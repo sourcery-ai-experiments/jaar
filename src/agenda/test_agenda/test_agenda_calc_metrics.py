@@ -1,6 +1,6 @@
 from datetime import datetime
 from src._road.road import RoadUnit
-from src.agenda.agenda import agendaunit_shop, get_from_json
+from src.agenda.agenda import agendaunit_shop, get_from_json as agendaunit_get_from_json
 from src.agenda.idea import IdeaUnit, ideaunit_shop
 from src.agenda.reason_idea import reasonunit_shop
 from src.agenda.group import groupunit_shop, balancelink_shop
@@ -17,7 +17,7 @@ from src.agenda.examples.example_agendas import (
 )
 
 
-def test_get_intent_dict_ReturnsCorrectObj():
+def test_AgendaUnit_get_intent_dict_ReturnsCorrectObj():
     # GIVEN
     bob_agenda = example_agendas_get_agenda_with_4_levels()
 
@@ -32,7 +32,7 @@ def test_get_intent_dict_ReturnsCorrectObj():
     assert bob_agenda.make_l1_road("feed cat") in intent_dict.keys()
 
 
-def test_agenda_get_intent_dict_ReturnsIntentWithOnlyCorrectItems():
+def test_AgendaUnit_get_intent_dict_ReturnsIntentWithOnlyCorrectItems():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels_and_2reasons()
     week_text = "weekdays"
@@ -55,7 +55,7 @@ def test_agenda_get_intent_dict_ReturnsIntentWithOnlyCorrectItems():
     assert x_agenda.make_l1_road("feed cat") in intent_dict.keys()
 
 
-def test_get_intent_returns_intent_WithAgendaImportance():
+def test_AgendaUnit_get_intent_dict_WithLargeAgendaImportance():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with_4_levels_and_2reasons_2beliefs()
 
@@ -73,7 +73,7 @@ def test_get_intent_returns_intent_WithAgendaImportance():
     assert intent_dict.get(x_agenda.make_l1_road(casa_text))._agenda_importance
 
 
-def test_get_intent_with_No7amItem():
+def test_AgendaUnit_get_intent_WithNo7amItemExample():
     # GIVEN
     x_agenda = example_agendas_get_agenda_with7amCleanTableReason()
 
@@ -93,7 +93,7 @@ def test_get_intent_with_No7amItem():
     assert cat_intent_item._label != clean_text
 
 
-def test_get_intent_with_7amItem():
+def test_AgendaUnit_get_intent_With7amItemExample():
     # GIVEN
     # set beliefs as midnight to 8am
     x_agenda = example_agendas_get_agenda_with7amCleanTableReason()
@@ -124,7 +124,7 @@ def test_get_intent_with_7amItem():
     assert clean_item._label == clean_text
 
 
-def test_get_intent_does_not_return_pledge_items_outside_range():
+def test_AgendaUnit_get_intent_DoesNotReturnPledgeItemsOutsideRange():
     zia_text = "Zia"
     zia_agenda = agendaunit_shop(zia_text)
     zia_agenda.set_time_hreg_ideas(c400_count=7)
@@ -159,6 +159,40 @@ def test_get_intent_does_not_return_pledge_items_outside_range():
     assert len(intent_dict) == 0
 
 
+def test_AgendaUnit_get_all_pledges_ReturnsCorrectObj():
+    # GIVEN
+    zia_text = "Zia"
+    zia_agenda = agendaunit_shop(zia_text)
+    casa_text = "casa"
+    casa_road = zia_agenda.make_l1_road(casa_text)
+    clean_text = "clean"
+    clean_road = zia_agenda.make_road(casa_road, clean_text)
+    sweep_text = "sweep"
+    sweep_road = zia_agenda.make_road(clean_road, sweep_text)
+    couch_text = "couch"
+    couch_road = zia_agenda.make_road(casa_road, couch_text)
+    zia_agenda.add_idea(ideaunit_shop(couch_text), casa_road)
+    zia_agenda.add_idea(ideaunit_shop(clean_text, pledge=True), casa_road)
+    zia_agenda.add_idea(ideaunit_shop(sweep_text, pledge=True), clean_road)
+    sweep_idea = zia_agenda.get_idea_obj(sweep_road)
+    bob_text = "Bob"
+    zia_agenda.add_partyunit(bob_text)
+    sweep_idea._assignedunit.set_suffgroup(bob_text)
+    print(f"{sweep_idea}")
+    intent_dict = zia_agenda.get_intent_dict()
+    assert intent_dict.get(clean_road) != None
+    assert intent_dict.get(sweep_road) is None
+    assert intent_dict.get(couch_road) is None
+
+    # WHEN
+    all_pledges_dict = zia_agenda.get_all_pledges()
+
+    # THEN
+    assert all_pledges_dict.get(sweep_road) == zia_agenda.get_idea_obj(sweep_road)
+    assert all_pledges_dict.get(clean_road) == zia_agenda.get_idea_obj(clean_road)
+    assert all_pledges_dict.get(couch_road) is None
+
+
 def test_example_agendas_agenda_v001_IntentExists():
     # GIVEN
     x_agenda = example_agendas_agenda_v001()
@@ -183,7 +217,7 @@ def test_example_agendas_agenda_v001_IntentExists():
     # assert str(type(intent_dict[12])) != "<class 'str'>"
 
 
-def test_exammple_AgendaHasCorrectAttributes():
+def test_example_agendas_agenda_v001_AgendaHasCorrectAttributes():
     # GIVEN
     x_agenda = example_agendas_agenda_v001()
 
@@ -262,7 +296,7 @@ def test_exammple_AgendaHasCorrectAttributes():
     print(len(idea_action_list))
 
 
-def test_exammple_AgendaCanFiltersOnBase():
+def test_example_agendas_agenda_v001_with_large_intent_AgendaCanFiltersOnBase():
     # GIVEN
     x_agenda = example_agendas_agenda_v001_with_large_intent()
     week_text = "weekdays"
@@ -291,7 +325,7 @@ def test_exammple_AgendaCanFiltersOnBase():
     assert len(action_list) == 29
 
 
-def test_set_intent_task_as_complete_SetsAttrCorrectly_Range():
+def test_AgendaUnit_set_intent_task_as_complete_SetsAttrCorrectly_Range():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
 
@@ -331,7 +365,7 @@ def test_set_intent_task_as_complete_SetsAttrCorrectly_Range():
     assert intent_dict == {}
 
 
-def test_set_intent_task_as_complete_SetsAttrCorrectly_Division():
+def test_AgendaUnit_set_intent_task_as_complete_SetsAttrCorrectly_Division():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
 
@@ -378,7 +412,7 @@ def test_agendaunit_get_from_json_CorrectlyLoadsActionFromJSON():
     x_agenda_json = example_agendas_agenda_v001().get_json()
 
     # WHEN
-    x_agenda = get_from_json(x_agenda_json=x_agenda_json)
+    x_agenda = agendaunit_get_from_json(x_agenda_json=x_agenda_json)
 
     # THEN
     assert len(x_agenda.get_idea_dict()) == 253
@@ -418,7 +452,7 @@ def test_agendaunit_get_from_json_CorrectlyLoadsActionFromJSON():
     assert len(x_agenda.get_intent_dict()) > 0
 
 
-def test_weekdayAgendaItemsCorrectlyReturned():
+def test_set_belief_WeekdayAgendaItemsCorrectlyReturned():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
     zia_agenda.set_time_hreg_ideas(c400_count=7)
@@ -547,7 +581,7 @@ def test_weekdayAgendaItemsCorrectlyReturned():
     #     print(f"{belief.base=} (H: {belief.belief}) {belief.=} {belief.open=} {belief.nigh=}")
 
 
-def test_agenda_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
+def test_AgendaUnit_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     # WHEN "I am cleaning the cookery since I'm in the apartment and it's 8am and it's dirty and I'm doing this for my family"
 
     # GIVEN
