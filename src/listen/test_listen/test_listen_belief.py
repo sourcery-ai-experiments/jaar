@@ -1,6 +1,7 @@
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.listen.listen import (
+    migrate_all_beliefs,
     get_debtors_roll,
     get_ordered_debtors_roll,
     listen_to_speaker_belief,
@@ -201,3 +202,58 @@ def test_set_listen_to_speaker_belief_DoesNotOverrideBelief():
     assert yao_listener.get_belief(status_road).pick == dirty_road
     # grabed speaker's beliefunit
     assert yao_listener.get_belief(fridge_road).pick == running_road
+
+
+def test_migrate_all_beliefs_CorrectlyAddsIdeaUnitsAndSetsBeliefUnits():
+    # GIVEN
+    yao_text = "Yao"
+    yao_src = agendaunit_shop(yao_text)
+    casa_text = "casa"
+    casa_road = yao_src.make_l1_road(casa_text)
+    status_text = "status"
+    status_road = yao_src.make_road(casa_road, status_text)
+    clean_text = "clean"
+    clean_road = yao_src.make_road(status_road, clean_text)
+    dirty_text = "dirty"
+    dirty_road = yao_src.make_road(status_road, dirty_text)
+    sweep_text = "sweep"
+    sweep_road = yao_src.make_road(casa_road, sweep_text)
+    weather_text = "weather"
+    weather_road = yao_src.make_l1_road(weather_text)
+    rain_text = "raining"
+    rain_road = yao_src.make_road(weather_road, rain_text)
+    snow_text = "snow"
+    snow_road = yao_src.make_road(weather_road, snow_text)
+
+    yao_src.add_partyunit(yao_text)
+    yao_src.set_party_pool(20)
+    yao_src.add_idea(ideaunit_shop(clean_text), status_road)
+    yao_src.add_idea(ideaunit_shop(dirty_text), status_road)
+    yao_src.add_idea(ideaunit_shop(sweep_text, pledge=True), casa_road)
+    yao_src.edit_reason(sweep_road, status_road, dirty_road)
+    # missing_belief_bases = list(yao_src.get_missing_belief_bases().keys())
+    yao_src.add_idea(ideaunit_shop(rain_text), weather_road)
+    yao_src.add_idea(ideaunit_shop(snow_text), weather_road)
+    yao_src.set_belief(weather_road, rain_road)
+    yao_src.set_belief(status_road, clean_road)
+
+    yao_dst = agendaunit_shop(yao_text)
+    assert yao_dst.idea_exists(clean_road) is False
+    assert yao_dst.idea_exists(dirty_road) is False
+    assert yao_dst.idea_exists(rain_road) is False
+    assert yao_dst.idea_exists(snow_road) is False
+    assert yao_dst.get_belief(weather_road) is None
+    assert yao_dst.get_belief(status_road) is None
+
+    # WHEN
+    migrate_all_beliefs(yao_src, yao_dst)
+
+    # THEN
+    assert yao_dst.idea_exists(clean_road)
+    assert yao_dst.idea_exists(dirty_road)
+    assert yao_dst.idea_exists(rain_road)
+    assert yao_dst.idea_exists(snow_road)
+    assert yao_dst.get_belief(weather_road) != None
+    assert yao_dst.get_belief(status_road) != None
+    assert yao_dst.get_belief(weather_road).pick == rain_road
+    assert yao_dst.get_belief(status_road).pick == clean_road

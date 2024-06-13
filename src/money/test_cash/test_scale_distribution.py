@@ -42,7 +42,7 @@ def test_allot_scale_v02():
     )
 
 
-def test_allot_scale_v03_0():
+def test_allot_scale_v03():
     # Example usage:
     partys = {
         "obj1": {"creditor_weight": 1.0},
@@ -61,7 +61,7 @@ def test_allot_scale_v03_0():
     assert sum(obj["alloted_value"] for obj in partys.values()) == scale_number
 
 
-def test_allot_scale_v03_1():
+def test_allot_scale_v04():
     # Example usage:
     partys = {
         "obj1": {"creditor_weight": 1.0},
@@ -80,7 +80,7 @@ def test_allot_scale_v03_1():
     assert sum(obj["alloted_value"] for obj in partys.values()) == scale_number
 
 
-def test_allot_scale_v04():
+def test_allot_scale_v05():
     # Example usage:
     partys = {
         "obj1": {"creditor_weight": 1.0},
@@ -107,7 +107,7 @@ def test_allot_scale_v04():
     assert sum(obj["alloted_value"] for obj in partys.values()) == scale_number
 
 
-def test_allot_scale_v05():
+def test_allot_scale_v06():
     # Example usage:
     partys = {
         "obj1": {"creditor_weight": 1.0},
@@ -134,7 +134,7 @@ def test_allot_scale_v05():
     assert sum(obj["alloted_value"] for obj in partys.values()) == scale_number
 
 
-def test_allot_scale_v06():
+def test_allot_scale_v07():
     # Example usage:
     partys = {
         "obj1": {"creditor_weight": 1.0},

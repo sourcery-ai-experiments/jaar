@@ -20,7 +20,7 @@ def create_pledge(
             x_agenda.add_partyunit(x_suffgroup)
 
         if reason_premise != None:
-            if x_agenda.idea_exists(reason_premise) == False:
+            if x_agenda.idea_exists(reason_premise) is False:
                 x_agenda.get_idea_obj(reason_premise, if_missing_create=True)
             reason_base = get_parent_road(reason_premise)
             x_agenda.edit_reason(pledge_road, reason_base, reason_premise)
@@ -35,6 +35,23 @@ def add_duty_pledge(
     duty_agenda = x_userhub.get_duty_agenda()
     old_duty_agenda = copy_deepcopy(duty_agenda)
     create_pledge(duty_agenda, pledge_road, x_suffgroup, reason_premise)
+    next_atomunit = x_userhub._default_atomunit()
+    next_atomunit._nucunit.add_all_different_quarkunits(old_duty_agenda, duty_agenda)
+    next_atomunit.save_files()
+    x_userhub.append_atoms_to_duty_file()
+
+
+def create_belief(x_agenda: AgendaUnit, belief_pick: RoadUnit):
+    if x_agenda.idea_exists(belief_pick) is False:
+        x_agenda.get_idea_obj(belief_pick, if_missing_create=True)
+    belief_base = get_parent_road(belief_pick)
+    x_agenda.set_belief(belief_base, belief_pick)
+
+
+def add_duty_belief(x_userhub: UserHub, belief_pick: RoadUnit):
+    duty_agenda = x_userhub.get_duty_agenda()
+    old_duty_agenda = copy_deepcopy(duty_agenda)
+    create_belief(duty_agenda, belief_pick)
     next_atomunit = x_userhub._default_atomunit()
     next_atomunit._nucunit.add_all_different_quarkunits(old_duty_agenda, duty_agenda)
     next_atomunit.save_files()
