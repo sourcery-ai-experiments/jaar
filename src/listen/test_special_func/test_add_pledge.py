@@ -50,3 +50,29 @@ def test_add_duty_pledge_SetsDutyAgendapledgeIdea_suffgroup(env_dir_setup_cleanu
     clean_idea = new_sue_duty.get_idea_obj(clean_road)
     print(f"{clean_idea._assignedunit._suffgroups=}")
     assert clean_idea._assignedunit.suffgroup_exists(bob_text)
+
+
+def test_add_duty_pledge_CanAdd_reasonunit(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_userhub = userhub_shop(env_dir(), root_label(), sue_text)
+    sue_userhub.initialize_atom_duty_files()
+    old_sue_duty = sue_userhub.get_duty_agenda()
+    clean_text = "clean"
+    clean_road = old_sue_duty.make_l1_road(clean_text)
+    house_estimation_text = "house_estimation"
+    house_estimation_road = old_sue_duty.make_l1_road(house_estimation_text)
+    dirty_text = "dirty"
+    dirty_road = old_sue_duty.make_road(house_estimation_road, dirty_text)
+    assert old_sue_duty.idea_exists(clean_road) is False
+
+    # WHEN
+    add_duty_pledge(sue_userhub, clean_road, reason_premise=dirty_road)
+
+    # THEN
+    new_sue_duty = sue_userhub.get_duty_agenda()
+    clean_idea = new_sue_duty.get_idea_obj(clean_road)
+    print(f"{clean_idea._reasonunits.keys()=}")
+    assert clean_idea.get_reasonunit(house_estimation_road) != None
+    house_reasonunit = clean_idea.get_reasonunit(house_estimation_road)
+    assert house_reasonunit.get_premise(dirty_road) != None
