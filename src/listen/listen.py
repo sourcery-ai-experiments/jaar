@@ -190,7 +190,10 @@ def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> Agend
 
     if listener._party_debtor_pool is None:
         return _allocate_missing_debtor_weight(listener, speaker._owner_id)
-    intent = generate_perspective_intent(perspective_agenda)
+    if listener._owner_id != speaker._owner_id:
+        intent = generate_perspective_intent(perspective_agenda)
+    else:
+        intent = list(perspective_agenda.get_all_pledges().values())
     if len(intent) == 0:
         return _allocate_missing_debtor_weight(listener, speaker._owner_id)
     return _ingest_perspective_intent(listener, intent)

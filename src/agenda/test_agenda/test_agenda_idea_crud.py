@@ -45,6 +45,23 @@ def test_AgendaUnit_add_idea_RaisesErrorWhen_parent_road_IdeaDoesNotExist():
     )
 
 
+def test_AgendaUnit_add_idea_RaisesErrorWhen_label_IsNotNode():
+    # GIVEN
+    zia_agenda = agendaunit_shop("Zia")
+    swim_road = zia_agenda.make_l1_road("swimming")
+    casa_text = "casa"
+    casa_road = zia_agenda.make_l1_road(casa_text)
+    run_text = "run"
+    run_road = zia_agenda.make_road(casa_road, run_text)
+
+    # WHEN/THEN
+    with pytest_raises(Exception) as excinfo:
+        zia_agenda.add_idea(ideaunit_shop(run_road), parent_road=swim_road)
+    assert (
+        str(excinfo.value) == f"add_idea failed because '{run_road}' is not a RoadNode."
+    )
+
+
 def test_AgendaUnit_add_l1_idea_CorrectlySetsAttr():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")

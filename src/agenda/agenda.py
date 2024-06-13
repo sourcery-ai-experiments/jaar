@@ -1116,6 +1116,11 @@ class AgendaUnit:
         bundling: bool = True,
         create_missing_ancestors: bool = True,
     ):
+        if RoadNode(idea_kid._label).is_node(self._road_delimiter) == False:
+            raise InvalidAgendaException(
+                f"add_idea failed because '{idea_kid._label}' is not a RoadNode."
+            )
+
         if self._idearoot._label != get_root_node_from_road(
             parent_road, self._road_delimiter
         ):
@@ -1519,6 +1524,11 @@ class AgendaUnit:
             for x_idea in self._idea_dict.values()
             if x_idea.is_intent_item(necessary_base=base)
         }
+
+    def get_all_pledges(self) -> dict[RoadUnit:IdeaUnit]:
+        self.calc_agenda_metrics()
+        all_ideas = self._idea_dict.values()
+        return {x_idea.get_road(): x_idea for x_idea in all_ideas if x_idea.pledge}
 
     def set_intent_task_complete(self, task_road: RoadUnit, base: RoadUnit):
         pledge_item = self.get_idea_obj(task_road)
