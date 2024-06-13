@@ -65,42 +65,43 @@ def test_get_real_dutys_partys_plotly_fig_DisplaysCorrectInfo(env_dir_setup_clea
     # assert 1 == 2
 
 
-# def test_get_real_works_partys_dataframe_ReturnsCorrectObj(
-#     env_dir_setup_cleanup,
-# ):
-#     # GIVEN
-#     music_real = create_example_real2()
-#     music_real.generate_all_work_agendas()
+def test_get_real_works_partys_dataframe_ReturnsCorrectObj(
+    env_dir_setup_cleanup,
+):
+    # GIVEN
+    music_real = create_example_real2()
+    music_real.generate_all_work_agendas()
 
-#     # WHEN
-#     x_df = get_real_works_partys_dataframe(music_real)
+    # WHEN
+    x_df = get_real_works_partys_dataframe(music_real)
 
-#     # THEN
-#     partyunit_colums = {
-#         "owner_id",
-#         "party_id",
-#         "creditor_weight",
-#         "debtor_weight",
-#         "_agenda_credit",
-#         "_agenda_debt",
-#         "_agenda_intent_credit",
-#         "_agenda_intent_debt",
-#         "_agenda_intent_ratio_credit",
-#         "_agenda_intent_ratio_debt",
-#         "_creditor_operational",
-#         "_debtor_operational",
-#         "_treasury_due_paid",
-#         "_treasury_due_diff",
-#         "_output_agenda_meld_order",
-#         "_treasury_credit_score",
-#         "_treasury_voice_rank",
-#         "_treasury_voice_hx_lowest_rank",
-#     }
-#     print(f"{set(x_df.columns)=}")
-#     print(x_df)
+    # THEN
+    partyunit_colums = {
+        "owner_id",
+        "party_id",
+        "creditor_weight",
+        "debtor_weight",
+        "_agenda_credit",
+        "_agenda_debt",
+        "_agenda_intent_credit",
+        "_agenda_intent_debt",
+        "_agenda_intent_ratio_credit",
+        "_agenda_intent_ratio_debt",
+        "_creditor_operational",
+        "_debtor_operational",
+        "_treasury_due_paid",
+        "_treasury_due_diff",
+        "_output_agenda_meld_order",
+        "_treasury_credit_score",
+        "_treasury_voice_rank",
+        "_treasury_voice_hx_lowest_rank",
+        "_missing_debtor_weight",
+    }
+    print(f"{set(x_df.columns)=}")
+    print(x_df)
 
-#     assert set(x_df.columns) == partyunit_colums
-#     assert x_df.shape[0] == 8
+    assert x_df.shape[0] == 8
+    assert set(x_df.columns) == partyunit_colums
 
 
 def test_get_real_works_partys_plotly_fig_DisplaysCorrectInfo(

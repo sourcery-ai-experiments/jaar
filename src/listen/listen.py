@@ -243,17 +243,6 @@ def listen_to_beliefs_duty_work(new_work: AgendaUnit, listener_userhub: UserHub)
                 listen_to_speaker_belief(new_work, speaker_work)
 
 
-# def listen_to_speakers_belief(
-#     new_listener: AgendaUnit, userhub: UserHub, src_listener: AgendaUnit = None
-# ):
-#     listen_to_speaker_belief(new_listener, src_listener)
-#     for x_partyunit in get_ordered_debtors_roll(new_listener):
-#         if x_partyunit.party_id != new_listener._owner_id:
-#             speaker_job = userhub.get_speaker_agenda(x_partyunit.party_id)
-#             if speaker_job != None:
-#                 listen_to_speaker_belief(new_listener, speaker_job)
-
-
 def listen_to_debtors_roll_duty_work(listener_userhub: UserHub) -> AgendaUnit:
     duty = listener_userhub.get_duty_agenda()
     new_agenda = create_listen_basis(duty)
