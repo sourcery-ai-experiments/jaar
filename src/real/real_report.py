@@ -9,11 +9,11 @@ from plotly.graph_objects import Figure as plotly_Figure, Table as plotly_Table
 
 def get_real_dutys_partys_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all person paths
-    person_filehubs = x_real.get_person_filehubs()
+    person_userhubs = x_real.get_person_userhubs()
     # for all persons get duty
     duty_dfs = []
-    for x_filehub in person_filehubs.values():
-        duty_agenda = x_filehub.get_duty_agenda()
+    for x_userhub in person_userhubs.values():
+        duty_agenda = x_userhub.get_duty_agenda()
         duty_agenda.calc_agenda_metrics()
         df = get_agenda_partyunits_dataframe(duty_agenda)
         df.insert(0, "owner_id", duty_agenda._owner_id)
@@ -65,11 +65,11 @@ def get_real_dutys_partys_plotly_fig(x_real: RealUnit) -> plotly_Figure:
 
 def get_real_works_partys_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all person paths
-    person_filehubs = x_real.get_person_filehubs()
+    person_userhubs = x_real.get_person_userhubs()
     # for all persons get work
     work_dfs = []
-    for x_filehub in person_filehubs.values():
-        work_agenda = x_filehub.get_work_agenda()
+    for x_userhub in person_userhubs.values():
+        work_agenda = x_userhub.get_work_agenda()
         work_agenda.calc_agenda_metrics()
         work_df = get_agenda_partyunits_dataframe(work_agenda)
         work_df.insert(0, "owner_id", work_agenda._owner_id)
@@ -121,11 +121,11 @@ def get_real_works_partys_plotly_fig(x_real: RealUnit) -> plotly_Figure:
 
 def get_real_dutys_intent_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all person paths
-    person_filehubs = x_real.get_person_filehubs()
+    person_userhubs = x_real.get_person_userhubs()
     # for all persons get duty
     duty_dfs = []
-    for x_filehub in person_filehubs.values():
-        duty_agenda = x_filehub.get_duty_agenda()
+    for x_userhub in person_userhubs.values():
+        duty_agenda = x_userhub.get_duty_agenda()
         duty_agenda.calc_agenda_metrics()
         df = get_agenda_intent_dataframe(duty_agenda)
         duty_dfs.append(df)
@@ -180,11 +180,11 @@ def get_real_dutys_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
 
 def get_real_works_intent_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all person paths
-    person_filehubs = x_real.get_person_filehubs()
+    person_userhubs = x_real.get_person_userhubs()
     # for all persons get work
     work_dfs = []
-    for x_filehub in person_filehubs.values():
-        work_agenda = x_filehub.get_work_agenda()
+    for x_userhub in person_userhubs.values():
+        work_agenda = x_userhub.get_work_agenda()
         work_agenda.calc_agenda_metrics()
         work_df = get_agenda_intent_dataframe(work_agenda)
         work_dfs.append(work_df)

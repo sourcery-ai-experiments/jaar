@@ -54,5 +54,5 @@ def get_descending_text() -> str:
     return "descending"
 
 
-def default_river_blocks_count() -> str:
+def default_river_blocks_count() -> int:
     return 40

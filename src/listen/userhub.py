@@ -50,10 +50,6 @@ from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 
 
-class Invalid_nox_type_Exception(Exception):
-    pass
-
-
 class Invalid_duty_Exception(Exception):
     pass
 
@@ -86,33 +82,24 @@ def get_econ_jobs_dir(x_econ_dir: str) -> str:
     return f"{x_econ_dir}/{jobs_str()}"
 
 
-def get_nox_type_set() -> set[str]:
-    return {
-        pipeline_duty_work_text(),
-        pipeline_role_job_text(),
-        pipeline_job_work_text(),
-    }
+# def pipeline_duty_work_text() -> str:
+#     return "duty_work"
 
 
-def pipeline_duty_work_text() -> str:
-    return "duty_work"
+# def pipeline_role_job_text() -> str:
+#     return "role_job"
 
 
-def pipeline_role_job_text() -> str:
-    return "role_job"
-
-
-def pipeline_job_work_text() -> str:
-    return "job_work"
+# def pipeline_job_work_text() -> str:
+#     return "job_work"
 
 
 @dataclass
-class FileHub:
+class UserHub:
     person_id: PersonID = None
     reals_dir: str = None
     real_id: str = None
     econ_road: RoadUnit = None
-    _nox_type: str = None  # can be "duty_work", "role_job", "job_work"
     road_delimiter: str = None
     planck: float = None
     penny: float = None
@@ -471,10 +458,14 @@ class FileHub:
         return agendaunit_get_from_json(file_content)
 
     def get_job_agenda(self, owner_id: PersonID) -> AgendaUnit:
+        if self.job_file_exists(owner_id) is False:
+            return None
         file_content = open_file(self.jobs_dir(), self.owner_file_name(owner_id))
         return agendaunit_get_from_json(file_content)
 
     def get_work_agenda(self) -> AgendaUnit:
+        if self.work_file_exists() is False:
+            return None
         file_content = self.open_file_work()
         return agendaunit_get_from_json(file_content)
 
@@ -487,92 +478,89 @@ class FileHub:
     def delete_treasury_db_file(self):
         delete_dir(self.treasury_db_path())
 
-    def set_nox_type(self, nox_type: str):
-        if nox_type is None or nox_type in get_nox_type_set():
-            self._nox_type = nox_type
-        else:
-            raise Invalid_nox_type_Exception(f"'{nox_type}' is an invalid nox_type")
+    def rj_speaker_file_name(self, speaker_id: PersonID) -> str:
+        return get_json_filename(speaker_id)
 
-    def speaker_dir(self, x_person_id: PersonID = None, x_econ_path: RoadUnit = None):
-        if self._nox_type == pipeline_role_job_text():
-            return self.jobs_dir()
-        if self._nox_type == pipeline_duty_work_text():
-            speaker_filehub = filehub_shop(
-                reals_dir=self.reals_dir,
-                real_id=self.real_id,
-                person_id=x_person_id,
-                road_delimiter=self.road_delimiter,
-                planck=self.planck,
-            )
-            return speaker_filehub.work_dir()
-        if self._nox_type == pipeline_job_work_text():
-            speaker_filehub = filehub_shop(
-                reals_dir=self.reals_dir,
-                real_id=self.real_id,
-                person_id=x_person_id,
-                econ_road=x_econ_path,
-                road_delimiter=self.road_delimiter,
-                planck=self.planck,
-            )
-            return speaker_filehub.jobs_dir()
+    def rj_speaker_dir(self, healer_id: PersonID) -> str:
+        healer_userhub = userhub_shop(
+            self.reals_dir, self.real_id, healer_id, self.econ_road
+        )
+        return healer_userhub.jobs_dir()
 
-    def speaker_file_name(self, x_arg=None) -> str:
-        if self._nox_type == pipeline_role_job_text():
-            return get_json_filename(x_arg)
-        if self._nox_type == pipeline_duty_work_text():
-            return get_json_filename(self.person_id)
-        if self._nox_type == pipeline_job_work_text():
-            return get_json_filename(self.person_id)
+    def rj_speaker_file_path(self, healer_id: PersonID, speaker_id: PersonID) -> str:
+        reals_dir = self.reals_dir
+        real_id = self.real_id
+        healer_userhub = userhub_shop(reals_dir, real_id, healer_id, self.econ_road)
+        return healer_userhub.job_path(owner_id=speaker_id)
 
-    def listener_dir(self, x_arg=None) -> str:
-        if self._nox_type == pipeline_role_job_text():
-            return self.roles_dir()
-        if self._nox_type == pipeline_duty_work_text():
-            return self.duty_dir()
-        if self._nox_type == pipeline_job_work_text():
-            return self.duty_dir()
+    def dw_speaker_file_name(self, person_id: PersonID) -> str:
+        return get_json_filename(person_id)
 
-    def listener_file_name(self, x_arg=None) -> str:
-        if self._nox_type == pipeline_role_job_text():
-            return get_json_filename(x_arg)
-        if self._nox_type == pipeline_duty_work_text():
-            return get_json_filename(self.person_id)
-        if self._nox_type == pipeline_job_work_text():
-            return get_json_filename(self.person_id)
+    def dw_speaker_dir(self, x_person_id: PersonID) -> str:
+        speaker_userhub = userhub_shop(
+            reals_dir=self.reals_dir,
+            real_id=self.real_id,
+            person_id=x_person_id,
+            road_delimiter=self.road_delimiter,
+            planck=self.planck,
+        )
+        return speaker_userhub.work_dir()
 
-    def destination_dir(self, x_arg=None) -> str:
-        if self._nox_type == pipeline_role_job_text():
-            return self.jobs_dir()
-        if self._nox_type == pipeline_duty_work_text():
-            return self.work_dir()
-        if self._nox_type == pipeline_job_work_text():
-            return self.work_dir()
+    def dw_speaker_file_path(self, x_person_id: PersonID) -> str:
+        return f"{self.dw_speaker_dir(x_person_id)}/{self.dw_speaker_file_name(x_person_id)}"
 
-    def destination_file_name(self, x_arg=None) -> str:
-        if self._nox_type == pipeline_role_job_text():
-            return get_json_filename(x_arg)
-        if self._nox_type == pipeline_duty_work_text():
-            return get_json_filename(self.person_id)
-        if self._nox_type == pipeline_job_work_text():
-            return get_json_filename(self.person_id)
+    def dw_speaker_agenda(self, speaker_id: PersonID) -> AgendaUnit:
+        speaker_userhub = userhub_shop(
+            reals_dir=self.reals_dir,
+            real_id=self.real_id,
+            person_id=speaker_id,
+            road_delimiter=self.road_delimiter,
+            planck=self.planck,
+        )
+        return speaker_userhub.get_work_agenda()
 
-    def get_speaker_agenda(
-        self, person_id: PersonID, return_None_if_missing: bool = True
+    def jw_speaker_dir(self, x_person_id: PersonID, x_econ_path: RoadUnit) -> str:
+        speaker_userhub = userhub_shop(
+            reals_dir=self.reals_dir,
+            real_id=self.real_id,
+            person_id=x_person_id,
+            econ_road=x_econ_path,
+            road_delimiter=self.road_delimiter,
+            planck=self.planck,
+        )
+        return speaker_userhub.jobs_dir()
+
+    def jw_speaker_file_path(self, x_person_id: PersonID, x_econ_path: RoadUnit) -> str:
+        jw_dir = self.jw_speaker_dir(x_person_id, x_econ_path)
+        return f"{jw_dir}/{self.owner_file_name(self.person_id)}"
+
+    def get_perspective_agenda(self, speaker: AgendaUnit) -> AgendaUnit:
+        # get copy of agenda without any metrics
+        perspective_agenda = agendaunit_get_from_json(speaker.get_json())
+        perspective_agenda.set_owner_id(self.person_id)
+        return perspective_agenda
+
+    def get_dw_perspective_agenda(self, speaker_id: PersonID) -> AgendaUnit:
+        return self.get_perspective_agenda(self.dw_speaker_agenda(speaker_id))
+
+    def rj_speaker_agenda(
+        self, healer_id: PersonID, speaker_id: PersonID
     ) -> AgendaUnit:
-        speaker_dir = self.speaker_dir(person_id)
-        speaker_file_name = self.speaker_file_name(person_id)
-        x_file_path = f"{speaker_dir}/{speaker_file_name}"
-        if os_path_exists(x_file_path) or not return_None_if_missing:
-            file_contents = open_file(speaker_dir, speaker_file_name)
-            return agendaunit_get_from_json(file_contents)
+        speaker_userhub = userhub_shop(
+            reals_dir=self.reals_dir,
+            real_id=self.real_id,
+            person_id=healer_id,
+            econ_road=self.econ_road,
+            road_delimiter=self.road_delimiter,
+            planck=self.planck,
+        )
+        return speaker_userhub.get_job_agenda(speaker_id)
 
-    def get_listener_agenda(self, person_id: PersonID) -> AgendaUnit:
-        listener_dir = self.listener_dir(person_id)
-        listener_file_name = self.listener_file_name(person_id)
-        x_file_path = f"{listener_dir}/{listener_file_name}"
-        if os_path_exists(x_file_path):
-            file_contents = open_file(listener_dir, listener_file_name)
-            return agendaunit_get_from_json(file_contents)
+    def rj_perspective_agenda(
+        self, healer_id: PersonID, speaker_id: PersonID
+    ) -> AgendaUnit:
+        speaker_job = self.rj_speaker_agenda(healer_id, speaker_id)
+        return self.get_perspective_agenda(speaker_job)
 
     def get_econ_roads(self):
         x_duty_agenda = self.get_duty_agenda()
@@ -607,7 +595,7 @@ class FileHub:
     def treasury_db_file_conn(self) -> Connection:
         if self.econ_road is None:
             raise _econ_roadMissingException(
-                f"filehub cannot connect to treasury_db_file because econ_road is {self.econ_road}"
+                f"userhub cannot connect to treasury_db_file because econ_road is {self.econ_road}"
             )
         if self.treasury_db_file_exists() is False:
             self.create_treasury_db_file()
@@ -620,22 +608,21 @@ class FileHub:
         self.econ_road = None
 
 
-def filehub_shop(
+def userhub_shop(
     reals_dir: str,
     real_id: RealID,
     person_id: PersonID = None,
     econ_road: RoadUnit = None,
-    nox_type: str = None,
     road_delimiter: str = None,
     planck: float = None,
     penny: float = None,
-) -> FileHub:
+) -> UserHub:
     if reals_dir is None:
         reals_dir = get_test_reals_dir()
     if real_id is None:
         real_id = get_test_real_id()
 
-    x_filehub = FileHub(
+    return UserHub(
         reals_dir=reals_dir,
         real_id=real_id,
         person_id=validate_roadnode(person_id, road_delimiter),
@@ -644,12 +631,10 @@ def filehub_shop(
         planck=default_planck_if_none(planck),
         penny=default_penny_if_none(penny),
     )
-    x_filehub.set_nox_type(nox_type)
-    return x_filehub
 
 
-def get_econ_path(x_filehub: FileHub, x_road: RoadNode) -> str:
+def get_econ_path(x_userhub: UserHub, x_road: RoadNode) -> str:
     econ_root = get_rootpart_of_econ_dir()
-    x_road = rebuild_road(x_road, x_filehub.real_id, econ_root)
-    x_list = get_all_road_nodes(x_road, x_filehub.road_delimiter)
-    return f"{x_filehub.econs_dir()}{get_directory_path(x_list=[*x_list])}"
+    x_road = rebuild_road(x_road, x_userhub.real_id, econ_root)
+    x_list = get_all_road_nodes(x_road, x_userhub.road_delimiter)
+    return f"{x_userhub.econs_dir()}{get_directory_path(x_list=[*x_list])}"

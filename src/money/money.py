@@ -3,13 +3,13 @@ from src._road.jaar_config import default_river_blocks_count
 from src._road.road import OwnerID
 from src.agenda.party import partylink_shop
 from src.agenda.agenda import AgendaUnit
-from src.listen.filehub import FileHub
+from src.listen.userhub import UserHub
 from src.money.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
-    get_agenda_partyunit_table_update_treasury_due_paid_sqlstr,
-    get_agenda_partyunit_table_update_credit_score_sqlstr,
-    get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr,
+    get_agenda_partyunit_table_update_treasury_due_paid_sqlstr as update_treasury_due_paid_sqlstr,
+    get_agenda_partyunit_table_update_credit_score_sqlstr as update_credit_score_sqlstr,
+    get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr as update_treasury_voice_rank_sqlstr,
     get_river_block_table_delete_sqlstr,
     get_river_block_table_insert_sqlstr,
     get_river_circle_table_insert_sqlstr,
@@ -46,34 +46,10 @@ class IntentBaseDoesNotExistException(Exception):
 
 @dataclass
 class MoneyUnit:
-    filehub: FileHub
+    userhub: UserHub
     _treasury_db = None
 
     # treasurying
-    def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
-        if sort_order == "descending":
-            owner_role = self.filehub.get_role_agenda(owner_id)
-            for count_x, x_partyunit in enumerate(owner_role._partys.values()):
-                x_partyunit.set_treasury_voice_rank(count_x)
-            self.filehub.save_role_agenda(owner_role)
-
-    def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
-        x_agenda = self.filehub.get_job_agenda(x_owner_id)
-
-        for groupunit_x in x_agenda._groups.values():
-            if groupunit_x._treasury_partylinks != None:
-                groupunit_x.clear_partylinks()
-                ic = get_agenda_ideaunit_dict(
-                    self.get_treasury_conn(),
-                    groupunit_x._treasury_partylinks,
-                )
-                for agenda_ideaunit in ic.values():
-                    if x_owner_id != agenda_ideaunit.owner_id:
-                        partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
-                        groupunit_x.set_partylink(partylink_x)
-        self.filehub.save_job_agenda(x_agenda)
-        self.refresh_treasury_job_agendas_data()
-
     def set_credit_flow_for_agenda(
         self, owner_id: OwnerID, max_blocks_count: int = None
     ):
@@ -82,6 +58,11 @@ class MoneyUnit:
             max_blocks_count = default_river_blocks_count()
         self._set_river_blocks(owner_id, max_blocks_count)
         self._set_partytreasuryunits_circles(owner_id)
+
+    def _clear_all_source_river_data(self, owner_id: str):
+        with self.get_treasury_conn() as treasury_conn:
+            block_s = get_river_block_table_delete_sqlstr(owner_id)
+            treasury_conn.execute(block_s)
 
     def _set_river_blocks(self, x_owner_id: OwnerID, max_blocks_count: int):
         # Transformations in river_block loop
@@ -142,11 +123,6 @@ class MoneyUnit:
 
         return river_ledger_x
 
-    def _clear_all_source_river_data(self, owner_id: str):
-        with self.get_treasury_conn() as treasury_conn:
-            block_s = get_river_block_table_delete_sqlstr(owner_id)
-            treasury_conn.execute(block_s)
-
     def _get_root_river_ledger_unit(self, owner_id: str) -> RiverLedgerUnit:
         default_cash_onset = 0.0
         default_cash_cease = 1.0
@@ -171,22 +147,16 @@ class MoneyUnit:
         with self.get_treasury_conn() as treasury_conn:
             treasury_conn.execute(get_river_circle_table_insert_sqlstr(owner_id))
             treasury_conn.execute(get_river_reach_table_final_insert_sqlstr(owner_id))
-            treasury_conn.execute(
-                get_agenda_partyunit_table_update_treasury_due_paid_sqlstr(owner_id)
-            )
-            treasury_conn.execute(
-                get_agenda_partyunit_table_update_credit_score_sqlstr(owner_id)
-            )
-            treasury_conn.execute(
-                get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr(owner_id)
-            )
+            treasury_conn.execute(update_treasury_due_paid_sqlstr(owner_id))
+            treasury_conn.execute(update_credit_score_sqlstr(owner_id))
+            treasury_conn.execute(update_treasury_voice_rank_sqlstr(owner_id))
 
             sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, owner_id)
-            x_agenda = self.filehub.get_job_agenda(owner_id=owner_id)
+            x_agenda = self.userhub.get_job_agenda(owner_id=owner_id)
             set_treasury_partytreasuryunits_to_agenda_partyunits(
                 x_agenda, sal_partytreasuryunits
             )
-            self.filehub.save_job_agenda(x_agenda)
+            self.userhub.save_job_agenda(x_agenda)
 
     def get_partytreasuryunits(self, owner_id: str) -> dict[str:PartyTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
@@ -200,8 +170,8 @@ class MoneyUnit:
         self._treasury_populate_agendas_data()
 
     def _treasury_populate_agendas_data(self):
-        for person_id in self.filehub.get_jobs_dir_file_names_list():
-            agendaunit_x = self.filehub.get_job_agenda(person_id)
+        for person_id in self.userhub.get_jobs_dir_file_names_list():
+            agendaunit_x = self.userhub.get_job_agenda(person_id)
             agendaunit_x.calc_agenda_metrics()
 
             self._treasury_insert_agendaunit(agendaunit_x)
@@ -266,7 +236,7 @@ class MoneyUnit:
 
     def get_treasury_conn(self) -> Connection:
         if self._treasury_db is None:
-            return self.filehub.treasury_db_file_conn()
+            return self.userhub.treasury_db_file_conn()
         else:
             return self._treasury_db
 
@@ -275,13 +245,13 @@ class MoneyUnit:
     ) -> Connection:
         if overwrite:
             self._treasury_db = None
-            self.filehub.delete_treasury_db_file()
+            self.userhub.delete_treasury_db_file()
 
         treasury_file_new = True
         if in_memory:
             self._treasury_db = sqlite3_connect(":memory:")
         else:
-            self.filehub.create_treasury_db_file()
+            self.userhub.create_treasury_db_file()
 
         if treasury_file_new:
             with self.get_treasury_conn() as treasury_conn:
@@ -323,12 +293,37 @@ class MoneyUnit:
                     sqlstr = get_calendar_table_insert_sqlstr(x_calendarintentunit)
                     cur.execute(sqlstr)
 
+    # exporting metrics to agenda files
+    def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
+        if sort_order == "descending":
+            owner_role = self.userhub.get_role_agenda(owner_id)
+            for count_x, x_partyunit in enumerate(owner_role._partys.values()):
+                x_partyunit.set_treasury_voice_rank(count_x)
+            self.userhub.save_role_agenda(owner_role)
 
-def moneyunit_shop(x_filehub: FileHub, in_memory_treasury: bool = None) -> MoneyUnit:
+    def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
+        x_agenda = self.userhub.get_job_agenda(x_owner_id)
+
+        for groupunit_x in x_agenda._groups.values():
+            if groupunit_x._treasury_partylinks != None:
+                groupunit_x.clear_partylinks()
+                ic = get_agenda_ideaunit_dict(
+                    self.get_treasury_conn(),
+                    groupunit_x._treasury_partylinks,
+                )
+                for agenda_ideaunit in ic.values():
+                    if x_owner_id != agenda_ideaunit.owner_id:
+                        partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
+                        groupunit_x.set_partylink(partylink_x)
+        self.userhub.save_job_agenda(x_agenda)
+        self.refresh_treasury_job_agendas_data()
+
+
+def moneyunit_shop(x_userhub: UserHub, in_memory_treasury: bool = None) -> MoneyUnit:
     if in_memory_treasury is None:
         in_memory_treasury = True
 
-    x_moneyunit = MoneyUnit(x_filehub)
+    x_moneyunit = MoneyUnit(x_userhub)
     x_moneyunit.create_treasury_db(in_memory=in_memory_treasury)
     return x_moneyunit
 
@@ -340,7 +335,7 @@ def set_treasury_partytreasuryunits_to_agenda_partyunits(
         x_partyunit.clear_treasurying_data()
         partytreasuryunit = partytreasuryunits.get(x_partyunit.party_id)
         if partytreasuryunit != None:
-            x_partyunit.set_treasurying_data(
+            x_partyunit.set_treasury_attr(
                 due_paid=partytreasuryunit.due_total,
                 due_diff=partytreasuryunit.due_diff,
                 credit_score=partytreasuryunit.credit_score,

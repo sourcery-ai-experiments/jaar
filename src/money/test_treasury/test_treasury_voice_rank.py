@@ -5,12 +5,12 @@ from src.agenda.agenda import agendaunit_shop
 from src.listen.meld_files import get_file_names_in_voice_rank_order
 from src.listen.listen import create_job_file_from_role_file
 from src.money.money import moneyunit_shop
-from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
 
 
 def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_cleanup):
     # GIVEN
-    temp_dir = f"{get_texas_filehub().reals_dir}/voice_rank_order_temp"
+    temp_dir = f"{get_texas_userhub().reals_dir}/voice_rank_order_temp"
     print(f"{temp_dir=}")
     yao_text = "Yao"
 
@@ -37,11 +37,11 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     elu_partyunit = partyunit_shop(party_id=elu_text)
 
     yao_agenda = agendaunit_shop(_owner_id=yao_text)
-    ava_partyunit.set_treasurying_data(None, None, None, voice_rank=33)
-    bob_partyunit.set_treasurying_data(None, None, None, voice_rank=33)
-    cal_partyunit.set_treasurying_data(None, None, None, voice_rank=77)
-    dom_partyunit.set_treasurying_data(None, None, None, voice_rank=55)
-    elu_partyunit.set_treasurying_data(None, None, None, voice_rank=99)
+    ava_partyunit.set_treasury_attr(None, None, None, voice_rank=33)
+    bob_partyunit.set_treasury_attr(None, None, None, voice_rank=33)
+    cal_partyunit.set_treasury_attr(None, None, None, voice_rank=77)
+    dom_partyunit.set_treasury_attr(None, None, None, voice_rank=55)
+    elu_partyunit.set_treasury_attr(None, None, None, voice_rank=99)
     yao_agenda.set_partyunit(ava_partyunit)
     yao_agenda.set_partyunit(bob_partyunit)
     yao_agenda.set_partyunit(cal_partyunit)
@@ -80,8 +80,8 @@ def test_MoneyUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    texas_filehub = get_texas_filehub()
-    x_money = moneyunit_shop(texas_filehub)
+    texas_userhub = get_texas_userhub()
+    x_money = moneyunit_shop(texas_userhub)
     ava_text = "Ava"
     bob_text = "Bob"
     cal_text = "Cal"
@@ -95,9 +95,9 @@ def test_MoneyUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type
     yao_role0_agenda.set_partyunit(partyunit_shop(cal_text))
     yao_role0_agenda.set_partyunit(partyunit_shop(dom_text))
     yao_role0_agenda.set_partyunit(partyunit_shop(elu_text))
-    texas_filehub.save_role_agenda(yao_role0_agenda)
-    create_job_file_from_role_file(texas_filehub, yao_text)
-    yao_role1_agenda = texas_filehub.get_role_agenda(yao_text)
+    texas_userhub.save_role_agenda(yao_role0_agenda)
+    create_job_file_from_role_file(texas_userhub, yao_text)
+    yao_role1_agenda = texas_userhub.get_role_agenda(yao_text)
     assert yao_role1_agenda.get_party(ava_text)._treasury_voice_rank is None
     assert yao_role1_agenda.get_party(bob_text)._treasury_voice_rank is None
     assert yao_role1_agenda.get_party(cal_text)._treasury_voice_rank is None
@@ -108,7 +108,7 @@ def test_MoneyUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type
     x_money.set_role_voice_ranks(yao_text, sort_order=get_descending_text())
 
     # THEN
-    yao_role2_agenda = texas_filehub.get_role_agenda(yao_text)
+    yao_role2_agenda = texas_userhub.get_role_agenda(yao_text)
     assert yao_role2_agenda.get_party(ava_text)._treasury_voice_rank != None
     assert yao_role2_agenda.get_party(bob_text)._treasury_voice_rank != None
     assert yao_role2_agenda.get_party(cal_text)._treasury_voice_rank != None

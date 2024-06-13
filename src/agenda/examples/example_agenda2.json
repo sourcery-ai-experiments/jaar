@@ -4253,29 +4253,29 @@
                         "_close": 1472657760,
                         "_is_expanded": true,
                         "_kids": {
-                            "400 year cycle": {
+                            "400 year segment": {
                                 "_begin": 0.0,
                                 "_close": 210379680.0,
                                 "_denom": 7,
                                 "_is_expanded": false,
-                                "_label": "400 year cycle",
+                                "_label": "400 year segment",
                                 "_meld_strategy": "default",
                                 "_numor": 1,
-                                "_range_source_road": "A,time,tech,400 year cycle",
+                                "_range_source_road": "A,time,tech,400 year segment",
                                 "_reest": true,
                                 "_uid": null,
                                 "_weight": 1,
                                 "pledge": false
                             },
-                            "400 year cycles": {
+                            "400 year segments": {
                                 "_begin": 0.0,
                                 "_close": 7.0,
                                 "_denom": 210379680,
                                 "_is_expanded": false,
-                                "_label": "400 year cycles",
+                                "_label": "400 year segments",
                                 "_meld_strategy": "default",
                                 "_numor": 1,
-                                "_range_source_road": "A,time,tech,400 year cycle",
+                                "_range_source_road": "A,time,tech,400 year segment",
                                 "_reest": false,
                                 "_uid": null,
                                 "_weight": 1,
@@ -4689,7 +4689,7 @@
                                 "_weight": 1,
                                 "pledge": false
                             },
-                            "400 year cycle": {
+                            "400 year segment": {
                                 "_begin": 0.0,
                                 "_close": 210379680.0,
                                 "_is_expanded": false,
@@ -4877,9 +4877,9 @@
                                         "pledge": false
                                     }
                                 },
-                                "_label": "400 year cycle",
+                                "_label": "400 year segment",
                                 "_meld_strategy": "default",
-                                "_numeric_road": "A,time,jajatime,400 year cycle",
+                                "_numeric_road": "A,time,jajatime,400 year segment",
                                 "_uid": null,
                                 "_weight": 1,
                                 "pledge": false
@@ -4936,7 +4936,7 @@
                                 },
                                 "_label": "4year with leap",
                                 "_meld_strategy": "default",
-                                "_numeric_road": "A,time,tech,400 year cycle,0-100-25 leap years,4year with leap",
+                                "_numeric_road": "A,time,tech,400 year segment,0-100-25 leap years,4year with leap",
                                 "_uid": null,
                                 "_weight": 1,
                                 "pledge": false

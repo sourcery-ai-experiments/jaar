@@ -462,7 +462,7 @@ class AgendaUnit:
     def get_time_c400_from_min(self, min: int) -> int:
         time_road = self.make_l1_road("time")
         tech_road = self.make_road(time_road, "tech")
-        c400_road = self.make_road(tech_road, "400 year cycle")
+        c400_road = self.make_road(tech_road, "400 year segment")
         c400_idea = self.get_idea_obj(c400_road)
         c400_min = c400_idea._close
         return int(min / c400_min), c400_idea, min % c400_min
@@ -483,7 +483,7 @@ class AgendaUnit:
         ):  # 96 year and 100 year ideas
             yr4_1461_road = self.make_road(tech_road, "4year with leap")
             yr4_1461_idea = self.get_idea_obj(yr4_1461_road)
-            yr4_cycles = int(cXXXyr_min / yr4_1461_idea._close)
+            yr4_segments = int(cXXXyr_min / yr4_1461_idea._close)
             cXyr_min = cXXXyr_min % yr4_1461_idea._close
             yr1_idea = yr4_1461_idea.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[
                 0
@@ -491,7 +491,7 @@ class AgendaUnit:
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
             yr4_1460_road = self.make_road(tech_road, "4year wo leap")
             yr4_1460_idea = self.get_idea_obj(yr4_1460_road)
-            yr4_cycles = 0
+            yr4_segments = 0
             yr1_idea = yr4_1460_idea.get_kids_in_range(cXXXyr_min, cXXXyr_min)[0]
             cXyr_min = cXXXyr_min % yr4_1460_idea._close
 
@@ -499,7 +499,7 @@ class AgendaUnit:
         yr1_idea_begin = int(yr1_idea._label.split("-")[0]) - 1
 
         c100_4_96y_begin = int(c100_4_96y._label.split("-")[0])
-        year_num = c100_4_96y_begin + (4 * yr4_cycles) + yr1_idea_begin
+        year_num = c100_4_96y_begin + (4 * yr4_segments) + yr1_idea_begin
         return year_num, yr1_idea, yr1_rem_min
 
     def get_time_month_from_min(self, min: int):
@@ -906,7 +906,7 @@ class AgendaUnit:
         # Now get associates (all their descendants and range_source_roads)
         lemma_beliefunits = {}  # belief.base : beliefUnit
         count_x = 0
-        while count_x > 10000 or x_lemmas.is_lemmas_evaluated() is False:
+        while (count_x > 10000 or x_lemmas.is_lemmas_evaluated()) is False:
             count_x += 1
             if count_x == 9998:
                 raise InvalidAgendaException("lemma loop failed")
@@ -1616,10 +1616,10 @@ class AgendaUnit:
                 balanceheir_agenda_debt=balancelink_obj._agenda_debt,
             )
 
-    def _distribute_agenda_intent_importance(self):
+    def _allot_agenda_intent_importance(self):
         for idea in self._idea_dict.values():
             # If there are no balancelines associated with idea
-            # distribute agenda_importance via general partyunit
+            # allot agenda_importance via general partyunit
             # credit ratio and debt ratio
             # if idea.is_intent_item() and idea._balancelines == {}:
             if idea.is_intent_item():
@@ -1635,7 +1635,7 @@ class AgendaUnit:
                             balanceline_agenda_debt=x_balanceline._agenda_debt,
                         )
 
-    def _distribute_groups_agenda_importance(self):
+    def _allot_groups_agenda_importance(self):
         for group_obj in self._groups.values():
             group_obj._set_partylink_agenda_credit_debt()
             for partylink in group_obj._partys.values():
@@ -1805,7 +1805,7 @@ class AgendaUnit:
 
         if x_idearoot.is_kidless():
             self._set_ancestors_metrics(self._idearoot.get_road(), econ_exceptions)
-            self._distribute_agenda_importance(idea=self._idearoot)
+            self._allot_agenda_importance(idea=self._idearoot)
 
     def _set_kids_attributes(
         self,
@@ -1842,9 +1842,9 @@ class AgendaUnit:
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using agenda root as common reference
             self._set_ancestors_metrics(idea_kid.get_road(), econ_exceptions)
-            self._distribute_agenda_importance(idea=idea_kid)
+            self._allot_agenda_importance(idea=idea_kid)
 
-    def _distribute_agenda_importance(self, idea: IdeaUnit):
+    def _allot_agenda_importance(self, idea: IdeaUnit):
         # TODO manage situations where balanceheir.creditor_weight is None for all balanceheirs
         # TODO manage situations where balanceheir.debtor_weight is None for all balanceheirs
         if idea.is_balanceheirless() is False:
@@ -1931,8 +1931,8 @@ class AgendaUnit:
             self._rational = True
 
     def _after_all_tree_traverses_set_credit_debt(self):
-        self._distribute_agenda_intent_importance()
-        self._distribute_groups_agenda_importance()
+        self._allot_agenda_intent_importance()
+        self._allot_groups_agenda_importance()
         self._set_agenda_intent_ratio_credit_debt()
 
     def _after_all_tree_traverses_set_healerhold_importance(self):

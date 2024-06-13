@@ -95,12 +95,13 @@ def test_get_real_works_partys_dataframe_ReturnsCorrectObj(
         "_treasury_credit_score",
         "_treasury_voice_rank",
         "_treasury_voice_hx_lowest_rank",
+        "_missing_debtor_weight",
     }
     print(f"{set(x_df.columns)=}")
     print(x_df)
 
-    assert set(x_df.columns) == partyunit_colums
     assert x_df.shape[0] == 8
+    assert set(x_df.columns) == partyunit_colums
 
 
 def test_get_real_works_partys_plotly_fig_DisplaysCorrectInfo(

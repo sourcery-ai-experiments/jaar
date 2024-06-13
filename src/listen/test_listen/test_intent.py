@@ -323,6 +323,6 @@ def test_listen_to_speaker_intent_ProcessesBarrenAgenda():
     print(f"{sue_partyunit.debtor_weight=}")
     print(f"{sue_partyunit._irrational_debtor_weight=}")
     assert zia_partyunit._irrational_debtor_weight == 0
-    assert zia_partyunit._missing_job_debtor_weight == 0
+    assert zia_partyunit._missing_debtor_weight == 0
     assert sue_partyunit._irrational_debtor_weight == 0
-    assert sue_partyunit._missing_job_debtor_weight == 51
+    assert sue_partyunit._missing_debtor_weight == 51

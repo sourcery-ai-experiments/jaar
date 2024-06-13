@@ -3,7 +3,7 @@ from src.money.money import (
     moneyunit_shop,
     set_treasury_partytreasuryunits_to_agenda_partyunits,
 )
-from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
 from src.money.treasury_sqlstr import (
     get_river_block_table_insert_sqlstr as river_block_insert,
     get_river_block_dict,
@@ -23,7 +23,7 @@ def test_MoneyUnit_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTa
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
     x_money.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -44,7 +44,7 @@ def test_MoneyUnit_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTa
     tim_due_paid = 0.5151
     tim_credit_score = 0.5252
     tim_voice_rank = 33
-    tim_partyunit.set_treasurying_data(
+    tim_partyunit.set_treasury_attr(
         tim_due_paid, None, tim_credit_score, tim_voice_rank
     )
     assert tim_partyunit._treasury_due_paid == tim_due_paid
@@ -152,7 +152,7 @@ def test_RiverBlockUnit_block_returned_ReturnsCorrectBool():
 
 def test_MoneyUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
     x_money.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
@@ -221,7 +221,7 @@ def test_river_block_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     bob_text = "Bob"
     tim_text = "Tim"
@@ -344,7 +344,7 @@ def test_PartyTreasuryUnit_exists():
     assert x_partytreasury.voice_rank == x_voice_rank
 
 
-def test_agenda_set_treasurying_data_partyunits_CorrectlySetsPartyUnitTreasuryingAttr():
+def test_agenda_set_treasury_attr_partyunits_CorrectlySetsPartyUnitTreasuryingAttr():
     # GIVEN
     bob_text = "Bob"
     x_agenda = agendaunit_shop(_owner_id=bob_text)
@@ -402,7 +402,7 @@ def test_MoneyUnit_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_Co
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     bob_text = "Bob"
     tom_text = "Tom"

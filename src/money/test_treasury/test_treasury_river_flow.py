@@ -1,6 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.money.money import moneyunit_shop
-from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_filehub
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
 from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from src.money.treasury_sqlstr import (
     get_partytreasuryunit_dict,
@@ -28,7 +28,7 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryuni
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -37,15 +37,15 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryuni
     sal_agentunit = agendaunit_shop(_owner_id=sal_text)
     sal_agentunit.add_partyunit(party_id=bob_text, creditor_weight=1)
     sal_agentunit.add_partyunit(party_id=tom_text, creditor_weight=3)
-    x_money.filehub.save_job_agenda(sal_agentunit)
+    x_money.userhub.save_job_agenda(sal_agentunit)
 
     bob_agentunit = agendaunit_shop(_owner_id=bob_text)
     bob_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(bob_agentunit)
+    x_money.userhub.save_job_agenda(bob_agentunit)
 
     tom_agentunit = agendaunit_shop(_owner_id=tom_text)
     tom_agentunit.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(tom_agentunit)
+    x_money.userhub.save_job_agenda(tom_agentunit)
 
     x_money.refresh_treasury_job_agendas_data()
     partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
@@ -104,7 +104,7 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryuni
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 agendas, 85% of river blocks to sal
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -115,19 +115,19 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryuni
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(sal_agenda)
+    x_money.userhub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(bob_agenda)
+    x_money.userhub.save_job_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(tom_agenda)
+    x_money.userhub.save_job_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
-    x_money.filehub.save_job_agenda(ava_agenda)
+    x_money.userhub.save_job_agenda(ava_agenda)
     x_money.refresh_treasury_job_agendas_data()
 
     partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
@@ -178,7 +178,7 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryuni
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -190,24 +190,24 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryuni
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(sal_agenda)
+    x_money.userhub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(bob_agenda)
+    x_money.userhub.save_job_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(tom_agenda)
+    x_money.userhub.save_job_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(ava_agenda)
+    x_money.userhub.save_job_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(elu_agenda)
+    x_money.userhub.save_job_agenda(elu_agenda)
 
     x_money.refresh_treasury_job_agendas_data()
 
@@ -261,7 +261,7 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryuni
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -273,25 +273,25 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryuni
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(sal_agenda)
+    x_money.userhub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(bob_agenda)
+    x_money.userhub.save_job_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(tom_agenda)
+    x_money.userhub.save_job_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(ava_agenda)
+    x_money.userhub.save_job_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(elu_agenda)
+    x_money.userhub.save_job_agenda(elu_agenda)
 
     x_money.refresh_treasury_job_agendas_data()
 
@@ -348,7 +348,7 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -360,25 +360,25 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyUsesMaxblocksCount(
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(sal_agenda)
+    x_money.userhub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(bob_agenda)
+    x_money.userhub.save_job_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(tom_agenda)
+    x_money.userhub.save_job_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(ava_agenda)
+    x_money.userhub.save_job_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(elu_agenda)
+    x_money.userhub.save_job_agenda(elu_agenda)
 
     x_money.refresh_treasury_job_agendas_data()
 
@@ -414,7 +414,7 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryuni
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -426,25 +426,25 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyPopulatespartytreasuryuni
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(sal_agenda)
+    x_money.userhub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(bob_agenda)
+    x_money.userhub.save_job_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(tom_agenda)
+    x_money.userhub.save_job_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(ava_agenda)
+    x_money.userhub.save_job_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(elu_agenda)
+    x_money.userhub.save_job_agenda(elu_agenda)
 
     x_money.refresh_treasury_job_agendas_data()
 
@@ -502,7 +502,7 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousR
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -514,25 +514,25 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyBuildsASingle_ContinuousR
     sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
     sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
     sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(sal_agenda)
+    x_money.userhub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(bob_agenda)
+    x_money.userhub.save_job_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(tom_agenda)
+    x_money.userhub.save_job_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(ava_agenda)
+    x_money.userhub.save_job_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(elu_agenda)
+    x_money.userhub.save_job_agenda(elu_agenda)
 
     x_money.refresh_treasury_job_agendas_data()
 
@@ -571,7 +571,7 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
 ):
     """GIVEN 5 agendas, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal"""
     # GIVEN
-    x_money = moneyunit_shop(get_texas_filehub())
+    x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -583,28 +583,28 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     sal_agenda_src.add_partyunit(party_id=bob_text, creditor_weight=2, debtor_weight=2)
     sal_agenda_src.add_partyunit(party_id=tom_text, creditor_weight=2, debtor_weight=1)
     sal_agenda_src.add_partyunit(party_id=ava_text, creditor_weight=2, debtor_weight=2)
-    x_money.filehub.save_job_agenda(sal_agenda_src)
+    x_money.userhub.save_job_agenda(sal_agenda_src)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
     bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
-    x_money.filehub.save_job_agenda(bob_agenda)
+    x_money.userhub.save_job_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
     tom_agenda.add_partyunit(party_id=sal_text)
-    x_money.filehub.save_job_agenda(tom_agenda)
+    x_money.userhub.save_job_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
     ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(ava_agenda)
+    x_money.userhub.save_job_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
     elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=8)
     elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
-    x_money.filehub.save_job_agenda(elu_agenda)
+    x_money.userhub.save_job_agenda(elu_agenda)
 
     x_money.refresh_treasury_job_agendas_data()
-    sal_agenda_before = x_money.filehub.get_job_agenda(owner_id=sal_text)
+    sal_agenda_before = x_money.userhub.get_job_agenda(owner_id=sal_text)
 
     x_money.set_credit_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)
     assert len(sal_agenda_before._partys) == 3
@@ -638,7 +638,7 @@ def test_MoneyUnit_set_credit_flow_for_agenda_CorrectlyUpatesAgendaPartyUnits(
     assert bob_partytreasury.cash_master == sal_text
     assert tom_partytreasury.cash_master == sal_text
 
-    sal_agenda_after = x_money.filehub.get_job_agenda(owner_id=sal_text)
+    sal_agenda_after = x_money.userhub.get_job_agenda(owner_id=sal_text)
     bob_party = sal_agenda_after._partys.get(bob_text)
     tom_party = sal_agenda_after._partys.get(tom_text)
     ava_party = sal_agenda_after._partys.get(ava_text)
