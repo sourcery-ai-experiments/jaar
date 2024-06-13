@@ -159,6 +159,19 @@ def get_ordered_debtors_roll(x_agenda: AgendaUnit) -> list[PartyUnit]:
     return partys_ordered_list
 
 
+def migrate_all_beliefs(src_listener: AgendaUnit, dst_listener: AgendaUnit):
+    for x_beliefunit in src_listener._idearoot._beliefunits.values():
+        base_road = x_beliefunit.base
+        pick_road = x_beliefunit.pick
+        if dst_listener.idea_exists(base_road) is False:
+            base_idea = src_listener.get_idea_obj(base_road)
+            dst_listener.add_idea(base_idea, base_idea._parent_road)
+        if dst_listener.idea_exists(pick_road) is False:
+            pick_idea = src_listener.get_idea_obj(pick_road)
+            dst_listener.add_idea(pick_idea, pick_idea._parent_road)
+        dst_listener.set_belief(base_road, pick_road)
+
+
 def listen_to_speaker_belief(
     listener: AgendaUnit,
     speaker: AgendaUnit,
@@ -166,7 +179,6 @@ def listen_to_speaker_belief(
 ) -> AgendaUnit:
     if missing_belief_bases is None:
         missing_belief_bases = list(listener.get_missing_belief_bases())
-
     for missing_belief_base in missing_belief_bases:
         x_beliefunit = speaker.get_belief(missing_belief_base)
         if x_beliefunit != None:
@@ -228,7 +240,7 @@ def listen_to_intents_role_job(listener_job: AgendaUnit, healer_userhub: UserHub
 
 def listen_to_beliefs_role_job(new_job: AgendaUnit, healer_userhub: UserHub):
     role = healer_userhub.get_role_agenda(new_job._owner_id)
-    listen_to_speaker_belief(new_job, role)
+    migrate_all_beliefs(role, new_job)
     for x_partyunit in get_ordered_debtors_roll(new_job):
         if x_partyunit.party_id != new_job._owner_id:
             speaker_job = healer_userhub.get_job_agenda(x_partyunit.party_id)
@@ -237,11 +249,11 @@ def listen_to_beliefs_role_job(new_job: AgendaUnit, healer_userhub: UserHub):
 
 
 def listen_to_beliefs_duty_work(new_work: AgendaUnit, listener_userhub: UserHub):
-    duty = listener_userhub.get_duty_agenda()
-    listen_to_speaker_belief(new_work, duty)
+    migrate_all_beliefs(listener_userhub.get_duty_agenda(), new_work)
     for x_partyunit in get_ordered_debtors_roll(new_work):
-        if x_partyunit.party_id != new_work._owner_id:
-            speaker_work = listener_userhub.get_work_agenda()
+        speaker_id = x_partyunit.party_id
+        if speaker_id != new_work._owner_id:
+            speaker_work = listener_userhub.dw_speaker_agenda(speaker_id)
             if speaker_work != None:
                 listen_to_speaker_belief(new_work, speaker_work)
 
@@ -328,6 +340,5 @@ def create_job_file_from_role_file(healer_userhub: UserHub, person_id: PersonID)
 
 
 def create_work_file_from_duty_file(userhub: UserHub):
-    # pipeline_duty_work_text()
     x_work = listen_to_debtors_roll_duty_work(userhub)
     userhub.save_work_agenda(x_work)

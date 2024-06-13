@@ -1116,7 +1116,7 @@ class AgendaUnit:
         bundling: bool = True,
         create_missing_ancestors: bool = True,
     ):
-        if RoadNode(idea_kid._label).is_node(self._road_delimiter) == False:
+        if RoadNode(idea_kid._label).is_node(self._road_delimiter) is False:
             raise InvalidAgendaException(
                 f"add_idea failed because '{idea_kid._label}' is not a RoadNode."
             )
