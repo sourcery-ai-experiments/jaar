@@ -21,14 +21,14 @@ def test_UserHub_PipelineMethodsReturnCorrectObjs_role_job():
 
     # THEN
     bob_text = "Bob"
-    assert sue_userhub.rj_speaker_file_name(bob_text) == f"{bob_text}.json"
-    assert sue_userhub.rj_speaker_file_name(sue_text) == f"{sue_text}.json"
+    assert sue_userhub.rolejob_role_file_name(bob_text) == f"{bob_text}.json"
+    assert sue_userhub.rolejob_role_file_name(sue_text) == f"{sue_text}.json"
     sue_jobs_dir = sue_userhub.jobs_dir()
-    assert sue_userhub.rj_speaker_dir(healer_id=sue_text) == sue_jobs_dir
+    assert sue_userhub.rolejob_role_dir(healer_id=sue_text) == sue_jobs_dir
     yao_text = "Yao"
     yao_userhub = userhub_shop(temp_env_dir, None, yao_text, nation_road)
     yao_jobs_dir = yao_userhub.jobs_dir()
-    assert sue_userhub.rj_speaker_dir(healer_id=yao_text) == yao_jobs_dir
+    assert sue_userhub.rolejob_role_dir(healer_id=yao_text) == yao_jobs_dir
     yao_bob_job_path = yao_userhub.job_path(bob_text)
     assert yao_bob_job_path == sue_userhub.rj_speaker_file_path(
         healer_id=yao_text, speaker_id=bob_text

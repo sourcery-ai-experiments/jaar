@@ -478,10 +478,10 @@ class UserHub:
     def delete_treasury_db_file(self):
         delete_dir(self.treasury_db_path())
 
-    def rj_speaker_file_name(self, speaker_id: PersonID) -> str:
+    def rolejob_role_file_name(self, speaker_id: PersonID) -> str:
         return get_json_filename(speaker_id)
 
-    def rj_speaker_dir(self, healer_id: PersonID) -> str:
+    def rolejob_role_dir(self, healer_id: PersonID) -> str:
         healer_userhub = userhub_shop(
             self.reals_dir, self.real_id, healer_id, self.econ_road
         )

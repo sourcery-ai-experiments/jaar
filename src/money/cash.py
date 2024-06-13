@@ -1,7 +1,7 @@
 from src.agenda.party import PartyUnit
 
 
-def allot_scale(partys: PartyUnit, scale_number: float, grain_unit):
+def allot_scale(partys: PartyUnit, scale_number: float, grain_unit: float):
     """
     allots the scale_number across partys with creditor_weighted attributes with a resolution of the grain unit.
 
