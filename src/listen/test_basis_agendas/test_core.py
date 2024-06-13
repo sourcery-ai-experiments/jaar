@@ -23,10 +23,10 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     zia_debtor_pool = 81
     yao_duty.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
     zia_irrational_debtor_weight = 11
-    zia_missing_job_debtor_weight = 22
+    zia_missing_debtor_weight = 22
     role_zia_partyunit = yao_duty.get_party(zia_text)
     role_zia_partyunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
-    role_zia_partyunit.add_missing_job_debtor_weight(zia_missing_job_debtor_weight)
+    role_zia_partyunit.add_missing_debtor_weight(zia_missing_debtor_weight)
     swim_group = groupunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
     swim_group.set_partylink(partylink_shop(zia_text))
     yao_duty.set_groupunit(swim_group)
@@ -67,10 +67,10 @@ def test_create_listen_basis_ReturnsCorrectObj():
     zia_debtor_pool = 81
     yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
     zia_irrational_debtor_weight = 11
-    zia_missing_job_debtor_weight = 22
+    zia_missing_debtor_weight = 22
     role_zia_partyunit = yao_role.get_party(zia_text)
     role_zia_partyunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
-    role_zia_partyunit.add_missing_job_debtor_weight(zia_missing_job_debtor_weight)
+    role_zia_partyunit.add_missing_debtor_weight(zia_missing_debtor_weight)
     swim_group = groupunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
     swim_group.set_partylink(partylink_shop(zia_text))
     yao_role.set_groupunit(swim_group)
@@ -96,7 +96,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     job_zia_partyunit = yao_basis_job.get_party(zia_text)
     assert yao_basis_job.get_partys_dict().keys() == yao_role.get_partys_dict().keys()
     assert job_zia_partyunit._irrational_debtor_weight == 0
-    assert job_zia_partyunit._missing_job_debtor_weight == 0
+    assert job_zia_partyunit._missing_debtor_weight == 0
 
 
 def test_get_default_work_agenda_ReturnsCorrectObj():

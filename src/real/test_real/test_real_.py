@@ -247,7 +247,6 @@ def test_RealUnit_get_person_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
         real_id=music_real.real_id,
         person_id=luca_text,
         econ_road=None,
-        nox_type=None,
         road_delimiter=music_real._road_delimiter,
         planck=music_real._planck,
     )
@@ -256,7 +255,6 @@ def test_RealUnit_get_person_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
         real_id=music_real.real_id,
         person_id=todd_text,
         econ_road=None,
-        nox_type=None,
         road_delimiter=music_real._road_delimiter,
         planck=music_real._planck,
     )

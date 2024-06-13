@@ -20,7 +20,6 @@ def test_UserHub_default_duty_agenda_ReturnsCorrectObj():
         real_id(),
         sue_text,
         econ_road=None,
-        nox_type=None,
         road_delimiter=slash_text,
         planck=point_five_float,
         penny=point_four_float,

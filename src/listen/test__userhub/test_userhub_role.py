@@ -6,7 +6,7 @@ from src.listen.userhub import userhub_shop
 from src.listen.examples.examples import get_agenda_with_4_levels
 from src.listen.examples.listen_env import (
     get_texas_userhub,
-    get_listen_temp_env_dir,
+    get_listen_temp_env_dir as env_dir,
     env_dir_setup_cleanup,
 )
 from os.path import exists as os_path_exists
@@ -21,8 +21,7 @@ def test_UserHub_create_econ_dir_if_missing_CreatesDirectory(env_dir_setup_clean
     usa_road = create_road(nation_road, usa_text)
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
-    temp_env_dir = get_listen_temp_env_dir()
-    sue_userhub = userhub_shop(temp_env_dir, None, sue_text, texas_road)
+    sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
     assert os_path_exists(sue_userhub.econ_dir()) is False
 
     # WHEN
@@ -41,8 +40,7 @@ def test_UserHub_save_role_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     usa_road = create_road(nation_road, usa_text)
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
-    temp_env_dir = get_listen_temp_env_dir()
-    sue_userhub = userhub_shop(temp_env_dir, None, sue_text, texas_road)
+    sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
@@ -64,8 +62,7 @@ def test_UserHub_role_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     usa_road = create_road(nation_road, usa_text)
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
-    temp_env_dir = get_listen_temp_env_dir()
-    sue_userhub = userhub_shop(temp_env_dir, None, sue_text, texas_road)
+    sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
@@ -87,8 +84,7 @@ def test_UserHub_get_role_agenda_OpensFile(env_dir_setup_cleanup):
     usa_road = create_road(nation_road, usa_text)
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
-    temp_env_dir = get_listen_temp_env_dir()
-    sue_userhub = userhub_shop(temp_env_dir, None, sue_text, texas_road)
+    sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
@@ -124,8 +120,7 @@ def test_UserHub_save_job_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     usa_road = create_road(nation_road, usa_text)
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
-    temp_env_dir = get_listen_temp_env_dir()
-    sue_userhub = userhub_shop(temp_env_dir, None, sue_text, texas_road)
+    sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
@@ -147,8 +142,7 @@ def test_UserHub_job_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     usa_road = create_road(nation_road, usa_text)
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
-    temp_env_dir = get_listen_temp_env_dir()
-    sue_userhub = userhub_shop(temp_env_dir, None, sue_text, texas_road)
+    sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
@@ -170,8 +164,7 @@ def test_UserHub_get_job_agenda_OpensFile(env_dir_setup_cleanup):
     usa_road = create_road(nation_road, usa_text)
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
-    temp_env_dir = get_listen_temp_env_dir()
-    sue_userhub = userhub_shop(temp_env_dir, None, sue_text, texas_road)
+    sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
     bob_text = "Bob"
     bob_agenda = get_agenda_with_4_levels()
     bob_agenda.set_owner_id(bob_text)
@@ -179,6 +172,22 @@ def test_UserHub_get_job_agenda_OpensFile(env_dir_setup_cleanup):
 
     # WHEN / THEN
     assert sue_userhub.get_job_agenda(bob_text).get_dict() == bob_agenda.get_dict()
+
+
+def test_UserHub_get_job_agenda_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+    sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
+    bob_text = "Bob"
+
+    # WHEN / THEN
+    assert sue_userhub.get_job_agenda(bob_text) is None
 
 
 def test_UserHub_delete_job_file_DeletesAgendaFile(env_dir_setup_cleanup):

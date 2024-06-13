@@ -1,7 +1,7 @@
 from src._road.road import RoadUnit, create_road, get_default_real_id_roadnode, RoadNode
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
-from src.listen.userhub import userhub_shop, UserHub, pipeline_duty_work_text
+from src.listen.userhub import userhub_shop, UserHub
 from src.listen.listen import listen_to_person_jobs, create_job_file_from_role_file
 from src.listen.examples.listen_env import (
     env_dir_setup_cleanup,
@@ -218,7 +218,7 @@ def get_yao_ohio_userhub() -> UserHub:
         real_id=yao_agenda._real_id,
         person_id=yao_agenda._owner_id,
         econ_road=get_ohio_road(),
-        nox_type=pipeline_duty_work_text(),
+        # pipeline_duty_work_text(),
     )
 
 
@@ -229,7 +229,7 @@ def get_yao_iowa_userhub() -> UserHub:
         real_id=yao_agenda._real_id,
         person_id=yao_agenda._owner_id,
         econ_road=get_iowa_road(),
-        nox_type=pipeline_duty_work_text(),
+        # pipeline_duty_work_text(),
     )
 
 
@@ -240,7 +240,7 @@ def get_zia_utah_userhub() -> UserHub:
         real_id=yao_agenda._real_id,
         person_id="Zia",
         econ_road=get_utah_road(),
-        nox_type=pipeline_duty_work_text(),
+        # pipeline_duty_work_text(),
     )
 
 
@@ -401,17 +401,18 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_duty_CanOnlyReferenceItsel
 
 def test_create_job_file_from_role_file_CreatesEmptyJob(env_dir_setup_cleanup):
     # GIVEN
-    sue_text = "Sue"
-    sue_role = agendaunit_shop(sue_text)
-    texas_userhub = get_texas_userhub()
-    texas_userhub.save_role_agenda(sue_role)
-    assert texas_userhub.job_file_exists(sue_text) is False
+    yao_text = "Yao"
+    yao_role = agendaunit_shop(yao_text)
+    sue_texas_userhub = get_texas_userhub()
+    sue_texas_userhub.save_role_agenda(yao_role)
+    assert sue_texas_userhub.job_file_exists(yao_text) is False
 
     # WHEN
-    sue_job = create_job_file_from_role_file(texas_userhub, sue_text)
+    create_job_file_from_role_file(sue_texas_userhub, yao_text)
 
     # GIVEN
-    assert sue_job._owner_id != None
-    assert sue_job._owner_id == sue_text
-    assert sue_job.get_dict() == sue_role.get_dict()
-    assert texas_userhub.job_file_exists(sue_text)
+    assert sue_texas_userhub.job_file_exists(yao_text)
+    yao_job = sue_texas_userhub.get_job_agenda(yao_text)
+    assert yao_job._owner_id != None
+    assert yao_job._owner_id == yao_text
+    assert yao_job.get_dict() == yao_role.get_dict()

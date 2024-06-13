@@ -4,10 +4,11 @@ from src._road.finance import default_planck_if_none, default_penny_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import AgendaUnit
 from src.listen.basis_agendas import get_default_work_agenda
-from src.listen.userhub import userhub_shop, UserHub, pipeline_duty_work_text
+from src.listen.userhub import userhub_shop, UserHub
 from src.listen.listen import (
     listen_to_speaker_intent,
-    listen_to_debtors_roll,
+    listen_to_debtors_roll_duty_work,
+    listen_to_debtors_roll_role_job,
     create_job_file_from_role_file,
 )
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
@@ -62,7 +63,6 @@ class RealUnit:
                 real_id=self.real_id,
                 person_id=x_person_id,
                 econ_road=None,
-                nox_type=None,
                 road_delimiter=self._road_delimiter,
                 planck=self._planck,
             )
@@ -131,7 +131,7 @@ class RealUnit:
                 self.real_id,
                 healer_id,
                 econ_road=None,
-                nox_type="role_job",
+                # "role_job",
                 road_delimiter=self._road_delimiter,
                 planck=self._planck,
             )
@@ -160,7 +160,7 @@ class RealUnit:
                 real_id=self.real_id,
                 person_id=healer_id,
                 econ_road=None,
-                nox_type="role_job",
+                # "role_job",
                 road_delimiter=self._road_delimiter,
                 planck=self._planck,
             )
@@ -171,7 +171,7 @@ class RealUnit:
                     real_id=self.real_id,
                     person_id=healer_id,
                     econ_road=econ_road,
-                    nox_type="role_job",
+                    # "role_job",
                     road_delimiter=self._road_delimiter,
                     planck=self._planck,
                 )
@@ -183,8 +183,9 @@ class RealUnit:
         # if nothing has come from duty->role->job->work pipeline use duty->work pipeline
         x_work.calc_agenda_metrics()
         if len(x_work._idea_dict) == 1:
-            listener_userhub.set_nox_type(pipeline_duty_work_text())
-            x_work = listen_to_debtors_roll(x_work, listener_userhub)
+            # pipeline_duty_work_text()
+            listen_to_debtors_roll_duty_work(listener_userhub)
+            listener_userhub.open_file_work()
             x_work.calc_agenda_metrics()
         if len(x_work._idea_dict) == 1:
             x_work = x_duty

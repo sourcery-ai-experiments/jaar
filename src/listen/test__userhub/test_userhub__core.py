@@ -12,7 +12,7 @@ from src._road.jaar_config import (
     get_rootpart_of_econ_dir,
 )
 from src.agenda.agenda import agendaunit_shop
-from src.listen.userhub import UserHub, userhub_shop, get_econ_path, get_nox_type_set
+from src.listen.userhub import UserHub, userhub_shop, get_econ_path
 from src.listen.examples.examples import get_agenda_with_4_levels
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as env_dir,
@@ -61,11 +61,6 @@ def test_get_econ_path_ReturnsCorrectObj():
     assert elpaso_path == get_econ_path(sue_userhub, diff_root_elpaso_road)
 
 
-def test_get_nox_type_set_ReturnsObj():
-    # GIVEN / WHEN / THEN
-    assert get_nox_type_set() == {"duty_work", "role_job", "job_work"}
-
-
 def test_UserHub_Exists():
     # GIVEN / WHEN
     x_userhub = UserHub()
@@ -75,7 +70,6 @@ def test_UserHub_Exists():
     assert x_userhub.real_id is None
     assert x_userhub.person_id is None
     assert x_userhub.econ_road is None
-    assert x_userhub._nox_type is None
     assert x_userhub.road_delimiter is None
     assert x_userhub.planck is None
     assert x_userhub.penny is None
@@ -92,13 +86,12 @@ def test_userhub_shop_ReturnsCorrectObj():
 
     # WHEN
     x_userhub = userhub_shop(
-        x_reals_dir,
-        x_real_id,
-        sue_text,
-        None,
-        None,
-        x_road_delimiter,
-        x_planck,
+        reals_dir=x_reals_dir,
+        real_id=x_real_id,
+        person_id=sue_text,
+        econ_road=None,
+        road_delimiter=x_road_delimiter,
+        planck=x_planck,
         penny=x_penny,
     )
 
@@ -338,6 +331,16 @@ def test_UserHub_get_work_agenda_OpensFile(env_dir_setup_cleanup):
 
     # WHEN / THEN
     assert sue_userhub.get_work_agenda().get_dict() == sue_agendaunit.get_dict()
+
+
+def test_UserHub_get_work_agenda_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
+    # GIVEN
+    sue_agendaunit = get_agenda_with_4_levels()
+    sue_text = sue_agendaunit._owner_id
+    sue_userhub = userhub_shop(env_dir(), None, sue_text)
+
+    # WHEN / THEN
+    assert sue_userhub.get_work_agenda() is None
 
 
 def test_UserHub_save_work_agenda_RaisesErrorWhenAgenda_work_id_IsWrong(

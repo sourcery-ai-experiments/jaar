@@ -33,7 +33,7 @@ class PartyUnit(PartyCore):
     debtor_weight: int = None
     # calculated fields
     _irrational_debtor_weight: int = None  # set by listening process
-    _missing_job_debtor_weight: int = None  # set by listening process
+    _missing_debtor_weight: int = None  # set by listening process
     # set by Agenda.calc_agenda_metrics()
     _agenda_credit: float = None
     _agenda_debt: float = None
@@ -121,8 +121,8 @@ class PartyUnit(PartyCore):
         }
         if self._irrational_debtor_weight not in [None, 0]:
             x_dict["_irrational_debtor_weight"] = self._irrational_debtor_weight
-        if self._missing_job_debtor_weight not in [None, 0]:
-            x_dict["_missing_job_debtor_weight"] = self._missing_job_debtor_weight
+        if self._missing_debtor_weight not in [None, 0]:
+            x_dict["_missing_debtor_weight"] = self._missing_debtor_weight
 
         if all_attrs:
             self._all_attrs_necessary_in_dict(x_dict)
@@ -168,12 +168,12 @@ class PartyUnit(PartyCore):
     def add_irrational_debtor_weight(self, x_irrational_debtor_weight: float):
         self._irrational_debtor_weight += x_irrational_debtor_weight
 
-    def add_missing_job_debtor_weight(self, x_missing_job_debtor_weight: float):
-        self._missing_job_debtor_weight += x_missing_job_debtor_weight
+    def add_missing_debtor_weight(self, x_missing_debtor_weight: float):
+        self._missing_debtor_weight += x_missing_debtor_weight
 
     def reset_listen_calculated_attrs(self):
         self._irrational_debtor_weight = 0
-        self._missing_job_debtor_weight = 0
+        self._missing_debtor_weight = 0
 
     def add_agenda_credit_debt(
         self,
@@ -221,7 +221,7 @@ class PartyUnit(PartyCore):
         self.creditor_weight += other_partyunit.creditor_weight
         self.debtor_weight += other_partyunit.debtor_weight
         self._irrational_debtor_weight += other_partyunit._irrational_debtor_weight
-        self._missing_job_debtor_weight += other_partyunit._missing_job_debtor_weight
+        self._missing_debtor_weight += other_partyunit._missing_debtor_weight
 
 
 # class PartyUnitsshop:
@@ -242,7 +242,7 @@ def partyunits_get_from_dict(
 
 def partyunit_get_from_dict(partyunit_dict: dict, _road_delimiter: str) -> PartyUnit:
     _irrational_debtor_weight = partyunit_dict.get("_irrational_debtor_weight", 0)
-    _missing_job_debtor_weight = partyunit_dict.get("_missing_job_debtor_weight", 0)
+    _missing_debtor_weight = partyunit_dict.get("_missing_debtor_weight", 0)
     _treasury_due_paid = partyunit_dict.get("_treasury_due_paid", 0)
     _treasury_due_diff = partyunit_dict.get("_treasury_due_diff", 0)
     _treasury_credit_score = partyunit_dict.get("_treasury_credit_score", 0)
@@ -267,7 +267,7 @@ def partyunit_get_from_dict(partyunit_dict: dict, _road_delimiter: str) -> Party
     )
     x_partyunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
     x_partyunit.add_irrational_debtor_weight(get_0_if_None(_irrational_debtor_weight))
-    x_partyunit.add_missing_job_debtor_weight(get_0_if_None(_missing_job_debtor_weight))
+    x_partyunit.add_missing_debtor_weight(get_0_if_None(_missing_debtor_weight))
 
     return x_partyunit
 
@@ -285,7 +285,7 @@ def partyunit_shop(
         creditor_weight=get_1_if_None(creditor_weight),
         debtor_weight=get_1_if_None(debtor_weight),
         _irrational_debtor_weight=get_0_if_None(),
-        _missing_job_debtor_weight=get_0_if_None(),
+        _missing_debtor_weight=get_0_if_None(),
         _creditor_operational=_creditor_operational,
         _debtor_operational=_debtor_operational,
         _agenda_credit=get_0_if_None(),
