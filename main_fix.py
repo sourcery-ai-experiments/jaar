@@ -337,20 +337,20 @@
 #             x_list.extend([file] for file in digest_file_list)
 #         return x_list
 
-#     def get_p_oaths_list(self):
+#     def get_p_facts_list(self):
 #         x_list = []
 #         if self.owner_id_output_agenda != None:
-#             oath_list = self.owner_id_output_agenda.get_oath_tree_ordered_road_list()
+#             fact_list = self.owner_id_output_agenda.get_fact_tree_ordered_road_list()
 
-#             for oath_road in oath_list:
-#                 oath_obj = self.owner_id_output_agenda.get_oath_obj(oath_road)
+#             for fact_road in fact_list:
+#                 fact_obj = self.owner_id_output_agenda.get_fact_obj(fact_road)
 
-#                 if oath_obj._parent_road.find("time") != 3:
+#                 if fact_obj._parent_road.find("time") != 3:
 #                     x_list.append(
 #                         [
-#                             agenda_importance_diplay(oath_obj._agenda_importance),
-#                             oath_road,
-#                             len(oath_obj._balancelinks),
+#                             agenda_importance_diplay(fact_obj._agenda_importance),
+#                             fact_road,
+#                             len(fact_obj._balancelinks),
 #                         ]
 #                     )
 
@@ -387,7 +387,7 @@
 #         if self.owner_id_output_agenda != None:
 #             for (
 #                 beliefunit
-#             ) in self.owner_id_output_agenda._oathroot._beliefunits.values():
+#             ) in self.owner_id_output_agenda._factroot._beliefunits.values():
 #                 open_nigh = ""
 #                 if beliefunit.open is None and beliefunit.nigh is None:
 #                     open_nigh = ""
@@ -454,29 +454,29 @@
 #             ]
 #         self.refresh_x(self.iggnores_table, column_headers, iggnores_list)
 
-#     def _sub_refresh_p_oaths_table(self):
-#         p_oaths_list = self.get_p_oaths_list()
-#         if len(p_oaths_list) >= 0:
+#     def _sub_refresh_p_facts_table(self):
+#         p_facts_list = self.get_p_facts_list()
+#         if len(p_facts_list) >= 0:
 #             column_headers = [
 #                 "agenda_importance",
-#                 f"Oaths Table ({len(p_oaths_list)})",
+#                 f"Facts Table ({len(p_facts_list)})",
 #                 "balancelinks",
 #             ]
 #         else:
 #             column_headers = [
 #                 "agenda_importance",
-#                 "Oaths Table",
+#                 "Facts Table",
 #                 "balancelinks",
 #             ]
 
-#         self.w_oaths_table.setObjectName("Oaths Table")
-#         self.w_oaths_table.setColumnHidden(0, False)
-#         self.w_oaths_table.setColumnHidden(1, False)
-#         self.w_oaths_table.setColumnHidden(2, False)
+#         self.w_facts_table.setObjectName("Facts Table")
+#         self.w_facts_table.setColumnHidden(0, False)
+#         self.w_facts_table.setColumnHidden(1, False)
+#         self.w_facts_table.setColumnHidden(2, False)
 #         self.refresh_x(
-#             table_x=self.w_oaths_table,
+#             table_x=self.w_facts_table,
 #             column_header=column_headers,
-#             populate_list=p_oaths_list,
+#             populate_list=p_facts_list,
 #             column_width=[50, 300, 50],
 #         )
 
@@ -526,7 +526,7 @@
 #         column_headers = [
 #             "agenda_importance",
 #             f"Agenda ({len(p_intent_list)})",
-#             "Oath parent_road",
+#             "Fact parent_road",
 #         ]
 
 #         self.refresh_x(
@@ -552,7 +552,7 @@
 #         self.owner_id_output_agenda = None
 #         if self.x_FunctionThatBuildsJob != None:
 #             self.owner_id_output_agenda = self.x_FunctionThatBuildsJob.get_remelded_output_agenda()
-#         self._sub_refresh_p_oaths_table()
+#         self._sub_refresh_p_facts_table()
 #         self._sub_refresh_p_partys_table()
 #         self._sub_refresh_p_ideas_table()
 #         self._sub_refresh_p_beliefs_table()

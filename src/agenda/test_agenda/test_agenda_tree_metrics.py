@@ -1,6 +1,6 @@
 from src.agenda.examples.example_agendas import agenda_v001
 from src.agenda.agenda import agendaunit_shop
-from src.agenda.oath import oathunit_shop
+from src.agenda.fact import factunit_shop
 from src._road.road import create_road_from_nodes
 
 
@@ -18,7 +18,7 @@ def test_AgendaUnit_get_tree_metrics_exists():
     assert zia_agenda_tree_metrics.balancelinks_metrics != None
 
 
-def test_AgendaUnit_get_tree_metrics_get_oath_uid_max_correctlyGetsMaxOathUID():
+def test_AgendaUnit_get_tree_metrics_get_fact_uid_max_correctlyGetsMaxFactUID():
     # GIVEN
     yao_agenda = agenda_v001()
 
@@ -27,10 +27,10 @@ def test_AgendaUnit_get_tree_metrics_get_oath_uid_max_correctlyGetsMaxOathUID():
 
     # THEN
     assert tree_metrics_x.uid_max == 279
-    assert yao_agenda.get_oath_uid_max() == 279
+    assert yao_agenda.get_fact_uid_max() == 279
 
 
-def test_AgendaUnit_get_tree_metrics_CorrectlySetsBoolean_all_oath_uids_are_unique():
+def test_AgendaUnit_get_tree_metrics_CorrectlySetsBoolean_all_fact_uids_are_unique():
     # GIVEN
     yao_agenda = agenda_v001()
 
@@ -38,59 +38,59 @@ def test_AgendaUnit_get_tree_metrics_CorrectlySetsBoolean_all_oath_uids_are_uniq
     tree_metrics_x = yao_agenda.get_tree_metrics()
 
     # THEN
-    assert tree_metrics_x.all_oath_uids_are_unique is False
+    assert tree_metrics_x.all_fact_uids_are_unique is False
     assert len(tree_metrics_x.uid_dict) == 219
 
 
-def test_AgendaUnit_get_tree_set_all_oath_uids_unique():
+def test_AgendaUnit_get_tree_set_all_fact_uids_unique():
     # GIVEN
     yao_agenda = agenda_v001()
     tree_metrics_before = yao_agenda.get_tree_metrics()
     assert len(tree_metrics_before.uid_dict) == 219
 
     # WHEN
-    yao_agenda.set_all_oath_uids_unique()
+    yao_agenda.set_all_fact_uids_unique()
 
     # THEN
     tree_metrics_after = yao_agenda.get_tree_metrics()
     # for uid, uid_count in tree_metrics_after.uid_dict.items():
-    #     # print(f"{uid=} {uid_count=} {len(yao_agenda.get_oath_dict())=}")
+    #     # print(f"{uid=} {uid_count=} {len(yao_agenda.get_fact_dict())=}")
     #     print(f"{uid=} {uid_count=} ")
     assert len(tree_metrics_after.uid_dict) == 253
-    assert tree_metrics_after.all_oath_uids_are_unique == True
+    assert tree_metrics_after.all_fact_uids_are_unique == True
 
 
-def test_AgendaUnit_set_all_oath_uids_unique_SetsUIDsCorrectly():
+def test_AgendaUnit_set_all_fact_uids_unique_SetsUIDsCorrectly():
     # GIVEN
     zia_text = "Zia"
     zia_agenda = agendaunit_shop(_owner_id=zia_text)
     swim_text = "swim"
     sports_text = "sports"
-    zia_agenda.add_l1_oath(oathunit_shop(swim_text, _uid=None))
-    zia_agenda.add_l1_oath(oathunit_shop(sports_text, _uid=2))
+    zia_agenda.add_l1_fact(factunit_shop(swim_text, _uid=None))
+    zia_agenda.add_l1_fact(factunit_shop(sports_text, _uid=2))
     swim_road = zia_agenda.make_l1_road(swim_text)
-    assert zia_agenda.get_oath_obj(swim_road)._uid is None
+    assert zia_agenda.get_fact_obj(swim_road)._uid is None
 
     # WHEN
-    zia_agenda.set_all_oath_uids_unique()
+    zia_agenda.set_all_fact_uids_unique()
 
     # THEN
-    assert zia_agenda.get_oath_obj(swim_road)._uid != None
+    assert zia_agenda.get_fact_obj(swim_road)._uid != None
 
 
-def test_AgendaUnit_get_tree_metrics_ReturnsANoneActionOathRoadUnit():
+def test_AgendaUnit_get_tree_metrics_ReturnsANoneActionFactRoadUnit():
     # GIVEN
     nia_text = "Nia"
     nia_agenda = agendaunit_shop(nia_text, _weight=10)
     weekdays = "weekdays"
-    nia_agenda.add_l1_oath(oathunit_shop(weekdays, _weight=40))
+    nia_agenda.add_l1_fact(factunit_shop(weekdays, _weight=40))
     tree_metrics_before = nia_agenda.get_tree_metrics()
 
     # WHEN/THEN
-    assert tree_metrics_before.last_evaluated_pledge_oath_road is None
+    assert tree_metrics_before.last_evaluated_pledge_fact_road is None
 
 
-def test_AgendaUnit_get_tree_metrics_ReturnsAnActionOathRoadUnit():
+def test_AgendaUnit_get_tree_metrics_ReturnsAnActionFactRoadUnit():
     # GIVEN
     yao_agenda = agenda_v001()
     yao_tree_metrics = yao_agenda.get_tree_metrics()
@@ -105,4 +105,4 @@ def test_AgendaUnit_get_tree_metrics_ReturnsAnActionOathRoadUnit():
             "Accomplish Fall 2021 training",
         ]
     )
-    assert yao_tree_metrics.last_evaluated_pledge_oath_road == train_road
+    assert yao_tree_metrics.last_evaluated_pledge_fact_road == train_road

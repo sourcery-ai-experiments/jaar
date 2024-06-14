@@ -24,7 +24,7 @@ from src.agenda.reason_assign import (
     assigned_heir_shop,
     assignedunit_get_from_dict,
 )
-from src.agenda.reason_oath import (
+from src.agenda.reason_fact import (
     BeliefCore,
     BeliefHeir,
     beliefheir_shop,
@@ -59,16 +59,16 @@ from dataclasses import dataclass
 from copy import deepcopy
 
 
-class InvalidOathException(Exception):
+class InvalidFactException(Exception):
     pass
 
 
-class OathGetDescendantsException(Exception):
+class FactGetDescendantsException(Exception):
     pass
 
 
 @dataclass
-class OathAttrFilter:
+class FactAttrFilter:
     weight: int = None
     uid: int = None
     reason: ReasonUnit = None
@@ -79,7 +79,7 @@ class OathAttrFilter:
     reason_premise_divisor: int = None
     reason_del_premise_base: RoadUnit = None
     reason_del_premise_need: RoadUnit = None
-    reason_suff_oath_active: str = None
+    reason_suff_fact_active: str = None
     assignedunit: AssignedUnit = None
     healerhold: HealerHold = None
     begin: float = None
@@ -104,7 +104,7 @@ class OathAttrFilter:
     def get_premise_need(self):
         return self.reason_premise
 
-    def set_premise_range_attributes_influenced_by_premise_oath(
+    def set_premise_range_attributes_influenced_by_premise_fact(
         self,
         premise_open,
         premise_nigh,
@@ -152,7 +152,7 @@ class OathAttrFilter:
         return self.reason_premise != None
 
 
-def oathattrfilter_shop(
+def factattrfilter_shop(
     weight: int = None,
     uid: int = None,
     reason: ReasonUnit = None,
@@ -163,7 +163,7 @@ def oathattrfilter_shop(
     reason_premise_divisor: int = None,
     reason_del_premise_base: RoadUnit = None,
     reason_del_premise_need: RoadUnit = None,
-    reason_suff_oath_active: str = None,
+    reason_suff_fact_active: str = None,
     assignedunit: AssignedUnit = None,
     healerhold: HealerHold = None,
     begin: float = None,
@@ -184,8 +184,8 @@ def oathattrfilter_shop(
     is_expanded: bool = None,
     meld_strategy: str = None,
     problem_bool: bool = None,
-) -> OathAttrFilter:
-    x_oathattrfilter = OathAttrFilter(
+) -> FactAttrFilter:
+    x_factattrfilter = FactAttrFilter(
         weight=weight,
         uid=uid,
         reason=reason,
@@ -196,7 +196,7 @@ def oathattrfilter_shop(
         reason_premise_divisor=reason_premise_divisor,
         reason_del_premise_base=reason_del_premise_base,
         reason_del_premise_need=reason_del_premise_need,
-        reason_suff_oath_active=reason_suff_oath_active,
+        reason_suff_fact_active=reason_suff_fact_active,
         assignedunit=assignedunit,
         healerhold=healerhold,
         begin=begin,
@@ -218,13 +218,13 @@ def oathattrfilter_shop(
         meld_strategy=meld_strategy,
         problem_bool=problem_bool,
     )
-    if x_oathattrfilter.has_ratio_attrs():
-        x_oathattrfilter.set_ratio_attr_defaults_if_none()
-    return x_oathattrfilter
+    if x_factattrfilter.has_ratio_attrs():
+        x_factattrfilter.set_ratio_attr_defaults_if_none()
+    return x_factattrfilter
 
 
 @dataclass
-class OathUnit:
+class FactUnit:
     _label: RoadNode = None
     _weight: int = None
     _parent_road: RoadUnit = None
@@ -331,10 +331,10 @@ class OathUnit:
         return {hc.base: hc.get_dict() for hc in self._beliefunits.values()}
 
     def set_beliefunit_to_complete(self, base_beliefunit: BeliefUnit):
-        # if a oath is considered a task then a beliefheir.open attribute can be increased to
-        # a number <= beliefheir.nigh so the oath no longer is a task. This method finds
-        # the minimal beliefheir.open to modify oath._task is False. oath_core._beliefheir cannot be straight up manipulated
-        # so it is mandatory that oath._beliefunit is different.
+        # if a fact is considered a task then a beliefheir.open attribute can be increased to
+        # a number <= beliefheir.nigh so the fact no longer is a task. This method finds
+        # the minimal beliefheir.open to modify fact._task is False. fact_core._beliefheir cannot be straight up manipulated
+        # so it is mandatory that fact._beliefunit is different.
         # self.set_beliefunits(base=belief, belief=base, open=premise_nigh, nigh=belief_nigh)
         self._beliefunits[base_beliefunit.base] = beliefunit_shop(
             base=base_beliefunit.base,
@@ -381,12 +381,12 @@ class OathUnit:
 
     def get_kids_in_range(self, begin: float, close: float) -> list:
         return [
-            x_oath
-            for x_oath in self._kids.values()
+            x_fact
+            for x_fact in self._kids.values()
             if (
-                (begin >= x_oath._begin and begin < x_oath._close)
-                or (close > x_oath._begin and close < x_oath._close)
-                or (begin <= x_oath._begin and close >= x_oath._close)
+                (begin >= x_fact._begin and begin < x_fact._close)
+                or (close > x_fact._begin and close < x_fact._close)
+                or (begin <= x_fact._begin and close >= x_fact._close)
             )
         ]
 
@@ -414,18 +414,18 @@ class OathUnit:
 
     def get_descendant_roads_from_kids(self) -> dict[RoadUnit:int]:
         descendant_roads = {}
-        to_evaluate_oaths = list(self._kids.values())
+        to_evaluate_facts = list(self._kids.values())
         count_x = 0
         max_count = 1000
-        while to_evaluate_oaths != [] and count_x < max_count:
-            x_oath = to_evaluate_oaths.pop()
-            descendant_roads[x_oath.get_road()] = -1
-            to_evaluate_oaths.extend(x_oath._kids.values())
+        while to_evaluate_facts != [] and count_x < max_count:
+            x_fact = to_evaluate_facts.pop()
+            descendant_roads[x_fact.get_road()] = -1
+            to_evaluate_facts.extend(x_fact._kids.values())
             count_x += 1
 
         if count_x == max_count:
-            raise OathGetDescendantsException(
-                f"Oath '{self.get_road()}' either has an infinite loop or more than {max_count} descendants."
+            raise FactGetDescendantsException(
+                f"Fact '{self.get_road()}' either has an infinite loop or more than {max_count} descendants."
             )
 
         return descendant_roads
@@ -502,8 +502,8 @@ class OathUnit:
 
     def set_kids_total_weight(self):
         self._kids_total_weight = 0
-        for x_oath in self._kids.values():
-            self._kids_total_weight += x_oath._weight
+        for x_fact in self._kids.values():
+            self._kids_total_weight += x_fact._weight
 
     def get_balanceheirs_credor_weight_sum(self) -> float:
         return sum(
@@ -520,7 +520,7 @@ class OathUnit:
         balanceheirs_debtor_weight_sum = self.get_balanceheirs_debtor_weight_sum()
         for balanceheir_x in self._balanceheirs.values():
             balanceheir_x.set_agenda_cred_debt(
-                oath_agenda_importance=self._agenda_importance,
+                fact_agenda_importance=self._agenda_importance,
                 balanceheirs_credor_weight_sum=balanceheirs_credor_weight_sum,
                 balanceheirs_debtor_weight_sum=balanceheirs_debtor_weight_sum,
             )
@@ -528,15 +528,15 @@ class OathUnit:
     def clear_balancelines(self):
         self._balancelines = {}
 
-    def set_oath_label(self, _label: str):
+    def set_fact_label(self, _label: str):
         if (
             self._root
             and _label != None
             and _label != self._agenda_real_id
             and self._agenda_real_id != None
         ):
-            raise Oath_root_LabelNotEmptyException(
-                f"Cannot set oathroot to string other than '{self._agenda_real_id}'"
+            raise Fact_root_LabelNotEmptyException(
+                f"Cannot set factroot to string other than '{self._agenda_real_id}'"
             )
         elif self._root and self._agenda_real_id is None:
             self._label = root_label()
@@ -599,26 +599,26 @@ class OathUnit:
             new_beliefunits[new_base_road] = beliefunit_obj
         self._beliefunits = new_beliefunits
 
-    def _meld_reasonunits(self, other_oath):
-        for lx in other_oath._reasonunits.values():
+    def _meld_reasonunits(self, other_fact):
+        for lx in other_fact._reasonunits.values():
             if self._reasonunits.get(lx.base) is None:
                 self._reasonunits[lx.base] = lx
             else:
                 self._reasonunits.get(lx.base).meld(lx)
 
-    def _meld_balancelinks(self, other_oath):
-        for bl in other_oath._balancelinks.values():
+    def _meld_balancelinks(self, other_fact):
+        for bl in other_fact._balancelinks.values():
             if self._balancelinks.get(bl.idea_id) != None:
                 self._balancelinks.get(bl.idea_id).meld(
                     other_balancelink=bl,
-                    other_meld_strategy=other_oath._meld_strategy,
+                    other_meld_strategy=other_fact._meld_strategy,
                     src_meld_strategy=self._meld_strategy,
                 )
             else:
                 self._balancelinks[bl.idea_id] = bl
 
-    def _meld_beliefunits(self, other_oath):
-        for hc in other_oath._beliefunits.values():
+    def _meld_beliefunits(self, other_fact):
+        for hc in other_fact._beliefunits.values():
             if self._beliefunits.get(hc.base) is None:
                 self._beliefunits[hc.base] = hc
             else:
@@ -626,31 +626,31 @@ class OathUnit:
 
     def meld(
         self,
-        other_oath,
-        _oathroot: bool = None,
+        other_fact,
+        _factroot: bool = None,
         party_id: PartyID = None,
         party_weight: float = None,
     ):
-        if _oathroot and self._label != other_oath._label:
-            raise InvalidOathException(
-                f"Meld fail oathroot _label '{self._label}' not the same as '{other_oath._label}'"
+        if _factroot and self._label != other_fact._label:
+            raise InvalidFactException(
+                f"Meld fail factroot _label '{self._label}' not the same as '{other_fact._label}'"
             )
-        if _oathroot:
+        if _factroot:
             self._weight = 1
         else:
             self._weight = get_meld_weight(
                 src_weight=self._weight,
                 src_meld_strategy=self._meld_strategy,
-                other_weight=other_oath._weight,
-                other_meld_strategy=other_oath._meld_strategy,
+                other_weight=other_fact._weight,
+                other_meld_strategy=other_fact._meld_strategy,
             )
-        self._meld_reasonunits(other_oath=other_oath)
-        self._meld_balancelinks(other_oath=other_oath)
-        self._meld_beliefunits(other_oath=other_oath)
-        if other_oath._meld_strategy != "override":
-            self._meld_attributes_that_must_be_equal(other_oath=other_oath)
+        self._meld_reasonunits(other_fact=other_fact)
+        self._meld_balancelinks(other_fact=other_fact)
+        self._meld_beliefunits(other_fact=other_fact)
+        if other_fact._meld_strategy != "override":
+            self._meld_attributes_that_must_be_equal(other_fact=other_fact)
         else:
-            self._meld_attributes_overide(other_oath=other_oath)
+            self._meld_attributes_overide(other_fact=other_fact)
         self._meld_originlinks(party_id, party_weight)
 
     def _meld_originlinks(self, party_id: PartyID, party_weight: float):
@@ -664,108 +664,108 @@ class OathUnit:
     def get_originunit_dict(self) -> dict[str:str]:
         return self._originunit.get_dict()
 
-    def _meld_attributes_overide(self, other_oath):
-        self._uid = other_oath._uid
-        self._begin = other_oath._begin
-        self._close = other_oath._close
-        self._addin = other_oath._addin
-        self._denom = other_oath._denom
-        self._numor = other_oath._numor
-        self._reest = other_oath._reest
-        self._range_source_road = other_oath._range_source_road
-        self._numeric_road = other_oath._numeric_road
-        self.pledge = other_oath.pledge
-        self._is_expanded = other_oath._is_expanded
+    def _meld_attributes_overide(self, other_fact):
+        self._uid = other_fact._uid
+        self._begin = other_fact._begin
+        self._close = other_fact._close
+        self._addin = other_fact._addin
+        self._denom = other_fact._denom
+        self._numor = other_fact._numor
+        self._reest = other_fact._reest
+        self._range_source_road = other_fact._range_source_road
+        self._numeric_road = other_fact._numeric_road
+        self.pledge = other_fact.pledge
+        self._is_expanded = other_fact._is_expanded
 
-    def _meld_attributes_that_must_be_equal(self, other_oath):
+    def _meld_attributes_that_must_be_equal(self, other_fact):
         to_be_equal_attributes = [
-            ("_uid", self._uid, other_oath._uid),
-            ("_begin", self._begin, other_oath._begin),
-            ("_close", self._close, other_oath._close),
-            ("_addin", self._addin, other_oath._addin),
-            ("_denom", self._denom, other_oath._denom),
-            ("_numor", self._numor, other_oath._numor),
-            ("_reest", self._reest, other_oath._reest),
+            ("_uid", self._uid, other_fact._uid),
+            ("_begin", self._begin, other_fact._begin),
+            ("_close", self._close, other_fact._close),
+            ("_addin", self._addin, other_fact._addin),
+            ("_denom", self._denom, other_fact._denom),
+            ("_numor", self._numor, other_fact._numor),
+            ("_reest", self._reest, other_fact._reest),
             (
                 "_range_source_road",
                 self._range_source_road,
-                other_oath._range_source_road,
+                other_fact._range_source_road,
             ),
-            ("_numeric_road", self._numeric_road, other_oath._numeric_road),
-            ("pledge", self.pledge, other_oath.pledge),
-            ("_is_expanded", self._is_expanded, other_oath._is_expanded),
+            ("_numeric_road", self._numeric_road, other_fact._numeric_road),
+            ("pledge", self.pledge, other_fact.pledge),
+            ("_is_expanded", self._is_expanded, other_fact._is_expanded),
         ]
         while to_be_equal_attributes != []:
             attrs = to_be_equal_attributes.pop()
             if attrs[1] != attrs[2]:
-                raise InvalidOathException(
-                    f"Meld fail oath={self.get_road()} {attrs[0]}:{attrs[1]} with {other_oath.get_road()} {attrs[0]}:{attrs[2]}"
+                raise InvalidFactException(
+                    f"Meld fail fact={self.get_road()} {attrs[0]}:{attrs[1]} with {other_fact.get_road()} {attrs[0]}:{attrs[2]}"
                 )
 
-    def _set_oath_attr(self, oath_attr: OathAttrFilter):
-        if oath_attr.weight != None:
-            self._weight = oath_attr.weight
-        if oath_attr.uid != None:
-            self._uid = oath_attr.uid
-        if oath_attr.reason != None:
-            self.set_reasonunit(reason=oath_attr.reason)
-        if oath_attr.reason_base != None and oath_attr.reason_premise != None:
+    def _set_fact_attr(self, fact_attr: FactAttrFilter):
+        if fact_attr.weight != None:
+            self._weight = fact_attr.weight
+        if fact_attr.uid != None:
+            self._uid = fact_attr.uid
+        if fact_attr.reason != None:
+            self.set_reasonunit(reason=fact_attr.reason)
+        if fact_attr.reason_base != None and fact_attr.reason_premise != None:
             self.set_reason_premise(
-                base=oath_attr.reason_base,
-                premise=oath_attr.reason_premise,
-                open=oath_attr.reason_premise_open,
-                nigh=oath_attr.reason_premise_nigh,
-                divisor=oath_attr.reason_premise_divisor,
+                base=fact_attr.reason_base,
+                premise=fact_attr.reason_premise,
+                open=fact_attr.reason_premise_open,
+                nigh=fact_attr.reason_premise_nigh,
+                divisor=fact_attr.reason_premise_divisor,
             )
-        if oath_attr.reason_base != None and oath_attr.reason_suff_oath_active != None:
-            self.set_reason_suff_oath_active(
-                base=oath_attr.reason_base,
-                suff_oath_active=oath_attr.reason_suff_oath_active,
+        if fact_attr.reason_base != None and fact_attr.reason_suff_fact_active != None:
+            self.set_reason_suff_fact_active(
+                base=fact_attr.reason_base,
+                suff_fact_active=fact_attr.reason_suff_fact_active,
             )
-        if oath_attr.assignedunit != None:
-            self._assignedunit = oath_attr.assignedunit
-        if oath_attr.healerhold != None:
-            self._healerhold = oath_attr.healerhold
-        if oath_attr.begin != None:
-            self._begin = oath_attr.begin
-        if oath_attr.close != None:
-            self._close = oath_attr.close
-        if oath_attr.addin != None:
-            self._addin = oath_attr.addin
-        if oath_attr.numor != None:
-            self._numor = oath_attr.numor
-        if oath_attr.denom != None:
-            self._denom = oath_attr.denom
-        if oath_attr.reest != None:
-            self._reest = oath_attr.reest
-        if oath_attr.numeric_road != None:
-            self._numeric_road = oath_attr.numeric_road
-        if oath_attr.range_source_road != None:
-            self._range_source_road = oath_attr.range_source_road
-        if oath_attr.descendant_pledge_count != None:
-            self._descendant_pledge_count = oath_attr.descendant_pledge_count
-        if oath_attr.all_party_cred != None:
-            self._all_party_cred = oath_attr.all_party_cred
-        if oath_attr.all_party_debt != None:
-            self._all_party_debt = oath_attr.all_party_debt
-        if oath_attr.balancelink != None:
-            self.set_balancelink(balancelink=oath_attr.balancelink)
-        if oath_attr.balancelink_del != None:
-            self.del_balancelink(idea_id=oath_attr.balancelink_del)
-        if oath_attr.is_expanded != None:
-            self._is_expanded = oath_attr.is_expanded
-        if oath_attr.pledge != None:
-            self.pledge = oath_attr.pledge
-        if oath_attr.meld_strategy != None:
-            self._meld_strategy = validate_meld_strategy(oath_attr.meld_strategy)
-        if oath_attr.beliefunit != None:
-            self.set_beliefunit(oath_attr.beliefunit)
-        if oath_attr.problem_bool != None:
-            self._problem_bool = oath_attr.problem_bool
+        if fact_attr.assignedunit != None:
+            self._assignedunit = fact_attr.assignedunit
+        if fact_attr.healerhold != None:
+            self._healerhold = fact_attr.healerhold
+        if fact_attr.begin != None:
+            self._begin = fact_attr.begin
+        if fact_attr.close != None:
+            self._close = fact_attr.close
+        if fact_attr.addin != None:
+            self._addin = fact_attr.addin
+        if fact_attr.numor != None:
+            self._numor = fact_attr.numor
+        if fact_attr.denom != None:
+            self._denom = fact_attr.denom
+        if fact_attr.reest != None:
+            self._reest = fact_attr.reest
+        if fact_attr.numeric_road != None:
+            self._numeric_road = fact_attr.numeric_road
+        if fact_attr.range_source_road != None:
+            self._range_source_road = fact_attr.range_source_road
+        if fact_attr.descendant_pledge_count != None:
+            self._descendant_pledge_count = fact_attr.descendant_pledge_count
+        if fact_attr.all_party_cred != None:
+            self._all_party_cred = fact_attr.all_party_cred
+        if fact_attr.all_party_debt != None:
+            self._all_party_debt = fact_attr.all_party_debt
+        if fact_attr.balancelink != None:
+            self.set_balancelink(balancelink=fact_attr.balancelink)
+        if fact_attr.balancelink_del != None:
+            self.del_balancelink(idea_id=fact_attr.balancelink_del)
+        if fact_attr.is_expanded != None:
+            self._is_expanded = fact_attr.is_expanded
+        if fact_attr.pledge != None:
+            self.pledge = fact_attr.pledge
+        if fact_attr.meld_strategy != None:
+            self._meld_strategy = validate_meld_strategy(fact_attr.meld_strategy)
+        if fact_attr.beliefunit != None:
+            self.set_beliefunit(fact_attr.beliefunit)
+        if fact_attr.problem_bool != None:
+            self._problem_bool = fact_attr.problem_bool
 
         self._del_reasonunit_all_cases(
-            base=oath_attr.reason_del_premise_base,
-            premise=oath_attr.reason_del_premise_need,
+            base=fact_attr.reason_del_premise_base,
+            premise=fact_attr.reason_del_premise_need,
         )
         self._set_addin_to_zero_if_any_transformations_exist()
 
@@ -784,14 +784,14 @@ class OathUnit:
             if len(self._reasonunits[base].premises) == 0:
                 self.del_reasonunit_base(base=base)
 
-    def set_reason_suff_oath_active(self, base: RoadUnit, suff_oath_active: str):
+    def set_reason_suff_fact_active(self, base: RoadUnit, suff_fact_active: str):
         x_reasonunit = self._get_or_create_reasonunit(base=base)
-        if suff_oath_active is False:
-            x_reasonunit.suff_oath_active = False
-        elif suff_oath_active == "Set to Ignore":
-            x_reasonunit.suff_oath_active = None
-        elif suff_oath_active:
-            x_reasonunit.suff_oath_active = True
+        if suff_fact_active is False:
+            x_reasonunit.suff_fact_active = False
+        elif suff_fact_active == "Set to Ignore":
+            x_reasonunit.suff_fact_active = None
+        elif suff_fact_active:
+            x_reasonunit.suff_fact_active = True
 
     def _get_or_create_reasonunit(self, base: RoadUnit) -> ReasonUnit:
         x_reasonunit = None
@@ -817,40 +817,40 @@ class OathUnit:
         try:
             self._reasonunits.pop(base)
         except KeyError as e:
-            raise InvalidOathException(f"No ReasonUnit at '{base}'") from e
+            raise InvalidFactException(f"No ReasonUnit at '{base}'") from e
 
     def del_reasonunit_premise(self, base: RoadUnit, premise: RoadUnit):
         reason_unit = self._reasonunits[base]
         reason_unit.del_premise(premise=premise)
 
-    def add_kid(self, oath_kid):
-        if oath_kid._numor != None:
-            # if oath_kid._denom != None:
-            # if oath_kid._reest != None:
+    def add_kid(self, fact_kid):
+        if fact_kid._numor != None:
+            # if fact_kid._denom != None:
+            # if fact_kid._reest != None:
             if self._begin is None or self._close is None:
-                raise InvalidOathException(
-                    f"Oath {oath_kid.get_road()} cannot have numor,denom,reest if parent does not have begin/close range"
+                raise InvalidFactException(
+                    f"Fact {fact_kid.get_road()} cannot have numor,denom,reest if parent does not have begin/close range"
                 )
 
-            oath_kid._begin = self._begin * oath_kid._numor / oath_kid._denom
-            oath_kid._close = self._close * oath_kid._numor / oath_kid._denom
+            fact_kid._begin = self._begin * fact_kid._numor / fact_kid._denom
+            fact_kid._close = self._close * fact_kid._numor / fact_kid._denom
 
-        self._kids[oath_kid._label] = oath_kid
+        self._kids[fact_kid._label] = fact_kid
         self._kids = dict(sorted(self._kids.items()))
 
-    def get_kid(self, oath_kid_label: RoadNode, if_missing_create=False):
+    def get_kid(self, fact_kid_label: RoadNode, if_missing_create=False):
         if if_missing_create is False:
-            return self._kids.get(oath_kid_label)
+            return self._kids.get(fact_kid_label)
         try:
-            return self._kids[oath_kid_label]
+            return self._kids[fact_kid_label]
         except Exception:
             KeyError
-            self.add_kid(oathunit_shop(oath_kid_label))
-            return_oath = self._kids.get(oath_kid_label)
-        return return_oath
+            self.add_kid(factunit_shop(fact_kid_label))
+            return_fact = self._kids.get(fact_kid_label)
+        return return_fact
 
-    def del_kid(self, oath_kid_label: RoadNode):
-        self._kids.pop(oath_kid_label)
+    def del_kid(self, fact_kid_label: RoadNode):
+        self._kids.pop(fact_kid_label)
 
     def clear_kids(self):
         self._kids = {}
@@ -886,14 +886,14 @@ class OathUnit:
         self._active = self._create_active(
             agenda_ideaunits=agenda_ideaunits, agenda_owner_id=agenda_owner_id
         )
-        self._set_oath_task()
+        self._set_fact_task()
         self.record_active_hx(
             tree_traverse_count=tree_traverse_count,
             prev_active=prev_to_now_active,
             now_active=self._active,
         )
 
-    def _set_oath_task(self):
+    def _set_fact_task(self):
         self._task = False
         if (
             self.pledge
@@ -937,7 +937,7 @@ class OathUnit:
 
     def set_reasonheirs(
         self,
-        agenda_oath_dict: dict[RoadUnit:],
+        agenda_fact_dict: dict[RoadUnit:],
         reasonheirs: dict[RoadUnit:ReasonCore] = None,
     ):
         if reasonheirs is None:
@@ -948,18 +948,18 @@ class OathUnit:
         for old_reasonheir in coalesced_reasons.values():
             new_reasonheir = reasonheir_shop(
                 base=old_reasonheir.base,
-                suff_oath_active=old_reasonheir.suff_oath_active,
+                suff_fact_active=old_reasonheir.suff_fact_active,
             )
             new_reasonheir.inherit_from_reasonheir(old_reasonheir)
 
-            # if agenda_oath_dict != None:
-            base_oath = agenda_oath_dict.get(old_reasonheir.base)
-            if base_oath != None:
-                new_reasonheir.set_base_oath_active(bool_x=base_oath._active)
+            # if agenda_fact_dict != None:
+            base_fact = agenda_fact_dict.get(old_reasonheir.base)
+            if base_fact != None:
+                new_reasonheir.set_base_fact_active(bool_x=base_fact._active)
 
             self._reasonheirs[new_reasonheir.base] = new_reasonheir
 
-    def set_oathroot_inherit_reasonheirs(self):
+    def set_factroot_inherit_reasonheirs(self):
         self._reasonheirs = {}
         for x_reasonunit in self._reasonunits.values():
             new_reasonheir = reasonheir_shop(x_reasonunit.base)
@@ -1084,7 +1084,7 @@ class OathUnit:
         return self._assignedheir.idea_in(idea_ids)
 
 
-def oathunit_shop(
+def factunit_shop(
     _label: RoadNode = None,
     _uid: int = None,  # Calculated field?
     _parent_road: RoadUnit = None,
@@ -1131,7 +1131,7 @@ def oathunit_shop(
     _active_hx: dict[int:bool] = None,
     _road_delimiter: str = None,
     _healerhold_importance: float = None,
-) -> OathUnit:
+) -> FactUnit:
     if _meld_strategy is None:
         _meld_strategy = get_meld_default()
     if _agenda_real_id is None:
@@ -1139,7 +1139,7 @@ def oathunit_shop(
     if _healerhold is None:
         _healerhold = healerhold_shop()
 
-    x_oathkid = OathUnit(
+    x_factkid = FactUnit(
         _label=None,
         _uid=_uid,
         _parent_road=_parent_road,
@@ -1187,20 +1187,20 @@ def oathunit_shop(
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _healerhold_importance=get_0_if_None(_healerhold_importance),
     )
-    if x_oathkid._root:
-        x_oathkid.set_oath_label(_label=_agenda_real_id)
+    if x_factkid._root:
+        x_factkid.set_fact_label(_label=_agenda_real_id)
     else:
-        x_oathkid.set_oath_label(_label=_label)
-    x_oathkid.set_assignedunit_empty_if_null()
-    x_oathkid.set_originunit_empty_if_null()
-    return x_oathkid
+        x_factkid.set_fact_label(_label=_label)
+    x_factkid.set_assignedunit_empty_if_null()
+    x_factkid.set_originunit_empty_if_null()
+    return x_factkid
 
 
-class Oath_root_LabelNotEmptyException(Exception):
+class Fact_root_LabelNotEmptyException(Exception):
     pass
 
 
-def get_obj_from_oath_dict(x_dict: dict[str:], dict_key: str) -> any:
+def get_obj_from_fact_dict(x_dict: dict[str:], dict_key: str) -> any:
     if dict_key == "_reasonunits":
         return (
             reasons_get_from_dict(x_dict[dict_key])

@@ -5,7 +5,7 @@ from src._road.road import (
 )
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import IdeaID, balancelink_shop, balanceheir_shop
-from src.agenda.reason_oath import (
+from src.agenda.reason_fact import (
     reasonunit_shop,
     reasonheir_shop,
     beliefunit_shop,
@@ -13,129 +13,129 @@ from src.agenda.reason_oath import (
 )
 from src.agenda.reason_assign import assignedunit_shop, assigned_heir_shop
 from src.agenda.origin import originunit_shop
-from src.agenda.oath import OathUnit, oathunit_shop, get_obj_from_oath_dict
+from src.agenda.fact import FactUnit, factunit_shop, get_obj_from_fact_dict
 from pytest import raises as pytest_raises
 
 
-def test_OathUnit_exists():
-    x_oathunit = OathUnit()
-    assert x_oathunit
-    assert x_oathunit._kids is None
-    assert x_oathunit._weight is None
-    assert x_oathunit._label is None
-    assert x_oathunit._uid is None
-    assert x_oathunit._all_party_cred is None
-    assert x_oathunit._all_party_debt is None
-    assert x_oathunit._begin is None
-    assert x_oathunit._close is None
-    assert x_oathunit._addin is None
-    assert x_oathunit._numor is None
-    assert x_oathunit._denom is None
-    assert x_oathunit._reest is None
-    assert x_oathunit._numeric_road is None
-    assert x_oathunit._range_source_road is None
-    assert x_oathunit.pledge is None
-    assert x_oathunit._problem_bool is None
-    assert x_oathunit._descendant_pledge_count is None
-    assert x_oathunit._balancelines is None
-    assert x_oathunit._balanceheirs is None
-    assert x_oathunit._is_expanded is None
-    assert x_oathunit._beliefheirs is None
-    assert x_oathunit._beliefunits is None
-    assert x_oathunit._meld_strategy is None
-    assert x_oathunit._healerhold is None
-    assert x_oathunit._level is None
-    assert x_oathunit._kids_total_weight is None
-    assert x_oathunit._active_hx is None
-    assert x_oathunit._agenda_importance is None
-    assert x_oathunit._agenda_fund_onset is None
-    assert x_oathunit._agenda_fund_cease is None
-    assert x_oathunit._reasonunits is None
-    assert x_oathunit._reasonheirs is None
-    assert x_oathunit._assignedunit is None
-    assert x_oathunit._assignedheir is None
-    assert x_oathunit._originunit is None
-    assert x_oathunit._road_delimiter is None
-    assert x_oathunit._root is None
-    assert x_oathunit._agenda_real_id is None
-    assert x_oathunit._healerhold_importance is None
+def test_FactUnit_exists():
+    x_factunit = FactUnit()
+    assert x_factunit
+    assert x_factunit._kids is None
+    assert x_factunit._weight is None
+    assert x_factunit._label is None
+    assert x_factunit._uid is None
+    assert x_factunit._all_party_cred is None
+    assert x_factunit._all_party_debt is None
+    assert x_factunit._begin is None
+    assert x_factunit._close is None
+    assert x_factunit._addin is None
+    assert x_factunit._numor is None
+    assert x_factunit._denom is None
+    assert x_factunit._reest is None
+    assert x_factunit._numeric_road is None
+    assert x_factunit._range_source_road is None
+    assert x_factunit.pledge is None
+    assert x_factunit._problem_bool is None
+    assert x_factunit._descendant_pledge_count is None
+    assert x_factunit._balancelines is None
+    assert x_factunit._balanceheirs is None
+    assert x_factunit._is_expanded is None
+    assert x_factunit._beliefheirs is None
+    assert x_factunit._beliefunits is None
+    assert x_factunit._meld_strategy is None
+    assert x_factunit._healerhold is None
+    assert x_factunit._level is None
+    assert x_factunit._kids_total_weight is None
+    assert x_factunit._active_hx is None
+    assert x_factunit._agenda_importance is None
+    assert x_factunit._agenda_fund_onset is None
+    assert x_factunit._agenda_fund_cease is None
+    assert x_factunit._reasonunits is None
+    assert x_factunit._reasonheirs is None
+    assert x_factunit._assignedunit is None
+    assert x_factunit._assignedheir is None
+    assert x_factunit._originunit is None
+    assert x_factunit._road_delimiter is None
+    assert x_factunit._root is None
+    assert x_factunit._agenda_real_id is None
+    assert x_factunit._healerhold_importance is None
 
 
-def test_oathunit_shop_NoParametersReturnsCorrectObj():
+def test_factunit_shop_NoParametersReturnsCorrectObj():
     # GIVEN / WHEN
-    x_oathunit = oathunit_shop()
+    x_factunit = factunit_shop()
 
     # THEN
-    assert x_oathunit
-    assert x_oathunit._kids == {}
-    assert x_oathunit._weight >= 1
-    assert x_oathunit._label is None
-    assert x_oathunit._uid is None
-    assert x_oathunit._all_party_cred is None
-    assert x_oathunit._all_party_debt is None
-    assert x_oathunit._begin is None
-    assert x_oathunit._close is None
-    assert x_oathunit._addin is None
-    assert x_oathunit._numor is None
-    assert x_oathunit._denom is None
-    assert x_oathunit._reest is None
-    assert x_oathunit._numeric_road is None
-    assert x_oathunit._range_source_road is None
-    assert x_oathunit.pledge is False
-    assert x_oathunit._problem_bool is False
-    assert x_oathunit._descendant_pledge_count is None
-    assert x_oathunit._balancelines == {}
-    assert x_oathunit._balancelinks == {}
-    assert x_oathunit._balanceheirs == {}
-    assert x_oathunit._is_expanded == True
-    assert x_oathunit._beliefheirs == {}
-    assert x_oathunit._beliefunits == {}
-    assert x_oathunit._meld_strategy == "default"
-    assert x_oathunit._healerhold == healerhold_shop()
-    assert x_oathunit._level is None
-    assert x_oathunit._kids_total_weight == 0
-    assert x_oathunit._active_hx == {}
-    assert x_oathunit._agenda_importance is None
-    assert x_oathunit._agenda_fund_onset is None
-    assert x_oathunit._agenda_fund_cease is None
-    assert x_oathunit._reasonunits == {}
-    assert x_oathunit._reasonheirs == {}
-    assert x_oathunit._assignedunit == assignedunit_shop()
-    assert x_oathunit._assignedheir is None
-    assert x_oathunit._originunit == originunit_shop()
-    assert x_oathunit._road_delimiter == default_road_delimiter_if_none()
-    assert x_oathunit._root is False
-    assert x_oathunit._agenda_real_id == root_label()
-    assert x_oathunit._healerhold_importance == 0
+    assert x_factunit
+    assert x_factunit._kids == {}
+    assert x_factunit._weight >= 1
+    assert x_factunit._label is None
+    assert x_factunit._uid is None
+    assert x_factunit._all_party_cred is None
+    assert x_factunit._all_party_debt is None
+    assert x_factunit._begin is None
+    assert x_factunit._close is None
+    assert x_factunit._addin is None
+    assert x_factunit._numor is None
+    assert x_factunit._denom is None
+    assert x_factunit._reest is None
+    assert x_factunit._numeric_road is None
+    assert x_factunit._range_source_road is None
+    assert x_factunit.pledge is False
+    assert x_factunit._problem_bool is False
+    assert x_factunit._descendant_pledge_count is None
+    assert x_factunit._balancelines == {}
+    assert x_factunit._balancelinks == {}
+    assert x_factunit._balanceheirs == {}
+    assert x_factunit._is_expanded == True
+    assert x_factunit._beliefheirs == {}
+    assert x_factunit._beliefunits == {}
+    assert x_factunit._meld_strategy == "default"
+    assert x_factunit._healerhold == healerhold_shop()
+    assert x_factunit._level is None
+    assert x_factunit._kids_total_weight == 0
+    assert x_factunit._active_hx == {}
+    assert x_factunit._agenda_importance is None
+    assert x_factunit._agenda_fund_onset is None
+    assert x_factunit._agenda_fund_cease is None
+    assert x_factunit._reasonunits == {}
+    assert x_factunit._reasonheirs == {}
+    assert x_factunit._assignedunit == assignedunit_shop()
+    assert x_factunit._assignedheir is None
+    assert x_factunit._originunit == originunit_shop()
+    assert x_factunit._road_delimiter == default_road_delimiter_if_none()
+    assert x_factunit._root is False
+    assert x_factunit._agenda_real_id == root_label()
+    assert x_factunit._healerhold_importance == 0
 
 
-def test_oathunit_shop_NonNoneParametersReturnsCorrectObj():
+def test_factunit_shop_NonNoneParametersReturnsCorrectObj():
     # GIVEN
     x_healerhold = healerhold_shop({"Sue", "Yao"})
     x_problem_bool = True
 
     # WHEN
-    x_oathunit = oathunit_shop(_healerhold=x_healerhold, _problem_bool=x_problem_bool)
+    x_factunit = factunit_shop(_healerhold=x_healerhold, _problem_bool=x_problem_bool)
 
     # THEN
-    assert x_oathunit._healerhold == x_healerhold
-    assert x_oathunit._problem_bool == x_problem_bool
+    assert x_factunit._healerhold == x_healerhold
+    assert x_factunit._problem_bool == x_problem_bool
 
 
-def test_OathUnit_get_obj_key_ReturnsCorrectObj():
+def test_FactUnit_get_obj_key_ReturnsCorrectObj():
     # GIVEN
     round_text = "round_things"
     round_road = create_road(root_label(), round_text)
     ball_text = "ball"
 
     # WHEN
-    ball_oath = oathunit_shop(_label=ball_text, _parent_road=round_road)
+    ball_fact = factunit_shop(_label=ball_text, _parent_road=round_road)
 
     # THEN
-    assert ball_oath.get_obj_key() == ball_text
+    assert ball_fact.get_obj_key() == ball_text
 
 
-def test_OathUnit_get_road_ReturnsCorrectObj():
+def test_FactUnit_get_road_ReturnsCorrectObj():
     # GIVEN
     round_text = "round_things"
     slash_text = "/"
@@ -143,35 +143,35 @@ def test_OathUnit_get_road_ReturnsCorrectObj():
     ball_text = "ball"
 
     # WHEN
-    ball_oath = oathunit_shop(
+    ball_fact = factunit_shop(
         ball_text, _parent_road=round_road, _road_delimiter=slash_text
     )
 
     # THEN
     ball_road = create_road(round_road, ball_text, delimiter=slash_text)
-    assert ball_oath.get_road() == ball_road
+    assert ball_fact.get_road() == ball_road
 
 
-def test_OathUnit_set_parent_road_ReturnsCorrectObj():
+def test_FactUnit_set_parent_road_ReturnsCorrectObj():
     # GIVEN
     round_text = "round_things"
     slash_text = "/"
     round_road = create_road(root_label(), round_text, delimiter=slash_text)
     ball_text = "ball"
-    ball_oath = oathunit_shop(
+    ball_fact = factunit_shop(
         ball_text, _parent_road=round_road, _road_delimiter=slash_text
     )
-    assert ball_oath._parent_road == round_road
+    assert ball_fact._parent_road == round_road
 
     # WHEN
     sports_road = create_road(root_label(), "sports", delimiter=slash_text)
-    ball_oath.set_parent_road(parent_road=sports_road)
+    ball_fact.set_parent_road(parent_road=sports_road)
 
     # THEN
-    assert ball_oath._parent_road == sports_road
+    assert ball_fact._parent_road == sports_road
 
 
-def test_OathUnit_balancelinks_exist():
+def test_FactUnit_balancelinks_exist():
     # GIVEN
     biker_credor_weight = 12
     biker_debtor_weight = 15
@@ -194,13 +194,13 @@ def test_OathUnit_balancelinks_exist():
 
     # WHEN
     sport_text = "sport"
-    sport_oath = oathunit_shop(_label=sport_text, _balancelinks=idea_links)
+    sport_fact = factunit_shop(_label=sport_text, _balancelinks=idea_links)
 
     # THEN
-    assert sport_oath._balancelinks == idea_links
+    assert sport_fact._balancelinks == idea_links
 
 
-def test_OathUnit_get_inherited_balanceheirs_weight_sum_SetsAttrCorrectly_WithValues():
+def test_FactUnit_get_inherited_balanceheirs_weight_sum_SetsAttrCorrectly_WithValues():
     # GIVEN
     biker_credor_weight = 12
     biker_debtor_weight = 15
@@ -225,71 +225,71 @@ def test_OathUnit_get_inherited_balanceheirs_weight_sum_SetsAttrCorrectly_WithVa
 
     # WHEN
     sport_text = "sport"
-    sport_oath = oathunit_shop(_label=sport_text, _balanceheirs=idea_links)
+    sport_fact = factunit_shop(_label=sport_text, _balanceheirs=idea_links)
 
     # THEN
-    assert sport_oath.get_balanceheirs_credor_weight_sum() != None
-    assert sport_oath.get_balanceheirs_credor_weight_sum() == 41
-    assert sport_oath.get_balanceheirs_debtor_weight_sum() != None
-    assert sport_oath.get_balanceheirs_debtor_weight_sum() == 47
+    assert sport_fact.get_balanceheirs_credor_weight_sum() != None
+    assert sport_fact.get_balanceheirs_credor_weight_sum() == 41
+    assert sport_fact.get_balanceheirs_debtor_weight_sum() != None
+    assert sport_fact.get_balanceheirs_debtor_weight_sum() == 47
 
-    assert len(sport_oath._balanceheirs) == 2
+    assert len(sport_fact._balanceheirs) == 2
 
-    swimmer_balanceheir = sport_oath._balanceheirs.get(swimmer_text)
+    swimmer_balanceheir = sport_fact._balanceheirs.get(swimmer_text)
     assert swimmer_balanceheir._agenda_cred is None
     assert swimmer_balanceheir._agenda_debt is None
-    biker_balanceheir = sport_oath._balanceheirs.get(biker_text)
+    biker_balanceheir = sport_fact._balanceheirs.get(biker_text)
     assert biker_balanceheir._agenda_cred is None
     assert biker_balanceheir._agenda_debt is None
 
     # WHEN
-    sport_oath._agenda_importance = 0.25
-    sport_oath.set_balanceheirs_agenda_cred_debt()
+    sport_fact._agenda_importance = 0.25
+    sport_fact.set_balanceheirs_agenda_cred_debt()
 
     # THEN
-    print(f"{len(sport_oath._balanceheirs)=}")
-    swimmer_balanceheir = sport_oath._balanceheirs.get(swimmer_text)
+    print(f"{len(sport_fact._balanceheirs)=}")
+    swimmer_balanceheir = sport_fact._balanceheirs.get(swimmer_text)
     assert swimmer_balanceheir._agenda_cred != None
     assert swimmer_balanceheir._agenda_debt != None
-    biker_balanceheir = sport_oath._balanceheirs.get(biker_text)
+    biker_balanceheir = sport_fact._balanceheirs.get(biker_text)
     assert biker_balanceheir._agenda_cred != None
     assert biker_balanceheir._agenda_debt != None
 
 
-def test_OathUnit_get_balancelinks_weight_sum_ReturnsCorrectObj_NoValues():
+def test_FactUnit_get_balancelinks_weight_sum_ReturnsCorrectObj_NoValues():
     # GIVEN /WHEN
     sport_text = "sport"
-    sport_oath = oathunit_shop(_label=sport_text)
-    assert sport_oath.get_balanceheirs_credor_weight_sum() != None
-    assert sport_oath.get_balanceheirs_debtor_weight_sum() != None
+    sport_fact = factunit_shop(_label=sport_text)
+    assert sport_fact.get_balanceheirs_credor_weight_sum() != None
+    assert sport_fact.get_balanceheirs_debtor_weight_sum() != None
 
     # WHEN / THEN
     # does not crash with empty set
-    sport_oath.set_balanceheirs_agenda_cred_debt()
+    sport_fact.set_balanceheirs_agenda_cred_debt()
 
 
-def test_OathUnit_set_reasonheirsCorrectlySourcesFromOutside():
+def test_FactUnit_set_reasonheirsCorrectlySourcesFromOutside():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(ball_text)
     run_text = "run"
     run_road = create_road(ball_road, run_text)
-    ball_oath = oathunit_shop(_label=ball_text)
+    ball_fact = factunit_shop(_label=ball_text)
     run_premise = premiseunit_shop(need=run_road, open=0, nigh=7)
     run_premises = {run_premise.need: run_premise}
     reasonheir = reasonheir_shop(run_road, premises=run_premises)
     reasonheirs = {reasonheir.base: reasonheir}
-    assert ball_oath._reasonheirs == {}
+    assert ball_fact._reasonheirs == {}
 
     # WHEN
-    ball_oath.set_reasonheirs(reasonheirs=reasonheirs, agenda_oath_dict={})
+    ball_fact.set_reasonheirs(reasonheirs=reasonheirs, agenda_fact_dict={})
 
     # THEN
-    assert ball_oath._reasonheirs == reasonheirs
-    assert id(ball_oath._reasonheirs) != id(reasonheirs)
+    assert ball_fact._reasonheirs == reasonheirs
+    assert id(ball_fact._reasonheirs) != id(reasonheirs)
 
 
-def test_OathUnit_set_reasonheirsCorrectlySourcesFromSelf():
+def test_FactUnit_set_reasonheirsCorrectlySourcesFromSelf():
     # GIVEN
     ball_text = "ball"
     ball_road = create_road(ball_text)
@@ -299,135 +299,135 @@ def test_OathUnit_set_reasonheirsCorrectlySourcesFromSelf():
     run_premises = {run_premise.need: run_premise}
     run_reasonunit = reasonunit_shop(base=run_road, premises=run_premises)
     run_reasonunits = {run_reasonunit.base: run_reasonunit}
-    ball_oath = oathunit_shop(_label=ball_text, _reasonunits=run_reasonunits)
-    assert ball_oath._reasonunits != {}
+    ball_fact = factunit_shop(_label=ball_text, _reasonunits=run_reasonunits)
+    assert ball_fact._reasonunits != {}
 
     # WHEN
-    ball_oath.set_reasonheirs(reasonheirs=None, agenda_oath_dict={})
+    ball_fact.set_reasonheirs(reasonheirs=None, agenda_fact_dict={})
 
     # THEN
     reasonheir = reasonheir_shop(run_road, premises=run_premises)
     reasonheirs = {reasonheir.base: reasonheir}
-    assert ball_oath._reasonheirs == reasonheirs
+    assert ball_fact._reasonheirs == reasonheirs
 
 
-def test_OathUnit_clear_descendant_pledge_count_ClearsCorrectly():
+def test_FactUnit_clear_descendant_pledge_count_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
-    ball_oath = oathunit_shop(_label=ball_text, _descendant_pledge_count=55)
-    assert ball_oath._descendant_pledge_count == 55
+    ball_fact = factunit_shop(_label=ball_text, _descendant_pledge_count=55)
+    assert ball_fact._descendant_pledge_count == 55
 
     # WHEN
-    ball_oath.clear_descendant_pledge_count()
+    ball_fact.clear_descendant_pledge_count()
 
     # THEN
-    assert ball_oath._descendant_pledge_count is None
+    assert ball_fact._descendant_pledge_count is None
 
 
-def test_OathUnit_add_to_descendant_pledge_count_CorrectlyAdds():
+def test_FactUnit_add_to_descendant_pledge_count_CorrectlyAdds():
     # GIVEN
     ball_text = "ball"
-    ball_oath = oathunit_shop(_label=ball_text, _descendant_pledge_count=55)
-    ball_oath.clear_descendant_pledge_count()
-    assert ball_oath._descendant_pledge_count is None
+    ball_fact = factunit_shop(_label=ball_text, _descendant_pledge_count=55)
+    ball_fact.clear_descendant_pledge_count()
+    assert ball_fact._descendant_pledge_count is None
 
     # WHEN
-    ball_oath.add_to_descendant_pledge_count(44)
+    ball_fact.add_to_descendant_pledge_count(44)
 
     # THEN
-    assert ball_oath._descendant_pledge_count == 44
+    assert ball_fact._descendant_pledge_count == 44
 
     # WHEN
-    ball_oath.add_to_descendant_pledge_count(33)
+    ball_fact.add_to_descendant_pledge_count(33)
 
     # THEN
-    assert ball_oath._descendant_pledge_count == 77
+    assert ball_fact._descendant_pledge_count == 77
 
 
-def test_OathUnit_clear_all_party_cred_debt_ClearsCorrectly():
+def test_FactUnit_clear_all_party_cred_debt_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
-    ball_oath = oathunit_shop(_label=ball_text, _all_party_cred=55, _all_party_debt=33)
-    assert ball_oath._all_party_cred == 55
-    assert ball_oath._all_party_debt == 33
+    ball_fact = factunit_shop(_label=ball_text, _all_party_cred=55, _all_party_debt=33)
+    assert ball_fact._all_party_cred == 55
+    assert ball_fact._all_party_debt == 33
 
     # WHEN
-    ball_oath.clear_all_party_cred_debt()
+    ball_fact.clear_all_party_cred_debt()
 
     # THEN
-    assert ball_oath._all_party_cred is None
-    assert ball_oath._all_party_debt is None
+    assert ball_fact._all_party_cred is None
+    assert ball_fact._all_party_debt is None
 
 
-def test_get_kids_in_range_GetsCorrectOaths():
+def test_get_kids_in_range_GetsCorrectFacts():
     # GIVEN
     mon366_text = "366months"
-    mon366_oath = oathunit_shop(_label=mon366_text, _begin=0, _close=366)
+    mon366_fact = factunit_shop(_label=mon366_text, _begin=0, _close=366)
     jan_text = "Jan"
     feb29_text = "Feb29"
     mar_text = "Mar"
-    mon366_oath.add_kid(oath_kid=oathunit_shop(_label=jan_text, _begin=0, _close=31))
-    mon366_oath.add_kid(oath_kid=oathunit_shop(_label=feb29_text, _begin=31, _close=60))
-    mon366_oath.add_kid(oath_kid=oathunit_shop(_label=mar_text, _begin=31, _close=91))
+    mon366_fact.add_kid(fact_kid=factunit_shop(_label=jan_text, _begin=0, _close=31))
+    mon366_fact.add_kid(fact_kid=factunit_shop(_label=feb29_text, _begin=31, _close=60))
+    mon366_fact.add_kid(fact_kid=factunit_shop(_label=mar_text, _begin=31, _close=91))
 
     # WHEN / THEN
-    assert len(mon366_oath.get_kids_in_range(begin=100, close=120)) == 0
-    assert len(mon366_oath.get_kids_in_range(begin=0, close=31)) == 1
-    assert len(mon366_oath.get_kids_in_range(begin=5, close=5)) == 1
-    assert len(mon366_oath.get_kids_in_range(begin=0, close=61)) == 3
-    assert mon366_oath.get_kids_in_range(begin=31, close=31)[0]._label == feb29_text
+    assert len(mon366_fact.get_kids_in_range(begin=100, close=120)) == 0
+    assert len(mon366_fact.get_kids_in_range(begin=0, close=31)) == 1
+    assert len(mon366_fact.get_kids_in_range(begin=5, close=5)) == 1
+    assert len(mon366_fact.get_kids_in_range(begin=0, close=61)) == 3
+    assert mon366_fact.get_kids_in_range(begin=31, close=31)[0]._label == feb29_text
 
 
-def test_get_obj_from_oath_dict_ReturnsCorrectObj():
+def test_get_obj_from_fact_dict_ReturnsCorrectObj():
     # GIVEN
     field_text = "_is_expanded"
     # WHEN / THEN
-    assert get_obj_from_oath_dict({field_text: True}, field_text)
-    assert get_obj_from_oath_dict({}, field_text)
-    assert get_obj_from_oath_dict({field_text: False}, field_text) is False
+    assert get_obj_from_fact_dict({field_text: True}, field_text)
+    assert get_obj_from_fact_dict({}, field_text)
+    assert get_obj_from_fact_dict({field_text: False}, field_text) is False
 
     # GIVEN
     field_text = "pledge"
     # WHEN / THEN
-    assert get_obj_from_oath_dict({field_text: True}, field_text)
-    assert get_obj_from_oath_dict({}, field_text) is False
-    assert get_obj_from_oath_dict({field_text: False}, field_text) is False
+    assert get_obj_from_fact_dict({field_text: True}, field_text)
+    assert get_obj_from_fact_dict({}, field_text) is False
+    assert get_obj_from_fact_dict({field_text: False}, field_text) is False
 
     # GIVEN
     field_text = "_problem_bool"
     # WHEN / THEN
-    assert get_obj_from_oath_dict({field_text: True}, field_text)
-    assert get_obj_from_oath_dict({}, field_text) is False
-    assert get_obj_from_oath_dict({field_text: False}, field_text) is False
+    assert get_obj_from_fact_dict({field_text: True}, field_text)
+    assert get_obj_from_fact_dict({}, field_text) is False
+    assert get_obj_from_fact_dict({field_text: False}, field_text) is False
 
     # GIVEN
     field_text = "_kids"
     # WHEN / THEN
-    assert get_obj_from_oath_dict({field_text: {}}, field_text) == {}
-    assert get_obj_from_oath_dict({}, field_text) == {}
+    assert get_obj_from_fact_dict({field_text: {}}, field_text) == {}
+    assert get_obj_from_fact_dict({}, field_text) == {}
 
 
-def test_get_obj_from_oath_dict_ReturnsCorrect_HealerHold():
+def test_get_obj_from_fact_dict_ReturnsCorrect_HealerHold():
     # GIVEN
     # WHEN / THEN
     healerhold_key = "_healerhold"
-    assert get_obj_from_oath_dict({}, healerhold_key) == healerhold_shop()
+    assert get_obj_from_fact_dict({}, healerhold_key) == healerhold_shop()
 
     # WHEN
     sue_text = "Sue"
     jim_text = "Jim"
     healerhold_dict = {"healerhold_idea_ids": [sue_text, jim_text]}
-    oathunit_dict = {healerhold_key: healerhold_dict}
+    factunit_dict = {healerhold_key: healerhold_dict}
 
     # THEN
     static_healerhold = healerhold_shop()
     static_healerhold.set_idea_id(x_idea_id=sue_text)
     static_healerhold.set_idea_id(x_idea_id=jim_text)
-    assert get_obj_from_oath_dict(oathunit_dict, healerhold_key) != None
-    assert get_obj_from_oath_dict(oathunit_dict, healerhold_key) == static_healerhold
+    assert get_obj_from_fact_dict(factunit_dict, healerhold_key) != None
+    assert get_obj_from_fact_dict(factunit_dict, healerhold_key) == static_healerhold
 
 
-def test_OathUnit_get_dict_ReturnsCorrectCompleteDict():
+def test_FactUnit_get_dict_ReturnsCorrectCompleteDict():
     # GIVEN
     week_text = "weekdays"
     week_road = create_road(root_label(), week_text)
@@ -495,7 +495,7 @@ def test_OathUnit_get_dict_ReturnsCorrectCompleteDict():
     casa_text = "casa"
     casa_road = create_road(root_label(), casa_text)
     x_problem_bool = True
-    casa_oath = oathunit_shop(
+    casa_fact = factunit_shop(
         _parent_road=casa_road,
         _kids=None,
         _balancelinks=biker_and_flyer_balancelinks,
@@ -512,103 +512,103 @@ def test_OathUnit_get_dict_ReturnsCorrectCompleteDict():
         _problem_bool=x_problem_bool,
     )
     beliefunit_x = beliefunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
-    casa_oath.set_beliefunit(beliefunit=beliefunit_x)
-    casa_oath._originunit.set_originlink(party_id="Ray", weight=None)
-    casa_oath._originunit.set_originlink(party_id="Lei", weight=4)
+    casa_fact.set_beliefunit(beliefunit=beliefunit_x)
+    casa_fact._originunit.set_originlink(party_id="Ray", weight=None)
+    casa_fact._originunit.set_originlink(party_id="Lei", weight=4)
     x_begin = 11
     x_close = 12
     x_addin = 13
     x_denom = 14
     x_numor = 15
     x_reest = 16
-    casa_oath._begin = x_begin
-    casa_oath._close = x_close
-    casa_oath._addin = x_addin
-    casa_oath._denom = x_denom
-    casa_oath._numor = x_numor
-    casa_oath._reest = x_reest
-    casa_oath._uid = 17
-    casa_oath.add_kid(oathunit_shop("paper"))
+    casa_fact._begin = x_begin
+    casa_fact._close = x_close
+    casa_fact._addin = x_addin
+    casa_fact._denom = x_denom
+    casa_fact._numor = x_numor
+    casa_fact._reest = x_reest
+    casa_fact._uid = 17
+    casa_fact.add_kid(factunit_shop("paper"))
 
     # WHEN
-    casa_dict = casa_oath.get_dict()
+    casa_dict = casa_fact.get_dict()
 
     # THEN
     assert casa_dict != None
     assert len(casa_dict["_kids"]) == 1
-    assert casa_dict["_kids"] == casa_oath.get_kids_dict()
-    assert casa_dict["_reasonunits"] == casa_oath.get_reasonunits_dict()
-    assert casa_dict["_balancelinks"] == casa_oath.get_balancelinks_dict()
+    assert casa_dict["_kids"] == casa_fact.get_kids_dict()
+    assert casa_dict["_reasonunits"] == casa_fact.get_reasonunits_dict()
+    assert casa_dict["_balancelinks"] == casa_fact.get_balancelinks_dict()
     assert casa_dict["_balancelinks"] == x1_balancelinks
     assert casa_dict["_assignedunit"] == sue_assignedunit.get_dict()
     assert casa_dict["_healerhold"] == yao_healerhold.get_dict()
-    assert casa_dict["_originunit"] == casa_oath.get_originunit_dict()
-    assert casa_dict["_weight"] == casa_oath._weight
-    assert casa_dict["_label"] == casa_oath._label
-    assert casa_dict["_uid"] == casa_oath._uid
-    assert casa_dict["_begin"] == casa_oath._begin
-    assert casa_dict["_close"] == casa_oath._close
-    assert casa_dict["_numor"] == casa_oath._numor
-    assert casa_dict["_denom"] == casa_oath._denom
-    assert casa_dict["_reest"] == casa_oath._reest
-    assert casa_dict["_range_source_road"] == casa_oath._range_source_road
-    assert casa_dict["pledge"] == casa_oath.pledge
-    assert casa_dict["_problem_bool"] == casa_oath._problem_bool
+    assert casa_dict["_originunit"] == casa_fact.get_originunit_dict()
+    assert casa_dict["_weight"] == casa_fact._weight
+    assert casa_dict["_label"] == casa_fact._label
+    assert casa_dict["_uid"] == casa_fact._uid
+    assert casa_dict["_begin"] == casa_fact._begin
+    assert casa_dict["_close"] == casa_fact._close
+    assert casa_dict["_numor"] == casa_fact._numor
+    assert casa_dict["_denom"] == casa_fact._denom
+    assert casa_dict["_reest"] == casa_fact._reest
+    assert casa_dict["_range_source_road"] == casa_fact._range_source_road
+    assert casa_dict["pledge"] == casa_fact.pledge
+    assert casa_dict["_problem_bool"] == casa_fact._problem_bool
     assert casa_dict["_problem_bool"] == x_problem_bool
-    assert casa_oath._is_expanded
+    assert casa_fact._is_expanded
     assert casa_dict.get("_is_expanded") is None
-    assert len(casa_dict["_beliefunits"]) == len(casa_oath.get_beliefunits_dict())
-    assert casa_oath._meld_strategy == "default"
+    assert len(casa_dict["_beliefunits"]) == len(casa_fact.get_beliefunits_dict())
+    assert casa_fact._meld_strategy == "default"
     assert casa_dict.get("_meld_strategy") is None
 
 
-def test_OathUnit_get_dict_ReturnsCorrectDictWithoutEmptyAttributes():
+def test_FactUnit_get_dict_ReturnsCorrectDictWithoutEmptyAttributes():
     # GIVEN
-    casa_oath = oathunit_shop()
+    casa_fact = factunit_shop()
 
     # WHEN
-    casa_dict = casa_oath.get_dict()
+    casa_dict = casa_fact.get_dict()
 
     # THEN
     assert casa_dict != None
     assert casa_dict == {"_weight": 1}
 
 
-def test_OathUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
+def test_FactUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     # GIVEN
-    casa_oath = oathunit_shop()
-    casa_oath._is_expanded = False
-    casa_oath.pledge = True
+    casa_fact = factunit_shop()
+    casa_fact._is_expanded = False
+    casa_fact.pledge = True
     ignore_text = "ignore"
-    casa_oath._meld_strategy = ignore_text
+    casa_fact._meld_strategy = ignore_text
 
     a_text = "a"
     a_road = create_road(root_label(), a_text)
-    casa_oath.set_beliefunit(beliefunit_shop(a_road, a_road))
+    casa_fact.set_beliefunit(beliefunit_shop(a_road, a_road))
 
     yao_text = "Yao"
-    casa_oath.set_balancelink(balancelink_shop(yao_text))
+    casa_fact.set_balancelink(balancelink_shop(yao_text))
 
-    x_assignedunit = casa_oath._assignedunit
+    x_assignedunit = casa_fact._assignedunit
     x_assignedunit.set_suffidea(idea_id=yao_text)
 
-    x_originunit = casa_oath._originunit
+    x_originunit = casa_fact._originunit
     x_originunit.set_originlink(yao_text, 1)
 
     rock_text = "Rock"
-    casa_oath.add_kid(oathunit_shop(rock_text))
+    casa_fact.add_kid(factunit_shop(rock_text))
 
-    assert not casa_oath._is_expanded
-    assert casa_oath.pledge
-    assert casa_oath._meld_strategy != "default"
-    assert casa_oath._beliefunits != None
-    assert casa_oath._balancelinks != None
-    assert casa_oath._assignedunit != None
-    assert casa_oath._originunit != None
-    assert casa_oath._kids != {}
+    assert not casa_fact._is_expanded
+    assert casa_fact.pledge
+    assert casa_fact._meld_strategy != "default"
+    assert casa_fact._beliefunits != None
+    assert casa_fact._balancelinks != None
+    assert casa_fact._assignedunit != None
+    assert casa_fact._originunit != None
+    assert casa_fact._kids != {}
 
     # WHEN
-    casa_dict = casa_oath.get_dict()
+    casa_dict = casa_fact.get_dict()
 
     # THEN
     assert casa_dict.get("_is_expanded") is False
@@ -621,21 +621,21 @@ def test_OathUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     assert casa_dict.get("_kids") != None
 
 
-def test_OathUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
+def test_FactUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
-    casa_oath = oathunit_shop()
-    assert casa_oath._is_expanded
-    assert casa_oath.pledge is False
-    assert casa_oath._meld_strategy == "default"
-    assert casa_oath._beliefunits == {}
-    assert casa_oath._balancelinks == {}
-    assert casa_oath._assignedunit == assignedunit_shop()
-    assert casa_oath._healerhold == healerhold_shop()
-    assert casa_oath._originunit == originunit_shop()
-    assert casa_oath._kids == {}
+    casa_fact = factunit_shop()
+    assert casa_fact._is_expanded
+    assert casa_fact.pledge is False
+    assert casa_fact._meld_strategy == "default"
+    assert casa_fact._beliefunits == {}
+    assert casa_fact._balancelinks == {}
+    assert casa_fact._assignedunit == assignedunit_shop()
+    assert casa_fact._healerhold == healerhold_shop()
+    assert casa_fact._originunit == originunit_shop()
+    assert casa_fact._kids == {}
 
     # WHEN
-    casa_dict = casa_oath.get_dict()
+    casa_dict = casa_fact.get_dict()
 
     # THEN
     assert casa_dict.get("_is_expanded") is None
@@ -649,274 +649,274 @@ def test_OathUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert casa_dict.get("_kids") is None
 
 
-def test_OathUnit_vaild_DenomCorrectInheritsBeginAndClose():
+def test_FactUnit_vaild_DenomCorrectInheritsBeginAndClose():
     # GIVEN
     casa_text = "casa"
     clean_text = "clean"
-    # parent oath
-    casa_oath = oathunit_shop(_label=casa_text, _begin=22.0, _close=66.0)
-    # kid oath
-    clean_oath = oathunit_shop(_label=clean_text, _numor=1, _denom=11.0, _reest=False)
+    # parent fact
+    casa_fact = factunit_shop(_label=casa_text, _begin=22.0, _close=66.0)
+    # kid fact
+    clean_fact = factunit_shop(_label=clean_text, _numor=1, _denom=11.0, _reest=False)
 
     # WHEN
-    casa_oath.add_kid(oath_kid=clean_oath)
+    casa_fact.add_kid(fact_kid=clean_fact)
 
     # THEN
-    assert casa_oath._kids[clean_text]._begin == 2
-    assert casa_oath._kids[clean_text]._close == 6
-    kid_oath_expected = oathunit_shop(
+    assert casa_fact._kids[clean_text]._begin == 2
+    assert casa_fact._kids[clean_text]._close == 6
+    kid_fact_expected = factunit_shop(
         clean_text, _numor=1, _denom=11.0, _reest=False, _begin=2, _close=6
     )
-    assert casa_oath._kids[clean_text] == kid_oath_expected
+    assert casa_fact._kids[clean_text] == kid_fact_expected
 
 
-def test_OathUnit_invaild_DenomThrowsError():
+def test_FactUnit_invaild_DenomThrowsError():
     # GIVEN
     casa_text = "casa"
-    parent_oath = oathunit_shop(_label=casa_text)
+    parent_fact = factunit_shop(_label=casa_text)
     casa_text = "casa"
     casa_road = create_road(root_label(), casa_text)
     clean_text = "clean"
     clean_road = create_road(casa_road, clean_text)
     print(f"{clean_road=}")
-    kid_oath = oathunit_shop(
+    kid_fact = factunit_shop(
         clean_text, _parent_road=casa_road, _numor=1, _denom=11.0, _reest=False
     )
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        parent_oath.add_kid(oath_kid=kid_oath)
+        parent_fact.add_kid(fact_kid=kid_fact)
     print(f"{str(excinfo.value)=}")
     assert (
         str(excinfo.value)
-        == f"Oath {clean_road} cannot have numor,denom,reest if parent does not have begin/close range"
+        == f"Fact {clean_road} cannot have numor,denom,reest if parent does not have begin/close range"
     )
 
 
-def test_OathUnit_get_reasonunit_ReturnsCorrectObj():
+def test_FactUnit_get_reasonunit_ReturnsCorrectObj():
     # GIVEN
     clean_text = "clean"
-    clean_oath = oathunit_shop(_label=clean_text)
+    clean_fact = factunit_shop(_label=clean_text)
     dirty_text = "dirty"
-    clean_oath.set_reasonunit(reasonunit_shop(base=dirty_text))
+    clean_fact.set_reasonunit(reasonunit_shop(base=dirty_text))
 
     # WHEN
-    x_reasonunit = clean_oath.get_reasonunit(base=dirty_text)
+    x_reasonunit = clean_fact.get_reasonunit(base=dirty_text)
 
     # THEN
     assert x_reasonunit != None
     assert x_reasonunit.base == dirty_text
 
 
-def test_OathUnit_get_reasonheir_ReturnsCorrectObj():
+def test_FactUnit_get_reasonheir_ReturnsCorrectObj():
     # GIVEN
     clean_text = "clean"
-    clean_oath = oathunit_shop(_label=clean_text)
+    clean_fact = factunit_shop(_label=clean_text)
     dirty_text = "dirty"
     reason_heir_x = reasonheir_shop(base=dirty_text)
     reason_heirs_x = {reason_heir_x.base: reason_heir_x}
-    clean_oath.set_reasonheirs(reasonheirs=reason_heirs_x, agenda_oath_dict={})
+    clean_fact.set_reasonheirs(reasonheirs=reason_heirs_x, agenda_fact_dict={})
 
     # WHEN
-    reason_heir_z = clean_oath.get_reasonheir(base=dirty_text)
+    reason_heir_z = clean_fact.get_reasonheir(base=dirty_text)
 
     # THEN
     assert reason_heir_z != None
     assert reason_heir_z.base == dirty_text
 
 
-def test_OathUnit_get_reasonheir_ReturnsNone():
+def test_FactUnit_get_reasonheir_ReturnsNone():
     # GIVEN
     clean_text = "clean"
-    clean_oath = oathunit_shop(_label=clean_text)
+    clean_fact = factunit_shop(_label=clean_text)
     dirty_text = "dirty"
     reason_heir_x = reasonheir_shop(dirty_text)
     reason_heirs_x = {reason_heir_x.base: reason_heir_x}
-    clean_oath.set_reasonheirs(reasonheirs=reason_heirs_x, agenda_oath_dict={})
+    clean_fact.set_reasonheirs(reasonheirs=reason_heirs_x, agenda_fact_dict={})
 
     # WHEN
     test6_text = "test6"
-    reason_heir_test6 = clean_oath.get_reasonheir(base=test6_text)
+    reason_heir_test6 = clean_fact.get_reasonheir(base=test6_text)
 
     # THEN
     assert reason_heir_test6 is None
 
 
-def test_OathUnit_set_active_SetsNullactive_hxToNonEmpty():
+def test_FactUnit_set_active_SetsNullactive_hxToNonEmpty():
     # GIVEN
     clean_text = "clean"
-    clean_oath = oathunit_shop(_label=clean_text)
-    assert clean_oath._active_hx == {}
+    clean_fact = factunit_shop(_label=clean_text)
+    assert clean_fact._active_hx == {}
 
     # WHEN
-    clean_oath.set_active(tree_traverse_count=3)
+    clean_fact.set_active(tree_traverse_count=3)
     # THEN
-    assert clean_oath._active_hx == {3: True}
+    assert clean_fact._active_hx == {3: True}
 
 
-def test_OathUnit_set_active_IfFullactive_hxResetToTrue():
+def test_FactUnit_set_active_IfFullactive_hxResetToTrue():
     # GIVEN
     clean_text = "clean"
-    clean_oath = oathunit_shop(_label=clean_text)
-    clean_oath._active_hx = {0: True, 4: False}
-    assert clean_oath._active_hx != {0: True}
+    clean_fact = factunit_shop(_label=clean_text)
+    clean_fact._active_hx = {0: True, 4: False}
+    assert clean_fact._active_hx != {0: True}
     # WHEN
-    clean_oath.set_active(tree_traverse_count=0)
+    clean_fact.set_active(tree_traverse_count=0)
     # THEN
-    assert clean_oath._active_hx == {0: True}
+    assert clean_fact._active_hx == {0: True}
 
 
-# def test_OathUnit_set_active_IfFullactive_hxResetToFalse():
+# def test_FactUnit_set_active_IfFullactive_hxResetToFalse():
 #     # GIVEN
 # clean_text = "clean"
-# clean_oath = oathunit_shop(_label=clean_text)
-#     clean_oath.set_reason_premise(
+# clean_fact = factunit_shop(_label=clean_text)
+#     clean_fact.set_reason_premise(
 #         base="testing1,sec",
 #         premise="testing1,sec,next",
 #         open=None,
 #         nigh=None,
 #         divisor=None,
 #     )
-#     clean_oath._active_hx = {0: True, 4: False}
-#     assert clean_oath._active_hx != {0: False}
+#     clean_fact._active_hx = {0: True, 4: False}
+#     assert clean_fact._active_hx != {0: False}
 #     # WHEN
-#     clean_oath.set_active(tree_traverse_count=0)
+#     clean_fact.set_active(tree_traverse_count=0)
 #     # THEN
-#     assert clean_oath._active_hx == {0: False}
+#     assert clean_fact._active_hx == {0: False}
 
 
-def test_OathUnit_record_active_hx_CorrectlyRecordsHistorry():
+def test_FactUnit_record_active_hx_CorrectlyRecordsHistorry():
     # GIVEN
     clean_text = "clean"
-    clean_oath = oathunit_shop(_label=clean_text)
-    assert clean_oath._active_hx == {}
+    clean_fact = factunit_shop(_label=clean_text)
+    assert clean_fact._active_hx == {}
 
     # WHEN
-    clean_oath.record_active_hx(
+    clean_fact.record_active_hx(
         tree_traverse_count=0,
         prev_active=None,
         now_active=True,
     )
     # THEN
-    assert clean_oath._active_hx == {0: True}
+    assert clean_fact._active_hx == {0: True}
 
     # WHEN
-    clean_oath.record_active_hx(
+    clean_fact.record_active_hx(
         tree_traverse_count=1,
         prev_active=True,
         now_active=True,
     )
     # THEN
-    assert clean_oath._active_hx == {0: True}
+    assert clean_fact._active_hx == {0: True}
 
     # WHEN
-    clean_oath.record_active_hx(
+    clean_fact.record_active_hx(
         tree_traverse_count=2,
         prev_active=True,
         now_active=False,
     )
     # THEN
-    assert clean_oath._active_hx == {0: True, 2: False}
+    assert clean_fact._active_hx == {0: True, 2: False}
 
     # WHEN
-    clean_oath.record_active_hx(
+    clean_fact.record_active_hx(
         tree_traverse_count=3,
         prev_active=False,
         now_active=False,
     )
     # THEN
-    assert clean_oath._active_hx == {0: True, 2: False}
+    assert clean_fact._active_hx == {0: True, 2: False}
 
     # WHEN
-    clean_oath.record_active_hx(
+    clean_fact.record_active_hx(
         tree_traverse_count=4,
         prev_active=False,
         now_active=True,
     )
     # THEN
-    assert clean_oath._active_hx == {0: True, 2: False, 4: True}
+    assert clean_fact._active_hx == {0: True, 2: False, 4: True}
 
     # WHEN
-    clean_oath.record_active_hx(
+    clean_fact.record_active_hx(
         tree_traverse_count=0,
         prev_active=False,
         now_active=False,
     )
     # THEN
-    assert clean_oath._active_hx == {0: False}
+    assert clean_fact._active_hx == {0: False}
 
 
-def test_OathUnit_set_assignedunit_empty_if_null():
+def test_FactUnit_set_assignedunit_empty_if_null():
     # GIVEN
     run_text = "run"
-    run_oath = oathunit_shop(_label=run_text)
-    run_oath._assignedunit = None
-    assert run_oath._assignedunit is None
+    run_fact = factunit_shop(_label=run_text)
+    run_fact._assignedunit = None
+    assert run_fact._assignedunit is None
 
     # WHEN
-    run_oath.set_assignedunit_empty_if_null()
+    run_fact.set_assignedunit_empty_if_null()
 
     # THEN
-    assert run_oath._assignedunit != None
-    assert run_oath._assignedunit == assignedunit_shop()
+    assert run_fact._assignedunit != None
+    assert run_fact._assignedunit == assignedunit_shop()
 
 
-def test_OathUnit_set_assignedheir_CorrectlySetsAttr():
+def test_FactUnit_set_assignedheir_CorrectlySetsAttr():
     # GIVEN
     swim_text = "swimmers"
     sport_text = "sports"
-    sport_oath = oathunit_shop(_label=sport_text)
-    sport_oath._assignedunit.set_suffidea(idea_id=swim_text)
-    assert sport_oath._assignedheir is None
+    sport_fact = factunit_shop(_label=sport_text)
+    sport_fact._assignedunit.set_suffidea(idea_id=swim_text)
+    assert sport_fact._assignedheir is None
 
     # WHEN
-    sport_oath.set_assignedheir(parent_assignheir=None, agenda_ideas=None)
+    sport_fact.set_assignedheir(parent_assignheir=None, agenda_ideas=None)
 
     # THEN
-    assert sport_oath._assignedheir != None
+    assert sport_fact._assignedheir != None
     swim_assignedunit = assignedunit_shop()
     swim_assignedunit.set_suffidea(idea_id=swim_text)
     swim_assigned_heir = assigned_heir_shop()
     swim_assigned_heir.set_suffideas(
         assignunit=swim_assignedunit, parent_assignheir=None, agenda_ideas=None
     )
-    assert sport_oath._assignedheir == swim_assigned_heir
+    assert sport_fact._assignedheir == swim_assigned_heir
 
 
-def test_OathUnit_get_descendants_ReturnsNoRoadUnits():
+def test_FactUnit_get_descendants_ReturnsNoRoadUnits():
     # GIVEN
     nation_text = "nation-state"
-    nation_oath = oathunit_shop(_label=nation_text, _parent_road=root_label())
+    nation_fact = factunit_shop(_label=nation_text, _parent_road=root_label())
 
     # WHEN
-    nation_descendants = nation_oath.get_descendant_roads_from_kids()
+    nation_descendants = nation_fact.get_descendant_roads_from_kids()
 
     # THEN
     assert nation_descendants == {}
 
 
-def test_OathUnit_get_descendants_Returns3DescendantsRoadUnits():
+def test_FactUnit_get_descendants_Returns3DescendantsRoadUnits():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_oath = oathunit_shop(nation_text, _parent_road=root_label())
+    nation_fact = factunit_shop(nation_text, _parent_road=root_label())
 
     usa_text = "USA"
     usa_road = create_road(nation_road, usa_text)
-    usa_oath = oathunit_shop(usa_text, _parent_road=nation_road)
-    nation_oath.add_kid(oath_kid=usa_oath)
+    usa_fact = factunit_shop(usa_text, _parent_road=nation_road)
+    nation_fact.add_kid(fact_kid=usa_fact)
 
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
-    texas_oath = oathunit_shop(texas_text, _parent_road=usa_road)
-    usa_oath.add_kid(oath_kid=texas_oath)
+    texas_fact = factunit_shop(texas_text, _parent_road=usa_road)
+    usa_fact.add_kid(fact_kid=texas_fact)
 
     iowa_text = "Iowa"
     iowa_road = create_road(usa_road, iowa_text)
-    iowa_oath = oathunit_shop(iowa_text, _parent_road=usa_road)
-    usa_oath.add_kid(oath_kid=iowa_oath)
+    iowa_fact = factunit_shop(iowa_text, _parent_road=usa_road)
+    usa_fact.add_kid(fact_kid=iowa_fact)
 
     # WHEN
-    nation_descendants = nation_oath.get_descendant_roads_from_kids()
+    nation_descendants = nation_fact.get_descendant_roads_from_kids()
 
     # THEN
     assert len(nation_descendants) == 3
@@ -925,78 +925,78 @@ def test_OathUnit_get_descendants_Returns3DescendantsRoadUnits():
     assert nation_descendants.get(iowa_road) != None
 
 
-def test_OathUnit_get_descendants_ErrorRaisedIfInfiniteLoop():
+def test_FactUnit_get_descendants_ErrorRaisedIfInfiniteLoop():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_oath = oathunit_shop(nation_text, _parent_road=root_label())
-    nation_oath.add_kid(oath_kid=nation_oath)
+    nation_fact = factunit_shop(nation_text, _parent_road=root_label())
+    nation_fact.add_kid(fact_kid=nation_fact)
     max_count = 1000
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        nation_oath.get_descendant_roads_from_kids()
+        nation_fact.get_descendant_roads_from_kids()
     assert (
         str(excinfo.value)
-        == f"Oath '{nation_oath.get_road()}' either has an infinite loop or more than {max_count} descendants."
+        == f"Fact '{nation_fact.get_road()}' either has an infinite loop or more than {max_count} descendants."
     )
 
 
-def test_OathUnit_clear_kids_CorrectlySetsAttr():
+def test_FactUnit_clear_kids_CorrectlySetsAttr():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_oath = oathunit_shop(nation_text, _parent_road=root_label())
-    nation_oath.add_kid(oathunit_shop("USA", _parent_road=nation_road))
-    nation_oath.add_kid(oathunit_shop("France", _parent_road=nation_road))
-    assert len(nation_oath._kids) == 2
+    nation_fact = factunit_shop(nation_text, _parent_road=root_label())
+    nation_fact.add_kid(factunit_shop("USA", _parent_road=nation_road))
+    nation_fact.add_kid(factunit_shop("France", _parent_road=nation_road))
+    assert len(nation_fact._kids) == 2
 
     # WHEN
-    nation_oath.clear_kids()
+    nation_fact.clear_kids()
 
     # THEN
-    assert len(nation_oath._kids) == 0
+    assert len(nation_fact._kids) == 0
 
 
-def test_OathUnit_get_kid_ReturnsCorrectObj():
+def test_FactUnit_get_kid_ReturnsCorrectObj():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_oath = oathunit_shop(nation_text, _parent_road=root_label())
+    nation_fact = factunit_shop(nation_text, _parent_road=root_label())
 
     usa_text = "USA"
     usa_road = create_road(nation_road, usa_text)
-    nation_oath.add_kid(oathunit_shop(usa_text, _parent_road=nation_road))
+    nation_fact.add_kid(factunit_shop(usa_text, _parent_road=nation_road))
 
     france_text = "France"
     france_road = create_road(nation_road, france_text)
-    nation_oath.add_kid(oathunit_shop(france_text, _parent_road=nation_road))
-    assert len(nation_oath._kids) == 2
+    nation_fact.add_kid(factunit_shop(france_text, _parent_road=nation_road))
+    assert len(nation_fact._kids) == 2
 
     # WHEN
-    france_oath = nation_oath.get_kid(france_text)
+    france_fact = nation_fact.get_kid(france_text)
 
     # THEN
-    assert france_oath._label == france_text
+    assert france_fact._label == france_text
 
 
-def test_OathUnit_del_kid_CorrectModifiesAttr():
+def test_FactUnit_del_kid_CorrectModifiesAttr():
     # GIVEN
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
-    nation_oath = oathunit_shop(nation_text, _parent_road=root_label())
+    nation_fact = factunit_shop(nation_text, _parent_road=root_label())
 
     usa_text = "USA"
     usa_road = create_road(nation_road, usa_text)
-    nation_oath.add_kid(oathunit_shop(usa_text, _parent_road=nation_road))
+    nation_fact.add_kid(factunit_shop(usa_text, _parent_road=nation_road))
 
     france_text = "France"
     france_road = create_road(nation_road, france_text)
-    nation_oath.add_kid(oathunit_shop(france_text, _parent_road=nation_road))
-    assert len(nation_oath._kids) == 2
+    nation_fact.add_kid(factunit_shop(france_text, _parent_road=nation_road))
+    assert len(nation_fact._kids) == 2
 
     # WHEN
-    nation_oath.del_kid(france_text)
+    nation_fact.del_kid(france_text)
 
     # THEN
-    assert len(nation_oath._kids) == 1
+    assert len(nation_fact._kids) == 1

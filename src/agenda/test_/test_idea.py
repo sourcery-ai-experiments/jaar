@@ -549,7 +549,7 @@ def test_BalanceHeir_set_agenda_importance_CorrectlySetsAttr():
     bikers_debt_weight = 6.0
     balancelinks_sum_credor_weight = 60
     balancelinks_sum_debtor_weight = 60
-    oath_agenda_importance = 1
+    fact_agenda_importance = 1
     idea_heir_x = balanceheir_shop(
         idea_id=bikers_idea_id,
         credor_weight=bikers_credor_weight,
@@ -558,7 +558,7 @@ def test_BalanceHeir_set_agenda_importance_CorrectlySetsAttr():
 
     # WHEN
     idea_heir_x.set_agenda_cred_debt(
-        oath_agenda_importance=oath_agenda_importance,
+        fact_agenda_importance=fact_agenda_importance,
         balanceheirs_credor_weight_sum=balancelinks_sum_credor_weight,
         balanceheirs_debtor_weight_sum=balancelinks_sum_debtor_weight,
     )

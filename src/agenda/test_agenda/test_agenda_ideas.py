@@ -7,7 +7,7 @@ from src.agenda.idea import (
     get_party_relevant_ideas,
 )
 from src.agenda.party import PartyID, partyunit_shop, partylink_shop
-from src.agenda.oath import oathunit_shop
+from src.agenda.fact import factunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.examples.example_agendas import agenda_v001 as examples_agenda_v001
 from pytest import raises as pytest_raises
@@ -137,18 +137,18 @@ def test_examples_agenda_v001_HasIdeas():
 
     # WHEN
     x_agenda.calc_agenda_metrics()
-    oath_dict = x_agenda._oath_dict
+    fact_dict = x_agenda._fact_dict
 
     # THEN
-    print(f"{len(oath_dict)=}")
-    db_oath = oath_dict.get(x_agenda.make_l1_road("D&B"))
-    print(f"{db_oath._label=} {db_oath._balancelinks=}")
-    assert len(db_oath._balancelinks) == 3
-    # for oath_key in oath_dict:
-    #     print(f"{oath_key=}")
-    #     if oath._label == "D&B":
-    #         print(f"{oath._label=} {oath._balancelinks=}")
-    #         db_balancelink_len = len(oath._balancelinks)
+    print(f"{len(fact_dict)=}")
+    db_fact = fact_dict.get(x_agenda.make_l1_road("D&B"))
+    print(f"{db_fact._label=} {db_fact._balancelinks=}")
+    assert len(db_fact._balancelinks) == 3
+    # for fact_key in fact_dict:
+    #     print(f"{fact_key=}")
+    #     if fact._label == "D&B":
+    #         print(f"{fact._label=} {fact._balancelinks=}")
+    #         db_balancelink_len = len(fact._balancelinks)
     # assert db_balancelink_len == 3
 
 
@@ -166,39 +166,39 @@ def test_AgendaUnit_set_balancelink_correctly_sets_balancelinks():
     assert len(sue_agenda._partys) == 3
     assert len(sue_agenda._ideas) == 3
     swim_text = "swim"
-    sue_agenda.add_l1_oath(oathunit_shop(swim_text))
+    sue_agenda.add_l1_fact(factunit_shop(swim_text))
     balancelink_rico = balancelink_shop(idea_id=IdeaID(rico_text), credor_weight=10)
     balancelink_carm = balancelink_shop(idea_id=IdeaID(carm_text), credor_weight=10)
     balancelink_patr = balancelink_shop(idea_id=IdeaID(patr_text), credor_weight=10)
     swim_road = sue_agenda.make_l1_road(swim_text)
-    sue_agenda.edit_oath_attr(road=swim_road, balancelink=balancelink_rico)
-    sue_agenda.edit_oath_attr(road=swim_road, balancelink=balancelink_carm)
-    sue_agenda.edit_oath_attr(road=swim_road, balancelink=balancelink_patr)
+    sue_agenda.edit_fact_attr(road=swim_road, balancelink=balancelink_rico)
+    sue_agenda.edit_fact_attr(road=swim_road, balancelink=balancelink_carm)
+    sue_agenda.edit_fact_attr(road=swim_road, balancelink=balancelink_patr)
 
     street_text = "streets"
-    sue_agenda.add_oath(oathunit_shop(street_text), parent_road=swim_road)
-    assert sue_agenda._oathroot._balancelinks in (None, {})
-    assert len(sue_agenda._oathroot._kids[swim_text]._balancelinks) == 3
+    sue_agenda.add_fact(factunit_shop(street_text), parent_road=swim_road)
+    assert sue_agenda._factroot._balancelinks in (None, {})
+    assert len(sue_agenda._factroot._kids[swim_text]._balancelinks) == 3
 
     # WHEN
-    oath_dict = sue_agenda.get_oath_dict()
+    fact_dict = sue_agenda.get_fact_dict()
 
     # THEN
-    print(f"{oath_dict.keys()=} {get_default_real_id_roadnode()=}")
-    root_oath = oath_dict.get(get_default_real_id_roadnode())
-    swim_oath = oath_dict.get(swim_road)
-    street_oath = oath_dict.get(sue_agenda.make_road(swim_road, street_text))
+    print(f"{fact_dict.keys()=} {get_default_real_id_roadnode()=}")
+    root_fact = fact_dict.get(get_default_real_id_roadnode())
+    swim_fact = fact_dict.get(swim_road)
+    street_fact = fact_dict.get(sue_agenda.make_road(swim_road, street_text))
 
-    assert len(swim_oath._balancelinks) == 3
-    assert len(swim_oath._balanceheirs) == 3
-    assert street_oath._balancelinks in (None, {})
-    assert len(street_oath._balanceheirs) == 3
+    assert len(swim_fact._balancelinks) == 3
+    assert len(swim_fact._balanceheirs) == 3
+    assert street_fact._balancelinks in (None, {})
+    assert len(street_fact._balanceheirs) == 3
 
-    print(f"{len(oath_dict)}")
-    print(f"{swim_oath._balancelinks}")
-    print(f"{swim_oath._balanceheirs}")
-    print(f"{swim_oath._balanceheirs}")
-    assert len(sue_agenda._oathroot._kids["swim"]._balanceheirs) == 3
+    print(f"{len(fact_dict)}")
+    print(f"{swim_fact._balancelinks}")
+    print(f"{swim_fact._balanceheirs}")
+    print(f"{swim_fact._balanceheirs}")
+    assert len(sue_agenda._factroot._kids["swim"]._balanceheirs) == 3
 
 
 def test_AgendaUnit_set_balancelink_correctly_deletes_balancelinks():
@@ -215,37 +215,37 @@ def test_AgendaUnit_set_balancelink_correctly_deletes_balancelinks():
     swim_text = "swim"
     swim_road = x_agenda.make_road(prom_text, swim_text)
 
-    x_agenda.add_l1_oath(oathunit_shop(swim_text))
+    x_agenda.add_l1_fact(factunit_shop(swim_text))
     balancelink_rico = balancelink_shop(idea_id=IdeaID(rico_text), credor_weight=10)
     balancelink_carm = balancelink_shop(idea_id=IdeaID(carm_text), credor_weight=10)
     balancelink_patr = balancelink_shop(idea_id=IdeaID(patr_text), credor_weight=10)
 
-    swim_oath = x_agenda.get_oath_obj(swim_road)
-    x_agenda.edit_oath_attr(road=swim_road, balancelink=balancelink_rico)
-    x_agenda.edit_oath_attr(road=swim_road, balancelink=balancelink_carm)
-    x_agenda.edit_oath_attr(road=swim_road, balancelink=balancelink_patr)
+    swim_fact = x_agenda.get_fact_obj(swim_road)
+    x_agenda.edit_fact_attr(road=swim_road, balancelink=balancelink_rico)
+    x_agenda.edit_fact_attr(road=swim_road, balancelink=balancelink_carm)
+    x_agenda.edit_fact_attr(road=swim_road, balancelink=balancelink_patr)
 
-    assert len(swim_oath._balancelinks) == 3
-    assert len(swim_oath._balanceheirs) == 3
+    assert len(swim_fact._balancelinks) == 3
+    assert len(swim_fact._balanceheirs) == 3
 
-    # print(f"{len(oath_list)}")
-    # print(f"{oath_list[0]._balancelinks}")
-    # print(f"{oath_list[0]._balanceheirs}")
-    # print(f"{oath_list[1]._balanceheirs}")
-    assert len(x_agenda._oathroot._kids[swim_text]._balancelinks) == 3
-    assert len(x_agenda._oathroot._kids[swim_text]._balanceheirs) == 3
+    # print(f"{len(fact_list)}")
+    # print(f"{fact_list[0]._balancelinks}")
+    # print(f"{fact_list[0]._balanceheirs}")
+    # print(f"{fact_list[1]._balanceheirs}")
+    assert len(x_agenda._factroot._kids[swim_text]._balancelinks) == 3
+    assert len(x_agenda._factroot._kids[swim_text]._balanceheirs) == 3
 
     # WHEN
-    x_agenda.edit_oath_attr(road=swim_road, balancelink_del=rico_text)
+    x_agenda.edit_fact_attr(road=swim_road, balancelink_del=rico_text)
 
     # THEN
-    swim_oath = x_agenda.get_oath_obj(swim_road)
-    print(f"{swim_oath._label=}")
-    print(f"{swim_oath._balancelinks=}")
-    print(f"{swim_oath._balanceheirs=}")
+    swim_fact = x_agenda.get_fact_obj(swim_road)
+    print(f"{swim_fact._label=}")
+    print(f"{swim_fact._balancelinks=}")
+    print(f"{swim_fact._balanceheirs=}")
 
-    assert len(x_agenda._oathroot._kids[swim_text]._balancelinks) == 2
-    assert len(x_agenda._oathroot._kids[swim_text]._balanceheirs) == 2
+    assert len(x_agenda._factroot._kids[swim_text]._balancelinks) == 2
+    assert len(x_agenda._factroot._kids[swim_text]._balanceheirs) == 2
 
 
 def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgendaImportance():
@@ -261,22 +261,22 @@ def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgend
     blink_rico = balancelink_shop(idea_id=rico_text, credor_weight=20, debtor_weight=6)
     blink_carm = balancelink_shop(idea_id=carm_text, credor_weight=10, debtor_weight=1)
     blink_patr = balancelink_shop(idea_id=patr_text, credor_weight=10)
-    sue_agenda._oathroot.set_balancelink(balancelink=blink_rico)
-    sue_agenda._oathroot.set_balancelink(balancelink=blink_carm)
-    sue_agenda._oathroot.set_balancelink(balancelink=blink_patr)
-    assert len(sue_agenda._oathroot._balancelinks) == 3
+    sue_agenda._factroot.set_balancelink(balancelink=blink_rico)
+    sue_agenda._factroot.set_balancelink(balancelink=blink_carm)
+    sue_agenda._factroot.set_balancelink(balancelink=blink_patr)
+    assert len(sue_agenda._factroot._balancelinks) == 3
 
     # WHEN
-    oath_dict = sue_agenda.get_oath_dict()
+    fact_dict = sue_agenda.get_fact_dict()
 
     # THEN
-    print(f"{oath_dict.keys()=}")
-    oath_prom = oath_dict.get(get_default_real_id_roadnode())
-    assert len(oath_prom._balanceheirs) == 3
+    print(f"{fact_dict.keys()=}")
+    fact_prom = fact_dict.get(get_default_real_id_roadnode())
+    assert len(fact_prom._balanceheirs) == 3
 
-    bheir_rico = oath_prom._balanceheirs.get(rico_text)
-    bheir_carm = oath_prom._balanceheirs.get(carm_text)
-    bheir_patr = oath_prom._balanceheirs.get(patr_text)
+    bheir_rico = fact_prom._balanceheirs.get(rico_text)
+    bheir_carm = fact_prom._balanceheirs.get(carm_text)
+    bheir_patr = fact_prom._balanceheirs.get(patr_text)
     assert bheir_rico._agenda_cred == 0.5
     assert bheir_rico._agenda_debt == 0.75
     assert bheir_carm._agenda_cred == 0.25
@@ -292,7 +292,7 @@ def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgend
 
     # agenda_cred_sum = 0
     # agenda_debt_sum = 0
-    # for idea in x_agenda._oathroot._balanceheirs.values():
+    # for idea in x_agenda._factroot._balanceheirs.values():
     #     print(f"{idea=}")
     #     assert idea._agenda_cred != None
     #     assert idea._agenda_cred in [0.25, 0.5]
@@ -305,7 +305,7 @@ def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgend
     # assert agenda_debt_sum == 1
 
 
-def test_AgendaUnit_get_oath_list_CorrectlyCalculates1LevelAgendaIdeaAgendaImportance():
+def test_AgendaUnit_get_fact_list_CorrectlyCalculates1LevelAgendaIdeaAgendaImportance():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
@@ -319,9 +319,9 @@ def test_AgendaUnit_get_oath_list_CorrectlyCalculates1LevelAgendaIdeaAgendaImpor
     blink_rico = balancelink_shop(idea_id=rico_text, credor_weight=20, debtor_weight=6)
     blink_carm = balancelink_shop(idea_id=carm_text, credor_weight=10, debtor_weight=1)
     blink_patr = balancelink_shop(idea_id=patr_text, credor_weight=10)
-    x_agenda._oathroot.set_balancelink(balancelink=blink_rico)
-    x_agenda._oathroot.set_balancelink(balancelink=blink_carm)
-    x_agenda._oathroot.set_balancelink(balancelink=blink_patr)
+    x_agenda._factroot.set_balancelink(balancelink=blink_rico)
+    x_agenda._factroot.set_balancelink(balancelink=blink_carm)
+    x_agenda._factroot.set_balancelink(balancelink=blink_patr)
 
     assert len(x_agenda._ideas) == 3
 
@@ -344,7 +344,7 @@ def test_AgendaUnit_get_oath_list_CorrectlyCalculates1LevelAgendaIdeaAgendaImpor
     # WHEN
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(sele_text)))
     bl_sele = balancelink_shop(idea_id=sele_text, credor_weight=37)
-    x_agenda._oathroot.set_balancelink(balancelink=bl_sele)
+    x_agenda._factroot.set_balancelink(balancelink=bl_sele)
     assert len(x_agenda._ideas) == 4
     x_agenda.calc_agenda_metrics()
 
@@ -374,12 +374,12 @@ def test_AgendaUnit_get_oath_list_CorrectlyCalculates1LevelAgendaIdeaAgendaImpor
     )
 
 
-def test_AgendaUnit_get_oath_list_CorrectlyCalculates3levelAgendaIdeaAgendaImportance():
+def test_AgendaUnit_get_fact_list_CorrectlyCalculates3levelAgendaIdeaAgendaImportance():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
     swim_text = "swim"
-    x_agenda.add_l1_oath(oathunit_shop(swim_text))
+    x_agenda.add_l1_fact(factunit_shop(swim_text))
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -394,9 +394,9 @@ def test_AgendaUnit_get_oath_list_CorrectlyCalculates3levelAgendaIdeaAgendaImpor
         idea_id=carm_text, credor_weight=10, debtor_weight=1
     )
     parm_balancelink = balancelink_shop(idea_id=patr_text, credor_weight=10)
-    x_agenda._oathroot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
-    x_agenda._oathroot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
-    x_agenda._oathroot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
+    x_agenda._factroot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
+    x_agenda._factroot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
+    x_agenda._factroot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
     assert len(x_agenda._ideas) == 3
 
     # WHEN
@@ -416,12 +416,12 @@ def test_AgendaUnit_get_oath_list_CorrectlyCalculates3levelAgendaIdeaAgendaImpor
     assert idea_rico._agenda_debt + idea_carm._agenda_debt + idea_patr._agenda_debt == 1
 
 
-def test_AgendaUnit_get_oath_list_CorrectlyCalculatesIdeaAgendaImportanceLWwithIdeaEmptyAncestors():
+def test_AgendaUnit_get_fact_list_CorrectlyCalculatesIdeaAgendaImportanceLWwithIdeaEmptyAncestors():
     # GIVEN
     prom_text = "prom"
     x_agenda = agendaunit_shop(prom_text)
     swim_text = "swim"
-    x_agenda.add_l1_oath(oathunit_shop(swim_text))
+    x_agenda.add_l1_fact(factunit_shop(swim_text))
 
     rico_text = "rico"
     carm_text = "carmen"
@@ -436,12 +436,12 @@ def test_AgendaUnit_get_oath_list_CorrectlyCalculatesIdeaAgendaImportanceLWwithI
         idea_id=carm_text, credor_weight=10, debtor_weight=1
     )
     parm_balancelink = balancelink_shop(idea_id=patr_text, credor_weight=10)
-    x_agenda._oathroot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
-    x_agenda._oathroot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
-    x_agenda._oathroot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
+    x_agenda._factroot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
+    x_agenda._factroot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
+    x_agenda._factroot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
 
     # no balancelinks attached to this one
-    x_agenda.add_l1_oath(oathunit_shop("hunt", _weight=3))
+    x_agenda.add_l1_fact(factunit_shop("hunt", _weight=3))
 
     # WHEN
     x_agenda.calc_agenda_metrics()
@@ -449,22 +449,22 @@ def test_AgendaUnit_get_oath_list_CorrectlyCalculatesIdeaAgendaImportanceLWwithI
     # THEN
 
     with pytest_raises(Exception) as excinfo:
-        x_agenda._oathroot._balancelinks[rico_text]
+        x_agenda._factroot._balancelinks[rico_text]
     assert str(excinfo.value) == f"'{rico_text}'"
     with pytest_raises(Exception) as excinfo:
-        x_agenda._oathroot._balancelinks[carm_text]
+        x_agenda._factroot._balancelinks[carm_text]
     assert str(excinfo.value) == f"'{carm_text}'"
     with pytest_raises(Exception) as excinfo:
-        x_agenda._oathroot._balancelinks[patr_text]
+        x_agenda._factroot._balancelinks[patr_text]
     assert str(excinfo.value) == f"'{patr_text}'"
     with pytest_raises(Exception) as excinfo:
-        x_agenda._oathroot._kids["hunt"]._balanceheirs[rico_text]
+        x_agenda._factroot._kids["hunt"]._balanceheirs[rico_text]
     assert str(excinfo.value) == f"'{rico_text}'"
     with pytest_raises(Exception) as excinfo:
-        x_agenda._oathroot._kids["hunt"]._balanceheirs[carm_text]
+        x_agenda._factroot._kids["hunt"]._balanceheirs[carm_text]
     assert str(excinfo.value) == f"'{carm_text}'"
     with pytest_raises(Exception) as excinfo:
-        x_agenda._oathroot._kids["hunt"]._balanceheirs[patr_text]
+        x_agenda._factroot._kids["hunt"]._balanceheirs[patr_text]
     assert str(excinfo.value) == f"'{patr_text}'"
 
     # THEN
@@ -588,16 +588,16 @@ def test_AgendaUnit_edit_ideaunit_idea_id_CorrectlyModifiesBalanceLinks():
     outdoor_road = x_agenda.make_road(x_agenda._owner_id, outdoor_text)
     camping_text = "camping"
     camping_road = x_agenda.make_road(outdoor_road, camping_text)
-    x_agenda.add_oath(oathunit_shop(camping_text), parent_road=outdoor_road)
+    x_agenda.add_fact(factunit_shop(camping_text), parent_road=outdoor_road)
 
-    camping_oath = x_agenda.get_oath_obj(camping_road)
+    camping_fact = x_agenda.get_fact_obj(camping_road)
     swim_balancelink = balancelink_shop(
         idea_id=swim_ideaunit.idea_id, credor_weight=5, debtor_weight=3
     )
-    camping_oath.set_balancelink(swim_balancelink)
-    assert camping_oath._balancelinks.get(swim_text) != None
-    assert camping_oath._balancelinks.get(swim_text).credor_weight == 5
-    assert camping_oath._balancelinks.get(swim_text).debtor_weight == 3
+    camping_fact.set_balancelink(swim_balancelink)
+    assert camping_fact._balancelinks.get(swim_text) != None
+    assert camping_fact._balancelinks.get(swim_text).credor_weight == 5
+    assert camping_fact._balancelinks.get(swim_text).debtor_weight == 3
 
     # WHEN
     jog_text = ",jog"
@@ -606,10 +606,10 @@ def test_AgendaUnit_edit_ideaunit_idea_id_CorrectlyModifiesBalanceLinks():
     )
 
     # THEN
-    assert camping_oath._balancelinks.get(swim_text) is None
-    assert camping_oath._balancelinks.get(jog_text) != None
-    assert camping_oath._balancelinks.get(jog_text).credor_weight == 5
-    assert camping_oath._balancelinks.get(jog_text).debtor_weight == 3
+    assert camping_fact._balancelinks.get(swim_text) is None
+    assert camping_fact._balancelinks.get(jog_text) != None
+    assert camping_fact._balancelinks.get(jog_text).credor_weight == 5
+    assert camping_fact._balancelinks.get(jog_text).debtor_weight == 3
 
 
 def test_AgendaUnit_edit_ideaunit_idea_id_CorrectlyMeldsBalanceLinesBalanceLinksBalanceHeirs():
@@ -629,23 +629,23 @@ def test_AgendaUnit_edit_ideaunit_idea_id_CorrectlyMeldsBalanceLinesBalanceLinks
     outdoor_road = x_agenda.make_road(x_agenda._owner_id, outdoor_text)
     camping_text = "camping"
     camping_road = x_agenda.make_road(outdoor_road, camping_text)
-    x_agenda.add_oath(oathunit_shop(camping_text), parent_road=outdoor_road)
+    x_agenda.add_fact(factunit_shop(camping_text), parent_road=outdoor_road)
 
-    camping_oath = x_agenda.get_oath_obj(camping_road)
+    camping_fact = x_agenda.get_fact_obj(camping_road)
     swim_balancelink = balancelink_shop(
         idea_id=swim_ideaunit.idea_id, credor_weight=5, debtor_weight=3
     )
-    camping_oath.set_balancelink(swim_balancelink)
+    camping_fact.set_balancelink(swim_balancelink)
     jog_balancelink = balancelink_shop(
         idea_id=jog_ideaunit.idea_id, credor_weight=7, debtor_weight=10
     )
-    camping_oath.set_balancelink(jog_balancelink)
-    assert camping_oath._balancelinks.get(swim_text) != None
-    assert camping_oath._balancelinks.get(swim_text).credor_weight == 5
-    assert camping_oath._balancelinks.get(swim_text).debtor_weight == 3
-    assert camping_oath._balancelinks.get(jog_text) != None
-    assert camping_oath._balancelinks.get(jog_text).credor_weight == 7
-    assert camping_oath._balancelinks.get(jog_text).debtor_weight == 10
+    camping_fact.set_balancelink(jog_balancelink)
+    assert camping_fact._balancelinks.get(swim_text) != None
+    assert camping_fact._balancelinks.get(swim_text).credor_weight == 5
+    assert camping_fact._balancelinks.get(swim_text).debtor_weight == 3
+    assert camping_fact._balancelinks.get(jog_text) != None
+    assert camping_fact._balancelinks.get(jog_text).credor_weight == 7
+    assert camping_fact._balancelinks.get(jog_text).debtor_weight == 10
 
     # WHEN
     x_agenda.edit_ideaunit_idea_id(
@@ -653,31 +653,31 @@ def test_AgendaUnit_edit_ideaunit_idea_id_CorrectlyMeldsBalanceLinesBalanceLinks
     )
 
     # THEN
-    assert camping_oath._balancelinks.get(swim_text) is None
-    assert camping_oath._balancelinks.get(jog_text) != None
-    assert camping_oath._balancelinks.get(jog_text).credor_weight == 12
-    assert camping_oath._balancelinks.get(jog_text).debtor_weight == 13
+    assert camping_fact._balancelinks.get(swim_text) is None
+    assert camping_fact._balancelinks.get(jog_text) != None
+    assert camping_fact._balancelinks.get(jog_text).credor_weight == 12
+    assert camping_fact._balancelinks.get(jog_text).debtor_weight == 13
 
 
-def test_AgendaUnit_add_oath_CreatesMissingIdeas():
+def test_AgendaUnit_add_fact_CreatesMissingIdeas():
     # GIVEN
     bob_text = "Bob"
     x_agenda = agendaunit_shop(bob_text)
     casa_road = x_agenda.make_l1_road("casa")
-    new_oath_parent_road = x_agenda.make_road(casa_road, "cleaning")
+    new_fact_parent_road = x_agenda.make_road(casa_road, "cleaning")
     clean_cookery_text = "clean_cookery"
-    clean_cookery_oath = oathunit_shop(
+    clean_cookery_fact = factunit_shop(
         _weight=40, _label=clean_cookery_text, pledge=True
     )
 
     family_text = ",family"
     balancelink_z = balancelink_shop(idea_id=family_text)
-    clean_cookery_oath.set_balancelink(balancelink=balancelink_z)
+    clean_cookery_fact.set_balancelink(balancelink=balancelink_z)
     assert len(x_agenda._ideas) == 0
     assert x_agenda.get_ideaunit(family_text) is None
 
     # WHEN
-    x_agenda.add_l1_oath(clean_cookery_oath, create_missing_ideas=True)
+    x_agenda.add_l1_fact(clean_cookery_fact, create_missing_ideas=True)
 
     # THEN
     assert len(x_agenda._ideas) == 1
@@ -685,7 +685,7 @@ def test_AgendaUnit_add_oath_CreatesMissingIdeas():
     assert x_agenda.get_ideaunit(family_text)._partys in (None, {})
 
 
-def test_AgendaUnit__get_filtered_balancelinks_oath_CorrectlyFiltersOath_balancelinks():
+def test_AgendaUnit__get_filtered_balancelinks_fact_CorrectlyFiltersFact_balancelinks():
     # GIVEN
     noa_text = "Noa"
     x1_agenda = agendaunit_shop(noa_text)
@@ -698,24 +698,24 @@ def test_AgendaUnit__get_filtered_balancelinks_oath_CorrectlyFiltersOath_balance
     casa_road = x1_agenda.make_l1_road(casa_text)
     swim_text = "swim"
     swim_road = x1_agenda.make_l1_road(swim_text)
-    x1_agenda.add_l1_oath(oathunit_shop(casa_text))
-    x1_agenda.add_l1_oath(oathunit_shop(swim_text))
-    x1_agenda.edit_oath_attr(swim_road, balancelink=balancelink_shop(xia_text))
-    x1_agenda.edit_oath_attr(swim_road, balancelink=balancelink_shop(zoa_text))
-    x1_agenda_swim_oath = x1_agenda.get_oath_obj(swim_road)
-    assert len(x1_agenda_swim_oath._balancelinks) == 2
+    x1_agenda.add_l1_fact(factunit_shop(casa_text))
+    x1_agenda.add_l1_fact(factunit_shop(swim_text))
+    x1_agenda.edit_fact_attr(swim_road, balancelink=balancelink_shop(xia_text))
+    x1_agenda.edit_fact_attr(swim_road, balancelink=balancelink_shop(zoa_text))
+    x1_agenda_swim_fact = x1_agenda.get_fact_obj(swim_road)
+    assert len(x1_agenda_swim_fact._balancelinks) == 2
     x_agenda = agendaunit_shop(noa_text)
     x_agenda.add_partyunit(party_id=xia_text)
 
     # WHEN
-    filtered_oath = x_agenda._get_filtered_balancelinks_oath(x1_agenda_swim_oath)
+    filtered_fact = x_agenda._get_filtered_balancelinks_fact(x1_agenda_swim_fact)
 
     # THEN
-    assert len(filtered_oath._balancelinks) == 1
-    assert list(filtered_oath._balancelinks.keys()) == [xia_text]
+    assert len(filtered_fact._balancelinks) == 1
+    assert list(filtered_fact._balancelinks.keys()) == [xia_text]
 
 
-def test_AgendaUnit_add_oath_CorrectlyFiltersOath_balancelinks():
+def test_AgendaUnit_add_fact_CorrectlyFiltersFact_balancelinks():
     # GIVEN
     noa_text = "Noa"
     x1_agenda = agendaunit_shop(noa_text)
@@ -728,42 +728,42 @@ def test_AgendaUnit_add_oath_CorrectlyFiltersOath_balancelinks():
     casa_road = x1_agenda.make_l1_road(casa_text)
     swim_text = "swim"
     swim_road = x1_agenda.make_l1_road(swim_text)
-    x1_agenda.add_l1_oath(oathunit_shop(casa_text))
-    x1_agenda.add_l1_oath(oathunit_shop(swim_text))
-    x1_agenda.edit_oath_attr(
+    x1_agenda.add_l1_fact(factunit_shop(casa_text))
+    x1_agenda.add_l1_fact(factunit_shop(swim_text))
+    x1_agenda.edit_fact_attr(
         road=swim_road, balancelink=balancelink_shop(idea_id=xia_text)
     )
-    x1_agenda.edit_oath_attr(
+    x1_agenda.edit_fact_attr(
         road=swim_road, balancelink=balancelink_shop(idea_id=zoa_text)
     )
-    x1_agenda_swim_oath = x1_agenda.get_oath_obj(swim_road)
-    assert len(x1_agenda_swim_oath._balancelinks) == 2
+    x1_agenda_swim_fact = x1_agenda.get_fact_obj(swim_road)
+    assert len(x1_agenda_swim_fact._balancelinks) == 2
 
     # WHEN
     x_agenda = agendaunit_shop(noa_text)
     x_agenda.add_partyunit(party_id=xia_text)
-    x_agenda.add_l1_oath(x1_agenda_swim_oath, create_missing_oaths=False)
+    x_agenda.add_l1_fact(x1_agenda_swim_fact, create_missing_facts=False)
 
     # THEN
-    x_agenda_swim_oath = x_agenda.get_oath_obj(swim_road)
-    assert len(x_agenda_swim_oath._balancelinks) == 1
-    assert list(x_agenda_swim_oath._balancelinks.keys()) == [xia_text]
+    x_agenda_swim_fact = x_agenda.get_fact_obj(swim_road)
+    assert len(x_agenda_swim_fact._balancelinks) == 1
+    assert list(x_agenda_swim_fact._balancelinks.keys()) == [xia_text]
 
 
-def test_AgendaUnit_add_oath_DoesNotOverwriteIdeas():
+def test_AgendaUnit_add_fact_DoesNotOverwriteIdeas():
     # GIVEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)
     casa_road = bob_agenda.make_l1_road("casa")
-    new_oath_parent_road = bob_agenda.make_road(casa_road, "cleaning")
+    new_fact_parent_road = bob_agenda.make_road(casa_road, "cleaning")
     clean_cookery_text = "clean_cookery"
-    clean_cookery_oath = oathunit_shop(
+    clean_cookery_fact = factunit_shop(
         _weight=40, _label=clean_cookery_text, pledge=True
     )
 
     family_text = ",family"
     balancelink_z = balancelink_shop(idea_id=family_text)
-    clean_cookery_oath.set_balancelink(balancelink=balancelink_z)
+    clean_cookery_fact.set_balancelink(balancelink=balancelink_z)
 
     ideaunit_z = ideaunit_shop(idea_id=family_text)
     ideaunit_z.set_partylink(partylink=partylink_shop(party_id="ann1"))
@@ -776,9 +776,9 @@ def test_AgendaUnit_add_oath_DoesNotOverwriteIdeas():
     assert len(bob_agenda.get_ideaunit(family_text)._partys) == 2
 
     # WHEN
-    bob_agenda.add_oath(
-        oath_kid=clean_cookery_oath,
-        parent_road=new_oath_parent_road,
+    bob_agenda.add_fact(
+        fact_kid=clean_cookery_fact,
+        parent_road=new_fact_parent_road,
         create_missing_ideas=True,
     )
 

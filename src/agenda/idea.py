@@ -162,7 +162,7 @@ class IdeaUnit(IdeaCore):
 
         # if self.idea_id != other_idea.idea_id:
         #     raise InvalidIdeaException(
-        #             f"Meld fail oath={self.get_road()} {attrs[0]}:{attrs[1]} with {other_oath.get_road()} {attrs[0]}:{attrs[2]}"
+        #             f"Meld fail fact={self.get_road()} {attrs[0]}:{attrs[1]} with {other_fact.get_road()} {attrs[0]}:{attrs[2]}"
         #     )
 
 
@@ -292,14 +292,14 @@ class BalanceHeir(IdeaCore):
 
     def set_agenda_cred_debt(
         self,
-        oath_agenda_importance,
+        fact_agenda_importance,
         balanceheirs_credor_weight_sum: float,
         balanceheirs_debtor_weight_sum: float,
     ):
-        self._agenda_cred = oath_agenda_importance * (
+        self._agenda_cred = fact_agenda_importance * (
             self.credor_weight / balanceheirs_credor_weight_sum
         )
-        self._agenda_debt = oath_agenda_importance * (
+        self._agenda_debt = fact_agenda_importance * (
             self.debtor_weight / balanceheirs_debtor_weight_sum
         )
 

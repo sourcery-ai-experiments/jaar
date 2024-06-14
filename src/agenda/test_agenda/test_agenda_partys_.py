@@ -16,7 +16,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v001_with_large_intent as examples_agenda_v001_with_large_intent,
 )
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
-from src.agenda.oath import oathunit_shop, OathUnit
+from src.agenda.fact import factunit_shop, FactUnit
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
 from copy import deepcopy as copy_deepcopy
@@ -76,10 +76,10 @@ def test_AgendaUnit_set_party_CorrectlySets_partys_ideas():
     rico_idea = rico_text
     carm_idea = carm_text
     patr_idea = patr_text
-    yao_agenda._oathroot.set_balancelink(balancelink_shop(rico_idea, credor_weight=10))
-    yao_agenda._oathroot.set_balancelink(balancelink_shop(carm_idea, credor_weight=10))
-    yao_agenda._oathroot.set_balancelink(balancelink_shop(patr_idea, credor_weight=10))
-    assert len(yao_agenda._oathroot._balancelinks) == 3
+    yao_agenda._factroot.set_balancelink(balancelink_shop(rico_idea, credor_weight=10))
+    yao_agenda._factroot.set_balancelink(balancelink_shop(carm_idea, credor_weight=10))
+    yao_agenda._factroot.set_balancelink(balancelink_shop(patr_idea, credor_weight=10))
+    assert len(yao_agenda._factroot._balancelinks) == 3
 
 
 def test_AgendaUnit_add_partyunit_CorrectlySets_partys():
@@ -219,9 +219,9 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyLinkAgendaCredAndDebt(
     bl_rico = balancelink_shop(idea_id=rico_text, credor_weight=20, debtor_weight=40)
     bl_carm = balancelink_shop(idea_id=carm_text, credor_weight=10, debtor_weight=5)
     bl_patr = balancelink_shop(idea_id=patr_text, credor_weight=10, debtor_weight=5)
-    yao_agenda._oathroot.set_balancelink(balancelink=bl_rico)
-    yao_agenda._oathroot.set_balancelink(balancelink=bl_carm)
-    yao_agenda._oathroot.set_balancelink(balancelink=bl_patr)
+    yao_agenda._factroot.set_balancelink(balancelink=bl_rico)
+    yao_agenda._factroot.set_balancelink(balancelink=bl_carm)
+    yao_agenda._factroot.set_balancelink(balancelink=bl_patr)
 
     rico_ideaunit = yao_agenda.get_ideaunit(rico_text)
     carm_ideaunit = yao_agenda.get_ideaunit(carm_text)
@@ -291,7 +291,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyLinkAgendaCredAndDebt(
     # WHEN another action, check metrics are as expected
     selena_text = "selena"
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(selena_text)))
-    yao_agenda._oathroot.set_balancelink(
+    yao_agenda._factroot.set_balancelink(
         balancelink=balancelink_shop(
             idea_id=IdeaID(selena_text), credor_weight=20, debtor_weight=13
         )
@@ -360,7 +360,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance()
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     swim_text = "swim"
-    yao_agenda.add_l1_oath(oathunit_shop(swim_text))
+    yao_agenda.add_l1_fact(factunit_shop(swim_text))
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -370,9 +370,9 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance()
     bl_rico = balancelink_shop(idea_id=rico_text, credor_weight=20, debtor_weight=40)
     bl_carm = balancelink_shop(idea_id=carm_text, credor_weight=10, debtor_weight=5)
     bl_patr = balancelink_shop(idea_id=patr_text, credor_weight=10, debtor_weight=5)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
+    yao_agenda._factroot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
+    yao_agenda._factroot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
+    yao_agenda._factroot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
 
     rico_partyunit = yao_agenda._partys.get(rico_text)
     carm_partyunit = yao_agenda._partys.get(carm_text)
@@ -433,7 +433,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance()
     # WHEN another action, check metrics are as expected
     selena_text = "selena"
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(selena_text)))
-    yao_agenda._oathroot.set_balancelink(
+    yao_agenda._factroot.set_balancelink(
         balancelink=balancelink_shop(
             idea_id=selena_text, credor_weight=20, debtor_weight=10
         )
@@ -505,7 +505,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartIdeaedLWPartyUnitAgenda
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     swim_text = "swim"
-    yao_agenda.add_l1_oath(oathunit_shop(swim_text))
+    yao_agenda.add_l1_fact(factunit_shop(swim_text))
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -515,13 +515,13 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartIdeaedLWPartyUnitAgenda
     bl_rico = balancelink_shop(idea_id=rico_text, credor_weight=20, debtor_weight=40)
     bl_carm = balancelink_shop(idea_id=carm_text, credor_weight=10, debtor_weight=5)
     bl_patr = balancelink_shop(idea_id=patr_text, credor_weight=10, debtor_weight=5)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
+    yao_agenda._factroot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
+    yao_agenda._factroot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
+    yao_agenda._factroot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
 
     # no balancelinks attached to this one
     hunt_text = "hunt"
-    yao_agenda.add_l1_oath(oathunit_shop(hunt_text, _weight=3))
+    yao_agenda.add_l1_fact(factunit_shop(hunt_text, _weight=3))
 
     # WHEN
     yao_agenda.calc_agenda_metrics()
@@ -614,7 +614,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartIdeaedLWPartyUnitAgenda
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyAttrs():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
-    yao_agenda.add_l1_oath(oathunit_shop("swim"))
+    yao_agenda.add_l1_fact(factunit_shop("swim"))
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -820,7 +820,7 @@ class BalanceIntentMetrics:
     intent_no_agenda_i_sum = 0
     intent_yes_agenda_i_sum = 0
 
-    def set_sums(self, intent_dict: dict[RoadUnit:OathUnit]):
+    def set_sums(self, intent_dict: dict[RoadUnit:FactUnit]):
         for intent_item in intent_dict.values():
             self.sum_agenda_intent_importance += intent_item._agenda_importance
             if intent_item._balancelines == {}:

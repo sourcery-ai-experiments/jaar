@@ -1,6 +1,6 @@
 from src.agenda.idea import ideaunit_shop
 from src.agenda.party import partylink_shop
-from src.agenda.oath import oathunit_shop
+from src.agenda.fact import factunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.listen.basis_agendas import (
     create_empty_agenda,
@@ -15,7 +15,7 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     slash_text = "/"
     penny_float = 0.7
     yao_duty = agendaunit_shop(yao_text, _road_delimiter=slash_text, _penny=penny_float)
-    yao_duty.add_l1_oath(oathunit_shop("Iowa"))
+    yao_duty.add_l1_fact(factunit_shop("Iowa"))
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
@@ -59,7 +59,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     yao_text = "Yao"
     slash_text = "/"
     yao_role = agendaunit_shop(yao_text, _road_delimiter=slash_text)
-    yao_role.add_l1_oath(oathunit_shop("Iowa"))
+    yao_role.add_l1_fact(factunit_shop("Iowa"))
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
@@ -91,8 +91,8 @@ def test_create_listen_basis_ReturnsCorrectObj():
     assert yao_basis_job._party_credor_pool == yao_role._party_credor_pool
     assert yao_basis_job._party_debtor_pool == yao_role._party_debtor_pool
     yao_basis_job.calc_agenda_metrics()
-    assert len(yao_basis_job._oath_dict) != len(yao_role._oath_dict)
-    assert len(yao_basis_job._oath_dict) == 1
+    assert len(yao_basis_job._fact_dict) != len(yao_role._fact_dict)
+    assert len(yao_basis_job._fact_dict) == 1
     job_zia_partyunit = yao_basis_job.get_party(zia_text)
     assert yao_basis_job.get_partys_dict().keys() == yao_role.get_partys_dict().keys()
     assert job_zia_partyunit._irrational_debtor_weight == 0
@@ -118,7 +118,7 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     swim_ideaunit.edit_partylink(bob_text)
     sue_agendaunit.set_ideaunit(swim_ideaunit)
     sue_agendaunit.set_party_pool(sue_party_pool)
-    sue_agendaunit.add_l1_oath(oathunit_shop(casa_text))
+    sue_agendaunit.add_l1_fact(factunit_shop(casa_text))
     sue_agendaunit.set_max_tree_traverse(sue_max_tree_traverse)
 
     # WHEN
@@ -137,4 +137,4 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     assert default_work_agenda._max_tree_traverse == sue_max_tree_traverse
     assert len(default_work_agenda.get_partys_dict()) == 1
     assert len(default_work_agenda.get_ideaunits_dict()) == 1
-    assert len(default_work_agenda._oath_dict) == 1
+    assert len(default_work_agenda._fact_dict) == 1

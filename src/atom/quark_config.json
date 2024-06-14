@@ -53,7 +53,7 @@
             "quark_order": 11
         }
     },
-    "agenda_oath_balancelink": {
+    "agenda_fact_balancelink": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 23
@@ -86,7 +86,7 @@
             "quark_order": 14
         }
     },
-    "agenda_oath_beliefunit": {
+    "agenda_fact_beliefunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 20
@@ -123,7 +123,7 @@
             "quark_order": 15
         }
     },
-    "agenda_oath_healerhold": {
+    "agenda_fact_healerhold": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 22
@@ -144,7 +144,7 @@
         },
         "treasury_only": false
     },
-    "agenda_oath_reason_premiseunit": {
+    "agenda_fact_reason_premiseunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 18
@@ -185,7 +185,7 @@
             "quark_order": 16
         }
     },
-    "agenda_oath_reasonunit": {
+    "agenda_fact_reasonunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 19
@@ -194,7 +194,7 @@
             "quark_order": 8
         },
         "optional_args": {
-            "suff_oath_active": {
+            "suff_fact_active": {
                 "python_type": "bool",
                 "sqlite_datatype": "INTEGER"
             }
@@ -214,7 +214,7 @@
             "quark_order": 17
         }
     },
-    "agenda_oath_suffidea": {
+    "agenda_fact_suffidea": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 21
@@ -235,7 +235,7 @@
         },
         "treasury_only": false
     },
-    "agenda_oathunit": {
+    "agenda_factunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 24

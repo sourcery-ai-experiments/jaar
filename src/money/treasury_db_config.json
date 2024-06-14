@@ -6,16 +6,16 @@
                 "owner_id": {}
             }
         },
-        "agenda_oath_beliefunit": {
+        "agenda_fact_beliefunit": {
             "columns": {
                 "base": {},
                 "owner_id": {},
                 "pick": {}
             }
         },
-        "agenda_oathunit": {
+        "agenda_factunit": {
             "columns": {
-                "oath_road": {},
+                "fact_road": {},
                 "owner_id": {}
             }
         },
@@ -47,7 +47,7 @@
         },
         "calendar": {
             "columns": {
-                "intent_oath_road": {},
+                "intent_fact_road": {},
                 "intent_weight": {},
                 "owner_id": {},
                 "report_date_range_cease": {},

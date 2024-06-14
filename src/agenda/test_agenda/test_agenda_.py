@@ -23,7 +23,7 @@ def test_AgendaUnit_Exists():
     assert x_agenda._weight is None
     assert x_agenda._partys is None
     assert x_agenda._ideas is None
-    assert x_agenda._oathroot is None
+    assert x_agenda._factroot is None
     assert x_agenda._max_tree_traverse is None
     assert x_agenda._road_delimiter is None
     assert x_agenda._planck is None
@@ -35,7 +35,7 @@ def test_AgendaUnit_Exists():
     assert x_agenda._meld_strategy is None
     assert x_agenda._originunit is None
 
-    assert x_agenda._oath_dict is None
+    assert x_agenda._fact_dict is None
     assert x_agenda._econ_dict is None
     assert x_agenda._healers_dict is None
     assert x_agenda._tree_traverse_count is None
@@ -43,7 +43,7 @@ def test_AgendaUnit_Exists():
     assert x_agenda._econs_justified is None
     assert x_agenda._econs_buildable is None
     assert x_agenda._sum_healerhold_importance is None
-    assert str(type(x_agenda._oathroot)).find("None") == 8
+    assert str(type(x_agenda._factroot)).find("None") == 8
 
 
 def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
@@ -70,7 +70,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._weight == 1
     assert x_agenda._partys == {}
     assert x_agenda._ideas == {}
-    assert x_agenda._oathroot != None
+    assert x_agenda._factroot != None
     assert x_agenda._max_tree_traverse == 3
     assert x_agenda._road_delimiter == slash_road_delimiter
     assert x_agenda._planck == five_planck
@@ -82,7 +82,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._meld_strategy == override_meld_strategy
     assert x_agenda._originunit == originunit_shop()
 
-    assert x_agenda._oath_dict == {}
+    assert x_agenda._fact_dict == {}
     assert x_agenda._econ_dict == {}
     assert x_agenda._healers_dict == {}
     assert x_agenda._tree_traverse_count is None
@@ -90,8 +90,8 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._econs_justified is False
     assert x_agenda._econs_buildable is False
     assert x_agenda._sum_healerhold_importance == 0
-    print(f"{type(x_agenda._oathroot)=}") == 0
-    assert str(type(x_agenda._oathroot)).find(".oath.OathUnit'>") > 0
+    print(f"{type(x_agenda._factroot)=}") == 0
+    assert str(type(x_agenda._factroot)).find(".fact.FactUnit'>") > 0
 
 
 def test_AgendaUnit_shop_ReturnsCorrect_meld_strategy():
@@ -120,13 +120,13 @@ def test_AgendaUnit_set_belief_IsAbleToSetTaskAsComplete():
     x_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
     mail_text = "obtain mail"
     assert x_agenda != None
-    assert len(x_agenda._oathroot._kids[mail_text]._reasonunits) == 1
-    oath_dict = x_agenda.get_oath_dict()
-    # for oath in oath_dict:
-    #     print(oath._label)
-    mail_oath = oath_dict.get(x_agenda.make_l1_road(mail_text))
-    assert mail_oath.pledge == True
-    assert mail_oath._task == True
+    assert len(x_agenda._factroot._kids[mail_text]._reasonunits) == 1
+    fact_dict = x_agenda.get_fact_dict()
+    # for fact in fact_dict:
+    #     print(fact._label)
+    mail_fact = fact_dict.get(x_agenda.make_l1_road(mail_text))
+    assert mail_fact.pledge == True
+    assert mail_fact._task == True
 
     # WHEN
     ced_min_label = "CE0_minutes"
@@ -135,29 +135,29 @@ def test_AgendaUnit_set_belief_IsAbleToSetTaskAsComplete():
     x_agenda.calc_agenda_metrics()
 
     # THEN
-    assert mail_oath.pledge == True
-    assert mail_oath._task is False
+    assert mail_fact.pledge == True
+    assert mail_fact._task is False
 
 
-def test_AgendaUnit_IsAbleToEditBeliefUnitAnyAncestor_Oath_1():
+def test_AgendaUnit_IsAbleToEditBeliefUnitAnyAncestor_Fact_1():
     x_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
     ced_min_label = "CE0_minutes"
     ced_road = x_agenda.make_l1_road(ced_min_label)
     x_agenda.set_belief(base=ced_road, pick=ced_road, open=82, nigh=85)
     mail_road = x_agenda.make_l1_road("obtain mail")
-    oath_dict = x_agenda.get_oath_dict()
-    mail_oath = oath_dict.get(mail_road)
-    assert mail_oath.pledge == True
-    assert mail_oath._task is False
+    fact_dict = x_agenda.get_fact_dict()
+    mail_fact = fact_dict.get(mail_road)
+    assert mail_fact.pledge == True
+    assert mail_fact._task is False
 
     x_agenda.set_belief(base=ced_road, pick=ced_road, open=82, nigh=95)
-    oath_dict = x_agenda.get_oath_dict()
-    mail_oath = oath_dict.get(mail_road)
-    assert mail_oath.pledge == True
-    assert mail_oath._task == True
+    fact_dict = x_agenda.get_fact_dict()
+    mail_fact = fact_dict.get(mail_road)
+    assert mail_fact.pledge == True
+    assert mail_fact._task == True
 
 
-def test_AgendaUnit_oathoot_uid_isEqualTo1():
+def test_AgendaUnit_factoot_uid_isEqualTo1():
     # GIVEN
     zia_text = "Zia"
 
@@ -165,7 +165,7 @@ def test_AgendaUnit_oathoot_uid_isEqualTo1():
     zia_agenda = agendaunit_shop(_owner_id=zia_text)
 
     # THEN
-    assert zia_agenda._oathroot._uid == 1
+    assert zia_agenda._factroot._uid == 1
 
 
 def test_AgendaUnit_set_max_tree_traverse_CorrectlySetsInt():

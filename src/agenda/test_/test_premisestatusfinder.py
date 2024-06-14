@@ -1,4 +1,4 @@
-from src.agenda.reason_oath import (
+from src.agenda.reason_fact import (
     PremiseStatusFinder,
     premisestatusfinder_shop,
 )

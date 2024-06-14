@@ -2,7 +2,7 @@ from src._road.finance import default_planck_if_none, default_penny_if_none
 from src._road.jaar_config import get_atoms_folder, get_json_filename
 from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
-from src.agenda.oath import oathunit_shop
+from src.agenda.fact import factunit_shop
 from src.listen.userhub import userhub_shop
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
@@ -175,22 +175,22 @@ def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     todd_duty_agenda.add_partyunit(todd_text)
     texas_text = "Texas"
     texas_road = luca_duty_agenda.make_l1_road(texas_text)
-    luca_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
-    todd_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
+    luca_duty_agenda.add_l1_fact(factunit_shop(texas_text, _problem_bool=True))
+    todd_duty_agenda.add_l1_fact(factunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = luca_duty_agenda.make_road(texas_road, dallas_text)
     dallas_healerhold = healerhold_shop({luca_text, todd_text})
-    dallas_oath = oathunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_fact = factunit_shop(dallas_text, _healerhold=dallas_healerhold)
     elpaso_text = "el paso"
     elpaso_road = luca_duty_agenda.make_road(texas_road, elpaso_text)
     elpaso_healerhold = healerhold_shop({luca_text})
-    elpaso_oath = oathunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_fact = factunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
 
-    luca_duty_agenda.add_oath(dallas_oath, texas_road)
-    luca_duty_agenda.add_oath(elpaso_oath, texas_road)
-    todd_duty_agenda.add_oath(dallas_oath, texas_road)
-    todd_duty_agenda.add_oath(elpaso_oath, texas_road)
-    # display_oathtree(luca_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
+    luca_duty_agenda.add_fact(dallas_fact, texas_road)
+    luca_duty_agenda.add_fact(elpaso_fact, texas_road)
+    todd_duty_agenda.add_fact(dallas_fact, texas_road)
+    todd_duty_agenda.add_fact(elpaso_fact, texas_road)
+    # display_facttree(luca_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
     luca_userhub.save_duty_agenda(luca_duty_agenda)
     todd_userhub.save_duty_agenda(todd_duty_agenda)
     luca_file_name = get_json_filename(luca_text)

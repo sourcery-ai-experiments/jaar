@@ -6,7 +6,7 @@ from src.agenda.agenda import agendaunit_shop
 def test_create_legible_list_ReturnsObj_partyunit_INSERT():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_oathunit"
+    category = "agenda_factunit"
     label_text = "label"
     parent_road_text = "parent_road"
     _addin_text = "_addin"
@@ -58,7 +58,7 @@ def test_create_legible_list_ReturnsObj_partyunit_INSERT():
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"Created Oath '{label_value}' with parent_road {parent_road_value}. _addin={_addin_value}._begin={_begin_value}._close={_close_value}._denom={_denom_value}._meld_strategy={_meld_strategy_value}._numeric_road={_numeric_road_value}._numor={_numor_value}._problem_bool={_problem_bool_value}._range_source_road={_range_source_road_value}._reest={_reest_value}._weight={_weight_value}.pledge={pledge_value}."
+    x_str = f"Created Fact '{label_value}' with parent_road {parent_road_value}. _addin={_addin_value}._begin={_begin_value}._close={_close_value}._denom={_denom_value}._meld_strategy={_meld_strategy_value}._numeric_road={_numeric_road_value}._numor={_numor_value}._problem_bool={_problem_bool_value}._range_source_road={_range_source_road_value}._reest={_reest_value}._weight={_weight_value}.pledge={pledge_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
@@ -66,7 +66,7 @@ def test_create_legible_list_ReturnsObj_partyunit_INSERT():
 def test_create_legible_list_ReturnsObj_partyunit_UPDATE():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_oathunit"
+    category = "agenda_factunit"
     label_text = "label"
     parent_road_text = "parent_road"
     _addin_text = "_addin"
@@ -118,7 +118,7 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE():
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"Oath '{label_value}' with parent_road {parent_road_value} transited these attributes: _addin={_addin_value}._begin={_begin_value}._close={_close_value}._denom={_denom_value}._meld_strategy={_meld_strategy_value}._numeric_road={_numeric_road_value}._numor={_numor_value}._problem_bool={_problem_bool_value}._range_source_road={_range_source_road_value}._reest={_reest_value}._weight={_weight_value}.pledge={pledge_value}."
+    x_str = f"Fact '{label_value}' with parent_road {parent_road_value} transited these attributes: _addin={_addin_value}._begin={_begin_value}._close={_close_value}._denom={_denom_value}._meld_strategy={_meld_strategy_value}._numeric_road={_numeric_road_value}._numor={_numor_value}._problem_bool={_problem_bool_value}._range_source_road={_range_source_road_value}._reest={_reest_value}._weight={_weight_value}.pledge={pledge_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
@@ -126,7 +126,7 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE():
 def test_create_legible_list_ReturnsObj_partyunit_DELETE():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_oathunit"
+    category = "agenda_factunit"
     label_text = "label"
     parent_road_text = "parent_road"
     label_value = "clean fridge"
@@ -142,6 +142,6 @@ def test_create_legible_list_ReturnsObj_partyunit_DELETE():
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"Oath '{label_value}' with parent_road {parent_road_value} was deleted."
+    x_str = f"Fact '{label_value}' with parent_road {parent_road_value} was deleted."
     print(f"{x_str=}")
     assert legible_list[0] == x_str

@@ -3,10 +3,10 @@ from src.atom.nuc import nucunit_shop, create_legible_list
 from src.agenda.agenda import agendaunit_shop
 
 
-def test_create_legible_list_ReturnsObj_oath_reason_premiseunit_INSERT_WithOutNumericArgs():
+def test_create_legible_list_ReturnsObj_fact_reason_premiseunit_INSERT_WithOutNumericArgs():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_oath_reason_premiseunit"
+    category = "agenda_fact_reason_premiseunit"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -27,15 +27,15 @@ def test_create_legible_list_ReturnsObj_oath_reason_premiseunit_INSERT_WithOutNu
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"PremiseUnit '{need_value}' created for reason '{base_value}' for oath '{road_value}'."
+    x_str = f"PremiseUnit '{need_value}' created for reason '{base_value}' for fact '{road_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_oath_reason_premiseunit_INSERT_WithNumericArgs():
+def test_create_legible_list_ReturnsObj_fact_reason_premiseunit_INSERT_WithNumericArgs():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_oath_reason_premiseunit"
+    category = "agenda_fact_reason_premiseunit"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -65,15 +65,15 @@ def test_create_legible_list_ReturnsObj_oath_reason_premiseunit_INSERT_WithNumer
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"PremiseUnit '{need_value}' created for reason '{base_value}' for oath '{road_value}'. Open={open_value}. Nigh={nigh_value}. Divisor={divisor_value}."
+    x_str = f"PremiseUnit '{need_value}' created for reason '{base_value}' for fact '{road_value}'. Open={open_value}. Nigh={nigh_value}. Divisor={divisor_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_oath_reason_premiseunit_UPDATE_WithOutNumericArgs():
+def test_create_legible_list_ReturnsObj_fact_reason_premiseunit_UPDATE_WithOutNumericArgs():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_oath_reason_premiseunit"
+    category = "agenda_fact_reason_premiseunit"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -94,15 +94,15 @@ def test_create_legible_list_ReturnsObj_oath_reason_premiseunit_UPDATE_WithOutNu
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"PremiseUnit '{need_value}' updated for reason '{base_value}' for oath '{road_value}'."
+    x_str = f"PremiseUnit '{need_value}' updated for reason '{base_value}' for fact '{road_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_oath_reason_premiseunit_UPDATE_WithNumericArgs():
+def test_create_legible_list_ReturnsObj_fact_reason_premiseunit_UPDATE_WithNumericArgs():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_oath_reason_premiseunit"
+    category = "agenda_fact_reason_premiseunit"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -132,15 +132,15 @@ def test_create_legible_list_ReturnsObj_oath_reason_premiseunit_UPDATE_WithNumer
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"PremiseUnit '{need_value}' updated for reason '{base_value}' for oath '{road_value}'. Open={open_value}. Nigh={nigh_value}. Divisor={divisor_value}."
+    x_str = f"PremiseUnit '{need_value}' updated for reason '{base_value}' for fact '{road_value}'. Open={open_value}. Nigh={nigh_value}. Divisor={divisor_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_oath_reason_premiseunit_DELETE():
+def test_create_legible_list_ReturnsObj_fact_reason_premiseunit_DELETE():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_oath_reason_premiseunit"
+    category = "agenda_fact_reason_premiseunit"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -161,6 +161,6 @@ def test_create_legible_list_ReturnsObj_oath_reason_premiseunit_DELETE():
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"PremiseUnit '{need_value}' deleted from reason '{base_value}' for oath '{road_value}'."
+    x_str = f"PremiseUnit '{need_value}' deleted from reason '{base_value}' for fact '{road_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str

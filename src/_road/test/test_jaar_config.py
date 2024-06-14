@@ -18,7 +18,7 @@ def test_work_str():
 
 def test_get_rootpart_of_econ_dir_ReturnsCorrectObj():
     # GIVEN / WHEN / THEN
-    assert get_rootpart_of_econ_dir() == "oathroot"
+    assert get_rootpart_of_econ_dir() == "factroot"
 
 
 def test_treasury_file_name_ReturnsObj() -> str:

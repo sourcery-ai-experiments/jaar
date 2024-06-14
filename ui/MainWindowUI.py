@@ -376,7 +376,7 @@ class Ui_MainWindow(object):
         self.label_intent_agenda_importance_header2.setText(
             _translate("MainWindow", "weight:")
         )
-        self.label_intent_road_data.setText(_translate("MainWindow", "Oath_id:"))
+        self.label_intent_road_data.setText(_translate("MainWindow", "Fact_id:"))
         self.label_intent_family_data.setText(_translate("MainWindow", "Agenda"))
         self.label_intent_agenda_importance_data.setText(
             _translate("MainWindow", "weight:")
@@ -394,9 +394,9 @@ class Ui_MainWindow(object):
         item = self.intent_states.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "agenda_importance"))
         item = self.intent_states.horizontalHeaderItem(3)
-        item.setText(_translate("MainWindow", "oath_road"))
+        item.setText(_translate("MainWindow", "fact_road"))
         item = self.intent_states.horizontalHeaderItem(4)
-        item.setText(_translate("MainWindow", "oath_percent"))
+        item.setText(_translate("MainWindow", "fact_percent"))
         item = self.intent_states.horizontalHeaderItem(5)
         item.setText(_translate("MainWindow", "jaja_open"))
         item = self.intent_states.horizontalHeaderItem(6)

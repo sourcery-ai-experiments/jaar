@@ -1,8 +1,8 @@
 from src._road.road import get_terminus_node, get_parent_road
 from src.agenda.idea import balancelink_shop
 from src.agenda.party import partylink_shop
-from src.agenda.reason_oath import beliefunit_shop
-from src.agenda.oath import oathunit_shop
+from src.agenda.reason_fact import beliefunit_shop
+from src.agenda.fact import factunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.atom.quark import (
@@ -370,7 +370,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_ideaunit(
     assert after_sue_agendaunit.get_ideaunit(fly_text) != None
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oathunit():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_factunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -380,13 +380,13 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oathunit(
     ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
     disc_text = "Ultimate Disc"
     disc_road = before_sue_agendaunit.make_road(sports_road, disc_text)
-    before_sue_agendaunit.add_oath(oathunit_shop(ball_text), sports_road)
-    before_sue_agendaunit.add_oath(oathunit_shop(disc_text), sports_road)
-    assert before_sue_agendaunit.oath_exists(ball_road)
-    assert before_sue_agendaunit.oath_exists(disc_road)
+    before_sue_agendaunit.add_fact(factunit_shop(ball_text), sports_road)
+    before_sue_agendaunit.add_fact(factunit_shop(disc_text), sports_road)
+    assert before_sue_agendaunit.fact_exists(ball_road)
+    assert before_sue_agendaunit.fact_exists(disc_road)
 
     # WHEN
-    delete_disc_quarkunit = quarkunit_shop("agenda_oathunit", quark_delete())
+    delete_disc_quarkunit = quarkunit_shop("agenda_factunit", quark_delete())
     delete_disc_quarkunit.set_required_arg(
         "label", get_terminus_node(disc_road, before_sue_agendaunit._road_delimiter)
     )
@@ -401,11 +401,11 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oathunit(
     after_sue_agendaunit = sue_nucunit.get_edited_agenda(before_sue_agendaunit)
 
     # THEN
-    assert after_sue_agendaunit.oath_exists(ball_road)
-    assert after_sue_agendaunit.oath_exists(disc_road) is False
+    assert after_sue_agendaunit.fact_exists(ball_road)
+    assert after_sue_agendaunit.fact_exists(disc_road) is False
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oathunit():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_factunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -415,9 +415,9 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oathunit(
     ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
     disc_text = "Ultimate Disc"
     disc_road = before_sue_agendaunit.make_road(sports_road, disc_text)
-    before_sue_agendaunit.add_oath(oathunit_shop(ball_text), sports_road)
-    assert before_sue_agendaunit.oath_exists(ball_road)
-    assert before_sue_agendaunit.oath_exists(disc_road) is False
+    before_sue_agendaunit.add_fact(factunit_shop(ball_text), sports_road)
+    assert before_sue_agendaunit.fact_exists(ball_road)
+    assert before_sue_agendaunit.fact_exists(disc_road) is False
 
     # WHEN
     # x_addin = 140
@@ -428,7 +428,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oathunit(
     x_numeric_road = None
     # x_numor = 10
     x_pledge = True
-    insert_disc_quarkunit = quarkunit_shop("agenda_oathunit", quark_insert())
+    insert_disc_quarkunit = quarkunit_shop("agenda_factunit", quark_insert())
     insert_disc_quarkunit.set_required_arg("label", disc_text)
     insert_disc_quarkunit.set_required_arg("parent_road", sports_road)
     # insert_disc_quarkunit.set_optional_arg("_addin", x_addin)
@@ -446,11 +446,11 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oathunit(
     after_sue_agendaunit = sue_nucunit.get_edited_agenda(before_sue_agendaunit)
 
     # THEN
-    assert after_sue_agendaunit.oath_exists(ball_road)
-    assert after_sue_agendaunit.oath_exists(disc_road)
+    assert after_sue_agendaunit.fact_exists(ball_road)
+    assert after_sue_agendaunit.fact_exists(disc_road)
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oathunit_SimpleAttributes():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_factunit_SimpleAttributes():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
@@ -458,11 +458,11 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oathunit_
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_agendaunit.make_road(sports_road, ball_text)
-    before_sue_agendaunit.add_oath(oathunit_shop(ball_text), sports_road)
-    assert before_sue_agendaunit.get_oath_obj(ball_road)._begin is None
-    assert before_sue_agendaunit.get_oath_obj(ball_road)._close is None
-    assert before_sue_agendaunit.get_oath_obj(ball_road)._meld_strategy == "default"
-    assert before_sue_agendaunit.get_oath_obj(ball_road).pledge is False
+    before_sue_agendaunit.add_fact(factunit_shop(ball_text), sports_road)
+    assert before_sue_agendaunit.get_fact_obj(ball_road)._begin is None
+    assert before_sue_agendaunit.get_fact_obj(ball_road)._close is None
+    assert before_sue_agendaunit.get_fact_obj(ball_road)._meld_strategy == "default"
+    assert before_sue_agendaunit.get_fact_obj(ball_road).pledge is False
 
     # WHEN
     # x_addin = 140
@@ -472,7 +472,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oathunit_
     x_meld_strategy = "override"
     # x_numor = 10
     x_pledge = True
-    insert_disc_quarkunit = quarkunit_shop("agenda_oathunit", quark_update())
+    insert_disc_quarkunit = quarkunit_shop("agenda_factunit", quark_update())
     insert_disc_quarkunit.set_required_arg("label", ball_text)
     insert_disc_quarkunit.set_required_arg("parent_road", sports_road)
     # insert_disc_quarkunit.set_optional_arg("_addin", x_addin)
@@ -489,15 +489,15 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oathunit_
     after_sue_agendaunit = sue_nucunit.get_edited_agenda(before_sue_agendaunit)
 
     # THEN
-    assert after_sue_agendaunit.get_oath_obj(ball_road)._begin == x_begin
-    assert after_sue_agendaunit.get_oath_obj(ball_road)._close == x_close
+    assert after_sue_agendaunit.get_fact_obj(ball_road)._begin == x_begin
+    assert after_sue_agendaunit.get_fact_obj(ball_road)._close == x_close
     assert (
-        after_sue_agendaunit.get_oath_obj(ball_road)._meld_strategy == x_meld_strategy
+        after_sue_agendaunit.get_fact_obj(ball_road)._meld_strategy == x_meld_strategy
     )
-    assert after_sue_agendaunit.get_oath_obj(ball_road).pledge
+    assert after_sue_agendaunit.get_fact_obj(ball_road).pledge
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_balancelink():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_fact_balancelink():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -524,17 +524,17 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_bala
     ball_road = before_sue_au.make_road(sports_road, ball_text)
     disc_text = "Ultimate Disc"
     disc_road = before_sue_au.make_road(sports_road, disc_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
-    before_sue_au.add_oath(oathunit_shop(disc_text), sports_road)
-    before_sue_au.edit_oath_attr(ball_road, balancelink=balancelink_shop(run_text))
-    before_sue_au.edit_oath_attr(ball_road, balancelink=balancelink_shop(fly_text))
-    before_sue_au.edit_oath_attr(disc_road, balancelink=balancelink_shop(run_text))
-    before_sue_au.edit_oath_attr(disc_road, balancelink=balancelink_shop(fly_text))
-    assert len(before_sue_au.get_oath_obj(ball_road)._balancelinks) == 2
-    assert len(before_sue_au.get_oath_obj(disc_road)._balancelinks) == 2
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
+    before_sue_au.add_fact(factunit_shop(disc_text), sports_road)
+    before_sue_au.edit_fact_attr(ball_road, balancelink=balancelink_shop(run_text))
+    before_sue_au.edit_fact_attr(ball_road, balancelink=balancelink_shop(fly_text))
+    before_sue_au.edit_fact_attr(disc_road, balancelink=balancelink_shop(run_text))
+    before_sue_au.edit_fact_attr(disc_road, balancelink=balancelink_shop(fly_text))
+    assert len(before_sue_au.get_fact_obj(ball_road)._balancelinks) == 2
+    assert len(before_sue_au.get_fact_obj(disc_road)._balancelinks) == 2
 
     # WHEN
-    delete_disc_quarkunit = quarkunit_shop("agenda_oath_balancelink", quark_delete())
+    delete_disc_quarkunit = quarkunit_shop("agenda_fact_balancelink", quark_delete())
     delete_disc_quarkunit.set_required_arg("road", disc_road)
     delete_disc_quarkunit.set_required_arg("idea_id", fly_text)
     print(f"{delete_disc_quarkunit=}")
@@ -543,11 +543,11 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_bala
     after_sue_agendaunit = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    assert len(after_sue_agendaunit.get_oath_obj(ball_road)._balancelinks) == 2
-    assert len(after_sue_agendaunit.get_oath_obj(disc_road)._balancelinks) == 1
+    assert len(after_sue_agendaunit.get_fact_obj(ball_road)._balancelinks) == 2
+    assert len(after_sue_agendaunit.get_fact_obj(disc_road)._balancelinks) == 1
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_balancelink():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_fact_balancelink():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -563,16 +563,16 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_bala
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
-    before_sue_au.edit_oath_attr(ball_road, balancelink=balancelink_shop(run_text))
-    run_balancelink = before_sue_au.get_oath_obj(ball_road)._balancelinks.get(run_text)
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
+    before_sue_au.edit_fact_attr(ball_road, balancelink=balancelink_shop(run_text))
+    run_balancelink = before_sue_au.get_fact_obj(ball_road)._balancelinks.get(run_text)
     assert run_balancelink.credor_weight == 1
     assert run_balancelink.debtor_weight == 1
 
     # WHEN
     x_credor_weight = 55
     x_debtor_weight = 66
-    update_disc_quarkunit = quarkunit_shop("agenda_oath_balancelink", quark_update())
+    update_disc_quarkunit = quarkunit_shop("agenda_fact_balancelink", quark_update())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("idea_id", run_text)
     update_disc_quarkunit.set_optional_arg("credor_weight", x_credor_weight)
@@ -583,13 +583,13 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_bala
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    run_balancelink = after_sue_au.get_oath_obj(ball_road)._balancelinks.get(run_text)
+    run_balancelink = after_sue_au.get_fact_obj(ball_road)._balancelinks.get(run_text)
     print(f"{run_balancelink.credor_weight=}")
     assert run_balancelink.credor_weight == x_credor_weight
     assert run_balancelink.debtor_weight == x_debtor_weight
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_balancelink():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_fact_balancelink():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -605,14 +605,14 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_bala
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
-    before_ball_oath = before_sue_au.get_oath_obj(ball_road)
-    assert before_ball_oath._balancelinks.get(run_text) is None
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
+    before_ball_fact = before_sue_au.get_fact_obj(ball_road)
+    assert before_ball_fact._balancelinks.get(run_text) is None
 
     # WHEN
     x_credor_weight = 55
     x_debtor_weight = 66
-    update_disc_quarkunit = quarkunit_shop("agenda_oath_balancelink", quark_insert())
+    update_disc_quarkunit = quarkunit_shop("agenda_fact_balancelink", quark_insert())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("idea_id", run_text)
     update_disc_quarkunit.set_optional_arg("credor_weight", x_credor_weight)
@@ -623,11 +623,11 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_bala
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oath = after_sue_au.get_oath_obj(ball_road)
-    assert after_ball_oath._balancelinks.get(run_text) != None
+    after_ball_fact = after_sue_au.get_fact_obj(ball_road)
+    assert after_ball_fact._balancelinks.get(run_text) != None
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_beliefunit():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_fact_beliefunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -635,20 +635,20 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_beli
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
     knee_text = "knee"
     knee_road = before_sue_au.make_l1_road(knee_text)
     broken_text = "broke cartilage"
     broken_road = before_sue_au.make_road(knee_road, broken_text)
-    before_sue_au.add_l1_oath(oathunit_shop(knee_text))
-    before_sue_au.add_oath(oathunit_shop(broken_text), knee_road)
-    before_ball_oath = before_sue_au.get_oath_obj(ball_road)
-    assert before_ball_oath._beliefunits == {}
+    before_sue_au.add_l1_fact(factunit_shop(knee_text))
+    before_sue_au.add_fact(factunit_shop(broken_text), knee_road)
+    before_ball_fact = before_sue_au.get_fact_obj(ball_road)
+    assert before_ball_fact._beliefunits == {}
 
     # WHEN
     broken_open = 55
     broken_nigh = 66
-    update_disc_quarkunit = quarkunit_shop("agenda_oath_beliefunit", quark_insert())
+    update_disc_quarkunit = quarkunit_shop("agenda_fact_beliefunit", quark_insert())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("base", knee_road)
     update_disc_quarkunit.set_optional_arg("pick", broken_road)
@@ -660,16 +660,16 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_beli
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oath = after_sue_au.get_oath_obj(ball_road)
-    assert after_ball_oath._beliefunits != {}
-    assert after_ball_oath._beliefunits.get(knee_road) != None
-    assert after_ball_oath._beliefunits.get(knee_road).base == knee_road
-    assert after_ball_oath._beliefunits.get(knee_road).pick == broken_road
-    assert after_ball_oath._beliefunits.get(knee_road).open == broken_open
-    assert after_ball_oath._beliefunits.get(knee_road).nigh == broken_nigh
+    after_ball_fact = after_sue_au.get_fact_obj(ball_road)
+    assert after_ball_fact._beliefunits != {}
+    assert after_ball_fact._beliefunits.get(knee_road) != None
+    assert after_ball_fact._beliefunits.get(knee_road).base == knee_road
+    assert after_ball_fact._beliefunits.get(knee_road).pick == broken_road
+    assert after_ball_fact._beliefunits.get(knee_road).open == broken_open
+    assert after_ball_fact._beliefunits.get(knee_road).nigh == broken_nigh
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_beliefunit():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_fact_beliefunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -677,22 +677,22 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_beli
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
     knee_text = "knee"
     knee_road = before_sue_au.make_l1_road(knee_text)
     broken_text = "broke cartilage"
     broken_road = before_sue_au.make_road(knee_road, broken_text)
-    before_sue_au.add_l1_oath(oathunit_shop(knee_text))
-    before_sue_au.add_oath(oathunit_shop(broken_text), knee_road)
-    before_sue_au.edit_oath_attr(
+    before_sue_au.add_l1_fact(factunit_shop(knee_text))
+    before_sue_au.add_fact(factunit_shop(broken_text), knee_road)
+    before_sue_au.edit_fact_attr(
         road=ball_road, beliefunit=beliefunit_shop(base=knee_road, pick=broken_road)
     )
-    before_ball_oath = before_sue_au.get_oath_obj(ball_road)
-    assert before_ball_oath._beliefunits != {}
-    assert before_ball_oath._beliefunits.get(knee_road) != None
+    before_ball_fact = before_sue_au.get_fact_obj(ball_road)
+    assert before_ball_fact._beliefunits != {}
+    assert before_ball_fact._beliefunits.get(knee_road) != None
 
     # WHEN
-    update_disc_quarkunit = quarkunit_shop("agenda_oath_beliefunit", quark_delete())
+    update_disc_quarkunit = quarkunit_shop("agenda_fact_beliefunit", quark_delete())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("base", knee_road)
     # print(f"{update_disc_quarkunit=}")
@@ -701,11 +701,11 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_beli
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oath = after_sue_au.get_oath_obj(ball_road)
-    assert after_ball_oath._beliefunits == {}
+    after_ball_fact = after_sue_au.get_fact_obj(ball_road)
+    assert after_ball_fact._beliefunits == {}
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_beliefunit():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_fact_beliefunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -713,29 +713,29 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_beli
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
     knee_text = "knee"
     knee_road = before_sue_au.make_l1_road(knee_text)
     broken_text = "broke cartilage"
     broken_road = before_sue_au.make_road(knee_road, broken_text)
     medical_text = "get medical attention"
     medical_road = before_sue_au.make_road(knee_road, medical_text)
-    before_sue_au.add_l1_oath(oathunit_shop(knee_text))
-    before_sue_au.add_oath(oathunit_shop(broken_text), knee_road)
-    before_sue_au.add_oath(oathunit_shop(medical_text), knee_road)
+    before_sue_au.add_l1_fact(factunit_shop(knee_text))
+    before_sue_au.add_fact(factunit_shop(broken_text), knee_road)
+    before_sue_au.add_fact(factunit_shop(medical_text), knee_road)
     before_knee_beliefunit = beliefunit_shop(knee_road, broken_road)
-    before_sue_au.edit_oath_attr(ball_road, beliefunit=before_knee_beliefunit)
-    before_ball_oath = before_sue_au.get_oath_obj(ball_road)
-    assert before_ball_oath._beliefunits != {}
-    assert before_ball_oath._beliefunits.get(knee_road) != None
-    assert before_ball_oath._beliefunits.get(knee_road).pick == broken_road
-    assert before_ball_oath._beliefunits.get(knee_road).open is None
-    assert before_ball_oath._beliefunits.get(knee_road).nigh is None
+    before_sue_au.edit_fact_attr(ball_road, beliefunit=before_knee_beliefunit)
+    before_ball_fact = before_sue_au.get_fact_obj(ball_road)
+    assert before_ball_fact._beliefunits != {}
+    assert before_ball_fact._beliefunits.get(knee_road) != None
+    assert before_ball_fact._beliefunits.get(knee_road).pick == broken_road
+    assert before_ball_fact._beliefunits.get(knee_road).open is None
+    assert before_ball_fact._beliefunits.get(knee_road).nigh is None
 
     # WHEN
     medical_open = 45
     medical_nigh = 77
-    update_disc_quarkunit = quarkunit_shop("agenda_oath_beliefunit", quark_update())
+    update_disc_quarkunit = quarkunit_shop("agenda_fact_beliefunit", quark_update())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("base", knee_road)
     update_disc_quarkunit.set_optional_arg("pick", medical_road)
@@ -747,15 +747,15 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_beli
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oath = after_sue_au.get_oath_obj(ball_road)
-    assert after_ball_oath._beliefunits != {}
-    assert after_ball_oath._beliefunits.get(knee_road) != None
-    assert after_ball_oath._beliefunits.get(knee_road).pick == medical_road
-    assert after_ball_oath._beliefunits.get(knee_road).open == medical_open
-    assert after_ball_oath._beliefunits.get(knee_road).nigh == medical_nigh
+    after_ball_fact = after_sue_au.get_fact_obj(ball_road)
+    assert after_ball_fact._beliefunits != {}
+    assert after_ball_fact._beliefunits.get(knee_road) != None
+    assert after_ball_fact._beliefunits.get(knee_road).pick == medical_road
+    assert after_ball_fact._beliefunits.get(knee_road).open == medical_open
+    assert after_ball_fact._beliefunits.get(knee_road).nigh == medical_nigh
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_reason_premiseunit():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_fact_reason_premiseunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -763,19 +763,19 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_reas
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
     knee_text = "knee"
     knee_road = before_sue_au.make_l1_road(knee_text)
     broken_text = "broke cartilage"
     broken_road = before_sue_au.make_road(knee_road, broken_text)
-    before_sue_au.add_l1_oath(oathunit_shop(knee_text))
-    before_sue_au.add_oath(oathunit_shop(broken_text), knee_road)
-    before_sue_au.edit_oath_attr(
+    before_sue_au.add_l1_fact(factunit_shop(knee_text))
+    before_sue_au.add_fact(factunit_shop(broken_text), knee_road)
+    before_sue_au.edit_fact_attr(
         ball_road, reason_base=knee_road, reason_premise=broken_road
     )
-    before_ball_oath = before_sue_au.get_oath_obj(ball_road)
-    assert before_ball_oath._reasonunits != {}
-    before_knee_reasonunit = before_ball_oath.get_reasonunit(knee_road)
+    before_ball_fact = before_sue_au.get_fact_obj(ball_road)
+    assert before_ball_fact._reasonunits != {}
+    before_knee_reasonunit = before_ball_fact.get_reasonunit(knee_road)
     assert before_knee_reasonunit != None
     broken_premiseunit = before_knee_reasonunit.get_premise(broken_road)
     assert broken_premiseunit.need == broken_road
@@ -788,7 +788,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_reas
     broken_nigh = 77
     broken_divisor = 3
     update_disc_quarkunit = quarkunit_shop(
-        "agenda_oath_reason_premiseunit", quark_update()
+        "agenda_fact_reason_premiseunit", quark_update()
     )
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("base", knee_road)
@@ -802,8 +802,8 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_reas
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oath = after_sue_au.get_oath_obj(ball_road)
-    after_knee_reasonunit = after_ball_oath.get_reasonunit(knee_road)
+    after_ball_fact = after_sue_au.get_fact_obj(ball_road)
+    after_knee_reasonunit = after_ball_fact.get_reasonunit(knee_road)
     assert after_knee_reasonunit != None
     after_broken_premiseunit = after_knee_reasonunit.get_premise(broken_road)
     assert after_broken_premiseunit.need == broken_road
@@ -812,7 +812,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_reas
     assert after_broken_premiseunit.divisor == broken_divisor
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_reason_premiseunit():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_fact_reason_premiseunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -820,21 +820,21 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_reas
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
     knee_text = "knee"
     knee_road = before_sue_au.make_l1_road(knee_text)
     broken_text = "broke cartilage"
     broken_road = before_sue_au.make_road(knee_road, broken_text)
     medical_text = "get medical attention"
     medical_road = before_sue_au.make_road(knee_road, medical_text)
-    before_sue_au.add_l1_oath(oathunit_shop(knee_text))
-    before_sue_au.add_oath(oathunit_shop(broken_text), knee_road)
-    before_sue_au.add_oath(oathunit_shop(medical_text), knee_road)
-    before_sue_au.edit_oath_attr(
+    before_sue_au.add_l1_fact(factunit_shop(knee_text))
+    before_sue_au.add_fact(factunit_shop(broken_text), knee_road)
+    before_sue_au.add_fact(factunit_shop(medical_text), knee_road)
+    before_sue_au.edit_fact_attr(
         ball_road, reason_base=knee_road, reason_premise=broken_road
     )
-    before_ball_oath = before_sue_au.get_oath_obj(ball_road)
-    before_knee_reasonunit = before_ball_oath.get_reasonunit(knee_road)
+    before_ball_fact = before_sue_au.get_fact_obj(ball_road)
+    before_knee_reasonunit = before_ball_fact.get_reasonunit(knee_road)
     assert before_knee_reasonunit.get_premise(broken_road) != None
     assert before_knee_reasonunit.get_premise(medical_road) is None
 
@@ -843,7 +843,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_reas
     medical_nigh = 77
     medical_divisor = 3
     update_disc_quarkunit = quarkunit_shop(
-        "agenda_oath_reason_premiseunit", quark_insert()
+        "agenda_fact_reason_premiseunit", quark_insert()
     )
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("base", knee_road)
@@ -857,8 +857,8 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_reas
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oath = after_sue_au.get_oath_obj(ball_road)
-    after_knee_reasonunit = after_ball_oath.get_reasonunit(knee_road)
+    after_ball_fact = after_sue_au.get_fact_obj(ball_road)
+    after_knee_reasonunit = after_ball_fact.get_reasonunit(knee_road)
     after_medical_premiseunit = after_knee_reasonunit.get_premise(medical_road)
     assert after_medical_premiseunit != None
     assert after_medical_premiseunit.need == medical_road
@@ -867,7 +867,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_reas
     assert after_medical_premiseunit.divisor == medical_divisor
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_reason_premiseunit():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_fact_reason_premiseunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -875,30 +875,30 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_reas
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
     knee_text = "knee"
     knee_road = before_sue_au.make_l1_road(knee_text)
     broken_text = "broke cartilage"
     broken_road = before_sue_au.make_road(knee_road, broken_text)
     medical_text = "get medical attention"
     medical_road = before_sue_au.make_road(knee_road, medical_text)
-    before_sue_au.add_l1_oath(oathunit_shop(knee_text))
-    before_sue_au.add_oath(oathunit_shop(broken_text), knee_road)
-    before_sue_au.add_oath(oathunit_shop(medical_text), knee_road)
-    before_sue_au.edit_oath_attr(
+    before_sue_au.add_l1_fact(factunit_shop(knee_text))
+    before_sue_au.add_fact(factunit_shop(broken_text), knee_road)
+    before_sue_au.add_fact(factunit_shop(medical_text), knee_road)
+    before_sue_au.edit_fact_attr(
         ball_road, reason_base=knee_road, reason_premise=broken_road
     )
-    before_sue_au.edit_oath_attr(
+    before_sue_au.edit_fact_attr(
         ball_road, reason_base=knee_road, reason_premise=medical_road
     )
-    before_ball_oath = before_sue_au.get_oath_obj(ball_road)
-    before_knee_reasonunit = before_ball_oath.get_reasonunit(knee_road)
+    before_ball_fact = before_sue_au.get_fact_obj(ball_road)
+    before_knee_reasonunit = before_ball_fact.get_reasonunit(knee_road)
     assert before_knee_reasonunit.get_premise(broken_road) != None
     assert before_knee_reasonunit.get_premise(medical_road) != None
 
     # WHEN
     update_disc_quarkunit = quarkunit_shop(
-        "agenda_oath_reason_premiseunit", quark_delete()
+        "agenda_fact_reason_premiseunit", quark_delete()
     )
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("base", knee_road)
@@ -908,13 +908,13 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_reas
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oath = after_sue_au.get_oath_obj(ball_road)
-    after_knee_reasonunit = after_ball_oath.get_reasonunit(knee_road)
+    after_ball_fact = after_sue_au.get_fact_obj(ball_road)
+    after_knee_reasonunit = after_ball_fact.get_reasonunit(knee_road)
     assert after_knee_reasonunit.get_premise(broken_road) != None
     assert after_knee_reasonunit.get_premise(medical_road) is None
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_reasonunit():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_fact_reasonunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -922,36 +922,36 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_reas
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
     knee_text = "knee"
     knee_road = before_sue_au.make_l1_road(knee_text)
     medical_text = "get medical attention"
     medical_road = before_sue_au.make_road(knee_road, medical_text)
-    before_sue_au.add_l1_oath(oathunit_shop(knee_text))
-    before_sue_au.add_oath(oathunit_shop(medical_text), knee_road)
-    before_ball_oath = before_sue_au.get_oath_obj(ball_road)
-    assert before_ball_oath.get_reasonunit(knee_road) is None
+    before_sue_au.add_l1_fact(factunit_shop(knee_text))
+    before_sue_au.add_fact(factunit_shop(medical_text), knee_road)
+    before_ball_fact = before_sue_au.get_fact_obj(ball_road)
+    assert before_ball_fact.get_reasonunit(knee_road) is None
 
     # WHEN
-    medical_suff_oath_active = True
-    update_disc_quarkunit = quarkunit_shop("agenda_oath_reasonunit", quark_insert())
+    medical_suff_fact_active = True
+    update_disc_quarkunit = quarkunit_shop("agenda_fact_reasonunit", quark_insert())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("base", knee_road)
-    update_disc_quarkunit.set_optional_arg("suff_oath_active", medical_suff_oath_active)
+    update_disc_quarkunit.set_optional_arg("suff_fact_active", medical_suff_fact_active)
     # print(f"{update_disc_quarkunit=}")
     sue_nucunit = nucunit_shop()
     sue_nucunit.set_quarkunit(update_disc_quarkunit)
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oath = after_sue_au.get_oath_obj(ball_road)
-    after_knee_reasonunit = after_ball_oath.get_reasonunit(knee_road)
+    after_ball_fact = after_sue_au.get_fact_obj(ball_road)
+    after_knee_reasonunit = after_ball_fact.get_reasonunit(knee_road)
     assert after_knee_reasonunit != None
     assert after_knee_reasonunit.get_premise(medical_road) is None
-    assert after_knee_reasonunit.suff_oath_active == medical_suff_oath_active
+    assert after_knee_reasonunit.suff_fact_active == medical_suff_fact_active
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_reasonunit():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_fact_reasonunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -959,31 +959,31 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_reas
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
     knee_text = "knee"
     knee_road = before_sue_au.make_l1_road(knee_text)
     medical_text = "get medical attention"
     medical_road = before_sue_au.make_road(knee_road, medical_text)
-    before_medical_suff_oath_active = False
-    before_sue_au.add_l1_oath(oathunit_shop(knee_text))
-    before_sue_au.add_oath(oathunit_shop(medical_text), knee_road)
-    before_sue_au.edit_oath_attr(
+    before_medical_suff_fact_active = False
+    before_sue_au.add_l1_fact(factunit_shop(knee_text))
+    before_sue_au.add_fact(factunit_shop(medical_text), knee_road)
+    before_sue_au.edit_fact_attr(
         road=ball_road,
         reason_base=knee_road,
-        reason_suff_oath_active=before_medical_suff_oath_active,
+        reason_suff_fact_active=before_medical_suff_fact_active,
     )
-    before_ball_oath = before_sue_au.get_oath_obj(ball_road)
-    before_ball_reasonunit = before_ball_oath.get_reasonunit(knee_road)
+    before_ball_fact = before_sue_au.get_fact_obj(ball_road)
+    before_ball_reasonunit = before_ball_fact.get_reasonunit(knee_road)
     assert before_ball_reasonunit != None
-    assert before_ball_reasonunit.suff_oath_active == before_medical_suff_oath_active
+    assert before_ball_reasonunit.suff_fact_active == before_medical_suff_fact_active
 
     # WHEN
-    after_medical_suff_oath_active = True
-    update_disc_quarkunit = quarkunit_shop("agenda_oath_reasonunit", quark_update())
+    after_medical_suff_fact_active = True
+    update_disc_quarkunit = quarkunit_shop("agenda_fact_reasonunit", quark_update())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("base", knee_road)
     update_disc_quarkunit.set_optional_arg(
-        "suff_oath_active", after_medical_suff_oath_active
+        "suff_fact_active", after_medical_suff_fact_active
     )
     # print(f"{update_disc_quarkunit=}")
     sue_nucunit = nucunit_shop()
@@ -991,14 +991,14 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_oath_reas
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oath = after_sue_au.get_oath_obj(ball_road)
-    after_knee_reasonunit = after_ball_oath.get_reasonunit(knee_road)
+    after_ball_fact = after_sue_au.get_fact_obj(ball_road)
+    after_knee_reasonunit = after_ball_fact.get_reasonunit(knee_road)
     assert after_knee_reasonunit != None
     assert after_knee_reasonunit.get_premise(medical_road) is None
-    assert after_knee_reasonunit.suff_oath_active == after_medical_suff_oath_active
+    assert after_knee_reasonunit.suff_fact_active == after_medical_suff_fact_active
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_reasonunit():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_fact_reasonunit():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -1006,21 +1006,21 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_reas
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
     knee_text = "knee"
     knee_road = before_sue_au.make_l1_road(knee_text)
-    medical_suff_oath_active = False
-    before_sue_au.add_l1_oath(oathunit_shop(knee_text))
-    before_sue_au.edit_oath_attr(
+    medical_suff_fact_active = False
+    before_sue_au.add_l1_fact(factunit_shop(knee_text))
+    before_sue_au.edit_fact_attr(
         road=ball_road,
         reason_base=knee_road,
-        reason_suff_oath_active=medical_suff_oath_active,
+        reason_suff_fact_active=medical_suff_fact_active,
     )
-    before_ball_oath = before_sue_au.get_oath_obj(ball_road)
-    assert before_ball_oath.get_reasonunit(knee_road) != None
+    before_ball_fact = before_sue_au.get_fact_obj(ball_road)
+    assert before_ball_fact.get_reasonunit(knee_road) != None
 
     # WHEN
-    update_disc_quarkunit = quarkunit_shop("agenda_oath_reasonunit", quark_delete())
+    update_disc_quarkunit = quarkunit_shop("agenda_fact_reasonunit", quark_delete())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("base", knee_road)
     sue_nucunit = nucunit_shop()
@@ -1028,11 +1028,11 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_reas
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oath = after_sue_au.get_oath_obj(ball_road)
-    assert after_ball_oath.get_reasonunit(knee_road) is None
+    after_ball_fact = after_sue_au.get_fact_obj(ball_road)
+    assert after_ball_fact.get_reasonunit(knee_road) is None
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_suffidea():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_fact_suffidea():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -1042,12 +1042,12 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_suff
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
-    before_ball_oathunit = before_sue_au.get_oath_obj(ball_road)
-    assert before_ball_oathunit._assignedunit._suffideas == {}
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
+    before_ball_factunit = before_sue_au.get_fact_obj(ball_road)
+    assert before_ball_factunit._assignedunit._suffideas == {}
 
     # WHEN
-    update_disc_quarkunit = quarkunit_shop("agenda_oath_suffidea", quark_insert())
+    update_disc_quarkunit = quarkunit_shop("agenda_fact_suffidea", quark_insert())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("idea_id", rico_text)
     sue_nucunit = nucunit_shop()
@@ -1055,12 +1055,12 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_oath_suff
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oathunit = after_sue_au.get_oath_obj(ball_road)
-    assert after_ball_oathunit._assignedunit._suffideas != {}
-    assert after_ball_oathunit._assignedunit.get_suffidea(rico_text) != None
+    after_ball_factunit = after_sue_au.get_fact_obj(ball_road)
+    assert after_ball_factunit._assignedunit._suffideas != {}
+    assert after_ball_factunit._assignedunit.get_suffidea(rico_text) != None
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_suffidea():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_fact_suffidea():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
@@ -1070,24 +1070,24 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_oath_suff
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
-    before_sue_au.add_oath(oathunit_shop(ball_text), sports_road)
-    before_ball_oathunit = before_sue_au.get_oath_obj(ball_road)
-    before_ball_oathunit._assignedunit.set_suffidea(rico_text)
-    assert before_ball_oathunit._assignedunit._suffideas != {}
-    assert before_ball_oathunit._assignedunit.get_suffidea(rico_text) != None
+    before_sue_au.add_fact(factunit_shop(ball_text), sports_road)
+    before_ball_factunit = before_sue_au.get_fact_obj(ball_road)
+    before_ball_factunit._assignedunit.set_suffidea(rico_text)
+    assert before_ball_factunit._assignedunit._suffideas != {}
+    assert before_ball_factunit._assignedunit.get_suffidea(rico_text) != None
 
     # WHEN
-    update_disc_quarkunit = quarkunit_shop("agenda_oath_suffidea", quark_delete())
+    update_disc_quarkunit = quarkunit_shop("agenda_fact_suffidea", quark_delete())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("idea_id", rico_text)
     sue_nucunit = nucunit_shop()
     sue_nucunit.set_quarkunit(update_disc_quarkunit)
-    print(f"{before_sue_au.get_oath_obj(ball_road)._assignedunit=}")
+    print(f"{before_sue_au.get_fact_obj(ball_road)._assignedunit=}")
     after_sue_au = sue_nucunit.get_edited_agenda(before_sue_au)
 
     # THEN
-    after_ball_oathunit = after_sue_au.get_oath_obj(ball_road)
-    assert after_ball_oathunit._assignedunit._suffideas == {}
+    after_ball_factunit = after_sue_au.get_fact_obj(ball_road)
+    assert after_ball_factunit._assignedunit._suffideas == {}
 
 
 def test_NucUnit_get_nucunit_example1_ContainsQuarkUnits():

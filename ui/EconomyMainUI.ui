@@ -562,7 +562,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_oaths_table">
+   <widget class="QTableWidget" name="w_facts_table">
     <property name="geometry">
      <rect>
       <x>600</x>
@@ -578,12 +578,12 @@
     </property>
     <column>
      <property name="text">
-      <string>owner_id Oaths</string>
+      <string>owner_id Facts</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Oath parent_road</string>
+      <string>Fact parent_road</string>
      </property>
     </column>
     <column>

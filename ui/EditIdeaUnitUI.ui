@@ -34,7 +34,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Oaths: Edit or Add Children </string>
+    <string>Facts: Edit or Add Children </string>
    </property>
   </widget>
   <widget class="QTextEdit" name="yo_deescription">
@@ -147,7 +147,7 @@
     <string>Current Node ID:</string>
    </property>
   </widget>
-  <widget class="QTreeWidget" name="baseoathunit">
+  <widget class="QTreeWidget" name="basefactunit">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -161,7 +161,7 @@
    </property>
    <column>
     <property name="text">
-     <string>oathunit</string>
+     <string>factunit</string>
     </property>
    </column>
   </widget>
@@ -217,7 +217,7 @@
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="oath2idea_table">
+  <widget class="QTableWidget" name="fact2idea_table">
    <property name="geometry">
     <rect>
      <x>1050</x>
@@ -247,7 +247,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" name="oath2idea_delete_button">
+  <widget class="QPushButton" name="fact2idea_delete_button">
    <property name="geometry">
     <rect>
      <x>1440</x>
@@ -265,7 +265,7 @@
     <string>De-link Idea</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="oath2idea_insert_button">
+  <widget class="QPushButton" name="fact2idea_insert_button">
    <property name="geometry">
     <rect>
      <x>1050</x>
@@ -280,10 +280,10 @@
     </font>
    </property>
    <property name="text">
-    <string>Add Idea to Oath</string>
+    <string>Add Idea to Fact</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="oath2idea_insert_combo">
+  <widget class="QComboBox" name="fact2idea_insert_combo">
    <property name="geometry">
     <rect>
      <x>1200</x>
@@ -1814,7 +1814,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add Pledge child oath</string>
+    <string>Add Pledge child fact</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_39">

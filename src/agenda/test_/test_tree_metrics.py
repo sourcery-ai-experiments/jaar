@@ -13,7 +13,7 @@ def test_TreeMetrics_Exists():
     assert x_tree_metrics.balancelinks_metrics is None
     assert x_tree_metrics.uid_max is None
     assert x_tree_metrics.uid_dict is None
-    assert x_tree_metrics.all_oath_uids_are_unique is None
+    assert x_tree_metrics.all_fact_uids_are_unique is None
 
 
 def test_treemetrics_shop_ReturnsCorrectObj():
@@ -28,11 +28,11 @@ def test_treemetrics_shop_ReturnsCorrectObj():
     assert x_tree_metrics.balancelinks_metrics == {}
     assert x_tree_metrics.uid_max == 0
     assert x_tree_metrics.uid_dict == {}
-    assert x_tree_metrics.all_oath_uids_are_unique
+    assert x_tree_metrics.all_fact_uids_are_unique
 
     # # could create tests for these methods?
     # def evaluate_node(
-    # def evaluate_action(self, pledge: bool, oath_road: RoadUnit):
+    # def evaluate_action(self, pledge: bool, fact_road: RoadUnit):
     # def evaluate_level(self, level):
     # def evaluate_reasonunits(self, reasons: dict[RoadUnit:ReasonUnit]):
     # def evaluate_balancelinks(self, balancelinks: dict[IdeaID:BalanceLink]):

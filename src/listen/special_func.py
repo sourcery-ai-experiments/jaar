@@ -12,16 +12,16 @@ def create_pledge(
     reason_premise: RoadUnit = None,
 ):
     if pledge_road is not None and get_terminus_node(pledge_road) != "":
-        x_oath = x_agenda.get_oath_obj(pledge_road, if_missing_create=True)
-        x_oath.pledge = True
-        x_oath._assignedunit.set_suffidea(x_suffidea)
+        x_fact = x_agenda.get_fact_obj(pledge_road, if_missing_create=True)
+        x_fact.pledge = True
+        x_fact._assignedunit.set_suffidea(x_suffidea)
 
         if x_agenda.get_ideaunit(x_suffidea) is None:
             x_agenda.add_partyunit(x_suffidea)
 
         if reason_premise != None:
-            if x_agenda.oath_exists(reason_premise) is False:
-                x_agenda.get_oath_obj(reason_premise, if_missing_create=True)
+            if x_agenda.fact_exists(reason_premise) is False:
+                x_agenda.get_fact_obj(reason_premise, if_missing_create=True)
             reason_base = get_parent_road(reason_premise)
             x_agenda.edit_reason(pledge_road, reason_base, reason_premise)
 
@@ -42,8 +42,8 @@ def add_duty_pledge(
 
 
 def create_belief(x_agenda: AgendaUnit, belief_pick: RoadUnit):
-    if x_agenda.oath_exists(belief_pick) is False:
-        x_agenda.get_oath_obj(belief_pick, if_missing_create=True)
+    if x_agenda.fact_exists(belief_pick) is False:
+        x_agenda.get_fact_obj(belief_pick, if_missing_create=True)
     belief_base = get_parent_road(belief_pick)
     x_agenda.set_belief(belief_base, belief_pick)
 

@@ -49,19 +49,19 @@ def get_agenda_intent_dataframe(
                 "_reest",
             ]
         )
-    x_oath_list = []
-    for x_oath in intent_dict.values():
-        oath_dict = {
+    x_fact_list = []
+    for x_fact in intent_dict.values():
+        fact_dict = {
             "owner_id": x_agenda._owner_id,
-            "agenda_importance": x_oath._agenda_importance,
-            "_label": x_oath._label,
-            "_parent_road": x_oath._parent_road,
-            "_begin": x_oath._begin,
-            "_close": x_oath._close,
-            "_addin": x_oath._addin,
-            "_denom": x_oath._denom,
-            "_numor": x_oath._numor,
-            "_reest": x_oath._reest,
+            "agenda_importance": x_fact._agenda_importance,
+            "_label": x_fact._label,
+            "_parent_road": x_fact._parent_road,
+            "_begin": x_fact._begin,
+            "_close": x_fact._close,
+            "_addin": x_fact._addin,
+            "_denom": x_fact._denom,
+            "_numor": x_fact._numor,
+            "_reest": x_fact._reest,
         }
-        x_oath_list.append(oath_dict)
-    return DataFrame(x_oath_list)
+        x_fact_list.append(fact_dict)
+    return DataFrame(x_fact_list)

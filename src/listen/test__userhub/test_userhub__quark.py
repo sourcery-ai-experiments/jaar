@@ -2,9 +2,9 @@ from src._instrument.file import dir_files as file_dir_files
 from src.listen.userhub import userhub_shop
 from src.listen.examples.example_listen_quarks import (
     get_quark_example_beliefunit_knee,
-    get_quark_example_oathunit_sports,
-    get_quark_example_oathunit_ball,
-    get_quark_example_oathunit_knee,
+    get_quark_example_factunit_sports,
+    get_quark_example_factunit_ball,
+    get_quark_example_factunit_knee,
 )
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as reals_dir,
@@ -165,7 +165,7 @@ def test_UserHub_get_agenda_from_quark_files_ReturnsFileWithZeroQuarks(
     assert yao_agenda._planck == yao_userhub.planck
 
 
-def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_SimpleOath(
+def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_SimpleFact(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -173,7 +173,7 @@ def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_SimpleOath(
     yao_userhub = userhub_shop(reals_dir(), real_id(), yao_text)
 
     # save quark files
-    sports_quark = get_quark_example_oathunit_sports(yao_userhub.real_id)
+    sports_quark = get_quark_example_factunit_sports(yao_userhub.real_id)
     yao_userhub.save_quark_file(sports_quark)
 
     # WHEN
@@ -186,7 +186,7 @@ def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_SimpleOath(
     sports_text = "sports"
     sports_road = yao_agenda.make_l1_road(sports_text)
 
-    assert yao_agenda.oath_exists(sports_road)
+    assert yao_agenda.fact_exists(sports_road)
 
 
 def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_WithBeliefUnit(
@@ -198,9 +198,9 @@ def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_WithBeliefUnit(
 
     # save quark files
     x_real_id = yao_userhub.real_id
-    yao_userhub.save_quark_file(get_quark_example_oathunit_sports(x_real_id))
-    yao_userhub.save_quark_file(get_quark_example_oathunit_ball(x_real_id))
-    yao_userhub.save_quark_file(get_quark_example_oathunit_knee(x_real_id))
+    yao_userhub.save_quark_file(get_quark_example_factunit_sports(x_real_id))
+    yao_userhub.save_quark_file(get_quark_example_factunit_ball(x_real_id))
+    yao_userhub.save_quark_file(get_quark_example_factunit_knee(x_real_id))
     yao_userhub.save_quark_file(get_quark_example_beliefunit_knee(x_real_id))
     print(f"{file_dir_files(yao_userhub.quarks_dir()).keys()=}")
 
@@ -214,4 +214,4 @@ def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_WithBeliefUnit(
     sports_text = "sports"
     sports_road = yao_agenda.make_l1_road(sports_text)
 
-    assert yao_agenda.oath_exists(sports_road)
+    assert yao_agenda.fact_exists(sports_road)

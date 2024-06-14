@@ -182,12 +182,12 @@ class RealUnit:
 
         # if nothing has come from duty->role->job->work pipeline use duty->work pipeline
         x_work.calc_agenda_metrics()
-        if len(x_work._oath_dict) == 1:
+        if len(x_work._fact_dict) == 1:
             # pipeline_duty_work_text()
             listen_to_debtors_roll_duty_work(listener_userhub)
             listener_userhub.open_file_work()
             x_work.calc_agenda_metrics()
-        if len(x_work._oath_dict) == 1:
+        if len(x_work._fact_dict) == 1:
             x_work = x_duty
         listener_userhub.save_work_agenda(x_work)
 

@@ -1,10 +1,10 @@
 from src.agenda.healer import healerhold_shop
-from src.agenda.oath import oathunit_shop
+from src.agenda.fact import factunit_shop
 from src.listen.userhub import userhub_shop
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env import get_test_reals_dir
 
-# from src.agenda.graphic import display_oathtree
+# from src.agenda.graphic import display_facttree
 
 
 def create_example_real1() -> RealUnit:
@@ -23,18 +23,18 @@ def create_example_real1() -> RealUnit:
     yao_duty_agenda.calc_agenda_metrics()
     texas_text = "Texas"
     texas_road = yao_duty_agenda.make_l1_road(texas_text)
-    yao_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
+    yao_duty_agenda.add_l1_fact(factunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = yao_duty_agenda.make_road(texas_road, dallas_text)
     dallas_healerhold = healerhold_shop({yao_text})
-    dallas_oath = oathunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_fact = factunit_shop(dallas_text, _healerhold=dallas_healerhold)
     elpaso_text = "el paso"
     elpaso_road = yao_duty_agenda.make_road(texas_road, elpaso_text)
     elpaso_healerhold = healerhold_shop({yao_text})
-    elpaso_oath = oathunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_fact = factunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
 
-    yao_duty_agenda.add_oath(dallas_oath, texas_road)
-    yao_duty_agenda.add_oath(elpaso_oath, texas_road)
+    yao_duty_agenda.add_fact(dallas_fact, texas_road)
+    yao_duty_agenda.add_fact(elpaso_fact, texas_road)
     # display_agenda(yao_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
     x_userhub = userhub_shop(
         reals_dir=yao_userhub.reals_dir,
@@ -87,24 +87,24 @@ def create_example_real2() -> RealUnit:
     zia_duty_agenda.add_partyunit(zia_text, 38, 400)
     texas_text = "Texas"
     texas_road = yao_duty_agenda.make_l1_road(texas_text)
-    yao_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
-    wei_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
-    zia_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
+    yao_duty_agenda.add_l1_fact(factunit_shop(texas_text, _problem_bool=True))
+    wei_duty_agenda.add_l1_fact(factunit_shop(texas_text, _problem_bool=True))
+    zia_duty_agenda.add_l1_fact(factunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = yao_duty_agenda.make_road(texas_road, dallas_text)
     dallas_healerhold = healerhold_shop({yao_text, zia_text})
-    dallas_oath = oathunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_fact = factunit_shop(dallas_text, _healerhold=dallas_healerhold)
     elpaso_text = "el paso"
     elpaso_road = yao_duty_agenda.make_road(texas_road, elpaso_text)
     elpaso_healerhold = healerhold_shop({yao_text})
-    elpaso_oath = oathunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_fact = factunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
 
-    yao_duty_agenda.add_oath(dallas_oath, texas_road)
-    yao_duty_agenda.add_oath(elpaso_oath, texas_road)
-    wei_duty_agenda.add_oath(dallas_oath, texas_road)
-    wei_duty_agenda.add_oath(elpaso_oath, texas_road)
-    zia_duty_agenda.add_oath(dallas_oath, texas_road)
-    zia_duty_agenda.add_oath(elpaso_oath, texas_road)
+    yao_duty_agenda.add_fact(dallas_fact, texas_road)
+    yao_duty_agenda.add_fact(elpaso_fact, texas_road)
+    wei_duty_agenda.add_fact(dallas_fact, texas_road)
+    wei_duty_agenda.add_fact(elpaso_fact, texas_road)
+    zia_duty_agenda.add_fact(dallas_fact, texas_road)
+    zia_duty_agenda.add_fact(elpaso_fact, texas_road)
     # display_agenda(yao_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
     yao_userhub.save_duty_agenda(yao_duty_agenda)
     wei_userhub.save_duty_agenda(wei_duty_agenda)
@@ -138,28 +138,28 @@ def create_example_real3() -> RealUnit:
 
     casa_text = "casa"
     casa_road = yao_duty_agenda.make_l1_road(casa_text)
-    yao_duty_agenda.add_l1_oath(oathunit_shop(casa_text))
-    wei_duty_agenda.add_l1_oath(oathunit_shop(casa_text))
-    zia_duty_agenda.add_l1_oath(oathunit_shop(casa_text))
+    yao_duty_agenda.add_l1_fact(factunit_shop(casa_text))
+    wei_duty_agenda.add_l1_fact(factunit_shop(casa_text))
+    zia_duty_agenda.add_l1_fact(factunit_shop(casa_text))
     clean_text = "clean"
     clean_road = yao_duty_agenda.make_road(casa_road, clean_text)
     bath_text = "clean bathroom"
     hall_text = "clean hall"
 
-    yao_duty_agenda.add_oath(oathunit_shop(clean_text, pledge=True), casa_road)
-    yao_duty_agenda.add_oath(oathunit_shop(bath_text, pledge=True), clean_road)
-    yao_duty_agenda.add_oath(oathunit_shop(hall_text, pledge=True), clean_road)
+    yao_duty_agenda.add_fact(factunit_shop(clean_text, pledge=True), casa_road)
+    yao_duty_agenda.add_fact(factunit_shop(bath_text, pledge=True), clean_road)
+    yao_duty_agenda.add_fact(factunit_shop(hall_text, pledge=True), clean_road)
     # yao_duty_agenda.calc_agenda_metrics()
-    # display_oathtree(yao_duty_agenda, mode="Econ").show()
+    # display_facttree(yao_duty_agenda, mode="Econ").show()
 
-    wei_duty_agenda.add_oath(oathunit_shop(clean_text, pledge=True), casa_road)
-    wei_duty_agenda.add_oath(oathunit_shop(bath_text, pledge=True), clean_road)
+    wei_duty_agenda.add_fact(factunit_shop(clean_text, pledge=True), casa_road)
+    wei_duty_agenda.add_fact(factunit_shop(bath_text, pledge=True), clean_road)
 
-    zia_duty_agenda.add_oath(oathunit_shop(clean_text, pledge=True), casa_road)
-    zia_duty_agenda.add_oath(oathunit_shop(bath_text, pledge=True), clean_road)
-    zia_duty_agenda.add_oath(oathunit_shop(hall_text, pledge=True), clean_road)
+    zia_duty_agenda.add_fact(factunit_shop(clean_text, pledge=True), casa_road)
+    zia_duty_agenda.add_fact(factunit_shop(bath_text, pledge=True), clean_road)
+    zia_duty_agenda.add_fact(factunit_shop(hall_text, pledge=True), clean_road)
 
-    # display_oathtree(yao_duty_agenda, mode="Econ").show()
+    # display_facttree(yao_duty_agenda, mode="Econ").show()
     yao_userhub.save_duty_agenda(yao_duty_agenda)
     wei_userhub.save_duty_agenda(wei_duty_agenda)
     zia_userhub.save_duty_agenda(zia_duty_agenda)
@@ -186,28 +186,28 @@ def create_example_real4() -> RealUnit:
 
     casa_text = "casa"
     casa_road = yao_duty_agenda.make_l1_road(casa_text)
-    yao_duty_agenda.add_l1_oath(oathunit_shop(casa_text))
-    wei_duty_agenda.add_l1_oath(oathunit_shop(casa_text))
-    zia_duty_agenda.add_l1_oath(oathunit_shop(casa_text))
+    yao_duty_agenda.add_l1_fact(factunit_shop(casa_text))
+    wei_duty_agenda.add_l1_fact(factunit_shop(casa_text))
+    zia_duty_agenda.add_l1_fact(factunit_shop(casa_text))
     clean_text = "clean"
     clean_road = yao_duty_agenda.make_road(casa_road, clean_text)
     bath_text = "clean bathroom"
     hall_text = "clean hall"
 
-    yao_duty_agenda.add_oath(oathunit_shop(clean_text, pledge=True), casa_road)
-    yao_duty_agenda.add_oath(oathunit_shop(bath_text, pledge=True), clean_road)
-    yao_duty_agenda.add_oath(oathunit_shop(hall_text, pledge=True), clean_road)
+    yao_duty_agenda.add_fact(factunit_shop(clean_text, pledge=True), casa_road)
+    yao_duty_agenda.add_fact(factunit_shop(bath_text, pledge=True), clean_road)
+    yao_duty_agenda.add_fact(factunit_shop(hall_text, pledge=True), clean_road)
     # yao_duty_agenda.calc_agenda_metrics()
-    # display_oathtree(yao_duty_agenda, mode="Econ").show()
+    # display_facttree(yao_duty_agenda, mode="Econ").show()
 
-    wei_duty_agenda.add_oath(oathunit_shop(clean_text, pledge=True), casa_road)
-    wei_duty_agenda.add_oath(oathunit_shop(bath_text, pledge=True), clean_road)
+    wei_duty_agenda.add_fact(factunit_shop(clean_text, pledge=True), casa_road)
+    wei_duty_agenda.add_fact(factunit_shop(bath_text, pledge=True), clean_road)
 
-    zia_duty_agenda.add_oath(oathunit_shop(clean_text, pledge=True), casa_road)
-    zia_duty_agenda.add_oath(oathunit_shop(bath_text, pledge=True), clean_road)
-    zia_duty_agenda.add_oath(oathunit_shop(hall_text, pledge=True), clean_road)
+    zia_duty_agenda.add_fact(factunit_shop(clean_text, pledge=True), casa_road)
+    zia_duty_agenda.add_fact(factunit_shop(bath_text, pledge=True), clean_road)
+    zia_duty_agenda.add_fact(factunit_shop(hall_text, pledge=True), clean_road)
 
-    # display_oathtree(yao_duty_agenda, mode="Econ").show()
+    # display_facttree(yao_duty_agenda, mode="Econ").show()
     yao_duty_agenda.set_party_credor_pool(101)
     wei_duty_agenda.set_party_credor_pool(75)
     zia_duty_agenda.set_party_credor_pool(52)
@@ -226,24 +226,24 @@ def create_example_real4() -> RealUnit:
 
     texas_text = "Texas"
     texas_road = yao_duty_agenda.make_l1_road(texas_text)
-    yao_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
-    wei_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
-    zia_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
+    yao_duty_agenda.add_l1_fact(factunit_shop(texas_text, _problem_bool=True))
+    wei_duty_agenda.add_l1_fact(factunit_shop(texas_text, _problem_bool=True))
+    zia_duty_agenda.add_l1_fact(factunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     dallas_road = yao_duty_agenda.make_road(texas_road, dallas_text)
     dallas_healerhold = healerhold_shop({yao_text, zia_text})
-    dallas_oath = oathunit_shop(dallas_text, _healerhold=dallas_healerhold)
+    dallas_fact = factunit_shop(dallas_text, _healerhold=dallas_healerhold)
     elpaso_text = "el paso"
     elpaso_road = yao_duty_agenda.make_road(texas_road, elpaso_text)
     elpaso_healerhold = healerhold_shop({yao_text})
-    elpaso_oath = oathunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
+    elpaso_fact = factunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
 
-    yao_duty_agenda.add_oath(dallas_oath, texas_road)
-    yao_duty_agenda.add_oath(elpaso_oath, texas_road)
-    wei_duty_agenda.add_oath(dallas_oath, texas_road)
-    wei_duty_agenda.add_oath(elpaso_oath, texas_road)
-    zia_duty_agenda.add_oath(dallas_oath, texas_road)
-    zia_duty_agenda.add_oath(elpaso_oath, texas_road)
+    yao_duty_agenda.add_fact(dallas_fact, texas_road)
+    yao_duty_agenda.add_fact(elpaso_fact, texas_road)
+    wei_duty_agenda.add_fact(dallas_fact, texas_road)
+    wei_duty_agenda.add_fact(elpaso_fact, texas_road)
+    zia_duty_agenda.add_fact(dallas_fact, texas_road)
+    zia_duty_agenda.add_fact(elpaso_fact, texas_road)
     # display_agenda(yao_duty_agenda.calc_agenda_metrics(), mode="Econ").show()
     yao_userhub.save_duty_agenda(yao_duty_agenda)
     wei_userhub.save_duty_agenda(wei_duty_agenda)

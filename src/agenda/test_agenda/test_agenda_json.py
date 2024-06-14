@@ -4,8 +4,8 @@ from src.agenda.idea import ideaunit_shop, balancelink_shop
 from src.agenda.party import partylink_shop
 from src.agenda.healer import healerhold_shop
 from src.agenda.reason_assign import assignedunit_shop
-from src.agenda.reason_oath import beliefunit_shop
-from src.agenda.oath import oathunit_shop
+from src.agenda.reason_fact import beliefunit_shop
+from src.agenda.fact import factunit_shop
 from src.agenda.agenda import (
     agendaunit_shop,
     get_from_json as agendaunit_get_from_json,
@@ -24,8 +24,8 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     x_agenda = example_agendas_agenda_v001()
     day_hour_text = "day_hour"
     day_hour_road = x_agenda.make_l1_road(day_hour_text)
-    day_hour_oath = x_agenda.get_oath_obj(day_hour_road)
-    day_hour_oath._originunit.set_originlink(party_id="Bob", weight=2)
+    day_hour_fact = x_agenda.get_fact_obj(day_hour_road)
+    day_hour_fact._originunit.set_originlink(party_id="Bob", weight=2)
     x_agenda.set_belief(
         base=day_hour_road,
         pick=day_hour_road,
@@ -69,40 +69,40 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     assert len(agenda_dict["_ideas"]) == 12
     assert len(agenda_dict["_ideas"]) != len(x_agenda._ideas)
 
-    x_oathroot = x_agenda._oathroot
-    oathroot_dict = agenda_dict["_oathroot"]
+    x_factroot = x_agenda._factroot
+    factroot_dict = agenda_dict["_factroot"]
     _kids = "_kids"
     _range_source_road = "_range_source_road"
     _numeric_road = "_numeric_road"
-    assert x_oathroot._label == x_agenda._real_id
-    assert oathroot_dict["_label"] == x_oathroot._label
-    assert oathroot_dict["_weight"] != agenda_weight
-    assert oathroot_dict["_weight"] == x_oathroot._weight
-    assert len(oathroot_dict[_kids]) == len(x_oathroot._kids)
+    assert x_factroot._label == x_agenda._real_id
+    assert factroot_dict["_label"] == x_factroot._label
+    assert factroot_dict["_weight"] != agenda_weight
+    assert factroot_dict["_weight"] == x_factroot._weight
+    assert len(factroot_dict[_kids]) == len(x_factroot._kids)
 
-    # check an oathkid._range_source_road attribute
+    # check an factkid._range_source_road attribute
     month_week_text = "month_week"
     month_week_road = x_agenda.make_l1_road(month_week_text)
-    month_week_oath_x = x_agenda.get_oath_obj(month_week_road)
+    month_week_fact_x = x_agenda.get_fact_obj(month_week_road)
     print("check real_id,month_week...range_source_road equal to...")
-    month_week_special_dict = oathroot_dict[_kids][month_week_text][_range_source_road]
+    month_week_special_dict = factroot_dict[_kids][month_week_text][_range_source_road]
     assert month_week_special_dict != None
     assert month_week_special_dict == x_agenda.make_l1_road("ced_week")
-    assert month_week_special_dict == month_week_oath_x._range_source_road
+    assert month_week_special_dict == month_week_fact_x._range_source_road
 
-    # check an oathkid._numeric_road attribute
+    # check an factkid._numeric_road attribute
     num1_text = "numeric_road_test"
     num1_road = x_agenda.make_l1_road(num1_text)
-    num1_oath_x = x_agenda.get_oath_obj(num1_road)
+    num1_fact_x = x_agenda.get_fact_obj(num1_road)
     print(f"check {num1_road}...numeric_road equal to...")
-    num1_dict_numeric_road = oathroot_dict[_kids][num1_text][_numeric_road]
+    num1_dict_numeric_road = factroot_dict[_kids][num1_text][_numeric_road]
     assert num1_dict_numeric_road != None
     assert num1_dict_numeric_road == month_week_road
-    assert num1_dict_numeric_road == num1_oath_x._numeric_road
+    assert num1_dict_numeric_road == num1_fact_x._numeric_road
 
     originunit_text = "_originunit"
-    day_hour_originunit_dict = oathroot_dict[_kids][day_hour_text][originunit_text]
-    assert day_hour_originunit_dict == day_hour_oath._originunit.get_dict()
+    day_hour_originunit_dict = factroot_dict[_kids][day_hour_text][originunit_text]
+    assert day_hour_originunit_dict == day_hour_fact._originunit.get_dict()
     _links = "_links"
     x_agenda_originlink = agenda_dict[originunit_text][_links][yao_text]
     print(f"{x_agenda_originlink=}")
@@ -111,24 +111,24 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     assert x_agenda_originlink["weight"] == 1
 
 
-def test_AgendaUnit_get_dict_ReturnsDictWith_oathroot_assignedunit():
+def test_AgendaUnit_get_dict_ReturnsDictWith_factroot_assignedunit():
     # GIVEN
     run_text = "runners"
     tom_agenda = agendaunit_shop("Tom")
     x_assignedunit = assignedunit_shop()
     x_assignedunit.set_suffidea(idea_id=run_text)
-    tom_agenda.edit_oath_attr(assignedunit=x_assignedunit, road=tom_agenda._real_id)
+    tom_agenda.edit_fact_attr(assignedunit=x_assignedunit, road=tom_agenda._real_id)
 
     # WHEN
     agenda_dict = tom_agenda.get_dict()
-    oathroot_dict = agenda_dict.get("_oathroot")
+    factroot_dict = agenda_dict.get("_factroot")
 
     # THEN
-    assert oathroot_dict["_assignedunit"] == x_assignedunit.get_dict()
-    assert oathroot_dict["_assignedunit"] == {"_suffideas": {run_text: run_text}}
+    assert factroot_dict["_assignedunit"] == x_assignedunit.get_dict()
+    assert factroot_dict["_assignedunit"] == {"_suffideas": {run_text: run_text}}
 
 
-def test_AgendaUnit_get_dict_ReturnsDictWith_oathroot_healerhold():
+def test_AgendaUnit_get_dict_ReturnsDictWith_factroot_healerhold():
     # GIVEN
     tom_agenda = agendaunit_shop("Tom")
     yao_text = "Yao"
@@ -139,17 +139,17 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_oathroot_healerhold():
     tom_agenda.set_ideaunit(run_ideaunit)
     run_healerhold = healerhold_shop()
     run_healerhold.set_idea_id(x_idea_id=run_text)
-    tom_agenda.edit_oath_attr(road=tom_agenda._real_id, healerhold=run_healerhold)
+    tom_agenda.edit_fact_attr(road=tom_agenda._real_id, healerhold=run_healerhold)
 
     # WHEN
     agenda_dict = tom_agenda.get_dict()
-    oathroot_dict = agenda_dict.get("_oathroot")
+    factroot_dict = agenda_dict.get("_factroot")
 
     # THEN
-    assert oathroot_dict["_healerhold"] == run_healerhold.get_dict()
+    assert factroot_dict["_healerhold"] == run_healerhold.get_dict()
 
 
-def test_AgendaUnit_get_dict_ReturnsDictWith_oathkid_AssignedUnit():
+def test_AgendaUnit_get_dict_ReturnsDictWith_factkid_AssignedUnit():
     # GIVEN
     tom_agenda = agendaunit_shop("Tom")
     run_text = ",run"
@@ -157,20 +157,20 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_oathkid_AssignedUnit():
 
     morn_text = "morning"
     morn_road = tom_agenda.make_l1_road(morn_text)
-    tom_agenda.add_l1_oath(oathunit_shop(morn_text))
+    tom_agenda.add_l1_fact(factunit_shop(morn_text))
     x_assignedunit = assignedunit_shop()
     x_assignedunit.set_suffidea(idea_id=run_text)
-    tom_agenda.edit_oath_attr(assignedunit=x_assignedunit, road=morn_road)
+    tom_agenda.edit_fact_attr(assignedunit=x_assignedunit, road=morn_road)
 
     # WHEN
     agenda_dict = tom_agenda.get_dict()
-    oathroot_dict = agenda_dict.get("_oathroot")
+    factroot_dict = agenda_dict.get("_factroot")
 
     # THEN
     _kids = "_kids"
     _assignedunit = "_assignedunit"
 
-    assigned_dict_x = oathroot_dict[_kids][morn_text][_assignedunit]
+    assigned_dict_x = factroot_dict[_kids][morn_text][_assignedunit]
     assert assigned_dict_x == x_assignedunit.get_dict()
     assert assigned_dict_x == {"_suffideas": {run_text: run_text}}
 
@@ -193,8 +193,8 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     run_ideaunit.set_partylink(partylink_shop(yao_text))
     zia_agenda.set_ideaunit(run_ideaunit)
     run_healerhold = healerhold_shop({run_text})
-    zia_agenda.edit_oath_attr(road=zia_agenda._real_id, healerhold=run_healerhold)
-    zia_agenda.edit_oath_attr(road=zia_agenda._real_id, problem_bool=True)
+    zia_agenda.edit_fact_attr(road=zia_agenda._real_id, healerhold=run_healerhold)
+    zia_agenda.edit_fact_attr(road=zia_agenda._real_id, problem_bool=True)
 
     # WHEN
     x_json = zia_agenda.get_json()
@@ -221,22 +221,22 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     with pytest_raises(Exception) as excinfo:
         agenda_dict["_last_atom_id"]
 
-    x_oathroot = zia_agenda._oathroot
-    oathroot_dict = agenda_dict.get("_oathroot")
+    x_factroot = zia_agenda._factroot
+    factroot_dict = agenda_dict.get("_factroot")
 
-    assert len(oathroot_dict[_kids]) == len(x_oathroot._kids)
+    assert len(factroot_dict[_kids]) == len(x_factroot._kids)
 
     shave_text = "shave"
-    shave_dict = oathroot_dict[_kids][shave_text]
+    shave_dict = factroot_dict[_kids][shave_text]
     shave_beliefunits = shave_dict["_beliefunits"]
     print(f"{shave_beliefunits=}")
     assert len(shave_beliefunits) == 1
-    assert len(shave_beliefunits) == len(x_oathroot._kids[shave_text]._beliefunits)
-    oathroot_healerhold = oathroot_dict["_healerhold"]
-    print(f"{oathroot_healerhold=}")
-    assert len(oathroot_healerhold) == 1
-    assert x_oathroot._healerhold.any_idea_id_exists()
-    assert x_oathroot._problem_bool
+    assert len(shave_beliefunits) == len(x_factroot._kids[shave_text]._beliefunits)
+    factroot_healerhold = factroot_dict["_healerhold"]
+    print(f"{factroot_healerhold=}")
+    assert len(factroot_healerhold) == 1
+    assert x_factroot._healerhold.any_idea_id_exists()
+    assert x_factroot._problem_bool
 
 
 def test_AgendaUnit_get_json_ReturnsCorrectJSON_BigExample():
@@ -249,7 +249,7 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_BigExample():
     day_min_road = yao_agenda.make_l1_road(day_min_text)
     yao_agenda.set_belief(base=day_min_road, pick=day_min_road, open=0, nigh=59)
     beliefunit_x = beliefunit_shop(day_min_road, day_min_road, 5, 59)
-    yao_agenda.edit_oath_attr(road=beliefunit_x.base, beliefunit=beliefunit_x)
+    yao_agenda.edit_fact_attr(road=beliefunit_x.base, beliefunit=beliefunit_x)
     yao_agenda.set_max_tree_traverse(int_x=2)
     yao_text = "Yao"
     yao_agenda._originunit.set_originlink(yao_text, 1)
@@ -266,29 +266,29 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_BigExample():
     assert agenda_dict["_max_tree_traverse"] == yao_agenda._max_tree_traverse
     assert agenda_dict["_road_delimiter"] == yao_agenda._road_delimiter
 
-    x_oathroot = yao_agenda._oathroot
-    oathroot_dict = agenda_dict.get("_oathroot")
-    assert len(oathroot_dict[_kids]) == len(x_oathroot._kids)
+    x_factroot = yao_agenda._factroot
+    factroot_dict = agenda_dict.get("_factroot")
+    assert len(factroot_dict[_kids]) == len(x_factroot._kids)
 
-    kids = oathroot_dict[_kids]
+    kids = factroot_dict[_kids]
     day_min_dict = kids[day_min_text]
     day_min_beliefunits_dict = day_min_dict["_beliefunits"]
-    day_min_oath_x = yao_agenda.get_oath_obj(day_min_road)
+    day_min_fact_x = yao_agenda.get_fact_obj(day_min_road)
     print(f"{day_min_beliefunits_dict=}")
     assert len(day_min_beliefunits_dict) == 1
-    assert len(day_min_beliefunits_dict) == len(day_min_oath_x._beliefunits)
+    assert len(day_min_beliefunits_dict) == len(day_min_fact_x._beliefunits)
 
     _reasonunits = "_reasonunits"
     cont_text = "Freelancing"
     ulti_text = "Ultimate Frisbee"
     cont_road = yao_agenda.make_l1_road(cont_text)
     ulti_road = yao_agenda.make_l1_road(ulti_text)
-    cont_oath = yao_agenda.get_oath_obj(cont_road)
-    ulti_oath = yao_agenda.get_oath_obj(ulti_road)
-    cont_reasonunits_dict = oathroot_dict[_kids][cont_text][_reasonunits]
-    ulti_reasonunits_dict = oathroot_dict[_kids][ulti_text][_reasonunits]
-    assert len(cont_reasonunits_dict) == len(cont_oath._reasonunits)
-    assert len(ulti_reasonunits_dict) == len(ulti_oath._reasonunits)
+    cont_fact = yao_agenda.get_fact_obj(cont_road)
+    ulti_fact = yao_agenda.get_fact_obj(ulti_road)
+    cont_reasonunits_dict = factroot_dict[_kids][cont_text][_reasonunits]
+    ulti_reasonunits_dict = factroot_dict[_kids][ulti_text][_reasonunits]
+    assert len(cont_reasonunits_dict) == len(cont_fact._reasonunits)
+    assert len(ulti_reasonunits_dict) == len(ulti_fact._reasonunits)
     originunit_text = "_originunit"
     _links = "_links"
     assert len(agenda_dict[originunit_text][_links])
@@ -313,11 +313,11 @@ def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():
 
     shave_text = "shave"
     shave_road = zia_agenda.make_l1_road(shave_text)
-    shave_oath_y1 = zia_agenda.get_oath_obj(shave_road)
-    shave_oath_y1._originunit.set_originlink(party_id="Sue", weight=4.3)
-    shave_oath_y1._problem_bool = True
+    shave_fact_y1 = zia_agenda.get_fact_obj(shave_road)
+    shave_fact_y1._originunit.set_originlink(party_id="Sue", weight=4.3)
+    shave_fact_y1._problem_bool = True
     # print(f"{shave_road=}")
-    # print(f"{json_shave_oath._label=} {json_shave_oath._parent_road=}")
+    # print(f"{json_shave_fact._label=} {json_shave_fact._parent_road=}")
 
     sue_text = "Sue"
     zia_agenda.add_partyunit(party_id=sue_text)
@@ -331,18 +331,18 @@ def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():
 
     run_assignedunit = assignedunit_shop()
     run_assignedunit.set_suffidea(idea_id=run_text)
-    zia_agenda.edit_oath_attr(zia_agenda._real_id, assignedunit=run_assignedunit)
+    zia_agenda.edit_fact_attr(zia_agenda._real_id, assignedunit=run_assignedunit)
     tim_assignedunit = assignedunit_shop()
     tim_assignedunit.set_suffidea(idea_id=tim_text)
-    zia_agenda.edit_oath_attr(shave_road, assignedunit=tim_assignedunit)
-    zia_agenda.edit_oath_attr(shave_road, balancelink=balancelink_shop(tim_text))
-    zia_agenda.edit_oath_attr(shave_road, balancelink=balancelink_shop(sue_text))
-    zia_agenda.edit_oath_attr(
+    zia_agenda.edit_fact_attr(shave_road, assignedunit=tim_assignedunit)
+    zia_agenda.edit_fact_attr(shave_road, balancelink=balancelink_shop(tim_text))
+    zia_agenda.edit_fact_attr(shave_road, balancelink=balancelink_shop(sue_text))
+    zia_agenda.edit_fact_attr(
         zia_agenda._real_id, balancelink=balancelink_shop(sue_text)
     )
-    # add healerhold to shave oathunit
+    # add healerhold to shave factunit
     run_healerhold = healerhold_shop({run_text})
-    zia_agenda.edit_oath_attr(shave_road, healerhold=run_healerhold)
+    zia_agenda.edit_fact_attr(shave_road, healerhold=run_healerhold)
 
     yao_text = "Yao"
     zia_agenda._originunit.set_originlink(yao_text, 1)
@@ -378,39 +378,39 @@ def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():
     print(f"{zia_agenda._ideas.keys()=}")
     assert json_agenda._ideas == zia_agenda._ideas
 
-    json_oathroot = json_agenda._oathroot
-    assert json_oathroot._parent_road == ""
-    assert json_oathroot._parent_road == zia_agenda._oathroot._parent_road
-    assert json_oathroot._reasonunits == {}
-    assert json_oathroot._assignedunit == zia_agenda._oathroot._assignedunit
-    assert json_oathroot._assignedunit == run_assignedunit
-    assert len(json_oathroot._beliefunits) == 1
-    assert len(json_oathroot._balancelinks) == 1
+    json_factroot = json_agenda._factroot
+    assert json_factroot._parent_road == ""
+    assert json_factroot._parent_road == zia_agenda._factroot._parent_road
+    assert json_factroot._reasonunits == {}
+    assert json_factroot._assignedunit == zia_agenda._factroot._assignedunit
+    assert json_factroot._assignedunit == run_assignedunit
+    assert len(json_factroot._beliefunits) == 1
+    assert len(json_factroot._balancelinks) == 1
 
-    assert len(json_agenda._oathroot._kids) == 2
+    assert len(json_agenda._factroot._kids) == 2
 
     weekday_text = "weekdays"
     weekday_road = json_agenda.make_l1_road(weekday_text)
-    weekday_oath_x = json_agenda.get_oath_obj(weekday_road)
-    assert len(weekday_oath_x._kids) == 2
+    weekday_fact_x = json_agenda.get_fact_obj(weekday_road)
+    assert len(weekday_fact_x._kids) == 2
 
     sunday_text = "Sunday"
     sunday_road = json_agenda.make_road(weekday_road, sunday_text)
-    sunday_oath = json_agenda.get_oath_obj(sunday_road)
-    assert sunday_oath._weight == 20
+    sunday_fact = json_agenda.get_fact_obj(sunday_road)
+    assert sunday_fact._weight == 20
 
-    json_shave_oath = json_agenda.get_oath_obj(shave_road)
-    zia_shave_oath = zia_agenda.get_oath_obj(shave_road)
-    assert len(json_shave_oath._reasonunits) == 1
-    assert json_shave_oath._assignedunit == zia_shave_oath._assignedunit
-    assert json_shave_oath._assignedunit == tim_assignedunit
-    assert json_shave_oath._originunit == zia_shave_oath._originunit
-    print(f"{json_shave_oath._healerhold=}")
-    assert json_shave_oath._healerhold == zia_shave_oath._healerhold
-    assert len(json_shave_oath._balancelinks) == 2
-    assert len(json_shave_oath._beliefunits) == 1
-    assert zia_shave_oath._problem_bool
-    assert json_shave_oath._problem_bool == zia_shave_oath._problem_bool
+    json_shave_fact = json_agenda.get_fact_obj(shave_road)
+    zia_shave_fact = zia_agenda.get_fact_obj(shave_road)
+    assert len(json_shave_fact._reasonunits) == 1
+    assert json_shave_fact._assignedunit == zia_shave_fact._assignedunit
+    assert json_shave_fact._assignedunit == tim_assignedunit
+    assert json_shave_fact._originunit == zia_shave_fact._originunit
+    print(f"{json_shave_fact._healerhold=}")
+    assert json_shave_fact._healerhold == zia_shave_fact._healerhold
+    assert len(json_shave_fact._balancelinks) == 2
+    assert len(json_shave_fact._beliefunits) == 1
+    assert zia_shave_fact._problem_bool
+    assert json_shave_fact._problem_bool == zia_shave_fact._problem_bool
 
     assert len(json_agenda._originunit._links) == 1
     assert json_agenda._originunit == zia_agenda._originunit
@@ -473,8 +473,8 @@ def test_agendaunit_get_from_json_jsonExportCorrectyExportsAgendaUnit_weight():
     x1_agenda = example_agendas_agenda_v001()
     x1_agenda._weight = 15
     assert 15 == x1_agenda._weight
-    assert x1_agenda._oathroot._weight != x1_agenda._weight
-    assert x1_agenda._oathroot._weight == 1
+    assert x1_agenda._factroot._weight != x1_agenda._weight
+    assert x1_agenda._factroot._weight == 1
 
     # WHEN
     x2_agenda = agendaunit_get_from_json(x1_agenda.get_json())
@@ -482,9 +482,9 @@ def test_agendaunit_get_from_json_jsonExportCorrectyExportsAgendaUnit_weight():
     # THEN
     assert x1_agenda._weight == 15
     assert x1_agenda._weight == x2_agenda._weight
-    assert x1_agenda._oathroot._weight == 1
-    assert x1_agenda._oathroot._weight == x2_agenda._oathroot._weight
-    assert x1_agenda._oathroot._kids == x2_agenda._oathroot._kids
+    assert x1_agenda._factroot._weight == 1
+    assert x1_agenda._factroot._weight == x2_agenda._factroot._weight
+    assert x1_agenda._factroot._kids == x2_agenda._factroot._kids
 
 
 def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
@@ -509,21 +509,21 @@ def test_get_dict_of_agenda_from_dict_ReturnsDictOfAgendaUnits():
     assert ccn_dict_of_obj.get(x1_agenda._owner_id) != None
     assert ccn_dict_of_obj.get(x2_agenda._owner_id) != None
     assert ccn_dict_of_obj.get(x3_agenda._owner_id) != None
-    cc1_oath_root = ccn_dict_of_obj.get(x1_agenda._owner_id)._oathroot
-    assert cc1_oath_root._originunit == x1_agenda._oathroot._originunit
-    assert ccn_dict_of_obj.get(x1_agenda._owner_id)._oath_dict == x1_agenda._oath_dict
+    cc1_fact_root = ccn_dict_of_obj.get(x1_agenda._owner_id)._factroot
+    assert cc1_fact_root._originunit == x1_agenda._factroot._originunit
+    assert ccn_dict_of_obj.get(x1_agenda._owner_id)._fact_dict == x1_agenda._fact_dict
     assert ccn_dict_of_obj.get(x1_agenda._owner_id) == x1_agenda
     ccn2_agenda = ccn_dict_of_obj.get(x2_agenda._owner_id)
-    assert ccn2_agenda._oathroot._label == x2_agenda._oathroot._label
-    assert ccn2_agenda._oathroot._parent_road == x2_agenda._oathroot._parent_road
+    assert ccn2_agenda._factroot._label == x2_agenda._factroot._label
+    assert ccn2_agenda._factroot._parent_road == x2_agenda._factroot._parent_road
     shave_road = ccn2_agenda.make_l1_road("shave")
     week_road = ccn2_agenda.make_l1_road("weekdays")
-    assert ccn2_agenda.get_oath_obj(shave_road) == x2_agenda.get_oath_obj(shave_road)
-    assert ccn2_agenda.get_oath_obj(week_road) == x2_agenda.get_oath_obj(week_road)
-    assert ccn2_agenda._oathroot == x2_agenda._oathroot
-    print(f"{ccn2_agenda._oath_dict.keys()=}")
-    print(f"{x2_agenda._oath_dict.keys()=}")
-    assert ccn2_agenda._oath_dict == x2_agenda._oath_dict
+    assert ccn2_agenda.get_fact_obj(shave_road) == x2_agenda.get_fact_obj(shave_road)
+    assert ccn2_agenda.get_fact_obj(week_road) == x2_agenda.get_fact_obj(week_road)
+    assert ccn2_agenda._factroot == x2_agenda._factroot
+    print(f"{ccn2_agenda._fact_dict.keys()=}")
+    print(f"{x2_agenda._fact_dict.keys()=}")
+    assert ccn2_agenda._fact_dict == x2_agenda._fact_dict
     assert ccn2_agenda == x2_agenda
     ccn_agenda3 = ccn_dict_of_obj.get(x3_agenda._owner_id)
     x3_agenda.calc_agenda_metrics()

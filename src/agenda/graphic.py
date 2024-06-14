@@ -1,5 +1,5 @@
 from src._road.road import get_parent_road, RoadUnit, is_sub_road
-from src.agenda.oath import OathUnit
+from src.agenda.fact import FactUnit
 from src.agenda.agenda import AgendaUnit
 from src.agenda.report import (
     get_agenda_partyunits_dataframe,
@@ -16,35 +16,35 @@ def _get_dot_diameter(x_ratio: float):
     return ((x_ratio**0.4)) * 100
 
 
-def _get_parent_y(x_oath: OathUnit, oathunit_y_coordinate_dict: dict) -> RoadUnit:
-    parent_road = get_parent_road(x_oath.get_road())
-    return oathunit_y_coordinate_dict.get(parent_road)
+def _get_parent_y(x_fact: FactUnit, factunit_y_coordinate_dict: dict) -> RoadUnit:
+    parent_road = get_parent_road(x_fact.get_road())
+    return factunit_y_coordinate_dict.get(parent_road)
 
 
-def _get_color_for_oathunit_trace(x_oathunit: OathUnit, mode: str) -> str:
+def _get_color_for_factunit_trace(x_factunit: FactUnit, mode: str) -> str:
     if mode is None:
-        if x_oathunit._level == 0:
+        if x_factunit._level == 0:
             return "Red"
-        elif x_oathunit._level == 1:
+        elif x_factunit._level == 1:
             return "Pink"
-        elif x_oathunit._level == 2:
+        elif x_factunit._level == 2:
             return "Green"
-        elif x_oathunit._level == 3:
+        elif x_factunit._level == 3:
             return "Blue"
-        elif x_oathunit._level == 4:
+        elif x_factunit._level == 4:
             return "Purple"
-        elif x_oathunit._level == 5:
+        elif x_factunit._level == 5:
             return "Gold"
         else:
             return "Black"
     elif mode == "Task":
-        return "Red" if x_oathunit.pledge else "Pink"
+        return "Red" if x_factunit.pledge else "Pink"
     elif mode == "Econ":
-        if x_oathunit._problem_bool and x_oathunit._healerhold.any_idea_id_exists():
+        if x_factunit._problem_bool and x_factunit._healerhold.any_idea_id_exists():
             return "Purple"
-        elif x_oathunit._healerhold.any_idea_id_exists():
+        elif x_factunit._healerhold.any_idea_id_exists():
             return "Blue"
-        elif x_oathunit._problem_bool:
+        elif x_factunit._problem_bool:
             return "Red"
         else:
             return "Pink"
@@ -55,57 +55,57 @@ def _add_individual_trace(
     anno_list: list,
     parent_y,
     source_y,
-    kid_oath: OathUnit,
+    kid_fact: FactUnit,
     mode: str,
 ):
     trace_list.append(
         plotly_Scatter(
-            x=[kid_oath._level - 1, kid_oath._level],
+            x=[kid_fact._level - 1, kid_fact._level],
             y=[parent_y, source_y],
-            marker_size=_get_dot_diameter(kid_oath._agenda_importance),
-            name=kid_oath._label,
-            marker_color=_get_color_for_oathunit_trace(kid_oath, mode=mode),
+            marker_size=_get_dot_diameter(kid_fact._agenda_importance),
+            name=kid_fact._label,
+            marker_color=_get_color_for_factunit_trace(kid_fact, mode=mode),
         )
     )
     anno_list.append(
         dict(
-            x=kid_oath._level,
-            y=source_y + (_get_dot_diameter(kid_oath._agenda_importance) / 150) + 0.002,
-            text=kid_oath._label,
+            x=kid_fact._level,
+            y=source_y + (_get_dot_diameter(kid_fact._agenda_importance) / 150) + 0.002,
+            text=kid_fact._label,
             showarrow=False,
         )
     )
 
 
-def _add_oathunit_traces(
+def _add_factunit_traces(
     trace_list, anno_list, x_agenda: AgendaUnit, source_y: float, mode: str
 ):
-    oaths = [x_agenda._oathroot]
-    y_oathunit_y_coordinate_dict = {None: 0}
-    prev_road = x_agenda._oathroot.get_road()
+    facts = [x_agenda._factroot]
+    y_factunit_y_coordinate_dict = {None: 0}
+    prev_road = x_agenda._factroot.get_road()
     source_y = 0
-    while oaths != []:
-        x_oath = oaths.pop(-1)
-        if is_sub_road(x_oath.get_road(), prev_road) is False:
+    while facts != []:
+        x_fact = facts.pop(-1)
+        if is_sub_road(x_fact.get_road(), prev_road) is False:
             source_y -= 1
         _add_individual_trace(
             trace_list=trace_list,
             anno_list=anno_list,
-            parent_y=_get_parent_y(x_oath, y_oathunit_y_coordinate_dict),
+            parent_y=_get_parent_y(x_fact, y_factunit_y_coordinate_dict),
             source_y=source_y,
-            kid_oath=x_oath,
+            kid_fact=x_fact,
             mode=mode,
         )
-        oaths.extend(iter(x_oath._kids.values()))
-        y_oathunit_y_coordinate_dict[x_oath.get_road()] = source_y
-        prev_road = x_oath.get_road()
+        facts.extend(iter(x_fact._kids.values()))
+        y_factunit_y_coordinate_dict[x_fact.get_road()] = source_y
+        prev_road = x_fact.get_road()
 
 
 def _update_layout_fig(x_fig: plotly_Figure, mode: str, x_agenda: AgendaUnit):
     x_title = "Tree with lines Layout"
     if mode == "Task":
-        x_title = "Oath Tree with task oaths in Red."
-    x_title += f" (Items: {len(x_agenda._oath_dict)})"
+        x_title = "Fact Tree with task facts in Red."
+    x_title += f" (Items: {len(x_agenda._fact_dict)})"
     x_title += f" (_sum_healerhold_importance: {x_agenda._sum_healerhold_importance})"
     x_title += f" (_econs_justified: {x_agenda._econs_justified})"
     x_fig.update_layout(
@@ -114,7 +114,7 @@ def _update_layout_fig(x_fig: plotly_Figure, mode: str, x_agenda: AgendaUnit):
     )
 
 
-def display_oathtree(x_agenda: AgendaUnit, mode: str = None) -> plotly_Figure:
+def display_facttree(x_agenda: AgendaUnit, mode: str = None) -> plotly_Figure:
     """Mode can be None, Task, Econ"""
 
     x_fig = plotly_Figure()
@@ -122,7 +122,7 @@ def display_oathtree(x_agenda: AgendaUnit, mode: str = None) -> plotly_Figure:
     trace_list = []
     anno_list = []
     print(f"{x_agenda._owner_id=}")
-    _add_oathunit_traces(trace_list, anno_list, x_agenda, source_y, mode=mode)
+    _add_factunit_traces(trace_list, anno_list, x_agenda, source_y, mode=mode)
     _update_layout_fig(x_fig, mode, x_agenda=x_agenda)
     while trace_list:
         x_trace = trace_list.pop(-1)

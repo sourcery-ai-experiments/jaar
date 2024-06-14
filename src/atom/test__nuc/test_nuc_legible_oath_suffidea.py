@@ -3,10 +3,10 @@ from src.atom.nuc import nucunit_shop, create_legible_list
 from src.agenda.agenda import agendaunit_shop
 
 
-def test_create_legible_list_ReturnsObj_oath_suffidea_INSERT():
+def test_create_legible_list_ReturnsObj_fact_suffidea_INSERT():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_oath_suffidea"
+    category = "agenda_fact_suffidea"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -23,15 +23,15 @@ def test_create_legible_list_ReturnsObj_oath_suffidea_INSERT():
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"Suffidea '{idea_id_value}' created for oath '{road_value}'."
+    x_str = f"Suffidea '{idea_id_value}' created for fact '{road_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_oath_suffidea_DELETE():
+def test_create_legible_list_ReturnsObj_fact_suffidea_DELETE():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_oath_suffidea"
+    category = "agenda_fact_suffidea"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -48,6 +48,6 @@ def test_create_legible_list_ReturnsObj_oath_suffidea_DELETE():
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"Suffidea '{idea_id_value}' deleted for oath '{road_value}'."
+    x_str = f"Suffidea '{idea_id_value}' deleted for fact '{road_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str

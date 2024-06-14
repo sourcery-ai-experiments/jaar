@@ -1,5 +1,5 @@
 from src._instrument.python import get_empty_dict_if_none, get_0_if_None
-from src.agenda.reason_oath import ReasonUnit, RoadUnit
+from src.agenda.reason_fact import ReasonUnit, RoadUnit
 from src.agenda.idea import BalanceLink, IdeaID
 from dataclasses import dataclass
 
@@ -12,8 +12,8 @@ class TreeMetrics:
     balancelinks_metrics: dict[IdeaID:BalanceLink] = None
     uid_max: int = None
     uid_dict: dict[int:int] = None
-    all_oath_uids_are_unique: bool = None
-    last_evaluated_pledge_oath_road: RoadUnit = None
+    all_fact_uids_are_unique: bool = None
+    last_evaluated_pledge_fact_road: RoadUnit = None
 
     def evaluate_node(
         self,
@@ -22,18 +22,18 @@ class TreeMetrics:
         balancelinks: dict[IdeaID:BalanceLink],
         uid: int,
         pledge: bool,
-        oath_road: RoadUnit,
+        fact_road: RoadUnit,
     ):
         self.node_count += 1
-        self.evaluate_action(pledge=pledge, oath_road=oath_road)
+        self.evaluate_action(pledge=pledge, fact_road=fact_road)
         self.evaluate_level(level=level)
         self.evaluate_reasonunits(reasons=reasons)
         self.evaluate_balancelinks(balancelinks=balancelinks)
         self.evaluate_uid_max(uid=uid)
 
-    def evaluate_action(self, pledge: bool, oath_road: RoadUnit):
+    def evaluate_action(self, pledge: bool, fact_road: RoadUnit):
         if pledge:
-            self.last_evaluated_pledge_oath_road = oath_road
+            self.last_evaluated_pledge_fact_road = fact_road
 
     def evaluate_level(self, level):
         if self.level_count.get(level) is None:
@@ -63,7 +63,7 @@ class TreeMetrics:
             self.uid_dict[uid] = 1
         else:
             self.uid_dict[uid] += 1
-            self.all_oath_uids_are_unique = False
+            self.all_fact_uids_are_unique = False
 
 
 def treemetrics_shop(
@@ -82,6 +82,6 @@ def treemetrics_shop(
         uid_dict=get_empty_dict_if_none(uid_dict),
         uid_max=get_0_if_None(uid_max),
     )
-    if x_treemetrics.all_oath_uids_are_unique is None:
-        x_treemetrics.all_oath_uids_are_unique = True
+    if x_treemetrics.all_fact_uids_are_unique is None:
+        x_treemetrics.all_fact_uids_are_unique = True
     return x_treemetrics

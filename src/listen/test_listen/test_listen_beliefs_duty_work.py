@@ -1,4 +1,4 @@
-from src.agenda.oath import oathunit_shop
+from src.agenda.fact import factunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.listen.listen import (
     create_listen_basis,
@@ -70,9 +70,9 @@ def test_listen_to_beliefs_role_job_SetsSingleBeliefUnitWithOtherTask(
     sue_texas_userhub.save_role_agenda(yao_role)
 
     zia_job = get_example_zia_speaker()
-    zia_job.add_oath(oathunit_shop(clean_text(), pledge=True), casa_road())
-    clean_oathunit = zia_job.get_oath_obj(clean_road())
-    clean_oathunit._assignedunit.set_suffidea(yao_text)
+    zia_job.add_fact(factunit_shop(clean_text(), pledge=True), casa_road())
+    clean_factunit = zia_job.get_fact_obj(clean_road())
+    clean_factunit._assignedunit.set_suffidea(yao_text)
     sue_texas_userhub.save_job_agenda(zia_job)
 
     new_yao_job = create_listen_basis(yao_role)
@@ -144,7 +144,7 @@ def test_listen_to_beliefs_role_job_ConfirmNoBeliefPickedFromOwnersSpeakerDirAge
     assert new_yao_job.get_missing_belief_bases().get(eat_road()) is None
     listen_to_intents_role_job(new_yao_job, sue_texas_userhub)
     print(f"{new_yao_job.get_missing_belief_bases().keys()=}")
-    print(f"{new_yao_job._oathroot._beliefunits.keys()=}")
+    print(f"{new_yao_job._factroot._beliefunits.keys()=}")
     assert new_yao_job.get_missing_belief_bases().get(eat_road()) != None
 
     # WHEN
@@ -212,7 +212,7 @@ def test_listen_to_beliefs_role_job_ConfirmNoBeliefPickedFromOwnersSpeakerDirAge
     assert new_yao_job1.get_missing_belief_bases().get(eat_road()) is None
     listen_to_intents_role_job(new_yao_job1, sue_texas_userhub)
     print(f"{new_yao_job1.get_missing_belief_bases().keys()=}")
-    print(f"{new_yao_job1._oathroot._beliefunits.keys()=}")
+    print(f"{new_yao_job1._factroot._beliefunits.keys()=}")
     assert new_yao_job1.get_missing_belief_bases().get(eat_road()) != None
 
     # WHEN
@@ -264,14 +264,14 @@ def test_listen_to_beliefs_role_job_ConfirmNoBeliefPickedFromOwnersSpeakerDirAge
 
 #     sue_speaker.add_partyunit(yao_text)
 #     sue_speaker.set_party_pool(20)
-#     sue_speaker.add_oath(oathunit_shop(clean_text), status_road)
-#     sue_speaker.add_oath(oathunit_shop(dirty_text), status_road)
-#     sue_speaker.add_oath(oathunit_shop(sweep_text, pledge=True), casa_road)
-#     sue_speaker.edit_oath_attr(
+#     sue_speaker.add_fact(factunit_shop(clean_text), status_road)
+#     sue_speaker.add_fact(factunit_shop(dirty_text), status_road)
+#     sue_speaker.add_fact(factunit_shop(sweep_text, pledge=True), casa_road)
+#     sue_speaker.edit_fact_attr(
 #         sweep_road, reason_base=status_road, reason_premise=dirty_road
 #     )
-#     sweep_oath = sue_speaker.get_oath_obj(sweep_road)
-#     sweep_oath._assignedunit.set_suffidea(yao_text)
+#     sweep_fact = sue_speaker.get_fact_obj(sweep_road)
+#     sweep_fact._assignedunit.set_suffidea(yao_text)
 
 #     sue_texas_userhub = get_texas_userhub()
 #     sue_texas_userhub.save_job_agenda(sue_text, sue_speaker.get_json(), True)
@@ -279,14 +279,14 @@ def test_listen_to_beliefs_role_job_ConfirmNoBeliefPickedFromOwnersSpeakerDirAge
 #     yao_role.add_partyunit(yao_text)
 #     yao_role.add_partyunit(sue_text)
 #     new_yao_job = create_listen_basis(yao_role)
-#     print(f"{new_yao_job.get_oath_dict().keys()=}")
+#     print(f"{new_yao_job.get_fact_dict().keys()=}")
 #     # assert new_yao_job.get_missing_belief_bases().get(status_road) is None
 #     listen_to_intents_role_job(new_yao_job, texas_userhub)
-#     print(f"{new_yao_job.get_oath_dict().keys()=}")
+#     print(f"{new_yao_job.get_fact_dict().keys()=}")
 #     assert new_yao_job.get_missing_belief_bases().get(status_road) != None
 
 #     # assert new_yao_job.get_missing_belief_bases().keys() == {status_road}
-#     # sue_speaker.set_belief(status_road, clean_road, create_missing_oaths=True)
+#     # sue_speaker.set_belief(status_road, clean_road, create_missing_facts=True)
 
 #     # # WHEN
 #     # listen_to_beliefs_role_job(yao_role, yao_job, missing_belief_bases)
@@ -317,14 +317,14 @@ def test_listen_to_beliefs_role_job_ConfirmNoBeliefPickedFromOwnersSpeakerDirAge
 #     running_text = "running"
 #     running_road = yao_role.make_road(fridge_road, running_text)
 
-#     yao_role.add_oath(oathunit_shop(running_text), fridge_road)
-#     yao_role.add_oath(oathunit_shop(clean_text), status_road)
-#     yao_role.add_oath(oathunit_shop(dirty_text), status_road)
-#     yao_role.add_oath(oathunit_shop(sweep_text, pledge=True), casa_road)
-#     yao_role.edit_oath_attr(
+#     yao_role.add_fact(factunit_shop(running_text), fridge_road)
+#     yao_role.add_fact(factunit_shop(clean_text), status_road)
+#     yao_role.add_fact(factunit_shop(dirty_text), status_road)
+#     yao_role.add_fact(factunit_shop(sweep_text, pledge=True), casa_road)
+#     yao_role.edit_fact_attr(
 #         sweep_road, reason_base=status_road, reason_premise=dirty_road
 #     )
-#     yao_role.edit_oath_attr(
+#     yao_role.edit_fact_attr(
 #         sweep_road, reason_base=fridge_road, reason_premise=running_road
 #     )
 #     assert len(yao_role.get_missing_belief_bases()) == 2
@@ -334,8 +334,8 @@ def test_listen_to_beliefs_role_job_ConfirmNoBeliefPickedFromOwnersSpeakerDirAge
 
 #     # WHEN
 #     yao_job = agendaunit_shop(yao_text)
-#     yao_job.set_belief(status_road, clean_road, create_missing_oaths=True)
-#     yao_job.set_belief(fridge_road, running_road, create_missing_oaths=True)
+#     yao_job.set_belief(status_road, clean_road, create_missing_facts=True)
+#     yao_job.set_belief(fridge_road, running_road, create_missing_facts=True)
 #     missing_belief_bases = list(yao_role.get_missing_belief_bases().keys())
 #     listen_to_beliefs_role_job(yao_role, yao_job, missing_belief_bases)
 

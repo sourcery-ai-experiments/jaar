@@ -1,4 +1,4 @@
-from src.agenda.oath import oathunit_shop
+from src.agenda.fact import factunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.listen.listen import (
     migrate_all_beliefs,
@@ -134,16 +134,16 @@ def test_set_listen_to_speaker_belief_SetsBelief():
 
     yao_listener.add_partyunit(yao_text)
     yao_listener.set_party_pool(20)
-    yao_listener.add_oath(oathunit_shop(clean_text), status_road)
-    yao_listener.add_oath(oathunit_shop(dirty_text), status_road)
-    yao_listener.add_oath(oathunit_shop(sweep_text, pledge=True), casa_road)
-    yao_listener.edit_oath_attr(
+    yao_listener.add_fact(factunit_shop(clean_text), status_road)
+    yao_listener.add_fact(factunit_shop(dirty_text), status_road)
+    yao_listener.add_fact(factunit_shop(sweep_text, pledge=True), casa_road)
+    yao_listener.edit_fact_attr(
         sweep_road, reason_base=status_road, reason_premise=dirty_road
     )
     missing_belief_bases = list(yao_listener.get_missing_belief_bases().keys())
 
     yao_speaker = agendaunit_shop(yao_text)
-    yao_speaker.set_belief(status_road, clean_road, create_missing_oaths=True)
+    yao_speaker.set_belief(status_road, clean_road, create_missing_facts=True)
     assert yao_listener.get_missing_belief_bases().keys() == {status_road}
 
     # WHEN
@@ -174,14 +174,14 @@ def test_set_listen_to_speaker_belief_DoesNotOverrideBelief():
     running_text = "running"
     running_road = yao_listener.make_road(fridge_road, running_text)
 
-    yao_listener.add_oath(oathunit_shop(running_text), fridge_road)
-    yao_listener.add_oath(oathunit_shop(clean_text), status_road)
-    yao_listener.add_oath(oathunit_shop(dirty_text), status_road)
-    yao_listener.add_oath(oathunit_shop(sweep_text, pledge=True), casa_road)
-    yao_listener.edit_oath_attr(
+    yao_listener.add_fact(factunit_shop(running_text), fridge_road)
+    yao_listener.add_fact(factunit_shop(clean_text), status_road)
+    yao_listener.add_fact(factunit_shop(dirty_text), status_road)
+    yao_listener.add_fact(factunit_shop(sweep_text, pledge=True), casa_road)
+    yao_listener.edit_fact_attr(
         sweep_road, reason_base=status_road, reason_premise=dirty_road
     )
-    yao_listener.edit_oath_attr(
+    yao_listener.edit_fact_attr(
         sweep_road, reason_base=fridge_road, reason_premise=running_road
     )
     assert len(yao_listener.get_missing_belief_bases()) == 2
@@ -191,8 +191,8 @@ def test_set_listen_to_speaker_belief_DoesNotOverrideBelief():
 
     # WHEN
     yao_speaker = agendaunit_shop(yao_text)
-    yao_speaker.set_belief(status_road, clean_road, create_missing_oaths=True)
-    yao_speaker.set_belief(fridge_road, running_road, create_missing_oaths=True)
+    yao_speaker.set_belief(status_road, clean_road, create_missing_facts=True)
+    yao_speaker.set_belief(fridge_road, running_road, create_missing_facts=True)
     missing_belief_bases = list(yao_listener.get_missing_belief_bases().keys())
     listen_to_speaker_belief(yao_listener, yao_speaker, missing_belief_bases)
 
@@ -204,7 +204,7 @@ def test_set_listen_to_speaker_belief_DoesNotOverrideBelief():
     assert yao_listener.get_belief(fridge_road).pick == running_road
 
 
-def test_migrate_all_beliefs_CorrectlyAddsOathUnitsAndSetsBeliefUnits():
+def test_migrate_all_beliefs_CorrectlyAddsFactUnitsAndSetsBeliefUnits():
     # GIVEN
     yao_text = "Yao"
     yao_src = agendaunit_shop(yao_text)
@@ -227,21 +227,21 @@ def test_migrate_all_beliefs_CorrectlyAddsOathUnitsAndSetsBeliefUnits():
 
     yao_src.add_partyunit(yao_text)
     yao_src.set_party_pool(20)
-    yao_src.add_oath(oathunit_shop(clean_text), status_road)
-    yao_src.add_oath(oathunit_shop(dirty_text), status_road)
-    yao_src.add_oath(oathunit_shop(sweep_text, pledge=True), casa_road)
+    yao_src.add_fact(factunit_shop(clean_text), status_road)
+    yao_src.add_fact(factunit_shop(dirty_text), status_road)
+    yao_src.add_fact(factunit_shop(sweep_text, pledge=True), casa_road)
     yao_src.edit_reason(sweep_road, status_road, dirty_road)
     # missing_belief_bases = list(yao_src.get_missing_belief_bases().keys())
-    yao_src.add_oath(oathunit_shop(rain_text), weather_road)
-    yao_src.add_oath(oathunit_shop(snow_text), weather_road)
+    yao_src.add_fact(factunit_shop(rain_text), weather_road)
+    yao_src.add_fact(factunit_shop(snow_text), weather_road)
     yao_src.set_belief(weather_road, rain_road)
     yao_src.set_belief(status_road, clean_road)
 
     yao_dst = agendaunit_shop(yao_text)
-    assert yao_dst.oath_exists(clean_road) is False
-    assert yao_dst.oath_exists(dirty_road) is False
-    assert yao_dst.oath_exists(rain_road) is False
-    assert yao_dst.oath_exists(snow_road) is False
+    assert yao_dst.fact_exists(clean_road) is False
+    assert yao_dst.fact_exists(dirty_road) is False
+    assert yao_dst.fact_exists(rain_road) is False
+    assert yao_dst.fact_exists(snow_road) is False
     assert yao_dst.get_belief(weather_road) is None
     assert yao_dst.get_belief(status_road) is None
 
@@ -249,10 +249,10 @@ def test_migrate_all_beliefs_CorrectlyAddsOathUnitsAndSetsBeliefUnits():
     migrate_all_beliefs(yao_src, yao_dst)
 
     # THEN
-    assert yao_dst.oath_exists(clean_road)
-    assert yao_dst.oath_exists(dirty_road)
-    assert yao_dst.oath_exists(rain_road)
-    assert yao_dst.oath_exists(snow_road)
+    assert yao_dst.fact_exists(clean_road)
+    assert yao_dst.fact_exists(dirty_road)
+    assert yao_dst.fact_exists(rain_road)
+    assert yao_dst.fact_exists(snow_road)
     assert yao_dst.get_belief(weather_road) != None
     assert yao_dst.get_belief(status_road) != None
     assert yao_dst.get_belief(weather_road).pick == rain_road

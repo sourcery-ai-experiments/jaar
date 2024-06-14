@@ -106,7 +106,7 @@ class AssignedHeir:
             ):
                 # else raise error
                 raise InvalidAssignHeirPopulateException(
-                    f"parent_assigned_heir does not contain all partys of the oath's assignedunit\n{set(all_parent_assignedheir_partys)=}\n\n{set(all_assignedunit_partys)=}"
+                    f"parent_assigned_heir does not contain all partys of the fact's assignedunit\n{set(all_parent_assignedheir_partys)=}\n\n{set(all_assignedunit_partys)=}"
                 )
 
             # set dict_x = to assignedunit ideas

@@ -6,10 +6,10 @@ from src._instrument.python import (
 )
 from src._instrument.sqlite import create_insert_sqlstr, RowData
 from src._road.road import create_road
-from src.agenda.reason_oath import beliefunit_shop
+from src.agenda.reason_fact import beliefunit_shop
 from src.agenda.party import partyunit_shop, partylink_shop
 from src.agenda.idea import ideaunit_shop, balancelink_shop
-from src.agenda.oath import oathunit_shop
+from src.agenda.fact import factunit_shop
 from src.agenda.agenda import AgendaUnit
 from dataclasses import dataclass
 from os import getcwd as os_getcwd
@@ -391,23 +391,23 @@ def _modify_agenda_idea_partylink_insert(x_agenda: AgendaUnit, x_quark: QuarkUni
     )
 
 
-def _modify_agenda_oathunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    oath_road = create_road(
+def _modify_agenda_factunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    fact_road = create_road(
         x_quark.get_value("parent_road"),
         x_quark.get_value("label"),
         delimiter=x_agenda._road_delimiter,
     )
-    x_agenda.del_oath_obj(oath_road, del_children=x_quark.get_value("del_children"))
+    x_agenda.del_fact_obj(fact_road, del_children=x_quark.get_value("del_children"))
 
 
-def _modify_agenda_oathunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    oath_road = create_road(
+def _modify_agenda_factunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    fact_road = create_road(
         x_quark.get_value("parent_road"),
         x_quark.get_value("label"),
         delimiter=x_agenda._road_delimiter,
     )
-    x_agenda.edit_oath_attr(
-        road=oath_road,
+    x_agenda.edit_fact_attr(
+        road=fact_road,
         addin=x_quark.get_value("_addin"),
         begin=x_quark.get_value("_begin"),
         close=x_quark.get_value("_close"),
@@ -422,9 +422,9 @@ def _modify_agenda_oathunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     )
 
 
-def _modify_agenda_oathunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_agenda.add_oath(
-        oath_kid=oathunit_shop(
+def _modify_agenda_factunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_agenda.add_fact(
+        fact_kid=factunit_shop(
             _label=x_quark.get_value("label"),
             _addin=x_quark.get_value("_addin"),
             _begin=x_quark.get_value("_begin"),
@@ -436,58 +436,58 @@ def _modify_agenda_oathunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
             pledge=x_quark.get_value("pledge"),
         ),
         parent_road=x_quark.get_value("parent_road"),
-        create_missing_oaths=False,
+        create_missing_facts=False,
         create_missing_ideas=False,
         create_missing_ancestors=False,
     )
 
 
-def _modify_agenda_oath_balancelink_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_agenda.edit_oath_attr(
+def _modify_agenda_fact_balancelink_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_agenda.edit_fact_attr(
         road=x_quark.get_value("road"),
         balancelink_del=x_quark.get_value("idea_id"),
     )
 
 
-def _modify_agenda_oath_balancelink_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_oath = x_agenda.get_oath_obj(x_quark.get_value("road"))
-    x_balancelink = x_oath._balancelinks.get(x_quark.get_value("idea_id"))
+def _modify_agenda_fact_balancelink_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_fact = x_agenda.get_fact_obj(x_quark.get_value("road"))
+    x_balancelink = x_fact._balancelinks.get(x_quark.get_value("idea_id"))
     x_credor_weight = x_quark.get_value("credor_weight")
     if x_credor_weight != None and x_balancelink.credor_weight != x_credor_weight:
         x_balancelink.credor_weight = x_credor_weight
     x_debtor_weight = x_quark.get_value("debtor_weight")
     if x_debtor_weight != None and x_balancelink.debtor_weight != x_debtor_weight:
         x_balancelink.debtor_weight = x_debtor_weight
-    x_agenda.edit_oath_attr(x_quark.get_value("road"), balancelink=x_balancelink)
+    x_agenda.edit_fact_attr(x_quark.get_value("road"), balancelink=x_balancelink)
 
 
-def _modify_agenda_oath_balancelink_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+def _modify_agenda_fact_balancelink_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_balancelink = balancelink_shop(
         idea_id=x_quark.get_value("idea_id"),
         credor_weight=x_quark.get_value("credor_weight"),
         debtor_weight=x_quark.get_value("debtor_weight"),
     )
-    x_agenda.edit_oath_attr(x_quark.get_value("road"), balancelink=x_balancelink)
+    x_agenda.edit_fact_attr(x_quark.get_value("road"), balancelink=x_balancelink)
 
 
-def _modify_agenda_oath_beliefunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_oathunit = x_agenda.get_oath_obj(x_quark.get_value("road"))
-    x_oathunit.del_beliefunit(x_quark.get_value("base"))
+def _modify_agenda_fact_beliefunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_factunit = x_agenda.get_fact_obj(x_quark.get_value("road"))
+    x_factunit.del_beliefunit(x_quark.get_value("base"))
 
 
-def _modify_agenda_oath_beliefunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_oathunit = x_agenda.get_oath_obj(x_quark.get_value("road"))
-    x_beliefunit = x_oathunit._beliefunits.get(x_quark.get_value("base"))
+def _modify_agenda_fact_beliefunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_factunit = x_agenda.get_fact_obj(x_quark.get_value("road"))
+    x_beliefunit = x_factunit._beliefunits.get(x_quark.get_value("base"))
     x_beliefunit.set_attr(
         pick=x_quark.get_value("pick"),
         open=x_quark.get_value("open"),
         nigh=x_quark.get_value("nigh"),
     )
-    # x_oathunit.set_beliefunit(x_beliefunit)
+    # x_factunit.set_beliefunit(x_beliefunit)
 
 
-def _modify_agenda_oath_beliefunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_agenda.edit_oath_attr(
+def _modify_agenda_fact_beliefunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_agenda.edit_fact_attr(
         road=x_quark.get_value("road"),
         beliefunit=beliefunit_shop(
             base=x_quark.get_value("base"),
@@ -498,41 +498,41 @@ def _modify_agenda_oath_beliefunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUn
     )
 
 
-def _modify_agenda_oath_reasonunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_oathunit = x_agenda.get_oath_obj(x_quark.get_value("road"))
-    x_oathunit.del_reasonunit_base(x_quark.get_value("base"))
+def _modify_agenda_fact_reasonunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_factunit = x_agenda.get_fact_obj(x_quark.get_value("road"))
+    x_factunit.del_reasonunit_base(x_quark.get_value("base"))
 
 
-def _modify_agenda_oath_reasonunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_agenda.edit_oath_attr(
+def _modify_agenda_fact_reasonunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_agenda.edit_fact_attr(
         road=x_quark.get_value("road"),
         reason_base=x_quark.get_value("base"),
-        reason_suff_oath_active=x_quark.get_value("suff_oath_active"),
+        reason_suff_fact_active=x_quark.get_value("suff_fact_active"),
     )
 
 
-def _modify_agenda_oath_reasonunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_agenda.edit_oath_attr(
+def _modify_agenda_fact_reasonunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_agenda.edit_fact_attr(
         road=x_quark.get_value("road"),
         reason_base=x_quark.get_value("base"),
-        reason_suff_oath_active=x_quark.get_value("suff_oath_active"),
+        reason_suff_fact_active=x_quark.get_value("suff_fact_active"),
     )
 
 
-def _modify_agenda_oath_reason_premiseunit_delete(
+def _modify_agenda_fact_reason_premiseunit_delete(
     x_agenda: AgendaUnit, x_quark: QuarkUnit
 ):
-    x_agenda.edit_oath_attr(
+    x_agenda.edit_fact_attr(
         road=x_quark.get_value("road"),
         reason_del_premise_base=x_quark.get_value("base"),
         reason_del_premise_need=x_quark.get_value("need"),
     )
 
 
-def _modify_agenda_oath_reason_premiseunit_update(
+def _modify_agenda_fact_reason_premiseunit_update(
     x_agenda: AgendaUnit, x_quark: QuarkUnit
 ):
-    x_agenda.edit_oath_attr(
+    x_agenda.edit_fact_attr(
         road=x_quark.get_value("road"),
         reason_base=x_quark.get_value("base"),
         reason_premise=x_quark.get_value("need"),
@@ -542,11 +542,11 @@ def _modify_agenda_oath_reason_premiseunit_update(
     )
 
 
-def _modify_agenda_oath_reason_premiseunit_insert(
+def _modify_agenda_fact_reason_premiseunit_insert(
     x_agenda: AgendaUnit, x_quark: QuarkUnit
 ):
-    x_oathunit = x_agenda.get_oath_obj(x_quark.get_value("road"))
-    x_oathunit.set_reason_premise(
+    x_factunit = x_agenda.get_fact_obj(x_quark.get_value("road"))
+    x_factunit.set_reason_premise(
         base=x_quark.get_value("base"),
         premise=x_quark.get_value("need"),
         open=x_quark.get_value("open"),
@@ -555,14 +555,14 @@ def _modify_agenda_oath_reason_premiseunit_insert(
     )
 
 
-def _modify_agenda_oath_suffidea_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_oathunit = x_agenda.get_oath_obj(x_quark.get_value("road"))
-    x_oathunit._assignedunit.del_suffidea(idea_id=x_quark.get_value("idea_id"))
+def _modify_agenda_fact_suffidea_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_factunit = x_agenda.get_fact_obj(x_quark.get_value("road"))
+    x_factunit._assignedunit.del_suffidea(idea_id=x_quark.get_value("idea_id"))
 
 
-def _modify_agenda_oath_suffidea_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_oathunit = x_agenda.get_oath_obj(x_quark.get_value("road"))
-    x_oathunit._assignedunit.set_suffidea(idea_id=x_quark.get_value("idea_id"))
+def _modify_agenda_fact_suffidea_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_factunit = x_agenda.get_fact_obj(x_quark.get_value("road"))
+    x_factunit._assignedunit.set_suffidea(idea_id=x_quark.get_value("idea_id"))
 
 
 def _modify_agenda_partyunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
@@ -610,56 +610,56 @@ def _modify_agenda_idea_partylink(x_agenda: AgendaUnit, x_quark: QuarkUnit):
         _modify_agenda_idea_partylink_insert(x_agenda, x_quark)
 
 
-def _modify_agenda_oathunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+def _modify_agenda_factunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_agenda_oathunit_delete(x_agenda, x_quark)
+        _modify_agenda_factunit_delete(x_agenda, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_agenda_oathunit_update(x_agenda, x_quark)
+        _modify_agenda_factunit_update(x_agenda, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_agenda_oathunit_insert(x_agenda, x_quark)
+        _modify_agenda_factunit_insert(x_agenda, x_quark)
 
 
-def _modify_agenda_oath_balancelink(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+def _modify_agenda_fact_balancelink(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_agenda_oath_balancelink_delete(x_agenda, x_quark)
+        _modify_agenda_fact_balancelink_delete(x_agenda, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_agenda_oath_balancelink_update(x_agenda, x_quark)
+        _modify_agenda_fact_balancelink_update(x_agenda, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_agenda_oath_balancelink_insert(x_agenda, x_quark)
+        _modify_agenda_fact_balancelink_insert(x_agenda, x_quark)
 
 
-def _modify_agenda_oath_beliefunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+def _modify_agenda_fact_beliefunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_agenda_oath_beliefunit_delete(x_agenda, x_quark)
+        _modify_agenda_fact_beliefunit_delete(x_agenda, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_agenda_oath_beliefunit_update(x_agenda, x_quark)
+        _modify_agenda_fact_beliefunit_update(x_agenda, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_agenda_oath_beliefunit_insert(x_agenda, x_quark)
+        _modify_agenda_fact_beliefunit_insert(x_agenda, x_quark)
 
 
-def _modify_agenda_oath_reasonunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+def _modify_agenda_fact_reasonunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_agenda_oath_reasonunit_delete(x_agenda, x_quark)
+        _modify_agenda_fact_reasonunit_delete(x_agenda, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_agenda_oath_reasonunit_update(x_agenda, x_quark)
+        _modify_agenda_fact_reasonunit_update(x_agenda, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_agenda_oath_reasonunit_insert(x_agenda, x_quark)
+        _modify_agenda_fact_reasonunit_insert(x_agenda, x_quark)
 
 
-def _modify_agenda_oath_reason_premiseunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+def _modify_agenda_fact_reason_premiseunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_agenda_oath_reason_premiseunit_delete(x_agenda, x_quark)
+        _modify_agenda_fact_reason_premiseunit_delete(x_agenda, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_agenda_oath_reason_premiseunit_update(x_agenda, x_quark)
+        _modify_agenda_fact_reason_premiseunit_update(x_agenda, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_agenda_oath_reason_premiseunit_insert(x_agenda, x_quark)
+        _modify_agenda_fact_reason_premiseunit_insert(x_agenda, x_quark)
 
 
-def _modify_agenda_oath_suffidea(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+def _modify_agenda_fact_suffidea(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_agenda_oath_suffidea_delete(x_agenda, x_quark)
+        _modify_agenda_fact_suffidea_delete(x_agenda, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_agenda_oath_suffidea_insert(x_agenda, x_quark)
+        _modify_agenda_fact_suffidea_insert(x_agenda, x_quark)
 
 
 def _modify_agenda_partyunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
@@ -678,18 +678,18 @@ def modify_agenda_with_quarkunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
         _modify_agenda_ideaunit(x_agenda, x_quark)
     elif x_quark.category == "agenda_idea_partylink":
         _modify_agenda_idea_partylink(x_agenda, x_quark)
-    elif x_quark.category == "agenda_oathunit":
-        _modify_agenda_oathunit(x_agenda, x_quark)
-    elif x_quark.category == "agenda_oath_balancelink":
-        _modify_agenda_oath_balancelink(x_agenda, x_quark)
-    elif x_quark.category == "agenda_oath_beliefunit":
-        _modify_agenda_oath_beliefunit(x_agenda, x_quark)
-    elif x_quark.category == "agenda_oath_reasonunit":
-        _modify_agenda_oath_reasonunit(x_agenda, x_quark)
-    elif x_quark.category == "agenda_oath_reason_premiseunit":
-        _modify_agenda_oath_reason_premiseunit(x_agenda, x_quark)
-    elif x_quark.category == "agenda_oath_suffidea":
-        _modify_agenda_oath_suffidea(x_agenda, x_quark)
+    elif x_quark.category == "agenda_factunit":
+        _modify_agenda_factunit(x_agenda, x_quark)
+    elif x_quark.category == "agenda_fact_balancelink":
+        _modify_agenda_fact_balancelink(x_agenda, x_quark)
+    elif x_quark.category == "agenda_fact_beliefunit":
+        _modify_agenda_fact_beliefunit(x_agenda, x_quark)
+    elif x_quark.category == "agenda_fact_reasonunit":
+        _modify_agenda_fact_reasonunit(x_agenda, x_quark)
+    elif x_quark.category == "agenda_fact_reason_premiseunit":
+        _modify_agenda_fact_reason_premiseunit(x_agenda, x_quark)
+    elif x_quark.category == "agenda_fact_suffidea":
+        _modify_agenda_fact_suffidea(x_agenda, x_quark)
     elif x_quark.category == "agenda_partyunit":
         _modify_agenda_partyunit(x_agenda, x_quark)
 
@@ -704,11 +704,11 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj._party_debtor_pool != y_obj._party_debtor_pool
             or x_obj._planck != y_obj._planck
         )
-    elif category in {"agenda_idea_partylink", "agenda_oath_balancelink"}:
+    elif category in {"agenda_idea_partylink", "agenda_fact_balancelink"}:
         return (x_obj.credor_weight != y_obj.credor_weight) or (
             x_obj.debtor_weight != y_obj.debtor_weight
         )
-    elif category == "agenda_oathunit":
+    elif category == "agenda_factunit":
         return (
             x_obj._addin != y_obj._addin
             or x_obj._begin != y_obj._begin
@@ -722,15 +722,15 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj._weight != y_obj._weight
             or x_obj.pledge != y_obj.pledge
         )
-    elif category == "agenda_oath_beliefunit":
+    elif category == "agenda_fact_beliefunit":
         return (
             (x_obj.pick != y_obj.pick)
             or (x_obj.open != y_obj.open)
             or (x_obj.nigh != y_obj.nigh)
         )
-    elif category == "agenda_oath_reasonunit":
-        return x_obj.suff_oath_active != y_obj.suff_oath_active
-    elif category == "agenda_oath_reason_premiseunit":
+    elif category == "agenda_fact_reasonunit":
+        return x_obj.suff_fact_active != y_obj.suff_fact_active
+    elif category == "agenda_fact_reason_premiseunit":
         return (
             x_obj.open != y_obj.open
             or x_obj.nigh != y_obj.nigh

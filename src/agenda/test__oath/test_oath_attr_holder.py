@@ -1,10 +1,10 @@
 from src.agenda.healer import healerhold_shop
-from src.agenda.oath import OathAttrFilter, oathattrfilter_shop
+from src.agenda.fact import FactAttrFilter, factattrfilter_shop
 from pytest import raises as pytest_raise
 
 
-def test_OathAttrFilter_Exists():
-    new_obj = OathAttrFilter()
+def test_FactAttrFilter_Exists():
+    new_obj = FactAttrFilter()
     assert new_obj.weight is None
     assert new_obj.uid is None
     assert new_obj.reason is None
@@ -15,7 +15,7 @@ def test_OathAttrFilter_Exists():
     assert new_obj.reason_premise_divisor is None
     assert new_obj.reason_del_premise_base is None
     assert new_obj.reason_del_premise_need is None
-    assert new_obj.reason_suff_oath_active is None
+    assert new_obj.reason_suff_fact_active is None
     assert new_obj.assignedunit is None
     assert new_obj.healerhold is None
     assert new_obj.begin is None
@@ -37,36 +37,36 @@ def test_OathAttrFilter_Exists():
     assert new_obj.meld_strategy is None
 
 
-def test_OathAttrFilter_CorrectlyCalculatesPremiseRanges():
+def test_FactAttrFilter_CorrectlyCalculatesPremiseRanges():
     # GIVEN
-    oath_attr = OathAttrFilter(reason_premise="some_road")
-    assert oath_attr.reason_premise_open is None
-    assert oath_attr.reason_premise_nigh is None
-    # assert oath_attr.reason_premise_numor is None
-    assert oath_attr.reason_premise_divisor is None
-    # assert oath_attr.reason_premise_reest is None
+    fact_attr = FactAttrFilter(reason_premise="some_road")
+    assert fact_attr.reason_premise_open is None
+    assert fact_attr.reason_premise_nigh is None
+    # assert fact_attr.reason_premise_numor is None
+    assert fact_attr.reason_premise_divisor is None
+    # assert fact_attr.reason_premise_reest is None
 
     # WHEN
-    oath_attr.set_premise_range_attributes_influenced_by_premise_oath(
+    fact_attr.set_premise_range_attributes_influenced_by_premise_fact(
         premise_open=5.0,
         premise_nigh=20.0,
         # premise_numor,
         premise_denom=4.0,
         # premise_reest,
     )
-    assert oath_attr.reason_premise_open == 5.0
-    assert oath_attr.reason_premise_nigh == 20.0
-    # assert oath_attr.reason_premise_numor is None
-    assert oath_attr.reason_premise_divisor == 4.0
-    # assert oath_attr.reason_premise_reest is None
+    assert fact_attr.reason_premise_open == 5.0
+    assert fact_attr.reason_premise_nigh == 20.0
+    # assert fact_attr.reason_premise_numor is None
+    assert fact_attr.reason_premise_divisor == 4.0
+    # assert fact_attr.reason_premise_reest is None
 
 
-def test_oathattrfilter_shop_ReturnsCorrectObj():
+def test_factattrfilter_shop_ReturnsCorrectObj():
     # GIVEN
     sue_healerhold = healerhold_shop({"Sue", "Yim"})
 
     # WHEN
-    x_oathattrfilter = oathattrfilter_shop(healerhold=sue_healerhold)
+    x_factattrfilter = factattrfilter_shop(healerhold=sue_healerhold)
 
     # THEN
-    assert x_oathattrfilter.healerhold == sue_healerhold
+    assert x_factattrfilter.healerhold == sue_healerhold

@@ -227,13 +227,13 @@ def test_UserHub_append_atoms_to_duty_file_AddsatomsToDutyFile(
     sports_road = duty_agenda.make_l1_road(sports_text)
     knee_text = "knee"
     knee_road = duty_agenda.make_road(sports_road, knee_text)
-    assert duty_agenda.oath_exists(sports_road) is False
-    assert duty_agenda.oath_exists(knee_road) is False
+    assert duty_agenda.fact_exists(sports_road) is False
+    assert duty_agenda.fact_exists(knee_road) is False
 
     # WHEN
     new_agenda = sue_userhub.append_atoms_to_duty_file()
 
     # THEN
     assert new_agenda != duty_agenda
-    assert new_agenda.oath_exists(sports_road)
-    assert new_agenda.oath_exists(knee_road)
+    assert new_agenda.fact_exists(sports_road)
+    assert new_agenda.fact_exists(knee_road)

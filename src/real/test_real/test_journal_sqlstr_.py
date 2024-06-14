@@ -162,11 +162,11 @@ CREATE TABLE IF NOT EXISTS quark_hx (
 
     assert generated_sqlstr.find(begin_sqlstr) == 0
     assert generated_sqlstr.find(end_sqlstr) > 0
-    example_oath_reasonunit_text = (
-        "oath_reasonunit_UPDATE_suff_oath_active INTEGER NULL"
+    example_fact_reasonunit_text = (
+        "fact_reasonunit_UPDATE_suff_fact_active INTEGER NULL"
     )
-    assert generated_sqlstr.find(example_oath_reasonunit_text) > 0
-    assert generated_sqlstr.find(example_oath_reasonunit_text) == 3430
+    assert generated_sqlstr.find(example_fact_reasonunit_text) > 0
+    assert generated_sqlstr.find(example_fact_reasonunit_text) == 3430
 
 
 def test_get_quark_hx_table_insert_sqlstr_ReturnsCorrectStr():
@@ -180,7 +180,7 @@ def test_get_quark_hx_table_insert_sqlstr_ReturnsCorrectStr():
     knee_open = 7
 
     # WHEN
-    x_category = "agenda_oath_beliefunit"
+    x_category = "agenda_fact_beliefunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"
@@ -219,11 +219,11 @@ CREATE TABLE IF NOT EXISTS quark_mstr (
     assert generated_sqlstr.find(begin_sqlstr) == 0
     assert generated_sqlstr.find(end_sqlstr) > 0
     assert generated_sqlstr.find(end_sqlstr) == 6067
-    example_oath_reasonunit_text = (
-        "oath_reasonunit_UPDATE_suff_oath_active INTEGER NULL"
+    example_fact_reasonunit_text = (
+        "fact_reasonunit_UPDATE_suff_fact_active INTEGER NULL"
     )
-    assert generated_sqlstr.find(example_oath_reasonunit_text) > 0
-    assert generated_sqlstr.find(example_oath_reasonunit_text) == 3463
+    assert generated_sqlstr.find(example_fact_reasonunit_text) > 0
+    assert generated_sqlstr.find(example_fact_reasonunit_text) == 3463
 
 
 def test_get_create_table_if_not_exist_sqlstrs_HasCorrectNumberOfNumber():

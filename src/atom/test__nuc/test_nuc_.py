@@ -309,24 +309,24 @@ def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj():
     #         print(f"{x_quark.category=}")
 
 
-def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj_OathUnitsSorted():
+def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj_FactUnitsSorted():
     # GIVEN
     x_real_id = root_label()
     sports_text = "sports"
     sports_road = create_road(x_real_id, sports_text)
     knee_text = "knee"
-    x_category = "agenda_oathunit"
+    x_category = "agenda_factunit"
     label_text = "label"
     parent_road_text = "parent_road"
-    sports_insert_oathunit_quarkunit = quarkunit_shop(x_category, quark_insert())
-    sports_insert_oathunit_quarkunit.set_required_arg(label_text, sports_text)
-    sports_insert_oathunit_quarkunit.set_required_arg(parent_road_text, x_real_id)
-    knee_insert_oathunit_quarkunit = quarkunit_shop(x_category, quark_insert())
-    knee_insert_oathunit_quarkunit.set_required_arg(label_text, knee_text)
-    knee_insert_oathunit_quarkunit.set_required_arg(parent_road_text, sports_road)
+    sports_insert_factunit_quarkunit = quarkunit_shop(x_category, quark_insert())
+    sports_insert_factunit_quarkunit.set_required_arg(label_text, sports_text)
+    sports_insert_factunit_quarkunit.set_required_arg(parent_road_text, x_real_id)
+    knee_insert_factunit_quarkunit = quarkunit_shop(x_category, quark_insert())
+    knee_insert_factunit_quarkunit.set_required_arg(label_text, knee_text)
+    knee_insert_factunit_quarkunit.set_required_arg(parent_road_text, sports_road)
     x_nucunit = nucunit_shop()
-    x_nucunit.set_quarkunit(knee_insert_oathunit_quarkunit)
-    x_nucunit.set_quarkunit(sports_insert_oathunit_quarkunit)
+    x_nucunit.set_quarkunit(knee_insert_factunit_quarkunit)
+    x_nucunit.set_quarkunit(sports_insert_factunit_quarkunit)
 
     # WHEN
     x_quark_order_list = x_nucunit.get_sorted_quarkunits()
@@ -335,8 +335,8 @@ def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj_OathUnitsSorted():
     assert len(x_quark_order_list) == 2
     # for quarkunit in x_quark_order_list:
     #     print(f"{quarkunit.required_args=}")
-    assert x_quark_order_list[0] == sports_insert_oathunit_quarkunit
-    assert x_quark_order_list[1] == knee_insert_oathunit_quarkunit
+    assert x_quark_order_list[0] == sports_insert_factunit_quarkunit
+    assert x_quark_order_list[1] == knee_insert_factunit_quarkunit
     # for crud_text, quark_list in sue_quark_order_dict.items():
     #     print(f"{crud_text=}")
     #     print(f"{len(quark_list)=}")
@@ -351,7 +351,7 @@ def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj_Road_Sorted():
     sports_road = create_road(x_real_id, sports_text)
     knee_text = "knee"
     knee_road = create_road(sports_road, knee_text)
-    x_category = "agenda_oath_balancelink"
+    x_category = "agenda_fact_balancelink"
     road_text = "road"
     idea_id_text = "idea_id"
     swimmers_text = ",Swimmers"

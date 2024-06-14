@@ -65,10 +65,10 @@ class EditBeliefTime(qtw.QTableWidget, Ui_Form):
         self.close()
 
     def display_belief_time(self):
-        # minutes_oath = self.agenda_x.get_oath_obj(
+        # minutes_fact = self.agenda_x.get_fact_obj(
         #     road=f"{root_label},time,jajatime"
         # )
-        minutes_belief = self.agenda_x._oathroot._beliefunits[
+        minutes_belief = self.agenda_x._factroot._beliefunits[
             f"{self.agenda_x._econ_id},time,jajatime"
         ]
 
