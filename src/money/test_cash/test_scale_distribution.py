@@ -5,9 +5,9 @@ from pytest import raises as pytest_raises
 def test_allot_scale_v01():
     # Example usage:
     partys = {
-        "obj1": {"creditor_weight": 1.0},
-        "obj2": {"creditor_weight": 2.0},
-        "obj3": {"creditor_weight": 3.0},
+        "obj1": {"credor_weight": 1.0},
+        "obj2": {"credor_weight": 2.0},
+        "obj3": {"credor_weight": 3.0},
     }
     print(f"{partys=}")
     scale_number = 100
@@ -24,9 +24,9 @@ def test_allot_scale_v01():
 def test_allot_scale_v02():
     # Example usage:
     partys = {
-        "obj1": {"creditor_weight": 1.0},
-        "obj2": {"creditor_weight": 2.0},
-        "obj3": {"creditor_weight": 3.0},
+        "obj1": {"credor_weight": 1.0},
+        "obj2": {"credor_weight": 2.0},
+        "obj3": {"credor_weight": 3.0},
     }
     print(f"{partys=}")
     scale_number = 100
@@ -45,9 +45,9 @@ def test_allot_scale_v02():
 def test_allot_scale_v03():
     # Example usage:
     partys = {
-        "obj1": {"creditor_weight": 1.0},
-        "obj2": {"creditor_weight": 2.0},
-        "obj3": {"creditor_weight": 3.0},
+        "obj1": {"credor_weight": 1.0},
+        "obj2": {"credor_weight": 2.0},
+        "obj3": {"credor_weight": 3.0},
     }
     print(f"{partys=}")
     scale_number = 100.5
@@ -64,9 +64,9 @@ def test_allot_scale_v03():
 def test_allot_scale_v04():
     # Example usage:
     partys = {
-        "obj1": {"creditor_weight": 1.0},
-        "obj2": {"creditor_weight": 2.0},
-        "obj3": {"creditor_weight": 3.0},
+        "obj1": {"credor_weight": 1.0},
+        "obj2": {"credor_weight": 2.0},
+        "obj3": {"credor_weight": 3.0},
     }
     print(f"{partys=}")
     scale_number = 101
@@ -83,13 +83,13 @@ def test_allot_scale_v04():
 def test_allot_scale_v05():
     # Example usage:
     partys = {
-        "obj1": {"creditor_weight": 1.0},
-        "obj2": {"creditor_weight": 2.0},
-        "obj3": {"creditor_weight": 3.0},
-        "obj4": {"creditor_weight": 7.0},
-        "obj5": {"creditor_weight": 13.0},
-        "obj6": {"creditor_weight": 99.0},
-        "obj7": {"creditor_weight": 41.0},
+        "obj1": {"credor_weight": 1.0},
+        "obj2": {"credor_weight": 2.0},
+        "obj3": {"credor_weight": 3.0},
+        "obj4": {"credor_weight": 7.0},
+        "obj5": {"credor_weight": 13.0},
+        "obj6": {"credor_weight": 99.0},
+        "obj7": {"credor_weight": 41.0},
     }
     print(f"{partys=}")
     scale_number = 101
@@ -110,13 +110,13 @@ def test_allot_scale_v05():
 def test_allot_scale_v06():
     # Example usage:
     partys = {
-        "obj1": {"creditor_weight": 1.0},
-        "obj2": {"creditor_weight": 2.0},
-        "obj3": {"creditor_weight": 3.0},
-        "obj4": {"creditor_weight": 7.0},
-        "obj5": {"creditor_weight": 13.0},
-        "obj6": {"creditor_weight": 99.0},
-        "obj7": {"creditor_weight": 100000000.0},
+        "obj1": {"credor_weight": 1.0},
+        "obj2": {"credor_weight": 2.0},
+        "obj3": {"credor_weight": 3.0},
+        "obj4": {"credor_weight": 7.0},
+        "obj5": {"credor_weight": 13.0},
+        "obj6": {"credor_weight": 99.0},
+        "obj7": {"credor_weight": 100000000.0},
     }
     print(f"{partys=}")
     scale_number = 101
@@ -137,13 +137,13 @@ def test_allot_scale_v06():
 def test_allot_scale_v07():
     # Example usage:
     partys = {
-        "obj1": {"creditor_weight": 1.0},
-        "obj2": {"creditor_weight": 2.0},
-        "obj3": {"creditor_weight": 3.0},
-        "obj4": {"creditor_weight": 7.0},
-        "obj5": {"creditor_weight": 13.0},
-        "obj6": {"creditor_weight": 99.0},
-        "obj7": {"creditor_weight": 100000000.0},
+        "obj1": {"credor_weight": 1.0},
+        "obj2": {"credor_weight": 2.0},
+        "obj3": {"credor_weight": 3.0},
+        "obj4": {"credor_weight": 7.0},
+        "obj5": {"credor_weight": 13.0},
+        "obj6": {"credor_weight": 99.0},
+        "obj7": {"credor_weight": 100000000.0},
     }
     print(f"{partys=}")
     scale_number = 1

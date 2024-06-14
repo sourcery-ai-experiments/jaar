@@ -56,16 +56,16 @@ def test_display_ideatree_GivenAgenda_shows_Tasks():
 def test_get_agenda_partys_plotly_fig_DisplaysCorrectInfo():
     # GIVEN
     luca_agenda = agendaunit_shop()
-    luca_agenda.set_party_creditor_pool(500)
+    luca_agenda.set_party_credor_pool(500)
     luca_agenda.set_party_debtor_pool(400)
     todd_text = "Todd"
-    todd_creditor_weight = 66
+    todd_credor_weight = 66
     todd_debtor_weight = 77
-    luca_agenda.add_partyunit(todd_text, todd_creditor_weight, todd_debtor_weight)
+    luca_agenda.add_partyunit(todd_text, todd_credor_weight, todd_debtor_weight)
     sue_text = "Sue"
-    sue_creditor_weight = 434
+    sue_credor_weight = 434
     sue_debtor_weight = 323
-    luca_agenda.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    luca_agenda.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
 
     # WHEN
     x_fig = get_agenda_partys_plotly_fig(luca_agenda)

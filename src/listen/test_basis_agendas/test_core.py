@@ -17,11 +17,11 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     yao_duty = agendaunit_shop(yao_text, _road_delimiter=slash_text, _penny=penny_float)
     yao_duty.add_l1_idea(ideaunit_shop("Iowa"))
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
-    zia_creditor_pool = 87
+    zia_credor_pool = 87
     zia_debtor_pool = 81
-    yao_duty.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_duty.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     zia_irrational_debtor_weight = 11
     zia_missing_debtor_weight = 22
     role_zia_partyunit = yao_duty.get_party(zia_text)
@@ -30,7 +30,7 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     swim_group = groupunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
     swim_group.set_partylink(partylink_shop(zia_text))
     yao_duty.set_groupunit(swim_group)
-    yao_duty.set_party_creditor_pool(zia_creditor_pool, True)
+    yao_duty.set_party_credor_pool(zia_credor_pool, True)
     yao_duty.set_party_debtor_pool(zia_debtor_pool, True)
 
     # WHEN
@@ -46,8 +46,8 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     assert yao_empty_job._planck == yao_duty._planck
     assert yao_empty_job._penny == yao_duty._penny
     assert yao_empty_job._monetary_desc is None
-    assert yao_empty_job._party_creditor_pool != yao_duty._party_creditor_pool
-    assert yao_empty_job._party_creditor_pool is None
+    assert yao_empty_job._party_credor_pool != yao_duty._party_credor_pool
+    assert yao_empty_job._party_credor_pool is None
     assert yao_empty_job._party_debtor_pool != yao_duty._party_debtor_pool
     assert yao_empty_job._party_debtor_pool is None
     yao_empty_job.calc_agenda_metrics()
@@ -61,11 +61,11 @@ def test_create_listen_basis_ReturnsCorrectObj():
     yao_role = agendaunit_shop(yao_text, _road_delimiter=slash_text)
     yao_role.add_l1_idea(ideaunit_shop("Iowa"))
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
-    zia_creditor_pool = 87
+    zia_credor_pool = 87
     zia_debtor_pool = 81
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     zia_irrational_debtor_weight = 11
     zia_missing_debtor_weight = 22
     role_zia_partyunit = yao_role.get_party(zia_text)
@@ -74,7 +74,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     swim_group = groupunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
     swim_group.set_partylink(partylink_shop(zia_text))
     yao_role.set_groupunit(swim_group)
-    yao_role.set_party_creditor_pool(zia_creditor_pool, True)
+    yao_role.set_party_credor_pool(zia_credor_pool, True)
     yao_role.set_party_debtor_pool(zia_debtor_pool, True)
 
     # WHEN
@@ -88,7 +88,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     assert yao_basis_job._road_delimiter == yao_role._road_delimiter
     assert yao_basis_job._planck == yao_role._planck
     assert yao_basis_job._monetary_desc == yao_role._monetary_desc
-    assert yao_basis_job._party_creditor_pool == yao_role._party_creditor_pool
+    assert yao_basis_job._party_credor_pool == yao_role._party_credor_pool
     assert yao_basis_job._party_debtor_pool == yao_role._party_debtor_pool
     yao_basis_job.calc_agenda_metrics()
     assert len(yao_basis_job._idea_dict) != len(yao_role._idea_dict)
@@ -132,7 +132,7 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     assert default_work_agenda._real_id == blue_text
     assert default_work_agenda._road_delimiter == slash_text
     assert default_work_agenda._planck == five_planck
-    assert default_work_agenda._party_creditor_pool is None
+    assert default_work_agenda._party_credor_pool is None
     assert default_work_agenda._party_debtor_pool is None
     assert default_work_agenda._max_tree_traverse == sue_max_tree_traverse
     assert len(default_work_agenda.get_partys_dict()) == 1

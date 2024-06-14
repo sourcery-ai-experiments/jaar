@@ -187,7 +187,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.party_list.setColumnWidth(1, 70)
         self.party_list.setHorizontalHeaderLabels(["PID", "LW Force"])
         partys_list = list(self.x_agenda._partys.values())
-        partys_list.sort(key=lambda x: x._agenda_credit, reverse=True)
+        partys_list.sort(key=lambda x: x._agenda_cred, reverse=True)
 
         for row, party in enumerate(partys_list, start=1):
             groups_count = 0
@@ -196,13 +196,13 @@ class EditMainView(qtw.QWidget, Ui_Form):
                     if partylink.party_id == party.party_id:
                         groups_count += 1
 
-            qt_agenda_credit = qtw.QTableWidgetItem(
-                agenda_importance_diplay(party._agenda_credit)
+            qt_agenda_cred = qtw.QTableWidgetItem(
+                agenda_importance_diplay(party._agenda_cred)
             )
             qt_group = qtw.QTableWidgetItem(f"{groups_count}")
             self.party_list.setRowCount(row)
             self.party_list.setItem(row - 1, 0, qtw.QTableWidgetItem(party.party_id))
-            self.party_list.setItem(row - 1, 1, qt_agenda_credit)
+            self.party_list.setItem(row - 1, 1, qt_agenda_cred)
 
     def open_editideaunit(self):
         self.EditIdeaunit = EditIdeaUnit()

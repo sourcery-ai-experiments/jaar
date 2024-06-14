@@ -8,7 +8,7 @@ from src.money.treasury_sqlstr import (
     get_partytreasuryunit_dict,
     get_agenda_partyunit_table_insert_sqlstr,
     get_agenda_partyunit_table_update_treasury_due_paid_sqlstr as update_treasury_due_paid_sqlstr,
-    get_agenda_partyunit_table_update_credit_score_sqlstr as update_credit_score_sqlstr,
+    get_agenda_partyunit_table_update_cred_score_sqlstr as update_cred_score_sqlstr,
     get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr as update_treasury_voice_rank_sqlstr,
     get_river_block_table_delete_sqlstr,
     get_river_block_table_insert_sqlstr,
@@ -50,9 +50,7 @@ class MoneyUnit:
     _treasury_db = None
 
     # treasurying
-    def set_credit_flow_for_agenda(
-        self, owner_id: OwnerID, max_blocks_count: int = None
-    ):
+    def set_cred_flow_for_agenda(self, owner_id: OwnerID, max_blocks_count: int = None):
         self._clear_all_source_river_data(owner_id)
         if max_blocks_count is None:
             max_blocks_count = default_river_blocks_count()
@@ -80,7 +78,7 @@ class MoneyUnit:
             for x_child_ledger in parent_agenda_ledger._partyviews.values():
                 ledgers_count += 1
 
-                coin_range = parent_range * x_child_ledger._agenda_intent_ratio_credit
+                coin_range = parent_range * x_child_ledger._agenda_intent_ratio_cred
                 coin_close = coin_onset + coin_range
 
                 # implies last object in dict
@@ -148,7 +146,7 @@ class MoneyUnit:
             treasury_conn.execute(get_river_circle_table_insert_sqlstr(owner_id))
             treasury_conn.execute(get_river_reach_table_final_insert_sqlstr(owner_id))
             treasury_conn.execute(update_treasury_due_paid_sqlstr(owner_id))
-            treasury_conn.execute(update_credit_score_sqlstr(owner_id))
+            treasury_conn.execute(update_cred_score_sqlstr(owner_id))
             treasury_conn.execute(update_treasury_voice_rank_sqlstr(owner_id))
 
             sal_partytreasuryunits = get_partytreasuryunit_dict(treasury_conn, owner_id)
@@ -338,6 +336,6 @@ def set_treasury_partytreasuryunits_to_agenda_partyunits(
             x_partyunit.set_treasury_attr(
                 due_paid=partytreasuryunit.due_total,
                 due_diff=partytreasuryunit.due_diff,
-                credit_score=partytreasuryunit.credit_score,
+                cred_score=partytreasuryunit.cred_score,
                 voice_rank=partytreasuryunit.voice_rank,
             )

@@ -200,30 +200,30 @@ def _delete_and_set_ex6(ex6_id: str = None):
     elu_text = "Elu"
 
     sal_agenda = agendaunit_shop(_owner_id=sal_text)
-    sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2)
-    sal_agenda.add_partyunit(party_id=tom_text, creditor_weight=7)
-    sal_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
+    sal_agenda.add_partyunit(party_id=bob_text, credor_weight=2)
+    sal_agenda.add_partyunit(party_id=tom_text, credor_weight=7)
+    sal_agenda.add_partyunit(party_id=ava_text, credor_weight=1)
     x_money.userhub.save_job_agenda(sal_agenda)
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
-    bob_agenda.add_partyunit(party_id=sal_text, creditor_weight=3)
-    bob_agenda.add_partyunit(party_id=ava_text, creditor_weight=1)
+    bob_agenda.add_partyunit(party_id=sal_text, credor_weight=3)
+    bob_agenda.add_partyunit(party_id=ava_text, credor_weight=1)
     x_money.userhub.save_job_agenda(bob_agenda)
 
     tom_agenda = agendaunit_shop(_owner_id=tom_text)
-    tom_agenda.add_partyunit(party_id=sal_text, creditor_weight=2)
+    tom_agenda.add_partyunit(party_id=sal_text, credor_weight=2)
     x_money.userhub.save_job_agenda(tom_agenda)
 
     ava_agenda = agendaunit_shop(_owner_id=ava_text)
-    ava_agenda.add_partyunit(party_id=elu_text, creditor_weight=2)
+    ava_agenda.add_partyunit(party_id=elu_text, credor_weight=2)
     x_money.userhub.save_job_agenda(ava_agenda)
 
     elu_agenda = agendaunit_shop(_owner_id=elu_text)
-    elu_agenda.add_partyunit(party_id=ava_text, creditor_weight=19)
-    elu_agenda.add_partyunit(party_id=sal_text, creditor_weight=1)
+    elu_agenda.add_partyunit(party_id=ava_text, credor_weight=19)
+    elu_agenda.add_partyunit(party_id=sal_text, credor_weight=1)
     x_money.userhub.save_job_agenda(elu_agenda)
 
     x_money.refresh_treasury_job_agendas_data()
-    x_money.set_credit_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)
+    x_money.set_cred_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)
 
     return x_money

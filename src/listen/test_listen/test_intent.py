@@ -235,13 +235,13 @@ def test_listen_to_speaker_intent_ProcessesIrrationalAgenda():
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     sue_text = "Sue"
-    sue_creditor_weight = 57
+    sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_role.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
     yao_role.set_party_pool(yao_pool)
 
@@ -276,8 +276,8 @@ def test_listen_to_speaker_intent_ProcessesIrrationalAgenda():
 
     # WHEN
     yao_job = create_empty_agenda(yao_role, yao_text)
-    yao_job.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_job.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_job.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_job.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_job.set_party_pool(yao_pool)
     yao_job = listen_to_speaker_intent(yao_job, sue_agendaunit)
 
@@ -297,21 +297,21 @@ def test_listen_to_speaker_intent_ProcessesBarrenAgenda():
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     sue_text = "Sue"
-    sue_creditor_weight = 57
+    sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_role.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
     yao_role.set_party_pool(yao_pool)
 
     # WHEN
     sue_job = create_empty_agenda(yao_role, sue_text)
     yao_job = create_empty_agenda(yao_role, yao_text)
-    yao_job.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_job.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_job.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_job.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_job.set_party_pool(yao_pool)
     yao_job = listen_to_speaker_intent(yao_job, speaker=sue_job)
 

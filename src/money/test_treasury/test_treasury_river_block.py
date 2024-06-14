@@ -31,24 +31,22 @@ def test_MoneyUnit_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTa
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     tim_partyunit = partyunit_shop(
         party_id=tim_text,
-        _creditor_operational=True,
+        _credor_operational=True,
         _debtor_operational=False,
     )
-    tim_partyunit._agenda_credit = 0.9
+    tim_partyunit._agenda_cred = 0.9
     tim_partyunit._agenda_debt = 0.8
-    tim_partyunit._agenda_intent_credit = 0.7
+    tim_partyunit._agenda_intent_cred = 0.7
     tim_partyunit._agenda_intent_debt = 0.6
-    tim_partyunit._agenda_intent_ratio_credit = 0.5
+    tim_partyunit._agenda_intent_ratio_cred = 0.5
     tim_partyunit._agenda_intent_ratio_debt = 0.4
 
     tim_due_paid = 0.5151
-    tim_credit_score = 0.5252
+    tim_cred_score = 0.5252
     tim_voice_rank = 33
-    tim_partyunit.set_treasury_attr(
-        tim_due_paid, None, tim_credit_score, tim_voice_rank
-    )
+    tim_partyunit.set_treasury_attr(tim_due_paid, None, tim_cred_score, tim_voice_rank)
     assert tim_partyunit._treasury_due_paid == tim_due_paid
-    assert tim_partyunit._treasury_credit_score == tim_credit_score
+    assert tim_partyunit._treasury_cred_score == tim_cred_score
     assert tim_partyunit._treasury_voice_rank == tim_voice_rank
 
     insert_sqlstr = get_agenda_partyunit_table_insert_sqlstr(bob_agenda, tim_partyunit)
@@ -70,16 +68,16 @@ def test_MoneyUnit_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTa
     tim_ledger = ledger_dict.get(tim_text)
     assert tim_ledger.owner_id == bob_text
     assert tim_ledger.party_id == tim_text
-    assert tim_ledger._agenda_credit == 0.9
+    assert tim_ledger._agenda_cred == 0.9
     assert tim_ledger._agenda_debt == 0.8
-    assert tim_ledger._agenda_intent_credit == 0.7
+    assert tim_ledger._agenda_intent_cred == 0.7
     assert tim_ledger._agenda_intent_debt == 0.6
-    assert tim_ledger._agenda_intent_ratio_credit == 0.5
+    assert tim_ledger._agenda_intent_ratio_cred == 0.5
     assert tim_ledger._agenda_intent_ratio_debt == 0.4
-    assert tim_ledger._creditor_operational
+    assert tim_ledger._credor_operational
     assert tim_ledger._debtor_operational == 0
     assert tim_ledger._treasury_due_paid == tim_due_paid
-    assert tim_ledger._treasury_credit_score == tim_credit_score
+    assert tim_ledger._treasury_cred_score == tim_cred_score
     assert tim_ledger._treasury_voice_rank == tim_voice_rank
 
 
@@ -159,13 +157,13 @@ def test_MoneyUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cl
     sal_text = "Sal"
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     sal_partyunit = partyunit_shop(
-        sal_text, _creditor_operational=True, _debtor_operational=False
+        sal_text, _credor_operational=True, _debtor_operational=False
     )
-    sal_partyunit._agenda_credit = 0.9
+    sal_partyunit._agenda_cred = 0.9
     sal_partyunit._agenda_debt = 0.8
-    sal_partyunit._agenda_intent_credit = 0.7
+    sal_partyunit._agenda_intent_cred = 0.7
     sal_partyunit._agenda_intent_debt = 0.6
-    sal_partyunit._agenda_intent_ratio_credit = 0.5
+    sal_partyunit._agenda_intent_ratio_cred = 0.5
     sal_partyunit._agenda_intent_ratio_debt = 0.4
 
     insert_sqlstr_sal = get_agenda_partyunit_table_insert_sqlstr(
@@ -174,13 +172,13 @@ def test_MoneyUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cl
 
     tim_text = "Tim"
     tim_partyunit = partyunit_shop(
-        tim_text, _creditor_operational=True, _debtor_operational=False
+        tim_text, _credor_operational=True, _debtor_operational=False
     )
-    tim_partyunit._agenda_credit = 0.012
+    tim_partyunit._agenda_cred = 0.012
     tim_partyunit._agenda_debt = 0.017
-    tim_partyunit._agenda_intent_credit = 0.077
+    tim_partyunit._agenda_intent_cred = 0.077
     tim_partyunit._agenda_intent_debt = 0.066
-    tim_partyunit._agenda_intent_ratio_credit = 0.051
+    tim_partyunit._agenda_intent_ratio_cred = 0.051
     tim_partyunit._agenda_intent_ratio_debt = 0.049
 
     insert_sqlstr_tim = get_agenda_partyunit_table_insert_sqlstr(
@@ -268,25 +266,25 @@ def test_RiverLedgerUnit_Exists():
     x1_partydbunit = PartyDBUnit(
         owner_id=bob_text,
         party_id=sal_text,
-        _agenda_credit=0.66,
+        _agenda_cred=0.66,
         _agenda_debt=0.2,
-        _agenda_intent_credit=0.4,
+        _agenda_intent_cred=0.4,
         _agenda_intent_debt=0.15,
-        _agenda_intent_ratio_credit=0.5,
+        _agenda_intent_ratio_cred=0.5,
         _agenda_intent_ratio_debt=0.12,
-        _creditor_operational=True,
+        _credor_operational=True,
         _debtor_operational=True,
     )
     x2_partydbunit = PartyDBUnit(
         owner_id=bob_text,
         party_id=tom_text,
-        _agenda_credit=0.05,
+        _agenda_cred=0.05,
         _agenda_debt=0.09,
-        _agenda_intent_credit=0.055,
+        _agenda_intent_cred=0.055,
         _agenda_intent_debt=0.0715,
-        _agenda_intent_ratio_credit=0.00995,
+        _agenda_intent_ratio_cred=0.00995,
         _agenda_intent_ratio_debt=0.00012,
-        _creditor_operational=True,
+        _credor_operational=True,
         _debtor_operational=True,
     )
     x_partyview_dict = {
@@ -320,7 +318,7 @@ def test_PartyTreasuryUnit_exists():
     x_due_total = "x_due_total"
     x_debt = "x_debt"
     x_due_diff = "x_due_diff"
-    x_credit_score = "credit_score"
+    x_cred_score = "cred_score"
     x_voice_rank = "voice_rank"
 
     # WHEN
@@ -330,7 +328,7 @@ def test_PartyTreasuryUnit_exists():
         due_total=x_due_total,
         debt=x_debt,
         due_diff=x_due_diff,
-        credit_score=x_credit_score,
+        cred_score=x_cred_score,
         voice_rank=x_voice_rank,
     )
 
@@ -340,7 +338,7 @@ def test_PartyTreasuryUnit_exists():
     assert x_partytreasury.due_total == x_due_total
     assert x_partytreasury.debt == x_debt
     assert x_partytreasury.due_diff == x_due_diff
-    assert x_partytreasury.credit_score == x_credit_score
+    assert x_partytreasury.cred_score == x_cred_score
     assert x_partytreasury.voice_rank == x_voice_rank
 
 
@@ -410,26 +408,26 @@ def test_MoneyUnit_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_Co
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
     tom_partyunit = partyunit_shop(
-        tom_text, _creditor_operational=True, _debtor_operational=False
+        tom_text, _credor_operational=True, _debtor_operational=False
     )
-    tom_partyunit._agenda_credit = 0.9
+    tom_partyunit._agenda_cred = 0.9
     tom_partyunit._agenda_debt = 0.8
-    tom_partyunit._agenda_intent_credit = 0.7
+    tom_partyunit._agenda_intent_cred = 0.7
     tom_partyunit._agenda_intent_debt = 0.6
-    tom_partyunit._agenda_intent_ratio_credit = 0.5
+    tom_partyunit._agenda_intent_ratio_cred = 0.5
     tom_partyunit._agenda_intent_ratio_debt = 0.411
 
     insert_sqlstr_tom = get_agenda_partyunit_table_insert_sqlstr(
         bob_agenda, tom_partyunit
     )
     sal_partyunit = partyunit_shop(
-        sal_text, _creditor_operational=True, _debtor_operational=False
+        sal_text, _credor_operational=True, _debtor_operational=False
     )
-    sal_partyunit._agenda_credit = 0.9
+    sal_partyunit._agenda_cred = 0.9
     sal_partyunit._agenda_debt = 0.8
-    sal_partyunit._agenda_intent_credit = 0.7
+    sal_partyunit._agenda_intent_cred = 0.7
     sal_partyunit._agenda_intent_debt = 0.6
-    sal_partyunit._agenda_intent_ratio_credit = 0.5
+    sal_partyunit._agenda_intent_ratio_cred = 0.5
     sal_partyunit._agenda_intent_ratio_debt = 0.455
 
     insert_sqlstr_sal = get_agenda_partyunit_table_insert_sqlstr(

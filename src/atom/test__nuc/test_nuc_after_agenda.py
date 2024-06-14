@@ -47,7 +47,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     new2_arg = "_max_tree_traverse"
     x_quarkunit.set_optional_arg(new2_arg, new2_value)
     new3_value = 77
-    new3_arg = "_party_creditor_pool"
+    new3_arg = "_party_credor_pool"
     x_quarkunit.set_optional_arg(new3_arg, new3_value)
     new4_value = 88
     new4_arg = "_party_debtor_pool"
@@ -70,7 +70,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     # THEN
     print(f"{sue_nucunit.quarkunits.keys()=}")
     assert after_sue_agendaunit._max_tree_traverse == new2_value
-    assert after_sue_agendaunit._party_creditor_pool == new3_value
+    assert after_sue_agendaunit._party_credor_pool == new3_value
     assert after_sue_agendaunit._party_debtor_pool == new4_value
     assert after_sue_agendaunit._meld_strategy == new5_value
     assert after_sue_agendaunit._weight == new1_value
@@ -123,9 +123,9 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_party():
     category = "agenda_partyunit"
     x_quarkunit = quarkunit_shop(category, quark_insert())
     x_quarkunit.set_required_arg("party_id", carm_text)
-    x_creditor_weight = 55
+    x_credor_weight = 55
     x_debtor_weight = 66
-    x_quarkunit.set_optional_arg("creditor_weight", x_creditor_weight)
+    x_quarkunit.set_optional_arg("credor_weight", x_credor_weight)
     x_quarkunit.set_optional_arg("debtor_weight", x_debtor_weight)
     sue_nucunit.set_quarkunit(x_quarkunit)
     print(f"{sue_nucunit.quarkunits.keys()=}")
@@ -136,7 +136,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_party():
     carm_partyunit = after_sue_agendaunit.get_party(carm_text)
     assert rico_partyunit != None
     assert carm_partyunit != None
-    assert carm_partyunit.creditor_weight == x_creditor_weight
+    assert carm_partyunit.credor_weight == x_credor_weight
     assert carm_partyunit.debtor_weight == x_debtor_weight
 
 
@@ -148,21 +148,21 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_party():
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     before_sue_agendaunit.add_partyunit(rico_text)
-    assert before_sue_agendaunit.get_party(rico_text).creditor_weight == 1
+    assert before_sue_agendaunit.get_party(rico_text).credor_weight == 1
 
     # WHEN
     category = "agenda_partyunit"
     x_quarkunit = quarkunit_shop(category, quark_update())
     x_quarkunit.set_required_arg("party_id", rico_text)
-    rico_creditor_weight = 55
-    x_quarkunit.set_optional_arg("creditor_weight", rico_creditor_weight)
+    rico_credor_weight = 55
+    x_quarkunit.set_optional_arg("credor_weight", rico_credor_weight)
     sue_nucunit.set_quarkunit(x_quarkunit)
     print(f"{sue_nucunit.quarkunits.keys()=}")
     after_sue_agendaunit = sue_nucunit.get_edited_agenda(before_sue_agendaunit)
 
     # THEN
     rico_party = after_sue_agendaunit.get_party(rico_text)
-    assert rico_party.creditor_weight == rico_creditor_weight
+    assert rico_party.credor_weight == rico_credor_weight
 
 
 def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_partylink():
@@ -228,8 +228,8 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_partylink
     rico_quarkunit = quarkunit_shop("agenda_group_partylink", quark_insert())
     rico_quarkunit.set_required_arg("group_id", run_text)
     rico_quarkunit.set_required_arg("party_id", rico_text)
-    rico_run_creditor_weight = 17
-    rico_quarkunit.set_optional_arg("creditor_weight", rico_run_creditor_weight)
+    rico_run_credor_weight = 17
+    rico_quarkunit.set_optional_arg("credor_weight", rico_run_credor_weight)
     print(f"{rico_quarkunit=}")
     sue_nucunit = nucunit_shop()
     sue_nucunit.set_quarkunit(rico_quarkunit)
@@ -240,7 +240,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_partylink
     after_run_groupunit = after_sue_agendaunit.get_groupunit(run_text)
     after_run_rico_partylink = after_run_groupunit.get_partylink(rico_text)
     assert after_run_rico_partylink != None
-    assert after_run_rico_partylink.creditor_weight == rico_run_creditor_weight
+    assert after_run_rico_partylink.credor_weight == rico_run_credor_weight
 
 
 def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_partylink():
@@ -251,21 +251,21 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_partylink
     before_sue_agendaunit.add_partyunit(rico_text)
     run_text = ",runners"
     run_groupunit = groupunit_shop(run_text)
-    old_rico_run_creditor_weight = 3
-    run_groupunit.set_partylink(partylink_shop(rico_text, old_rico_run_creditor_weight))
+    old_rico_run_credor_weight = 3
+    run_groupunit.set_partylink(partylink_shop(rico_text, old_rico_run_credor_weight))
     before_sue_agendaunit.set_groupunit(run_groupunit)
     before_run_groupunit = before_sue_agendaunit.get_groupunit(run_text)
     before_run_rico_partylink = before_run_groupunit.get_partylink(rico_text)
-    assert before_run_rico_partylink.creditor_weight == old_rico_run_creditor_weight
+    assert before_run_rico_partylink.credor_weight == old_rico_run_credor_weight
     assert before_run_rico_partylink.debtor_weight == 1
 
     # WHEN
     rico_quarkunit = quarkunit_shop("agenda_group_partylink", quark_update())
     rico_quarkunit.set_required_arg("group_id", run_text)
     rico_quarkunit.set_required_arg("party_id", rico_text)
-    new_rico_run_creditor_weight = 7
+    new_rico_run_credor_weight = 7
     new_rico_run_debtor_weight = 11
-    rico_quarkunit.set_optional_arg("creditor_weight", new_rico_run_creditor_weight)
+    rico_quarkunit.set_optional_arg("credor_weight", new_rico_run_credor_weight)
     rico_quarkunit.set_optional_arg("debtor_weight", new_rico_run_debtor_weight)
     print(f"{rico_quarkunit=}")
     sue_nucunit = nucunit_shop()
@@ -275,7 +275,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_partylink
     # THEN
     after_run_groupunit = after_sue_agendaunit.get_groupunit(run_text)
     after_run_rico_partylink = after_run_groupunit.get_partylink(rico_text)
-    assert after_run_rico_partylink.creditor_weight == new_rico_run_creditor_weight
+    assert after_run_rico_partylink.credor_weight == new_rico_run_credor_weight
     assert after_run_rico_partylink.debtor_weight == new_rico_run_debtor_weight
 
 
@@ -569,16 +569,16 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_bala
     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
     before_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(run_text))
     run_balancelink = before_sue_au.get_idea_obj(ball_road)._balancelinks.get(run_text)
-    assert run_balancelink.creditor_weight == 1
+    assert run_balancelink.credor_weight == 1
     assert run_balancelink.debtor_weight == 1
 
     # WHEN
-    x_creditor_weight = 55
+    x_credor_weight = 55
     x_debtor_weight = 66
     update_disc_quarkunit = quarkunit_shop("agenda_idea_balancelink", quark_update())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("group_id", run_text)
-    update_disc_quarkunit.set_optional_arg("creditor_weight", x_creditor_weight)
+    update_disc_quarkunit.set_optional_arg("credor_weight", x_credor_weight)
     update_disc_quarkunit.set_optional_arg("debtor_weight", x_debtor_weight)
     # print(f"{update_disc_quarkunit=}")
     sue_nucunit = nucunit_shop()
@@ -587,8 +587,8 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_bala
 
     # THEN
     run_balancelink = after_sue_au.get_idea_obj(ball_road)._balancelinks.get(run_text)
-    print(f"{run_balancelink.creditor_weight=}")
-    assert run_balancelink.creditor_weight == x_creditor_weight
+    print(f"{run_balancelink.credor_weight=}")
+    assert run_balancelink.credor_weight == x_credor_weight
     assert run_balancelink.debtor_weight == x_debtor_weight
 
 
@@ -613,12 +613,12 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_bala
     assert before_ball_idea._balancelinks.get(run_text) is None
 
     # WHEN
-    x_creditor_weight = 55
+    x_credor_weight = 55
     x_debtor_weight = 66
     update_disc_quarkunit = quarkunit_shop("agenda_idea_balancelink", quark_insert())
     update_disc_quarkunit.set_required_arg("road", ball_road)
     update_disc_quarkunit.set_required_arg("group_id", run_text)
-    update_disc_quarkunit.set_optional_arg("creditor_weight", x_creditor_weight)
+    update_disc_quarkunit.set_optional_arg("credor_weight", x_credor_weight)
     update_disc_quarkunit.set_optional_arg("debtor_weight", x_debtor_weight)
     # print(f"{update_disc_quarkunit=}")
     sue_nucunit = nucunit_shop()
@@ -1115,7 +1115,7 @@ def test_NucUnit_get_nucunit_example1_ContainsQuarkUnits():
     before_sue_agendaunit.set_groupunit(fly_groupunit)
     assert before_sue_agendaunit._weight != 55
     assert before_sue_agendaunit._max_tree_traverse != 66
-    assert before_sue_agendaunit._party_creditor_pool != 77
+    assert before_sue_agendaunit._party_credor_pool != 77
     assert before_sue_agendaunit._party_debtor_pool != 88
     assert before_sue_agendaunit._meld_strategy != "override"
     assert before_sue_agendaunit.party_exists(rico_text)
@@ -1130,7 +1130,7 @@ def test_NucUnit_get_nucunit_example1_ContainsQuarkUnits():
     # THEN
     assert after_sue_agendaunit._weight == 55
     assert after_sue_agendaunit._max_tree_traverse == 66
-    assert after_sue_agendaunit._party_creditor_pool == 77
+    assert after_sue_agendaunit._party_credor_pool == 77
     assert after_sue_agendaunit._party_debtor_pool == 88
     assert after_sue_agendaunit._meld_strategy == "override"
     assert after_sue_agendaunit.party_exists(rico_text)

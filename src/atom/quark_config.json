@@ -8,7 +8,7 @@
             "quark_order": 1
         },
         "optional_args": {
-            "creditor_weight": {
+            "credor_weight": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
@@ -66,7 +66,7 @@
             "quark_order": 4
         },
         "optional_args": {
-            "creditor_weight": {
+            "credor_weight": {
                 "python_type": "float",
                 "sqlite_datatype": "REAL"
             },
@@ -321,7 +321,7 @@
             "quark_order": 0
         },
         "optional_args": {
-            "creditor_weight": {
+            "credor_weight": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
@@ -356,7 +356,7 @@
                 "python_type": "str",
                 "sqlite_datatype": "TEXT"
             },
-            "_party_creditor_pool": {
+            "_party_credor_pool": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },

@@ -44,7 +44,7 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasury
     tom_text = "Tom"
 
     bob_agentunit = agendaunit_shop(bob_text)
-    bob_agentunit.add_partyunit(tom_text, creditor_weight=3, debtor_weight=1)
+    bob_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
     x_money.userhub.save_job_agenda(bob_agentunit)
     x_money.refresh_treasury_job_agendas_data()
     partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
@@ -68,7 +68,7 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasury
     tom_text = "Tom"
 
     bob_agentunit = agendaunit_shop(bob_text)
-    bob_agentunit.add_partyunit(tom_text, creditor_weight=3, debtor_weight=1)
+    bob_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
     x_money.userhub.save_job_agenda(bob_agentunit)
     x_money.refresh_treasury_job_agendas_data()
     partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
@@ -94,27 +94,27 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunit
     elu_text = "Elu"
 
     bob_agentunit = agendaunit_shop(bob_text)
-    bob_agentunit.add_partyunit(tom_text, creditor_weight=3, debtor_weight=1)
-    bob_agentunit.add_partyunit(sal_text, creditor_weight=1, debtor_weight=4)
-    bob_agentunit.add_partyunit(elu_text, creditor_weight=1, debtor_weight=4)
+    bob_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
+    bob_agentunit.add_partyunit(sal_text, credor_weight=1, debtor_weight=4)
+    bob_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(bob_agentunit)
 
     sal_agentunit = agendaunit_shop(sal_text)
-    sal_agentunit.add_partyunit(bob_text, creditor_weight=1, debtor_weight=4)
-    sal_agentunit.add_partyunit(tom_text, creditor_weight=3, debtor_weight=1)
-    sal_agentunit.add_partyunit(elu_text, creditor_weight=1, debtor_weight=4)
+    sal_agentunit.add_partyunit(bob_text, credor_weight=1, debtor_weight=4)
+    sal_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
+    sal_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(sal_agentunit)
 
     tom_agentunit = agendaunit_shop(tom_text)
-    tom_agentunit.add_partyunit(bob_text, creditor_weight=3, debtor_weight=1)
-    tom_agentunit.add_partyunit(sal_text, creditor_weight=1, debtor_weight=4)
-    tom_agentunit.add_partyunit(elu_text, creditor_weight=1, debtor_weight=4)
+    tom_agentunit.add_partyunit(bob_text, credor_weight=3, debtor_weight=1)
+    tom_agentunit.add_partyunit(sal_text, credor_weight=1, debtor_weight=4)
+    tom_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(tom_agentunit)
 
     elu_agentunit = agendaunit_shop(elu_text)
-    elu_agentunit.add_partyunit(bob_text, creditor_weight=3, debtor_weight=1)
-    elu_agentunit.add_partyunit(tom_text, creditor_weight=1, debtor_weight=4)
-    elu_agentunit.add_partyunit(elu_text, creditor_weight=1, debtor_weight=4)
+    elu_agentunit.add_partyunit(bob_text, credor_weight=3, debtor_weight=1)
+    elu_agentunit.add_partyunit(tom_text, credor_weight=1, debtor_weight=4)
+    elu_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(elu_agentunit)
 
     partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
@@ -247,7 +247,7 @@ def test_MoneyUnit_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks
     bob_agenda.add_idea(ideaunit_shop(swim_text), parent_road=bob_sports_road)
     tom_agenda.add_idea(ideaunit_shop(swim_text), parent_road=tom_sports_road)
 
-    sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2, debtor_weight=2)
+    sal_agenda.add_partyunit(party_id=bob_text, credor_weight=2, debtor_weight=2)
 
     swim_group_text = ",swimming experts"
     swim_group_unit = groupunit_shop(group_id=swim_group_text)

@@ -25,11 +25,11 @@ def get_real_dutys_partys_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "party_id",
-        "creditor_weight",
+        "credor_weight",
         "debtor_weight",
-        "_agenda_credit",
+        "_agenda_cred",
         "_agenda_debt",
-        "_agenda_intent_credit",
+        "_agenda_intent_cred",
         "_agenda_intent_debt",
     ]
     df = get_real_dutys_partys_dataframe(x_real)
@@ -42,11 +42,11 @@ def get_real_dutys_partys_plotly_fig(x_real: RealUnit) -> plotly_Figure:
             values=[
                 df.owner_id,
                 df.party_id,
-                df.creditor_weight,
+                df.credor_weight,
                 df.debtor_weight,
-                df._agenda_credit,
+                df._agenda_cred,
                 df._agenda_debt,
-                df._agenda_intent_credit,
+                df._agenda_intent_cred,
                 df._agenda_intent_debt,
             ],
             fill_color="lavender",
@@ -81,11 +81,11 @@ def get_real_works_partys_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "party_id",
-        "creditor_weight",
+        "credor_weight",
         "debtor_weight",
-        "_agenda_credit",
+        "_agenda_cred",
         "_agenda_debt",
-        "_agenda_intent_credit",
+        "_agenda_intent_cred",
         "_agenda_intent_debt",
     ]
     df = get_real_works_partys_dataframe(x_real)
@@ -98,11 +98,11 @@ def get_real_works_partys_plotly_fig(x_real: RealUnit) -> plotly_Figure:
             values=[
                 df.owner_id,
                 df.party_id,
-                df.creditor_weight,
+                df.credor_weight,
                 df.debtor_weight,
-                df._agenda_credit,
+                df._agenda_cred,
                 df._agenda_debt,
-                df._agenda_intent_credit,
+                df._agenda_intent_cred,
                 df._agenda_intent_debt,
             ],
             fill_color="lavender",

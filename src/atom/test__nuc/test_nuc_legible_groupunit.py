@@ -128,16 +128,16 @@ def test_create_legible_list_ReturnsObj_group_partylink_INSERT():
     category = "agenda_group_partylink"
     group_id_text = "group_id"
     party_id_text = "party_id"
-    creditor_weight_text = "creditor_weight"
+    credor_weight_text = "credor_weight"
     debtor_weight_text = "debtor_weight"
     swim_text = f"{sue_agenda._road_delimiter}Swimmers"
     rico_text = "Rico"
-    creditor_weight_value = 81
+    credor_weight_value = 81
     debtor_weight_value = 43
     rico_quarkunit = quarkunit_shop(category, quark_insert())
     rico_quarkunit.set_arg(group_id_text, swim_text)
     rico_quarkunit.set_arg(party_id_text, rico_text)
-    rico_quarkunit.set_arg(creditor_weight_text, creditor_weight_value)
+    rico_quarkunit.set_arg(credor_weight_text, credor_weight_value)
     rico_quarkunit.set_arg(debtor_weight_text, debtor_weight_value)
     # print(f"{rico_quarkunit=}")
     x_nucunit = nucunit_shop()
@@ -147,27 +147,27 @@ def test_create_legible_list_ReturnsObj_group_partylink_INSERT():
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"Group '{swim_text}' has new member {rico_text} with group_credit={creditor_weight_value} and group_debt={debtor_weight_value}."
+    x_str = f"Group '{swim_text}' has new member {rico_text} with group_cred={credor_weight_value} and group_debt={debtor_weight_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_group_partylink_UPDATE_creditor_weight_debtor_weight():
+def test_create_legible_list_ReturnsObj_group_partylink_UPDATE_credor_weight_debtor_weight():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     category = "agenda_group_partylink"
     group_id_text = "group_id"
     party_id_text = "party_id"
-    creditor_weight_text = "creditor_weight"
+    credor_weight_text = "credor_weight"
     debtor_weight_text = "debtor_weight"
     swim_text = f"{sue_agenda._road_delimiter}Swimmers"
     rico_text = "Rico"
-    creditor_weight_value = 81
+    credor_weight_value = 81
     debtor_weight_value = 43
     rico_quarkunit = quarkunit_shop(category, quark_update())
     rico_quarkunit.set_arg(group_id_text, swim_text)
     rico_quarkunit.set_arg(party_id_text, rico_text)
-    rico_quarkunit.set_arg(creditor_weight_text, creditor_weight_value)
+    rico_quarkunit.set_arg(credor_weight_text, credor_weight_value)
     rico_quarkunit.set_arg(debtor_weight_text, debtor_weight_value)
     # print(f"{rico_quarkunit=}")
     x_nucunit = nucunit_shop()
@@ -177,25 +177,25 @@ def test_create_legible_list_ReturnsObj_group_partylink_UPDATE_creditor_weight_d
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"Group '{swim_text}' member {rico_text} has new group_credit={creditor_weight_value} and group_debt={debtor_weight_value}."
+    x_str = f"Group '{swim_text}' member {rico_text} has new group_cred={credor_weight_value} and group_debt={debtor_weight_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_group_partylink_UPDATE_creditor_weight():
+def test_create_legible_list_ReturnsObj_group_partylink_UPDATE_credor_weight():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     category = "agenda_group_partylink"
     group_id_text = "group_id"
     party_id_text = "party_id"
-    creditor_weight_text = "creditor_weight"
+    credor_weight_text = "credor_weight"
     swim_text = f"{sue_agenda._road_delimiter}Swimmers"
     rico_text = "Rico"
-    creditor_weight_value = 81
+    credor_weight_value = 81
     rico_quarkunit = quarkunit_shop(category, quark_update())
     rico_quarkunit.set_arg(group_id_text, swim_text)
     rico_quarkunit.set_arg(party_id_text, rico_text)
-    rico_quarkunit.set_arg(creditor_weight_text, creditor_weight_value)
+    rico_quarkunit.set_arg(credor_weight_text, credor_weight_value)
     # print(f"{rico_quarkunit=}")
     x_nucunit = nucunit_shop()
     x_nucunit.set_quarkunit(rico_quarkunit)
@@ -204,7 +204,7 @@ def test_create_legible_list_ReturnsObj_group_partylink_UPDATE_creditor_weight()
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"Group '{swim_text}' member {rico_text} has new group_credit={creditor_weight_value}."
+    x_str = f"Group '{swim_text}' member {rico_text} has new group_cred={credor_weight_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 

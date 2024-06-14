@@ -4,52 +4,52 @@
             "_party_mirror": false,
             "_partys": {
                 "Benjamin Stoddert": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Benjamin Stoddert"
                 },
                 "Bob302": {
-                    "creditor_weight": 6.25,
+                    "credor_weight": 6.25,
                     "debtor_weight": 1,
                     "party_id": "Bob302"
                 },
                 "Charles Lee": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Charles Lee"
                 },
                 "Jane Randolph": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Jane Randolph"
                 },
                 "Maria Reynolds": {
-                    "creditor_weight": 6.75,
+                    "credor_weight": 6.75,
                     "debtor_weight": 1,
                     "party_id": "Maria Reynolds"
                 },
                 "Martha Doubs": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Martha Doubs"
                 },
                 "Mikayla": {
-                    "creditor_weight": 10,
+                    "credor_weight": 10,
                     "debtor_weight": 1,
                     "party_id": "Mikayla"
                 },
                 "Sam zamora": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Sam zamora"
                 },
                 "Shadwell Harris": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Shadwell Harris"
                 },
                 "WIlliam Wallace": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "WIlliam Wallace"
                 }
@@ -60,22 +60,22 @@
             "_party_mirror": false,
             "_partys": {
                 "Benjamin Stoddert": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Benjamin Stoddert"
                 },
                 "Charles Lee": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Charles Lee"
                 },
                 "Martha Doubs": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Martha Doubs"
                 },
                 "Sam zamora": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Sam zamora"
                 }
@@ -86,22 +86,22 @@
             "_party_mirror": false,
             "_partys": {
                 "Bob302": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Bob302"
                 },
                 "Perrison": {
-                    "creditor_weight": 5,
+                    "credor_weight": 5,
                     "debtor_weight": 1,
                     "party_id": "Perrison"
                 },
                 "Prashant": {
-                    "creditor_weight": 2,
+                    "credor_weight": 2,
                     "debtor_weight": 1,
                     "party_id": "Prashant"
                 },
                 "Renee Elise Goldsberry": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Renee Elise Goldsberry"
                 }
@@ -112,17 +112,17 @@
             "_party_mirror": false,
             "_partys": {
                 "Philipa": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Philipa"
                 },
                 "Renee Elise Goldsberry": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Renee Elise Goldsberry"
                 },
                 "Thomas OSU": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Thomas OSU"
                 }
@@ -133,112 +133,112 @@
             "_party_mirror": false,
             "_partys": {
                 "A a ron Jones": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "A a ron Jones"
                 },
                 "America": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "America"
                 },
                 "Anna": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Anna"
                 },
                 "Benjamin Stoddert": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Benjamin Stoddert"
                 },
                 "Bob302": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Bob302"
                 },
                 "Charles Lee": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Charles Lee"
                 },
                 "Ernesto Chavez": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Ernesto Chavez"
                 },
                 "Jacque Chirac": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Jacque Chirac"
                 },
                 "Jane Randolph": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Jane Randolph"
                 },
                 "Maria Reynolds": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Maria Reynolds"
                 },
                 "Martha Doubs": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Martha Doubs"
                 },
                 "Mikayla": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Mikayla"
                 },
                 "Norberto": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Norberto"
                 },
                 "Perrison": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Perrison"
                 },
                 "Philipa": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Philipa"
                 },
                 "Prashant": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Prashant"
                 },
                 "Renee Elise Goldsberry": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Renee Elise Goldsberry"
                 },
                 "Sam zamora": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Sam zamora"
                 },
                 "Shadwell Harris": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Shadwell Harris"
                 },
                 "Thomas OSU": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Thomas OSU"
                 },
                 "Travis Fox": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Travis Fox"
                 },
                 "WIlliam Wallace": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "WIlliam Wallace"
                 }
@@ -249,17 +249,17 @@
             "_party_mirror": false,
             "_partys": {
                 "America": {
-                    "creditor_weight": 6.45,
+                    "credor_weight": 6.45,
                     "debtor_weight": 1,
                     "party_id": "America"
                 },
                 "Anna": {
-                    "creditor_weight": 6.2,
+                    "credor_weight": 6.2,
                     "debtor_weight": 1,
                     "party_id": "Anna"
                 },
                 "Travis Fox": {
-                    "creditor_weight": 6.35,
+                    "credor_weight": 6.35,
                     "debtor_weight": 1,
                     "party_id": "Travis Fox"
                 }
@@ -270,17 +270,17 @@
             "_party_mirror": false,
             "_partys": {
                 "America": {
-                    "creditor_weight": 6.1,
+                    "credor_weight": 6.1,
                     "debtor_weight": 1,
                     "party_id": "America"
                 },
                 "Perrison": {
-                    "creditor_weight": 6.4,
+                    "credor_weight": 6.4,
                     "debtor_weight": 1,
                     "party_id": "Perrison"
                 },
                 "Renee Elise Goldsberry": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Renee Elise Goldsberry"
                 }
@@ -291,7 +291,7 @@
             "_party_mirror": false,
             "_partys": {
                 "Renee Elise Goldsberry": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Renee Elise Goldsberry"
                 }
@@ -302,17 +302,17 @@
             "_party_mirror": false,
             "_partys": {
                 "A a ron Jones": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "A a ron Jones"
                 },
                 "Jacque Chirac": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Jacque Chirac"
                 },
                 "Norberto": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Norberto"
                 }
@@ -323,7 +323,7 @@
             "_party_mirror": false,
             "_partys": {
                 "Renee Elise Goldsberry": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Renee Elise Goldsberry"
                 }
@@ -334,22 +334,22 @@
             "_party_mirror": false,
             "_partys": {
                 "Ernesto Chavez": {
-                    "creditor_weight": 6.5,
+                    "credor_weight": 6.5,
                     "debtor_weight": 1,
                     "party_id": "Ernesto Chavez"
                 },
                 "Mikayla": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Mikayla"
                 },
                 "Philipa": {
-                    "creditor_weight": 52,
+                    "credor_weight": 52,
                     "debtor_weight": 1,
                     "party_id": "Philipa"
                 },
                 "Renee Elise Goldsberry": {
-                    "creditor_weight": 3,
+                    "credor_weight": 3,
                     "debtor_weight": 1,
                     "party_id": "Renee Elise Goldsberry"
                 }
@@ -360,7 +360,7 @@
             "_party_mirror": false,
             "_partys": {
                 "Renee Elise Goldsberry": {
-                    "creditor_weight": 1,
+                    "credor_weight": 1,
                     "debtor_weight": 1,
                     "party_id": "Renee Elise Goldsberry"
                 }
@@ -1546,7 +1546,7 @@
                     "call Crazy pete to say hi": {
                         "_balancelinks": {
                             "Perrison": {
-                                "creditor_weight": 1.0,
+                                "credor_weight": 1.0,
                                 "debtor_weight": 1,
                                 "group_id": "Perrison"
                             }
@@ -1598,7 +1598,7 @@
                             "check cat water": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -1647,7 +1647,7 @@
                             "clean baby seats": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -1675,7 +1675,7 @@
                             "clean bathroom": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -1703,7 +1703,7 @@
                             "clean cat poo": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -1732,7 +1732,7 @@
                             "clean humidifiers": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -1760,7 +1760,7 @@
                             "clean sheets couch blankets": {
                                 "_balancelinks": {
                                     "Perrison": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": "Perrison"
                                     }
@@ -1788,7 +1788,7 @@
                             "clean table": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -1816,7 +1816,7 @@
                             "deep clean play mat": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -1844,7 +1844,7 @@
                             "empty roomba": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -1872,7 +1872,7 @@
                             "empty roomba Friday": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -1935,7 +1935,7 @@
                             "laundry monday": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -1973,7 +1973,7 @@
                             "laundry saturday": {
                                 "_balancelinks": {
                                     "Travis Fox": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": "Travis Fox"
                                     }
@@ -2045,7 +2045,7 @@
                             "laundry wednesday": {
                                 "_balancelinks": {
                                     "America": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": "America"
                                     }
@@ -2104,7 +2104,7 @@
                             "prepare_bed clean bedroom": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2132,7 +2132,7 @@
                             "roomba bedroom": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2160,7 +2160,7 @@
                             "roomba bedroom Friday": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2188,7 +2188,7 @@
                             "roomba living area": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2216,7 +2216,7 @@
                             "roomba living area thur": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2244,7 +2244,7 @@
                             "roomba maintenance": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2272,7 +2272,7 @@
                             "wipe down play mat2": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2322,7 +2322,7 @@
                             "5 push-ups": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2350,7 +2350,7 @@
                             "check protein for week is adequate": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2378,7 +2378,7 @@
                             "clip body nails": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2406,7 +2406,7 @@
                             "cook veggies every morning": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2434,7 +2434,7 @@
                             "morning multivitamin": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2483,7 +2483,7 @@
                             "noce hair removal": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2511,7 +2511,7 @@
                             "pull ear hair": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2539,7 +2539,7 @@
                             "shampoo hair": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2567,7 +2567,7 @@
                             "straight back for 45 secs": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2680,7 +2680,7 @@
                             "trim beard": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2711,7 +2711,7 @@
                                     "bike or something": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "creditor_weight": 1.0,
+                                                "credor_weight": 1.0,
                                                 "debtor_weight": 1,
                                                 "group_id": ",Family"
                                             }
@@ -2739,7 +2739,7 @@
                                     "chest and arms (mon)": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "creditor_weight": 1.0,
+                                                "credor_weight": 1.0,
                                                 "debtor_weight": 1,
                                                 "group_id": ",Family"
                                             }
@@ -2806,7 +2806,7 @@
                                     "core lower back": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "creditor_weight": 1.0,
+                                                "credor_weight": 1.0,
                                                 "debtor_weight": 1,
                                                 "group_id": ",Family"
                                             }
@@ -2834,7 +2834,7 @@
                                     "rest": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "creditor_weight": 1.0,
+                                                "credor_weight": 1.0,
                                                 "debtor_weight": 1,
                                                 "group_id": ",Family"
                                             }
@@ -2862,7 +2862,7 @@
                                     "shoulders and upper back": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "creditor_weight": 1.0,
+                                                "credor_weight": 1.0,
                                                 "debtor_weight": 1,
                                                 "group_id": ",Family"
                                             }
@@ -2910,7 +2910,7 @@
                                     "squats hamstrings and calves": {
                                         "_balancelinks": {
                                             ",Family": {
-                                                "creditor_weight": 1.0,
+                                                "credor_weight": 1.0,
                                                 "debtor_weight": 1,
                                                 "group_id": ",Family"
                                             }
@@ -2955,7 +2955,7 @@
                             "be reponsible for rent": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -2983,7 +2983,7 @@
                             "be responsible for expenses card": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -3011,7 +3011,7 @@
                             "be responsible for utilities bills": {
                                 "_balancelinks": {
                                     "Perrison": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": "Perrison"
                                     }
@@ -3039,7 +3039,7 @@
                             "set aside a little bucks for fun the week": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -3074,7 +3074,7 @@
                     "Housing": {
                         "_balancelinks": {
                             ",OceanVista Apt": {
-                                "creditor_weight": 1.0,
+                                "credor_weight": 1.0,
                                 "debtor_weight": 1,
                                 "group_id": ",OceanVista Apt"
                             }
@@ -3127,7 +3127,7 @@
                                                     "heater maintenance": {
                                                         "_balancelinks": {
                                                             "Norberto": {
-                                                                "creditor_weight": 1.0,
+                                                                "credor_weight": 1.0,
                                                                 "debtor_weight": 1,
                                                                 "group_id": "Norberto"
                                                             }
@@ -3273,7 +3273,7 @@
                             "clip oldest nails": {
                                 "_balancelinks": {
                                     "America": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": "America"
                                     }
@@ -3311,7 +3311,7 @@
                             "get rid of toy buy new toy": {
                                 "_balancelinks": {
                                     ",Family": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Family"
                                     }
@@ -3390,7 +3390,7 @@
                     "say hi to birds": {
                         "_balancelinks": {
                             ",Family": {
-                                "creditor_weight": 1.0,
+                                "credor_weight": 1.0,
                                 "debtor_weight": 1,
                                 "group_id": ",Family"
                             }
@@ -3426,17 +3426,17 @@
             "D&B": {
                 "_balancelinks": {
                     ",Climate Death": {
-                        "creditor_weight": 1.0,
+                        "credor_weight": 1.0,
                         "debtor_weight": 1,
                         "group_id": ",Climate Death"
                     },
                     ",Family": {
-                        "creditor_weight": 1.0,
+                        "credor_weight": 1.0,
                         "debtor_weight": 1,
                         "group_id": ",Family"
                     },
                     "America": {
-                        "creditor_weight": 1.0,
+                        "credor_weight": 1.0,
                         "debtor_weight": 1,
                         "group_id": "America"
                     }
@@ -3446,7 +3446,7 @@
                     "bens friends be desperate for of housing support": {
                         "_balancelinks": {
                             "Renee Elise Goldsberry": {
-                                "creditor_weight": 1.0,
+                                "credor_weight": 1.0,
                                 "debtor_weight": 1,
                                 "group_id": "Renee Elise Goldsberry"
                             }
@@ -3456,7 +3456,7 @@
                             "Ask Aaron monthly what I can do": {
                                 "_balancelinks": {
                                     "Renee Elise Goldsberry": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": "Renee Elise Goldsberry"
                                     }
@@ -3502,7 +3502,7 @@
                     "develop D&B software": {
                         "_balancelinks": {
                             ",hurt by us dollar": {
-                                "creditor_weight": 1.0,
+                                "credor_weight": 1.0,
                                 "debtor_weight": 1,
                                 "group_id": ",hurt by us dollar"
                             }
@@ -3565,7 +3565,7 @@
                             "donate to influential people that are pro-Climate Death": {
                                 "_balancelinks": {
                                     ",Climate Death": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Climate Death"
                                     }
@@ -3699,7 +3699,7 @@
                             "being receptive to Aaron": {
                                 "_balancelinks": {
                                     "Renee Elise Goldsberry": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": "Renee Elise Goldsberry"
                                     }
@@ -3709,7 +3709,7 @@
                                     "be available for phone call": {
                                         "_balancelinks": {
                                             "Renee Elise Goldsberry": {
-                                                "creditor_weight": 1.0,
+                                                "credor_weight": 1.0,
                                                 "debtor_weight": 1,
                                                 "group_id": "Renee Elise Goldsberry"
                                             }
@@ -3747,12 +3747,12 @@
                                     "call Aaron and discuss methodology": {
                                         "_balancelinks": {
                                             ",Climate Death": {
-                                                "creditor_weight": 1.0,
+                                                "credor_weight": 1.0,
                                                 "debtor_weight": 1,
                                                 "group_id": ",Climate Death"
                                             },
                                             "Renee Elise Goldsberry": {
-                                                "creditor_weight": 1.0,
+                                                "credor_weight": 1.0,
                                                 "debtor_weight": 1,
                                                 "group_id": "Renee Elise Goldsberry"
                                             }
@@ -3831,7 +3831,7 @@
                             "write letters about Climate Death to congressman": {
                                 "_balancelinks": {
                                     ",Climate Death": {
-                                        "creditor_weight": 1.0,
+                                        "credor_weight": 1.0,
                                         "debtor_weight": 1,
                                         "group_id": ",Climate Death"
                                     }
@@ -6612,156 +6612,156 @@
     "_owner_id": "Bob",
     "_partys": {
         "A a ron Jones": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "A a ron Jones"
         },
         "America": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "America"
         },
         "Anna": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Anna"
         },
         "Benjamin Stoddert": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Benjamin Stoddert"
         },
         "Bob302": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Bob302"
         },
         "Charles Lee": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Charles Lee"
         },
         "Ernesto Chavez": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Ernesto Chavez"
         },
         "Jacque Chirac": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Jacque Chirac"
         },
         "Jane Randolph": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Jane Randolph"
         },
         "Maria Reynolds": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Maria Reynolds"
         },
         "Martha Doubs": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Martha Doubs"
         },
         "Mikayla": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Mikayla"
         },
         "Norberto": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Norberto"
         },
         "Perrison": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Perrison"
         },
         "Philipa": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Philipa"
         },
         "Prashant": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Prashant"
         },
         "Renee Elise Goldsberry": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Renee Elise Goldsberry"
         },
         "Sam zamora": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Sam zamora"
         },
         "Shadwell Harris": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Shadwell Harris"
         },
         "Thomas OSU": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Thomas OSU"
         },
         "Travis Fox": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "Travis Fox"
         },
         "WIlliam Wallace": {
-            "_creditor_operational": null,
+            "_credor_operational": null,
             "_debtor_operational": null,
-            "creditor_weight": 1,
+            "credor_weight": 1,
             "debtor_weight": 1,
             "party_id": "WIlliam Wallace"
         }

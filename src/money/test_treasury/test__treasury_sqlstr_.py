@@ -5,7 +5,7 @@ from src.money.treasury_sqlstr import (
     get_agendaunits_select_sqlstr,
     get_agenda_partyunit_table_create_sqlstr,
     get_agenda_partyunit_table_update_treasury_due_paid_sqlstr,
-    get_agenda_partyunit_table_update_credit_score_sqlstr,
+    get_agenda_partyunit_table_update_cred_score_sqlstr,
     get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr,
     get_river_reach_table_touch_select_sqlstr,
     get_river_reach_table_final_select_sqlstr,
@@ -373,17 +373,17 @@ def test_get_agenda_partyunit_table_create_sqlstr_ReturnsCorrectStr():
 CREATE TABLE IF NOT EXISTS agenda_partyunit (
   owner_id VARCHAR(255) NOT NULL 
 , party_id VARCHAR(255) NOT NULL
-, _agenda_credit FLOAT
+, _agenda_cred FLOAT
 , _agenda_debt FLOAT
-, _agenda_intent_credit FLOAT
+, _agenda_intent_cred FLOAT
 , _agenda_intent_debt FLOAT
-, _agenda_intent_ratio_credit FLOAT
+, _agenda_intent_ratio_cred FLOAT
 , _agenda_intent_ratio_debt FLOAT
-, _creditor_operational INT
+, _credor_operational INT
 , _debtor_operational INT
 , _treasury_due_paid FLOAT
 , _treasury_due_diff FLOAT
-, _treasury_credit_score FLOAT
+, _treasury_cred_score FLOAT
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
 , FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
@@ -395,15 +395,15 @@ CREATE TABLE IF NOT EXISTS agenda_partyunit (
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_agenda_partyunit_table_update_credit_score_sqlstr_ReturnsCorrectStr():
+def test_get_agenda_partyunit_table_update_cred_score_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     yao_text = "Yao"
-    generated_sqlstr = get_agenda_partyunit_table_update_credit_score_sqlstr(yao_text)
+    generated_sqlstr = get_agenda_partyunit_table_update_cred_score_sqlstr(yao_text)
 
     # THEN
     example_sqlstr = f"""
 UPDATE agenda_partyunit
-SET _treasury_credit_score = (
+SET _treasury_cred_score = (
     SELECT SUM(reach_coin_close - reach_coin_start) range_sum
     FROM river_reach reach
     WHERE reach.cash_master = agenda_partyunit.owner_id
@@ -430,7 +430,7 @@ SET _treasury_voice_rank =
     SELECT rn
     FROM (
         SELECT p2.party_id
-        , row_number() over (order by p2._treasury_credit_score DESC) rn
+        , row_number() over (order by p2._treasury_cred_score DESC) rn
         FROM agenda_partyunit p2
         WHERE p2.owner_id = '{yao_text}'
     ) p3

@@ -142,17 +142,17 @@ def display_ideatree(x_agenda: AgendaUnit, mode: str = None) -> plotly_Figure:
 def get_agenda_partys_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
     column_header_list = [
         "party_id",
-        "_party_creditor_pool",
-        "creditor_weight",
+        "_party_credor_pool",
+        "credor_weight",
         "_party_debtor_pool",
         "debtor_weight",
-        "_agenda_credit",
+        "_agenda_cred",
         "_agenda_debt",
-        "_agenda_intent_credit",
+        "_agenda_intent_cred",
         "_agenda_intent_debt",
     ]
     df = get_agenda_partyunits_dataframe(x_agenda)
-    df.insert(1, "_party_creditor_pool", x_agenda._party_creditor_pool)
+    df.insert(1, "_party_credor_pool", x_agenda._party_credor_pool)
     df.insert(4, "_party_debtor_pool", x_agenda._party_debtor_pool)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
@@ -162,13 +162,13 @@ def get_agenda_partys_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
         cells=dict(
             values=[
                 df.party_id,
-                df._party_creditor_pool,
-                df.creditor_weight,
+                df._party_credor_pool,
+                df.credor_weight,
                 df._party_debtor_pool,
                 df.debtor_weight,
-                df._agenda_credit,
+                df._agenda_cred,
                 df._agenda_debt,
-                df._agenda_intent_credit,
+                df._agenda_intent_cred,
                 df._agenda_intent_debt,
             ],
             fill_color="lavender",

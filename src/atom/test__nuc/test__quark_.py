@@ -195,7 +195,7 @@ def test_get_quark_columns_build_ReturnsCorrectObj():
 
     # THEN
     assert len(quark_columns) == 113
-    assert quark_columns.get("agendaunit_UPDATE__party_creditor_pool") == "INTEGER"
+    assert quark_columns.get("agendaunit_UPDATE__party_credor_pool") == "INTEGER"
     # print(f"{quark_columns.keys()=}")
 
 
@@ -214,10 +214,10 @@ def test_QuarkUnit_exists():
 def test_quarkunit_shop_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    bob_creditor_weight = 55
+    bob_credor_weight = 55
     bob_debtor_weight = 66
-    bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
-    cw_text = "_creditor_weight"
+    bob_partyunit = partyunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
+    cw_text = "_credor_weight"
     dw_text = "_debtor_weight"
     bob_required_dict = {"party_id": "huh"}
     bob_optional_dict = {cw_text: bob_partyunit.get_dict().get(cw_text)}
@@ -289,7 +289,7 @@ def test_QuarkUnit_is_optional_args_valid_ReturnsCorrectBoolean():
     assert bob_insert_quarkunit.is_optional_args_valid()
 
     # WHEN
-    bob_insert_quarkunit.set_optional_arg("creditor_weight", 55)
+    bob_insert_quarkunit.set_optional_arg("credor_weight", 55)
     # THEN
     assert len(bob_insert_quarkunit.optional_args) == 1
     assert bob_insert_quarkunit.is_optional_args_valid()
@@ -309,9 +309,9 @@ def test_QuarkUnit_is_optional_args_valid_ReturnsCorrectBoolean():
 
 def test_QuarkUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     bob_text = "Bob"
-    bob_creditor_weight = 55
+    bob_credor_weight = 55
     bob_debtor_weight = 66
-    bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
+    bob_partyunit = partyunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
     partyunit_text = "agenda_partyunit"
 
     # WHEN
@@ -341,7 +341,7 @@ def test_QuarkUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
 
     # WHEN
     bob_insert_quarkunit.optional_args = {}
-    cw_text = "creditor_weight"
+    cw_text = "credor_weight"
     dw_text = "debtor_weight"
     bob_insert_quarkunit.set_optional_arg(
         cw_text, bob_partyunit.get_dict().get(cw_text)
@@ -373,13 +373,13 @@ def test_QuarkUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
 def test_QuarkUnit_get_value_ReturnsObj():
     # GIVEN
     bob_text = "Bob"
-    bob_creditor_weight = 55
+    bob_credor_weight = 55
     bob_debtor_weight = 66
-    bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
+    bob_partyunit = partyunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
     partyunit_text = "agenda_partyunit"
     bob_insert_quarkunit = quarkunit_shop(partyunit_text, quark_insert())
     party_id_text = "party_id"
-    cw_text = "creditor_weight"
+    cw_text = "credor_weight"
     dw_text = "debtor_weight"
     print(f"{bob_partyunit.get_dict()=}")
     # bob_partyunit_dict = {party_id_text: bob_partyunit.get_dict().get(party_id_text)}
@@ -394,7 +394,7 @@ def test_QuarkUnit_get_value_ReturnsObj():
     assert bob_insert_quarkunit.is_valid()
 
     # WHEN / THEN
-    assert bob_insert_quarkunit.get_value(cw_text) == bob_creditor_weight
+    assert bob_insert_quarkunit.get_value(cw_text) == bob_credor_weight
     assert bob_insert_quarkunit.get_value(dw_text) == bob_debtor_weight
 
 
@@ -421,42 +421,42 @@ def test_QuarkUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_DELETE():
 def test_QuarkUnit_set_quark_order_SetCorrectAttr():
     # GIVEN
     bob_text = "Bob"
-    bob_creditor_weight = 55
+    bob_credor_weight = 55
     bob_debtor_weight = 66
     partyunit_text = "agenda_partyunit"
     bob_insert_quarkunit = quarkunit_shop(partyunit_text, quark_insert())
     party_id_text = "party_id"
-    cw_text = "creditor_weight"
+    cw_text = "credor_weight"
     dw_text = "debtor_weight"
     bob_insert_quarkunit.set_required_arg(party_id_text, bob_text)
-    bob_insert_quarkunit.set_optional_arg(cw_text, bob_creditor_weight)
+    bob_insert_quarkunit.set_optional_arg(cw_text, bob_credor_weight)
     bob_insert_quarkunit.set_optional_arg(dw_text, bob_debtor_weight)
     assert bob_insert_quarkunit.is_valid()
 
     # WHEN / THEN
-    assert bob_insert_quarkunit.get_value(cw_text) == bob_creditor_weight
+    assert bob_insert_quarkunit.get_value(cw_text) == bob_credor_weight
     assert bob_insert_quarkunit.get_value(dw_text) == bob_debtor_weight
 
 
 def test_QuarkUnit_set_arg_SetsAny_required_arg_optional_arg():
     # GIVEN
     bob_text = "Bob"
-    bob_creditor_weight = 55
+    bob_credor_weight = 55
     bob_debtor_weight = 66
     partyunit_text = "agenda_partyunit"
     bob_insert_quarkunit = quarkunit_shop(partyunit_text, quark_insert())
     party_id_text = "party_id"
-    cw_text = "creditor_weight"
+    cw_text = "credor_weight"
     dw_text = "debtor_weight"
 
     # WHEN
     bob_insert_quarkunit.set_arg(party_id_text, bob_text)
-    bob_insert_quarkunit.set_arg(cw_text, bob_creditor_weight)
+    bob_insert_quarkunit.set_arg(cw_text, bob_credor_weight)
     bob_insert_quarkunit.set_arg(dw_text, bob_debtor_weight)
 
     # THEN
     assert bob_insert_quarkunit.get_value(party_id_text) == bob_text
-    assert bob_insert_quarkunit.get_value(cw_text) == bob_creditor_weight
+    assert bob_insert_quarkunit.get_value(cw_text) == bob_credor_weight
     assert bob_insert_quarkunit.get_value(dw_text) == bob_debtor_weight
     assert bob_insert_quarkunit.get_value(party_id_text) == bob_text
     assert bob_insert_quarkunit.is_valid()

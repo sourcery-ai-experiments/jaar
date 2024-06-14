@@ -35,10 +35,10 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJobAgendaWhenNo_suffgroupIs
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_role.set_party_pool(zia_pool)
 
     zia_job = agendaunit_shop(zia_text)
@@ -63,10 +63,10 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJobAgenda(env_dir_setup_cle
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_role.set_party_pool(zia_pool)
 
     zia_job = agendaunit_shop(zia_text)
@@ -159,13 +159,13 @@ def test_listen_to_intent_role_job_intent_ProcessesIrrationalAgenda(
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     sue_text = "Sue"
-    sue_creditor_weight = 57
+    sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_role.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
     yao_role.set_party_pool(yao_pool)
     yao_dakota_userhub = userhub_shop(env_dir(), None, yao_text, get_dakota_road())
@@ -236,12 +236,12 @@ def test_listen_to_intent_role_job_intent_ProcessesMissingDebtorJobAgenda(
     yao_role = agendaunit_shop(yao_text)
     zia_text = "Zia"
     sue_text = "Sue"
-    zia_creditor_weight = 47
-    sue_creditor_weight = 57
+    zia_credor_weight = 47
+    sue_credor_weight = 57
     zia_debtor_weight = 41
     sue_debtor_weight = 51
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_role.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
     yao_role.set_party_pool(yao_pool)
     yao_dakota_userhub = userhub_shop(env_dir(), None, yao_text, get_dakota_road())
@@ -280,13 +280,13 @@ def test_listen_to_intent_role_job_intent_ListensToOwner_role_AndNotOwner_job(
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
     yao_text = "Yao"
-    yao_creditor_weight = 57
+    yao_credor_weight = 57
     yao_debtor_weight = 51
-    yao_role.add_partyunit(yao_text, yao_creditor_weight, yao_debtor_weight)
+    yao_role.add_partyunit(yao_text, yao_credor_weight, yao_debtor_weight)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_pool = 87
     yao_role.set_party_pool(yao_pool)
     # save yao without task to roles

@@ -762,7 +762,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.idea2group_table.setItem(
                 row - 1,
                 2,
-                qtw1(agenda_importance_diplay(balanceheir._agenda_credit)),
+                qtw1(agenda_importance_diplay(balanceheir._agenda_cred)),
             )
 
         self.idea2group_table.sortItems(1, QtCore.Qt.AscendingOrder)
@@ -837,7 +837,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             uid=None,
             reason=None,
             descendant_pledge_count=None,
-            all_party_credit=None,
+            all_party_cred=None,
             all_party_debt=None,
             balancelink=None,
             is_expanded=None,
@@ -918,7 +918,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             reason_del_premise_base=None,
             reason_del_premise_need=None,
             descendant_pledge_count=None,
-            all_party_credit=None,
+            all_party_cred=None,
             all_party_debt=None,
             balancelink=None,
             balancelink_del=None,

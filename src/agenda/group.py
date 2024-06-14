@@ -40,9 +40,9 @@ class GroupUnit(GroupCore):
     _treasury_partylinks: RoadUnit = None  # calculated by MoneyUnit
     _road_delimiter: str = None  # calculated by AgendaUnit.set_groupunit
     # calculated by AgendaUnit.calc_agenda_metrics()
-    _agenda_credit: float = None
+    _agenda_cred: float = None
     _agenda_debt: float = None
-    _agenda_intent_credit: float = None
+    _agenda_intent_cred: float = None
     _agenda_intent_debt: float = None
 
     def set_group_id(self, group_id: GroupID = None):
@@ -69,29 +69,29 @@ class GroupUnit(GroupCore):
 
         return x_dict
 
-    def reset_agenda_credit_debt(self):
-        self._agenda_credit = 0
+    def reset_agenda_cred_debt(self):
+        self._agenda_cred = 0
         self._agenda_debt = 0
-        self._agenda_intent_credit = 0
+        self._agenda_intent_cred = 0
         self._agenda_intent_debt = 0
         for partylink in self._partys.values():
-            partylink.reset_agenda_credit_debt()
+            partylink.reset_agenda_cred_debt()
 
-    def _set_partylink_agenda_credit_debt(self):
-        partylinks_creditor_weight_sum = sum(
-            partylink.creditor_weight for partylink in self._partys.values()
+    def _set_partylink_agenda_cred_debt(self):
+        partylinks_credor_weight_sum = sum(
+            partylink.credor_weight for partylink in self._partys.values()
         )
         partylinks_debtor_weight_sum = sum(
             partylink.debtor_weight for partylink in self._partys.values()
         )
 
         for partylink in self._partys.values():
-            partylink.set_agenda_credit_debt(
-                partylinks_creditor_weight_sum=partylinks_creditor_weight_sum,
+            partylink.set_agenda_cred_debt(
+                partylinks_credor_weight_sum=partylinks_credor_weight_sum,
                 partylinks_debtor_weight_sum=partylinks_debtor_weight_sum,
-                group_agenda_credit=self._agenda_credit,
+                group_agenda_cred=self._agenda_cred,
                 group_agenda_debt=self._agenda_debt,
-                group_agenda_intent_credit=self._agenda_intent_credit,
+                group_agenda_intent_cred=self._agenda_intent_cred,
                 group_agenda_intent_debt=self._agenda_intent_debt,
             )
 
@@ -109,11 +109,11 @@ class GroupUnit(GroupCore):
         self._partys[partylink.party_id] = partylink
 
     def edit_partylink(
-        self, party_id: PartyID, creditor_weight: int = None, debtor_weight: int = None
+        self, party_id: PartyID, credor_weight: int = None, debtor_weight: int = None
     ):
         x_partylink = self.get_partylink(party_id)
-        if creditor_weight != None:
-            x_partylink.creditor_weight = creditor_weight
+        if credor_weight != None:
+            x_partylink.credor_weight = credor_weight
         if debtor_weight != None:
             x_partylink.debtor_weight = debtor_weight
 
@@ -130,18 +130,18 @@ class GroupUnit(GroupCore):
         self, to_delete_party_id: PartyID, to_absorb_party_id: PartyID
     ):
         old_group_partylink = self.get_partylink(to_delete_party_id)
-        new_partylink_creditor_weight = old_group_partylink.creditor_weight
+        new_partylink_credor_weight = old_group_partylink.credor_weight
         new_partylink_debtor_weight = old_group_partylink.debtor_weight
 
         new_partylink = self.get_partylink(to_absorb_party_id)
         if new_partylink != None:
-            new_partylink_creditor_weight += new_partylink.creditor_weight
+            new_partylink_credor_weight += new_partylink.credor_weight
             new_partylink_debtor_weight += new_partylink.debtor_weight
 
         self.set_partylink(
             partylink=partylink_shop(
                 party_id=to_absorb_party_id,
-                creditor_weight=new_partylink_creditor_weight,
+                credor_weight=new_partylink_credor_weight,
                 debtor_weight=new_partylink_debtor_weight,
             )
         )
@@ -229,9 +229,9 @@ def groupunit_shop(
     x_groupunit = GroupUnit(
         _party_mirror=_party_mirror,
         _partys=get_empty_dict_if_none(_partys),
-        _agenda_credit=get_0_if_None(),
+        _agenda_cred=get_0_if_None(),
         _agenda_debt=get_0_if_None(),
-        _agenda_intent_credit=get_0_if_None(),
+        _agenda_intent_cred=get_0_if_None(),
         _agenda_intent_debt=get_0_if_None(),
         _treasury_partylinks=_treasury_partylinks,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
@@ -242,13 +242,13 @@ def groupunit_shop(
 
 @dataclass
 class BalanceLink(GroupCore):
-    creditor_weight: float = 1.0
+    credor_weight: float = 1.0
     debtor_weight: float = 1.0
 
     def get_dict(self) -> dict[str:str]:
         return {
             "group_id": self.group_id,
-            "creditor_weight": self.creditor_weight,
+            "credor_weight": self.credor_weight,
             "debtor_weight": self.debtor_weight,
         }
 
@@ -258,10 +258,10 @@ class BalanceLink(GroupCore):
         other_meld_strategy: str,
         src_meld_strategy: str,
     ):
-        self.creditor_weight = get_meld_weight(
-            src_weight=self.creditor_weight,
+        self.credor_weight = get_meld_weight(
+            src_weight=self.credor_weight,
             src_meld_strategy=src_meld_strategy,
-            other_weight=other_balancelink.creditor_weight,
+            other_weight=other_balancelink.credor_weight,
             other_meld_strategy=other_meld_strategy,
         )
         self.debtor_weight = get_meld_weight(
@@ -283,7 +283,7 @@ def balancelinks_get_from_dict(x_dict: dict) -> dict[GroupID, BalanceLink]:
     for balancelinks_dict in x_dict.values():
         x_group = balancelink_shop(
             group_id=balancelinks_dict["group_id"],
-            creditor_weight=balancelinks_dict["creditor_weight"],
+            credor_weight=balancelinks_dict["credor_weight"],
             debtor_weight=balancelinks_dict["debtor_weight"],
         )
         balancelinks[x_group.group_id] = x_group
@@ -291,30 +291,30 @@ def balancelinks_get_from_dict(x_dict: dict) -> dict[GroupID, BalanceLink]:
 
 
 def balancelink_shop(
-    group_id: GroupID, creditor_weight: float = None, debtor_weight: float = None
+    group_id: GroupID, credor_weight: float = None, debtor_weight: float = None
 ) -> BalanceLink:
-    creditor_weight = get_1_if_None(creditor_weight)
+    credor_weight = get_1_if_None(credor_weight)
     debtor_weight = get_1_if_None(debtor_weight)
     return BalanceLink(
-        group_id=group_id, creditor_weight=creditor_weight, debtor_weight=debtor_weight
+        group_id=group_id, credor_weight=credor_weight, debtor_weight=debtor_weight
     )
 
 
 @dataclass
 class BalanceHeir(GroupCore):
-    creditor_weight: float = 1.0
+    credor_weight: float = 1.0
     debtor_weight: float = 1.0
-    _agenda_credit: float = None
+    _agenda_cred: float = None
     _agenda_debt: float = None
 
-    def set_agenda_credit_debt(
+    def set_agenda_cred_debt(
         self,
         idea_agenda_importance,
-        balanceheirs_creditor_weight_sum: float,
+        balanceheirs_credor_weight_sum: float,
         balanceheirs_debtor_weight_sum: float,
     ):
-        self._agenda_credit = idea_agenda_importance * (
-            self.creditor_weight / balanceheirs_creditor_weight_sum
+        self._agenda_cred = idea_agenda_importance * (
+            self.credor_weight / balanceheirs_credor_weight_sum
         )
         self._agenda_debt = idea_agenda_importance * (
             self.debtor_weight / balanceheirs_debtor_weight_sum
@@ -323,42 +323,42 @@ class BalanceHeir(GroupCore):
 
 def balanceheir_shop(
     group_id: GroupID,
-    creditor_weight: float = None,
+    credor_weight: float = None,
     debtor_weight: float = None,
-    _agenda_credit: float = None,
+    _agenda_cred: float = None,
     _agenda_debt: float = None,
 ) -> BalanceHeir:
-    creditor_weight = get_1_if_None(creditor_weight)
+    credor_weight = get_1_if_None(credor_weight)
     debtor_weight = get_1_if_None(debtor_weight)
     return BalanceHeir(
         group_id=group_id,
-        creditor_weight=creditor_weight,
+        credor_weight=credor_weight,
         debtor_weight=debtor_weight,
-        _agenda_credit=_agenda_credit,
+        _agenda_cred=_agenda_cred,
         _agenda_debt=_agenda_debt,
     )
 
 
 @dataclass
 class BalanceLine(GroupCore):
-    _agenda_credit: float = None
+    _agenda_cred: float = None
     _agenda_debt: float = None
 
-    def add_agenda_credit_debt(self, agenda_credit: float, agenda_debt: float):
-        self.set_agenda_credit_debt_zero_if_null()
-        self._agenda_credit += agenda_credit
+    def add_agenda_cred_debt(self, agenda_cred: float, agenda_debt: float):
+        self.set_agenda_cred_debt_zero_if_null()
+        self._agenda_cred += agenda_cred
         self._agenda_debt += agenda_debt
 
-    def set_agenda_credit_debt_zero_if_null(self):
-        if self._agenda_credit is None:
-            self._agenda_credit = 0
+    def set_agenda_cred_debt_zero_if_null(self):
+        if self._agenda_cred is None:
+            self._agenda_cred = 0
         if self._agenda_debt is None:
             self._agenda_debt = 0
 
 
-def balanceline_shop(group_id: GroupID, _agenda_credit: float, _agenda_debt: float):
+def balanceline_shop(group_id: GroupID, _agenda_cred: float, _agenda_debt: float):
     return BalanceLine(
-        group_id=group_id, _agenda_credit=_agenda_credit, _agenda_debt=_agenda_debt
+        group_id=group_id, _agenda_cred=_agenda_cred, _agenda_debt=_agenda_debt
     )
 
 

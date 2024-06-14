@@ -75,33 +75,33 @@ def test_AgendaUnit_calc_agenda_metrics_ClearsDescendantAttributes():
     mon_text = "Monday"
     yrx = x_agenda._idearoot
     assert yrx._descendant_pledge_count is None
-    assert yrx._all_party_credit is None
+    assert yrx._all_party_cred is None
     assert yrx._all_party_debt is None
     assert yrx._kids[casa_text]._descendant_pledge_count is None
-    assert yrx._kids[casa_text]._all_party_credit is None
+    assert yrx._kids[casa_text]._all_party_cred is None
     assert yrx._kids[casa_text]._all_party_debt is None
     assert yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count is None
-    assert yrx._kids[week_text]._kids[mon_text]._all_party_credit is None
+    assert yrx._kids[week_text]._kids[mon_text]._all_party_cred is None
     assert yrx._kids[week_text]._kids[mon_text]._all_party_debt is None
 
     yrx._descendant_pledge_count = -2
-    yrx._all_party_credit = -2
+    yrx._all_party_cred = -2
     yrx._all_party_debt = -2
     yrx._kids[casa_text]._descendant_pledge_count = -2
-    yrx._kids[casa_text]._all_party_credit = -2
+    yrx._kids[casa_text]._all_party_cred = -2
     yrx._kids[casa_text]._all_party_debt = -2
     yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count = -2
-    yrx._kids[week_text]._kids[mon_text]._all_party_credit = -2
+    yrx._kids[week_text]._kids[mon_text]._all_party_cred = -2
     yrx._kids[week_text]._kids[mon_text]._all_party_debt = -2
 
     assert yrx._descendant_pledge_count == -2
-    assert yrx._all_party_credit == -2
+    assert yrx._all_party_cred == -2
     assert yrx._all_party_debt == -2
     assert yrx._kids[casa_text]._descendant_pledge_count == -2
-    assert yrx._kids[casa_text]._all_party_credit == -2
+    assert yrx._kids[casa_text]._all_party_cred == -2
     assert yrx._kids[casa_text]._all_party_debt == -2
     assert yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count == -2
-    assert yrx._kids[week_text]._kids[mon_text]._all_party_credit == -2
+    assert yrx._kids[week_text]._kids[mon_text]._all_party_cred == -2
     assert yrx._kids[week_text]._kids[mon_text]._all_party_debt == -2
 
     # WHEN
@@ -112,11 +112,11 @@ def test_AgendaUnit_calc_agenda_metrics_ClearsDescendantAttributes():
     assert yrx._kids[casa_text]._descendant_pledge_count == 0
     assert yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count == 0
 
-    assert yrx._kids[week_text]._kids[mon_text]._all_party_credit == True
+    assert yrx._kids[week_text]._kids[mon_text]._all_party_cred == True
     assert yrx._kids[week_text]._kids[mon_text]._all_party_debt == True
-    assert yrx._kids[casa_text]._all_party_credit == True
+    assert yrx._kids[casa_text]._all_party_cred == True
     assert yrx._kids[casa_text]._all_party_debt == True
-    assert yrx._all_party_credit == True
+    assert yrx._all_party_cred == True
     assert yrx._all_party_debt == True
 
 
@@ -163,7 +163,7 @@ def test_AgendaUnit_calc_agenda_metrics_RootOnlyCorrectlySetsDescendantAttribute
     # GIVEN
     tim_agenda = agendaunit_shop(_owner_id="Tim")
     assert tim_agenda._idearoot._descendant_pledge_count is None
-    assert tim_agenda._idearoot._all_party_credit is None
+    assert tim_agenda._idearoot._all_party_cred is None
     assert tim_agenda._idearoot._all_party_debt is None
 
     # WHEN
@@ -171,7 +171,7 @@ def test_AgendaUnit_calc_agenda_metrics_RootOnlyCorrectlySetsDescendantAttribute
 
     # THEN
     assert tim_agenda._idearoot._descendant_pledge_count == 0
-    assert tim_agenda._idearoot._all_party_credit == True
+    assert tim_agenda._idearoot._all_party_cred == True
     assert tim_agenda._idearoot._all_party_debt == True
 
 
@@ -208,13 +208,13 @@ def test_AgendaUnit_calc_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_
     # test root status:
     x_idearoot = x_agenda.get_idea_obj(x_agenda._real_id)
     assert x_idearoot._descendant_pledge_count is None
-    assert x_idearoot._all_party_credit is None
+    assert x_idearoot._all_party_cred is None
     assert x_idearoot._all_party_debt is None
     assert x_idearoot._kids[casa_text]._descendant_pledge_count is None
-    assert x_idearoot._kids[casa_text]._all_party_credit is None
+    assert x_idearoot._kids[casa_text]._all_party_cred is None
     assert x_idearoot._kids[casa_text]._all_party_debt is None
     assert x_idearoot._kids[week_text]._kids[mon_text]._descendant_pledge_count is None
-    assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_credit is None
+    assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_cred is None
     assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_debt is None
 
     # WHEN
@@ -225,11 +225,11 @@ def test_AgendaUnit_calc_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_
     assert x_idearoot._kids[casa_text]._descendant_pledge_count == 1
     assert x_idearoot._kids[casa_text]._kids[email_text]._descendant_pledge_count == 0
     assert x_idearoot._kids[week_text]._kids[mon_text]._descendant_pledge_count == 0
-    assert x_idearoot._all_party_credit == True
+    assert x_idearoot._all_party_cred == True
     assert x_idearoot._all_party_debt == True
-    assert x_idearoot._kids[casa_text]._all_party_credit == True
+    assert x_idearoot._kids[casa_text]._all_party_cred == True
     assert x_idearoot._kids[casa_text]._all_party_debt == True
-    assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_credit == True
+    assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_cred == True
     assert x_idearoot._kids[week_text]._kids[mon_text]._all_party_debt == True
 
 
@@ -265,21 +265,21 @@ def test_AgendaUnit_calc_agenda_metrics_NLevelCorrectlySetsDescendantAttributes_
     # print(x_agenda._kids[casa_text]._kids[email_text]._balancelink)
 
     # THEN
-    assert x_agenda._idearoot._all_party_credit is False
+    assert x_agenda._idearoot._all_party_cred is False
     assert x_agenda._idearoot._all_party_debt is False
     casa_idea = x_agenda._idearoot._kids[casa_text]
-    assert casa_idea._all_party_credit is False
+    assert casa_idea._all_party_cred is False
     assert casa_idea._all_party_debt is False
-    assert casa_idea._kids[email_text]._all_party_credit is False
+    assert casa_idea._kids[email_text]._all_party_cred is False
     assert casa_idea._kids[email_text]._all_party_debt is False
-    assert casa_idea._kids[vacuum_text]._all_party_credit == True
+    assert casa_idea._kids[vacuum_text]._all_party_cred == True
     assert casa_idea._kids[vacuum_text]._all_party_debt == True
     week_idea = x_agenda._idearoot._kids[week_text]
-    assert week_idea._all_party_credit == True
+    assert week_idea._all_party_cred == True
     assert week_idea._all_party_debt == True
-    assert week_idea._kids[mon_text]._all_party_credit == True
+    assert week_idea._kids[mon_text]._all_party_cred == True
     assert week_idea._kids[mon_text]._all_party_debt == True
-    assert week_idea._kids[tue_text]._all_party_credit == True
+    assert week_idea._kids[tue_text]._all_party_cred == True
     assert week_idea._kids[tue_text]._all_party_debt == True
 
 
@@ -334,7 +334,7 @@ def test_AgendaUnit_calc_agenda_metrics_TreeTraverseSetsBalanceLineestorFromRoot
     assert x_agenda._idearoot._balancelines != {}
     root_idea = x_agenda.get_idea_obj(road=x_agenda._idearoot._label)
     sue_balanceline = x_agenda._idearoot._balancelines.get(sue_text)
-    print(f"{sue_balanceline._agenda_credit=} {root_idea._agenda_importance=} ")
+    print(f"{sue_balanceline._agenda_cred=} {root_idea._agenda_importance=} ")
     print(f"  {sue_balanceline._agenda_debt=} {root_idea._agenda_importance=} ")
     sum_x = 0
     cat_road = x_agenda.make_l1_road("feed cat")
@@ -360,11 +360,11 @@ def test_AgendaUnit_calc_agenda_metrics_TreeTraverseSetsBalanceLineestorFromRoot
     # for kid_idea in root_idea._kids.values():
     #     sum_x += kid_idea._agenda_importance
     #     print(f"  {kid_idea._agenda_importance=} {sum_x=} {kid_idea.get_road()=}")
-    assert round(sue_balanceline._agenda_credit, 15) == 1
+    assert round(sue_balanceline._agenda_cred, 15) == 1
     assert round(sue_balanceline._agenda_debt, 15) == 1
     x_balanceline = balanceline_shop(
         group_id=sue_text,
-        _agenda_credit=0.9999999999999998,
+        _agenda_cred=0.9999999999999998,
         _agenda_debt=0.9999999999999998,
     )
     assert x_agenda._idearoot._balancelines == {x_balanceline.group_id: x_balanceline}
@@ -391,7 +391,7 @@ def test_AgendaUnit_calc_agenda_metrics_TreeTraverseSetsBalanceLineestorFromNonR
     assert x_agenda._idearoot._balancelines != {}
     x_balanceline = balanceline_shop(
         group_id=sue_text,
-        _agenda_credit=0.23076923076923078,
+        _agenda_cred=0.23076923076923078,
         _agenda_debt=0.23076923076923078,
     )
     assert x_agenda._idearoot._balancelines == {x_balanceline.group_id: x_balanceline}

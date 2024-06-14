@@ -329,9 +329,9 @@ def _modify_agenda_update_agendaunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_arg = "_max_tree_traverse"
     if x_quark.get_value(x_arg) != None:
         x_agenda.set_max_tree_traverse(x_quark.get_value(x_arg))
-    x_arg = "_party_creditor_pool"
+    x_arg = "_party_credor_pool"
     if x_quark.get_value(x_arg) != None:
-        x_agenda.set_party_creditor_pool(x_quark.get_value(x_arg))
+        x_agenda.set_party_credor_pool(x_quark.get_value(x_arg))
     x_arg = "_party_debtor_pool"
     if x_quark.get_value(x_arg) != None:
         x_agenda.set_party_debtor_pool(x_quark.get_value(x_arg))
@@ -379,7 +379,7 @@ def _modify_agenda_group_partylink_update(x_agenda: AgendaUnit, x_quark: QuarkUn
     x_groupunit = x_agenda.get_groupunit(x_quark.get_value("group_id"))
     x_groupunit.edit_partylink(
         party_id=x_quark.get_value("party_id"),
-        creditor_weight=x_quark.get_value("creditor_weight"),
+        credor_weight=x_quark.get_value("credor_weight"),
         debtor_weight=x_quark.get_value("debtor_weight"),
     )
 
@@ -389,7 +389,7 @@ def _modify_agenda_group_partylink_insert(x_agenda: AgendaUnit, x_quark: QuarkUn
     x_groupunit.set_partylink(
         partylink_shop(
             party_id=x_quark.get_value("party_id"),
-            creditor_weight=x_quark.get_value("creditor_weight"),
+            credor_weight=x_quark.get_value("credor_weight"),
             debtor_weight=x_quark.get_value("debtor_weight"),
         )
     )
@@ -456,9 +456,9 @@ def _modify_agenda_idea_balancelink_delete(x_agenda: AgendaUnit, x_quark: QuarkU
 def _modify_agenda_idea_balancelink_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_idea = x_agenda.get_idea_obj(x_quark.get_value("road"))
     x_balancelink = x_idea._balancelinks.get(x_quark.get_value("group_id"))
-    x_creditor_weight = x_quark.get_value("creditor_weight")
-    if x_creditor_weight != None and x_balancelink.creditor_weight != x_creditor_weight:
-        x_balancelink.creditor_weight = x_creditor_weight
+    x_credor_weight = x_quark.get_value("credor_weight")
+    if x_credor_weight != None and x_balancelink.credor_weight != x_credor_weight:
+        x_balancelink.credor_weight = x_credor_weight
     x_debtor_weight = x_quark.get_value("debtor_weight")
     if x_debtor_weight != None and x_balancelink.debtor_weight != x_debtor_weight:
         x_balancelink.debtor_weight = x_debtor_weight
@@ -468,7 +468,7 @@ def _modify_agenda_idea_balancelink_update(x_agenda: AgendaUnit, x_quark: QuarkU
 def _modify_agenda_idea_balancelink_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_balancelink = balancelink_shop(
         group_id=x_quark.get_value("group_id"),
-        creditor_weight=x_quark.get_value("creditor_weight"),
+        credor_weight=x_quark.get_value("credor_weight"),
         debtor_weight=x_quark.get_value("debtor_weight"),
     )
     x_agenda.edit_idea_attr(x_quark.get_value("road"), balancelink=x_balancelink)
@@ -576,7 +576,7 @@ def _modify_agenda_partyunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
 def _modify_agenda_partyunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_agenda.edit_partyunit(
         party_id=x_quark.get_value("party_id"),
-        creditor_weight=x_quark.get_value("creditor_weight"),
+        credor_weight=x_quark.get_value("credor_weight"),
         debtor_weight=x_quark.get_value("debtor_weight"),
     )
 
@@ -585,7 +585,7 @@ def _modify_agenda_partyunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_agenda.set_partyunit(
         partyunit_shop(
             party_id=x_quark.get_value("party_id"),
-            creditor_weight=x_quark.get_value("creditor_weight"),
+            credor_weight=x_quark.get_value("credor_weight"),
             debtor_weight=x_quark.get_value("debtor_weight"),
         )
     )
@@ -704,14 +704,14 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             x_obj._weight != y_obj._weight
             or x_obj._max_tree_traverse != y_obj._max_tree_traverse
             or x_obj._meld_strategy != y_obj._meld_strategy
-            or x_obj._party_creditor_pool != y_obj._party_creditor_pool
+            or x_obj._party_credor_pool != y_obj._party_credor_pool
             or x_obj._party_debtor_pool != y_obj._party_debtor_pool
             or x_obj._planck != y_obj._planck
         )
     elif category == "agenda_groupunit":
         return x_obj._treasury_partylinks != y_obj._treasury_partylinks
     elif category in {"agenda_group_partylink", "agenda_idea_balancelink"}:
-        return (x_obj.creditor_weight != y_obj.creditor_weight) or (
+        return (x_obj.credor_weight != y_obj.credor_weight) or (
             x_obj.debtor_weight != y_obj.debtor_weight
         )
     elif category == "agenda_ideaunit":
@@ -743,7 +743,7 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj.divisor != y_obj.divisor
         )
     elif category == "agenda_partyunit":
-        return (x_obj.creditor_weight != y_obj.creditor_weight) or (
+        return (x_obj.credor_weight != y_obj.credor_weight) or (
             x_obj.debtor_weight != y_obj.debtor_weight
         )
 

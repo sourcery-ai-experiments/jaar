@@ -29,7 +29,7 @@ def test_IdeaAttrFilter_Exists():
     assert new_obj.pledge is None
     assert new_obj.beliefunit is None
     assert new_obj.descendant_pledge_count is None
-    assert new_obj.all_party_credit is None
+    assert new_obj.all_party_cred is None
     assert new_obj.all_party_debt is None
     assert new_obj.balancelink is None
     assert new_obj.balancelink_del is None
