@@ -139,7 +139,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QTableWidget" name="groups_in_table">
+  <widget class="QTableWidget" name="ideas_in_table">
    <property name="geometry">
     <rect>
      <x>530</x>
@@ -174,7 +174,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QTableWidget" name="groups_out_table">
+  <widget class="QTableWidget" name="ideas_out_table">
    <property name="geometry">
     <rect>
      <x>920</x>
@@ -245,13 +245,13 @@
     </font>
    </property>
    <property name="text">
-    <string>Groups</string>
+    <string>Ideas</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="group_update_button">
+  <widget class="QPushButton" name="idea_update_button">
    <property name="geometry">
     <rect>
      <x>880</x>
@@ -261,10 +261,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Update Group</string>
+    <string>Update Idea</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="group_delete_button">
+  <widget class="QPushButton" name="idea_delete_button">
    <property name="geometry">
     <rect>
      <x>720</x>
@@ -274,7 +274,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>delete Group</string>
+    <string>delete Idea</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -293,7 +293,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="group_insert_button">
+  <widget class="QPushButton" name="idea_insert_button">
    <property name="geometry">
     <rect>
      <x>880</x>
@@ -303,10 +303,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add Group</string>
+    <string>Add Idea</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="group_name">
+  <widget class="QLineEdit" name="idea_name">
    <property name="geometry">
     <rect>
      <x>720</x>
@@ -316,7 +316,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="party_group_set_button">
+  <widget class="QPushButton" name="party_idea_set_button">
    <property name="geometry">
     <rect>
      <x>1060</x>
@@ -333,10 +333,10 @@
     </font>
    </property>
    <property name="text">
-    <string>add group to party</string>
+    <string>add idea to party</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="party_group_del_button">
+  <widget class="QPushButton" name="party_idea_del_button">
    <property name="geometry">
     <rect>
      <x>530</x>
@@ -353,10 +353,10 @@
     </font>
    </property>
    <property name="text">
-    <string>Abolish Group from party</string>
+    <string>Abolish Idea from party</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="groups_stan_table">
+  <widget class="QTableWidget" name="ideas_stan_table">
    <property name="geometry">
     <rect>
      <x>530</x>

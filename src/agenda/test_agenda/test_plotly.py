@@ -7,13 +7,13 @@ from src.agenda.examples.example_agendas import (
 )
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.graphic import (
-    display_ideatree,
+    display_oathtree,
     get_agenda_partys_plotly_fig,
     get_agenda_intent_plotly_fig,
 )
 
 
-def test_display_ideatree_GivenAgenda():
+def test_display_oathtree_GivenAgenda():
     # a_agenda = get_1node_agenda()
     # a_agenda = get_2node_agenda()
     # a_agenda = get_3node_agenda()
@@ -22,10 +22,10 @@ def test_display_ideatree_GivenAgenda():
     a_agenda = get_agenda_with_4_levels()
     # a_agenda = agenda_v001()
     a_agenda.calc_agenda_metrics()
-    print(f"Agenda {a_agenda._real_id}: Nodes ({len(a_agenda._idea_dict)})")
+    print(f"Agenda {a_agenda._real_id}: Nodes ({len(a_agenda._oath_dict)})")
 
     # WHEN
-    x_fig = display_ideatree(a_agenda)
+    x_fig = display_oathtree(a_agenda)
 
     # THEN
     # show_figure = True
@@ -33,7 +33,7 @@ def test_display_ideatree_GivenAgenda():
     #     x_fig.show()
 
 
-def test_display_ideatree_GivenAgenda_shows_Tasks():
+def test_display_oathtree_GivenAgenda_shows_Tasks():
     # a_agenda = get_1node_agenda()
     # a_agenda = get_2node_agenda()
     # a_agenda = get_3node_agenda()
@@ -42,10 +42,10 @@ def test_display_ideatree_GivenAgenda_shows_Tasks():
     a_agenda = get_agenda_assignment_laundry_example1()
     # a_agenda = agenda_v001()
     a_agenda.calc_agenda_metrics()
-    print(f"Agenda {a_agenda._real_id}: Nodes ({len(a_agenda._idea_dict)})")
+    print(f"Agenda {a_agenda._real_id}: Nodes ({len(a_agenda._oath_dict)})")
 
     # WHEN
-    x_fig = display_ideatree(a_agenda, mode="Task")
+    x_fig = display_oathtree(a_agenda, mode="Task")
 
     # THEN
     # show_figure = True

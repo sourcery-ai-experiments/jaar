@@ -8,7 +8,7 @@ from PyQt5 import QtCore as qtc
 class EditParty2bd(qtw.QWidget, Ui_Form):
     """The settings dialog window"""
 
-    refresh_ideaunit_submitted = qtc.pyqtSignal(bool)
+    refresh_oathunit_submitted = qtc.pyqtSignal(bool)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -21,9 +21,9 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         self.gp_party_yes.clicked.connect(self.gp_party_yes_clicked)
         self.gp_party_no.clicked.connect(self.gp_party_no_clicked)
 
-        self.gp_party2group_delete_button.clicked.connect(self.party2group_delete)
-        self.gp_add_button.clicked.connect(self.party2group_add)
-        self.update_weight_button.clicked.connect(self.party2group_update)
+        self.gp_party2idea_delete_button.clicked.connect(self.party2idea_delete)
+        self.gp_add_button.clicked.connect(self.party2idea_add)
+        self.update_weight_button.clicked.connect(self.party2idea_update)
 
         self.gp_insert_button.clicked.connect(self.gp_insert)
         self.gp_delete_button.clicked.connect(self.gp_delete)
@@ -55,32 +55,32 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         #     .gp_update(gp_id=gp_id, gp_pid=gp_pid)
         # self.refreshAll()
 
-    def party2group_update(self):
+    def party2idea_update(self):
         currentRowInt = self.gp_party_yes.currentRow()
         # if self.gp_party_yes.rowCount() > 0:
         #     currentRowInt = max(currentRowInt, 0)
         #     party_id = self.party_id
         #     gp_id = int(self.gp_party_yes.item(currentRowInt, 4).text())
-        #     weight = int(self.party2group_weight_edit.text())
-        #     Party2OG.party2group_update(party_id=party_id, gp_id=gp_id, weight=weight)
+        #     weight = int(self.party2idea_weight_edit.text())
+        #     Party2OG.party2idea_update(party_id=party_id, gp_id=gp_id, weight=weight)
         #     self.refreshAll()
 
-    def party2group_delete(self):
+    def party2idea_delete(self):
         currentRowInt = self.gp_party_yes.currentRow()
         # if self.gp_party_yes.rowCount() > 0:
         #     currentRowInt = max(currentRowInt, 0)
         #     party_id = self.party_id
         #     gp_id = int(self.gp_party_yes.item(currentRowInt, 4).text())
-        #     Party2OG.party2group_delete(party_id=party_id, gp_id=gp_id)
+        #     Party2OG.party2idea_delete(party_id=party_id, gp_id=gp_id)
         #     self.refreshAll()
 
-    def party2group_add(self):
+    def party2idea_add(self):
         currentRowInt = self.gp_party_no.currentRow()
         # if self.gp_party_no.rowCount() > 0:
         #     currentRowInt = max(currentRowInt, 0)
         #     party_id = self.party_id
         #     gp_id = int(self.gp_party_no.item(currentRowInt, 2).text())
-        #     Party2OG.party2group_insert(party_id=party_id, gp_id=gp_id, weight=1)
+        #     Party2OG.party2idea_insert(party_id=party_id, gp_id=gp_id, weight=1)
         # self.refreshAll()
 
     def refreshAll(self):
@@ -103,11 +103,11 @@ class EditParty2bd(qtw.QWidget, Ui_Form):
         self.gp_party_no.setColumnHidden(2, True)
 
     def gp_party_yes_clicked(self):
-        self.party2group_weight_edit.setText(
+        self.party2idea_weight_edit.setText(
             self.gp_party_yes.item(self.gp_party_yes.currentRow(), 1).text()
         )
 
     def gp_party_no_clicked(self):
         pid = self.gp_party_no.item(self.gp_party_no.currentRow(), 0).text()
         self.gp_update_pid_edit.setText(pid)
-        self.gp_delete_button.setText(f'Delete Party Group " {pid} "')
+        self.gp_delete_button.setText(f'Delete Party Idea " {pid} "')

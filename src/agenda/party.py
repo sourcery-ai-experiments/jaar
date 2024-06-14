@@ -323,20 +323,20 @@ class PartyLink(PartyCore):
         self,
         partylinks_credor_weight_sum: float,
         partylinks_debtor_weight_sum: float,
-        group_agenda_cred: float,
-        group_agenda_debt: float,
-        group_agenda_intent_cred: float,
-        group_agenda_intent_debt: float,
+        idea_agenda_cred: float,
+        idea_agenda_debt: float,
+        idea_agenda_intent_cred: float,
+        idea_agenda_intent_debt: float,
     ):
-        group_agenda_cred = get_1_if_None(group_agenda_cred)
-        group_agenda_debt = get_1_if_None(group_agenda_debt)
+        idea_agenda_cred = get_1_if_None(idea_agenda_cred)
+        idea_agenda_debt = get_1_if_None(idea_agenda_debt)
         credor_ratio = self.credor_weight / partylinks_credor_weight_sum
         debtor_ratio = self.debtor_weight / partylinks_debtor_weight_sum
 
-        self._agenda_cred = group_agenda_cred * credor_ratio
-        self._agenda_debt = group_agenda_debt * debtor_ratio
-        self._agenda_intent_cred = group_agenda_intent_cred * credor_ratio
-        self._agenda_intent_debt = group_agenda_intent_debt * debtor_ratio
+        self._agenda_cred = idea_agenda_cred * credor_ratio
+        self._agenda_debt = idea_agenda_debt * debtor_ratio
+        self._agenda_intent_cred = idea_agenda_intent_cred * credor_ratio
+        self._agenda_intent_debt = idea_agenda_intent_debt * debtor_ratio
 
     def reset_agenda_cred_debt(self):
         self._agenda_cred = 0

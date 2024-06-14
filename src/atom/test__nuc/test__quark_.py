@@ -18,18 +18,18 @@ def test_quark_config_HasCorrect_category():
     assert category_ref() == {
         "agendaunit",
         "agenda_partyunit",
-        "agenda_groupunit",
-        "agenda_group_partylink",
         "agenda_ideaunit",
-        "agenda_idea_balancelink",
-        "agenda_idea_reasonunit",
-        "agenda_idea_reason_premiseunit",
-        "agenda_idea_suffgroup",
-        "agenda_idea_healerhold",
-        "agenda_idea_beliefunit",
+        "agenda_idea_partylink",
+        "agenda_oathunit",
+        "agenda_oath_balancelink",
+        "agenda_oath_reasonunit",
+        "agenda_oath_reason_premiseunit",
+        "agenda_oath_suffidea",
+        "agenda_oath_healerhold",
+        "agenda_oath_beliefunit",
     }
     assert "agenda_partyunit" in category_ref()
-    assert is_category_ref("idearoot") is False
+    assert is_category_ref("oathroot") is False
 
 
 def check_every_crud_dict_has_element(quark_config_dict, quark_order_text):
@@ -81,7 +81,7 @@ def check_every_crud_dict_has_element(quark_config_dict, quark_order_text):
     return True
 
 
-def test_get_quark_config_dict_EveryCrudOperationHasNucOrderGroup():
+def test_get_quark_config_dict_EveryCrudOperationHasNucOrderIdea():
     # GIVEN
     quark_order_text = "quark_order"
     description_elements_text = "description_elements"
@@ -94,63 +94,63 @@ def test_get_quark_config_dict_EveryCrudOperationHasNucOrderGroup():
     mog = quark_order_text
     # # Simple script for editing quark_config.json
     # set_mog("agenda_partyunit", quark_insert(), mog, 0)
-    # set_mog("agenda_group_partylink", quark_insert(), mog, 1)
-    # set_mog("groupunit", quark_insert(), mog, 2)
-    # set_mog("agenda_ideaunit", quark_insert(), mog, 3)
-    # set_mog("agenda_idea_balancelink", quark_insert(), mog, 4)
-    # set_mog("agenda_idea_suffgroup", quark_insert(), mog, 5)
-    # set_mog("agenda_idea_healerhold", quark_insert(), mog, 6)
-    # set_mog("agenda_idea_beliefunit", quark_insert(), mog, 7)
-    # set_mog("agenda_idea_reasonunit", quark_insert(), mog, 8)
-    # set_mog("agenda_idea_reason_premiseunit", quark_insert(), mog, 9)
+    # set_mog("agenda_idea_partylink", quark_insert(), mog, 1)
+    # set_mog("ideaunit", quark_insert(), mog, 2)
+    # set_mog("agenda_oathunit", quark_insert(), mog, 3)
+    # set_mog("agenda_oath_balancelink", quark_insert(), mog, 4)
+    # set_mog("agenda_oath_suffidea", quark_insert(), mog, 5)
+    # set_mog("agenda_oath_healerhold", quark_insert(), mog, 6)
+    # set_mog("agenda_oath_beliefunit", quark_insert(), mog, 7)
+    # set_mog("agenda_oath_reasonunit", quark_insert(), mog, 8)
+    # set_mog("agenda_oath_reason_premiseunit", quark_insert(), mog, 9)
     # set_mog("agenda_partyunit", quark_update(), mog, 10)
-    # set_mog("groupunit", quark_update(), mog, 11)
-    # set_mog("agenda_group_partylink", quark_update(), mog, 12)
-    # set_mog("agenda_ideaunit", quark_update(), mog, 13)
-    # set_mog("agenda_idea_balancelink", quark_update(), mog, 14)
-    # set_mog("agenda_idea_beliefunit", quark_update(), mog, 15)
-    # set_mog("agenda_idea_reason_premiseunit", quark_update(), mog, 16)
-    # set_mog("agenda_idea_reasonunit", quark_update(), mog, 17)
-    # set_mog("agenda_idea_reason_premiseunit", quark_delete(), mog, 18)
-    # set_mog("agenda_idea_reasonunit", quark_delete(), mog, 19)
-    # set_mog("agenda_idea_beliefunit", quark_delete(), mog, 20)
-    # set_mog("agenda_idea_suffgroup", quark_delete(), mog, 21)
-    # set_mog("agenda_idea_healerhold", quark_delete(), mog, 22)
-    # set_mog("agenda_idea_balancelink", quark_delete(), mog, 23)
-    # set_mog("agenda_ideaunit", quark_delete(), mog, 24)
-    # set_mog("agenda_group_partylink", quark_delete(), mog, 25)
+    # set_mog("ideaunit", quark_update(), mog, 11)
+    # set_mog("agenda_idea_partylink", quark_update(), mog, 12)
+    # set_mog("agenda_oathunit", quark_update(), mog, 13)
+    # set_mog("agenda_oath_balancelink", quark_update(), mog, 14)
+    # set_mog("agenda_oath_beliefunit", quark_update(), mog, 15)
+    # set_mog("agenda_oath_reason_premiseunit", quark_update(), mog, 16)
+    # set_mog("agenda_oath_reasonunit", quark_update(), mog, 17)
+    # set_mog("agenda_oath_reason_premiseunit", quark_delete(), mog, 18)
+    # set_mog("agenda_oath_reasonunit", quark_delete(), mog, 19)
+    # set_mog("agenda_oath_beliefunit", quark_delete(), mog, 20)
+    # set_mog("agenda_oath_suffidea", quark_delete(), mog, 21)
+    # set_mog("agenda_oath_healerhold", quark_delete(), mog, 22)
+    # set_mog("agenda_oath_balancelink", quark_delete(), mog, 23)
+    # set_mog("agenda_oathunit", quark_delete(), mog, 24)
+    # set_mog("agenda_idea_partylink", quark_delete(), mog, 25)
     # set_mog("agenda_partyunit", quark_delete(), mog, 26)
-    # set_mog("groupunit", quark_delete(), mog, 27)
+    # set_mog("ideaunit", quark_delete(), mog, 27)
     # set_mog("agendaunit", quark_update(), mog, 28)
 
     assert 0 == q_order("agenda_partyunit", quark_insert(), mog, 0)
-    assert 1 == q_order("agenda_group_partylink", quark_insert(), mog, 1)
-    assert 2 == q_order("agenda_groupunit", quark_insert(), mog, 2)
-    assert 3 == q_order("agenda_ideaunit", quark_insert(), mog, 3)
-    assert 4 == q_order("agenda_idea_balancelink", quark_insert(), mog, 4)
-    assert 5 == q_order("agenda_idea_suffgroup", quark_insert(), mog, 5)
-    assert 6 == q_order("agenda_idea_healerhold", quark_insert(), mog, 6)
-    assert 7 == q_order("agenda_idea_beliefunit", quark_insert(), mog, 7)
-    assert 8 == q_order("agenda_idea_reasonunit", quark_insert(), mog, 8)
-    assert 9 == q_order("agenda_idea_reason_premiseunit", quark_insert(), mog, 9)
+    assert 1 == q_order("agenda_idea_partylink", quark_insert(), mog, 1)
+    assert 2 == q_order("agenda_ideaunit", quark_insert(), mog, 2)
+    assert 3 == q_order("agenda_oathunit", quark_insert(), mog, 3)
+    assert 4 == q_order("agenda_oath_balancelink", quark_insert(), mog, 4)
+    assert 5 == q_order("agenda_oath_suffidea", quark_insert(), mog, 5)
+    assert 6 == q_order("agenda_oath_healerhold", quark_insert(), mog, 6)
+    assert 7 == q_order("agenda_oath_beliefunit", quark_insert(), mog, 7)
+    assert 8 == q_order("agenda_oath_reasonunit", quark_insert(), mog, 8)
+    assert 9 == q_order("agenda_oath_reason_premiseunit", quark_insert(), mog, 9)
     assert 10 == q_order("agenda_partyunit", quark_update(), mog, 10)
-    assert 11 == q_order("agenda_groupunit", quark_update(), mog, 11)
-    assert 12 == q_order("agenda_group_partylink", quark_update(), mog, 12)
-    assert 13 == q_order("agenda_ideaunit", quark_update(), mog, 13)
-    assert 14 == q_order("agenda_idea_balancelink", quark_update(), mog, 14)
-    assert 15 == q_order("agenda_idea_beliefunit", quark_update(), mog, 15)
-    assert 16 == q_order("agenda_idea_reason_premiseunit", quark_update(), mog, 16)
-    assert 17 == q_order("agenda_idea_reasonunit", quark_update(), mog, 17)
-    assert 18 == q_order("agenda_idea_reason_premiseunit", quark_delete(), mog, 18)
-    assert 19 == q_order("agenda_idea_reasonunit", quark_delete(), mog, 19)
-    assert 20 == q_order("agenda_idea_beliefunit", quark_delete(), mog, 20)
-    assert 21 == q_order("agenda_idea_suffgroup", quark_delete(), mog, 21)
-    assert 22 == q_order("agenda_idea_healerhold", quark_delete(), mog, 22)
-    assert 23 == q_order("agenda_idea_balancelink", quark_delete(), mog, 23)
-    assert 24 == q_order("agenda_ideaunit", quark_delete(), mog, 24)
-    assert 25 == q_order("agenda_group_partylink", quark_delete(), mog, 25)
+    assert 11 == q_order("agenda_ideaunit", quark_update(), mog, 11)
+    assert 12 == q_order("agenda_idea_partylink", quark_update(), mog, 12)
+    assert 13 == q_order("agenda_oathunit", quark_update(), mog, 13)
+    assert 14 == q_order("agenda_oath_balancelink", quark_update(), mog, 14)
+    assert 15 == q_order("agenda_oath_beliefunit", quark_update(), mog, 15)
+    assert 16 == q_order("agenda_oath_reason_premiseunit", quark_update(), mog, 16)
+    assert 17 == q_order("agenda_oath_reasonunit", quark_update(), mog, 17)
+    assert 18 == q_order("agenda_oath_reason_premiseunit", quark_delete(), mog, 18)
+    assert 19 == q_order("agenda_oath_reasonunit", quark_delete(), mog, 19)
+    assert 20 == q_order("agenda_oath_beliefunit", quark_delete(), mog, 20)
+    assert 21 == q_order("agenda_oath_suffidea", quark_delete(), mog, 21)
+    assert 22 == q_order("agenda_oath_healerhold", quark_delete(), mog, 22)
+    assert 23 == q_order("agenda_oath_balancelink", quark_delete(), mog, 23)
+    assert 24 == q_order("agenda_oathunit", quark_delete(), mog, 24)
+    assert 25 == q_order("agenda_idea_partylink", quark_delete(), mog, 25)
     assert 26 == q_order("agenda_partyunit", quark_delete(), mog, 26)
-    assert 27 == q_order("agenda_groupunit", quark_delete(), mog, 27)
+    assert 27 == q_order("agenda_ideaunit", quark_delete(), mog, 27)
     assert 28 == q_order("agendaunit", quark_update(), mog, 28)
 
 

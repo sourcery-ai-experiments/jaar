@@ -115,7 +115,7 @@ def test_CalendarIntentUnit_exists():
         calendarreport=x_calendarreport,
         time_begin=x_time_begin,
         time_close=x_time_close,
-        intent_idea_road=fridge_road,
+        intent_oath_road=fridge_road,
         intent_weight=x_intent_weight,
         task=x_task,
     )
@@ -124,7 +124,7 @@ def test_CalendarIntentUnit_exists():
     assert x_calendarintentunit.calendarreport == x_calendarreport
     assert x_calendarintentunit.time_begin == x_time_begin
     assert x_calendarintentunit.time_close == x_time_close
-    assert x_calendarintentunit.intent_idea_road == fridge_road
+    assert x_calendarintentunit.intent_oath_road == fridge_road
     assert x_calendarintentunit.intent_weight == x_intent_weight
     assert x_calendarintentunit.task == x_task
 
@@ -169,7 +169,7 @@ def test_MoneyUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecor
         calendarreport=x_calendarreport,
         time_begin=x_time_begin,
         time_close=x_time_close,
-        intent_idea_road=fridge_road,
+        intent_oath_road=fridge_road,
         intent_weight=x_intent_weight,
         task=x_task,
     )

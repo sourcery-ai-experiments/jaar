@@ -39,7 +39,7 @@ def roles_str() -> str:
 
 
 def get_rootpart_of_econ_dir() -> str:
-    return "idearoot"
+    return "oathroot"
 
 
 def treasury_file_name() -> str:

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src.agenda.group import GroupUnit, GroupID
+from src.agenda.idea import IdeaUnit, IdeaID
 from src.agenda.party import PartyID
 
 
@@ -9,126 +9,126 @@ class InvalidAssignHeirPopulateException(Exception):
 
 @dataclass
 class AssignedUnit:
-    _suffgroups: dict[GroupID:GroupID]
+    _suffideas: dict[IdeaID:IdeaID]
 
     def get_dict(self) -> dict[str:str]:
-        _suffgroups = {
-            x_group_id: x_group_id  # premise.get_dict()
-            for x_group_id, _suffgroup in self._suffgroups.items()
+        _suffideas = {
+            x_idea_id: x_idea_id  # premise.get_dict()
+            for x_idea_id, _suffidea in self._suffideas.items()
         }
-        return {"_suffgroups": _suffgroups}
+        return {"_suffideas": _suffideas}
 
-    def set_suffgroup(self, group_id: GroupID):
-        self._suffgroups[group_id] = -1
+    def set_suffidea(self, idea_id: IdeaID):
+        self._suffideas[idea_id] = -1
 
-    def suffgroup_exists(self, group_id: GroupID):
-        return self._suffgroups.get(group_id) != None
+    def suffidea_exists(self, idea_id: IdeaID):
+        return self._suffideas.get(idea_id) != None
 
-    def del_suffgroup(self, group_id: GroupID):
-        self._suffgroups.pop(group_id)
+    def del_suffidea(self, idea_id: IdeaID):
+        self._suffideas.pop(idea_id)
 
-    def get_suffgroup(self, group_id: GroupID) -> GroupID:
-        return self._suffgroups.get(group_id)
-
-
-def assignedunit_shop(_suffgroups: dict[GroupID:GroupID] = None) -> AssignedUnit:
-    if _suffgroups is None:
-        _suffgroups = {}
-
-    return AssignedUnit(_suffgroups=_suffgroups)
+    def get_suffidea(self, idea_id: IdeaID) -> IdeaID:
+        return self._suffideas.get(idea_id)
 
 
-def create_assignedunit(suffgroup: GroupID):
+def assignedunit_shop(_suffideas: dict[IdeaID:IdeaID] = None) -> AssignedUnit:
+    if _suffideas is None:
+        _suffideas = {}
+
+    return AssignedUnit(_suffideas=_suffideas)
+
+
+def create_assignedunit(suffidea: IdeaID):
     x_assignedunit = assignedunit_shop()
-    x_assignedunit.set_suffgroup(suffgroup)
+    x_assignedunit.set_suffidea(suffidea)
     return x_assignedunit
 
 
 @dataclass
 class AssignedHeir:
-    _suffgroups: dict[GroupID:GroupID]
+    _suffideas: dict[IdeaID:IdeaID]
     _owner_id_assigned: bool
 
     def _get_all_partys(
         self,
-        agenda_groups: dict[GroupID:GroupUnit],
-        group_id_dict: dict[GroupID:],
-    ) -> dict[GroupID:GroupUnit]:
+        agenda_ideas: dict[IdeaID:IdeaUnit],
+        idea_id_dict: dict[IdeaID:],
+    ) -> dict[IdeaID:IdeaUnit]:
         dict_x = {}
-        for group_id_x in group_id_dict:
-            dict_x |= agenda_groups.get(group_id_x)._partys
+        for idea_id_x in idea_id_dict:
+            dict_x |= agenda_ideas.get(idea_id_x)._partys
         return dict_x
 
     def _get_all_suff_partys(
-        self, agenda_groups: dict[GroupID:GroupUnit]
-    ) -> dict[GroupID:GroupUnit]:
-        return self._get_all_partys(agenda_groups, self._suffgroups)
+        self, agenda_ideas: dict[IdeaID:IdeaUnit]
+    ) -> dict[IdeaID:IdeaUnit]:
+        return self._get_all_partys(agenda_ideas, self._suffideas)
 
     def set_owner_id_assigned(
-        self, agenda_groups: dict[GroupID:GroupUnit], agenda_owner_id: PartyID
+        self, agenda_ideas: dict[IdeaID:IdeaUnit], agenda_owner_id: PartyID
     ):
         self._owner_id_assigned = False
-        if self._suffgroups == {}:
+        if self._suffideas == {}:
             self._owner_id_assigned = True
         else:
-            all_suff_partys_x = self._get_all_suff_partys(agenda_groups)
+            all_suff_partys_x = self._get_all_suff_partys(agenda_ideas)
             if all_suff_partys_x.get(agenda_owner_id) != None:
                 self._owner_id_assigned = True
 
-    def set_suffgroups(
+    def set_suffideas(
         self,
         parent_assignheir,
         assignunit: AssignedUnit,
-        agenda_groups: dict[GroupID:GroupUnit],
+        agenda_ideas: dict[IdeaID:IdeaUnit],
     ):
         dict_x = {}
-        if parent_assignheir is None or parent_assignheir._suffgroups == {}:
-            for suffgroup in assignunit._suffgroups:
-                dict_x[suffgroup] = -1
-        elif assignunit._suffgroups == {} or (
-            parent_assignheir._suffgroups.keys() == assignunit._suffgroups.keys()
+        if parent_assignheir is None or parent_assignheir._suffideas == {}:
+            for suffidea in assignunit._suffideas:
+                dict_x[suffidea] = -1
+        elif assignunit._suffideas == {} or (
+            parent_assignheir._suffideas.keys() == assignunit._suffideas.keys()
         ):
-            for suffgroup in parent_assignheir._suffgroups.keys():
-                dict_x[suffgroup] = -1
+            for suffidea in parent_assignheir._suffideas.keys():
+                dict_x[suffidea] = -1
         else:
-            # get all_partys of parent assignedheir groups
+            # get all_partys of parent assignedheir ideas
             all_parent_assignedheir_partys = self._get_all_partys(
-                agenda_groups=agenda_groups,
-                group_id_dict=parent_assignheir._suffgroups,
+                agenda_ideas=agenda_ideas,
+                idea_id_dict=parent_assignheir._suffideas,
             )
-            # get all_partys of assignedunit groups
+            # get all_partys of assignedunit ideas
             all_assignedunit_partys = self._get_all_partys(
-                agenda_groups=agenda_groups,
-                group_id_dict=assignunit._suffgroups,
+                agenda_ideas=agenda_ideas,
+                idea_id_dict=assignunit._suffideas,
             )
             if not set(all_assignedunit_partys).issubset(
                 set(all_parent_assignedheir_partys)
             ):
                 # else raise error
                 raise InvalidAssignHeirPopulateException(
-                    f"parent_assigned_heir does not contain all partys of the idea's assignedunit\n{set(all_parent_assignedheir_partys)=}\n\n{set(all_assignedunit_partys)=}"
+                    f"parent_assigned_heir does not contain all partys of the oath's assignedunit\n{set(all_parent_assignedheir_partys)=}\n\n{set(all_assignedunit_partys)=}"
                 )
 
-            # set dict_x = to assignedunit groups
-            for suffgroup in assignunit._suffgroups.keys():
-                dict_x[suffgroup] = -1
-        self._suffgroups = dict_x
+            # set dict_x = to assignedunit ideas
+            for suffidea in assignunit._suffideas.keys():
+                dict_x[suffidea] = -1
+        self._suffideas = dict_x
 
-    def group_in(self, group_ids: dict[GroupID:-1]):
-        return self._suffgroups == {} or any(
-            self._suffgroups.get(gn_x) != None for gn_x in group_ids
+    def idea_in(self, idea_ids: dict[IdeaID:-1]):
+        return self._suffideas == {} or any(
+            self._suffideas.get(gn_x) != None for gn_x in idea_ids
         )
 
 
 def assigned_heir_shop(
-    _suffgroups: dict[GroupID:GroupID] = None, _owner_id_assigned: bool = None
+    _suffideas: dict[IdeaID:IdeaID] = None, _owner_id_assigned: bool = None
 ) -> AssignedHeir:
-    if _suffgroups is None:
-        _suffgroups = {}
+    if _suffideas is None:
+        _suffideas = {}
     if _owner_id_assigned is None:
         _owner_id_assigned = False
 
-    return AssignedHeir(_suffgroups=_suffgroups, _owner_id_assigned=_owner_id_assigned)
+    return AssignedHeir(_suffideas=_suffideas, _owner_id_assigned=_owner_id_assigned)
 
     # def meld(self, other_reason):
     #     for premise_x in other_reason.premises.values():
@@ -144,7 +144,7 @@ def assigned_heir_shop(
 
 def assignedunit_get_from_dict(assignedunit_dict: dict) -> AssignedUnit:
     assignedunit_x = assignedunit_shop()
-    for suffgroup_group_id in assignedunit_dict.get("_suffgroups"):
-        assignedunit_x.set_suffgroup(group_id=suffgroup_group_id)
+    for suffidea_idea_id in assignedunit_dict.get("_suffideas"):
+        assignedunit_x.set_suffidea(idea_id=suffidea_idea_id)
 
     return assignedunit_x

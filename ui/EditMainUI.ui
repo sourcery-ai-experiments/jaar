@@ -36,7 +36,7 @@
     <string>Refresh All</string>
    </property>
   </widget>
-  <widget class="QTreeWidget" name="baseideaunit">
+  <widget class="QTreeWidget" name="baseoathunit">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -74,7 +74,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="open_groupedit_button">
+  <widget class="QPushButton" name="open_ideaedit_button">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -84,7 +84,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Open Group Edit</string>
+    <string>Open Idea Edit</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="beliefs_table">
