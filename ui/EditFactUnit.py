@@ -1,14 +1,14 @@
-# command to for converting ui form to python file: pyuic5 ui\EditOathUnitUI.ui -o ui\EditOathUnitUI.py
+# command to for converting ui form to python file: pyuic5 ui\EditFactUnitUI.ui -o ui\EditFactUnitUI.py
 import sys
-from src.agenda.oath import oathunit_shop, oathattrfilter_shop
-from ui.EditOathUnitUI import Ui_Form
+from src.agenda.fact import factunit_shop, factattrfilter_shop
+from ui.EditFactUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
 from src._road.road import create_road
 from src.agenda.hreg_time import PremiseUnitHregTime
 from src.agenda.idea import BalanceLink, IdeaID
-from src.agenda.reason_oath import RoadUnit
-from src.agenda.hreg_time import HregTimeOathSource  # get_24hr, get_60min
+from src.agenda.reason_fact import RoadUnit
+from src.agenda.hreg_time import HregTimeFactSource  # get_24hr, get_60min
 from ui.pyqt_func import (
     num2str,
     bool_val,
@@ -24,7 +24,7 @@ class PyQtUIException(Exception):
     pass
 
 
-class EditOathUnit(qtw0, Ui_Form):
+class EditFactUnit(qtw0, Ui_Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -34,12 +34,12 @@ class EditOathUnit(qtw0, Ui_Form):
         self.close_button.clicked.connect(self.close)
         self.quit_button.clicked.connect(sys.exit)
 
-        self.baseoathunit.itemClicked.connect(self.yo_tree_item_selected)
-        self.baseoathunit.itemActivated.connect(self.yo_tree_item_expanded)
-        self.submit_node_update.clicked.connect(self.oath_update)
-        self.submit_node_delete.clicked.connect(self.oath_delete)
-        self.submit_child_insert.clicked.connect(self.oath_insert)
-        self.submit_pledge_insert.clicked.connect(self.oath_pledge_insert)
+        self.basefactunit.itemClicked.connect(self.yo_tree_item_selected)
+        self.basefactunit.itemActivated.connect(self.yo_tree_item_expanded)
+        self.submit_node_update.clicked.connect(self.fact_update)
+        self.submit_node_delete.clicked.connect(self.fact_delete)
+        self.submit_child_insert.clicked.connect(self.fact_insert)
+        self.submit_pledge_insert.clicked.connect(self.fact_pledge_insert)
 
         self.cb_rootadmiration.stateAtomd.connect(self.refresh_tree)
         self.cb_yo_id.stateAtomd.connect(self.refresh_tree)
@@ -56,9 +56,9 @@ class EditOathUnit(qtw0, Ui_Form):
         self.cb_yo2bd_count.stateAtomd.connect(self.refresh_tree)
         self.combo_dim_root.currentTextAtomd.connect(self.refresh_tree)
 
-        self.oath2idea_table.itemClicked.connect(self.oath2idea_table_select)
-        self.oath2idea_delete_button.clicked.connect(self.oath2idea_delete)
-        self.oath2idea_insert_button.clicked.connect(self.oath2idea_update)
+        self.fact2idea_table.itemClicked.connect(self.fact2idea_table_select)
+        self.fact2idea_delete_button.clicked.connect(self.fact2idea_delete)
+        self.fact2idea_insert_button.clicked.connect(self.fact2idea_update)
         self.reason_table.itemClicked.connect(self.reason_table_select)
         self.reason_base_combo.currentTextAtomd.connect(self.reason_premise_combo_load)
         self.reason_premise_combo.currentTextAtomd.connect(
@@ -88,7 +88,7 @@ class EditOathUnit(qtw0, Ui_Form):
 
         self.yo_tree_item_setHidden(setHiddenBool=True)
         self.show
-        self.x_oath = None
+        self.x_fact = None
 
     def toogle_reasonheir_tables(self):
         self.reasonheir_table_hidden = self.reasonheir_table_hidden is False
@@ -98,7 +98,7 @@ class EditOathUnit(qtw0, Ui_Form):
         self.reason_base_combo.setCurrentText(f"{self.x_agenda._real_id},time,jajatime")
 
     def add_hreg_to_agenda(self):
-        self.x_agenda.set_time_hreg_oaths(c400_count=7)
+        self.x_agenda.set_time_hreg_facts(c400_count=7)
         self.refresh_tree()
 
     def yo_tree_item_setHidden(self, setHiddenBool):
@@ -144,12 +144,12 @@ class EditOathUnit(qtw0, Ui_Form):
         self.hreg_length_hr.setHidden(setHiddenBool)
         self.hreg_length_min.setHidden(setHiddenBool)
         self.submit_child_insert.setHidden(setHiddenBool)
-        self.oath2idea_table.setHidden(setHiddenBool)
-        self.oath2idea_table.clear()
-        self.oath2idea_table.setRowCount(1)
-        self.oath2idea_insert_combo.setHidden(setHiddenBool)
-        self.oath2idea_delete_button.setHidden(setHiddenBool)
-        self.oath2idea_insert_button.setHidden(setHiddenBool)
+        self.fact2idea_table.setHidden(setHiddenBool)
+        self.fact2idea_table.clear()
+        self.fact2idea_table.setRowCount(1)
+        self.fact2idea_insert_combo.setHidden(setHiddenBool)
+        self.fact2idea_delete_button.setHidden(setHiddenBool)
+        self.fact2idea_insert_button.setHidden(setHiddenBool)
         self.reasonheir_table.setHidden(True)
         self.reason_table.setHidden(setHiddenBool)
         self.reason_base_combo.setHidden(setHiddenBool)
@@ -172,18 +172,18 @@ class EditOathUnit(qtw0, Ui_Form):
         self.submit_child_insert.setHidden(setHiddenBool)
         self.submit_node_update.setHidden(setHiddenBool)
         self.submit_node_delete.setHidden(setHiddenBool)
-        hregoath = HregTimeOathSource(",")
+        hregfact = HregTimeFactSource(",")
         self.hreg_open_hr.clear()
-        self.hreg_open_hr.addItems(hregoath.get_24hr())
+        self.hreg_open_hr.addItems(hregfact.get_24hr())
         self.hreg_open_hr.setCurrentText("")
         self.hreg_open_min.clear()
-        self.hreg_open_min.addItems(hregoath.get_60min())
+        self.hreg_open_min.addItems(hregfact.get_60min())
         self.hreg_open_min.setCurrentText("")
         self.hreg_length_hr.clear()
-        self.hreg_length_hr.addItems(hregoath.get_24hr())
+        self.hreg_length_hr.addItems(hregfact.get_24hr())
         self.hreg_length_hr.setCurrentText("")
         self.hreg_length_min.clear()
-        self.hreg_length_min.addItems(hregoath.get_60min())
+        self.hreg_length_min.addItems(hregfact.get_60min())
         self.hreg_length_min.setCurrentText("")
         self.hreg_weekday.clear()
         self.hreg_weekday.addItems(
@@ -204,7 +204,7 @@ class EditOathUnit(qtw0, Ui_Form):
         self.prom_l_02.setText("")
         self.yo_action_cb.setChecked(False)
         self.yo_deescription.setText("")
-        self.oath_label_on_populate = ""
+        self.fact_label_on_populate = ""
         self.yo_weight.setText("")
         # self.reason_base_combo.setText("")
         # self.reason_premise_combo.setText("")
@@ -218,67 +218,67 @@ class EditOathUnit(qtw0, Ui_Form):
         self.reason_premise_open_combo.clear()
         self.reason_premise_nigh_combo.clear()
         self.reason_premise_divisor_combo.clear()
-        self.oath2idea_insert_combo.clear()
+        self.fact2idea_insert_combo.clear()
 
         if setHiddenBool is False:
-            self.x_oath_populate()
+            self.x_fact_populate()
 
-    def x_oath_populate(self):
-        self.label_parent_id.setText(f"Current Node road : {self.x_oath._parent_road}")
-        self.yo_deescription.setText(self.x_oath._label)
-        # self.oath_label_on_populate = self.x_oath._label
-        self.yo_parent_road.setText(self.x_oath._parent_road)
-        self.yo_weight.setText(num2str(self.x_oath._weight))
-        self.yo_begin.setText(num2str(self.x_oath._begin))
+    def x_fact_populate(self):
+        self.label_parent_id.setText(f"Current Node road : {self.x_fact._parent_road}")
+        self.yo_deescription.setText(self.x_fact._label)
+        # self.fact_label_on_populate = self.x_fact._label
+        self.yo_parent_road.setText(self.x_fact._parent_road)
+        self.yo_weight.setText(num2str(self.x_fact._weight))
+        self.yo_begin.setText(num2str(self.x_fact._begin))
         self.yo_range_source_road.clear()
         self.yo_numeric_road.clear()
-        if f"{type(self.x_oath)}" != "<class 'lw.agenda.AgendaUnit'>":
-            self.populate_oath_kid_actions()
-        self.yo_close.setText(num2str(self.x_oath._close))
-        self.yo_action_cb.setChecked(self.x_oath.pledge)
-        self.yo_task_status.setText(str(self.x_oath._task))
-        self.yo_active.setText(str(self.x_oath._active))
-        self.submit_child_insert.setText(f"Add child {self.x_oath._label:8}")
+        if f"{type(self.x_fact)}" != "<class 'lw.agenda.AgendaUnit'>":
+            self.populate_fact_kid_actions()
+        self.yo_close.setText(num2str(self.x_fact._close))
+        self.yo_action_cb.setChecked(self.x_fact.pledge)
+        self.yo_task_status.setText(str(self.x_fact._task))
+        self.yo_active.setText(str(self.x_fact._active))
+        self.submit_child_insert.setText(f"Add child {self.x_fact._label:8}")
         self.reason_table_load()
         self.reasonheir_table_load()
         self.reason_base_combo_load()
-        self.oath2idea_table_load()
-        self.oath2idea_insert_combo_load()
+        self.fact2idea_table_load()
+        self.fact2idea_insert_combo_load()
         if self.combo_dim_root.currentText() == "":
             self.combo_dim_root.addItems(list(self.x_agenda.get_reason_bases()))
 
-    def populate_oath_kid_actions(self):
-        self.yo_addin.setText(num2str(self.x_oath._addin))
-        self.yo_numor.setText(num2str(self.x_oath._numor))
-        self.yo_denom.setText(num2str(self.x_oath._denom))
-        self.yo_reest.setChecked(bool_val(self.x_oath._reest))
-        oath_road_list = self.x_agenda.get_oath_tree_ordered_road_list()
-        oath_road_list.append("")
-        self.yo_range_source_road.addItems(oath_road_list)
-        self.yo_range_source_road.setCurrentText(self.x_oath._range_source_road)
-        self.yo_numeric_road.addItems(oath_road_list)
-        self.yo_numeric_road.setCurrentText(self.x_oath._numeric_road)
+    def populate_fact_kid_actions(self):
+        self.yo_addin.setText(num2str(self.x_fact._addin))
+        self.yo_numor.setText(num2str(self.x_fact._numor))
+        self.yo_denom.setText(num2str(self.x_fact._denom))
+        self.yo_reest.setChecked(bool_val(self.x_fact._reest))
+        fact_road_list = self.x_agenda.get_fact_tree_ordered_road_list()
+        fact_road_list.append("")
+        self.yo_range_source_road.addItems(fact_road_list)
+        self.yo_range_source_road.setCurrentText(self.x_fact._range_source_road)
+        self.yo_numeric_road.addItems(fact_road_list)
+        self.yo_numeric_road.setCurrentText(self.x_fact._numeric_road)
 
     def yo_tree_item_selected(self):
-        oath_label = self.baseoathunit.currentItem().data(2, 10)
-        oath_parent_road = self.baseoathunit.currentItem().data(2, 11)
-        if oath_parent_road not in ("", None):
-            self.x_oath = self.x_agenda.get_oath_obj(
-                road=create_road(oath_parent_road, oath_label)
+        fact_label = self.basefactunit.currentItem().data(2, 10)
+        fact_parent_road = self.basefactunit.currentItem().data(2, 11)
+        if fact_parent_road not in ("", None):
+            self.x_fact = self.x_agenda.get_fact_obj(
+                road=create_road(fact_parent_road, fact_label)
             )
         else:
-            self.x_oath = self.x_agenda._oathroot
+            self.x_fact = self.x_agenda._factroot
         self.yo_tree_item_setHidden(setHiddenBool=False)
 
     def yo_tree_item_expanded(self):
-        root = self.baseoathunit.invisibleRootItem()
-        self.oath_tree_set_is_expanded(root)
+        root = self.basefactunit.invisibleRootItem()
+        self.fact_tree_set_is_expanded(root)
 
     def reason_base_combo_load(self):
-        # create list of all oath roads (road+_label)
+        # create list of all fact roads (road+_label)
         self.reason_base_combo.clear()
         self.reason_base_combo.addItems([""])
-        self.reason_base_combo.addItems(self.x_agenda.get_oath_tree_ordered_road_list())
+        self.reason_base_combo.addItems(self.x_agenda.get_fact_tree_ordered_road_list())
 
     def reason_premise_combo_load(self):
         self.reason_premise_combo.clear()
@@ -293,12 +293,12 @@ class EditOathUnit(qtw0, Ui_Form):
             self.x_agenda._owner_id,
             "",
         ]:
-            premise_oath = self.x_agenda.get_oath_obj(
+            premise_fact = self.x_agenda.get_fact_obj(
                 road=self.reason_premise_combo.currentText()
             )
-            if premise_oath._range_source_road != None:
+            if premise_fact._range_source_road != None:
                 filtered_list = self.x_agenda.get_heir_road_list(
-                    premise_oath._range_source_road
+                    premise_fact._range_source_road
                 )
         self.reason_premise_open_combo.clear()
         self.reason_premise_nigh_combo.clear()
@@ -322,40 +322,40 @@ class EditOathUnit(qtw0, Ui_Form):
             self.reason_premise_open_combo_sel_actions()
 
     def reason_premise_open_combo_sel_actions(self):
-        open_oath_x = self.x_agenda.get_oath_obj(
+        open_fact_x = self.x_agenda.get_fact_obj(
             road=self.reason_premise_open_combo.currentText()
         )
-        if open_oath_x._begin != None:
-            self.reason_premise_open.setText(str(open_oath_x._begin))
-        if open_oath_x._close != None:
-            self.reason_premise_nigh.setText(str(open_oath_x._close))
-        if open_oath_x._addin != None:
-            self.reason_premise_divisor.setText(str(open_oath_x._addin))
-        if open_oath_x._numor != None:
-            self.reason_premise_divisor.setText(str(open_oath_x._numor))
-        if open_oath_x._denom != None:
-            self.reason_premise_divisor.setText(str(open_oath_x._denom))
-        if open_oath_x._reest != None:
-            self.reason_premise_divisor.setText(str(open_oath_x._reest))
+        if open_fact_x._begin != None:
+            self.reason_premise_open.setText(str(open_fact_x._begin))
+        if open_fact_x._close != None:
+            self.reason_premise_nigh.setText(str(open_fact_x._close))
+        if open_fact_x._addin != None:
+            self.reason_premise_divisor.setText(str(open_fact_x._addin))
+        if open_fact_x._numor != None:
+            self.reason_premise_divisor.setText(str(open_fact_x._numor))
+        if open_fact_x._denom != None:
+            self.reason_premise_divisor.setText(str(open_fact_x._denom))
+        if open_fact_x._reest != None:
+            self.reason_premise_divisor.setText(str(open_fact_x._reest))
 
     def numeric_road_combo_select(self):
         if self.reason_premise_open_combo.currentText() not in [
             self.x_agenda._owner_id,
             "",
         ]:
-            open_oath_x = self.x_agenda.get_oath_obj(
+            open_fact_x = self.x_agenda.get_fact_obj(
                 road=self.reason_premise_open_combo.currentText()
             )
-            # nigh_oath_x = self.x_agenda.get_oath_obj(
+            # nigh_fact_x = self.x_agenda.get_fact_obj(
             #     road=self.reason_premise_nigh_combo.currentText()
             # )
-            # divisor_oath_x = self.x_agenda.get_oath_obj(
+            # divisor_fact_x = self.x_agenda.get_fact_obj(
             #     road=self.reason_premise_divisor_combo.currentText()
             # )
-            # if open_oath_x._begin != None:
-            #     self.reason_premise_open.setText(str(open_oath_x._begin))
-            # if open_oath_x._close != None:
-            #     self.reason_premise_nigh.setText(str(open_oath_x._close))
+            # if open_fact_x._begin != None:
+            #     self.reason_premise_open.setText(str(open_fact_x._begin))
+            # if open_fact_x._close != None:
+            #     self.reason_premise_nigh.setText(str(open_fact_x._close))
 
     def set_premise_open_combo(self):
         if (
@@ -366,15 +366,15 @@ class EditOathUnit(qtw0, Ui_Form):
             ]
             and self.reason_premise_open.toPlainText() != ""
         ):
-            open_oath_x = self.x_agenda.get_oath_obj(
+            open_fact_x = self.x_agenda.get_fact_obj(
                 road=self.reason_premise_open_combo.currentText()
             )
             open_int = str2float(self.reason_premise_open.toPlainText())
-            open_kids = open_oath_x.get_kids_in_range(begin=open_int, close=open_int)
+            open_kids = open_fact_x.get_kids_in_range(begin=open_int, close=open_int)
             if len(open_kids) == 1:
-                oath_x = open_kids[0]
+                fact_x = open_kids[0]
                 self.reason_premise_open_combo.setCurrentText(
-                    f"{oath_x._parent_road},{oath_x._label}"
+                    f"{fact_x._parent_road},{fact_x._label}"
                 )
 
     def set_premise_nigh_combo(self):
@@ -386,15 +386,15 @@ class EditOathUnit(qtw0, Ui_Form):
             ]
             and self.reason_premise_nigh.toPlainText() != ""
         ):
-            nigh_oath_x = self.x_agenda.get_oath_obj(
+            nigh_fact_x = self.x_agenda.get_fact_obj(
                 road=self.reason_premise_nigh_combo.currentText()
             )
             nigh_int = int(self.reason_premise_nigh.toPlainText())
-            nigh_kids = nigh_oath_x.get_kids_in_range(begin=nigh_int, close=nigh_int)
+            nigh_kids = nigh_fact_x.get_kids_in_range(begin=nigh_int, close=nigh_int)
             if len(nigh_kids) == 1:
-                oath_x = nigh_kids[0]
+                fact_x = nigh_kids[0]
                 self.reason_premise_nigh_combo.setCurrentText(
-                    f"{oath_x._parent_road},{oath_x._label}"
+                    f"{fact_x._parent_road},{fact_x._label}"
                 )
 
     def set_premise_divisor_combo(self):
@@ -406,17 +406,17 @@ class EditOathUnit(qtw0, Ui_Form):
             ]
             and self.reason_premise_divisor.toPlainText() != ""
         ):
-            divisor_oath_x = self.x_agenda.get_oath_obj(
+            divisor_fact_x = self.x_agenda.get_fact_obj(
                 road=self.reason_premise_divisor_combo.currentText()
             )
             divisor_int = int(self.reason_premise_divisor.toPlainText())
-            divisor_kids = divisor_oath_x.get_kids_in_range(
+            divisor_kids = divisor_fact_x.get_kids_in_range(
                 begin=divisor_int, close=divisor_int
             )
             if len(divisor_kids) == 1:
-                oath_x = divisor_kids[0]
+                fact_x = divisor_kids[0]
                 self.reason_premise_divisor_combo.setCurrentText(
-                    f"{oath_x._parent_road},{oath_x._label}"
+                    f"{fact_x._parent_road},{fact_x._label}"
                 )
 
     def reason_premise_nigh_combo_select(self):
@@ -425,11 +425,11 @@ class EditOathUnit(qtw0, Ui_Form):
             self.x_agenda._owner_id,
             "",
         ]:
-            nigh_oath_x = self.x_agenda.get_oath_obj(
+            nigh_fact_x = self.x_agenda.get_fact_obj(
                 road=self.reason_premise_nigh_combo.currentText()
             )
-            if nigh_oath_x._close != None:
-                self.reason_premise_nigh.setText(str(nigh_oath_x._close))
+            if nigh_fact_x._close != None:
+                self.reason_premise_nigh.setText(str(nigh_fact_x._close))
 
     def reason_premise_divisor_combo_select(self):
         self.reason_premise_divisor.setText("")
@@ -437,17 +437,17 @@ class EditOathUnit(qtw0, Ui_Form):
             self.x_agenda._owner_id,
             "",
         ]:
-            divisor_oath_x = self.x_agenda.get_oath_obj(
+            divisor_fact_x = self.x_agenda.get_fact_obj(
                 road=self.reason_premise_divisor_combo.currentText()
             )
-            if divisor_oath_x._denom != None:
-                self.reason_premise_divisor.setText(str(divisor_oath_x._denom))
+            if divisor_fact_x._denom != None:
+                self.reason_premise_divisor.setText(str(divisor_fact_x._denom))
 
     def reason_table_load(self):
         self.reason_table.clear()
         row = 0
-        for reason in self.x_oath._reasonunits.values():
-            reasonheir = self.x_oath._reasonheirs.get(reason.base)
+        for reason in self.x_fact._reasonunits.values():
+            reasonheir = self.x_fact._reasonheirs.get(reason.base)
             for premise in reason.premises.values():
                 reason_text = reason.base.replace(f"{self.x_agenda._owner_id}", "")
                 reason_text = reason_text[1:]
@@ -530,7 +530,7 @@ class EditOathUnit(qtw0, Ui_Form):
     def reasonheir_table_load(self):
         self.reasonheir_table.clear()
         row = 0
-        for reasonheir in self.x_oath._reasonheirs.values():
+        for reasonheir in self.x_fact._reasonheirs.values():
             for premise in reasonheir.premises.values():
                 reasonheir_text = reasonheir.base.replace(
                     f"{self.x_agenda._owner_id}", ""
@@ -692,10 +692,10 @@ class EditOathUnit(qtw0, Ui_Form):
             open_x = str2float(self.reason_premise_open.toPlainText())
             nigh_x = str2float(self.reason_premise_nigh.toPlainText())
             divisor_x = str2float(self.reason_premise_divisor.toPlainText())
-            oath_label = self.baseoathunit.currentItem().data(2, 10)
-            oath_parent_road = self.baseoathunit.currentItem().data(2, 11)
-            self.x_agenda.edit_oath_attr(
-                road=f"{oath_parent_road},{oath_label}",
+            fact_label = self.basefactunit.currentItem().data(2, 10)
+            fact_parent_road = self.basefactunit.currentItem().data(2, 11)
+            self.x_agenda.edit_fact_attr(
+                road=f"{fact_parent_road},{fact_label}",
                 reason_base=base_x,
                 reason_premise=premise_x,
                 reason_premise_open=open_x,
@@ -703,7 +703,7 @@ class EditOathUnit(qtw0, Ui_Form):
                 reason_premise_divisor=divisor_x,
             )
 
-            # self.x_oath.set_reason_premise(
+            # self.x_fact.set_reason_premise(
             #     base=base_x,
             #     need=premise_x,
             #     open=open_x,
@@ -718,105 +718,105 @@ class EditOathUnit(qtw0, Ui_Form):
             self.reason_base_combo.currentText() != ""
             and self.reason_premise_combo.currentText() != ""
         ):
-            self.x_oath.del_reasonunit_premise(
+            self.x_fact.del_reasonunit_premise(
                 base=self.reason_base_combo.currentText(),
                 need=self.reason_premise_combo.currentText(),
             )
             self.reason_table_load()
 
-    def oath2idea_table_select(self):
-        self.oath2idea_delete_button.setText(
-            f"""Delete {self.oath2idea_table.item(self.oath2idea_table.currentRow(), 1).text()}"""
+    def fact2idea_table_select(self):
+        self.fact2idea_delete_button.setText(
+            f"""Delete {self.fact2idea_table.item(self.fact2idea_table.currentRow(), 1).text()}"""
         )
 
-    def oath2idea_table_load(self):
-        # oath2idea_table is qtw.QTableWidget()
-        self.oath2idea_table.clear()
-        self.oath2idea_table.sortItems(1, QtCore.Qt.AscendingOrder)
-        self.oath2idea_table.horizontalHeaderVisible = False
-        self.oath2idea_table.verticalHeaderVisible = False
-        self.oath2idea_table.setColumnWidth(0, 150)
-        self.oath2idea_table.setColumnHidden(1, True)
-        self.oath2idea_table.setColumnWidth(1, 50)
-        self.oath2idea_table.setColumnWidth(2, 70)
-        self.oath2idea_table.setHorizontalHeaderLabels(
+    def fact2idea_table_load(self):
+        # fact2idea_table is qtw.QTableWidget()
+        self.fact2idea_table.clear()
+        self.fact2idea_table.sortItems(1, QtCore.Qt.AscendingOrder)
+        self.fact2idea_table.horizontalHeaderVisible = False
+        self.fact2idea_table.verticalHeaderVisible = False
+        self.fact2idea_table.setColumnWidth(0, 150)
+        self.fact2idea_table.setColumnHidden(1, True)
+        self.fact2idea_table.setColumnWidth(1, 50)
+        self.fact2idea_table.setColumnWidth(2, 70)
+        self.fact2idea_table.setHorizontalHeaderLabels(
             ["Idea display", "idea_pid", "LW Force"]
         )
-        # print(f"{self.x_oath._balancelinks=}")
-        # print(f"{self.x_oath._balanceheirs=}")
-        balancelinks_list = list(self.x_oath._balancelinks.values())
+        # print(f"{self.x_fact._balancelinks=}")
+        # print(f"{self.x_fact._balanceheirs=}")
+        balancelinks_list = list(self.x_fact._balancelinks.values())
         balancelinks_list.sort(key=lambda x: x.idea_id, reverse=False)
-        balanceheirs_list = list(self.x_oath._balanceheirs.values())
+        balanceheirs_list = list(self.x_fact._balanceheirs.values())
         balanceheirs_list.sort(key=lambda x: x.idea_id, reverse=False)
         # print(f"{balancelinks_list=}")
         # print(f"{balanceheirs_list=}")
 
         for row, balanceheir in enumerate(balanceheirs_list, start=1):
-            self.oath2idea_table.setRowCount(row)
+            self.fact2idea_table.setRowCount(row)
             x_text = f"  Heir: {balanceheir.idea_id}"
             for balancelink in balancelinks_list:
                 if balancelink.idea_id == balanceheir.idea_id:
                     x_text = f"{balanceheir.idea_id}"
-            self.oath2idea_table.setItem(row - 1, 0, qtw1(x_text))
-            self.oath2idea_table.setItem(row - 1, 1, qtw1(balanceheir.idea_id))
-            self.oath2idea_table.setItem(
+            self.fact2idea_table.setItem(row - 1, 0, qtw1(x_text))
+            self.fact2idea_table.setItem(row - 1, 1, qtw1(balanceheir.idea_id))
+            self.fact2idea_table.setItem(
                 row - 1,
                 2,
                 qtw1(agenda_importance_diplay(balanceheir._agenda_cred)),
             )
 
-        self.oath2idea_table.sortItems(1, QtCore.Qt.AscendingOrder)
+        self.fact2idea_table.sortItems(1, QtCore.Qt.AscendingOrder)
 
-    def oath2idea_insert_combo_load(self):
+    def fact2idea_insert_combo_load(self):
         # ideaunits_list = list(self.x_agenda._ideaunits.values())
         ideaunits_pids_list = []
         for ideaunit in self.x_agenda._ideas.values():
             idea_previously_selected = any(
                 ideaunit.idea_id == balancelink.idea_id
-                for balancelink in self.x_oath._balancelinks.values()
+                for balancelink in self.x_fact._balancelinks.values()
             )
             if not idea_previously_selected:
                 ideaunits_pids_list.append(ideaunit.idea_id)
         ideaunits_pids_list.sort(key=lambda x: x.lower(), reverse=False)
 
-        self.oath2idea_insert_combo.clear()
-        self.oath2idea_insert_combo.addItems(ideaunits_pids_list)
+        self.fact2idea_insert_combo.clear()
+        self.fact2idea_insert_combo.addItems(ideaunits_pids_list)
 
-    def oath2idea_update(self):
-        bd_pid_new = self.oath2idea_insert_combo.currentText()
+    def fact2idea_update(self):
+        bd_pid_new = self.fact2idea_insert_combo.currentText()
         if bd_pid_new == "":
-            raise PyQtUIException("bd_pid is empty, oath2bd cannot be updated")
+            raise PyQtUIException("bd_pid is empty, fact2bd cannot be updated")
         balancelink_new = BalanceLink(idea_id=IdeaID(bd_pid_new), weight=1)
-        self.x_agenda.edit_oath_attr(
-            road=f"{self.x_oath._parent_road},{self.x_oath._label}",
+        self.x_agenda.edit_fact_attr(
+            road=f"{self.x_fact._parent_road},{self.x_fact._label}",
             balancelink=balancelink_new,
         )
-        self.oath2idea_insert_combo_load()
-        self.oath2idea_table_load()
+        self.fact2idea_insert_combo_load()
+        self.fact2idea_table_load()
 
-    def oath2idea_delete(self):
+    def fact2idea_delete(self):
         delete_idea_pid = ""
-        if self.oath2idea_table.currentRow() != None:
-            delete_idea_pid = self.oath2idea_table.item(
-                self.oath2idea_table.currentRow(), 1
+        if self.fact2idea_table.currentRow() != None:
+            delete_idea_pid = self.fact2idea_table.item(
+                self.fact2idea_table.currentRow(), 1
             ).text()
-            self.x_agenda.edit_oath_attr(
-                road=f"{self.x_oath._parent_road},{self.x_oath._label}",
+            self.x_agenda.edit_fact_attr(
+                road=f"{self.x_fact._parent_road},{self.x_fact._label}",
                 balancelink_del=delete_idea_pid,
             )
-            self.oath2idea_insert_combo_load()
-            self.oath2idea_table_load()
+            self.fact2idea_insert_combo_load()
+            self.fact2idea_table_load()
 
-    def oath_delete(self):
-        self.x_agenda.del_oath_obj(
-            road=f"{self.x_oath._parent_road},{self.x_oath._label}"
+    def fact_delete(self):
+        self.x_agenda.del_fact_obj(
+            road=f"{self.x_fact._parent_road},{self.x_fact._label}"
         )
-        self.baseoathunit.clear()
+        self.basefactunit.clear()
         self.refresh_tree(disable_is_expanded=True)
 
-    def oath_edit_nonroad_data(self, oath_road):
-        self.x_agenda.edit_oath_attr(
-            road=oath_road,
+    def fact_edit_nonroad_data(self, fact_road):
+        self.x_agenda.edit_fact_attr(
+            road=fact_road,
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
             close=str2float(self.yo_close.toPlainText()),
@@ -843,9 +843,9 @@ class EditOathUnit(qtw0, Ui_Form):
             is_expanded=None,
         )
 
-    def oath_edit_road(self, oath_road):
-        self.x_agenda.edit_oath_label(
-            old_road=oath_road,
+    def fact_edit_road(self, fact_road):
+        self.x_agenda.edit_fact_label(
+            old_road=fact_road,
             new_label=self.yo_deescription.toPlainText(),
         )
 
@@ -853,36 +853,36 @@ class EditOathUnit(qtw0, Ui_Form):
         self.refresh_tree(disable_is_expanded=True)
         self.yo_tree_item_setHidden(setHiddenBool=True)
 
-    def oath_update(self):
-        oath_road = None
-        if self.x_oath._parent_road not in (None, ""):
-            oath_road = f"{self.x_oath._parent_road},{self.x_oath._label}"
+    def fact_update(self):
+        fact_road = None
+        if self.x_fact._parent_road not in (None, ""):
+            fact_road = f"{self.x_fact._parent_road},{self.x_fact._label}"
         else:
-            oath_road = f"{self.x_oath._label}"
-        self.oath_edit_nonroad_data(oath_road=oath_road)
+            fact_road = f"{self.x_fact._label}"
+        self.fact_edit_nonroad_data(fact_road=fact_road)
         # if (
-        #     self.oath_label_on_populate != self.yo_deescription.toPlainText()
-        #     and self.oath_label_on_populate != ""
-        #     and self.oath_label_on_populate != None
+        #     self.fact_label_on_populate != self.yo_deescription.toPlainText()
+        #     and self.fact_label_on_populate != ""
+        #     and self.fact_label_on_populate != None
         # ):
-        #     self.oath_edit_road()
-        if self.x_oath._label != self.yo_deescription.toPlainText():
-            self.oath_edit_road(oath_road=oath_road)
+        #     self.fact_edit_road()
+        if self.x_fact._label != self.yo_deescription.toPlainText():
+            self.fact_edit_road(fact_road=fact_road)
 
-    def oath_pledge_insert(self):
-        new_parent_road = f"{self.x_oath._label}"
-        if self.x_oath._parent_road not in ("", None):
-            new_parent_road = f"{self.x_oath._parent_road},{self.x_oath._label}"
+    def fact_pledge_insert(self):
+        new_parent_road = f"{self.x_fact._label}"
+        if self.x_fact._parent_road not in ("", None):
+            new_parent_road = f"{self.x_fact._parent_road},{self.x_fact._label}"
         new_road = f"{new_parent_road},{self.yo_deescription.toPlainText()}"
-        self.oath_insert()
+        self.fact_insert()
 
         # add done/not_done children
         not_done_text = "not done"
-        self.x_agenda.add_oath(oathunit_shop(not_done_text), new_road)
+        self.x_agenda.add_fact(factunit_shop(not_done_text), new_road)
         done_text = "done"
-        self.x_agenda.add_oath(oathunit_shop(done_text), new_road)
+        self.x_agenda.add_fact(factunit_shop(done_text), new_road)
         # set reason to "not done"
-        self.x_agenda.edit_oath_attr(
+        self.x_agenda.edit_fact_attr(
             road=new_road,
             reason_base=new_road,
             reason_premise=f"{new_road},{not_done_text}",
@@ -893,9 +893,9 @@ class EditOathUnit(qtw0, Ui_Form):
         )
         self.refresh_tree()
 
-    def oath_insert(self):
-        new_oath = oathunit_shop(self.yo_deescription.toPlainText())
-        oath_attr_x = oathattrfilter_shop(
+    def fact_insert(self):
+        new_fact = factunit_shop(self.yo_deescription.toPlainText())
+        fact_attr_x = factattrfilter_shop(
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
             close=str2float(self.yo_close.toPlainText()),
@@ -925,11 +925,11 @@ class EditOathUnit(qtw0, Ui_Form):
             is_expanded=None,
             meld_strategy=None,
         )
-        new_oath._set_oath_attr(oath_attr=oath_attr_x)
-        new_parent_road = f"{self.x_oath._label}"
-        if self.x_oath._parent_road not in ("", None):
-            new_parent_road = f"{self.x_oath._parent_road},{self.x_oath._label}"
-        self.x_agenda.add_oath(new_oath, new_parent_road)
+        new_fact._set_fact_attr(fact_attr=fact_attr_x)
+        new_parent_road = f"{self.x_fact._label}"
+        if self.x_fact._parent_road not in ("", None):
+            new_parent_road = f"{self.x_fact._parent_road},{self.x_fact._label}"
+        self.x_agenda.add_fact(new_fact, new_parent_road)
         self.refresh_tree()
 
     def refresh_tree(self, disable_is_expanded: bool = False):
@@ -949,14 +949,14 @@ class EditOathUnit(qtw0, Ui_Form):
         reason_view_base = self.combo_dim_root.currentText()
         beliefheir_view_flag = self.cb_beliefheir_view.checkState() == 2
 
-        # root = self.baseoathunit.invisibleRootItem()
+        # root = self.basefactunit.invisibleRootItem()
         # self.yo_tree_isExpanded(node=root, level=1)
-        root = self.baseoathunit.invisibleRootItem()
+        root = self.basefactunit.invisibleRootItem()
         if not disable_is_expanded:
-            self.oath_tree_set_is_expanded(root)
+            self.fact_tree_set_is_expanded(root)
 
         tree_root = get_pyqttree(
-            oathroot=self.x_agenda._oathroot,
+            factroot=self.x_agenda._factroot,
             yo_intent_flag=yo_intent_flag,
             yo_action_flag=yo_action_flag,
             yo_beliefunit_time_flag=yo_beliefunit_time_flag,
@@ -973,10 +973,10 @@ class EditOathUnit(qtw0, Ui_Form):
             source_agenda=self.x_agenda,
         )
 
-        self.baseoathunit.clear()
-        self.baseoathunit.insertTopLevelItems(0, [tree_root])
+        self.basefactunit.clear()
+        self.basefactunit.insertTopLevelItems(0, [tree_root])
 
-        root = self.baseoathunit.invisibleRootItem()
+        root = self.basefactunit.invisibleRootItem()
         self.pyqt_tree_setExpanded(root)
         # self.yo_tree_item_setHidden(setHiddenBool=True)
 
@@ -988,7 +988,7 @@ class EditOathUnit(qtw0, Ui_Form):
             item.setExpanded(item.data(2, 20))
             self.pyqt_tree_setExpanded(item)
 
-    def oath_tree_set_is_expanded(self, root):
+    def fact_tree_set_is_expanded(self, root):
         child_count = root.childCount()
         for i in range(child_count):
             item = root.child(i)
@@ -1000,8 +1000,8 @@ class EditOathUnit(qtw0, Ui_Form):
             # print(f"road={road_x},{label_x}")
             # print(f"{_road=}")
 
-            self.x_agenda.edit_oath_attr(road=_road, is_expanded=is_expanded)
-            self.oath_tree_set_is_expanded(item)
+            self.x_agenda.edit_fact_attr(road=_road, is_expanded=is_expanded)
+            self.fact_tree_set_is_expanded(item)
 
     def reason_table_select(self):
         self.reason_base_combo_load()
