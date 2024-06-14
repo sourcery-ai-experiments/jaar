@@ -1,8 +1,8 @@
 from src._road.road import create_road
 from src.agenda.agenda import (
     agendaunit_shop,
+    oathunit_shop,
     ideaunit_shop,
-    groupunit_shop,
     partylink_shop,
 )
 from src.money.money import moneyunit_shop
@@ -13,17 +13,17 @@ from src.money.examples.econ_env import (
 )
 from src._instrument.sqlite import get_single_result
 from src.money.treasury_sqlstr import (
+    get_agenda_oathunit_row_count,
+    OathCatalog,
+    get_agenda_oathunit_table_insert_sqlstr,
+    get_agenda_oathunit_dict,
+    get_agenda_oath_beliefunit_row_count,
+    BeliefCatalog,
+    get_agenda_oath_beliefunit_table_insert_sqlstr,
     get_agenda_ideaunit_row_count,
-    IdeaCatalog,
+    IdeaUnitCatalog,
     get_agenda_ideaunit_table_insert_sqlstr,
     get_agenda_ideaunit_dict,
-    get_agenda_idea_beliefunit_row_count,
-    BeliefCatalog,
-    get_agenda_idea_beliefunit_table_insert_sqlstr,
-    get_agenda_groupunit_row_count,
-    GroupUnitCatalog,
-    get_agenda_groupunit_table_insert_sqlstr,
-    get_agenda_groupunit_dict,
 )
 from src.money.examples.example_econ_agendas import (
     get_3node_agenda,
@@ -181,7 +181,7 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTab
     assert get_single_result(x_money.get_treasury_conn(), agenda_count_sqlstrs) == 4
 
 
-def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_groupunit(
+def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_ideaunit(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -199,7 +199,7 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_g
     x_money.userhub.save_job_agenda(bob_agenda)
     x_money.userhub.save_job_agenda(tom_agenda)
 
-    sqlstr = get_row_count_sqlstr("agenda_groupunit")
+    sqlstr = get_row_count_sqlstr("agenda_ideaunit")
     assert get_single_result(x_money.get_treasury_conn(), sqlstr) == 0
 
     # WHEN
@@ -209,7 +209,7 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_g
     assert get_single_result(x_money.get_treasury_conn(), sqlstr) == 3
 
 
-def test_MoneyUnit_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_MoneyUnit_get_agenda_oathunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -218,22 +218,22 @@ def test_MoneyUnit_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTab
 
     bob_text = "Bob"
     with x_money.get_treasury_conn() as treasury_conn:
-        assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 0
+        assert get_agenda_oathunit_row_count(treasury_conn, bob_text) == 0
 
     # WHEN
     resources_road = create_road(temp_real_id(), "resources")
     water_road = create_road(resources_road, "water")
-    water_agenda_ideaunit = IdeaCatalog(owner_id=bob_text, idea_road=water_road)
-    water_insert_sqlstr = get_agenda_ideaunit_table_insert_sqlstr(water_agenda_ideaunit)
+    water_agenda_oathunit = OathCatalog(owner_id=bob_text, oath_road=water_road)
+    water_insert_sqlstr = get_agenda_oathunit_table_insert_sqlstr(water_agenda_oathunit)
     with x_money.get_treasury_conn() as treasury_conn:
         print(water_insert_sqlstr)
         treasury_conn.execute(water_insert_sqlstr)
 
     # THEN
-    assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 1
+    assert get_agenda_oathunit_row_count(treasury_conn, bob_text) == 1
 
 
-def test_MoneyUnit_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_table(
+def test_MoneyUnit_refresh_treasury_job_agendas_data_Populates_agenda_oathunit_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
@@ -254,19 +254,19 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_t
     x_money.userhub.save_job_agenda(sal_agenda)
 
     with x_money.get_treasury_conn() as treasury_conn:
-        assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 0
+        assert get_agenda_oathunit_row_count(treasury_conn, bob_text) == 0
 
     # WHEN
     x_money.refresh_treasury_job_agendas_data()
 
     # THEN
     with x_money.get_treasury_conn() as treasury_conn:
-        assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 3
-        assert get_agenda_ideaunit_row_count(treasury_conn, tim_text) == 6
-        assert get_agenda_ideaunit_row_count(treasury_conn, sal_text) == 5
+        assert get_agenda_oathunit_row_count(treasury_conn, bob_text) == 3
+        assert get_agenda_oathunit_row_count(treasury_conn, tim_text) == 6
+        assert get_agenda_oathunit_row_count(treasury_conn, sal_text) == 5
 
 
-def test_MoneyUnit_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup):
+def test_MoneyUnit_get_agenda_oathunit_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.refresh_treasury_job_agendas_data()
@@ -288,23 +288,23 @@ def test_MoneyUnit_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cle
     x_money.userhub.save_job_agenda(sal_agenda)
     x_money.userhub.save_job_agenda(elu_agenda)
     x_money.refresh_treasury_job_agendas_data()
-    i_count_sqlstr = get_row_count_sqlstr("agenda_ideaunit")
+    i_count_sqlstr = get_row_count_sqlstr("agenda_oathunit")
     with x_money.get_treasury_conn() as treasury_conn:
         print(f"{i_count_sqlstr=}")
         assert get_single_result(x_money.get_treasury_conn(), i_count_sqlstr) == 20
 
     # WHEN / THEN
-    assert len(get_agenda_ideaunit_dict(x_money.get_treasury_conn())) == 20
+    assert len(get_agenda_oathunit_dict(x_money.get_treasury_conn())) == 20
     b_road = create_road(temp_real_id(), "B")
-    assert len(get_agenda_ideaunit_dict(x_money.get_treasury_conn(), b_road)) == 3
+    assert len(get_agenda_oathunit_dict(x_money.get_treasury_conn(), b_road)) == 3
     c_road = create_road(temp_real_id(), "C")
     ce_road = create_road(c_road, "E")
-    assert len(get_agenda_ideaunit_dict(x_money.get_treasury_conn(), ce_road)) == 2
+    assert len(get_agenda_oathunit_dict(x_money.get_treasury_conn(), ce_road)) == 2
     ex_road = create_road(temp_real_id())
-    assert len(get_agenda_ideaunit_dict(x_money.get_treasury_conn(), ex_road)) == 4
+    assert len(get_agenda_oathunit_dict(x_money.get_treasury_conn(), ex_road)) == 4
 
 
-def test_MoneyUnit_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_MoneyUnit_get_agenda_oath_beliefunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
@@ -313,7 +313,7 @@ def test_MoneyUnit_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopul
 
     bob_text = "Bob"
     with x_money.get_treasury_conn() as treasury_conn:
-        assert get_agenda_idea_beliefunit_row_count(treasury_conn, bob_text) == 0
+        assert get_agenda_oath_beliefunit_row_count(treasury_conn, bob_text) == 0
 
     # WHEN
     weather_road = create_road(temp_real_id(), "weather")
@@ -322,16 +322,16 @@ def test_MoneyUnit_get_agenda_idea_beliefunit_table_insert_sqlstr_CorrectlyPopul
         base=weather_road,
         pick=create_road(weather_road, "rain"),
     )
-    water_insert_sqlstr = get_agenda_idea_beliefunit_table_insert_sqlstr(weather_rain)
+    water_insert_sqlstr = get_agenda_oath_beliefunit_table_insert_sqlstr(weather_rain)
     with x_money.get_treasury_conn() as treasury_conn:
         print(water_insert_sqlstr)
         treasury_conn.execute(water_insert_sqlstr)
 
     # THEN
-    assert get_agenda_idea_beliefunit_row_count(treasury_conn, bob_text) == 1
+    assert get_agenda_oath_beliefunit_row_count(treasury_conn, bob_text) == 1
 
 
-def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_table(
+def test_refresh_treasury_job_agendas_data_Populates_agenda_oath_beliefunit_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
@@ -354,8 +354,8 @@ def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_tabl
     f_road = create_road(c_road, f_text)
     b_text = "B"
     b_road = tim_agenda.make_l1_road(b_text)
-    # for idea_x in tim_agenda._idea_dict.values():
-    #     print(f"{f_road=} {idea_x.get_road()=}")
+    # for oath_x in tim_agenda._oath_dict.values():
+    #     print(f"{f_road=} {oath_x.get_road()=}")
     tim_agenda.set_belief(base=c_road, pick=f_road)
 
     bob_agenda.set_belief(base=c_road, pick=f_road)
@@ -372,24 +372,24 @@ def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_beliefunit_tabl
     x_money.userhub.save_job_agenda(sal_agenda)
 
     with x_money.get_treasury_conn() as treasury_conn:
-        assert get_agenda_idea_beliefunit_row_count(treasury_conn, bob_text) == 0
-        assert get_agenda_idea_beliefunit_row_count(treasury_conn, tim_text) == 0
-        assert get_agenda_idea_beliefunit_row_count(treasury_conn, sal_text) == 0
+        assert get_agenda_oath_beliefunit_row_count(treasury_conn, bob_text) == 0
+        assert get_agenda_oath_beliefunit_row_count(treasury_conn, tim_text) == 0
+        assert get_agenda_oath_beliefunit_row_count(treasury_conn, sal_text) == 0
 
     # WHEN
     x_money.refresh_treasury_job_agendas_data()
 
     # THEN
-    print(f"{get_agenda_idea_beliefunit_row_count(treasury_conn, bob_text)=}")
-    print(f"{get_agenda_idea_beliefunit_row_count(treasury_conn, tim_text)=}")
-    print(f"{get_agenda_idea_beliefunit_row_count(treasury_conn, sal_text)=}")
+    print(f"{get_agenda_oath_beliefunit_row_count(treasury_conn, bob_text)=}")
+    print(f"{get_agenda_oath_beliefunit_row_count(treasury_conn, tim_text)=}")
+    print(f"{get_agenda_oath_beliefunit_row_count(treasury_conn, sal_text)=}")
     with x_money.get_treasury_conn() as treasury_conn:
-        assert get_agenda_idea_beliefunit_row_count(treasury_conn, bob_text) == 2
-        assert get_agenda_idea_beliefunit_row_count(treasury_conn, tim_text) == 1
-        assert get_agenda_idea_beliefunit_row_count(treasury_conn, sal_text) == 1
+        assert get_agenda_oath_beliefunit_row_count(treasury_conn, bob_text) == 2
+        assert get_agenda_oath_beliefunit_row_count(treasury_conn, tim_text) == 1
+        assert get_agenda_oath_beliefunit_row_count(treasury_conn, sal_text) == 1
 
 
-def test_MoneyUnit_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_MoneyUnit_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
@@ -398,23 +398,23 @@ def test_MoneyUnit_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTa
 
     bob_text = "Bob"
     with x_money.get_treasury_conn() as treasury_conn:
-        assert get_agenda_groupunit_row_count(treasury_conn, bob_text) == 0
+        assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 0
 
     # WHEN
-    bob_group_x = GroupUnitCatalog(
+    bob_idea_x = IdeaUnitCatalog(
         owner_id=bob_text,
-        groupunit_group_id="US Dollar",
+        ideaunit_idea_id="US Dollar",
     )
-    bob_group_sqlstr = get_agenda_groupunit_table_insert_sqlstr(bob_group_x)
+    bob_idea_sqlstr = get_agenda_ideaunit_table_insert_sqlstr(bob_idea_x)
     with x_money.get_treasury_conn() as treasury_conn:
-        print(bob_group_sqlstr)
-        treasury_conn.execute(bob_group_sqlstr)
+        print(bob_idea_sqlstr)
+        treasury_conn.execute(bob_idea_sqlstr)
 
     # THEN
-    assert get_agenda_groupunit_row_count(treasury_conn, bob_text) == 1
+    assert get_agenda_ideaunit_row_count(treasury_conn, bob_text) == 1
 
 
-def test_MoneyUnit_get_agenda_groupunit_dict_ReturnsGroupUnitData(
+def test_MoneyUnit_get_agenda_ideaunit_dict_ReturnsIdeaUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -431,19 +431,19 @@ def test_MoneyUnit_get_agenda_groupunit_dict_ReturnsGroupUnitData(
     x_money.userhub.save_job_agenda(bob_agenda)
     x_money.userhub.save_job_agenda(tom_agenda)
     x_money.refresh_treasury_job_agendas_data()
-    sqlstr = get_row_count_sqlstr("agenda_groupunit")
+    sqlstr = get_row_count_sqlstr("agenda_ideaunit")
     assert get_single_result(x_money.get_treasury_conn(), sqlstr) == 3
 
     # WHEN
     with x_money.get_treasury_conn() as treasury_conn:
-        print("try to grab GroupUnit data")
-        agenda_groupunit_dict = get_agenda_groupunit_dict(db_conn=treasury_conn)
+        print("try to grab IdeaUnit data")
+        agenda_ideaunit_dict = get_agenda_ideaunit_dict(db_conn=treasury_conn)
 
     # THEN
-    assert len(agenda_groupunit_dict) == 3
-    bob_agenda_tom_group = f"{bob_text} {tom_text}"
-    tom_bob_agenda_group = f"{tom_text} {bob_text}"
-    tom_agenda_elu_group = f"{tom_text} {elu_text}"
-    assert agenda_groupunit_dict.get(bob_agenda_tom_group) != None
-    assert agenda_groupunit_dict.get(tom_bob_agenda_group) != None
-    assert agenda_groupunit_dict.get(tom_agenda_elu_group) != None
+    assert len(agenda_ideaunit_dict) == 3
+    bob_agenda_tom_idea = f"{bob_text} {tom_text}"
+    tom_bob_agenda_idea = f"{tom_text} {bob_text}"
+    tom_agenda_elu_idea = f"{tom_text} {elu_text}"
+    assert agenda_ideaunit_dict.get(bob_agenda_tom_idea) != None
+    assert agenda_ideaunit_dict.get(tom_bob_agenda_idea) != None
+    assert agenda_ideaunit_dict.get(tom_agenda_elu_idea) != None

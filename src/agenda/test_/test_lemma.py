@@ -1,6 +1,6 @@
-from src.agenda.reason_idea import beliefunit_shop
+from src.agenda.reason_oath import beliefunit_shop
 from src.agenda.lemma import Lemma, Lemmas, lemmas_shop
-from src.agenda.idea import ideaunit_shop
+from src.agenda.oath import oathunit_shop
 from src._road.road import (
     get_default_real_id_roadnode as root_label,
     create_road,
@@ -8,10 +8,10 @@ from src._road.road import (
 
 
 def test_lemma_attributes_exist():
-    x_lemma = Lemma(src_belief=1, calc_belief=2, x_idea=3, eval_status=4, eval_count=5)
+    x_lemma = Lemma(src_belief=1, calc_belief=2, x_oath=3, eval_status=4, eval_count=5)
     assert x_lemma.src_belief == 1
     assert x_lemma.calc_belief == 2
-    assert x_lemma.x_idea == 3
+    assert x_lemma.x_oath == 3
     assert x_lemma.eval_status == 4
     assert x_lemma.eval_count == 5
 
@@ -38,14 +38,14 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario1():
 
     # WHEN
     hist_road = create_road(root_label(), "histoory")
-    idea_kid = ideaunit_shop("timerange1", _parent_road=hist_road, _begin=0, _close=12)
-    src_idea = ideaunit_shop(
+    oath_kid = oathunit_shop("timerange1", _parent_road=hist_road, _begin=0, _close=12)
+    src_oath = oathunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
-    tr1 = create_road(idea_kid._parent_road, idea_kid._label)
+    tr1 = create_road(oath_kid._parent_road, oath_kid._label)
     src_belief = beliefunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
     new_belief = x_lemmas_x._create_new_belief(
-        x_idea=idea_kid, src_belief=src_belief, src_idea=src_idea
+        x_oath=oath_kid, src_belief=src_belief, src_oath=src_oath
     )
 
     # THEN
@@ -61,14 +61,14 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario2():
 
     # WHEN
     hist_road = create_road(root_label(), "histoory")
-    idea_kid = ideaunit_shop("timerange1", _parent_road=hist_road, _begin=7, _close=12)
-    tr1 = create_road(idea_kid._parent_road, idea_kid._label)
+    oath_kid = oathunit_shop("timerange1", _parent_road=hist_road, _begin=7, _close=12)
+    tr1 = create_road(oath_kid._parent_road, oath_kid._label)
     src_belief = beliefunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
-    src_idea = ideaunit_shop(
+    src_oath = oathunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
     new_belief = x_lemmas_x._create_new_belief(
-        x_idea=idea_kid, src_belief=src_belief, src_idea=src_idea
+        x_oath=oath_kid, src_belief=src_belief, src_oath=src_oath
     )
 
     # THEN
@@ -82,7 +82,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario3_denom():
 
     # WHEN
     hist_road = create_road(root_label(), "histoory")
-    idea_kid = ideaunit_shop(
+    oath_kid = oathunit_shop(
         _label="timerange1",
         _parent_road=hist_road,
         _begin=0,
@@ -91,13 +91,13 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario3_denom():
         _denom=10,
         _reest=False,
     )
-    tr1 = create_road(idea_kid._parent_road, idea_kid._label)
+    tr1 = create_road(oath_kid._parent_road, oath_kid._label)
     src_belief = beliefunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
-    src_idea = ideaunit_shop(
+    src_oath = oathunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
     new_belief = x_lemmas._create_new_belief(
-        x_idea=idea_kid, src_belief=src_belief, src_idea=src_idea
+        x_oath=oath_kid, src_belief=src_belief, src_oath=src_oath
     )
 
     # THEN
@@ -111,18 +111,18 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario3_2_denom():
 
     # WHEN
     hist_road = create_road(root_label(), "histoory")
-    ex_idea = ideaunit_shop("range_x", _parent_road=hist_road, _begin=0, _close=10080)
-    idea_kid = ideaunit_shop(
+    ex_oath = oathunit_shop("range_x", _parent_road=hist_road, _begin=0, _close=10080)
+    oath_kid = oathunit_shop(
         _label="timerange1",
         _parent_road=create_road(root_label(), "range_x"),
         _begin=7200,
         _close=8440,
         _reest=False,
     )
-    ex_road = create_road(ex_idea._parent_road, ex_idea._label)
+    ex_road = create_road(ex_oath._parent_road, ex_oath._label)
     ex_belief = beliefunit_shop(base=ex_road, pick=ex_road, open=7200, nigh=7200)
     new_belief = x_lemmas._create_new_belief(
-        x_idea=idea_kid, src_belief=ex_belief, src_idea=ex_idea
+        x_oath=oath_kid, src_belief=ex_belief, src_oath=ex_oath
     )
 
     # THEN
@@ -136,7 +136,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario4_denomReest():
 
     # WHEN
     hist_road = create_road(root_label(), "histoory")
-    idea_kid = ideaunit_shop(
+    oath_kid = oathunit_shop(
         _label="timerange1",
         _parent_road=hist_road,
         _begin=0,
@@ -145,13 +145,13 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario4_denomReest():
         _denom=1,
         _reest=True,
     )
-    tr1 = create_road(idea_kid._parent_road, idea_kid._label)
+    tr1 = create_road(oath_kid._parent_road, oath_kid._label)
     src_belief = beliefunit_shop(base=tr1, pick=tr1, open=120, nigh=150)
-    src_idea = ideaunit_shop(
+    src_oath = oathunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
     new_belief = x_lemmas_x._create_new_belief(
-        x_idea=idea_kid, src_belief=src_belief, src_idea=src_idea
+        x_oath=oath_kid, src_belief=src_belief, src_oath=src_oath
     )
 
     # THEN
@@ -165,7 +165,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario5_denomReest():
 
     # WHEN
     hist_road = create_road(root_label(), "histoory")
-    idea_kid = ideaunit_shop(
+    oath_kid = oathunit_shop(
         _label="timerange1",
         _parent_road=hist_road,
         _begin=0,
@@ -174,13 +174,13 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario5_denomReest():
         _denom=952,
         _reest=True,
     )
-    tr1 = create_road(idea_kid._parent_road, idea_kid._label)
+    tr1 = create_road(oath_kid._parent_road, oath_kid._label)
     src_belief = beliefunit_shop(base=tr1, pick=tr1, open=100, nigh=150)
-    src_idea = ideaunit_shop(
+    src_oath = oathunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
     new_belief = x_lemmas_x._create_new_belief(
-        x_idea=idea_kid, src_belief=src_belief, src_idea=src_idea
+        x_oath=oath_kid, src_belief=src_belief, src_oath=src_oath
     )
 
     # THEN
@@ -192,7 +192,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario6_denomReest():
     # GIVEN
     hist_road = create_road(root_label(), "histoory")
     x_lemmas_x = lemmas_shop()
-    idea_src = ideaunit_shop(
+    oath_src = oathunit_shop(
         _label="timerange1",
         _parent_road=hist_road,
         _begin=0,
@@ -200,7 +200,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario6_denomReest():
     )
 
     # WHEN / THEN Check
-    tr3_kid = ideaunit_shop(
+    tr3_kid = oathunit_shop(
         _label="subera",
         _parent_road=hist_road,
         _begin=40,
@@ -209,13 +209,13 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario6_denomReest():
     tr3 = create_road(tr3_kid._parent_road, tr3_kid._label)
     src_belief = beliefunit_shop(base=tr3, pick=tr3, open=30, nigh=20)
     tr3_30_20_belief = x_lemmas_x._create_new_belief(
-        x_idea=tr3_kid, src_belief=src_belief, src_idea=idea_src
+        x_oath=tr3_kid, src_belief=src_belief, src_oath=oath_src
     )
     assert tr3_30_20_belief.open == 40
     assert tr3_30_20_belief.nigh == 50
 
     # WHEN / THEN Check
-    trb_kid = ideaunit_shop(
+    trb_kid = oathunit_shop(
         _label="subera",
         _parent_road=hist_road,
         _begin=40,
@@ -224,13 +224,13 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario6_denomReest():
     trb = create_road(trb_kid._parent_road, trb_kid._label)
     src_belief = beliefunit_shop(base=trb, pick=trb, open=30, nigh=20)
     trb_30_20_belief = x_lemmas_x._create_new_belief(
-        x_idea=trb_kid, src_belief=src_belief, src_idea=idea_src
+        x_oath=trb_kid, src_belief=src_belief, src_oath=oath_src
     )
     assert trb_30_20_belief.open == 40
     assert trb_30_20_belief.nigh == 60
 
     # WHEN / THEN Check
-    tr4_kid = ideaunit_shop(
+    tr4_kid = oathunit_shop(
         _label="subera",
         _parent_road=hist_road,
         _begin=55,
@@ -239,13 +239,13 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario6_denomReest():
     tr4 = create_road(tr4_kid._parent_road, tr4_kid._label)
     src_belief = beliefunit_shop(base=tr4, pick=tr4, open=30, nigh=20)
     tr4_30_20_belief = x_lemmas_x._create_new_belief(
-        x_idea=tr4_kid, src_belief=src_belief, src_idea=idea_src
+        x_oath=tr4_kid, src_belief=src_belief, src_oath=oath_src
     )
     assert tr4_30_20_belief.open == 55
     assert tr4_30_20_belief.nigh == 10
 
     # WHEN / THEN Check
-    tr5_kid = ideaunit_shop(
+    tr5_kid = oathunit_shop(
         _label="subera",
         _parent_road=hist_road,
         _begin=0,
@@ -254,7 +254,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario6_denomReest():
     tr5 = create_road(tr5_kid._parent_road, tr5_kid._label)
     src_belief = beliefunit_shop(base=tr5, pick=tr5, open=30, nigh=20)
     tr5_0_60_belief = x_lemmas_x._create_new_belief(
-        x_idea=tr5_kid, src_belief=src_belief, src_idea=idea_src
+        x_oath=tr5_kid, src_belief=src_belief, src_oath=oath_src
     )
     assert tr5_0_60_belief.open == 30
     assert tr5_0_60_belief.nigh == 20
@@ -266,7 +266,7 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario7_denomReest():
 
     # WHEN
     hist_road = create_road(root_label(), "histoory")
-    idea_kid = ideaunit_shop(
+    oath_kid = oathunit_shop(
         _label="timerange1",
         _parent_road=hist_road,
         _begin=0,
@@ -275,13 +275,13 @@ def test_lemmas_create_new_belief_createsCorrectBelief_scenario7_denomReest():
         _denom=1,
         _reest=True,
     )
-    tr1 = create_road(idea_kid._parent_road, idea_kid._label)
+    tr1 = create_road(oath_kid._parent_road, oath_kid._label)
     src_belief = beliefunit_shop(base=tr1, pick=tr1, open=90, nigh=150)
-    src_idea = ideaunit_shop(
+    src_oath = oathunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
     new_belief = x_lemmas_x._create_new_belief(
-        x_idea=idea_kid, src_belief=src_belief, src_idea=src_idea
+        x_oath=oath_kid, src_belief=src_belief, src_oath=src_oath
     )
 
     # THEN
@@ -308,32 +308,32 @@ def test_lemmas_get_unevaluated_lemma_ReturnsCorrectLemmaWhenPopulated():
     hist_road = create_road(root_label(), "histoory")
     x_lemmas_x = lemmas_shop()
     x_lemmas_x.lemmas = {}
-    src_idea = ideaunit_shop(
+    src_oath = oathunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
 
-    tr1_idea = ideaunit_shop("timerange1", _parent_road=hist_road, _begin=7, _close=12)
-    tr1 = create_road(tr1_idea._parent_road, tr1_idea._label)
+    tr1_oath = oathunit_shop("timerange1", _parent_road=hist_road, _begin=7, _close=12)
+    tr1 = create_road(tr1_oath._parent_road, tr1_oath._label)
     src_belief = beliefunit_shop(base=tr1, pick=tr1, open=0, nigh=30)
-    x_lemmas_x.eval(x_idea=tr1_idea, src_belief=src_belief, src_idea=src_idea)
+    x_lemmas_x.eval(x_oath=tr1_oath, src_belief=src_belief, src_oath=src_oath)
 
-    tr2_idea = ideaunit_shop("timerange2", _parent_road=hist_road, _begin=40, _close=60)
-    tr2 = create_road(tr2_idea._parent_road, tr2_idea._label)
+    tr2_oath = oathunit_shop("timerange2", _parent_road=hist_road, _begin=40, _close=60)
+    tr2 = create_road(tr2_oath._parent_road, tr2_oath._label)
     src_belief = beliefunit_shop(base=tr2, pick=tr2, open=55, nigh=60)
-    x_lemmas_x.eval(x_idea=tr2_idea, src_belief=src_belief, src_idea=src_idea)
+    x_lemmas_x.eval(x_oath=tr2_oath, src_belief=src_belief, src_oath=src_oath)
 
     # WHEN
     lem1 = x_lemmas_x.get_unevaluated_lemma()
-    print(f"{lem1.x_idea=}")
+    print(f"{lem1.x_oath=}")
     print(f"{tr1=}")
     lem2 = x_lemmas_x.get_unevaluated_lemma()
-    print(f"{lem2.x_idea=}")
+    print(f"{lem2.x_oath=}")
     lem3 = x_lemmas_x.get_unevaluated_lemma()
     print(f"{lem3=}")
 
     # THEN
-    assert lem1.x_idea in (tr1_idea, tr2_idea)
-    assert lem2.x_idea in (tr1_idea, tr2_idea)
+    assert lem1.x_oath in (tr1_oath, tr2_oath)
+    assert lem2.x_oath in (tr1_oath, tr2_oath)
     assert lem3 is None
 
     x_lemmas_x = None
@@ -344,22 +344,22 @@ def test_lemmas_is_lemmas_incomplete_ReturnsCorrectBoolWhenPopulated():
     hist_road = create_road(root_label(), "histoory")
     z_lemmas = lemmas_shop()
     z_lemmas.lemmas = {}
-    src_idea = ideaunit_shop(
+    src_oath = oathunit_shop(
         "sub_timerange", _parent_road=hist_road, _begin=-13, _close=500
     )
 
     # for x_lemma in z_lemmas.lemmas.values():
     #     print(f"Does not exist: {lemma.eval_status=} {lemma.calc_belief=}")
 
-    tr1_idea = ideaunit_shop("timerange1", _parent_road=hist_road, _begin=7, _close=12)
-    tr1_road = create_road(tr1_idea._parent_road, tr1_idea._label)
+    tr1_oath = oathunit_shop("timerange1", _parent_road=hist_road, _begin=7, _close=12)
+    tr1_road = create_road(tr1_oath._parent_road, tr1_oath._label)
     src_belief = beliefunit_shop(base=tr1_road, pick=tr1_road, open=0, nigh=30)
-    z_lemmas.eval(x_idea=tr1_idea, src_belief=src_belief, src_idea=src_idea)
+    z_lemmas.eval(x_oath=tr1_oath, src_belief=src_belief, src_oath=src_oath)
 
-    tr2_idea = ideaunit_shop("timerange2", _parent_road=hist_road, _begin=40, _close=60)
-    tr2_road = create_road(tr2_idea._parent_road, tr2_idea._label)
+    tr2_oath = oathunit_shop("timerange2", _parent_road=hist_road, _begin=40, _close=60)
+    tr2_road = create_road(tr2_oath._parent_road, tr2_oath._label)
     src_belief = beliefunit_shop(base=tr2_road, pick=tr2_road, open=55, nigh=60)
-    z_lemmas.eval(x_idea=tr2_idea, src_belief=src_belief, src_idea=src_idea)
+    z_lemmas.eval(x_oath=tr2_oath, src_belief=src_belief, src_oath=src_oath)
 
     # WHEN / THEN
     assert len(z_lemmas.lemmas) == 2

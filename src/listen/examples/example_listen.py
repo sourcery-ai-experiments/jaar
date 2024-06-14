@@ -1,5 +1,5 @@
 from src._road.road import RoadUnit, create_road, get_default_real_id_roadnode
-from src.agenda.idea import ideaunit_shop
+from src.agenda.oath import oathunit_shop
 from src.agenda.agenda import agendaunit_shop, AgendaUnit
 
 
@@ -62,14 +62,14 @@ def run_road() -> RoadUnit:
 def get_example_zia_speaker() -> AgendaUnit:
     zia_text = "Zia"
     zia_speaker = agendaunit_shop(zia_text)
-    zia_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
-    zia_speaker.add_idea(ideaunit_shop(full_text()), eat_road())
+    zia_speaker.add_oath(oathunit_shop(cook_text(), pledge=True), casa_road())
+    zia_speaker.add_oath(oathunit_shop(hungry_text()), eat_road())
+    zia_speaker.add_oath(oathunit_shop(full_text()), eat_road())
     yao_text = "Yao"
     zia_speaker.add_partyunit(yao_text, debtor_weight=12)
-    cook_ideaunit = zia_speaker.get_idea_obj(cook_road())
-    cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    zia_speaker.edit_idea_attr(
+    cook_oathunit = zia_speaker.get_oath_obj(cook_road())
+    cook_oathunit._assignedunit.set_suffidea(yao_text)
+    zia_speaker.edit_oath_attr(
         cook_road(), reason_base=eat_road(), reason_premise=hungry_road()
     )
     zia_speaker.set_belief(eat_road(), full_road())
@@ -80,14 +80,14 @@ def get_example_zia_speaker() -> AgendaUnit:
 def get_example_bob_speaker() -> AgendaUnit:
     bob_text = "Bob"
     bob_speaker = agendaunit_shop(bob_text)
-    bob_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    bob_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
-    bob_speaker.add_idea(ideaunit_shop(full_text()), eat_road())
+    bob_speaker.add_oath(oathunit_shop(cook_text(), pledge=True), casa_road())
+    bob_speaker.add_oath(oathunit_shop(hungry_text()), eat_road())
+    bob_speaker.add_oath(oathunit_shop(full_text()), eat_road())
     yao_text = "Yao"
     bob_speaker.add_partyunit(yao_text, debtor_weight=12)
-    cook_ideaunit = bob_speaker.get_idea_obj(cook_road())
-    cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    bob_speaker.edit_idea_attr(
+    cook_oathunit = bob_speaker.get_oath_obj(cook_road())
+    cook_oathunit._assignedunit.set_suffidea(yao_text)
+    bob_speaker.edit_oath_attr(
         cook_road(), reason_base=eat_road(), reason_premise=hungry_road()
     )
     bob_speaker.set_belief(eat_road(), hungry_road())
@@ -104,12 +104,12 @@ def get_example_yao_speaker() -> AgendaUnit:
     yao_speaker.add_partyunit(zia_text, debtor_weight=36)
     yao_speaker.add_partyunit(bob_text, debtor_weight=48)
     yao_speaker.set_party_pool(100)
-    yao_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    yao_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
-    yao_speaker.add_idea(ideaunit_shop(full_text()), eat_road())
-    cook_ideaunit = yao_speaker.get_idea_obj(cook_road())
-    cook_ideaunit._assignedunit.set_suffgroup(yao_text)
-    yao_speaker.edit_idea_attr(
+    yao_speaker.add_oath(oathunit_shop(cook_text(), pledge=True), casa_road())
+    yao_speaker.add_oath(oathunit_shop(hungry_text()), eat_road())
+    yao_speaker.add_oath(oathunit_shop(full_text()), eat_road())
+    cook_oathunit = yao_speaker.get_oath_obj(cook_road())
+    cook_oathunit._assignedunit.set_suffidea(yao_text)
+    yao_speaker.edit_oath_attr(
         cook_road(), reason_base=eat_road(), reason_premise=hungry_road()
     )
     yao_speaker.set_belief(eat_road(), hungry_road())

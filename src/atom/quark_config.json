@@ -1,5 +1,5 @@
 {
-    "agenda_group_partylink": {
+    "agenda_idea_partylink": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 25
@@ -18,8 +18,8 @@
             }
         },
         "required_args": {
-            "group_id": {
-                "python_type": "GroupID",
+            "idea_id": {
+                "python_type": "IdeaID",
                 "sqlite_datatype": "TEXT"
             },
             "party_id": {
@@ -32,7 +32,7 @@
             "quark_order": 12
         }
     },
-    "agenda_groupunit": {
+    "agenda_ideaunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 27
@@ -43,8 +43,8 @@
         "optional_args": {
         },
         "required_args": {
-            "group_id": {
-                "python_type": "GroupID",
+            "idea_id": {
+                "python_type": "IdeaID",
                 "sqlite_datatype": "TEXT"
             }
         },
@@ -53,7 +53,7 @@
             "quark_order": 11
         }
     },
-    "agenda_idea_balancelink": {
+    "agenda_oath_balancelink": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 23
@@ -72,8 +72,8 @@
             }
         },
         "required_args": {
-            "group_id": {
-                "python_type": "GroupID",
+            "idea_id": {
+                "python_type": "IdeaID",
                 "sqlite_datatype": "TEXT"
             },
             "road": {
@@ -86,7 +86,7 @@
             "quark_order": 14
         }
     },
-    "agenda_idea_beliefunit": {
+    "agenda_oath_beliefunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 20
@@ -123,7 +123,7 @@
             "quark_order": 15
         }
     },
-    "agenda_idea_healerhold": {
+    "agenda_oath_healerhold": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 22
@@ -133,8 +133,8 @@
         },
         "optional_args": {},
         "required_args": {
-            "group_id": {
-                "python_type": "GroupID",
+            "idea_id": {
+                "python_type": "IdeaID",
                 "sqlite_datatype": "TEXT"
             },
             "road": {
@@ -144,7 +144,7 @@
         },
         "treasury_only": false
     },
-    "agenda_idea_reason_premiseunit": {
+    "agenda_oath_reason_premiseunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 18
@@ -185,7 +185,7 @@
             "quark_order": 16
         }
     },
-    "agenda_idea_reasonunit": {
+    "agenda_oath_reasonunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 19
@@ -194,7 +194,7 @@
             "quark_order": 8
         },
         "optional_args": {
-            "suff_idea_active": {
+            "suff_oath_active": {
                 "python_type": "bool",
                 "sqlite_datatype": "INTEGER"
             }
@@ -214,7 +214,7 @@
             "quark_order": 17
         }
     },
-    "agenda_idea_suffgroup": {
+    "agenda_oath_suffidea": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 21
@@ -224,8 +224,8 @@
         },
         "optional_args": {},
         "required_args": {
-            "group_id": {
-                "python_type": "GroupID",
+            "idea_id": {
+                "python_type": "IdeaID",
                 "sqlite_datatype": "TEXT"
             },
             "road": {
@@ -235,7 +235,7 @@
         },
         "treasury_only": false
     },
-    "agenda_ideaunit": {
+    "agenda_oathunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 24

@@ -20,7 +20,7 @@ def test_QuarkUnit_get_insert_sqlstr_RaisesErrorWhen_is_valid_False():
     knee_road = create_road("a", knee_text)
 
     # WHEN
-    x_category = "agenda_idea_beliefunit"
+    x_category = "agenda_oath_beliefunit"
     update_disc_quarkunit = quarkunit_shop(x_category, quark_update())
     update_disc_quarkunit.set_required_arg("base", knee_road)
 
@@ -53,7 +53,7 @@ VALUES (
     assert x_quarkunit.get_insert_sqlstr() == example_sqlstr
 
 
-def test_QuarkUnit_get_insert_sqlstr_ReturnsCorrectObj_idea_beliefunit():
+def test_QuarkUnit_get_insert_sqlstr_ReturnsCorrectObj_oath_beliefunit():
     # GIVEN
     sports_text = "sports"
     sports_road = create_road("a", sports_text)
@@ -62,7 +62,7 @@ def test_QuarkUnit_get_insert_sqlstr_ReturnsCorrectObj_idea_beliefunit():
     knee_text = "knee"
     knee_road = create_road("a", knee_text)
     knee_open = 7
-    x_category = "agenda_idea_beliefunit"
+    x_category = "agenda_oath_beliefunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"
@@ -90,7 +90,7 @@ VALUES (
     assert gen_sqlstr == example_sqlstr
 
 
-def test_get_quarkunit_from_rowdata_ReturnsCorrectObj_idea_beliefunit():
+def test_get_quarkunit_from_rowdata_ReturnsCorrectObj_oath_beliefunit():
     # GIVEN
     sports_text = "sports"
     sports_road = create_road("a", sports_text)
@@ -99,7 +99,7 @@ def test_get_quarkunit_from_rowdata_ReturnsCorrectObj_idea_beliefunit():
     knee_text = "knee"
     knee_road = create_road("a", knee_text)
     knee_open = 7
-    x_category = "agenda_idea_beliefunit"
+    x_category = "agenda_oath_beliefunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"

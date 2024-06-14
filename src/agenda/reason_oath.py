@@ -478,7 +478,7 @@ def premises_get_from_dict(x_dict: dict) -> dict[str:PremiseUnit]:
 class ReasonCore:
     base: RoadUnit
     premises: dict[RoadUnit:PremiseUnit]
-    suff_idea_active: bool = None
+    suff_oath_active: bool = None
     delimiter: str = None
 
     def set_delimiter(self, new_delimiter: str):
@@ -549,13 +549,13 @@ class ReasonCore:
 def reasoncore_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_idea_active: bool = None,
+    suff_oath_active: bool = None,
     delimiter: str = None,
 ):
     return ReasonCore(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_idea_active=suff_idea_active,
+        suff_oath_active=suff_oath_active,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -570,21 +570,21 @@ class ReasonUnit(ReasonCore):
         x_dict = {"base": self.base}
         if premises_dict != {}:
             x_dict["premises"] = premises_dict
-        if self.suff_idea_active != None:
-            x_dict["suff_idea_active"] = self.suff_idea_active
+        if self.suff_oath_active != None:
+            x_dict["suff_oath_active"] = self.suff_oath_active
         return x_dict
 
 
 def reasonunit_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_idea_active: bool = None,
+    suff_oath_active: bool = None,
     delimiter: str = None,
 ):
     return ReasonUnit(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_idea_active=suff_idea_active,
+        suff_oath_active=suff_oath_active,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -593,7 +593,7 @@ def reasonunit_shop(
 class ReasonHeir(ReasonCore):
     _status: bool = None
     _task: bool = None
-    _base_idea_active: bool = None
+    _base_oath_active: bool = None
 
     def inherit_from_reasonheir(self, x_reasonunit: ReasonUnit):
         x_premises = {}
@@ -627,8 +627,8 @@ class ReasonHeir(ReasonCore):
 
         return x_belief
 
-    def set_base_idea_active(self, bool_x: bool):
-        self._base_idea_active = bool_x
+    def set_base_oath_active(self, bool_x: bool):
+        self._base_oath_active = bool_x
 
     def set_status(self, beliefs: dict[RoadUnit:BeliefHeir]):
         self.clear_status()
@@ -648,8 +648,8 @@ class ReasonHeir(ReasonCore):
         self._status = bool(
             is_a_single_premise_true
             or (
-                self._base_idea_active != None
-                and self._base_idea_active == self.suff_idea_active
+                self._base_oath_active != None
+                and self._base_oath_active == self.suff_oath_active
             )
         )
         self._task = True if is_single_task_true else None
@@ -660,19 +660,19 @@ class ReasonHeir(ReasonCore):
 def reasonheir_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_idea_active: bool = None,
+    suff_oath_active: bool = None,
     _status: bool = None,
     _task: bool = None,
-    _base_idea_active: bool = None,
+    _base_oath_active: bool = None,
     delimiter: str = None,
 ):
     return ReasonHeir(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_idea_active=suff_idea_active,
+        suff_oath_active=suff_oath_active,
         _status=_status,
         _task=_task,
-        _base_idea_active=_base_idea_active,
+        _base_oath_active=_base_oath_active,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -686,7 +686,7 @@ def reasons_get_from_dict(reasons_dict: dict) -> dict[RoadUnit:ReasonUnit]:
             x_reasonunit.premises = premises_get_from_dict(
                 x_dict=reason_dict["premises"]
             )
-        if reason_dict.get("suff_idea_active") != None:
-            x_reasonunit.suff_idea_active = reason_dict.get("suff_idea_active")
+        if reason_dict.get("suff_oath_active") != None:
+            x_reasonunit.suff_oath_active = reason_dict.get("suff_oath_active")
         x_dict[x_reasonunit.base] = x_reasonunit
     return x_dict

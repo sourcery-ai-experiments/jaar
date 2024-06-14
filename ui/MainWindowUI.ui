@@ -498,7 +498,7 @@
      </font>
     </property>
     <property name="text">
-     <string>Idea_id:</string>
+     <string>Oath_id:</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_intent_family_data">
@@ -658,12 +658,12 @@
     </column>
     <column>
      <property name="text">
-      <string>idea_road</string>
+      <string>oath_road</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>idea_percent</string>
+      <string>oath_percent</string>
      </property>
     </column>
     <column>

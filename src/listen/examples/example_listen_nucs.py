@@ -10,17 +10,17 @@ from src.atom.quark import (
 from src.atom.nuc import NucUnit, nucunit_shop
 
 
-def get_quark_example_ideaunit_sports(real_id: RealID = None) -> QuarkUnit:
+def get_quark_example_oathunit_sports(real_id: RealID = None) -> QuarkUnit:
     if real_id is None:
         real_id = get_test_real_id()
     sports_text = "sports"
-    x_category = "agenda_ideaunit"
+    x_category = "agenda_oathunit"
     label_text = "label"
     parent_road_text = "parent_road"
-    insert_ideaunit_quarkunit = quarkunit_shop(x_category, quark_insert())
-    insert_ideaunit_quarkunit.set_required_arg(label_text, sports_text)
-    insert_ideaunit_quarkunit.set_required_arg(parent_road_text, real_id)
-    return insert_ideaunit_quarkunit
+    insert_oathunit_quarkunit = quarkunit_shop(x_category, quark_insert())
+    insert_oathunit_quarkunit.set_required_arg(label_text, sports_text)
+    insert_oathunit_quarkunit.set_required_arg(parent_road_text, real_id)
+    return insert_oathunit_quarkunit
 
 
 def get_nucunit_carm_example() -> NucUnit:

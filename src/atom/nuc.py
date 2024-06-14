@@ -7,10 +7,10 @@ from src._instrument.python import (
     get_0_if_None,
 )
 from src._road.road import RoadUnit, get_terminus_node, get_parent_road
-from src.agenda.reason_idea import BeliefUnit, ReasonUnit
+from src.agenda.reason_oath import BeliefUnit, ReasonUnit
 from src.agenda.party import PartyLink, PartyID
-from src.agenda.group import GroupUnit, GroupID
-from src.agenda.idea import IdeaUnit
+from src.agenda.idea import IdeaUnit, IdeaID
+from src.agenda.oath import OathUnit
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from src.atom.quark import (
     CRUD_command,
@@ -133,8 +133,8 @@ class NucUnit:
         after_agenda.calc_agenda_metrics()
         self.add_quarkunits_agendaunit_simple_attrs(before_agenda, after_agenda)
         self.add_quarkunit_partyunits(before_agenda, after_agenda)
-        self.add_quarkunit_groupunits(before_agenda, after_agenda)
-        self.add_quarkunits_ideas(before_agenda, after_agenda)
+        self.add_quarkunit_ideaunits(before_agenda, after_agenda)
+        self.add_quarkunits_oaths(before_agenda, after_agenda)
 
     def add_quarkunits_agendaunit_simple_attrs(
         self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
@@ -223,118 +223,118 @@ class NucUnit:
             x_quarkunit.set_required_arg("party_id", delete_party_id)
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_groupunits(
+    def add_quarkunit_ideaunits(
         self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
     ):
-        before_group_ids = {
-            before_group_id
-            for before_group_id in before_agenda._groups.keys()
-            if before_agenda.get_groupunit(before_group_id)._party_mirror is False
+        before_idea_ids = {
+            before_idea_id
+            for before_idea_id in before_agenda._ideas.keys()
+            if before_agenda.get_ideaunit(before_idea_id)._party_mirror is False
         }
-        after_group_ids = {
-            after_group_id
-            for after_group_id in after_agenda._groups.keys()
-            if after_agenda.get_groupunit(after_group_id)._party_mirror is False
+        after_idea_ids = {
+            after_idea_id
+            for after_idea_id in after_agenda._ideas.keys()
+            if after_agenda.get_ideaunit(after_idea_id)._party_mirror is False
         }
 
-        self.add_quarkunit_groupunit_inserts(
+        self.add_quarkunit_ideaunit_inserts(
             after_agenda=after_agenda,
-            insert_group_ids=after_group_ids.difference(before_group_ids),
+            insert_idea_ids=after_idea_ids.difference(before_idea_ids),
         )
 
-        self.add_quarkunit_groupunit_deletes(
+        self.add_quarkunit_ideaunit_deletes(
             before_agenda=before_agenda,
-            delete_group_ids=before_group_ids.difference(after_group_ids),
+            delete_idea_ids=before_idea_ids.difference(after_idea_ids),
         )
 
-        self.add_quarkunit_groupunit_updates(
+        self.add_quarkunit_ideaunit_updates(
             before_agenda=before_agenda,
             after_agenda=after_agenda,
-            update_group_ids=before_group_ids.intersection(after_group_ids),
+            update_idea_ids=before_idea_ids.intersection(after_idea_ids),
         )
 
-    def add_quarkunit_groupunit_inserts(
-        self, after_agenda: AgendaUnit, insert_group_ids: set
+    def add_quarkunit_ideaunit_inserts(
+        self, after_agenda: AgendaUnit, insert_idea_ids: set
     ):
-        for insert_group_id in insert_group_ids:
-            insert_groupunit = after_agenda.get_groupunit(insert_group_id)
-            x_quarkunit = quarkunit_shop("agenda_groupunit", quark_insert())
-            x_quarkunit.set_required_arg("group_id", insert_groupunit.group_id)
+        for insert_idea_id in insert_idea_ids:
+            insert_ideaunit = after_agenda.get_ideaunit(insert_idea_id)
+            x_quarkunit = quarkunit_shop("agenda_ideaunit", quark_insert())
+            x_quarkunit.set_required_arg("idea_id", insert_ideaunit.idea_id)
             self.set_quarkunit(x_quarkunit)
             self.add_quarkunit_partylinks_inserts(
-                after_groupunit=insert_groupunit,
-                insert_partylink_party_ids=set(insert_groupunit._partys.keys()),
+                after_ideaunit=insert_ideaunit,
+                insert_partylink_party_ids=set(insert_ideaunit._partys.keys()),
             )
 
-    def add_quarkunit_groupunit_updates(
-        self, before_agenda: AgendaUnit, after_agenda: AgendaUnit, update_group_ids: set
+    def add_quarkunit_ideaunit_updates(
+        self, before_agenda: AgendaUnit, after_agenda: AgendaUnit, update_idea_ids: set
     ):
-        for group_id in update_group_ids:
-            after_groupunit = after_agenda.get_groupunit(group_id)
-            before_groupunit = before_agenda.get_groupunit(group_id)
+        for idea_id in update_idea_ids:
+            after_ideaunit = after_agenda.get_ideaunit(idea_id)
+            before_ideaunit = before_agenda.get_ideaunit(idea_id)
             if optional_args_different(
-                "agenda_groupunit", before_groupunit, after_groupunit
+                "agenda_ideaunit", before_ideaunit, after_ideaunit
             ):
-                x_quarkunit = quarkunit_shop("agenda_groupunit", quark_update())
-                x_quarkunit.set_required_arg("group_id", after_groupunit.group_id)
+                x_quarkunit = quarkunit_shop("agenda_ideaunit", quark_update())
+                x_quarkunit.set_required_arg("idea_id", after_ideaunit.idea_id)
                 self.set_quarkunit(x_quarkunit)
 
-            self.add_quarkunit_groupunit_update_partylinks(
-                after_groupunit=after_groupunit, before_groupunit=before_groupunit
+            self.add_quarkunit_ideaunit_update_partylinks(
+                after_ideaunit=after_ideaunit, before_ideaunit=before_ideaunit
             )
 
-    def add_quarkunit_groupunit_update_partylinks(
-        self, after_groupunit: GroupUnit, before_groupunit: GroupUnit
+    def add_quarkunit_ideaunit_update_partylinks(
+        self, after_ideaunit: IdeaUnit, before_ideaunit: IdeaUnit
     ):
-        after_party_ids = set(after_groupunit._partys.keys())
-        before_party_ids = set(before_groupunit._partys.keys())
+        after_party_ids = set(after_ideaunit._partys.keys())
+        before_party_ids = set(before_ideaunit._partys.keys())
 
         self.add_quarkunit_partylinks_inserts(
-            after_groupunit=after_groupunit,
+            after_ideaunit=after_ideaunit,
             insert_partylink_party_ids=after_party_ids.difference(before_party_ids),
         )
 
         self.add_quarkunit_partylinks_delete(
-            before_group_id=before_groupunit.group_id,
+            before_idea_id=before_ideaunit.idea_id,
             before_party_ids=before_party_ids.difference(after_party_ids),
         )
 
         update_party_ids = before_party_ids.intersection(after_party_ids)
         for update_party_id in update_party_ids:
-            before_partylink = before_groupunit.get_partylink(update_party_id)
-            after_partylink = after_groupunit.get_partylink(update_party_id)
+            before_partylink = before_ideaunit.get_partylink(update_party_id)
+            after_partylink = after_ideaunit.get_partylink(update_party_id)
             if optional_args_different(
-                "agenda_group_partylink", before_partylink, after_partylink
+                "agenda_idea_partylink", before_partylink, after_partylink
             ):
                 self.add_quarkunit_partylink_update(
-                    group_id=after_groupunit.group_id,
+                    idea_id=after_ideaunit.idea_id,
                     before_partylink=before_partylink,
                     after_partylink=after_partylink,
                 )
 
-    def add_quarkunit_groupunit_deletes(
-        self, before_agenda: AgendaUnit, delete_group_ids: set
+    def add_quarkunit_ideaunit_deletes(
+        self, before_agenda: AgendaUnit, delete_idea_ids: set
     ):
-        for delete_group_id in delete_group_ids:
-            x_quarkunit = quarkunit_shop("agenda_groupunit", quark_delete())
-            x_quarkunit.set_required_arg("group_id", delete_group_id)
+        for delete_idea_id in delete_idea_ids:
+            x_quarkunit = quarkunit_shop("agenda_ideaunit", quark_delete())
+            x_quarkunit.set_required_arg("idea_id", delete_idea_id)
             self.set_quarkunit(x_quarkunit)
 
-            delete_groupunit = before_agenda.get_groupunit(delete_group_id)
+            delete_ideaunit = before_agenda.get_ideaunit(delete_idea_id)
             self.add_quarkunit_partylinks_delete(
-                delete_group_id, set(delete_groupunit._partys.keys())
+                delete_idea_id, set(delete_ideaunit._partys.keys())
             )
 
     def add_quarkunit_partylinks_inserts(
         self,
-        after_groupunit: GroupUnit,
+        after_ideaunit: IdeaUnit,
         insert_partylink_party_ids: list[PartyID],
     ):
-        after_group_id = after_groupunit.group_id
+        after_idea_id = after_ideaunit.idea_id
         for insert_party_id in insert_partylink_party_ids:
-            after_partylink = after_groupunit.get_partylink(insert_party_id)
-            x_quarkunit = quarkunit_shop("agenda_group_partylink", quark_insert())
-            x_quarkunit.set_required_arg("group_id", after_group_id)
+            after_partylink = after_ideaunit.get_partylink(insert_party_id)
+            x_quarkunit = quarkunit_shop("agenda_idea_partylink", quark_insert())
+            x_quarkunit.set_required_arg("idea_id", after_idea_id)
             x_quarkunit.set_required_arg("party_id", after_partylink.party_id)
             if after_partylink.credor_weight != None:
                 x_quarkunit.set_optional_arg(
@@ -348,12 +348,12 @@ class NucUnit:
 
     def add_quarkunit_partylink_update(
         self,
-        group_id: GroupID,
+        idea_id: IdeaID,
         before_partylink: PartyLink,
         after_partylink: PartyLink,
     ):
-        x_quarkunit = quarkunit_shop("agenda_group_partylink", quark_update())
-        x_quarkunit.set_required_arg("group_id", group_id)
+        x_quarkunit = quarkunit_shop("agenda_idea_partylink", quark_update())
+        x_quarkunit.set_required_arg("idea_id", idea_id)
         x_quarkunit.set_required_arg("party_id", after_partylink.party_id)
         if after_partylink.credor_weight != before_partylink.credor_weight:
             x_quarkunit.set_optional_arg("credor_weight", after_partylink.credor_weight)
@@ -362,183 +362,183 @@ class NucUnit:
         self.set_quarkunit(x_quarkunit)
 
     def add_quarkunit_partylinks_delete(
-        self, before_group_id: GroupID, before_party_ids: PartyID
+        self, before_idea_id: IdeaID, before_party_ids: PartyID
     ):
         for delete_party_id in before_party_ids:
-            x_quarkunit = quarkunit_shop("agenda_group_partylink", quark_delete())
-            x_quarkunit.set_required_arg("group_id", before_group_id)
+            x_quarkunit = quarkunit_shop("agenda_idea_partylink", quark_delete())
+            x_quarkunit.set_required_arg("idea_id", before_idea_id)
             x_quarkunit.set_required_arg("party_id", delete_party_id)
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunits_ideas(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
-        before_idea_roads = set(before_agenda._idea_dict.keys())
-        after_idea_roads = set(after_agenda._idea_dict.keys())
+    def add_quarkunits_oaths(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
+        before_oath_roads = set(before_agenda._oath_dict.keys())
+        after_oath_roads = set(after_agenda._oath_dict.keys())
 
-        self.add_quarkunit_idea_inserts(
+        self.add_quarkunit_oath_inserts(
             after_agenda=after_agenda,
-            insert_idea_roads=after_idea_roads.difference(before_idea_roads),
+            insert_oath_roads=after_oath_roads.difference(before_oath_roads),
         )
-        self.add_quarkunit_idea_deletes(
+        self.add_quarkunit_oath_deletes(
             before_agenda=before_agenda,
-            delete_idea_roads=before_idea_roads.difference(after_idea_roads),
+            delete_oath_roads=before_oath_roads.difference(after_oath_roads),
         )
-        self.add_quarkunit_idea_updates(
+        self.add_quarkunit_oath_updates(
             before_agenda=before_agenda,
             after_agenda=after_agenda,
-            update_roads=before_idea_roads.intersection(after_idea_roads),
+            update_roads=before_oath_roads.intersection(after_oath_roads),
         )
 
-    def add_quarkunit_idea_inserts(
-        self, after_agenda: AgendaUnit, insert_idea_roads: set
+    def add_quarkunit_oath_inserts(
+        self, after_agenda: AgendaUnit, insert_oath_roads: set
     ):
-        for insert_idea_road in insert_idea_roads:
-            insert_ideaunit = after_agenda.get_idea_obj(insert_idea_road)
-            x_quarkunit = quarkunit_shop("agenda_ideaunit", quark_insert())
-            x_quarkunit.set_required_arg("parent_road", insert_ideaunit._parent_road)
-            x_quarkunit.set_required_arg("label", insert_ideaunit._label)
-            x_quarkunit.set_optional_arg("_addin", insert_ideaunit._addin)
-            x_quarkunit.set_optional_arg("_begin", insert_ideaunit._begin)
-            x_quarkunit.set_optional_arg("_close", insert_ideaunit._close)
-            x_quarkunit.set_optional_arg("_denom", insert_ideaunit._denom)
+        for insert_oath_road in insert_oath_roads:
+            insert_oathunit = after_agenda.get_oath_obj(insert_oath_road)
+            x_quarkunit = quarkunit_shop("agenda_oathunit", quark_insert())
+            x_quarkunit.set_required_arg("parent_road", insert_oathunit._parent_road)
+            x_quarkunit.set_required_arg("label", insert_oathunit._label)
+            x_quarkunit.set_optional_arg("_addin", insert_oathunit._addin)
+            x_quarkunit.set_optional_arg("_begin", insert_oathunit._begin)
+            x_quarkunit.set_optional_arg("_close", insert_oathunit._close)
+            x_quarkunit.set_optional_arg("_denom", insert_oathunit._denom)
             x_quarkunit.set_optional_arg(
-                "_meld_strategy", insert_ideaunit._meld_strategy
+                "_meld_strategy", insert_oathunit._meld_strategy
             )
-            x_quarkunit.set_optional_arg("_numeric_road", insert_ideaunit._numeric_road)
-            x_quarkunit.set_optional_arg("_numor", insert_ideaunit._numor)
+            x_quarkunit.set_optional_arg("_numeric_road", insert_oathunit._numeric_road)
+            x_quarkunit.set_optional_arg("_numor", insert_oathunit._numor)
             x_quarkunit.set_optional_arg(
-                "_range_source_road", insert_ideaunit._range_source_road
+                "_range_source_road", insert_oathunit._range_source_road
             )
-            x_quarkunit.set_optional_arg("_reest", insert_ideaunit._reest)
-            x_quarkunit.set_optional_arg("_weight", insert_ideaunit._weight)
-            x_quarkunit.set_optional_arg("pledge", insert_ideaunit.pledge)
+            x_quarkunit.set_optional_arg("_reest", insert_oathunit._reest)
+            x_quarkunit.set_optional_arg("_weight", insert_oathunit._weight)
+            x_quarkunit.set_optional_arg("pledge", insert_oathunit.pledge)
             self.set_quarkunit(x_quarkunit)
 
-            self.add_quarkunit_idea_beliefunit_inserts(
-                ideaunit=insert_ideaunit,
-                insert_beliefunit_bases=set(insert_ideaunit._beliefunits.keys()),
+            self.add_quarkunit_oath_beliefunit_inserts(
+                oathunit=insert_oathunit,
+                insert_beliefunit_bases=set(insert_oathunit._beliefunits.keys()),
             )
-            self.add_quarkunit_idea_balancelink_inserts(
-                after_ideaunit=insert_ideaunit,
-                insert_balancelink_group_ids=set(insert_ideaunit._balancelinks.keys()),
+            self.add_quarkunit_oath_balancelink_inserts(
+                after_oathunit=insert_oathunit,
+                insert_balancelink_idea_ids=set(insert_oathunit._balancelinks.keys()),
             )
-            self.add_quarkunit_idea_reasonunit_inserts(
-                after_ideaunit=insert_ideaunit,
-                insert_reasonunit_bases=set(insert_ideaunit._reasonunits.keys()),
+            self.add_quarkunit_oath_reasonunit_inserts(
+                after_oathunit=insert_oathunit,
+                insert_reasonunit_bases=set(insert_oathunit._reasonunits.keys()),
             )
-            self.add_quarkunit_idea_suffgroup_insert(
-                idea_road=insert_idea_road,
-                insert_suffgroup_group_ids=insert_ideaunit._assignedunit._suffgroups.keys(),
+            self.add_quarkunit_oath_suffidea_insert(
+                oath_road=insert_oath_road,
+                insert_suffidea_idea_ids=insert_oathunit._assignedunit._suffideas.keys(),
             )
 
-    def add_quarkunit_idea_updates(
+    def add_quarkunit_oath_updates(
         self, before_agenda: AgendaUnit, after_agenda: AgendaUnit, update_roads: set
     ):
-        for idea_road in update_roads:
-            after_ideaunit = after_agenda.get_idea_obj(idea_road)
-            before_ideaunit = before_agenda.get_idea_obj(idea_road)
+        for oath_road in update_roads:
+            after_oathunit = after_agenda.get_oath_obj(oath_road)
+            before_oathunit = before_agenda.get_oath_obj(oath_road)
             if optional_args_different(
-                "agenda_ideaunit", before_ideaunit, after_ideaunit
+                "agenda_oathunit", before_oathunit, after_oathunit
             ):
-                x_quarkunit = quarkunit_shop("agenda_ideaunit", quark_update())
-                x_quarkunit.set_required_arg("parent_road", after_ideaunit._parent_road)
-                x_quarkunit.set_required_arg("label", after_ideaunit._label)
-                if before_ideaunit._addin != after_ideaunit._addin:
-                    x_quarkunit.set_optional_arg("_addin", after_ideaunit._addin)
-                if before_ideaunit._begin != after_ideaunit._begin:
-                    x_quarkunit.set_optional_arg("_begin", after_ideaunit._begin)
-                if before_ideaunit._close != after_ideaunit._close:
-                    x_quarkunit.set_optional_arg("_close", after_ideaunit._close)
-                if before_ideaunit._denom != after_ideaunit._denom:
-                    x_quarkunit.set_optional_arg("_denom", after_ideaunit._denom)
-                if before_ideaunit._meld_strategy != after_ideaunit._meld_strategy:
+                x_quarkunit = quarkunit_shop("agenda_oathunit", quark_update())
+                x_quarkunit.set_required_arg("parent_road", after_oathunit._parent_road)
+                x_quarkunit.set_required_arg("label", after_oathunit._label)
+                if before_oathunit._addin != after_oathunit._addin:
+                    x_quarkunit.set_optional_arg("_addin", after_oathunit._addin)
+                if before_oathunit._begin != after_oathunit._begin:
+                    x_quarkunit.set_optional_arg("_begin", after_oathunit._begin)
+                if before_oathunit._close != after_oathunit._close:
+                    x_quarkunit.set_optional_arg("_close", after_oathunit._close)
+                if before_oathunit._denom != after_oathunit._denom:
+                    x_quarkunit.set_optional_arg("_denom", after_oathunit._denom)
+                if before_oathunit._meld_strategy != after_oathunit._meld_strategy:
                     x_quarkunit.set_optional_arg(
-                        "_meld_strategy", after_ideaunit._meld_strategy
+                        "_meld_strategy", after_oathunit._meld_strategy
                     )
-                if before_ideaunit._numeric_road != after_ideaunit._numeric_road:
+                if before_oathunit._numeric_road != after_oathunit._numeric_road:
                     x_quarkunit.set_optional_arg(
-                        "_numeric_road", after_ideaunit._numeric_road
+                        "_numeric_road", after_oathunit._numeric_road
                     )
-                if before_ideaunit._numor != after_ideaunit._numor:
-                    x_quarkunit.set_optional_arg("_numor", after_ideaunit._numor)
+                if before_oathunit._numor != after_oathunit._numor:
+                    x_quarkunit.set_optional_arg("_numor", after_oathunit._numor)
                 if (
-                    before_ideaunit._range_source_road
-                    != after_ideaunit._range_source_road
+                    before_oathunit._range_source_road
+                    != after_oathunit._range_source_road
                 ):
                     x_quarkunit.set_optional_arg(
-                        "_range_source_road", after_ideaunit._range_source_road
+                        "_range_source_road", after_oathunit._range_source_road
                     )
-                if before_ideaunit._reest != after_ideaunit._reest:
-                    x_quarkunit.set_optional_arg("_reest", after_ideaunit._reest)
-                if before_ideaunit._weight != after_ideaunit._weight:
-                    x_quarkunit.set_optional_arg("_weight", after_ideaunit._weight)
-                if before_ideaunit.pledge != after_ideaunit.pledge:
-                    x_quarkunit.set_optional_arg("pledge", after_ideaunit.pledge)
+                if before_oathunit._reest != after_oathunit._reest:
+                    x_quarkunit.set_optional_arg("_reest", after_oathunit._reest)
+                if before_oathunit._weight != after_oathunit._weight:
+                    x_quarkunit.set_optional_arg("_weight", after_oathunit._weight)
+                if before_oathunit.pledge != after_oathunit.pledge:
+                    x_quarkunit.set_optional_arg("pledge", after_oathunit.pledge)
                 self.set_quarkunit(x_quarkunit)
 
             # insert / update / delete beliefunits
-            before_beliefunit_bases = set(before_ideaunit._beliefunits.keys())
-            after_beliefunit_bases = set(after_ideaunit._beliefunits.keys())
-            self.add_quarkunit_idea_beliefunit_inserts(
-                ideaunit=after_ideaunit,
+            before_beliefunit_bases = set(before_oathunit._beliefunits.keys())
+            after_beliefunit_bases = set(after_oathunit._beliefunits.keys())
+            self.add_quarkunit_oath_beliefunit_inserts(
+                oathunit=after_oathunit,
                 insert_beliefunit_bases=after_beliefunit_bases.difference(
                     before_beliefunit_bases
                 ),
             )
-            self.add_quarkunit_idea_beliefunit_updates(
-                before_ideaunit=before_ideaunit,
-                after_ideaunit=after_ideaunit,
+            self.add_quarkunit_oath_beliefunit_updates(
+                before_oathunit=before_oathunit,
+                after_oathunit=after_oathunit,
                 update_beliefunit_bases=before_beliefunit_bases.intersection(
                     after_beliefunit_bases
                 ),
             )
-            self.add_quarkunit_idea_beliefunit_deletes(
-                idea_road=idea_road,
+            self.add_quarkunit_oath_beliefunit_deletes(
+                oath_road=oath_road,
                 delete_beliefunit_bases=before_beliefunit_bases.difference(
                     after_beliefunit_bases
                 ),
             )
 
             # insert / update / delete balanceunits
-            before_balancelinks_group_ids = set(before_ideaunit._balancelinks.keys())
-            after_balancelinks_group_ids = set(after_ideaunit._balancelinks.keys())
-            self.add_quarkunit_idea_balancelink_inserts(
-                after_ideaunit=after_ideaunit,
-                insert_balancelink_group_ids=after_balancelinks_group_ids.difference(
-                    before_balancelinks_group_ids
+            before_balancelinks_idea_ids = set(before_oathunit._balancelinks.keys())
+            after_balancelinks_idea_ids = set(after_oathunit._balancelinks.keys())
+            self.add_quarkunit_oath_balancelink_inserts(
+                after_oathunit=after_oathunit,
+                insert_balancelink_idea_ids=after_balancelinks_idea_ids.difference(
+                    before_balancelinks_idea_ids
                 ),
             )
-            self.add_quarkunit_idea_balancelink_updates(
-                before_ideaunit=before_ideaunit,
-                after_ideaunit=after_ideaunit,
-                update_balancelink_group_ids=before_balancelinks_group_ids.intersection(
-                    after_balancelinks_group_ids
+            self.add_quarkunit_oath_balancelink_updates(
+                before_oathunit=before_oathunit,
+                after_oathunit=after_oathunit,
+                update_balancelink_idea_ids=before_balancelinks_idea_ids.intersection(
+                    after_balancelinks_idea_ids
                 ),
             )
-            self.add_quarkunit_idea_balancelink_deletes(
-                idea_road=idea_road,
-                delete_balancelink_group_ids=before_balancelinks_group_ids.difference(
-                    after_balancelinks_group_ids
+            self.add_quarkunit_oath_balancelink_deletes(
+                oath_road=oath_road,
+                delete_balancelink_idea_ids=before_balancelinks_idea_ids.difference(
+                    after_balancelinks_idea_ids
                 ),
             )
 
             # insert / update / delete reasonunits
-            before_reasonunit_bases = set(before_ideaunit._reasonunits.keys())
-            after_reasonunit_bases = set(after_ideaunit._reasonunits.keys())
-            self.add_quarkunit_idea_reasonunit_inserts(
-                after_ideaunit=after_ideaunit,
+            before_reasonunit_bases = set(before_oathunit._reasonunits.keys())
+            after_reasonunit_bases = set(after_oathunit._reasonunits.keys())
+            self.add_quarkunit_oath_reasonunit_inserts(
+                after_oathunit=after_oathunit,
                 insert_reasonunit_bases=after_reasonunit_bases.difference(
                     before_reasonunit_bases
                 ),
             )
-            self.add_quarkunit_idea_reasonunit_updates(
-                before_ideaunit=before_ideaunit,
-                after_ideaunit=after_ideaunit,
+            self.add_quarkunit_oath_reasonunit_updates(
+                before_oathunit=before_oathunit,
+                after_oathunit=after_oathunit,
                 update_reasonunit_bases=before_reasonunit_bases.intersection(
                     after_reasonunit_bases
                 ),
             )
-            self.add_quarkunit_idea_reasonunit_deletes(
-                before_ideaunit=before_ideaunit,
+            self.add_quarkunit_oath_reasonunit_deletes(
+                before_oathunit=before_oathunit,
                 delete_reasonunit_bases=before_reasonunit_bases.difference(
                     after_reasonunit_bases
                 ),
@@ -548,156 +548,156 @@ class NucUnit:
             # update reasonunits_permises update_premise
             # update reasonunits_permises delete_premise
 
-            # insert / update / delete suffgroups
-            before_suffgroups_group_ids = set(
-                before_ideaunit._assignedunit._suffgroups.keys()
+            # insert / update / delete suffideas
+            before_suffideas_idea_ids = set(
+                before_oathunit._assignedunit._suffideas.keys()
             )
-            after_suffgroups_group_ids = set(
-                after_ideaunit._assignedunit._suffgroups.keys()
+            after_suffideas_idea_ids = set(
+                after_oathunit._assignedunit._suffideas.keys()
             )
-            self.add_quarkunit_idea_suffgroup_insert(
-                idea_road=idea_road,
-                insert_suffgroup_group_ids=after_suffgroups_group_ids.difference(
-                    before_suffgroups_group_ids
+            self.add_quarkunit_oath_suffidea_insert(
+                oath_road=oath_road,
+                insert_suffidea_idea_ids=after_suffideas_idea_ids.difference(
+                    before_suffideas_idea_ids
                 ),
             )
-            self.add_quarkunit_idea_suffgroup_deletes(
-                idea_road=idea_road,
-                delete_suffgroup_group_ids=before_suffgroups_group_ids.difference(
-                    after_suffgroups_group_ids
+            self.add_quarkunit_oath_suffidea_deletes(
+                oath_road=oath_road,
+                delete_suffidea_idea_ids=before_suffideas_idea_ids.difference(
+                    after_suffideas_idea_ids
                 ),
             )
 
-    def add_quarkunit_idea_deletes(
-        self, before_agenda: AgendaUnit, delete_idea_roads: set
+    def add_quarkunit_oath_deletes(
+        self, before_agenda: AgendaUnit, delete_oath_roads: set
     ):
-        for delete_idea_road in delete_idea_roads:
+        for delete_oath_road in delete_oath_roads:
             x_parent_road = get_parent_road(
-                delete_idea_road, before_agenda._road_delimiter
+                delete_oath_road, before_agenda._road_delimiter
             )
-            x_label = get_terminus_node(delete_idea_road, before_agenda._road_delimiter)
-            x_quarkunit = quarkunit_shop("agenda_ideaunit", quark_delete())
+            x_label = get_terminus_node(delete_oath_road, before_agenda._road_delimiter)
+            x_quarkunit = quarkunit_shop("agenda_oathunit", quark_delete())
             x_quarkunit.set_required_arg("parent_road", x_parent_road)
             x_quarkunit.set_required_arg("label", x_label)
             self.set_quarkunit(x_quarkunit)
 
-            delete_ideaunit = before_agenda.get_idea_obj(delete_idea_road)
-            self.add_quarkunit_idea_beliefunit_deletes(
-                idea_road=delete_idea_road,
-                delete_beliefunit_bases=set(delete_ideaunit._beliefunits.keys()),
+            delete_oathunit = before_agenda.get_oath_obj(delete_oath_road)
+            self.add_quarkunit_oath_beliefunit_deletes(
+                oath_road=delete_oath_road,
+                delete_beliefunit_bases=set(delete_oathunit._beliefunits.keys()),
             )
-            self.add_quarkunit_idea_balancelink_deletes(
-                idea_road=delete_idea_road,
-                delete_balancelink_group_ids=set(delete_ideaunit._balancelinks.keys()),
+            self.add_quarkunit_oath_balancelink_deletes(
+                oath_road=delete_oath_road,
+                delete_balancelink_idea_ids=set(delete_oathunit._balancelinks.keys()),
             )
-            self.add_quarkunit_idea_reasonunit_deletes(
-                before_ideaunit=delete_ideaunit,
-                delete_reasonunit_bases=set(delete_ideaunit._reasonunits.keys()),
+            self.add_quarkunit_oath_reasonunit_deletes(
+                before_oathunit=delete_oathunit,
+                delete_reasonunit_bases=set(delete_oathunit._reasonunits.keys()),
             )
-            self.add_quarkunit_idea_suffgroup_deletes(
-                idea_road=delete_idea_road,
-                delete_suffgroup_group_ids=set(
-                    delete_ideaunit._assignedunit._suffgroups.keys()
+            self.add_quarkunit_oath_suffidea_deletes(
+                oath_road=delete_oath_road,
+                delete_suffidea_idea_ids=set(
+                    delete_oathunit._assignedunit._suffideas.keys()
                 ),
             )
 
-    def add_quarkunit_idea_reasonunit_inserts(
-        self, after_ideaunit: IdeaUnit, insert_reasonunit_bases: set
+    def add_quarkunit_oath_reasonunit_inserts(
+        self, after_oathunit: OathUnit, insert_reasonunit_bases: set
     ):
         for insert_reasonunit_base in insert_reasonunit_bases:
-            after_reasonunit = after_ideaunit.get_reasonunit(insert_reasonunit_base)
-            x_quarkunit = quarkunit_shop("agenda_idea_reasonunit", quark_insert())
-            x_quarkunit.set_required_arg("road", after_ideaunit.get_road())
+            after_reasonunit = after_oathunit.get_reasonunit(insert_reasonunit_base)
+            x_quarkunit = quarkunit_shop("agenda_oath_reasonunit", quark_insert())
+            x_quarkunit.set_required_arg("road", after_oathunit.get_road())
             x_quarkunit.set_required_arg("base", after_reasonunit.base)
-            if after_reasonunit.suff_idea_active != None:
+            if after_reasonunit.suff_oath_active != None:
                 x_quarkunit.set_optional_arg(
-                    "suff_idea_active", after_reasonunit.suff_idea_active
+                    "suff_oath_active", after_reasonunit.suff_oath_active
                 )
             self.set_quarkunit(x_quarkunit)
 
-            self.add_quarkunit_idea_reason_premiseunit_inserts(
-                idea_road=after_ideaunit.get_road(),
+            self.add_quarkunit_oath_reason_premiseunit_inserts(
+                oath_road=after_oathunit.get_road(),
                 after_reasonunit=after_reasonunit,
                 insert_premise_needs=set(after_reasonunit.premises.keys()),
             )
 
-    def add_quarkunit_idea_reasonunit_updates(
+    def add_quarkunit_oath_reasonunit_updates(
         self,
-        before_ideaunit: IdeaUnit,
-        after_ideaunit: IdeaUnit,
+        before_oathunit: OathUnit,
+        after_oathunit: OathUnit,
         update_reasonunit_bases: set,
     ):
         for update_reasonunit_base in update_reasonunit_bases:
-            before_reasonunit = before_ideaunit.get_reasonunit(update_reasonunit_base)
-            after_reasonunit = after_ideaunit.get_reasonunit(update_reasonunit_base)
+            before_reasonunit = before_oathunit.get_reasonunit(update_reasonunit_base)
+            after_reasonunit = after_oathunit.get_reasonunit(update_reasonunit_base)
             if optional_args_different(
-                "agenda_idea_reasonunit", before_reasonunit, after_reasonunit
+                "agenda_oath_reasonunit", before_reasonunit, after_reasonunit
             ):
-                x_quarkunit = quarkunit_shop("agenda_idea_reasonunit", quark_update())
-                x_quarkunit.set_required_arg("road", before_ideaunit.get_road())
+                x_quarkunit = quarkunit_shop("agenda_oath_reasonunit", quark_update())
+                x_quarkunit.set_required_arg("road", before_oathunit.get_road())
                 x_quarkunit.set_required_arg("base", after_reasonunit.base)
                 if (
-                    before_reasonunit.suff_idea_active
-                    != after_reasonunit.suff_idea_active
+                    before_reasonunit.suff_oath_active
+                    != after_reasonunit.suff_oath_active
                 ):
                     x_quarkunit.set_optional_arg(
-                        "suff_idea_active", after_reasonunit.suff_idea_active
+                        "suff_oath_active", after_reasonunit.suff_oath_active
                     )
                 self.set_quarkunit(x_quarkunit)
 
             before_premise_needs = set(before_reasonunit.premises.keys())
             after_premise_needs = set(after_reasonunit.premises.keys())
-            self.add_quarkunit_idea_reason_premiseunit_inserts(
-                idea_road=before_ideaunit.get_road(),
+            self.add_quarkunit_oath_reason_premiseunit_inserts(
+                oath_road=before_oathunit.get_road(),
                 after_reasonunit=after_reasonunit,
                 insert_premise_needs=after_premise_needs.difference(
                     before_premise_needs
                 ),
             )
-            self.add_quarkunit_idea_reason_premiseunit_updates(
-                idea_road=before_ideaunit.get_road(),
+            self.add_quarkunit_oath_reason_premiseunit_updates(
+                oath_road=before_oathunit.get_road(),
                 before_reasonunit=before_reasonunit,
                 after_reasonunit=after_reasonunit,
                 update_premise_needs=after_premise_needs.intersection(
                     before_premise_needs
                 ),
             )
-            self.add_quarkunit_idea_reason_premiseunit_deletes(
-                idea_road=before_ideaunit.get_road(),
+            self.add_quarkunit_oath_reason_premiseunit_deletes(
+                oath_road=before_oathunit.get_road(),
                 reasonunit_base=update_reasonunit_base,
                 delete_premise_needs=before_premise_needs.difference(
                     after_premise_needs
                 ),
             )
 
-    def add_quarkunit_idea_reasonunit_deletes(
-        self, before_ideaunit: IdeaUnit, delete_reasonunit_bases: set
+    def add_quarkunit_oath_reasonunit_deletes(
+        self, before_oathunit: OathUnit, delete_reasonunit_bases: set
     ):
         for delete_reasonunit_base in delete_reasonunit_bases:
-            x_quarkunit = quarkunit_shop("agenda_idea_reasonunit", quark_delete())
-            x_quarkunit.set_required_arg("road", before_ideaunit.get_road())
+            x_quarkunit = quarkunit_shop("agenda_oath_reasonunit", quark_delete())
+            x_quarkunit.set_required_arg("road", before_oathunit.get_road())
             x_quarkunit.set_required_arg("base", delete_reasonunit_base)
             self.set_quarkunit(x_quarkunit)
 
-            before_reasonunit = before_ideaunit.get_reasonunit(delete_reasonunit_base)
-            self.add_quarkunit_idea_reason_premiseunit_deletes(
-                idea_road=before_ideaunit.get_road(),
+            before_reasonunit = before_oathunit.get_reasonunit(delete_reasonunit_base)
+            self.add_quarkunit_oath_reason_premiseunit_deletes(
+                oath_road=before_oathunit.get_road(),
                 reasonunit_base=delete_reasonunit_base,
                 delete_premise_needs=set(before_reasonunit.premises.keys()),
             )
 
-    def add_quarkunit_idea_reason_premiseunit_inserts(
+    def add_quarkunit_oath_reason_premiseunit_inserts(
         self,
-        idea_road: RoadUnit,
+        oath_road: RoadUnit,
         after_reasonunit: ReasonUnit,
         insert_premise_needs: set,
     ):
         for insert_premise_need in insert_premise_needs:
             after_premiseunit = after_reasonunit.get_premise(insert_premise_need)
             x_quarkunit = quarkunit_shop(
-                "agenda_idea_reason_premiseunit", quark_insert()
+                "agenda_oath_reason_premiseunit", quark_insert()
             )
-            x_quarkunit.set_required_arg("road", idea_road)
+            x_quarkunit.set_required_arg("road", oath_road)
             x_quarkunit.set_required_arg("base", after_reasonunit.base)
             x_quarkunit.set_required_arg("need", after_premiseunit.need)
             if after_premiseunit.open != None:
@@ -708,9 +708,9 @@ class NucUnit:
                 x_quarkunit.set_optional_arg("divisor", after_premiseunit.divisor)
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_idea_reason_premiseunit_updates(
+    def add_quarkunit_oath_reason_premiseunit_updates(
         self,
-        idea_road: RoadUnit,
+        oath_road: RoadUnit,
         before_reasonunit: ReasonUnit,
         after_reasonunit: ReasonUnit,
         update_premise_needs: set,
@@ -719,12 +719,12 @@ class NucUnit:
             before_premiseunit = before_reasonunit.get_premise(update_premise_need)
             after_premiseunit = after_reasonunit.get_premise(update_premise_need)
             if optional_args_different(
-                "agenda_idea_reason_premiseunit", before_premiseunit, after_premiseunit
+                "agenda_oath_reason_premiseunit", before_premiseunit, after_premiseunit
             ):
                 x_quarkunit = quarkunit_shop(
-                    "agenda_idea_reason_premiseunit", quark_update()
+                    "agenda_oath_reason_premiseunit", quark_update()
                 )
-                x_quarkunit.set_required_arg("road", idea_road)
+                x_quarkunit.set_required_arg("road", oath_road)
                 x_quarkunit.set_required_arg("base", before_reasonunit.base)
                 x_quarkunit.set_required_arg("need", after_premiseunit.need)
                 if after_premiseunit.open != before_premiseunit.open:
@@ -735,49 +735,49 @@ class NucUnit:
                     x_quarkunit.set_optional_arg("divisor", after_premiseunit.divisor)
                 self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_idea_reason_premiseunit_deletes(
+    def add_quarkunit_oath_reason_premiseunit_deletes(
         self,
-        idea_road: RoadUnit,
+        oath_road: RoadUnit,
         reasonunit_base: RoadUnit,
         delete_premise_needs: set,
     ):
         for delete_premise_need in delete_premise_needs:
             x_quarkunit = quarkunit_shop(
-                "agenda_idea_reason_premiseunit", quark_delete()
+                "agenda_oath_reason_premiseunit", quark_delete()
             )
-            x_quarkunit.set_required_arg("road", idea_road)
+            x_quarkunit.set_required_arg("road", oath_road)
             x_quarkunit.set_required_arg("base", reasonunit_base)
             x_quarkunit.set_required_arg("need", delete_premise_need)
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_idea_suffgroup_insert(
-        self, idea_road: RoadUnit, insert_suffgroup_group_ids: set
+    def add_quarkunit_oath_suffidea_insert(
+        self, oath_road: RoadUnit, insert_suffidea_idea_ids: set
     ):
-        for insert_suffgroup_group_id in insert_suffgroup_group_ids:
-            x_quarkunit = quarkunit_shop("agenda_idea_suffgroup", quark_insert())
-            x_quarkunit.set_required_arg("road", idea_road)
-            x_quarkunit.set_required_arg("group_id", insert_suffgroup_group_id)
+        for insert_suffidea_idea_id in insert_suffidea_idea_ids:
+            x_quarkunit = quarkunit_shop("agenda_oath_suffidea", quark_insert())
+            x_quarkunit.set_required_arg("road", oath_road)
+            x_quarkunit.set_required_arg("idea_id", insert_suffidea_idea_id)
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_idea_suffgroup_deletes(
-        self, idea_road: RoadUnit, delete_suffgroup_group_ids: set
+    def add_quarkunit_oath_suffidea_deletes(
+        self, oath_road: RoadUnit, delete_suffidea_idea_ids: set
     ):
-        for delete_suffgroup_group_id in delete_suffgroup_group_ids:
-            x_quarkunit = quarkunit_shop("agenda_idea_suffgroup", quark_delete())
-            x_quarkunit.set_required_arg("road", idea_road)
-            x_quarkunit.set_required_arg("group_id", delete_suffgroup_group_id)
+        for delete_suffidea_idea_id in delete_suffidea_idea_ids:
+            x_quarkunit = quarkunit_shop("agenda_oath_suffidea", quark_delete())
+            x_quarkunit.set_required_arg("road", oath_road)
+            x_quarkunit.set_required_arg("idea_id", delete_suffidea_idea_id)
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_idea_balancelink_inserts(
-        self, after_ideaunit: IdeaUnit, insert_balancelink_group_ids: set
+    def add_quarkunit_oath_balancelink_inserts(
+        self, after_oathunit: OathUnit, insert_balancelink_idea_ids: set
     ):
-        for after_balancelink_group_id in insert_balancelink_group_ids:
-            after_balancelink = after_ideaunit._balancelinks.get(
-                after_balancelink_group_id
+        for after_balancelink_idea_id in insert_balancelink_idea_ids:
+            after_balancelink = after_oathunit._balancelinks.get(
+                after_balancelink_idea_id
             )
-            x_quarkunit = quarkunit_shop("agenda_idea_balancelink", quark_insert())
-            x_quarkunit.set_required_arg("road", after_ideaunit.get_road())
-            x_quarkunit.set_required_arg("group_id", after_balancelink.group_id)
+            x_quarkunit = quarkunit_shop("agenda_oath_balancelink", quark_insert())
+            x_quarkunit.set_required_arg("road", after_oathunit.get_road())
+            x_quarkunit.set_required_arg("idea_id", after_balancelink.idea_id)
             x_quarkunit.set_optional_arg(
                 "credor_weight", after_balancelink.credor_weight
             )
@@ -786,25 +786,25 @@ class NucUnit:
             )
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_idea_balancelink_updates(
+    def add_quarkunit_oath_balancelink_updates(
         self,
-        before_ideaunit: IdeaUnit,
-        after_ideaunit: IdeaUnit,
-        update_balancelink_group_ids: set,
+        before_oathunit: OathUnit,
+        after_oathunit: OathUnit,
+        update_balancelink_idea_ids: set,
     ):
-        for update_balancelink_group_id in update_balancelink_group_ids:
-            before_balancelink = before_ideaunit._balancelinks.get(
-                update_balancelink_group_id
+        for update_balancelink_idea_id in update_balancelink_idea_ids:
+            before_balancelink = before_oathunit._balancelinks.get(
+                update_balancelink_idea_id
             )
-            after_balancelink = after_ideaunit._balancelinks.get(
-                update_balancelink_group_id
+            after_balancelink = after_oathunit._balancelinks.get(
+                update_balancelink_idea_id
             )
             if optional_args_different(
-                "agenda_idea_balancelink", before_balancelink, after_balancelink
+                "agenda_oath_balancelink", before_balancelink, after_balancelink
             ):
-                x_quarkunit = quarkunit_shop("agenda_idea_balancelink", quark_update())
-                x_quarkunit.set_required_arg("road", before_ideaunit.get_road())
-                x_quarkunit.set_required_arg("group_id", after_balancelink.group_id)
+                x_quarkunit = quarkunit_shop("agenda_oath_balancelink", quark_update())
+                x_quarkunit.set_required_arg("road", before_oathunit.get_road())
+                x_quarkunit.set_required_arg("idea_id", after_balancelink.idea_id)
                 if before_balancelink.credor_weight != after_balancelink.credor_weight:
                     x_quarkunit.set_optional_arg(
                         "credor_weight", after_balancelink.credor_weight
@@ -815,22 +815,22 @@ class NucUnit:
                     )
                 self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_idea_balancelink_deletes(
-        self, idea_road: RoadUnit, delete_balancelink_group_ids: set
+    def add_quarkunit_oath_balancelink_deletes(
+        self, oath_road: RoadUnit, delete_balancelink_idea_ids: set
     ):
-        for delete_balancelink_group_id in delete_balancelink_group_ids:
-            x_quarkunit = quarkunit_shop("agenda_idea_balancelink", quark_delete())
-            x_quarkunit.set_required_arg("road", idea_road)
-            x_quarkunit.set_required_arg("group_id", delete_balancelink_group_id)
+        for delete_balancelink_idea_id in delete_balancelink_idea_ids:
+            x_quarkunit = quarkunit_shop("agenda_oath_balancelink", quark_delete())
+            x_quarkunit.set_required_arg("road", oath_road)
+            x_quarkunit.set_required_arg("idea_id", delete_balancelink_idea_id)
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_idea_beliefunit_inserts(
-        self, ideaunit: IdeaUnit, insert_beliefunit_bases: set
+    def add_quarkunit_oath_beliefunit_inserts(
+        self, oathunit: OathUnit, insert_beliefunit_bases: set
     ):
         for insert_beliefunit_base in insert_beliefunit_bases:
-            insert_beliefunit = ideaunit._beliefunits.get(insert_beliefunit_base)
-            x_quarkunit = quarkunit_shop("agenda_idea_beliefunit", quark_insert())
-            x_quarkunit.set_required_arg("road", ideaunit.get_road())
+            insert_beliefunit = oathunit._beliefunits.get(insert_beliefunit_base)
+            x_quarkunit = quarkunit_shop("agenda_oath_beliefunit", quark_insert())
+            x_quarkunit.set_required_arg("road", oathunit.get_road())
             x_quarkunit.set_required_arg("base", insert_beliefunit.base)
             if insert_beliefunit.pick != None:
                 x_quarkunit.set_optional_arg("pick", insert_beliefunit.pick)
@@ -840,20 +840,20 @@ class NucUnit:
                 x_quarkunit.set_optional_arg("nigh", insert_beliefunit.nigh)
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_idea_beliefunit_updates(
+    def add_quarkunit_oath_beliefunit_updates(
         self,
-        before_ideaunit: IdeaUnit,
-        after_ideaunit: IdeaUnit,
+        before_oathunit: OathUnit,
+        after_oathunit: OathUnit,
         update_beliefunit_bases: set,
     ):
         for update_beliefunit_base in update_beliefunit_bases:
-            before_beliefunit = before_ideaunit._beliefunits.get(update_beliefunit_base)
-            after_beliefunit = after_ideaunit._beliefunits.get(update_beliefunit_base)
+            before_beliefunit = before_oathunit._beliefunits.get(update_beliefunit_base)
+            after_beliefunit = after_oathunit._beliefunits.get(update_beliefunit_base)
             if optional_args_different(
-                "agenda_idea_beliefunit", before_beliefunit, after_beliefunit
+                "agenda_oath_beliefunit", before_beliefunit, after_beliefunit
             ):
-                x_quarkunit = quarkunit_shop("agenda_idea_beliefunit", quark_update())
-                x_quarkunit.set_required_arg("road", before_ideaunit.get_road())
+                x_quarkunit = quarkunit_shop("agenda_oath_beliefunit", quark_update())
+                x_quarkunit.set_required_arg("road", before_oathunit.get_road())
                 x_quarkunit.set_required_arg("base", after_beliefunit.base)
                 if before_beliefunit.pick != after_beliefunit.pick:
                     x_quarkunit.set_optional_arg("pick", after_beliefunit.pick)
@@ -863,12 +863,12 @@ class NucUnit:
                     x_quarkunit.set_optional_arg("nigh", after_beliefunit.nigh)
                 self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_idea_beliefunit_deletes(
-        self, idea_road: RoadUnit, delete_beliefunit_bases: BeliefUnit
+    def add_quarkunit_oath_beliefunit_deletes(
+        self, oath_road: RoadUnit, delete_beliefunit_bases: BeliefUnit
     ):
         for delete_beliefunit_base in delete_beliefunit_bases:
-            x_quarkunit = quarkunit_shop("agenda_idea_beliefunit", quark_delete())
-            x_quarkunit.set_required_arg("road", idea_road)
+            x_quarkunit = quarkunit_shop("agenda_oath_beliefunit", quark_delete())
+            x_quarkunit.set_required_arg("road", oath_road)
             x_quarkunit.set_required_arg("base", delete_beliefunit_base)
             self.set_quarkunit(x_quarkunit)
 
@@ -932,67 +932,61 @@ def create_legible_list(x_nuc: NucUnit, x_agenda: AgendaUnit) -> list[str]:
         quarks_dict, [quark_delete(), "agenda_partyunit"]
     )
 
-    groupunit_insert_dict = get_leg_obj(
-        quarks_dict, [quark_insert(), "agenda_groupunit"]
-    )
-    groupunit_update_dict = get_leg_obj(
-        quarks_dict, [quark_update(), "agenda_groupunit"]
-    )
-    groupunit_delete_dict = get_leg_obj(
-        quarks_dict, [quark_delete(), "agenda_groupunit"]
-    )
+    ideaunit_insert_dict = get_leg_obj(quarks_dict, [quark_insert(), "agenda_ideaunit"])
+    ideaunit_update_dict = get_leg_obj(quarks_dict, [quark_update(), "agenda_ideaunit"])
+    ideaunit_delete_dict = get_leg_obj(quarks_dict, [quark_delete(), "agenda_ideaunit"])
 
-    x_list = [quark_insert(), "agenda_group_partylink"]
-    group_partylink_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "agenda_group_partylink"]
-    group_partylink_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "agenda_group_partylink"]
-    group_partylink_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "agenda_idea_partylink"]
+    idea_partylink_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "agenda_idea_partylink"]
+    idea_partylink_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "agenda_idea_partylink"]
+    idea_partylink_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "agenda_ideaunit"]
-    agenda_ideaunit_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "agenda_ideaunit"]
-    agenda_ideaunit_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "agenda_ideaunit"]
-    agenda_ideaunit_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "agenda_oathunit"]
+    agenda_oathunit_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "agenda_oathunit"]
+    agenda_oathunit_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "agenda_oathunit"]
+    agenda_oathunit_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "agenda_idea_balancelink"]
-    agenda_idea_balancelink_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "agenda_idea_balancelink"]
-    agenda_idea_balancelink_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "agenda_idea_balancelink"]
-    agenda_idea_balancelink_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "agenda_oath_balancelink"]
+    agenda_oath_balancelink_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "agenda_oath_balancelink"]
+    agenda_oath_balancelink_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "agenda_oath_balancelink"]
+    agenda_oath_balancelink_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "agenda_idea_reasonunit"]
-    agenda_idea_reasonunit_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "agenda_idea_reasonunit"]
-    agenda_idea_reasonunit_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "agenda_idea_reasonunit"]
-    agenda_idea_reasonunit_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "agenda_oath_reasonunit"]
+    agenda_oath_reasonunit_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "agenda_oath_reasonunit"]
+    agenda_oath_reasonunit_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "agenda_oath_reasonunit"]
+    agenda_oath_reasonunit_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "agenda_idea_reason_premiseunit"]
-    agenda_idea_reason_premiseunit_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "agenda_idea_reason_premiseunit"]
-    agenda_idea_reason_premiseunit_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "agenda_idea_reason_premiseunit"]
-    agenda_idea_reason_premiseunit_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "agenda_oath_reason_premiseunit"]
+    agenda_oath_reason_premiseunit_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "agenda_oath_reason_premiseunit"]
+    agenda_oath_reason_premiseunit_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "agenda_oath_reason_premiseunit"]
+    agenda_oath_reason_premiseunit_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "agenda_idea_suffgroup"]
-    agenda_idea_suffgroup_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "agenda_idea_suffgroup"]
-    agenda_idea_suffgroup_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "agenda_oath_suffidea"]
+    agenda_oath_suffidea_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "agenda_oath_suffidea"]
+    agenda_oath_suffidea_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "agenda_idea_healerhold"]
-    agenda_idea_healerhold_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "agenda_idea_healerhold"]
-    agenda_idea_healerhold_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "agenda_oath_healerhold"]
+    agenda_oath_healerhold_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "agenda_oath_healerhold"]
+    agenda_oath_healerhold_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "agenda_idea_beliefunit"]
-    agenda_idea_beliefunit_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "agenda_idea_beliefunit"]
-    agenda_idea_beliefunit_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "agenda_idea_beliefunit"]
-    agenda_idea_beliefunit_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "agenda_oath_beliefunit"]
+    agenda_oath_beliefunit_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "agenda_oath_beliefunit"]
+    agenda_oath_beliefunit_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "agenda_oath_beliefunit"]
+    agenda_oath_beliefunit_delete_dict = get_leg_obj(quarks_dict, x_list)
 
     leg_list = []
     if agendaunit_quark != None:
@@ -1010,113 +1004,113 @@ def create_legible_list(x_nuc: NucUnit, x_agenda: AgendaUnit) -> list[str]:
             leg_list, partyunit_delete_dict, x_agenda
         )
 
-    if groupunit_insert_dict != None:
-        add_agenda_groupunit_insert_to_legible_list(
-            leg_list, groupunit_insert_dict, x_agenda
-        )
-    if groupunit_update_dict != None:
-        add_agenda_groupunit_update_to_legible_list(
-            leg_list, groupunit_update_dict, x_agenda
-        )
-    if groupunit_delete_dict != None:
-        add_agenda_groupunit_delete_to_legible_list(
-            leg_list, groupunit_delete_dict, x_agenda
-        )
-
-    if group_partylink_insert_dict != None:
-        add_agenda_group_partylink_insert_to_legible_list(
-            leg_list, group_partylink_insert_dict, x_agenda
-        )
-    if group_partylink_update_dict != None:
-        add_agenda_group_partylink_update_to_legible_list(
-            leg_list, group_partylink_update_dict, x_agenda
-        )
-    if group_partylink_delete_dict != None:
-        add_agenda_group_partylink_delete_to_legible_list(
-            leg_list, group_partylink_delete_dict, x_agenda
-        )
-
-    if agenda_ideaunit_insert_dict != None:
+    if ideaunit_insert_dict != None:
         add_agenda_ideaunit_insert_to_legible_list(
-            leg_list, agenda_ideaunit_insert_dict, x_agenda
+            leg_list, ideaunit_insert_dict, x_agenda
         )
-    if agenda_ideaunit_update_dict != None:
+    if ideaunit_update_dict != None:
         add_agenda_ideaunit_update_to_legible_list(
-            leg_list, agenda_ideaunit_update_dict, x_agenda
+            leg_list, ideaunit_update_dict, x_agenda
         )
-    if agenda_ideaunit_delete_dict != None:
+    if ideaunit_delete_dict != None:
         add_agenda_ideaunit_delete_to_legible_list(
-            leg_list, agenda_ideaunit_delete_dict, x_agenda
+            leg_list, ideaunit_delete_dict, x_agenda
         )
 
-    if agenda_idea_balancelink_insert_dict != None:
-        add_agenda_idea_balancelink_insert_to_legible_list(
-            leg_list, agenda_idea_balancelink_insert_dict, x_agenda
+    if idea_partylink_insert_dict != None:
+        add_agenda_idea_partylink_insert_to_legible_list(
+            leg_list, idea_partylink_insert_dict, x_agenda
         )
-    if agenda_idea_balancelink_update_dict != None:
-        add_agenda_idea_balancelink_update_to_legible_list(
-            leg_list, agenda_idea_balancelink_update_dict, x_agenda
+    if idea_partylink_update_dict != None:
+        add_agenda_idea_partylink_update_to_legible_list(
+            leg_list, idea_partylink_update_dict, x_agenda
         )
-    if agenda_idea_balancelink_delete_dict != None:
-        add_agenda_idea_balancelink_delete_to_legible_list(
-            leg_list, agenda_idea_balancelink_delete_dict, x_agenda
-        )
-
-    if agenda_idea_reasonunit_insert_dict != None:
-        add_agenda_idea_reasonunit_insert_to_legible_list(
-            leg_list, agenda_idea_reasonunit_insert_dict, x_agenda
-        )
-    if agenda_idea_reasonunit_update_dict != None:
-        add_agenda_idea_reasonunit_update_to_legible_list(
-            leg_list, agenda_idea_reasonunit_update_dict, x_agenda
-        )
-    if agenda_idea_reasonunit_delete_dict != None:
-        add_agenda_idea_reasonunit_delete_to_legible_list(
-            leg_list, agenda_idea_reasonunit_delete_dict, x_agenda
+    if idea_partylink_delete_dict != None:
+        add_agenda_idea_partylink_delete_to_legible_list(
+            leg_list, idea_partylink_delete_dict, x_agenda
         )
 
-    if agenda_idea_reason_premiseunit_insert_dict != None:
+    if agenda_oathunit_insert_dict != None:
+        add_agenda_oathunit_insert_to_legible_list(
+            leg_list, agenda_oathunit_insert_dict, x_agenda
+        )
+    if agenda_oathunit_update_dict != None:
+        add_agenda_oathunit_update_to_legible_list(
+            leg_list, agenda_oathunit_update_dict, x_agenda
+        )
+    if agenda_oathunit_delete_dict != None:
+        add_agenda_oathunit_delete_to_legible_list(
+            leg_list, agenda_oathunit_delete_dict, x_agenda
+        )
+
+    if agenda_oath_balancelink_insert_dict != None:
+        add_agenda_oath_balancelink_insert_to_legible_list(
+            leg_list, agenda_oath_balancelink_insert_dict, x_agenda
+        )
+    if agenda_oath_balancelink_update_dict != None:
+        add_agenda_oath_balancelink_update_to_legible_list(
+            leg_list, agenda_oath_balancelink_update_dict, x_agenda
+        )
+    if agenda_oath_balancelink_delete_dict != None:
+        add_agenda_oath_balancelink_delete_to_legible_list(
+            leg_list, agenda_oath_balancelink_delete_dict, x_agenda
+        )
+
+    if agenda_oath_reasonunit_insert_dict != None:
+        add_agenda_oath_reasonunit_insert_to_legible_list(
+            leg_list, agenda_oath_reasonunit_insert_dict, x_agenda
+        )
+    if agenda_oath_reasonunit_update_dict != None:
+        add_agenda_oath_reasonunit_update_to_legible_list(
+            leg_list, agenda_oath_reasonunit_update_dict, x_agenda
+        )
+    if agenda_oath_reasonunit_delete_dict != None:
+        add_agenda_oath_reasonunit_delete_to_legible_list(
+            leg_list, agenda_oath_reasonunit_delete_dict, x_agenda
+        )
+
+    if agenda_oath_reason_premiseunit_insert_dict != None:
         add_agenda_reason_premiseunit_insert_to_legible_list(
-            leg_list, agenda_idea_reason_premiseunit_insert_dict, x_agenda
+            leg_list, agenda_oath_reason_premiseunit_insert_dict, x_agenda
         )
-    if agenda_idea_reason_premiseunit_update_dict != None:
+    if agenda_oath_reason_premiseunit_update_dict != None:
         add_agenda_reason_premiseunit_update_to_legible_list(
-            leg_list, agenda_idea_reason_premiseunit_update_dict, x_agenda
+            leg_list, agenda_oath_reason_premiseunit_update_dict, x_agenda
         )
-    if agenda_idea_reason_premiseunit_delete_dict != None:
+    if agenda_oath_reason_premiseunit_delete_dict != None:
         add_agenda_reason_premiseunit_delete_to_legible_list(
-            leg_list, agenda_idea_reason_premiseunit_delete_dict, x_agenda
+            leg_list, agenda_oath_reason_premiseunit_delete_dict, x_agenda
         )
 
-    if agenda_idea_suffgroup_insert_dict != None:
-        add_agenda_idea_suffgroup_insert_to_legible_list(
-            leg_list, agenda_idea_suffgroup_insert_dict, x_agenda
+    if agenda_oath_suffidea_insert_dict != None:
+        add_agenda_oath_suffidea_insert_to_legible_list(
+            leg_list, agenda_oath_suffidea_insert_dict, x_agenda
         )
-    if agenda_idea_suffgroup_delete_dict != None:
-        add_agenda_idea_suffgroup_delete_to_legible_list(
-            leg_list, agenda_idea_suffgroup_delete_dict, x_agenda
-        )
-
-    if agenda_idea_healerhold_insert_dict != None:
-        add_agenda_idea_healerhold_insert_to_legible_list(
-            leg_list, agenda_idea_healerhold_insert_dict, x_agenda
-        )
-    if agenda_idea_healerhold_delete_dict != None:
-        add_agenda_idea_healerhold_delete_to_legible_list(
-            leg_list, agenda_idea_healerhold_delete_dict, x_agenda
+    if agenda_oath_suffidea_delete_dict != None:
+        add_agenda_oath_suffidea_delete_to_legible_list(
+            leg_list, agenda_oath_suffidea_delete_dict, x_agenda
         )
 
-    if agenda_idea_beliefunit_insert_dict != None:
-        add_agenda_idea_beliefunit_insert_to_legible_list(
-            leg_list, agenda_idea_beliefunit_insert_dict, x_agenda
+    if agenda_oath_healerhold_insert_dict != None:
+        add_agenda_oath_healerhold_insert_to_legible_list(
+            leg_list, agenda_oath_healerhold_insert_dict, x_agenda
         )
-    if agenda_idea_beliefunit_update_dict != None:
-        add_agenda_idea_beliefunit_update_to_legible_list(
-            leg_list, agenda_idea_beliefunit_update_dict, x_agenda
+    if agenda_oath_healerhold_delete_dict != None:
+        add_agenda_oath_healerhold_delete_to_legible_list(
+            leg_list, agenda_oath_healerhold_delete_dict, x_agenda
         )
-    if agenda_idea_beliefunit_delete_dict != None:
-        add_agenda_idea_beliefunit_delete_to_legible_list(
-            leg_list, agenda_idea_beliefunit_delete_dict, x_agenda
+
+    if agenda_oath_beliefunit_insert_dict != None:
+        add_agenda_oath_beliefunit_insert_to_legible_list(
+            leg_list, agenda_oath_beliefunit_insert_dict, x_agenda
+        )
+    if agenda_oath_beliefunit_update_dict != None:
+        add_agenda_oath_beliefunit_update_to_legible_list(
+            leg_list, agenda_oath_beliefunit_update_dict, x_agenda
+        )
+    if agenda_oath_beliefunit_delete_dict != None:
+        add_agenda_oath_beliefunit_delete_to_legible_list(
+            leg_list, agenda_oath_beliefunit_delete_dict, x_agenda
         )
 
     return leg_list
@@ -1223,82 +1217,82 @@ def add_agenda_partyunit_delete_to_legible_list(
         legible_list.append(x_str)
 
 
-def add_agenda_groupunit_insert_to_legible_list(
-    legible_list: list[str], groupunit_dict: QuarkUnit, x_agenda: AgendaUnit
+def add_agenda_ideaunit_insert_to_legible_list(
+    legible_list: list[str], ideaunit_dict: QuarkUnit, x_agenda: AgendaUnit
 ):
-    for groupunit_quark in groupunit_dict.values():
-        group_id = groupunit_quark.get_value("group_id")
-        x_str = f"The group '{group_id}' was created"
+    for ideaunit_quark in ideaunit_dict.values():
+        idea_id = ideaunit_quark.get_value("idea_id")
+        x_str = f"The idea '{idea_id}' was created"
         x_str += "."
         legible_list.append(x_str)
 
 
-def add_agenda_groupunit_update_to_legible_list(
-    legible_list: list[str], groupunit_dict: QuarkUnit, x_agenda: AgendaUnit
+def add_agenda_ideaunit_update_to_legible_list(
+    legible_list: list[str], ideaunit_dict: QuarkUnit, x_agenda: AgendaUnit
 ):
-    for groupunit_quark in groupunit_dict.values():
-        group_id = groupunit_quark.get_value("group_id")
-        x_str = f"The group '{group_id}'"
+    for ideaunit_quark in ideaunit_dict.values():
+        idea_id = ideaunit_quark.get_value("idea_id")
+        x_str = f"The idea '{idea_id}'"
         x_str += "."
         legible_list.append(x_str)
 
 
-def add_agenda_groupunit_delete_to_legible_list(
-    legible_list: list[str], groupunit_dict: QuarkUnit, x_agenda: AgendaUnit
+def add_agenda_ideaunit_delete_to_legible_list(
+    legible_list: list[str], ideaunit_dict: QuarkUnit, x_agenda: AgendaUnit
 ):
     x_monetary_desc = x_agenda._monetary_desc
     if x_monetary_desc is None:
         x_monetary_desc = "monetary_desc"
-    for groupunit_quark in groupunit_dict.values():
-        group_id = groupunit_quark.get_value("group_id")
-        x_str = f"The group '{group_id}' was deleted."
+    for ideaunit_quark in ideaunit_dict.values():
+        idea_id = ideaunit_quark.get_value("idea_id")
+        x_str = f"The idea '{idea_id}' was deleted."
         legible_list.append(x_str)
 
 
-def add_agenda_group_partylink_insert_to_legible_list(
-    legible_list: list[str], group_partylink_insert_dict: dict, x_agenda: AgendaUnit
+def add_agenda_idea_partylink_insert_to_legible_list(
+    legible_list: list[str], idea_partylink_insert_dict: dict, x_agenda: AgendaUnit
 ):
-    for group_partylink_dict in group_partylink_insert_dict.values():
-        for group_partylink_quark in group_partylink_dict.values():
-            group_id = group_partylink_quark.get_value("group_id")
-            party_id = group_partylink_quark.get_value("party_id")
-            credor_weight_value = group_partylink_quark.get_value("credor_weight")
-            debtor_weight_value = group_partylink_quark.get_value("debtor_weight")
-            x_str = f"Group '{group_id}' has new member {party_id} with group_cred={credor_weight_value} and group_debt={debtor_weight_value}."
+    for idea_partylink_dict in idea_partylink_insert_dict.values():
+        for idea_partylink_quark in idea_partylink_dict.values():
+            idea_id = idea_partylink_quark.get_value("idea_id")
+            party_id = idea_partylink_quark.get_value("party_id")
+            credor_weight_value = idea_partylink_quark.get_value("credor_weight")
+            debtor_weight_value = idea_partylink_quark.get_value("debtor_weight")
+            x_str = f"Idea '{idea_id}' has new member {party_id} with idea_cred={credor_weight_value} and idea_debt={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_agenda_group_partylink_update_to_legible_list(
-    legible_list: list[str], group_partylink_update_dict: dict, x_agenda: AgendaUnit
+def add_agenda_idea_partylink_update_to_legible_list(
+    legible_list: list[str], idea_partylink_update_dict: dict, x_agenda: AgendaUnit
 ):
-    for group_partylink_dict in group_partylink_update_dict.values():
-        for group_partylink_quark in group_partylink_dict.values():
-            group_id = group_partylink_quark.get_value("group_id")
-            party_id = group_partylink_quark.get_value("party_id")
-            credor_weight_value = group_partylink_quark.get_value("credor_weight")
-            debtor_weight_value = group_partylink_quark.get_value("debtor_weight")
+    for idea_partylink_dict in idea_partylink_update_dict.values():
+        for idea_partylink_quark in idea_partylink_dict.values():
+            idea_id = idea_partylink_quark.get_value("idea_id")
+            party_id = idea_partylink_quark.get_value("party_id")
+            credor_weight_value = idea_partylink_quark.get_value("credor_weight")
+            debtor_weight_value = idea_partylink_quark.get_value("debtor_weight")
             if credor_weight_value != None and debtor_weight_value != None:
-                x_str = f"Group '{group_id}' member {party_id} has new group_cred={credor_weight_value} and group_debt={debtor_weight_value}."
+                x_str = f"Idea '{idea_id}' member {party_id} has new idea_cred={credor_weight_value} and idea_debt={debtor_weight_value}."
             elif credor_weight_value != None and debtor_weight_value is None:
-                x_str = f"Group '{group_id}' member {party_id} has new group_cred={credor_weight_value}."
+                x_str = f"Idea '{idea_id}' member {party_id} has new idea_cred={credor_weight_value}."
             elif credor_weight_value is None and debtor_weight_value != None:
-                x_str = f"Group '{group_id}' member {party_id} has new group_debt={debtor_weight_value}."
+                x_str = f"Idea '{idea_id}' member {party_id} has new idea_debt={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_agenda_group_partylink_delete_to_legible_list(
-    legible_list: list[str], group_partylink_delete_dict: dict, x_agenda: AgendaUnit
+def add_agenda_idea_partylink_delete_to_legible_list(
+    legible_list: list[str], idea_partylink_delete_dict: dict, x_agenda: AgendaUnit
 ):
-    for group_partylink_dict in group_partylink_delete_dict.values():
-        for group_partylink_quark in group_partylink_dict.values():
-            group_id = group_partylink_quark.get_value("group_id")
-            party_id = group_partylink_quark.get_value("party_id")
-            x_str = f"Group '{group_id}' no longer has member {party_id}."
+    for idea_partylink_dict in idea_partylink_delete_dict.values():
+        for idea_partylink_quark in idea_partylink_dict.values():
+            idea_id = idea_partylink_quark.get_value("idea_id")
+            party_id = idea_partylink_quark.get_value("party_id")
+            x_str = f"Idea '{idea_id}' no longer has member {party_id}."
             legible_list.append(x_str)
 
 
-def add_agenda_ideaunit_insert_to_legible_list(
-    legible_list: list[str], ideaunit_insert_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oathunit_insert_to_legible_list(
+    legible_list: list[str], oathunit_insert_dict: dict, x_agenda: AgendaUnit
 ):
     label_text = "label"
     parent_road_text = "parent_road"
@@ -1314,24 +1308,24 @@ def add_agenda_ideaunit_insert_to_legible_list(
     _reest_text = "_reest"
     _weight_text = "_weight"
     pledge_text = "pledge"
-    for parent_road_dict in ideaunit_insert_dict.values():
-        for ideaunit_quark in parent_road_dict.values():
-            label_value = ideaunit_quark.get_value(label_text)
-            parent_road_value = ideaunit_quark.get_value(parent_road_text)
-            _addin_value = ideaunit_quark.get_value(_addin_text)
-            _begin_value = ideaunit_quark.get_value(_begin_text)
-            _close_value = ideaunit_quark.get_value(_close_text)
-            _denom_value = ideaunit_quark.get_value(_denom_text)
-            _meld_strategy_value = ideaunit_quark.get_value(_meld_strategy_text)
-            _numeric_road_value = ideaunit_quark.get_value(_numeric_road_text)
-            _numor_value = ideaunit_quark.get_value(_numor_text)
-            _problem_bool_value = ideaunit_quark.get_value(_problem_bool_text)
-            _range_source_road_value = ideaunit_quark.get_value(_range_source_road_text)
-            _reest_value = ideaunit_quark.get_value(_reest_text)
-            _weight_value = ideaunit_quark.get_value(_weight_text)
-            pledge_value = ideaunit_quark.get_value(pledge_text)
+    for parent_road_dict in oathunit_insert_dict.values():
+        for oathunit_quark in parent_road_dict.values():
+            label_value = oathunit_quark.get_value(label_text)
+            parent_road_value = oathunit_quark.get_value(parent_road_text)
+            _addin_value = oathunit_quark.get_value(_addin_text)
+            _begin_value = oathunit_quark.get_value(_begin_text)
+            _close_value = oathunit_quark.get_value(_close_text)
+            _denom_value = oathunit_quark.get_value(_denom_text)
+            _meld_strategy_value = oathunit_quark.get_value(_meld_strategy_text)
+            _numeric_road_value = oathunit_quark.get_value(_numeric_road_text)
+            _numor_value = oathunit_quark.get_value(_numor_text)
+            _problem_bool_value = oathunit_quark.get_value(_problem_bool_text)
+            _range_source_road_value = oathunit_quark.get_value(_range_source_road_text)
+            _reest_value = oathunit_quark.get_value(_reest_text)
+            _weight_value = oathunit_quark.get_value(_weight_text)
+            pledge_value = oathunit_quark.get_value(pledge_text)
             x_str = (
-                f"Created Idea '{label_value}' with parent_road {parent_road_value}. "
+                f"Created Oath '{label_value}' with parent_road {parent_road_value}. "
             )
             if _addin_value != None:
                 x_str += f"_addin={_addin_value}."
@@ -1361,8 +1355,8 @@ def add_agenda_ideaunit_insert_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_agenda_ideaunit_update_to_legible_list(
-    legible_list: list[str], ideaunit_update_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oathunit_update_to_legible_list(
+    legible_list: list[str], oathunit_update_dict: dict, x_agenda: AgendaUnit
 ):
     label_text = "label"
     parent_road_text = "parent_road"
@@ -1378,23 +1372,23 @@ def add_agenda_ideaunit_update_to_legible_list(
     _reest_text = "_reest"
     _weight_text = "_weight"
     pledge_text = "pledge"
-    for parent_road_dict in ideaunit_update_dict.values():
-        for ideaunit_quark in parent_road_dict.values():
-            label_value = ideaunit_quark.get_value(label_text)
-            parent_road_value = ideaunit_quark.get_value(parent_road_text)
-            _addin_value = ideaunit_quark.get_value(_addin_text)
-            _begin_value = ideaunit_quark.get_value(_begin_text)
-            _close_value = ideaunit_quark.get_value(_close_text)
-            _denom_value = ideaunit_quark.get_value(_denom_text)
-            _meld_strategy_value = ideaunit_quark.get_value(_meld_strategy_text)
-            _numeric_road_value = ideaunit_quark.get_value(_numeric_road_text)
-            _numor_value = ideaunit_quark.get_value(_numor_text)
-            _problem_bool_value = ideaunit_quark.get_value(_problem_bool_text)
-            _range_source_road_value = ideaunit_quark.get_value(_range_source_road_text)
-            _reest_value = ideaunit_quark.get_value(_reest_text)
-            _weight_value = ideaunit_quark.get_value(_weight_text)
-            pledge_value = ideaunit_quark.get_value(pledge_text)
-            x_str = f"Idea '{label_value}' with parent_road {parent_road_value} transited these attributes: "
+    for parent_road_dict in oathunit_update_dict.values():
+        for oathunit_quark in parent_road_dict.values():
+            label_value = oathunit_quark.get_value(label_text)
+            parent_road_value = oathunit_quark.get_value(parent_road_text)
+            _addin_value = oathunit_quark.get_value(_addin_text)
+            _begin_value = oathunit_quark.get_value(_begin_text)
+            _close_value = oathunit_quark.get_value(_close_text)
+            _denom_value = oathunit_quark.get_value(_denom_text)
+            _meld_strategy_value = oathunit_quark.get_value(_meld_strategy_text)
+            _numeric_road_value = oathunit_quark.get_value(_numeric_road_text)
+            _numor_value = oathunit_quark.get_value(_numor_text)
+            _problem_bool_value = oathunit_quark.get_value(_problem_bool_text)
+            _range_source_road_value = oathunit_quark.get_value(_range_source_road_text)
+            _reest_value = oathunit_quark.get_value(_reest_text)
+            _weight_value = oathunit_quark.get_value(_weight_text)
+            pledge_value = oathunit_quark.get_value(pledge_text)
+            x_str = f"Oath '{label_value}' with parent_road {parent_road_value} transited these attributes: "
             if _addin_value != None:
                 x_str += f"_addin={_addin_value}."
             if _begin_value != None:
@@ -1423,106 +1417,106 @@ def add_agenda_ideaunit_update_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_agenda_ideaunit_delete_to_legible_list(
-    legible_list: list[str], ideaunit_delete_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oathunit_delete_to_legible_list(
+    legible_list: list[str], oathunit_delete_dict: dict, x_agenda: AgendaUnit
 ):
     label_text = "label"
     parent_road_text = "parent_road"
-    for parent_road_dict in ideaunit_delete_dict.values():
-        for ideaunit_quark in parent_road_dict.values():
-            label_value = ideaunit_quark.get_value(label_text)
-            parent_road_value = ideaunit_quark.get_value(parent_road_text)
-            x_str = f"Idea '{label_value}' with parent_road {parent_road_value} was deleted."
+    for parent_road_dict in oathunit_delete_dict.values():
+        for oathunit_quark in parent_road_dict.values():
+            label_value = oathunit_quark.get_value(label_text)
+            parent_road_value = oathunit_quark.get_value(parent_road_text)
+            x_str = f"Oath '{label_value}' with parent_road {parent_road_value} was deleted."
             legible_list.append(x_str)
 
 
-def add_agenda_idea_balancelink_insert_to_legible_list(
-    legible_list: list[str], idea_balancelink_insert_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_balancelink_insert_to_legible_list(
+    legible_list: list[str], oath_balancelink_insert_dict: dict, x_agenda: AgendaUnit
 ):
-    for road_dict in idea_balancelink_insert_dict.values():
-        for idea_balancelink_quark in road_dict.values():
-            group_id_value = idea_balancelink_quark.get_value("group_id")
-            road_value = idea_balancelink_quark.get_value("road")
-            credor_weight_value = idea_balancelink_quark.get_value("credor_weight")
-            debtor_weight_value = idea_balancelink_quark.get_value("debtor_weight")
-            x_str = f"Balancelink created for group {group_id_value} for idea '{road_value}' with credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
+    for road_dict in oath_balancelink_insert_dict.values():
+        for oath_balancelink_quark in road_dict.values():
+            idea_id_value = oath_balancelink_quark.get_value("idea_id")
+            road_value = oath_balancelink_quark.get_value("road")
+            credor_weight_value = oath_balancelink_quark.get_value("credor_weight")
+            debtor_weight_value = oath_balancelink_quark.get_value("debtor_weight")
+            x_str = f"Balancelink created for idea {idea_id_value} for oath '{road_value}' with credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_agenda_idea_balancelink_update_to_legible_list(
-    legible_list: list[str], idea_balancelink_update_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_balancelink_update_to_legible_list(
+    legible_list: list[str], oath_balancelink_update_dict: dict, x_agenda: AgendaUnit
 ):
-    for road_dict in idea_balancelink_update_dict.values():
-        for idea_balancelink_quark in road_dict.values():
-            group_id_value = idea_balancelink_quark.get_value("group_id")
-            road_value = idea_balancelink_quark.get_value("road")
-            credor_weight_value = idea_balancelink_quark.get_value("credor_weight")
-            debtor_weight_value = idea_balancelink_quark.get_value("debtor_weight")
+    for road_dict in oath_balancelink_update_dict.values():
+        for oath_balancelink_quark in road_dict.values():
+            idea_id_value = oath_balancelink_quark.get_value("idea_id")
+            road_value = oath_balancelink_quark.get_value("road")
+            credor_weight_value = oath_balancelink_quark.get_value("credor_weight")
+            debtor_weight_value = oath_balancelink_quark.get_value("debtor_weight")
             if credor_weight_value != None and debtor_weight_value != None:
-                x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
+                x_str = f"Balancelink has been transited for idea {idea_id_value} for oath '{road_value}'. Now credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
             elif credor_weight_value != None and debtor_weight_value is None:
-                x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value}."
+                x_str = f"Balancelink has been transited for idea {idea_id_value} for oath '{road_value}'. Now credor_weight={credor_weight_value}."
             elif credor_weight_value is None and debtor_weight_value != None:
-                x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
+                x_str = f"Balancelink has been transited for idea {idea_id_value} for oath '{road_value}'. Now debtor_weight={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_agenda_idea_balancelink_delete_to_legible_list(
-    legible_list: list[str], idea_balancelink_delete_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_balancelink_delete_to_legible_list(
+    legible_list: list[str], oath_balancelink_delete_dict: dict, x_agenda: AgendaUnit
 ):
-    for road_dict in idea_balancelink_delete_dict.values():
-        for idea_balancelink_quark in road_dict.values():
-            group_id_value = idea_balancelink_quark.get_value("group_id")
-            road_value = idea_balancelink_quark.get_value("road")
-            x_str = f"Balancelink for group {group_id_value}, idea '{road_value}' has been deleted."
+    for road_dict in oath_balancelink_delete_dict.values():
+        for oath_balancelink_quark in road_dict.values():
+            idea_id_value = oath_balancelink_quark.get_value("idea_id")
+            road_value = oath_balancelink_quark.get_value("road")
+            x_str = f"Balancelink for idea {idea_id_value}, oath '{road_value}' has been deleted."
             legible_list.append(x_str)
 
 
-def add_agenda_idea_reasonunit_insert_to_legible_list(
-    legible_list: list[str], idea_reasonunit_insert_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_reasonunit_insert_to_legible_list(
+    legible_list: list[str], oath_reasonunit_insert_dict: dict, x_agenda: AgendaUnit
 ):
-    for road_dict in idea_reasonunit_insert_dict.values():
-        for idea_reasonunit_quark in road_dict.values():
-            road_value = idea_reasonunit_quark.get_value("road")
-            base_value = idea_reasonunit_quark.get_value("base")
-            suff_idea_active_value = idea_reasonunit_quark.get_value("suff_idea_active")
+    for road_dict in oath_reasonunit_insert_dict.values():
+        for oath_reasonunit_quark in road_dict.values():
+            road_value = oath_reasonunit_quark.get_value("road")
+            base_value = oath_reasonunit_quark.get_value("base")
+            suff_oath_active_value = oath_reasonunit_quark.get_value("suff_oath_active")
             x_str = (
-                f"ReasonUnit created for idea '{road_value}' with base '{base_value}'."
+                f"ReasonUnit created for oath '{road_value}' with base '{base_value}'."
             )
-            if suff_idea_active_value != None:
-                x_str += f" suff_idea_active={suff_idea_active_value}."
+            if suff_oath_active_value != None:
+                x_str += f" suff_oath_active={suff_oath_active_value}."
             legible_list.append(x_str)
 
 
-def add_agenda_idea_reasonunit_update_to_legible_list(
-    legible_list: list[str], idea_reasonunit_update_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_reasonunit_update_to_legible_list(
+    legible_list: list[str], oath_reasonunit_update_dict: dict, x_agenda: AgendaUnit
 ):
-    for road_dict in idea_reasonunit_update_dict.values():
-        for idea_reasonunit_quark in road_dict.values():
-            road_value = idea_reasonunit_quark.get_value("road")
-            base_value = idea_reasonunit_quark.get_value("base")
-            suff_idea_active_value = idea_reasonunit_quark.get_value("suff_idea_active")
-            if suff_idea_active_value != None:
-                x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' transited with suff_idea_active={suff_idea_active_value}."
-            elif suff_idea_active_value is None:
-                x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' and no longer checks base active mode."
+    for road_dict in oath_reasonunit_update_dict.values():
+        for oath_reasonunit_quark in road_dict.values():
+            road_value = oath_reasonunit_quark.get_value("road")
+            base_value = oath_reasonunit_quark.get_value("base")
+            suff_oath_active_value = oath_reasonunit_quark.get_value("suff_oath_active")
+            if suff_oath_active_value != None:
+                x_str = f"ReasonUnit base='{base_value}' for oath '{road_value}' transited with suff_oath_active={suff_oath_active_value}."
+            elif suff_oath_active_value is None:
+                x_str = f"ReasonUnit base='{base_value}' for oath '{road_value}' and no longer checks base active mode."
             legible_list.append(x_str)
 
 
-def add_agenda_idea_reasonunit_delete_to_legible_list(
-    legible_list: list[str], idea_reasonunit_delete_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_reasonunit_delete_to_legible_list(
+    legible_list: list[str], oath_reasonunit_delete_dict: dict, x_agenda: AgendaUnit
 ):
-    for road_dict in idea_reasonunit_delete_dict.values():
-        for idea_reasonunit_quark in road_dict.values():
-            road_value = idea_reasonunit_quark.get_value("road")
-            base_value = idea_reasonunit_quark.get_value("base")
-            x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' has been deleted."
+    for road_dict in oath_reasonunit_delete_dict.values():
+        for oath_reasonunit_quark in road_dict.values():
+            road_value = oath_reasonunit_quark.get_value("road")
+            base_value = oath_reasonunit_quark.get_value("base")
+            x_str = f"ReasonUnit base='{base_value}' for oath '{road_value}' has been deleted."
             legible_list.append(x_str)
 
 
 def add_agenda_reason_premiseunit_insert_to_legible_list(
     legible_list: list[str],
-    idea_reason_premiseunit_insert_dict: dict,
+    oath_reason_premiseunit_insert_dict: dict,
     x_agenda: AgendaUnit,
 ):
     road_text = "road"
@@ -1531,16 +1525,16 @@ def add_agenda_reason_premiseunit_insert_to_legible_list(
     divisor_text = "divisor"
     nigh_text = "nigh"
     open_text = "open"
-    for road_dict in idea_reason_premiseunit_insert_dict.values():
+    for road_dict in oath_reason_premiseunit_insert_dict.values():
         for base_dict in road_dict.values():
-            for idea_reason_premiseunit_quark in base_dict.values():
-                road_value = idea_reason_premiseunit_quark.get_value(road_text)
-                base_value = idea_reason_premiseunit_quark.get_value(base_text)
-                need_value = idea_reason_premiseunit_quark.get_value(need_text)
-                divisor_value = idea_reason_premiseunit_quark.get_value(divisor_text)
-                nigh_value = idea_reason_premiseunit_quark.get_value(nigh_text)
-                open_value = idea_reason_premiseunit_quark.get_value(open_text)
-                x_str = f"PremiseUnit '{need_value}' created for reason '{base_value}' for idea '{road_value}'."
+            for oath_reason_premiseunit_quark in base_dict.values():
+                road_value = oath_reason_premiseunit_quark.get_value(road_text)
+                base_value = oath_reason_premiseunit_quark.get_value(base_text)
+                need_value = oath_reason_premiseunit_quark.get_value(need_text)
+                divisor_value = oath_reason_premiseunit_quark.get_value(divisor_text)
+                nigh_value = oath_reason_premiseunit_quark.get_value(nigh_text)
+                open_value = oath_reason_premiseunit_quark.get_value(open_text)
+                x_str = f"PremiseUnit '{need_value}' created for reason '{base_value}' for oath '{road_value}'."
                 if open_value != None:
                     x_str += f" Open={open_value}."
                 if nigh_value != None:
@@ -1552,7 +1546,7 @@ def add_agenda_reason_premiseunit_insert_to_legible_list(
 
 def add_agenda_reason_premiseunit_update_to_legible_list(
     legible_list: list[str],
-    idea_reason_premiseunit_update_dict: dict,
+    oath_reason_premiseunit_update_dict: dict,
     x_agenda: AgendaUnit,
 ):
     road_text = "road"
@@ -1561,16 +1555,16 @@ def add_agenda_reason_premiseunit_update_to_legible_list(
     divisor_text = "divisor"
     nigh_text = "nigh"
     open_text = "open"
-    for road_dict in idea_reason_premiseunit_update_dict.values():
+    for road_dict in oath_reason_premiseunit_update_dict.values():
         for base_dict in road_dict.values():
-            for idea_reason_premiseunit_quark in base_dict.values():
-                road_value = idea_reason_premiseunit_quark.get_value(road_text)
-                base_value = idea_reason_premiseunit_quark.get_value(base_text)
-                need_value = idea_reason_premiseunit_quark.get_value(need_text)
-                divisor_value = idea_reason_premiseunit_quark.get_value(divisor_text)
-                nigh_value = idea_reason_premiseunit_quark.get_value(nigh_text)
-                open_value = idea_reason_premiseunit_quark.get_value(open_text)
-                x_str = f"PremiseUnit '{need_value}' updated for reason '{base_value}' for idea '{road_value}'."
+            for oath_reason_premiseunit_quark in base_dict.values():
+                road_value = oath_reason_premiseunit_quark.get_value(road_text)
+                base_value = oath_reason_premiseunit_quark.get_value(base_text)
+                need_value = oath_reason_premiseunit_quark.get_value(need_text)
+                divisor_value = oath_reason_premiseunit_quark.get_value(divisor_text)
+                nigh_value = oath_reason_premiseunit_quark.get_value(nigh_text)
+                open_value = oath_reason_premiseunit_quark.get_value(open_text)
+                x_str = f"PremiseUnit '{need_value}' updated for reason '{base_value}' for oath '{road_value}'."
                 if open_value != None:
                     x_str += f" Open={open_value}."
                 if nigh_value != None:
@@ -1582,82 +1576,82 @@ def add_agenda_reason_premiseunit_update_to_legible_list(
 
 def add_agenda_reason_premiseunit_delete_to_legible_list(
     legible_list: list[str],
-    idea_reason_premiseunit_delete_dict: dict,
+    oath_reason_premiseunit_delete_dict: dict,
     x_agenda: AgendaUnit,
 ):
     road_text = "road"
     base_text = "base"
     need_text = "need"
-    for road_dict in idea_reason_premiseunit_delete_dict.values():
+    for road_dict in oath_reason_premiseunit_delete_dict.values():
         for base_dict in road_dict.values():
-            for idea_reason_premiseunit_quark in base_dict.values():
-                road_value = idea_reason_premiseunit_quark.get_value(road_text)
-                base_value = idea_reason_premiseunit_quark.get_value(base_text)
-                need_value = idea_reason_premiseunit_quark.get_value(need_text)
-                x_str = f"PremiseUnit '{need_value}' deleted from reason '{base_value}' for idea '{road_value}'."
+            for oath_reason_premiseunit_quark in base_dict.values():
+                road_value = oath_reason_premiseunit_quark.get_value(road_text)
+                base_value = oath_reason_premiseunit_quark.get_value(base_text)
+                need_value = oath_reason_premiseunit_quark.get_value(need_text)
+                x_str = f"PremiseUnit '{need_value}' deleted from reason '{base_value}' for oath '{road_value}'."
                 legible_list.append(x_str)
 
 
-def add_agenda_idea_suffgroup_insert_to_legible_list(
-    legible_list: list[str], idea_suffgroup_insert_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_suffidea_insert_to_legible_list(
+    legible_list: list[str], oath_suffidea_insert_dict: dict, x_agenda: AgendaUnit
 ):
-    for road_dict in idea_suffgroup_insert_dict.values():
-        for idea_suffgroup_quark in road_dict.values():
-            group_id_value = idea_suffgroup_quark.get_value("group_id")
-            road_value = idea_suffgroup_quark.get_value("road")
-            x_str = f"Suffgroup '{group_id_value}' created for idea '{road_value}'."
+    for road_dict in oath_suffidea_insert_dict.values():
+        for oath_suffidea_quark in road_dict.values():
+            idea_id_value = oath_suffidea_quark.get_value("idea_id")
+            road_value = oath_suffidea_quark.get_value("road")
+            x_str = f"Suffidea '{idea_id_value}' created for oath '{road_value}'."
             legible_list.append(x_str)
 
 
-def add_agenda_idea_suffgroup_delete_to_legible_list(
-    legible_list: list[str], idea_suffgroup_delete_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_suffidea_delete_to_legible_list(
+    legible_list: list[str], oath_suffidea_delete_dict: dict, x_agenda: AgendaUnit
 ):
-    for road_dict in idea_suffgroup_delete_dict.values():
-        for idea_suffgroup_quark in road_dict.values():
-            group_id_value = idea_suffgroup_quark.get_value("group_id")
-            road_value = idea_suffgroup_quark.get_value("road")
-            x_str = f"Suffgroup '{group_id_value}' deleted for idea '{road_value}'."
+    for road_dict in oath_suffidea_delete_dict.values():
+        for oath_suffidea_quark in road_dict.values():
+            idea_id_value = oath_suffidea_quark.get_value("idea_id")
+            road_value = oath_suffidea_quark.get_value("road")
+            x_str = f"Suffidea '{idea_id_value}' deleted for oath '{road_value}'."
             legible_list.append(x_str)
 
 
-def add_agenda_idea_healerhold_insert_to_legible_list(
-    legible_list: list[str], idea_healerhold_insert_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_healerhold_insert_to_legible_list(
+    legible_list: list[str], oath_healerhold_insert_dict: dict, x_agenda: AgendaUnit
 ):
-    for road_dict in idea_healerhold_insert_dict.values():
-        for idea_healerhold_quark in road_dict.values():
-            group_id_value = idea_healerhold_quark.get_value("group_id")
-            road_value = idea_healerhold_quark.get_value("road")
-            x_str = f"Healerhold '{group_id_value}' created for idea '{road_value}'."
+    for road_dict in oath_healerhold_insert_dict.values():
+        for oath_healerhold_quark in road_dict.values():
+            idea_id_value = oath_healerhold_quark.get_value("idea_id")
+            road_value = oath_healerhold_quark.get_value("road")
+            x_str = f"Healerhold '{idea_id_value}' created for oath '{road_value}'."
             legible_list.append(x_str)
 
 
-def add_agenda_idea_healerhold_delete_to_legible_list(
-    legible_list: list[str], idea_healerhold_delete_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_healerhold_delete_to_legible_list(
+    legible_list: list[str], oath_healerhold_delete_dict: dict, x_agenda: AgendaUnit
 ):
-    for road_dict in idea_healerhold_delete_dict.values():
-        for idea_healerhold_quark in road_dict.values():
-            group_id_value = idea_healerhold_quark.get_value("group_id")
-            road_value = idea_healerhold_quark.get_value("road")
-            x_str = f"Healerhold '{group_id_value}' deleted for idea '{road_value}'."
+    for road_dict in oath_healerhold_delete_dict.values():
+        for oath_healerhold_quark in road_dict.values():
+            idea_id_value = oath_healerhold_quark.get_value("idea_id")
+            road_value = oath_healerhold_quark.get_value("road")
+            x_str = f"Healerhold '{idea_id_value}' deleted for oath '{road_value}'."
             legible_list.append(x_str)
 
 
-def add_agenda_idea_beliefunit_insert_to_legible_list(
-    legible_list: list[str], idea_beliefunit_insert_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_beliefunit_insert_to_legible_list(
+    legible_list: list[str], oath_beliefunit_insert_dict: dict, x_agenda: AgendaUnit
 ):
     road_text = "road"
     base_text = "base"
     pick_text = "pick"
     nigh_text = "nigh"
     open_text = "open"
-    for road_dict in idea_beliefunit_insert_dict.values():
-        for idea_beliefunit_quark in road_dict.values():
-            road_value = idea_beliefunit_quark.get_value(road_text)
-            base_value = idea_beliefunit_quark.get_value(base_text)
-            pick_value = idea_beliefunit_quark.get_value(pick_text)
-            nigh_value = idea_beliefunit_quark.get_value(nigh_text)
-            open_value = idea_beliefunit_quark.get_value(open_text)
-            x_str = f"BeliefUnit '{pick_value}' created for base '{base_value}' for idea '{road_value}'."
+    for road_dict in oath_beliefunit_insert_dict.values():
+        for oath_beliefunit_quark in road_dict.values():
+            road_value = oath_beliefunit_quark.get_value(road_text)
+            base_value = oath_beliefunit_quark.get_value(base_text)
+            pick_value = oath_beliefunit_quark.get_value(pick_text)
+            nigh_value = oath_beliefunit_quark.get_value(nigh_text)
+            open_value = oath_beliefunit_quark.get_value(open_text)
+            x_str = f"BeliefUnit '{pick_value}' created for base '{base_value}' for oath '{road_value}'."
             if open_value != None:
                 x_str += f" Open={open_value}."
             if nigh_value != None:
@@ -1665,22 +1659,22 @@ def add_agenda_idea_beliefunit_insert_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_agenda_idea_beliefunit_update_to_legible_list(
-    legible_list: list[str], idea_beliefunit_update_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_beliefunit_update_to_legible_list(
+    legible_list: list[str], oath_beliefunit_update_dict: dict, x_agenda: AgendaUnit
 ):
     road_text = "road"
     base_text = "base"
     pick_text = "pick"
     nigh_text = "nigh"
     open_text = "open"
-    for road_dict in idea_beliefunit_update_dict.values():
-        for idea_beliefunit_quark in road_dict.values():
-            road_value = idea_beliefunit_quark.get_value(road_text)
-            base_value = idea_beliefunit_quark.get_value(base_text)
-            pick_value = idea_beliefunit_quark.get_value(pick_text)
-            nigh_value = idea_beliefunit_quark.get_value(nigh_text)
-            open_value = idea_beliefunit_quark.get_value(open_text)
-            x_str = f"BeliefUnit '{pick_value}' updated for base '{base_value}' for idea '{road_value}'."
+    for road_dict in oath_beliefunit_update_dict.values():
+        for oath_beliefunit_quark in road_dict.values():
+            road_value = oath_beliefunit_quark.get_value(road_text)
+            base_value = oath_beliefunit_quark.get_value(base_text)
+            pick_value = oath_beliefunit_quark.get_value(pick_text)
+            nigh_value = oath_beliefunit_quark.get_value(nigh_text)
+            open_value = oath_beliefunit_quark.get_value(open_text)
+            x_str = f"BeliefUnit '{pick_value}' updated for base '{base_value}' for oath '{road_value}'."
             if open_value != None:
                 x_str += f" Open={open_value}."
             if nigh_value != None:
@@ -1688,16 +1682,16 @@ def add_agenda_idea_beliefunit_update_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_agenda_idea_beliefunit_delete_to_legible_list(
-    legible_list: list[str], idea_beliefunit_delete_dict: dict, x_agenda: AgendaUnit
+def add_agenda_oath_beliefunit_delete_to_legible_list(
+    legible_list: list[str], oath_beliefunit_delete_dict: dict, x_agenda: AgendaUnit
 ):
     road_text = "road"
     base_text = "base"
     pick_text = "pick"
-    for road_dict in idea_beliefunit_delete_dict.values():
-        for idea_beliefunit_quark in road_dict.values():
-            road_value = idea_beliefunit_quark.get_value(road_text)
-            base_value = idea_beliefunit_quark.get_value(base_text)
-            pick_value = idea_beliefunit_quark.get_value(pick_text)
-            x_str = f"BeliefUnit '{pick_value}' deleted from base '{base_value}' for idea '{road_value}'."
+    for road_dict in oath_beliefunit_delete_dict.values():
+        for oath_beliefunit_quark in road_dict.values():
+            road_value = oath_beliefunit_quark.get_value(road_text)
+            base_value = oath_beliefunit_quark.get_value(base_text)
+            pick_value = oath_beliefunit_quark.get_value(pick_text)
+            x_str = f"BeliefUnit '{pick_value}' deleted from base '{base_value}' for oath '{road_value}'."
             legible_list.append(x_str)

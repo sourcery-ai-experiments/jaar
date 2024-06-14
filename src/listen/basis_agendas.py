@@ -23,7 +23,7 @@ def create_empty_agenda(
 def create_listen_basis(x_role: AgendaUnit) -> AgendaUnit:
     x_listen = create_empty_agenda(x_role, x_owner_id=x_role._owner_id)
     x_listen._partys = x_role._partys
-    x_listen._groups = x_role._groups
+    x_listen._ideas = x_role._ideas
     x_listen.set_monetary_desc(x_role._monetary_desc)
     x_listen.set_max_tree_traverse(x_role._max_tree_traverse)
     if x_role._party_credor_pool != None:

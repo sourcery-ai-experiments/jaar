@@ -1,21 +1,21 @@
 {
     "tables": {
-        "agenda_groupunit": {
+        "agenda_ideaunit": {
             "columns": {
-                "groupunit_group_id": {},
+                "ideaunit_idea_id": {},
                 "owner_id": {}
             }
         },
-        "agenda_idea_beliefunit": {
+        "agenda_oath_beliefunit": {
             "columns": {
                 "base": {},
                 "owner_id": {},
                 "pick": {}
             }
         },
-        "agenda_ideaunit": {
+        "agenda_oathunit": {
             "columns": {
-                "idea_road": {},
+                "oath_road": {},
                 "owner_id": {}
             }
         },
@@ -47,7 +47,7 @@
         },
         "calendar": {
             "columns": {
-                "intent_idea_road": {},
+                "intent_oath_road": {},
                 "intent_weight": {},
                 "owner_id": {},
                 "report_date_range_cease": {},

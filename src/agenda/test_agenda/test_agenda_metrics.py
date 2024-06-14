@@ -1,6 +1,6 @@
-from src.agenda.graphic import display_ideatree
+from src.agenda.graphic import display_oathtree
 from src.agenda.party import partyunit_shop
-from src.agenda.group import GroupID, balancelink_shop
+from src.agenda.idea import IdeaID, balancelink_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.healer import healerhold_shop
 from src.agenda.examples.example_agendas import (
@@ -9,8 +9,8 @@ from src.agenda.examples.example_agendas import (
     agenda_v001,
     from_list_get_active,
 )
-from src.agenda.idea import ideaunit_shop
-from src.agenda.reason_idea import (
+from src.agenda.oath import oathunit_shop
+from src.agenda.reason_oath import (
     premiseunit_shop,
     reasonunit_shop,
     reasonheir_shop,
@@ -49,7 +49,7 @@ def test_AgendaUnit_get_missing_belief_bases_ReturnsAllBasesNotCoveredByBeliefs(
     assert len(missing_bases) == 11
 
 
-def test_AgendaUnit_3AdvocatesNoideaunit_shop():
+def test_AgendaUnit_3AdvocatesNooathunit_shop():
     # GIVEN
     rico_text = "rico"
     carm_text = "carmen"
@@ -63,14 +63,14 @@ def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     zia_agenda.set_partyunit(partyunit=au_rico)
     zia_agenda.set_partyunit(partyunit=au_carm)
     zia_agenda.set_partyunit(partyunit=au_patr)
-    zia_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(group_id=GroupID(rico_text), credor_weight=10)
+    zia_agenda._oathroot.set_balancelink(
+        balancelink=balancelink_shop(idea_id=IdeaID(rico_text), credor_weight=10)
     )
-    zia_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(group_id=GroupID(carm_text), credor_weight=10)
+    zia_agenda._oathroot.set_balancelink(
+        balancelink=balancelink_shop(idea_id=IdeaID(carm_text), credor_weight=10)
     )
-    zia_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(group_id=GroupID(patr_text), credor_weight=10)
+    zia_agenda._oathroot.set_balancelink(
+        balancelink=balancelink_shop(idea_id=IdeaID(patr_text), credor_weight=10)
     )
 
     # WHEN
@@ -81,19 +81,19 @@ def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     balancelink_rico = partys_metrics[rico_text]
     balancelink_carm = partys_metrics[carm_text]
     balancelink_patr = partys_metrics[patr_text]
-    assert balancelink_rico.group_id != None
-    assert balancelink_carm.group_id != None
-    assert balancelink_patr.group_id != None
-    assert balancelink_rico.group_id == rico_text
-    assert balancelink_carm.group_id == carm_text
-    assert balancelink_patr.group_id == patr_text
-    all_groups = zia_agenda._groups
-    groupunit_rico = all_groups[rico_text]
-    groupunit_carm = all_groups[carm_text]
-    groupunit_patr = all_groups[patr_text]
-    assert groupunit_rico._party_mirror == True
-    assert groupunit_carm._party_mirror == True
-    assert groupunit_patr._party_mirror == True
+    assert balancelink_rico.idea_id != None
+    assert balancelink_carm.idea_id != None
+    assert balancelink_patr.idea_id != None
+    assert balancelink_rico.idea_id == rico_text
+    assert balancelink_carm.idea_id == carm_text
+    assert balancelink_patr.idea_id == patr_text
+    all_ideas = zia_agenda._ideas
+    ideaunit_rico = all_ideas[rico_text]
+    ideaunit_carm = all_ideas[carm_text]
+    ideaunit_patr = all_ideas[patr_text]
+    assert ideaunit_rico._party_mirror == True
+    assert ideaunit_carm._party_mirror == True
+    assert ideaunit_patr._party_mirror == True
 
 
 def _check_all_objects_in_dict_are_correct_type(x_dict: dict, type_str: str) -> bool:
@@ -105,7 +105,7 @@ def _check_all_objects_in_dict_are_correct_type(x_dict: dict, type_str: str) -> 
     return bool_x
 
 
-def test_AgendaUnit_calc_agenda_metrics_CreatesFullyPopulated_idea_dict():
+def test_AgendaUnit_calc_agenda_metrics_CreatesFullyPopulated_oath_dict():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
 
@@ -113,7 +113,7 @@ def test_AgendaUnit_calc_agenda_metrics_CreatesFullyPopulated_idea_dict():
     sue_agenda.calc_agenda_metrics()
 
     # THEN
-    assert len(sue_agenda._idea_dict) == 17
+    assert len(sue_agenda._oath_dict) == 17
 
 
 def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefSaysNo():
@@ -124,23 +124,23 @@ def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefSays
     sun_text = "Sunday"
     sun_road = sue_agenda.make_road(week_road, sun_text)
 
-    # for idea in sue_agenda._idea_dict.values():
-    #     print(f"{casa_road=} {idea.get_road()=}")
+    # for oath in sue_agenda._oath_dict.values():
+    #     print(f"{casa_road=} {oath.get_road()=}")
     casa_text = "casa"
     casa_road = sue_agenda.make_l1_road(casa_text)
-    assert sue_agenda.get_idea_obj(casa_road)._active is None
+    assert sue_agenda.get_oath_obj(casa_road)._active is None
 
     # WHEN
     sue_agenda.set_belief(base=week_road, pick=sun_road)
     sue_agenda.calc_agenda_metrics()
 
     # THEN
-    assert sue_agenda._idea_dict != {}
-    assert len(sue_agenda._idea_dict) == 17
+    assert sue_agenda._oath_dict != {}
+    assert len(sue_agenda._oath_dict) == 17
 
-    # for idea in sue_agenda._idea_dict.values():
-    #     print(f"{casa_road=} {idea.get_road()=}")
-    assert sue_agenda.get_idea_obj(casa_road)._active is False
+    # for oath in sue_agenda._oath_dict.values():
+    #     print(f"{casa_road=} {oath.get_road()=}")
+    assert sue_agenda.get_oath_obj(casa_road)._active is False
 
 
 def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefModifies():
@@ -158,9 +158,9 @@ def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefModi
 
     # THEN
     sue_agenda.calc_agenda_metrics()
-    assert sue_agenda._idea_dict
-    assert len(sue_agenda._idea_dict) == 17
-    assert sue_agenda._idea_dict.get(casa_road)._active is False
+    assert sue_agenda._oath_dict
+    assert len(sue_agenda._oath_dict) == 17
+    assert sue_agenda._oath_dict.get(casa_road)._active is False
 
     # WHEN
     states_text = "nation-state"
@@ -171,9 +171,9 @@ def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefModi
 
     # THEN
     sue_agenda.calc_agenda_metrics()
-    assert sue_agenda._idea_dict
-    assert len(sue_agenda._idea_dict) == 17
-    assert sue_agenda._idea_dict.get(casa_road)._active
+    assert sue_agenda._oath_dict
+    assert len(sue_agenda._oath_dict) == 17
+    assert sue_agenda._oath_dict.get(casa_road)._active
 
     # WHEN
     france_text = "France"
@@ -182,12 +182,12 @@ def test_AgendaUnit_calc_agenda_metrics_SetsSatiateStatusCorrectlyWhenBeliefModi
 
     # THEN
     sue_agenda.calc_agenda_metrics()
-    assert sue_agenda._idea_dict
-    assert len(sue_agenda._idea_dict) == 17
-    assert sue_agenda._idea_dict.get(casa_road)._active is False
+    assert sue_agenda._oath_dict
+    assert len(sue_agenda._oath_dict) == 17
+    assert sue_agenda._oath_dict.get(casa_road)._active is False
 
 
-def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_idea_dict():
+def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_oath_dict():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     week_text = "weekdays"
@@ -203,15 +203,15 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_idea_dict():
 
     casa_text = "casa"
     casa_road = sue_agenda.make_l1_road(casa_text)
-    casa_idea = sue_agenda.get_idea_obj(casa_road)
-    print(f"{sue_agenda._owner_id=} {len(casa_idea._reasonunits)=}")
-    # print(f"{casa_idea._reasonunits=}")
-    print(f"{sue_agenda._owner_id=} {len(sue_agenda._idearoot._beliefunits)=}")
-    # print(f"{sue_agenda._idearoot._beliefunits=}")
+    casa_oath = sue_agenda.get_oath_obj(casa_road)
+    print(f"{sue_agenda._owner_id=} {len(casa_oath._reasonunits)=}")
+    # print(f"{casa_oath._reasonunits=}")
+    print(f"{sue_agenda._owner_id=} {len(sue_agenda._oathroot._beliefunits)=}")
+    # print(f"{sue_agenda._oathroot._beliefunits=}")
 
     sue_agenda.calc_agenda_metrics()
-    assert sue_agenda._idea_dict
-    assert len(sue_agenda._idea_dict) == 17
+    assert sue_agenda._oath_dict
+    assert len(sue_agenda._oath_dict) == 17
 
     usa_text = "USA"
     usa_road = sue_agenda.make_road(state_road, usa_text)
@@ -232,14 +232,14 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_idea_dict():
         premises={wed.need: wed},
         _status=True,
         _task=False,
-        _base_idea_active=True,
+        _base_oath_active=True,
     )
     sta_lh = reasonheir_shop(
         base=state_road,
         premises={usa.need: usa},
         _status=True,
         _task=False,
-        _base_idea_active=True,
+        _base_oath_active=True,
     )
 
     x1_reasonunits = {
@@ -255,25 +255,25 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_idea_dict():
     sue_agenda.set_belief(base=state_road, pick=oregon_road)
 
     # THEN
-    casa_idea = sue_agenda._idea_dict.get(casa_road)
-    print(f"\nlook at {casa_idea.get_road()=}")
-    assert casa_idea._parent_road == sue_agenda._real_id
-    assert casa_idea._kids == {}
-    assert casa_idea._weight == 30
-    assert casa_idea._label == casa_text
-    assert casa_idea._level == 1
-    assert casa_idea._active
-    assert casa_idea.pledge
-    # print(f"{casa_idea._reasonheirs=}")
-    x_reasonheir_state = casa_idea._reasonheirs[state_road]
+    casa_oath = sue_agenda._oath_dict.get(casa_road)
+    print(f"\nlook at {casa_oath.get_road()=}")
+    assert casa_oath._parent_road == sue_agenda._real_id
+    assert casa_oath._kids == {}
+    assert casa_oath._weight == 30
+    assert casa_oath._label == casa_text
+    assert casa_oath._level == 1
+    assert casa_oath._active
+    assert casa_oath.pledge
+    # print(f"{casa_oath._reasonheirs=}")
+    x_reasonheir_state = casa_oath._reasonheirs[state_road]
     print(f"  {x_reasonheir_state=}")
     print(f"  {x_reasonheir_state._status=}\n")
-    # assert casa_idea._reasonheirs == x1_reasonheirs
+    # assert casa_oath._reasonheirs == x1_reasonheirs
 
-    assert len(casa_idea._reasonheirs) == len(x1_reasonheirs)
-    week_reasonheir = casa_idea._reasonheirs.get(week_road)
+    assert len(casa_oath._reasonheirs) == len(x1_reasonheirs)
+    week_reasonheir = casa_oath._reasonheirs.get(week_road)
     # usa_premise = week_reasonheir.premises.get(usa_road)
-    print(f"    {casa_idea._label=}")
+    print(f"    {casa_oath._label=}")
     # print(f"    {usa_premise.base=}")
     # print(f"    {usa_premise._task=}")
     # print(f"    {usa_premise._task=}")
@@ -285,21 +285,21 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_idea_dict():
     # assert usa_premise._status == w_need._status
     # assert week_reasonheir.premises == week_reasonheir.premises
 
-    # assert casa_idea._reasonunits == x1_reasonunits
+    # assert casa_oath._reasonunits == x1_reasonunits
 
-    # print("iterate through every idea...")
-    # for x_idea in idea_dict:
-    #     if str(type(x_idea)).find(".idea.IdeaUnit'>") > 0:
-    #         assert x_idea._active != None
+    # print("iterate through every oath...")
+    # for x_oath in oath_dict:
+    #     if str(type(x_oath)).find(".oath.OathUnit'>") > 0:
+    #         assert x_oath._active != None
 
     #     # print("")
-    #     # print(f"{x_idea._label=}")
-    #     # print(f"{len(x_idea._reasonunits)=}")
+    #     # print(f"{x_oath._label=}")
+    #     # print(f"{len(x_oath._reasonunits)=}")
     #     print(
-    #         f"  {x_idea._label} iterate through every reasonheir... {len(x_idea._reasonheirs)=} {x_idea._label=}"
+    #         f"  {x_oath._label} iterate through every reasonheir... {len(x_oath._reasonheirs)=} {x_oath._label=}"
     #     )
-    #     # print(f"{x_idea._reasonheirs=}")
-    #     for reason in x_idea._reasonheirs.values():
+    #     # print(f"{x_oath._reasonheirs=}")
+    #     for reason in x_oath._reasonheirs.values():
     #         assert str(type(reason)).find(".reason.ReasonHeir'>") > 0
     #         print(f"    {reason.base=}")
     #         assert reason._status != None
@@ -316,77 +316,77 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlyClears_agenda_fund():
     casa_road = x_agenda.make_l1_road("casa")
     catt_road = x_agenda.make_l1_road("feed cat")
     week_road = x_agenda.make_l1_road("weekdays")
-    x_agenda._idearoot._agenda_fund_onset = 13
-    x_agenda._idearoot._agenda_fund_cease = 13
-    x_agenda.get_idea_obj(casa_road)._agenda_fund_onset = 13
-    x_agenda.get_idea_obj(casa_road)._agenda_fund_cease = 13
-    x_agenda.get_idea_obj(catt_road)._agenda_fund_onset = 13
-    x_agenda.get_idea_obj(catt_road)._agenda_fund_cease = 13
-    x_agenda.get_idea_obj(week_road)._agenda_fund_onset = 13
-    x_agenda.get_idea_obj(week_road)._agenda_fund_cease = 13
+    x_agenda._oathroot._agenda_fund_onset = 13
+    x_agenda._oathroot._agenda_fund_cease = 13
+    x_agenda.get_oath_obj(casa_road)._agenda_fund_onset = 13
+    x_agenda.get_oath_obj(casa_road)._agenda_fund_cease = 13
+    x_agenda.get_oath_obj(catt_road)._agenda_fund_onset = 13
+    x_agenda.get_oath_obj(catt_road)._agenda_fund_cease = 13
+    x_agenda.get_oath_obj(week_road)._agenda_fund_onset = 13
+    x_agenda.get_oath_obj(week_road)._agenda_fund_cease = 13
 
-    assert x_agenda._idearoot._agenda_fund_onset == 13
-    assert x_agenda._idearoot._agenda_fund_cease == 13
-    assert x_agenda.get_idea_obj(casa_road)._agenda_fund_onset == 13
-    assert x_agenda.get_idea_obj(casa_road)._agenda_fund_cease == 13
-    assert x_agenda.get_idea_obj(catt_road)._agenda_fund_onset == 13
-    assert x_agenda.get_idea_obj(catt_road)._agenda_fund_cease == 13
-    assert x_agenda.get_idea_obj(week_road)._agenda_fund_onset == 13
-    assert x_agenda.get_idea_obj(week_road)._agenda_fund_cease == 13
+    assert x_agenda._oathroot._agenda_fund_onset == 13
+    assert x_agenda._oathroot._agenda_fund_cease == 13
+    assert x_agenda.get_oath_obj(casa_road)._agenda_fund_onset == 13
+    assert x_agenda.get_oath_obj(casa_road)._agenda_fund_cease == 13
+    assert x_agenda.get_oath_obj(catt_road)._agenda_fund_onset == 13
+    assert x_agenda.get_oath_obj(catt_road)._agenda_fund_cease == 13
+    assert x_agenda.get_oath_obj(week_road)._agenda_fund_onset == 13
+    assert x_agenda.get_oath_obj(week_road)._agenda_fund_cease == 13
 
     # WHEN
     x_agenda.calc_agenda_metrics()
 
     # THEN
-    assert x_agenda._idearoot._agenda_fund_onset != 13
-    assert x_agenda._idearoot._agenda_fund_cease != 13
-    assert x_agenda.get_idea_obj(casa_road)._agenda_fund_onset != 13
-    assert x_agenda.get_idea_obj(casa_road)._agenda_fund_cease != 13
-    assert x_agenda.get_idea_obj(catt_road)._agenda_fund_onset != 13
-    assert x_agenda.get_idea_obj(catt_road)._agenda_fund_cease != 13
-    assert x_agenda.get_idea_obj(week_road)._agenda_fund_onset != 13
-    assert x_agenda.get_idea_obj(week_road)._agenda_fund_cease != 13
+    assert x_agenda._oathroot._agenda_fund_onset != 13
+    assert x_agenda._oathroot._agenda_fund_cease != 13
+    assert x_agenda.get_oath_obj(casa_road)._agenda_fund_onset != 13
+    assert x_agenda.get_oath_obj(casa_road)._agenda_fund_cease != 13
+    assert x_agenda.get_oath_obj(catt_road)._agenda_fund_onset != 13
+    assert x_agenda.get_oath_obj(catt_road)._agenda_fund_cease != 13
+    assert x_agenda.get_oath_obj(week_road)._agenda_fund_onset != 13
+    assert x_agenda.get_oath_obj(week_road)._agenda_fund_cease != 13
 
 
-def test_AgendaUnit_calc_agenda_metrics_CorrectlyCalculatesIdeaAttr_agenda_fund():
+def test_AgendaUnit_calc_agenda_metrics_CorrectlyCalculatesOathAttr_agenda_fund():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao", _weight=10)
 
     auto_text = "auto"
     auto_road = yao_agenda.make_l1_road(auto_text)
-    auto_idea = ideaunit_shop(auto_text, _weight=10)
-    yao_agenda.add_l1_idea(auto_idea)
+    auto_oath = oathunit_shop(auto_text, _weight=10)
+    yao_agenda.add_l1_oath(auto_oath)
 
     barn_text = "barn"
     barn_road = yao_agenda.make_l1_road(barn_text)
-    barn_idea = ideaunit_shop(barn_text, _weight=60)
-    yao_agenda.add_l1_idea(barn_idea)
+    barn_oath = oathunit_shop(barn_text, _weight=60)
+    yao_agenda.add_l1_oath(barn_oath)
     lamb_text = "lambs"
     lamb_road = yao_agenda.make_road(barn_road, lamb_text)
-    lamb_idea = ideaunit_shop(lamb_text, _weight=1)
-    yao_agenda.add_idea(lamb_idea, parent_road=barn_road)
+    lamb_oath = oathunit_shop(lamb_text, _weight=1)
+    yao_agenda.add_oath(lamb_oath, parent_road=barn_road)
     duck_text = "ducks"
     duck_road = yao_agenda.make_road(barn_road, duck_text)
-    duck_idea = ideaunit_shop(duck_text, _weight=2)
-    yao_agenda.add_idea(duck_idea, parent_road=barn_road)
+    duck_oath = oathunit_shop(duck_text, _weight=2)
+    yao_agenda.add_oath(duck_oath, parent_road=barn_road)
 
     coal_text = "coal"
     coal_road = yao_agenda.make_l1_road(coal_text)
-    coal_idea = ideaunit_shop(coal_text, _weight=30)
-    yao_agenda.add_l1_idea(coal_idea)
+    coal_oath = oathunit_shop(coal_text, _weight=30)
+    yao_agenda.add_l1_oath(coal_oath)
 
-    assert yao_agenda._idearoot._agenda_fund_onset is None
-    assert yao_agenda._idearoot._agenda_fund_cease is None
-    assert yao_agenda.get_idea_obj(auto_road)._agenda_fund_onset is None
-    assert yao_agenda.get_idea_obj(auto_road)._agenda_fund_cease is None
-    assert yao_agenda.get_idea_obj(barn_road)._agenda_fund_onset is None
-    assert yao_agenda.get_idea_obj(barn_road)._agenda_fund_cease is None
-    assert yao_agenda.get_idea_obj(coal_road)._agenda_fund_onset is None
-    assert yao_agenda.get_idea_obj(coal_road)._agenda_fund_cease is None
-    lamb_before = yao_agenda.get_idea_obj(road=lamb_road)
+    assert yao_agenda._oathroot._agenda_fund_onset is None
+    assert yao_agenda._oathroot._agenda_fund_cease is None
+    assert yao_agenda.get_oath_obj(auto_road)._agenda_fund_onset is None
+    assert yao_agenda.get_oath_obj(auto_road)._agenda_fund_cease is None
+    assert yao_agenda.get_oath_obj(barn_road)._agenda_fund_onset is None
+    assert yao_agenda.get_oath_obj(barn_road)._agenda_fund_cease is None
+    assert yao_agenda.get_oath_obj(coal_road)._agenda_fund_onset is None
+    assert yao_agenda.get_oath_obj(coal_road)._agenda_fund_cease is None
+    lamb_before = yao_agenda.get_oath_obj(road=lamb_road)
     assert lamb_before._agenda_fund_onset is None
     assert lamb_before._agenda_fund_cease is None
-    duck_before = yao_agenda.get_idea_obj(road=duck_road)
+    duck_before = yao_agenda.get_oath_obj(road=duck_road)
     assert duck_before._agenda_fund_onset is None
     assert duck_before._agenda_fund_cease is None
 
@@ -394,40 +394,40 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlyCalculatesIdeaAttr_agenda_fund(
     yao_agenda.calc_agenda_metrics()
 
     # THEN
-    assert yao_agenda._idearoot._agenda_fund_onset == 0.0
-    assert yao_agenda._idearoot._agenda_fund_cease == 1.0
-    assert yao_agenda.get_idea_obj(auto_road)._agenda_fund_onset == 0.0
-    assert yao_agenda.get_idea_obj(auto_road)._agenda_fund_cease == 0.1
-    assert yao_agenda.get_idea_obj(barn_road)._agenda_fund_onset == 0.1
-    assert yao_agenda.get_idea_obj(barn_road)._agenda_fund_cease == 0.7
-    assert yao_agenda.get_idea_obj(coal_road)._agenda_fund_onset == 0.7
-    assert yao_agenda.get_idea_obj(coal_road)._agenda_fund_cease == 1.0
+    assert yao_agenda._oathroot._agenda_fund_onset == 0.0
+    assert yao_agenda._oathroot._agenda_fund_cease == 1.0
+    assert yao_agenda.get_oath_obj(auto_road)._agenda_fund_onset == 0.0
+    assert yao_agenda.get_oath_obj(auto_road)._agenda_fund_cease == 0.1
+    assert yao_agenda.get_oath_obj(barn_road)._agenda_fund_onset == 0.1
+    assert yao_agenda.get_oath_obj(barn_road)._agenda_fund_cease == 0.7
+    assert yao_agenda.get_oath_obj(coal_road)._agenda_fund_onset == 0.7
+    assert yao_agenda.get_oath_obj(coal_road)._agenda_fund_cease == 1.0
 
-    duck_after = yao_agenda.get_idea_obj(road=duck_road)
+    duck_after = yao_agenda.get_oath_obj(road=duck_road)
     assert duck_after._agenda_fund_onset == 0.1
     assert duck_after._agenda_fund_cease == 0.5
-    lamb_after = yao_agenda.get_idea_obj(road=lamb_road)
+    lamb_after = yao_agenda.get_oath_obj(road=lamb_road)
     assert lamb_after._agenda_fund_onset == 0.5
     assert lamb_after._agenda_fund_cease == 0.7
 
 
-def test_AgendaUnit_get_idea_list_without_root_CorrectlyCalculatesIdeaAttributes():
+def test_AgendaUnit_get_oath_list_without_root_CorrectlyCalculatesOathAttributes():
     # GIVEN
     x_agenda = get_agenda_with7amCleanTableReason()
 
     # WHEN
-    idea_list_without_idearoot = x_agenda.get_idea_list_without_idearoot()
-    idea_dict_with_idearoot = x_agenda.get_idea_dict()
+    oath_list_without_oathroot = x_agenda.get_oath_list_without_oathroot()
+    oath_dict_with_oathroot = x_agenda.get_oath_dict()
 
     # THEN
-    assert len(idea_list_without_idearoot) == 28
-    assert len(idea_list_without_idearoot) + 1 == len(idea_dict_with_idearoot)
+    assert len(oath_list_without_oathroot) == 28
+    assert len(oath_list_without_oathroot) + 1 == len(oath_dict_with_oathroot)
 
-    # for idea in x_agenda.get_idea_list_without_idearoot():
-    #     assert str(type(idea)).find(".idea.IdeaUnit'>") > 0
+    # for oath in x_agenda.get_oath_list_without_oathroot():
+    #     assert str(type(oath)).find(".oath.OathUnit'>") > 0
 
-    # for idea in x_agenda.get_idea_list_without_idearoot():
-    #     print(f"{idea._label=}")
+    # for oath in x_agenda.get_oath_list_without_oathroot():
+    #     print(f"{oath._label=}")
 
 
 def test_AgendaUnit_calc_agenda_metrics_CorrectlyCalculatesRangeAttributes():
@@ -438,7 +438,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlyCalculatesRangeAttributes():
     house_road = sue_agenda.make_l1_road(house_text)
     clean_text = "clean table"
     clean_road = sue_agenda.make_road(house_road, clean_text)
-    assert sue_agenda._idea_dict.get(clean_road)._active is False
+    assert sue_agenda._oath_dict.get(clean_road)._active is False
 
     # set beliefs as midnight to 8am
     time_text = "timetech"
@@ -457,23 +457,23 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlyCalculatesRangeAttributes():
 
     # THEN
     sue_agenda.calc_agenda_metrics()
-    assert sue_agenda._idea_dict.get(clean_road)._active
+    assert sue_agenda._oath_dict.get(clean_road)._active
 
     # WHEN
     # set beliefs as 8am to 10am
     day24hr_open = 8.0
     day24hr_nigh = 10.0
-    print(sue_agenda._idearoot._beliefunits[day24hr_road])
+    print(sue_agenda._oathroot._beliefunits[day24hr_road])
     sue_agenda.set_belief(
         base=day24hr_base, pick=day24hr_pick, open=day24hr_open, nigh=day24hr_nigh
     )
-    print(sue_agenda._idearoot._beliefunits[day24hr_road])
-    print(sue_agenda._idearoot._kids[house_text]._kids[clean_text]._reasonunits)
-    # sue_agenda._idearoot._kids["housemanagement"]._kids[clean_text]._active = None
+    print(sue_agenda._oathroot._beliefunits[day24hr_road])
+    print(sue_agenda._oathroot._kids[house_text]._kids[clean_text]._reasonunits)
+    # sue_agenda._oathroot._kids["housemanagement"]._kids[clean_text]._active = None
 
     # THEN
     sue_agenda.calc_agenda_metrics()
-    assert sue_agenda._idea_dict.get(clean_road)._active is False
+    assert sue_agenda._oath_dict.get(clean_road)._active is False
 
 
 def test_get_intent_dict_ReturnsCorrectObj():
@@ -511,36 +511,36 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsData_agenda_v001():
     yao_agenda.set_belief(base=inter_road, pick=inter_road)
     assert yao_agenda != None
     # print(f"{yao_agenda._owner_id=}")
-    # print(f"{len(yao_agenda._idearoot._kids)=}")
+    # print(f"{len(yao_agenda._oathroot._kids)=}")
     ulty_text = "Ultimate Frisbee"
     ulty_road = yao_agenda.make_l1_road(ulty_text)
 
-    # if yao_agenda._idearoot._kids["Ultimate Frisbee"]._label == "Ultimate Frisbee":
-    assert yao_agenda._idearoot._kids[ulty_text]._reasonunits != None
+    # if yao_agenda._oathroot._kids["Ultimate Frisbee"]._label == "Ultimate Frisbee":
+    assert yao_agenda._oathroot._kids[ulty_text]._reasonunits != None
     assert yao_agenda._owner_id != None
 
-    # for belief in yao_agenda._idearoot._beliefunits.values():
+    # for belief in yao_agenda._oathroot._beliefunits.values():
     #     print(f"{belief=}")
 
     yao_agenda.calc_agenda_metrics()
-    # print(f"{str(type(idea))=}")
-    # print(f"{len(idea_dict)=}")
+    # print(f"{str(type(oath))=}")
+    # print(f"{len(oath_dict)=}")
     laundry_text = "laundry monday"
     casa_road = yao_agenda.make_l1_road("casa")
     cleaning_road = yao_agenda.make_road(casa_road, "cleaning")
     laundry_road = yao_agenda.make_road(cleaning_road, laundry_text)
 
-    # for idea in idea_dict:
+    # for oath in oath_dict:
     #     assert (
-    #         str(type(idea)).find(".idea.IdeaUnit'>") > 0
-    #         or str(type(idea)).find(".idea.IdeaUnit'>") > 0
+    #         str(type(oath)).find(".oath.OathUnit'>") > 0
+    #         or str(type(oath)).find(".oath.OathUnit'>") > 0
     #     )
-    #     # print(f"{idea._label=}")
-    #     if idea._label == laundry_text:
-    #         for reason in idea._reasonunits.values():
-    #             print(f"{idea._label=} {reason.base=}")  # {reason.premises=}")
-    # assert idea._active is False
-    assert yao_agenda._idea_dict.get(laundry_road)._active is False
+    #     # print(f"{oath._label=}")
+    #     if oath._label == laundry_text:
+    #         for reason in oath._reasonunits.values():
+    #             print(f"{oath._label=} {reason.base=}")  # {reason.premises=}")
+    # assert oath._active is False
+    assert yao_agenda._oath_dict.get(laundry_road)._active is False
 
     # WHEN
     week_text = "weekdays"
@@ -551,7 +551,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsData_agenda_v001():
     yao_agenda.calc_agenda_metrics()
 
     # THEN
-    assert yao_agenda._idea_dict.get(laundry_road)._active is False
+    assert yao_agenda._oath_dict.get(laundry_road)._active is False
 
 
 def test_AgendaUnit_calc_agenda_metrics_OptionWeekdaysReturnsCorrectObj_agenda_v001():
@@ -606,12 +606,12 @@ def test_AgendaUnit_calc_agenda_metrics_OptionWeekdaysReturnsCorrectObj_agenda_v
     }
     mt_reasonunit = reasonunit_shop(week_road, premises=mt_premises)
     mt_reasonheir = reasonheir_shop(week_road, premises=mt_premises, _status=False)
-    x_idearoot = yao_agenda.get_idea_obj(yao_agenda._real_id)
-    x_idearoot.set_reasonunit(reason=mt_reasonunit)
+    x_oathroot = yao_agenda.get_oath_obj(yao_agenda._real_id)
+    x_oathroot.set_reasonunit(reason=mt_reasonunit)
     # print(f"{yao_agenda._reasonunits[week_road].base=}")
     # print(f"{yao_agenda._reasonunits[week_road].premises[mon_road].need=}")
     # print(f"{yao_agenda._reasonunits[week_road].premises[tue_road].need=}")
-    week_reasonunit = x_idearoot._reasonunits[week_road]
+    week_reasonunit = x_oathroot._reasonunits[week_road]
     print(f"{week_reasonunit.premises=}")
     premise_mon = week_reasonunit.premises.get(mon_road)
     premise_tue = week_reasonunit.premises.get(tue_road)
@@ -622,10 +622,10 @@ def test_AgendaUnit_calc_agenda_metrics_OptionWeekdaysReturnsCorrectObj_agenda_v
     assert week_reasonunit == mt_reasonunit
 
     # WHEN
-    idea_dict = yao_agenda.get_idea_dict()
+    oath_dict = yao_agenda.get_oath_dict()
 
     # THEN
-    gen_week_reasonheir = x_idearoot.get_reasonheir(week_road)
+    gen_week_reasonheir = x_oathroot.get_reasonheir(week_road)
     gen_mon_premise = gen_week_reasonheir.premises.get(mon_road)
     assert gen_mon_premise._status == mt_reasonheir.premises.get(mon_road)._status
     assert gen_mon_premise == mt_reasonheir.premises.get(mon_road)
@@ -636,28 +636,28 @@ def test_AgendaUnit_calc_agenda_metrics_OptionWeekdaysReturnsCorrectObj_agenda_v
     casa_road = yao_agenda.make_l1_road(casa_text)
     bird_text = "say hi to birds"
     bird_road = yao_agenda.make_road(casa_road, bird_text)
-    assert from_list_get_active(road=bird_road, idea_dict=idea_dict) is False
+    assert from_list_get_active(road=bird_road, oath_dict=oath_dict) is False
 
     # yao_agenda.set_belief(base=week_road, pick=mon_road)
-    # idea_dict = yao_agenda.get_idea_dict()
-    # casa_idea = x_idearoot._kids[casa_text]
-    # twee_idea = casa_idea._kids[bird_text]
-    # print(f"{len(x_idearoot._reasonheirs)=}")
-    # print(f"{len(casa_idea._reasonheirs)=}")
-    # print(f"{len(twee_idea._reasonheirs)=}")
+    # oath_dict = yao_agenda.get_oath_dict()
+    # casa_oath = x_oathroot._kids[casa_text]
+    # twee_oath = casa_oath._kids[bird_text]
+    # print(f"{len(x_oathroot._reasonheirs)=}")
+    # print(f"{len(casa_oath._reasonheirs)=}")
+    # print(f"{len(twee_oath._reasonheirs)=}")
 
-    # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) == True
+    # assert YR.get_active(road=bird_oath, oath_dict=oath_dict) == True
 
     # yao_agenda.set_belief(base=f"{yao_agenda._real_id},weekdays", pick=f"{yao_agenda._real_id},weekdays,Tuesday")
-    # idea_dict = yao_agenda.get_idea_dict()
-    # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) == True
+    # oath_dict = yao_agenda.get_oath_dict()
+    # assert YR.get_active(road=bird_oath, oath_dict=oath_dict) == True
 
     # yao_agenda.set_belief(base=f"{yao_agenda._real_id},weekdays", pick=f"{yao_agenda._real_id},weekdays,Wednesday")
-    # idea_dict = yao_agenda.get_idea_dict()
-    # assert YR.get_active(road=bird_idea, idea_dict=idea_dict) is False
+    # oath_dict = yao_agenda.get_oath_dict()
+    # assert YR.get_active(road=bird_oath, oath_dict=oath_dict) is False
 
 
-def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsIdeaUnitsActiveWithEvery6WeeksReason_agenda_v001():
+def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsOathUnitsActiveWithEvery6WeeksReason_agenda_v001():
     # GIVEN
     yao_agenda = agenda_v001()
     day_text = "day_hour"
@@ -676,38 +676,38 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsIdeaUnitsActiveWithEvery6We
     premise_divisor = None
     premise_open = None
     premise_nigh = None
-    print(f"{len(yao_agenda._idea_dict)=}")
+    print(f"{len(yao_agenda._oath_dict)=}")
 
     casa_road = yao_agenda.make_l1_road("casa")
     cleaning_road = yao_agenda.make_road(casa_road, "cleaning")
     clean_couch_road = yao_agenda.make_road(
         cleaning_road, "clean sheets couch blankets"
     )
-    clean_sheet_idea = yao_agenda.get_idea_obj(clean_couch_road)
-    # print(f"{clean_sheet_idea._reasonunits.values()=}")
-    ced_week_reason = clean_sheet_idea._reasonunits.get(ced_week_base)
+    clean_sheet_oath = yao_agenda.get_oath_obj(clean_couch_road)
+    # print(f"{clean_sheet_oath._reasonunits.values()=}")
+    ced_week_reason = clean_sheet_oath._reasonunits.get(ced_week_base)
     ced_week_premise = ced_week_reason.premises.get(ced_week_base)
     print(
-        f"{clean_sheet_idea._label=} {ced_week_reason.base=} {ced_week_premise.need=}"
+        f"{clean_sheet_oath._label=} {ced_week_reason.base=} {ced_week_premise.need=}"
     )
-    # print(f"{clean_sheet_idea._label=} {ced_week_reason.base=} {premise_x=}")
+    # print(f"{clean_sheet_oath._label=} {ced_week_reason.base=} {premise_x=}")
     premise_divisor = ced_week_premise.divisor
     premise_open = ced_week_premise.open
     premise_nigh = ced_week_premise.nigh
-    # print(f"{idea._reasonunits=}")
-    assert clean_sheet_idea._active is False
+    # print(f"{oath._reasonunits=}")
+    assert clean_sheet_oath._active is False
 
-    # for idea in idea_dict:
-    #     # print(f"{idea._parent_road=}")
-    #     if idea._label == "clean sheets couch blankets":
-    #         print(f"{idea.get_road()=}")
+    # for oath in oath_dict:
+    #     # print(f"{oath._parent_road=}")
+    #     if oath._label == "clean sheets couch blankets":
+    #         print(f"{oath.get_road()=}")
 
     assert premise_divisor == 6
     assert premise_open == 1
     print(
-        f"There exists a idea with a reason_base {ced_week_base} that also has lemmet div =6 and open/nigh =1"
+        f"There exists a oath with a reason_base {ced_week_base} that also has lemmet div =6 and open/nigh =1"
     )
-    # print(f"{len(idea_dict)=}")
+    # print(f"{len(oath_dict)=}")
     ced_week_open = 6001
 
     # WHEN
@@ -720,7 +720,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsIdeaUnitsActiveWithEvery6We
     print(
         f"Nation-states set and also belief set: {ced_week_base=} with {ced_week_open=} and {ced_week_open=}"
     )
-    print(f"{yao_agenda._idearoot._beliefunits=}")
+    print(f"{yao_agenda._oathroot._beliefunits=}")
     yao_agenda.calc_agenda_metrics()
 
     # THEN
@@ -730,14 +730,14 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsIdeaUnitsActiveWithEvery6We
     cleaning_road = yao_agenda.make_road(casa_road, "cleaning")
     clean_couch_text = "clean sheets couch blankets"
     clean_couch_road = yao_agenda.make_road(cleaning_road, clean_couch_text)
-    clean_couch_idea = yao_agenda.get_idea_obj(road=clean_couch_road)
-    week_reason = clean_couch_idea._reasonunits.get(week_road)
+    clean_couch_oath = yao_agenda.get_oath_obj(road=clean_couch_road)
+    week_reason = clean_couch_oath._reasonunits.get(week_road)
     week_premise = week_reason.premises.get(week_road)
-    print(f"{clean_couch_idea._label=} {week_reason.base=} {week_premise=}")
+    print(f"{clean_couch_oath._label=} {week_reason.base=} {week_premise=}")
     assert week_premise.divisor == 6 and week_premise.open == 1
 
 
-def test_AgendaUnit_calc_agenda_metrics_EveryIdeaHasActiveStatus_agenda_v001():
+def test_AgendaUnit_calc_agenda_metrics_EveryOathHasActiveStatus_agenda_v001():
     # GIVEN
     yao_agenda = agenda_v001()
 
@@ -745,36 +745,36 @@ def test_AgendaUnit_calc_agenda_metrics_EveryIdeaHasActiveStatus_agenda_v001():
     yao_agenda.calc_agenda_metrics()
 
     # THEN
-    print(f"{len(yao_agenda._idea_dict)=}")
-    # first_idea_kid_count = 0
-    # first_idea_kid_none_count = 0
-    # first_idea_kid_true_count = 0
-    # first_idea_kid_false_count = 0
-    # for idea in idea_list:
-    #     if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
-    #         first_idea_kid_count += 1
-    #         if idea._active is None:
-    #             first_idea_kid_none_count += 1
-    #         elif idea._active:
-    #             first_idea_kid_true_count += 1
-    #         elif idea._active is False:
-    #             first_idea_kid_false_count += 1
+    print(f"{len(yao_agenda._oath_dict)=}")
+    # first_oath_kid_count = 0
+    # first_oath_kid_none_count = 0
+    # first_oath_kid_true_count = 0
+    # first_oath_kid_false_count = 0
+    # for oath in oath_list:
+    #     if str(type(oath)).find(".oath.OathUnit'>") > 0:
+    #         first_oath_kid_count += 1
+    #         if oath._active is None:
+    #             first_oath_kid_none_count += 1
+    #         elif oath._active:
+    #             first_oath_kid_true_count += 1
+    #         elif oath._active is False:
+    #             first_oath_kid_false_count += 1
 
-    # print(f"{first_idea_kid_count=}")
-    # print(f"{first_idea_kid_none_count=}")
-    # print(f"{first_idea_kid_true_count=}")
-    # print(f"{first_idea_kid_false_count=}")
+    # print(f"{first_oath_kid_count=}")
+    # print(f"{first_oath_kid_none_count=}")
+    # print(f"{first_oath_kid_true_count=}")
+    # print(f"{first_oath_kid_false_count=}")
 
-    # idea_kid_count = 0
-    # for idea in idea_list_without_idearoot:
-    #     idea_kid_count += 1
-    #     print(f"{idea._label=} {idea_kid_count=}")
-    #     assert idea._active != None
-    #     assert idea._active in (True, False)
-    # assert idea_kid_count == len(idea_list_without_idearoot)
+    # oath_kid_count = 0
+    # for oath in oath_list_without_oathroot:
+    #     oath_kid_count += 1
+    #     print(f"{oath._label=} {oath_kid_count=}")
+    #     assert oath._active != None
+    #     assert oath._active in (True, False)
+    # assert oath_kid_count == len(oath_list_without_oathroot)
 
-    assert len(yao_agenda._idea_dict) == sum(
-        idea._active != None for idea in yao_agenda._idea_dict.values()
+    assert len(yao_agenda._oath_dict) == sum(
+        oath._active != None for oath in yao_agenda._oath_dict.values()
     )
 
 
@@ -802,8 +802,8 @@ def test_AgendaUnit_calc_agenda_metrics_EveryOtherMonthReturnsCorrectObj_agenda_
     weekdays_text = "weekdays"
     weekdays_road = yao_agenda.make_l1_road(weekdays_text)
     yao_agenda.set_belief(base=weekdays_road, pick=weekdays_road)
-    idea_dict = yao_agenda.get_idea_dict()
-    print(f"{len(idea_dict)=}")
+    oath_dict = yao_agenda.get_oath_dict()
+    print(f"{len(oath_dict)=}")
 
     casa_text = "casa"
     casa_road = yao_agenda.make_l1_road(casa_text)
@@ -811,7 +811,7 @@ def test_AgendaUnit_calc_agenda_metrics_EveryOtherMonthReturnsCorrectObj_agenda_
     clean_road = yao_agenda.make_road(casa_road, clean_text)
     mat_label = "deep clean play mat"
     mat_road = yao_agenda.make_road(clean_road, mat_label)
-    assert from_list_get_active(road=mat_road, idea_dict=idea_dict) is False
+    assert from_list_get_active(road=mat_road, oath_dict=oath_dict) is False
 
     year_month_base = yao_agenda.make_l1_road("year_month")
     print(f"{year_month_base=}, {year_month_base=}")
@@ -823,10 +823,10 @@ def test_AgendaUnit_calc_agenda_metrics_EveryOtherMonthReturnsCorrectObj_agenda_
     yao_agenda.calc_agenda_metrics()
 
     # THEN
-    print(f"{len(idea_dict)=}")
-    print(f"{len(yao_agenda._idearoot._beliefunits)=}")
-    # from_list_get_active(road=mat_road, idea_dict=idea_dict)
-    assert from_list_get_active(road=mat_road, idea_dict=yao_agenda._idea_dict)
+    print(f"{len(oath_dict)=}")
+    print(f"{len(yao_agenda._oathroot._beliefunits)=}")
+    # from_list_get_active(road=mat_road, oath_dict=oath_dict)
+    assert from_list_get_active(road=mat_road, oath_dict=yao_agenda._oath_dict)
 
 
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsEmpty_sum_healerhold_importance():
@@ -852,62 +852,62 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_sum_healerhold_importance(
     usa_road = sue_agenda.make_road(nation_road, "USA")
     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
     sue_healerhold = healerhold_shop({"Sue"})
-    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
-    oregon_idea = sue_agenda.get_idea_obj(oregon_road)
-    print(f"{oregon_idea._agenda_importance=}")
+    sue_agenda.edit_oath_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+    oregon_oath = sue_agenda.get_oath_obj(oregon_road)
+    print(f"{oregon_oath._agenda_importance=}")
     assert sue_agenda._sum_healerhold_importance == 0
-    assert oregon_idea._healerhold_importance == 0
+    assert oregon_oath._healerhold_importance == 0
 
     # WHEN
     sue_agenda.calc_agenda_metrics()
     # THEN
     assert sue_agenda._sum_healerhold_importance == 0.038461538461538464
-    assert oregon_idea._healerhold_importance == 1
+    assert oregon_oath._healerhold_importance == 1
 
     # WHEN
     week_road = sue_agenda.make_l1_road("weekdays")
-    sue_agenda.edit_idea_attr(week_road, problem_bool=True)
+    sue_agenda.edit_oath_attr(week_road, problem_bool=True)
     mon_road = sue_agenda.make_road(week_road, "Monday")
-    sue_agenda.edit_idea_attr(mon_road, healerhold=sue_healerhold)
-    mon_idea = sue_agenda.get_idea_obj(mon_road)
-    # print(f"{mon_idea._problem_bool=} {mon_idea._agenda_importance=}")
+    sue_agenda.edit_oath_attr(mon_road, healerhold=sue_healerhold)
+    mon_oath = sue_agenda.get_oath_obj(mon_road)
+    # print(f"{mon_oath._problem_bool=} {mon_oath._agenda_importance=}")
     sue_agenda.calc_agenda_metrics()
     # THEN
     assert sue_agenda._sum_healerhold_importance != 0.038461538461538464
     assert sue_agenda._sum_healerhold_importance == 0.06923076923076923
-    assert oregon_idea._healerhold_importance == 0.5555555555555556
-    assert mon_idea._healerhold_importance == 0.4444444444444444
+    assert oregon_oath._healerhold_importance == 0.5555555555555556
+    assert mon_oath._healerhold_importance == 0.4444444444444444
 
     # WHEN
     tue_road = sue_agenda.make_road(week_road, "Tuesday")
-    sue_agenda.edit_idea_attr(tue_road, healerhold=sue_healerhold)
-    tue_idea = sue_agenda.get_idea_obj(tue_road)
-    # print(f"{tue_idea._problem_bool=} {tue_idea._agenda_importance=}")
+    sue_agenda.edit_oath_attr(tue_road, healerhold=sue_healerhold)
+    tue_oath = sue_agenda.get_oath_obj(tue_road)
+    # print(f"{tue_oath._problem_bool=} {tue_oath._agenda_importance=}")
     # sat_road = sue_agenda.make_road(week_road, "Saturday")
-    # sat_idea = sue_agenda.get_idea_obj(sat_road)
-    # print(f"{sat_idea._problem_bool=} {sat_idea._agenda_importance=}")
+    # sat_oath = sue_agenda.get_oath_obj(sat_road)
+    # print(f"{sat_oath._problem_bool=} {sat_oath._agenda_importance=}")
     sue_agenda.calc_agenda_metrics()
 
     # THEN
     assert sue_agenda._sum_healerhold_importance != 0.06923076923076923
     assert sue_agenda._sum_healerhold_importance == 0.1
-    assert oregon_idea._healerhold_importance == 0.38461538461538464
-    assert mon_idea._healerhold_importance == 0.3076923076923077
-    assert tue_idea._healerhold_importance == 0.3076923076923077
+    assert oregon_oath._healerhold_importance == 0.38461538461538464
+    assert mon_oath._healerhold_importance == 0.3076923076923077
+    assert tue_oath._healerhold_importance == 0.3076923076923077
 
     # WHEN
-    sue_agenda.edit_idea_attr(week_road, healerhold=sue_healerhold)
-    week_idea = sue_agenda.get_idea_obj(week_road)
+    sue_agenda.edit_oath_attr(week_road, healerhold=sue_healerhold)
+    week_oath = sue_agenda.get_oath_obj(week_road)
     print(
-        f"{week_idea._label=} {week_idea._problem_bool=} {week_idea._agenda_importance=}"
+        f"{week_oath._label=} {week_oath._problem_bool=} {week_oath._agenda_importance=}"
     )
     sue_agenda.calc_agenda_metrics()
     # THEN
-    # display_ideatree(sue_agenda, "Econ").show()
+    # display_oathtree(sue_agenda, "Econ").show()
     assert sue_agenda._sum_healerhold_importance == 0
-    assert oregon_idea._healerhold_importance == 0
-    assert mon_idea._healerhold_importance == 0
-    assert tue_idea._healerhold_importance == 0
+    assert oregon_oath._healerhold_importance == 0
+    assert mon_oath._healerhold_importance == 0
+    assert tue_oath._healerhold_importance == 0
 
 
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econ_dict_v1():
@@ -919,7 +919,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econ_dict_v1():
     usa_road = sue_agenda.make_road(nation_road, "USA")
     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
     sue_healerhold = healerhold_shop({"Sue"})
-    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+    sue_agenda.edit_oath_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
     assert len(sue_agenda._econ_dict) == 0
     assert sue_agenda._econ_dict.get(oregon_road) is None
 
@@ -931,11 +931,11 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econ_dict_v1():
 
     # WHEN
     week_road = sue_agenda.make_l1_road("weekdays")
-    sue_agenda.edit_idea_attr(week_road, problem_bool=True)
+    sue_agenda.edit_oath_attr(week_road, problem_bool=True)
     mon_road = sue_agenda.make_road(week_road, "Monday")
-    sue_agenda.edit_idea_attr(mon_road, healerhold=sue_healerhold)
-    # mon_idea = sue_agenda.get_idea_obj(mon_road)
-    # print(f"{mon_idea._problem_bool=} {mon_idea._agenda_importance=}")
+    sue_agenda.edit_oath_attr(mon_road, healerhold=sue_healerhold)
+    # mon_oath = sue_agenda.get_oath_obj(mon_road)
+    # print(f"{mon_oath._problem_bool=} {mon_oath._agenda_importance=}")
     sue_agenda.calc_agenda_metrics()
     # THEN
     assert len(sue_agenda._econ_dict) == 2
@@ -944,12 +944,12 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econ_dict_v1():
 
     # WHEN
     tue_road = sue_agenda.make_road(week_road, "Tuesday")
-    sue_agenda.edit_idea_attr(tue_road, healerhold=sue_healerhold)
-    # tue_idea = sue_agenda.get_idea_obj(tue_road)
-    # print(f"{tue_idea._problem_bool=} {tue_idea._agenda_importance=}")
+    sue_agenda.edit_oath_attr(tue_road, healerhold=sue_healerhold)
+    # tue_oath = sue_agenda.get_oath_obj(tue_road)
+    # print(f"{tue_oath._problem_bool=} {tue_oath._agenda_importance=}")
     # sat_road = sue_agenda.make_road(week_road, "Saturday")
-    # sat_idea = sue_agenda.get_idea_obj(sat_road)
-    # print(f"{sat_idea._problem_bool=} {sat_idea._agenda_importance=}")
+    # sat_oath = sue_agenda.get_oath_obj(sat_road)
+    # print(f"{sat_oath._problem_bool=} {sat_oath._agenda_importance=}")
     sue_agenda.calc_agenda_metrics()
 
     # THEN
@@ -959,14 +959,14 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econ_dict_v1():
     assert sue_agenda._econ_dict.get(tue_road) != None
 
     # WHEN
-    sue_agenda.edit_idea_attr(week_road, healerhold=sue_healerhold)
-    week_idea = sue_agenda.get_idea_obj(week_road)
+    sue_agenda.edit_oath_attr(week_road, healerhold=sue_healerhold)
+    week_oath = sue_agenda.get_oath_obj(week_road)
     print(
-        f"{week_idea._label=} {week_idea._problem_bool=} {week_idea._agenda_importance=}"
+        f"{week_oath._label=} {week_oath._problem_bool=} {week_oath._agenda_importance=}"
     )
     sue_agenda.calc_agenda_metrics()
     # THEN
-    # display_ideatree(sue_agenda, "Econ").show()
+    # display_oathtree(sue_agenda, "Econ").show()
     assert len(sue_agenda._econ_dict) == 0
     assert sue_agenda._econ_dict == {}
 
@@ -990,11 +990,11 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econ_dict_v1():
 #     usa_road = sue_agenda.make_road(nation_road, "USA")
 #     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
 #     sue_healerhold = healerhold_shop({sue_text})
-#     sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+#     sue_agenda.edit_oath_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
 
 #     week_road = sue_agenda.make_l1_road("weekdays")
 #     bob_healerhold = healerhold_shop({bob_text})
-#     sue_agenda.edit_idea_attr(week_road, problem_bool=True, healerhold=bob_healerhold)
+#     sue_agenda.edit_oath_attr(week_road, problem_bool=True, healerhold=bob_healerhold)
 #     assert sue_agenda._healers_dict == {}
 
 #     # WHEN
@@ -1002,10 +1002,10 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econ_dict_v1():
 
 #     # THEN
 #     assert len(sue_agenda._healers_dict) == 2
-#     week_idea = sue_agenda.get_idea_obj(week_road)
-#     assert sue_agenda._healers_dict.get(bob_text) == {week_road: week_idea}
-#     oregon_idea = sue_agenda.get_idea_obj(oregon_road)
-#     assert sue_agenda._healers_dict.get(sue_text) == {oregon_road: oregon_idea}
+#     week_oath = sue_agenda.get_oath_obj(week_road)
+#     assert sue_agenda._healers_dict.get(bob_text) == {week_road: week_oath}
+#     oregon_oath = sue_agenda.get_oath_obj(oregon_road)
+#     assert sue_agenda._healers_dict.get(sue_text) == {oregon_road: oregon_oath}
 
 
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_healers_dict():
@@ -1027,11 +1027,11 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_healers_dict():
     usa_road = sue_agenda.make_road(nation_road, "USA")
     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
     sue_healerhold = healerhold_shop({sue_text})
-    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+    sue_agenda.edit_oath_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
 
     week_road = sue_agenda.make_l1_road("weekdays")
     bob_healerhold = healerhold_shop({bob_text})
-    sue_agenda.edit_idea_attr(week_road, problem_bool=True, healerhold=bob_healerhold)
+    sue_agenda.edit_oath_attr(week_road, problem_bool=True, healerhold=bob_healerhold)
     assert sue_agenda._healers_dict == {}
 
     # WHEN
@@ -1039,10 +1039,10 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_healers_dict():
 
     # THEN
     assert len(sue_agenda._healers_dict) == 2
-    week_idea = sue_agenda.get_idea_obj(week_road)
-    assert sue_agenda._healers_dict.get(bob_text) == {week_road: week_idea}
-    oregon_idea = sue_agenda.get_idea_obj(oregon_road)
-    assert sue_agenda._healers_dict.get(sue_text) == {oregon_road: oregon_idea}
+    week_oath = sue_agenda.get_oath_obj(week_road)
+    assert sue_agenda._healers_dict.get(bob_text) == {week_road: week_oath}
+    oregon_oath = sue_agenda.get_oath_obj(oregon_road)
+    assert sue_agenda._healers_dict.get(sue_text) == {oregon_road: oregon_oath}
 
 
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_buildable_True():
@@ -1064,11 +1064,11 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_buildable_True():
     usa_road = sue_agenda.make_road(nation_road, "USA")
     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
     sue_healerhold = healerhold_shop({sue_text})
-    sue_agenda.edit_idea_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
+    sue_agenda.edit_oath_attr(oregon_road, problem_bool=True, healerhold=sue_healerhold)
 
     week_road = sue_agenda.make_l1_road("weekdays")
     bob_healerhold = healerhold_shop({bob_text})
-    sue_agenda.edit_idea_attr(week_road, problem_bool=True, healerhold=bob_healerhold)
+    sue_agenda.edit_oath_attr(week_road, problem_bool=True, healerhold=bob_healerhold)
 
     # WHEN
     sue_agenda.calc_agenda_metrics()
@@ -1096,9 +1096,9 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_buildable_False():
     oregon_road = sue_agenda.make_road(usa_road, "Oregon")
     bend_text = "Be/nd"
     bend_road = sue_agenda.make_road(oregon_road, bend_text)
-    sue_agenda.add_idea(ideaunit_shop(bend_text), oregon_road)
+    sue_agenda.add_oath(oathunit_shop(bend_text), oregon_road)
     sue_healerhold = healerhold_shop({sue_text})
-    sue_agenda.edit_idea_attr(bend_road, problem_bool=True, healerhold=sue_healerhold)
+    sue_agenda.edit_oath_attr(bend_road, problem_bool=True, healerhold=sue_healerhold)
     assert sue_agenda._econs_buildable
 
     # WHEN

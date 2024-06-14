@@ -4,7 +4,7 @@ from PyQt5 import QtWidgets as qtw
 from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1
-from ui.EditIdeaUnit import EditIdeaUnit
+from ui.EditOathUnit import EditOathUnit
 from ui.EditParty import EditParty
 from ui.pyqt_func import (
     agenda_importance_diplay,
@@ -21,16 +21,16 @@ class EditMainViewException(Exception):
 class EditMainView(qtw.QWidget, Ui_Form):
     """The settings dialog window"""
 
-    refresh_ideaunit_submitted = qtc.pyqtSignal(bool)
+    refresh_oathunit_submitted = qtc.pyqtSignal(bool)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
         self.refresh_button.clicked.connect(self.refresh_all)
-        self.baseideaunit.itemClicked.connect(self.open_editideaunit)
+        self.baseoathunit.itemClicked.connect(self.open_editoathunit)
         self.party_list.itemClicked.connect(self.open_edit_party)
         self.close_button.clicked.connect(self.close)
-        self.open_groupedit_button.clicked.connect(self.open_edit_party)
+        self.open_ideaedit_button.clicked.connect(self.open_edit_party)
 
         # self.beliefs_table.itemClicked.connect(self.belief_base_combo_set)
         self.beliefs_table.setObjectName("Agenda Beliefs")
@@ -74,7 +74,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.refresh_all()
 
     def get_beliefs_list(self):
-        return self.x_agenda._idearoot._beliefunits.values()
+        return self.x_agenda._oathroot._beliefunits.values()
 
     def beliefs_table_load(self):
         self.beliefs_table.setRowCount(0)
@@ -128,7 +128,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
     def belief_table_select(self):
         self.belief_base_update_combo.clear()
         self.belief_base_update_combo.addItems(
-            self.x_agenda.get_idea_tree_ordered_road_list()
+            self.x_agenda.get_oath_tree_ordered_road_list()
         )
         self.belief_base_update_combo.setCurrentText(
             self.beliefs_table.item(self.beliefs_table.currentRow(), 2).text()
@@ -167,7 +167,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         if self.beliefs_table.item(self.beliefs_table.currentRow(), 2).text() is None:
             raise EditMainViewException("No table selection for belief update.")
         belief_update_combo_text = self.belief_update_combo.currentText()
-        self.x_agenda._idearoot._beliefunits[base_road].belief = (
+        self.x_agenda._oathroot._beliefunits[base_road].belief = (
             belief_update_combo_text
         )
         self.base_road = None
@@ -176,7 +176,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
     def refresh_all(self):
         if self.x_agenda != None:
             self.refresh_party_list()
-            self.refresh_idea_tree()
+            self.refresh_oath_tree()
             self.beliefs_table_load()
 
     def refresh_party_list(self):
@@ -190,25 +190,25 @@ class EditMainView(qtw.QWidget, Ui_Form):
         partys_list.sort(key=lambda x: x._agenda_cred, reverse=True)
 
         for row, party in enumerate(partys_list, start=1):
-            groups_count = 0
-            for group in self.x_agenda._groups.values():
-                for partylink in group._partys.values():
+            ideas_count = 0
+            for idea in self.x_agenda._ideas.values():
+                for partylink in idea._partys.values():
                     if partylink.party_id == party.party_id:
-                        groups_count += 1
+                        ideas_count += 1
 
             qt_agenda_cred = qtw.QTableWidgetItem(
                 agenda_importance_diplay(party._agenda_cred)
             )
-            qt_group = qtw.QTableWidgetItem(f"{groups_count}")
+            qt_idea = qtw.QTableWidgetItem(f"{ideas_count}")
             self.party_list.setRowCount(row)
             self.party_list.setItem(row - 1, 0, qtw.QTableWidgetItem(party.party_id))
             self.party_list.setItem(row - 1, 1, qt_agenda_cred)
 
-    def open_editideaunit(self):
-        self.EditIdeaunit = EditIdeaUnit()
-        self.EditIdeaunit.x_agenda = self.x_agenda
-        self.EditIdeaunit.refresh_tree()
-        self.EditIdeaunit.show()
+    def open_editoathunit(self):
+        self.EditOathunit = EditOathUnit()
+        self.EditOathunit.x_agenda = self.x_agenda
+        self.EditOathunit.refresh_tree()
+        self.EditOathunit.show()
 
     def open_edit_party(self):
         self.edit_party = EditParty()
@@ -216,10 +216,10 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.edit_party.refresh_all()
         self.edit_party.show()
 
-    def refresh_idea_tree(self):
-        tree_root = get_pyqttree(idearoot=self.x_agenda._idearoot)
-        self.baseideaunit.clear()
-        self.baseideaunit.insertTopLevelItems(0, [tree_root])
+    def refresh_oath_tree(self):
+        tree_root = get_pyqttree(oathroot=self.x_agenda._oathroot)
+        self.baseoathunit.clear()
+        self.baseoathunit.insertTopLevelItems(0, [tree_root])
 
         # expand to depth set by agenda
         def yo_tree_setExpanded(root):
@@ -229,5 +229,5 @@ class EditMainView(qtw.QWidget, Ui_Form):
                 item.setExpanded(item.data(2, 20))
                 yo_tree_setExpanded(item)
 
-        root = self.baseideaunit.invisibleRootItem()
+        root = self.baseoathunit.invisibleRootItem()
         yo_tree_setExpanded(root)

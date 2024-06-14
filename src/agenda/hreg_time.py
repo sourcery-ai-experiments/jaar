@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from datetime import datetime
 
 
-# created to help make code readable. Holds some IdeaUnit attributes
+# created to help make code readable. Holds some OathUnit attributes
 @dataclass
 class YB:
     n: str = None
@@ -24,10 +24,10 @@ class InvalidPremiseUnitException(Exception):
 
 
 @dataclass
-class HregTimeIdeaSource:
+class HregTimeOathSource:
     delimiter: str
 
-    def _get_time_hreg_src_idea(self, c400_count: int):
+    def _get_time_hreg_src_oath(self, c400_count: int):
         time_text = "time"
         min_text = "minutes"
         return self._get_time_hreg_ced(time_text, tech=min_text, c400_count=c400_count)
@@ -66,7 +66,7 @@ class HregTimeIdeaSource:
         list_x += self._get_time_hreg_month(local_root=rt, multipler=m)
         list_x += self._get_time_hreg_day(local_root=rt, multipler=m)
         list_x += self._get_time_hreg_hour(local_root=rt, multipler=m)
-        list_x += self._get_time_hreg_weekday_idea(
+        list_x += self._get_time_hreg_weekday_oath(
             local_root=rt, multipler=m, jajatime=jaja
         )
 
@@ -117,7 +117,7 @@ class HregTimeIdeaSource:
 
         return hreg_list
 
-    def _get_time_hreg_weekday_idea(
+    def _get_time_hreg_weekday_oath(
         self, local_root: str, multipler: int, jajatime: str
     ):
         m = multipler

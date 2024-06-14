@@ -532,7 +532,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_groups_table">
+   <widget class="QTableWidget" name="w_ideas_table">
     <property name="geometry">
      <rect>
       <x>1000</x>
@@ -548,7 +548,7 @@
     </property>
     <column>
      <property name="text">
-      <string>owner_ids Groups</string>
+      <string>owner_ids Ideas</string>
      </property>
     </column>
     <column>
@@ -562,7 +562,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_ideas_table">
+   <widget class="QTableWidget" name="w_oaths_table">
     <property name="geometry">
      <rect>
       <x>600</x>
@@ -578,12 +578,12 @@
     </property>
     <column>
      <property name="text">
-      <string>owner_id Ideas</string>
+      <string>owner_id Oaths</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Idea parent_road</string>
+      <string>Oath parent_road</string>
      </property>
     </column>
     <column>
