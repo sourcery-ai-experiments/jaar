@@ -1,796 +1,1022 @@
-from src.agenda.reason_oath import (
+from src._road.road import get_default_real_id_roadnode
+from src.agenda.belief import (
+    BeliefID,
+    balancelink_shop,
     beliefunit_shop,
-    beliefunit_shop,
-    beliefheir_shop,
+    get_partys_relevant_beliefs,
+    get_party_relevant_beliefs,
 )
-from src.agenda.oath import oathunit_shop, RoadUnit
-from src.agenda.examples.example_agendas import (
-    get_agenda_with_4_levels as examples_get_agenda_with_4_levels,
-)
+from src.agenda.party import PartyID, partyunit_shop, partylink_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
+from src.agenda.examples.example_agendas import agenda_v001 as examples_agenda_v001
 from pytest import raises as pytest_raises
 
 
-def test_AgendaUnit_set_belief_CorrectlyModifiesAttr_1():
+def test_AgendaUnit_beliefs_get_beliefunit_ReturnsCorrectObj():
     # GIVEN
-    x_agenda = examples_get_agenda_with_4_levels()
-    weekday_road = x_agenda.make_l1_road("weekdays")
-    sunday_road = x_agenda.make_road(weekday_road, "Sunday")
-    sunday_agenda_belief = beliefunit_shop(base=weekday_road, pick=sunday_road)
-    print(sunday_agenda_belief)
-    x_oathroot = x_agenda._oathroot
-    x_oathroot._beliefunits = {sunday_agenda_belief.base: sunday_agenda_belief}
-    assert x_oathroot._beliefunits != None
-    x_oathroot._beliefunits = {}
-    assert not x_oathroot._beliefunits
-
-    # GIVEN
-    x_agenda.set_belief(base=weekday_road, pick=sunday_road)
-
-    # THEN
-    assert x_oathroot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
-
-    # GIVEN
-    x_oathroot._beliefunits = {}
-    assert not x_oathroot._beliefunits
-    usa_week_road = x_agenda.make_l1_road("nation-state")
-    usa_week_unit = beliefunit_shop(usa_week_road, usa_week_road, open=608, nigh=610)
-    x_oathroot._beliefunits = {usa_week_unit.base: usa_week_unit}
-
-    x_oathroot._beliefunits = {}
-    assert not x_oathroot._beliefunits
+    x_agenda = agendaunit_shop()
+    swim_text = ",swimmers"
+    # x_agenda.set_beliefunit(y_beliefunit=beliefunit_shop(belief_id=swim_text))
+    swim_beliefs = {swim_text: beliefunit_shop(belief_id=swim_text)}
+    x_agenda._beliefs = swim_beliefs
 
     # WHEN
-    x_agenda.set_belief(base=usa_week_road, pick=usa_week_road, open=608, nigh=610)
+    swim_beliefunit = x_agenda.get_beliefunit(swim_text)
 
     # THEN
-    assert x_oathroot._beliefunits != None
-    assert x_oathroot._beliefunits == {usa_week_unit.base: usa_week_unit}
+    assert swim_beliefunit == beliefunit_shop(belief_id=swim_text)
 
 
-def test_AgendaUnit_set_belief_CorrectlyModifiesAttr_2():
+def test_AgendaUnit_beliefs_set_beliefunit_CorrectlySetAttr():
     # GIVEN
-    x_agenda = examples_get_agenda_with_4_levels()
-    weekday_road = x_agenda.make_l1_road("weekdays")
-    sunday_road = x_agenda.make_road(weekday_road, "Sunday")
+    swim_text = ",swimmers"
+    x_agenda = agendaunit_shop()
 
     # WHEN
-    x_agenda.set_belief(base=weekday_road, pick=sunday_road)
+    x_agenda.set_beliefunit(y_beliefunit=beliefunit_shop(belief_id=swim_text))
 
     # THEN
-    sunday_agenda_belief = beliefunit_shop(base=weekday_road, pick=sunday_road)
-    x_oathroot = x_agenda._oathroot
-    assert x_oathroot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
+    assert len(x_agenda._beliefs) == 1
+    swim_beliefs = {swim_text: beliefunit_shop(belief_id=swim_text)}
+    assert len(x_agenda._beliefs) == len(swim_beliefs)
+    assert x_agenda.get_beliefunit(swim_text) != None
+    swim_beliefunit = x_agenda.get_beliefunit(swim_text)
+    assert swim_beliefunit._partys == swim_beliefs.get(swim_text)._partys
+    assert x_agenda.get_beliefunit(swim_text) == swim_beliefs.get(swim_text)
+    assert x_agenda._beliefs == swim_beliefs
 
 
-def test_AgendaUnit_set_belief_CorrectlyModifiesAttrWhen_pick_IsNone():
+def test_AgendaUnit_beliefs_set_beliefunit_CorrectlyReplacesBelief():
     # GIVEN
-    x_agenda = examples_get_agenda_with_4_levels()
-    weekday_road = x_agenda.make_l1_road("weekdays")
+    swim_text = ",swimmers"
+    x_agenda = agendaunit_shop()
+    swim1_belief = beliefunit_shop(swim_text)
+    bob_text = "Bob"
+    swim1_belief.set_partylink(partylink_shop(bob_text))
+    x_agenda.set_beliefunit(swim1_belief)
+    assert len(x_agenda.get_beliefunit(swim_text)._partys) == 1
 
     # WHEN
-    x_agenda.set_belief(base=weekday_road, open=5, nigh=7)
+    yao_text = "Yao"
+    swim2_belief = beliefunit_shop(swim_text)
+    swim2_belief.set_partylink(partylink_shop(bob_text))
+    swim2_belief.set_partylink(partylink_shop(yao_text))
+    x_agenda.set_beliefunit(swim2_belief, replace=False)
 
     # THEN
-    sunday_agenda_belief = beliefunit_shop(weekday_road, weekday_road, 5, 7)
-    x_oathroot = x_agenda._oathroot
-    assert x_oathroot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
-
-
-def test_AgendaUnit_set_belief_CorrectlyModifiesAttrWhen_open_IsNone():
-    # GIVEN
-    x_agenda = examples_get_agenda_with_4_levels()
-    weekday_road = x_agenda.make_l1_road("weekdays")
-    x_agenda.set_belief(base=weekday_road, open=5, nigh=7)
-    x_oathroot = x_agenda._oathroot
-    assert x_oathroot._beliefunits.get(weekday_road) == beliefunit_shop(
-        weekday_road, weekday_road, 5, 7
-    )
-
-    # WHEN
-    x_agenda.set_belief(base=weekday_road, nigh=10)
-
-    # THEN
-    assert x_oathroot._beliefunits.get(weekday_road) == beliefunit_shop(
-        weekday_road, weekday_road, 5, 10
-    )
-
-
-def test_AgendaUnit_set_belief_FailsToCreateWhenBaseAndBeliefAreDifferenctAndBeliefOathIsNotRangeRoot():
-    # GIVEN
-    bob_agenda = agendaunit_shop("Bob")
-    time_text = "time"
-    time_oath = oathunit_shop(time_text, _begin=0, _close=140)
-    bob_agenda.add_l1_oath(time_oath)
-    time_road = bob_agenda.make_l1_road(time_text)
-    a1st = "age1st"
-    a1st_road = bob_agenda.make_road(time_road, a1st)
-    a1st_oath = oathunit_shop(a1st, _begin=0, _close=20)
-    bob_agenda.add_oath(a1st_oath, parent_road=time_road)
-    a1e1st_text = "a1_era1st"
-    a1e1st_oath = oathunit_shop(a1e1st_text, _begin=20, _close=30)
-    bob_agenda.add_oath(a1e1st_oath, parent_road=a1st_road)
-    a1e1_road = bob_agenda.make_road(a1st_road, a1e1st_text)
-    assert bob_agenda._oathroot._beliefunits in (None, {})
+    assert len(x_agenda.get_beliefunit(swim_text)._partys) == 1
 
     # WHEN / THEN
+    x_agenda.set_beliefunit(swim2_belief, replace=True)
+    assert len(x_agenda.get_beliefunit(swim_text)._partys) == 2
+
+
+# def test_AgendaUnit_beliefs_set_beliefunit_RaisesErrorWhen_party_mirrorSubmitted():
+#     # GIVEN
+#     yao_agenda = agendaunit_shop("Yao")
+#     bob_text = "Bob"
+#     yao_agenda.set_partyunit(partyunit_shop(bob_text))
+#     bob_beliefunit = yao_agenda.get_beliefunit(bob_text)
+
+#     # WHEN
+#     with pytest_raises(Exception) as excinfo:
+#         yao_agenda.set_beliefunit(bob_beliefunit)
+#     assert (
+#         str(excinfo.value)
+#         == f"AgendaUnit.set_beliefunit('{bob_text}') fails because belief is _party_mirror."
+#     )
+
+
+def test_AgendaUnit_beliefs_set_beliefunit_CorrectlySets_partylinks():
+    # GIVEN
+    swim_text = ",swimmers"
+    x_agenda = agendaunit_shop()
+    swim1_belief = beliefunit_shop(swim_text)
+    bob_text = "Bob"
+    swim1_belief.set_partylink(partylink_shop(bob_text))
+    x_agenda.set_beliefunit(swim1_belief)
+    assert len(x_agenda.get_beliefunit(swim_text)._partys) == 1
+
+    # WHEN
+    yao_text = "Yao"
+    swim2_belief = beliefunit_shop(swim_text)
+    swim2_belief.set_partylink(partylink_shop(bob_text))
+    swim2_belief.set_partylink(partylink_shop(yao_text))
+    x_agenda.set_beliefunit(swim2_belief, add_partylinks=True)
+
+    # THEN
+    assert len(x_agenda.get_beliefunit(swim_text)._partys) == 2
+
+
+def test_AgendaUnit_beliefs_del_beliefunit_casasCorrectly():
+    # GIVEN
+    x_agenda = agendaunit_shop()
+    swim_text = "swimmers"
+    swim_belief = beliefunit_shop(belief_id=BeliefID(swim_text))
+    x_agenda.set_beliefunit(y_beliefunit=swim_belief)
+    assert x_agenda.get_beliefunit(swim_text) != None
+
+    # WHEN
+    x_agenda.del_beliefunit(belief_id=swim_text)
+    assert x_agenda.get_beliefunit(swim_text) is None
+    assert x_agenda._beliefs == {}
+
+
+def test_examples_agenda_v001_HasBeliefs():
+    # GIVEN / WHEN
+    x_agenda = examples_agenda_v001()
+
+    # THEN
+    assert x_agenda._beliefs != None
+    assert len(x_agenda._beliefs) == 34
+    everyone_partys_len = None
+    everyone_belief = x_agenda.get_beliefunit(",Everyone")
+    everyone_partys_len = len(everyone_belief._partys)
+    assert everyone_partys_len == 22
+
+    # WHEN
+    x_agenda.calc_agenda_metrics()
+    idea_dict = x_agenda._idea_dict
+
+    # THEN
+    print(f"{len(idea_dict)=}")
+    db_idea = idea_dict.get(x_agenda.make_l1_road("D&B"))
+    print(f"{db_idea._label=} {db_idea._balancelinks=}")
+    assert len(db_idea._balancelinks) == 3
+    # for idea_key in idea_dict:
+    #     print(f"{idea_key=}")
+    #     if idea._label == "D&B":
+    #         print(f"{idea._label=} {idea._balancelinks=}")
+    #         db_balancelink_len = len(idea._balancelinks)
+    # assert db_balancelink_len == 3
+
+
+def test_AgendaUnit_set_balancelink_correctly_sets_balancelinks():
+    # GIVEN
+    sue_text = "Sue"
+    sue_agenda = agendaunit_shop(sue_text)
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+
+    assert len(sue_agenda._partys) == 3
+    assert len(sue_agenda._beliefs) == 3
+    swim_text = "swim"
+    sue_agenda.add_l1_idea(ideaunit_shop(swim_text))
+    balancelink_rico = balancelink_shop(belief_id=BeliefID(rico_text), credor_weight=10)
+    balancelink_carm = balancelink_shop(belief_id=BeliefID(carm_text), credor_weight=10)
+    balancelink_patr = balancelink_shop(belief_id=BeliefID(patr_text), credor_weight=10)
+    swim_road = sue_agenda.make_l1_road(swim_text)
+    sue_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
+    sue_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
+    sue_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
+
+    street_text = "streets"
+    sue_agenda.add_idea(ideaunit_shop(street_text), parent_road=swim_road)
+    assert sue_agenda._idearoot._balancelinks in (None, {})
+    assert len(sue_agenda._idearoot._kids[swim_text]._balancelinks) == 3
+
+    # WHEN
+    idea_dict = sue_agenda.get_idea_dict()
+
+    # THEN
+    print(f"{idea_dict.keys()=} {get_default_real_id_roadnode()=}")
+    root_idea = idea_dict.get(get_default_real_id_roadnode())
+    swim_idea = idea_dict.get(swim_road)
+    street_idea = idea_dict.get(sue_agenda.make_road(swim_road, street_text))
+
+    assert len(swim_idea._balancelinks) == 3
+    assert len(swim_idea._balanceheirs) == 3
+    assert street_idea._balancelinks in (None, {})
+    assert len(street_idea._balanceheirs) == 3
+
+    print(f"{len(idea_dict)}")
+    print(f"{swim_idea._balancelinks}")
+    print(f"{swim_idea._balanceheirs}")
+    print(f"{swim_idea._balanceheirs}")
+    assert len(sue_agenda._idearoot._kids["swim"]._balanceheirs) == 3
+
+
+def test_AgendaUnit_set_balancelink_correctly_deletes_balancelinks():
+    # GIVEN
+    prom_text = "prom"
+    x_agenda = agendaunit_shop(prom_text)
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+
+    swim_text = "swim"
+    swim_road = x_agenda.make_road(prom_text, swim_text)
+
+    x_agenda.add_l1_idea(ideaunit_shop(swim_text))
+    balancelink_rico = balancelink_shop(belief_id=BeliefID(rico_text), credor_weight=10)
+    balancelink_carm = balancelink_shop(belief_id=BeliefID(carm_text), credor_weight=10)
+    balancelink_patr = balancelink_shop(belief_id=BeliefID(patr_text), credor_weight=10)
+
+    swim_idea = x_agenda.get_idea_obj(swim_road)
+    x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
+    x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
+    x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
+
+    assert len(swim_idea._balancelinks) == 3
+    assert len(swim_idea._balanceheirs) == 3
+
+    # print(f"{len(idea_list)}")
+    # print(f"{idea_list[0]._balancelinks}")
+    # print(f"{idea_list[0]._balanceheirs}")
+    # print(f"{idea_list[1]._balanceheirs}")
+    assert len(x_agenda._idearoot._kids[swim_text]._balancelinks) == 3
+    assert len(x_agenda._idearoot._kids[swim_text]._balanceheirs) == 3
+
+    # WHEN
+    x_agenda.edit_idea_attr(road=swim_road, balancelink_del=rico_text)
+
+    # THEN
+    swim_idea = x_agenda.get_idea_obj(swim_road)
+    print(f"{swim_idea._label=}")
+    print(f"{swim_idea._balancelinks=}")
+    print(f"{swim_idea._balanceheirs=}")
+
+    assert len(x_agenda._idearoot._kids[swim_text]._balancelinks) == 2
+    assert len(x_agenda._idearoot._kids[swim_text]._balanceheirs) == 2
+
+
+def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgendaImportance():
+    # GIVEN
+    sue_text = "Sue"
+    sue_agenda = agendaunit_shop(sue_text)
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
+    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    blink_rico = balancelink_shop(
+        belief_id=rico_text, credor_weight=20, debtor_weight=6
+    )
+    blink_carm = balancelink_shop(
+        belief_id=carm_text, credor_weight=10, debtor_weight=1
+    )
+    blink_patr = balancelink_shop(belief_id=patr_text, credor_weight=10)
+    sue_agenda._idearoot.set_balancelink(balancelink=blink_rico)
+    sue_agenda._idearoot.set_balancelink(balancelink=blink_carm)
+    sue_agenda._idearoot.set_balancelink(balancelink=blink_patr)
+    assert len(sue_agenda._idearoot._balancelinks) == 3
+
+    # WHEN
+    idea_dict = sue_agenda.get_idea_dict()
+
+    # THEN
+    print(f"{idea_dict.keys()=}")
+    idea_prom = idea_dict.get(get_default_real_id_roadnode())
+    assert len(idea_prom._balanceheirs) == 3
+
+    bheir_rico = idea_prom._balanceheirs.get(rico_text)
+    bheir_carm = idea_prom._balanceheirs.get(carm_text)
+    bheir_patr = idea_prom._balanceheirs.get(patr_text)
+    assert bheir_rico._agenda_cred == 0.5
+    assert bheir_rico._agenda_debt == 0.75
+    assert bheir_carm._agenda_cred == 0.25
+    assert bheir_carm._agenda_debt == 0.125
+    assert bheir_patr._agenda_cred == 0.25
+    assert bheir_patr._agenda_debt == 0.125
+    assert (
+        bheir_rico._agenda_cred + bheir_carm._agenda_cred + bheir_patr._agenda_cred == 1
+    )
+    assert (
+        bheir_rico._agenda_debt + bheir_carm._agenda_debt + bheir_patr._agenda_debt == 1
+    )
+
+    # agenda_cred_sum = 0
+    # agenda_debt_sum = 0
+    # for belief in x_agenda._idearoot._balanceheirs.values():
+    #     print(f"{belief=}")
+    #     assert belief._agenda_cred != None
+    #     assert belief._agenda_cred in [0.25, 0.5]
+    #     assert belief._agenda_debt != None
+    #     assert belief._agenda_debt in [0.75, 0.125]
+    #     agenda_cred_sum += belief._agenda_cred
+    #     agenda_debt_sum += belief._agenda_debt
+
+    # assert agenda_cred_sum == 1
+    # assert agenda_debt_sum == 1
+
+
+def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaBeliefAgendaImportance():
+    # GIVEN
+    prom_text = "prom"
+    x_agenda = agendaunit_shop(prom_text)
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    sele_text = "selena"
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    blink_rico = balancelink_shop(
+        belief_id=rico_text, credor_weight=20, debtor_weight=6
+    )
+    blink_carm = balancelink_shop(
+        belief_id=carm_text, credor_weight=10, debtor_weight=1
+    )
+    blink_patr = balancelink_shop(belief_id=patr_text, credor_weight=10)
+    x_agenda._idearoot.set_balancelink(balancelink=blink_rico)
+    x_agenda._idearoot.set_balancelink(balancelink=blink_carm)
+    x_agenda._idearoot.set_balancelink(balancelink=blink_patr)
+
+    assert len(x_agenda._beliefs) == 3
+
+    # WHEN
+    x_agenda.calc_agenda_metrics()
+
+    # THEN
+    belief_rico = x_agenda.get_beliefunit(rico_text)
+    belief_carm = x_agenda.get_beliefunit(carm_text)
+    belief_patr = x_agenda.get_beliefunit(patr_text)
+    assert belief_rico._agenda_cred == 0.5
+    assert belief_rico._agenda_debt == 0.75
+    assert belief_carm._agenda_cred == 0.25
+    assert belief_carm._agenda_debt == 0.125
+    assert belief_patr._agenda_cred == 0.25
+    assert belief_patr._agenda_debt == 0.125
+    assert (
+        belief_rico._agenda_cred + belief_carm._agenda_cred + belief_patr._agenda_cred
+        == 1
+    )
+    assert (
+        belief_rico._agenda_debt + belief_carm._agenda_debt + belief_patr._agenda_debt
+        == 1
+    )
+
+    # WHEN
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(sele_text)))
+    bl_sele = balancelink_shop(belief_id=sele_text, credor_weight=37)
+    x_agenda._idearoot.set_balancelink(balancelink=bl_sele)
+    assert len(x_agenda._beliefs) == 4
+    x_agenda.calc_agenda_metrics()
+
+    # THEN
+    belief_sele = x_agenda.get_beliefunit(sele_text)
+    assert belief_rico._agenda_cred != 0.5
+    assert belief_rico._agenda_debt != 0.75
+    assert belief_carm._agenda_cred != 0.25
+    assert belief_carm._agenda_debt != 0.125
+    assert belief_patr._agenda_cred != 0.25
+    assert belief_patr._agenda_debt != 0.125
+    assert belief_sele._agenda_cred != None
+    assert belief_sele._agenda_debt != None
+    assert (
+        belief_rico._agenda_cred
+        + belief_carm._agenda_cred
+        + belief_patr._agenda_cred
+        + belief_sele._agenda_cred
+        == 1
+    )
+    assert (
+        belief_rico._agenda_debt
+        + belief_carm._agenda_debt
+        + belief_patr._agenda_debt
+        + belief_sele._agenda_debt
+        == 1
+    )
+
+
+def test_AgendaUnit_get_idea_list_CorrectlyCalculates3levelAgendaBeliefAgendaImportance():
+    # GIVEN
+    prom_text = "prom"
+    x_agenda = agendaunit_shop(prom_text)
+    swim_text = "swim"
+    x_agenda.add_l1_idea(ideaunit_shop(swim_text))
+
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    rico_balancelink = balancelink_shop(
+        belief_id=rico_text, credor_weight=20, debtor_weight=6
+    )
+    carm_balancelink = balancelink_shop(
+        belief_id=carm_text, credor_weight=10, debtor_weight=1
+    )
+    parm_balancelink = balancelink_shop(belief_id=patr_text, credor_weight=10)
+    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
+    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
+    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
+    assert len(x_agenda._beliefs) == 3
+
+    # WHEN
+    x_agenda.calc_agenda_metrics()
+
+    # THEN
+    belief_rico = x_agenda.get_beliefunit(rico_text)
+    belief_carm = x_agenda.get_beliefunit(carm_text)
+    belief_patr = x_agenda.get_beliefunit(patr_text)
+    assert belief_rico._agenda_cred == 0.5
+    assert belief_rico._agenda_debt == 0.75
+    assert belief_carm._agenda_cred == 0.25
+    assert belief_carm._agenda_debt == 0.125
+    assert belief_patr._agenda_cred == 0.25
+    assert belief_patr._agenda_debt == 0.125
+    assert (
+        belief_rico._agenda_cred + belief_carm._agenda_cred + belief_patr._agenda_cred
+        == 1
+    )
+    assert (
+        belief_rico._agenda_debt + belief_carm._agenda_debt + belief_patr._agenda_debt
+        == 1
+    )
+
+
+def test_AgendaUnit_get_idea_list_CorrectlyCalculatesBeliefAgendaImportanceLWwithBeliefEmptyAncestors():
+    # GIVEN
+    prom_text = "prom"
+    x_agenda = agendaunit_shop(prom_text)
+    swim_text = "swim"
+    x_agenda.add_l1_idea(ideaunit_shop(swim_text))
+
+    rico_text = "rico"
+    carm_text = "carmen"
+    patr_text = "patrick"
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
+    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    rico_balancelink = balancelink_shop(
+        belief_id=rico_text, credor_weight=20, debtor_weight=6
+    )
+    carm_balancelink = balancelink_shop(
+        belief_id=carm_text, credor_weight=10, debtor_weight=1
+    )
+    parm_balancelink = balancelink_shop(belief_id=patr_text, credor_weight=10)
+    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
+    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
+    x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
+
+    # no balancelinks attached to this one
+    x_agenda.add_l1_idea(ideaunit_shop("hunt", _weight=3))
+
+    # WHEN
+    x_agenda.calc_agenda_metrics()
+
+    # THEN
+
     with pytest_raises(Exception) as excinfo:
-        bob_agenda.set_belief(base=a1e1_road, pick=a1e1_road, open=20, nigh=23)
+        x_agenda._idearoot._balancelinks[rico_text]
+    assert str(excinfo.value) == f"'{rico_text}'"
+    with pytest_raises(Exception) as excinfo:
+        x_agenda._idearoot._balancelinks[carm_text]
+    assert str(excinfo.value) == f"'{carm_text}'"
+    with pytest_raises(Exception) as excinfo:
+        x_agenda._idearoot._balancelinks[patr_text]
+    assert str(excinfo.value) == f"'{patr_text}'"
+    with pytest_raises(Exception) as excinfo:
+        x_agenda._idearoot._kids["hunt"]._balanceheirs[rico_text]
+    assert str(excinfo.value) == f"'{rico_text}'"
+    with pytest_raises(Exception) as excinfo:
+        x_agenda._idearoot._kids["hunt"]._balanceheirs[carm_text]
+    assert str(excinfo.value) == f"'{carm_text}'"
+    with pytest_raises(Exception) as excinfo:
+        x_agenda._idearoot._kids["hunt"]._balanceheirs[patr_text]
+    assert str(excinfo.value) == f"'{patr_text}'"
+
+    # THEN
+    belief_rico = x_agenda.get_beliefunit(rico_text)
+    belief_carm = x_agenda.get_beliefunit(carm_text)
+    belief_patr = x_agenda.get_beliefunit(patr_text)
+    assert belief_rico._agenda_cred == 0.125
+    assert belief_rico._agenda_debt == 0.1875
+    assert belief_carm._agenda_cred == 0.0625
+    assert belief_carm._agenda_debt == 0.03125
+    assert belief_patr._agenda_cred == 0.0625
+    assert belief_patr._agenda_debt == 0.03125
+    assert (
+        belief_rico._agenda_cred + belief_carm._agenda_cred + belief_patr._agenda_cred
+        == 0.25
+    )
+    assert (
+        belief_rico._agenda_debt + belief_carm._agenda_debt + belief_patr._agenda_debt
+        == 0.25
+    )
+
+
+def test_AgendaUnit_edit_beliefunit_belief_id_CorrectlyCreatesNewPersonID():
+    # GIVEN
+    agenda = agendaunit_shop("prom")
+    rico_text = "rico"
+    agenda.add_partyunit(party_id=rico_text)
+    swim_text = ",swimmers"
+    swim_belief = beliefunit_shop(belief_id=swim_text)
+    swim_belief.set_partylink(partylink=partylink_shop(party_id=rico_text))
+    agenda.set_beliefunit(swim_belief)
+    assert len(agenda._partys) == 1
+    assert len(agenda._beliefs) == 2
+    assert agenda.get_beliefunit(swim_text) != None
+    assert agenda.get_beliefunit(swim_text)._party_mirror is False
+    assert len(agenda.get_beliefunit(swim_text)._partys) == 1
+
+    # WHEN
+    jog_text = ",jog"
+    agenda.edit_beliefunit_belief_id(
+        old_belief_id=swim_text, new_belief_id=jog_text, allow_belief_overwite=False
+    )
+
+    # THEN
+    assert agenda.get_beliefunit(jog_text) != None
+    assert agenda.get_beliefunit(swim_text) is None
+    assert len(agenda._partys) == 1
+    assert len(agenda._beliefs) == 2
+    assert agenda.get_beliefunit(jog_text)._party_mirror is False
+    assert len(agenda.get_beliefunit(jog_text)._partys) == 1
+
+
+def test_AgendaUnit_edit_Beliefunit_belief_id_raiseErrorNewPersonIDPreviouslyExists():
+    # GIVEN
+    agenda = agendaunit_shop("prom")
+    rico_text = "rico"
+    agenda.add_partyunit(party_id=rico_text)
+    swim_text = ",swimmers"
+    agenda.set_beliefunit(beliefunit_shop(belief_id=swim_text))
+    jog_text = ",jog"
+    agenda.set_beliefunit(beliefunit_shop(belief_id=jog_text))
+
+    # WHEN
+    with pytest_raises(Exception) as excinfo:
+        agenda.edit_beliefunit_belief_id(
+            old_belief_id=swim_text,
+            new_belief_id=jog_text,
+            allow_belief_overwite=False,
+        )
     assert (
         str(excinfo.value)
-        == f"Non range-root belief:{a1e1_road} can only be set by range-root belief"
+        == f"Belief '{swim_text}' modify to '{jog_text}' failed since '{jog_text}' exists."
     )
 
 
-def test_AgendaUnit_del_belief_CorrectlyModifiesAttr():
+def test_AgendaUnit_edit_beliefunit_belief_id_CorrectlyMeldPersonIDs():
     # GIVEN
-    x_agenda = examples_get_agenda_with_4_levels()
-    weekday_road = x_agenda.make_l1_road("weekdays")
-    sunday_road = x_agenda.make_road(weekday_road, "Sunday")
-    x_agenda.set_belief(base=weekday_road, pick=sunday_road)
-    sunday_agenda_belief = beliefunit_shop(base=weekday_road, pick=sunday_road)
-    x_oathroot = x_agenda._oathroot
-    assert x_oathroot._beliefunits == {sunday_agenda_belief.base: sunday_agenda_belief}
+    agenda = agendaunit_shop("prom")
+    rico_text = "rico"
+    agenda.add_partyunit(party_id=rico_text)
+    swim_text = ",swimmers"
+    swim_belief = beliefunit_shop(belief_id=swim_text)
+    swim_belief.set_partylink(
+        partylink=partylink_shop(party_id=rico_text, credor_weight=5, debtor_weight=3)
+    )
+    agenda.set_beliefunit(swim_belief)
+    jog_text = ",jog"
+    jog_belief = beliefunit_shop(belief_id=jog_text)
+    jog_belief.set_partylink(
+        partylink=partylink_shop(party_id=rico_text, credor_weight=7, debtor_weight=10)
+    )
+    agenda.set_beliefunit(jog_belief)
+    print(f"{agenda.get_beliefunit(jog_text)._partys.get(rico_text)=}")
+    assert agenda.get_beliefunit(jog_text) != None
 
     # WHEN
-    x_agenda.del_belief(base=weekday_road)
+    agenda.edit_beliefunit_belief_id(
+        old_belief_id=swim_text,
+        new_belief_id=jog_text,
+        allow_belief_overwite=True,
+    )
 
     # THEN
-    assert x_oathroot._beliefunits == {}
+    assert agenda.get_beliefunit(jog_text) != None
+    assert agenda.get_beliefunit(swim_text) is None
+    assert len(agenda._partys) == 1
+    assert len(agenda._beliefs) == 2
+    assert agenda.get_beliefunit(jog_text)._party_mirror is False
+    assert len(agenda.get_beliefunit(jog_text)._partys) == 1
+    assert agenda.get_beliefunit(jog_text)._partys.get(rico_text).credor_weight == 12
+    assert agenda.get_beliefunit(jog_text)._partys.get(rico_text).debtor_weight == 13
 
 
-def test_AgendaUnit_get_oath_list_BeliefHeirsCorrectlyInherited():
+def test_AgendaUnit_edit_beliefunit_belief_id_CorrectlyModifiesBalanceLinks():
+    # GIVEN
+    x_agenda = agendaunit_shop("prom")
+    rico_text = "rico"
+    x_agenda.add_partyunit(party_id=rico_text)
+    swim_text = ",swimmers"
+    swim_beliefunit = beliefunit_shop(belief_id=swim_text)
+    x_agenda.set_beliefunit(swim_beliefunit)
+    outdoor_text = "outdoors"
+    outdoor_road = x_agenda.make_road(x_agenda._owner_id, outdoor_text)
+    camping_text = "camping"
+    camping_road = x_agenda.make_road(outdoor_road, camping_text)
+    x_agenda.add_idea(ideaunit_shop(camping_text), parent_road=outdoor_road)
+
+    camping_idea = x_agenda.get_idea_obj(camping_road)
+    swim_balancelink = balancelink_shop(
+        belief_id=swim_beliefunit.belief_id, credor_weight=5, debtor_weight=3
+    )
+    camping_idea.set_balancelink(swim_balancelink)
+    assert camping_idea._balancelinks.get(swim_text) != None
+    assert camping_idea._balancelinks.get(swim_text).credor_weight == 5
+    assert camping_idea._balancelinks.get(swim_text).debtor_weight == 3
+
+    # WHEN
+    jog_text = ",jog"
+    x_agenda.edit_beliefunit_belief_id(
+        old_belief_id=swim_text, new_belief_id=jog_text, allow_belief_overwite=False
+    )
+
+    # THEN
+    assert camping_idea._balancelinks.get(swim_text) is None
+    assert camping_idea._balancelinks.get(jog_text) != None
+    assert camping_idea._balancelinks.get(jog_text).credor_weight == 5
+    assert camping_idea._balancelinks.get(jog_text).debtor_weight == 3
+
+
+def test_AgendaUnit_edit_beliefunit_belief_id_CorrectlyMeldsBalanceLinesBalanceLinksBalanceHeirs():
+    # GIVEN
+    x_agenda = agendaunit_shop("prom")
+    rico_text = "rico"
+    x_agenda.add_partyunit(party_id=rico_text)
+    swim_text = ",swimmers"
+    swim_beliefunit = beliefunit_shop(belief_id=swim_text)
+    x_agenda.set_beliefunit(swim_beliefunit)
+
+    jog_text = ",jog"
+    jog_beliefunit = beliefunit_shop(belief_id=jog_text)
+    x_agenda.set_beliefunit(jog_beliefunit)
+
+    outdoor_text = "outdoors"
+    outdoor_road = x_agenda.make_road(x_agenda._owner_id, outdoor_text)
+    camping_text = "camping"
+    camping_road = x_agenda.make_road(outdoor_road, camping_text)
+    x_agenda.add_idea(ideaunit_shop(camping_text), parent_road=outdoor_road)
+
+    camping_idea = x_agenda.get_idea_obj(camping_road)
+    swim_balancelink = balancelink_shop(
+        belief_id=swim_beliefunit.belief_id, credor_weight=5, debtor_weight=3
+    )
+    camping_idea.set_balancelink(swim_balancelink)
+    jog_balancelink = balancelink_shop(
+        belief_id=jog_beliefunit.belief_id, credor_weight=7, debtor_weight=10
+    )
+    camping_idea.set_balancelink(jog_balancelink)
+    assert camping_idea._balancelinks.get(swim_text) != None
+    assert camping_idea._balancelinks.get(swim_text).credor_weight == 5
+    assert camping_idea._balancelinks.get(swim_text).debtor_weight == 3
+    assert camping_idea._balancelinks.get(jog_text) != None
+    assert camping_idea._balancelinks.get(jog_text).credor_weight == 7
+    assert camping_idea._balancelinks.get(jog_text).debtor_weight == 10
+
+    # WHEN
+    x_agenda.edit_beliefunit_belief_id(
+        old_belief_id=swim_text, new_belief_id=jog_text, allow_belief_overwite=True
+    )
+
+    # THEN
+    assert camping_idea._balancelinks.get(swim_text) is None
+    assert camping_idea._balancelinks.get(jog_text) != None
+    assert camping_idea._balancelinks.get(jog_text).credor_weight == 12
+    assert camping_idea._balancelinks.get(jog_text).debtor_weight == 13
+
+
+def test_AgendaUnit_add_idea_CreatesMissingBeliefs():
+    # GIVEN
+    bob_text = "Bob"
+    x_agenda = agendaunit_shop(bob_text)
+    casa_road = x_agenda.make_l1_road("casa")
+    new_idea_parent_road = x_agenda.make_road(casa_road, "cleaning")
+    clean_cookery_text = "clean_cookery"
+    clean_cookery_idea = ideaunit_shop(
+        _weight=40, _label=clean_cookery_text, pledge=True
+    )
+
+    family_text = ",family"
+    balancelink_z = balancelink_shop(belief_id=family_text)
+    clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
+    assert len(x_agenda._beliefs) == 0
+    assert x_agenda.get_beliefunit(family_text) is None
+
+    # WHEN
+    x_agenda.add_l1_idea(clean_cookery_idea, create_missing_beliefs=True)
+
+    # THEN
+    assert len(x_agenda._beliefs) == 1
+    assert x_agenda.get_beliefunit(family_text) != None
+    assert x_agenda.get_beliefunit(family_text)._partys in (None, {})
+
+
+def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balancelinks():
+    # GIVEN
+    noa_text = "Noa"
+    x1_agenda = agendaunit_shop(noa_text)
+    xia_text = "Xia"
+    zoa_text = "Zoa"
+    x1_agenda.add_partyunit(party_id=xia_text)
+    x1_agenda.add_partyunit(party_id=zoa_text)
+
+    casa_text = "casa"
+    casa_road = x1_agenda.make_l1_road(casa_text)
+    swim_text = "swim"
+    swim_road = x1_agenda.make_l1_road(swim_text)
+    x1_agenda.add_l1_idea(ideaunit_shop(casa_text))
+    x1_agenda.add_l1_idea(ideaunit_shop(swim_text))
+    x1_agenda.edit_idea_attr(swim_road, balancelink=balancelink_shop(xia_text))
+    x1_agenda.edit_idea_attr(swim_road, balancelink=balancelink_shop(zoa_text))
+    x1_agenda_swim_idea = x1_agenda.get_idea_obj(swim_road)
+    assert len(x1_agenda_swim_idea._balancelinks) == 2
+    x_agenda = agendaunit_shop(noa_text)
+    x_agenda.add_partyunit(party_id=xia_text)
+
+    # WHEN
+    filtered_idea = x_agenda._get_filtered_balancelinks_idea(x1_agenda_swim_idea)
+
+    # THEN
+    assert len(filtered_idea._balancelinks) == 1
+    assert list(filtered_idea._balancelinks.keys()) == [xia_text]
+
+
+def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
+    # GIVEN
+    noa_text = "Noa"
+    x1_agenda = agendaunit_shop(noa_text)
+    xia_text = "Xia"
+    zoa_text = "Zoa"
+    x1_agenda.add_partyunit(party_id=xia_text)
+    x1_agenda.add_partyunit(party_id=zoa_text)
+
+    casa_text = "casa"
+    casa_road = x1_agenda.make_l1_road(casa_text)
+    swim_text = "swim"
+    swim_road = x1_agenda.make_l1_road(swim_text)
+    x1_agenda.add_l1_idea(ideaunit_shop(casa_text))
+    x1_agenda.add_l1_idea(ideaunit_shop(swim_text))
+    x1_agenda.edit_idea_attr(
+        road=swim_road, balancelink=balancelink_shop(belief_id=xia_text)
+    )
+    x1_agenda.edit_idea_attr(
+        road=swim_road, balancelink=balancelink_shop(belief_id=zoa_text)
+    )
+    x1_agenda_swim_idea = x1_agenda.get_idea_obj(swim_road)
+    assert len(x1_agenda_swim_idea._balancelinks) == 2
+
+    # WHEN
+    x_agenda = agendaunit_shop(noa_text)
+    x_agenda.add_partyunit(party_id=xia_text)
+    x_agenda.add_l1_idea(x1_agenda_swim_idea, create_missing_ideas=False)
+
+    # THEN
+    x_agenda_swim_idea = x_agenda.get_idea_obj(swim_road)
+    assert len(x_agenda_swim_idea._balancelinks) == 1
+    assert list(x_agenda_swim_idea._balancelinks.keys()) == [xia_text]
+
+
+def test_AgendaUnit_add_idea_DoesNotOverwriteBeliefs():
+    # GIVEN
+    bob_text = "Bob"
+    bob_agenda = agendaunit_shop(bob_text)
+    casa_road = bob_agenda.make_l1_road("casa")
+    new_idea_parent_road = bob_agenda.make_road(casa_road, "cleaning")
+    clean_cookery_text = "clean_cookery"
+    clean_cookery_idea = ideaunit_shop(
+        _weight=40, _label=clean_cookery_text, pledge=True
+    )
+
+    family_text = ",family"
+    balancelink_z = balancelink_shop(belief_id=family_text)
+    clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
+
+    beliefunit_z = beliefunit_shop(belief_id=family_text)
+    beliefunit_z.set_partylink(partylink=partylink_shop(party_id="ann1"))
+    beliefunit_z.set_partylink(partylink=partylink_shop(party_id="bet1"))
+    bob_agenda.set_beliefunit(y_beliefunit=beliefunit_z)
+
+    # assert len(bob_agenda._beliefs) == 0
+    # assert bob_agenda.get_beliefunit(family_text) is None
+    assert len(bob_agenda._beliefs) == 1
+    assert len(bob_agenda.get_beliefunit(family_text)._partys) == 2
+
+    # WHEN
+    bob_agenda.add_idea(
+        idea_kid=clean_cookery_idea,
+        parent_road=new_idea_parent_road,
+        create_missing_beliefs=True,
+    )
+
+    # THEN
+
+    # assert len(bob_agenda._beliefs) == 1
+    # assert len(bob_agenda.get_beliefunit(family_text)._partys) == 0
+    # beliefunit_z = beliefunit_shop(belief_id=family_text)
+    # beliefunit_z.set_partylink(partylink=partylink_shop(party_id="ann2"))
+    # beliefunit_z.set_partylink(partylink=partylink_shop(party_id="bet2"))
+    # bob_agenda.set_beliefunit(y_beliefunit=beliefunit_z)
+
+    assert len(bob_agenda._beliefs) == 1
+    assert len(bob_agenda.get_beliefunit(family_text)._partys) == 2
+
+
+def test_AgendaUnit_set_beliefunit_create_missing_partys_DoesCreateMissingPartys():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
-    swim_text = "swim"
-    swim_road = bob_agenda.make_l1_road(swim_text)
-    bob_agenda.add_l1_oath(oathunit_shop(swim_text))
-    fast_text = "fast"
-    slow_text = "slow"
-    fast_road = bob_agenda.make_road(swim_road, fast_text)
-    slow_road = bob_agenda.make_road(swim_road, slow_text)
-    bob_agenda.add_oath(oathunit_shop(fast_text), parent_road=swim_road)
-    bob_agenda.add_oath(oathunit_shop(slow_text), parent_road=swim_road)
+    family_text = ",family"
+    anna_text = "anna"
+    beto_text = "beto"
+    beliefunit_z = beliefunit_shop(belief_id=family_text)
+    beliefunit_z.set_partylink(
+        partylink=partylink_shop(party_id=anna_text, credor_weight=3, debtor_weight=7)
+    )
+    beliefunit_z.set_partylink(
+        partylink=partylink_shop(party_id=beto_text, credor_weight=5, debtor_weight=11)
+    )
 
-    earth_text = "earth"
-    earth_road = bob_agenda.make_l1_road(earth_text)
-    bob_agenda.add_l1_oath(oathunit_shop(earth_text))
+    assert beliefunit_z._partys.get(anna_text).credor_weight == 3
+    assert beliefunit_z._partys.get(anna_text).debtor_weight == 7
 
-    swim_oath = bob_agenda.get_oath_obj(swim_road)
-    fast_oath = bob_agenda.get_oath_obj(fast_road)
-    slow_oath = bob_agenda.get_oath_obj(slow_road)
+    assert beliefunit_z._partys.get(beto_text).credor_weight == 5
+    assert beliefunit_z._partys.get(beto_text).debtor_weight == 11
 
-    assert swim_oath._beliefheirs == {}
-    assert fast_oath._beliefheirs == {}
-    assert slow_oath._beliefheirs == {}
+    assert len(bob_agenda._partys) == 0
+    assert len(bob_agenda._beliefs) == 0
 
     # WHEN
-    bob_agenda.set_belief(base=earth_road, pick=earth_road, open=1.0, nigh=5.0)
-    beliefheir_set_range = beliefheir_shop(earth_road, earth_road, 1.0, 5.0)
-    beliefheirs_set_range = {beliefheir_set_range.base: beliefheir_set_range}
-    belief_none_range = beliefheir_shop(earth_road, earth_road, None, None)
-    beliefs_none_range = {belief_none_range.base: belief_none_range}
+    bob_agenda.set_beliefunit(y_beliefunit=beliefunit_z, create_missing_partys=True)
 
     # THEN
-    assert swim_oath._beliefheirs != None
-    assert fast_oath._beliefheirs != None
-    assert slow_oath._beliefheirs != None
-    assert swim_oath._beliefheirs == beliefheirs_set_range
-    assert fast_oath._beliefheirs == beliefheirs_set_range
-    assert slow_oath._beliefheirs == beliefheirs_set_range
-    print(f"{swim_oath._beliefheirs=}")
-    assert len(swim_oath._beliefheirs) == 1
+    assert len(bob_agenda._partys) == 2
+    assert len(bob_agenda._beliefs) == 3
+    assert bob_agenda._partys.get(anna_text).credor_weight == 3
+    assert bob_agenda._partys.get(anna_text).debtor_weight == 7
 
-    # WHEN
-    swim_oath._beliefheirs.get(earth_road).set_range_null()
-
-    # THEN
-    assert swim_oath._beliefheirs == beliefs_none_range
-    assert fast_oath._beliefheirs == beliefheirs_set_range
-    assert slow_oath._beliefheirs == beliefheirs_set_range
-
-    belief_x1 = swim_oath._beliefheirs.get(earth_road)
-    belief_x1.set_range_null()
-    print(type(belief_x1))
-    assert str(type(belief_x1)).find(".reason.BeliefHeir'>")
+    assert bob_agenda._partys.get(beto_text).credor_weight == 5
+    assert bob_agenda._partys.get(beto_text).debtor_weight == 11
 
 
-def test_AgendaUnit_get_oath_list_BeliefUnitCorrectlyTransformsbeliefheir_shop():
+def test_AgendaUnit_set_beliefunit_create_missing_partys_DoesNotReplacePartys():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
-    swim_text = "swim"
-    swim_road = bob_agenda.make_l1_road(swim_text)
-    bob_agenda.add_l1_oath(oathunit_shop(swim_text))
-    swim_oath = bob_agenda.get_oath_obj(swim_road)
+    family_text = ",family"
+    anna_text = "anna"
+    beto_text = "beto"
+    bob_agenda.set_partyunit(
+        partyunit_shop(party_id=anna_text, credor_weight=17, debtor_weight=88)
+    )
+    bob_agenda.set_partyunit(
+        partyunit_shop(party_id=beto_text, credor_weight=46, debtor_weight=71)
+    )
+    beliefunit_z = beliefunit_shop(belief_id=family_text)
+    beliefunit_z.set_partylink(
+        partylink=partylink_shop(party_id=anna_text, credor_weight=3, debtor_weight=7)
+    )
+    beliefunit_z.set_partylink(
+        partylink=partylink_shop(party_id=beto_text, credor_weight=5, debtor_weight=11)
+    )
 
-    fast_text = "fast"
-    slow_text = "slow"
-    bob_agenda.add_oath(oathunit_shop(fast_text), parent_road=swim_road)
-    bob_agenda.add_oath(oathunit_shop(slow_text), parent_road=swim_road)
-
-    earth_text = "earth"
-    earth_road = bob_agenda.make_l1_road(earth_text)
-    bob_agenda.add_l1_oath(oathunit_shop(earth_text))
-
-    assert swim_oath._beliefheirs == {}
+    assert beliefunit_z._partys.get(anna_text).credor_weight == 3
+    assert beliefunit_z._partys.get(anna_text).debtor_weight == 7
+    assert beliefunit_z._partys.get(beto_text).credor_weight == 5
+    assert beliefunit_z._partys.get(beto_text).debtor_weight == 11
+    assert len(bob_agenda._partys) == 2
+    assert bob_agenda._partys.get(anna_text).credor_weight == 17
+    assert bob_agenda._partys.get(anna_text).debtor_weight == 88
+    assert bob_agenda._partys.get(beto_text).credor_weight == 46
+    assert bob_agenda._partys.get(beto_text).debtor_weight == 71
 
     # WHEN
-    bob_agenda.set_belief(base=earth_road, pick=earth_road, open=1.0, nigh=5.0)
+    bob_agenda.set_beliefunit(y_beliefunit=beliefunit_z, create_missing_partys=True)
 
     # THEN
-    first_earthheir = beliefheir_shop(earth_road, earth_road, open=1.0, nigh=5.0)
-    first_earthdict = {first_earthheir.base: first_earthheir}
-    assert swim_oath._beliefheirs == first_earthdict
+    assert len(bob_agenda._partys) == 2
+    assert bob_agenda._partys.get(anna_text).credor_weight == 17
+    assert bob_agenda._partys.get(anna_text).debtor_weight == 88
+    assert bob_agenda._partys.get(beto_text).credor_weight == 46
+    assert bob_agenda._partys.get(beto_text).debtor_weight == 71
+
+
+def test_AgendaUnit_get_beliefunits_dict_ReturnsCorrectObj():
+    # GIVEN
+    bob_agenda = agendaunit_shop("Bob")
+    swim_text = ",swimmers"
+    run_text = ",runners"
+    fly_text = ",flyers"
+    yao_text = "Yao"
+    bob_agenda.set_partyunit(partyunit_shop(yao_text))
+    bob_agenda.set_beliefunit(y_beliefunit=beliefunit_shop(belief_id=swim_text))
+    bob_agenda.set_beliefunit(y_beliefunit=beliefunit_shop(belief_id=run_text))
+    bob_agenda.set_beliefunit(y_beliefunit=beliefunit_shop(belief_id=fly_text))
+    assert len(bob_agenda._beliefs) == 4
 
     # WHEN
-    # earth_curb = beliefunit_shop(base=earth_road, pick=earth_road, open=3.0, nigh=4.0)
-    # swim_y.set_beliefunit(beliefunit=earth_curb) Not sure what this is for. Testing what "set_beliefunit" does with the parameters, but what?
-    bob_agenda.set_belief(base=earth_road, pick=earth_road, open=3.0, nigh=5.0)
+    x_beliefunits_dict = bob_agenda.get_beliefunits_dict()
 
     # THEN
-    after_earthheir = beliefheir_shop(earth_road, earth_road, open=3.0, nigh=5.0)
-    after_earthdict = {after_earthheir.base: after_earthheir}
-    assert swim_oath._beliefheirs == after_earthdict
+    assert x_beliefunits_dict.get(fly_text) != None
+    assert x_beliefunits_dict.get(run_text) != None
+    assert x_beliefunits_dict.get(swim_text) != None
+    assert x_beliefunits_dict.get(yao_text) is None
+    assert len(x_beliefunits_dict) == 3
 
 
-def test_AgendaUnit_get_oath_list_BeliefHeirCorrectlyDeletesBeliefUnit():
+def test_get_partys_relevant_beliefs_ReturnsEmptyDict():
     # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    swim_text = "swim"
-    swim_road = sue_agenda.make_l1_road(swim_text)
-    sue_agenda.add_l1_oath(oathunit_shop(swim_text))
-    fast_text = "fast"
-    slow_text = "slow"
-    sue_agenda.add_oath(oathunit_shop(fast_text), parent_road=swim_road)
-    sue_agenda.add_oath(oathunit_shop(slow_text), parent_road=swim_road)
-    earth_text = "earth"
-    earth_road = sue_agenda.make_l1_road(earth_text)
-    sue_agenda.add_l1_oath(oathunit_shop(earth_text))
+    bob_text = "Bob"
+    agenda_with_partys = agendaunit_shop(bob_text)
 
-    swim_oath = sue_agenda.get_oath_obj(swim_road)
+    sam_text = "sam"
+    wil_text = "wil"
+    agenda_with_partys.set_partyunit(partyunit=partyunit_shop(party_id=bob_text))
+    agenda_with_partys.set_partyunit(partyunit=partyunit_shop(party_id=sam_text))
 
-    first_earthheir = beliefheir_shop(earth_road, earth_road, open=200.0, nigh=500.0)
-    first_earthdict = {first_earthheir.base: first_earthheir}
-
-    assert swim_oath._beliefheirs == {}
+    agenda_with_beliefs = agendaunit_shop()
 
     # WHEN
-    sue_agenda.set_belief(base=earth_road, pick=earth_road, open=200.0, nigh=500.0)
+    print(f"{len(agenda_with_partys._partys)=} {len(agenda_with_beliefs._beliefs)=}")
+    relevant_x = get_partys_relevant_beliefs(
+        agenda_with_beliefs._beliefs, agenda_with_partys._partys
+    )
 
     # THEN
-    assert swim_oath._beliefheirs == first_earthdict
-
-    earth_curb = beliefunit_shop(base=earth_road, pick=earth_road, open=3.0, nigh=4.0)
-    swim_oath.set_beliefunit(beliefunit=earth_curb)
-    sue_agenda.calc_agenda_metrics()
-    assert swim_oath._beliefheirs == first_earthdict
-    assert swim_oath._beliefunits == {}
+    assert relevant_x == {}
 
 
-def test_get_ranged_beliefs():
-    # GIVEN a single ranged belief
-    sue_agenda = agendaunit_shop("Sue")
-    time_text = "time"
-    time_oath = oathunit_shop(time_text, _begin=0, _close=140)
-    sue_agenda.add_l1_oath(time_oath)
-
-    clean_text = "clean"
-    clean_oath = oathunit_shop(clean_text, pledge=True)
-    sue_agenda.add_l1_oath(clean_oath)
-    c_road = sue_agenda.make_l1_road(clean_text)
-    time_road = sue_agenda.make_l1_road(time_text)
-    # sue_agenda.edit_oath_attr(road=c_road, reason_base=time_road, reason_premise=time_road, reason_premise_open=5, reason_premise_nigh=10)
-
-    sue_agenda.set_belief(base=time_road, pick=time_road, open=5, nigh=10)
-    print(f"Given a single ranged belief {sue_agenda._oathroot._beliefunits=}")
-    assert len(sue_agenda._oathroot._beliefunits) == 1
-
-    # WHEN / THEN
-    assert len(sue_agenda._get_rangeroot_beliefunits()) == 1
-
-    # WHEN one ranged belief added
-    place_text = "place_x"
-    place_oath = oathunit_shop(place_text, _begin=600, _close=800)
-    sue_agenda.add_l1_oath(place_oath)
-    place_road = sue_agenda.make_l1_road(place_text)
-    sue_agenda.set_belief(base=place_road, pick=place_road, open=5, nigh=10)
-    print(f"When one ranged belief added {sue_agenda._oathroot._beliefunits=}")
-    assert len(sue_agenda._oathroot._beliefunits) == 2
-
-    # THEN
-    assert len(sue_agenda._get_rangeroot_beliefunits()) == 2
-
-    # WHEN one non-ranged_belief added
-    mood = "mood_x"
-    sue_agenda.add_l1_oath(oathunit_shop(mood))
-    m_road = sue_agenda.make_l1_road(mood)
-    sue_agenda.set_belief(base=m_road, pick=m_road)
-    print(f"When one non-ranged_belief added {sue_agenda._oathroot._beliefunits=}")
-    assert len(sue_agenda._oathroot._beliefunits) == 3
-
-    # THEN
-    assert len(sue_agenda._get_rangeroot_beliefunits()) == 2
-
-
-def test_get_roots_ranged_beliefs():
-    # GIVEN a two ranged beliefs where one is "range-root" get_root_ranged_beliefs returns one "range-root" belief
-    sue_agenda = agendaunit_shop("Sue")
-    time_text = "time"
-    sue_agenda.add_l1_oath(oathunit_shop(time_text, _begin=0, _close=140))
-    time_road = sue_agenda.make_l1_road(time_text)
-    mood_x = "mood_x"
-    sue_agenda.add_l1_oath(oathunit_shop(mood_x))
-    m_x_road = sue_agenda.make_l1_road(mood_x)
-    happy = "happy"
-    sad = "Sad"
-    sue_agenda.add_oath(oathunit_shop(happy), parent_road=m_x_road)
-    sue_agenda.add_oath(oathunit_shop(sad), parent_road=m_x_road)
-    sue_agenda.set_belief(base=time_road, pick=time_road, open=5, nigh=10)
-    sue_agenda.set_belief(base=m_x_road, pick=sue_agenda.make_road(m_x_road, happy))
-    print(
-        f"Given a root ranged belief and non-range belief:\n{sue_agenda._oathroot._beliefunits=}"
-    )
-    assert len(sue_agenda._oathroot._beliefunits) == 2
-
-    # WHEN / THEN
-    assert len(sue_agenda._get_rangeroot_beliefunits()) == 1
-    assert sue_agenda._get_rangeroot_beliefunits()[0].base == time_road
-
-    # a belief who's oath range is defined by numeric_root is not "rangeroot"
-    mirror_x = "mirror_x"
-    sue_agenda.add_l1_oath(oathunit_shop(mirror_x, _numeric_road=time_text))
-    m_x_road = sue_agenda.make_l1_road(mirror_x)
-    sue_agenda.set_belief(base=m_x_road, pick=time_road, open=5, nigh=10)
-    assert len(sue_agenda._oathroot._beliefunits) == 3
-
-    # WHEN / THEN
-    assert len(sue_agenda._get_rangeroot_beliefunits()) == 1
-    assert sue_agenda._get_rangeroot_beliefunits()[0].base == time_road
-
-
-def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario1():
-    sue_agenda = agendaunit_shop("Sue")
-    # # the action
-    # clean = "clean"
-    # sue_agenda.add_oath(oathunit_shop(clean, pledge=True))
-
-    time_text = "time"
-    sue_agenda.add_l1_oath(oathunit_shop(time_text, _begin=0, _close=140))
-    time_road = sue_agenda.make_l1_road(time_text)
-    age1st_text = "age1st"
-    age2nd_text = "age2nd"
-    age3rd_text = "age3rd"
-    age4th_text = "age4th"
-    age5th_text = "age5th"
-    age6th_text = "age6th"
-    age7th_text = "age7th"
-    age1st_oath = oathunit_shop(age1st_text, _begin=0, _close=20)
-    age2nd_oath = oathunit_shop(age2nd_text, _begin=20, _close=40)
-    age3rd_oath = oathunit_shop(age3rd_text, _begin=40, _close=60)
-    age4th_oath = oathunit_shop(age4th_text, _begin=60, _close=80)
-    age5th_oath = oathunit_shop(age5th_text, _begin=80, _close=100)
-    age6th_oath = oathunit_shop(age6th_text, _begin=100, _close=120)
-    age7th_oath = oathunit_shop(age7th_text, _begin=120, _close=140)
-    sue_agenda.add_oath(age1st_oath, parent_road=time_road)
-    sue_agenda.add_oath(age2nd_oath, parent_road=time_road)
-    sue_agenda.add_oath(age3rd_oath, parent_road=time_road)
-    sue_agenda.add_oath(age4th_oath, parent_road=time_road)
-    sue_agenda.add_oath(age5th_oath, parent_road=time_road)
-    sue_agenda.add_oath(age6th_oath, parent_road=time_road)
-    sue_agenda.add_oath(age7th_oath, parent_road=time_road)
-
-    # set for instant moment in 3rd age
-    sue_agenda.set_belief(base=time_road, pick=time_road, open=45, nigh=45)
-    lemma_dict = sue_agenda._get_lemma_beliefunits()
-    print(f"{len(lemma_dict)=}")
-    print(f"{lemma_dict=}")
-    assert len(lemma_dict) == 7
-    age1st_lemma = lemma_dict[sue_agenda.make_road(time_road, age1st_text)]
-    age2nd_lemma = lemma_dict[sue_agenda.make_road(time_road, age2nd_text)]
-    age3rd_lemma = lemma_dict[sue_agenda.make_road(time_road, age3rd_text)]
-    age4th_lemma = lemma_dict[sue_agenda.make_road(time_road, age4th_text)]
-    age5th_lemma = lemma_dict[sue_agenda.make_road(time_road, age5th_text)]
-    age6th_lemma = lemma_dict[sue_agenda.make_road(time_road, age6th_text)]
-    age7th_lemma = lemma_dict[sue_agenda.make_road(time_road, age7th_text)]
-    assert age1st_lemma.open is None
-    assert age2nd_lemma.open is None
-    assert age3rd_lemma.open == 45
-    assert age4th_lemma.open is None
-    assert age5th_lemma.open is None
-    assert age6th_lemma.open is None
-    assert age7th_lemma.open is None
-    assert age1st_lemma.nigh is None
-    assert age2nd_lemma.nigh is None
-    assert age3rd_lemma.nigh == 45
-    assert age4th_lemma.nigh is None
-    assert age5th_lemma.nigh is None
-    assert age6th_lemma.nigh is None
-    assert age7th_lemma.nigh is None
-
-
-def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario2():
-    sue_agenda = agendaunit_shop("Sue")
-    # # the action
-    # clean = "clean"
-    # sue_agenda.add_oath(oathunit_shop(clean, pledge=True))
-
-    time_text = "time"
-    time_oath = oathunit_shop(time_text, _begin=0, _close=140)
-    time_road = sue_agenda.make_l1_road(time_text)
-    sue_agenda.add_l1_oath(time_oath)
-    age1st_text = "age1st"
-    age2nd_text = "age2nd"
-    age3rd_text = "age3rd"
-    age4th_text = "age4th"
-    age5th_text = "age5th"
-    age6th_text = "age6th"
-    age7th_text = "age7th"
-    age1st_oath = oathunit_shop(age1st_text, _begin=0, _close=20)
-    age2nd_oath = oathunit_shop(age2nd_text, _begin=20, _close=40)
-    age3rd_oath = oathunit_shop(age3rd_text, _begin=40, _close=60)
-    age4th_oath = oathunit_shop(age4th_text, _begin=60, _close=80)
-    age5th_oath = oathunit_shop(age5th_text, _begin=80, _close=100)
-    age6th_oath = oathunit_shop(age6th_text, _begin=100, _close=120)
-    age7th_oath = oathunit_shop(age7th_text, _begin=120, _close=140)
-    sue_agenda.add_oath(age1st_oath, parent_road=time_road)
-    sue_agenda.add_oath(age2nd_oath, parent_road=time_road)
-    sue_agenda.add_oath(age3rd_oath, parent_road=time_road)
-    sue_agenda.add_oath(age4th_oath, parent_road=time_road)
-    sue_agenda.add_oath(age5th_oath, parent_road=time_road)
-    sue_agenda.add_oath(age6th_oath, parent_road=time_road)
-    sue_agenda.add_oath(age7th_oath, parent_road=time_road)
-
-    # set for instant moment in 3rd age
-    sue_agenda.set_belief(base=time_road, pick=time_road, open=35, nigh=65)
-    lemma_dict = sue_agenda._get_lemma_beliefunits()
-    assert len(lemma_dict) == 7
-    age1st_lemma = lemma_dict[sue_agenda.make_road(time_road, age1st_text)]
-    age2nd_lemma = lemma_dict[sue_agenda.make_road(time_road, age2nd_text)]
-    age3rd_lemma = lemma_dict[sue_agenda.make_road(time_road, age3rd_text)]
-    age4th_lemma = lemma_dict[sue_agenda.make_road(time_road, age4th_text)]
-    age5th_lemma = lemma_dict[sue_agenda.make_road(time_road, age5th_text)]
-    age6th_lemma = lemma_dict[sue_agenda.make_road(time_road, age6th_text)]
-    age7th_lemma = lemma_dict[sue_agenda.make_road(time_road, age7th_text)]
-    assert age1st_lemma.open is None
-    assert age2nd_lemma.open == 35
-    assert age3rd_lemma.open == 40
-    assert age4th_lemma.open == 60
-    assert age5th_lemma.open is None
-    assert age6th_lemma.open is None
-    assert age7th_lemma.open is None
-    assert age1st_lemma.nigh is None
-    assert age2nd_lemma.nigh == 40
-    assert age3rd_lemma.nigh == 60
-    assert age4th_lemma.nigh == 65
-    assert age5th_lemma.nigh is None
-    assert age6th_lemma.nigh is None
-    assert age7th_lemma.nigh is None
-
-
-def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario3():
-    sue_agenda = agendaunit_shop("Sue")
-    # # the action
-    # clean = "clean"
-    # sue_agenda.add_oath(oathunit_shop(clean, pledge=True))
-
-    time_text = "time"
-    time_oath = oathunit_shop(time_text, _begin=0, _close=140)
-    time_road = sue_agenda.make_l1_road(time_text)
-    sue_agenda.add_l1_oath(time_oath)
-    age1st_text = "age1st"
-    age2nd_text = "age2nd"
-    age3rd_text = "age3rd"
-    age4th_text = "age4th"
-    age5th_text = "age5th"
-    age6th_text = "age6th"
-    age7th_text = "age7th"
-    age1st_oath = oathunit_shop(age1st_text, _begin=0, _close=20)
-    age2nd_oath = oathunit_shop(age2nd_text, _begin=20, _close=40)
-    age3rd_oath = oathunit_shop(age3rd_text, _begin=40, _close=60)
-    age4th_oath = oathunit_shop(age4th_text, _begin=60, _close=80)
-    age5th_oath = oathunit_shop(age5th_text, _begin=80, _close=100)
-    age6th_oath = oathunit_shop(age6th_text, _begin=100, _close=120)
-    age7th_oath = oathunit_shop(age7th_text, _begin=120, _close=140)
-    sue_agenda.add_oath(age1st_oath, parent_road=time_road)
-    sue_agenda.add_oath(age2nd_oath, parent_road=time_road)
-    sue_agenda.add_oath(age3rd_oath, parent_road=time_road)
-    sue_agenda.add_oath(age4th_oath, parent_road=time_road)
-    sue_agenda.add_oath(age5th_oath, parent_road=time_road)
-    sue_agenda.add_oath(age6th_oath, parent_road=time_road)
-    sue_agenda.add_oath(age7th_oath, parent_road=time_road)
-
-    a2_road = sue_agenda.make_road(time_road, age2nd_text)
-    a2e1st_text = "a1_era1st"
-    a2e2nd_text = "a1_era2nd"
-    a2e3rd_text = "a1_era3rd"
-    a2e4th_text = "a1_era4th"
-    a2e1st_oath = oathunit_shop(a2e1st_text, _begin=20, _close=30)
-    a2e2nd_oath = oathunit_shop(a2e2nd_text, _begin=30, _close=34)
-    a2e3rd_oath = oathunit_shop(a2e3rd_text, _begin=34, _close=38)
-    a2e4th_oath = oathunit_shop(a2e4th_text, _begin=38, _close=40)
-    sue_agenda.add_oath(a2e1st_oath, parent_road=a2_road)
-    sue_agenda.add_oath(a2e2nd_oath, parent_road=a2_road)
-    sue_agenda.add_oath(a2e3rd_oath, parent_road=a2_road)
-    sue_agenda.add_oath(a2e4th_oath, parent_road=a2_road)
-
-    a3_road = sue_agenda.make_road(time_road, age3rd_text)
-    a3e1st_text = "a3_era1st"
-    a3e2nd_text = "a3_era2nd"
-    a3e3rd_text = "a3_era3rd"
-    a3e4th_text = "a3_era4th"
-    a3e1st_oath = oathunit_shop(a3e1st_text, _begin=40, _close=45)
-    a3e2nd_oath = oathunit_shop(a3e2nd_text, _begin=45, _close=50)
-    a3e3rd_oath = oathunit_shop(a3e3rd_text, _begin=55, _close=58)
-    a3e4th_oath = oathunit_shop(a3e4th_text, _begin=58, _close=60)
-    sue_agenda.add_oath(a3e1st_oath, parent_road=a3_road)
-    sue_agenda.add_oath(a3e2nd_oath, parent_road=a3_road)
-    sue_agenda.add_oath(a3e3rd_oath, parent_road=a3_road)
-    sue_agenda.add_oath(a3e4th_oath, parent_road=a3_road)
-
-    # set for instant moment in 3rd age
-    sue_agenda.set_belief(base=time_road, pick=time_road, open=35, nigh=55)
-    lemma_dict = sue_agenda._get_lemma_beliefunits()
-    assert len(lemma_dict) == 15
-    a2e1st_lemma = lemma_dict[sue_agenda.make_road(a2_road, a2e1st_text)]
-    a2e2nd_lemma = lemma_dict[sue_agenda.make_road(a2_road, a2e2nd_text)]
-    a2e3rd_lemma = lemma_dict[sue_agenda.make_road(a2_road, a2e3rd_text)]
-    a2e4th_lemma = lemma_dict[sue_agenda.make_road(a2_road, a2e4th_text)]
-    a3e1st_lemma = lemma_dict[sue_agenda.make_road(a3_road, a3e1st_text)]
-    a3e2nd_lemma = lemma_dict[sue_agenda.make_road(a3_road, a3e2nd_text)]
-    a3e3rd_lemma = lemma_dict[sue_agenda.make_road(a3_road, a3e3rd_text)]
-    a3e4th_lemma = lemma_dict[sue_agenda.make_road(a3_road, a3e4th_text)]
-    assert a2e1st_lemma.open is None
-    assert a2e2nd_lemma.open is None
-    assert a2e3rd_lemma.open == 35
-    assert a2e4th_lemma.open == 38
-    assert a3e1st_lemma.open == 40
-    assert a3e2nd_lemma.open == 45
-    assert a3e3rd_lemma.open is None
-    assert a3e4th_lemma.open is None
-    assert a2e1st_lemma.nigh is None
-    assert a2e2nd_lemma.nigh is None
-    assert a2e3rd_lemma.nigh == 38
-    assert a2e4th_lemma.nigh == 40
-    assert a3e1st_lemma.nigh == 45
-    assert a3e2nd_lemma.nigh == 50
-    assert a3e3rd_lemma.nigh is None
-    assert a3e4th_lemma.nigh is None
-
-
-def test_create_lemma_beliefs_CorrectlyCreates1stLevelLemmaBelief_Scenario4():
-    sue_agenda = agendaunit_shop("Sue")
-    arsub1 = "descending_subsecction1"
-    arsub1_oath = oathunit_shop(arsub1, _begin=0, _close=140)
-    as1_road = sue_agenda.make_l1_road(arsub1)
-    sue_agenda.add_l1_oath(arsub1_oath)
-    # range-root oath has range_source_road
-    time_text = "time"
-    time_oath = oathunit_shop(
-        time_text, _begin=0, _close=140, _range_source_road=as1_road
-    )
-    sue_agenda.add_l1_oath(time_oath)
-
-    arsub2 = "descending_subsecction2"
-    arsub2_oath = oathunit_shop(arsub2, _begin=0, _close=20)
-    as2_road = sue_agenda.make_l1_road(arsub2)
-    sue_agenda.add_l1_oath(arsub2_oath)
-
-    # non-range-root child oath has range_source_road
-    time_road = sue_agenda.make_l1_road(time_text)
-    age1st = "age1st"
-    age1st_oath = oathunit_shop(
-        age1st, _begin=0, _close=20, _range_source_road=as2_road
-    )
-    sue_agenda.add_oath(age1st_oath, parent_road=time_road)
-
-    # set for instant moment in 3rd age
-    sue_agenda.set_belief(base=time_road, pick=time_road, open=35, nigh=55)
-    lemma_dict = sue_agenda._get_lemma_beliefunits()
-    assert len(lemma_dict) == 3
-    a1_lemma = lemma_dict[sue_agenda.make_road(time_road, age1st)]
-    as1_lemma = lemma_dict[as1_road]
-    as2_lemma = lemma_dict[as2_road]
-    assert a1_lemma.open is None
-    assert as1_lemma.open == 35
-    assert as2_lemma.open is None
-    assert a1_lemma.nigh is None
-    assert as1_lemma.nigh == 55
-    assert as2_lemma.nigh is None
-
-
-def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario4_1():
-    sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_time_hreg_oaths(c400_count=7)
-    time_road = sue_agenda.make_l1_road("time")
-    jajatime_road = sue_agenda.make_road(time_road, "jajatime")
-    timetech_road = sue_agenda.make_road(time_road, "tech")
-    sue_agenda.set_belief(jajatime_road, jajatime_road, open=1500, nigh=1500)
-    lhu = sue_agenda._get_lemma_beliefunits()
-
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].open == 1500
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].nigh == 1500
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open > 0
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open < 1
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh > 0
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh < 1
-    assert lhu[sue_agenda.make_road(jajatime_road, "days")].open >= 1
-    assert lhu[sue_agenda.make_road(jajatime_road, "days")].open <= 2
-    assert lhu[sue_agenda.make_road(jajatime_road, "days")].nigh >= 1
-    assert lhu[sue_agenda.make_road(jajatime_road, "days")].nigh <= 2
-    assert lhu[sue_agenda.make_road(jajatime_road, "day")].open == 60
-    assert lhu[sue_agenda.make_road(jajatime_road, "day")].nigh == 60
-    assert lhu[sue_agenda.make_road(jajatime_road, "week")].open == 1500
-    assert int(lhu[sue_agenda.make_road(jajatime_road, "week")].nigh) == 1500
-    assert lhu[sue_agenda.make_road(timetech_road, "week")].open == 1500
-    assert int(lhu[sue_agenda.make_road(timetech_road, "week")].nigh) == 1500
-
-
-def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario5():
-    sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_time_hreg_oaths(c400_count=7)
-    time_road = sue_agenda.make_l1_road("time")
-    timetech_road = sue_agenda.make_road(time_road, "tech")
-    jajatime_road = sue_agenda.make_road(time_road, "jajatime")
-    sue_agenda.set_belief(jajatime_road, jajatime_road, 1500, nigh=1063954002)
-    lhu = sue_agenda._get_lemma_beliefunits()
-
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].open == 0
-    assert (
-        lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].nigh == 210379680
-    )
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open > 0
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open < 1
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh > 5
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh < 6
-    lemma_days = lhu[sue_agenda.make_road(jajatime_road, "days")]
-    assert int(lemma_days.open) == 1  # 0 / 1440
-    assert int(lemma_days.nigh) == 738856  # 1063953183 / 1440
-    lemma_day = lhu[sue_agenda.make_road(jajatime_road, "day")]
-    assert lemma_day.open == 0  # 0 / 1440
-    assert lemma_day.nigh == 1440  # 1362  # 1063953183 / 1440
-    lemma_jajatime_week = lhu[sue_agenda.make_road(jajatime_road, "week")]
-    assert lemma_jajatime_week.open == 0  # 0 / 1440
-    assert int(lemma_jajatime_week.nigh) == 10080  # 1063953183 / 1440
-    lemma_timetech_week = lhu[sue_agenda.make_road(jajatime_road, "week")]
-    assert lemma_timetech_week.open == 0  # 0 / 1440
-    assert int(lemma_timetech_week.nigh) == 10080  # 1063953183 / 1440
-
-
-def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario6():
-    sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_time_hreg_oaths(c400_count=7)
-    time_road = sue_agenda.make_l1_road("time")
-    jajatime_road = sue_agenda.make_road(time_road, "jajatime")
-    sue_agenda.set_belief(jajatime_road, jajatime_road, 1063954000, nigh=1063954002)
-    lhu = sue_agenda._get_lemma_beliefunits()
-
-    assert (
-        lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].open == 12055600.0
-    )
-    assert (
-        lhu[sue_agenda.make_road(jajatime_road, "400 year segment")].nigh == 12055602.0
-    )
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open > 5
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].open < 6
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh > 5
-    assert lhu[sue_agenda.make_road(jajatime_road, "400 year segments")].nigh < 6
-    lemma_days = lhu[sue_agenda.make_road(jajatime_road, "days")]
-    assert int(lemma_days.open) == 738856  # 1063954000 / 1440
-    assert int(lemma_days.nigh) == 738856  # 1063954000 / 1440
-    lemma_day = lhu[sue_agenda.make_road(jajatime_road, "day")]
-    assert lemma_day.open == 1360  # 0 / 1440
-    assert int(lemma_day.nigh) == 1362  # 1063953183 / 1440
-
-
-def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario7():
+def test_get_partys_relevant_beliefs_Returns2SinglePartyBeliefs():
     # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_time_hreg_oaths(c400_count=7)
-    time_road = sue_agenda.make_l1_road("time")
-    timetech_road = sue_agenda.make_road(time_road, "tech")
-    techweek_road = sue_agenda.make_road(timetech_road, "week")
-    jajatime_road = sue_agenda.make_road(time_road, "jajatime")
+    bob_text = "Bob"
+    sam_text = "Sam"
+    wil_text = "Wil"
+    agenda_3beliefs = agendaunit_shop(bob_text)
+    agenda_3beliefs.set_partyunit(partyunit=partyunit_shop(party_id=bob_text))
+    agenda_3beliefs.set_partyunit(partyunit=partyunit_shop(party_id=sam_text))
+    agenda_3beliefs.set_partyunit(partyunit=partyunit_shop(party_id=wil_text))
 
-    # WHEN minute range that should be Thursday to Monday midnight
-    sue_agenda.set_belief(jajatime_road, jajatime_road, 1063951200, nigh=1063956960)
-    lhu = sue_agenda._get_lemma_beliefunits()
-
-    # THEN
-    week_open = lhu[sue_agenda.make_road(jajatime_road, "week")].open
-    week_nigh = lhu[sue_agenda.make_road(jajatime_road, "week")].nigh
-    week_text = "week"
-    print(
-        f"for {sue_agenda.make_road(jajatime_road,week_text)}: {week_open=} {week_nigh=}"
-    )
-    assert lhu[sue_agenda.make_road(jajatime_road, "week")].open == 7200
-    assert lhu[sue_agenda.make_road(jajatime_road, "week")].nigh == 2880
-
-    week_open = lhu[sue_agenda.make_road(timetech_road, "week")].open
-    week_nigh = lhu[sue_agenda.make_road(timetech_road, "week")].nigh
-    print(
-        f"for {sue_agenda.make_road(timetech_road,week_text)}: {week_open=} {week_nigh=}"
-    )
-    assert lhu[sue_agenda.make_road(timetech_road, "week")].open == 7200
-    assert lhu[sue_agenda.make_road(timetech_road, "week")].nigh == 2880
-    print(f"{techweek_road=}")
-    print(lhu[techweek_road])
-    print(lhu[sue_agenda.make_road(techweek_road, "Thursday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Friday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Saturday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Sunday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Monday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Tuesday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Wednesday")])
-
-
-def test_create_lemma_beliefs_CorrectlyCreatesNthLevelLemmaBelief_Scenario8():
-    # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_time_hreg_oaths(c400_count=7)
-    time_road = sue_agenda.make_l1_road("time")
-    timetech_road = sue_agenda.make_road(time_road, "tech")
-    techweek_road = sue_agenda.make_road(timetech_road, "week")
-    jajatime_road = sue_agenda.make_road(time_road, "jajatime")
-
-    # WHEN minute range that should be Thursday to Monday midnight
-    sue_agenda.set_belief(jajatime_road, jajatime_road, 1063951200, nigh=1063951200)
-    lhu = sue_agenda._get_lemma_beliefunits()
-
-    # THEN
-    week_open = lhu[techweek_road].open
-    week_nigh = lhu[techweek_road].nigh
-    print(f"for {techweek_road}: {week_open=} {week_nigh=}")
-    assert lhu[techweek_road].open == 7200
-    assert lhu[techweek_road].nigh == 7200
-
-    week_open = lhu[sue_agenda.make_road(timetech_road, "week")].open
-    week_nigh = lhu[sue_agenda.make_road(timetech_road, "week")].nigh
-    week_text = "week"
-    print(
-        f"for {sue_agenda.make_road(timetech_road,week_text)}: {week_open=} {week_nigh=}"
-    )
-    assert lhu[sue_agenda.make_road(timetech_road, "week")].open == 7200
-    assert lhu[sue_agenda.make_road(timetech_road, "week")].nigh == 7200
-    print(lhu[techweek_road])
-    print(lhu[sue_agenda.make_road(techweek_road, "Thursday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Friday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Saturday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Sunday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Monday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Tuesday")])
-    print(lhu[sue_agenda.make_road(techweek_road, "Wednesday")])
-
-
-def test_AgendaUnit_set_belief_create_missing_oaths_CreatesBaseAndBelief():
-    # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    situations_text = "situations"
-    situations_road = sue_agenda.make_l1_road(situations_text)
-    climate_text = "climate"
-    climate_road = sue_agenda.make_road(situations_road, climate_text)
-    assert sue_agenda._oathroot.get_kid(situations_text) is None
+    agenda_2partys = agendaunit_shop(bob_text)
+    agenda_2partys.set_partyunit(partyunit=partyunit_shop(party_id=bob_text))
+    agenda_2partys.set_partyunit(partyunit=partyunit_shop(party_id=sam_text))
 
     # WHEN
-    sue_agenda.set_belief(situations_road, climate_road, create_missing_oaths=True)
+    print(f"{len(agenda_2partys._partys)=} {len(agenda_3beliefs._beliefs)=}")
+    mrg_x = get_partys_relevant_beliefs(
+        agenda_3beliefs._beliefs, agenda_2partys._partys
+    )
 
     # THEN
-    assert sue_agenda._oathroot.get_kid(situations_text) != None
-    assert sue_agenda.get_oath_obj(situations_road) != None
-    assert sue_agenda.get_oath_obj(climate_road) != None
+    assert mrg_x == {bob_text: {bob_text: -1}, sam_text: {sam_text: -1}}
 
 
-def test_AgendaUnit_get_belief_ReturnsBeliefUnit():
+def test_get_party_relevant_beliefs_ReturnsCorrectDict():
     # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    situations_text = "situations"
-    situations_road = sue_agenda.make_l1_road(situations_text)
-    climate_text = "climate"
-    climate_road = sue_agenda.make_road(situations_road, climate_text)
-    sue_agenda.set_belief(situations_road, climate_road, create_missing_oaths=True)
+    jes_text = "Jessi"
+    jes_agenda = agendaunit_shop(jes_text)
+    bob_text = "Bob"
+    jes_agenda.set_partyunit(partyunit_shop(party_id=jes_text))
+    jes_agenda.set_partyunit(partyunit_shop(party_id=bob_text))
+
+    hike_text = "hikers"
+    jes_agenda.set_beliefunit(beliefunit_shop(belief_id=hike_text))
+    hike_belief = jes_agenda.get_beliefunit(hike_text)
+    hike_belief.set_partylink(partylink_shop(bob_text))
 
     # WHEN
-    generated_situations_base = sue_agenda.get_belief(situations_road)
+    noa_text = "Noa"
+    noa_mrg = get_party_relevant_beliefs(jes_agenda._beliefs, noa_text)
 
     # THEN
-    static_situations_base = sue_agenda._oathroot._beliefunits.get(situations_road)
-    assert generated_situations_base == static_situations_base
+    assert noa_mrg == {}
+
+
+def test_get_party_relevant_beliefs_ReturnsCorrectDict():
+    # GIVEN
+    jes_text = "Jessi"
+    jes_agenda = agendaunit_shop(jes_text)
+    bob_text = "Bob"
+    noa_text = "Noa"
+    eli_text = "Eli"
+    jes_agenda.set_partyunit(partyunit_shop(party_id=jes_text))
+    jes_agenda.set_partyunit(partyunit_shop(party_id=bob_text))
+    jes_agenda.set_partyunit(partyunit_shop(party_id=noa_text))
+    jes_agenda.set_partyunit(partyunit_shop(party_id=eli_text))
+
+    swim_text = ",swimmers"
+    jes_agenda.set_beliefunit(beliefunit_shop(belief_id=swim_text))
+    swim_belief = jes_agenda.get_beliefunit(swim_text)
+    swim_belief.set_partylink(partylink_shop(bob_text))
+
+    hike_text = ",hikers"
+    jes_agenda.set_beliefunit(beliefunit_shop(belief_id=hike_text))
+    hike_belief = jes_agenda.get_beliefunit(hike_text)
+    hike_belief.set_partylink(partylink_shop(bob_text))
+    hike_belief.set_partylink(partylink_shop(noa_text))
+
+    hunt_text = ",hunters"
+    jes_agenda.set_beliefunit(beliefunit_shop(belief_id=hunt_text))
+    hike_belief = jes_agenda.get_beliefunit(hunt_text)
+    hike_belief.set_partylink(partylink_shop(noa_text))
+    hike_belief.set_partylink(partylink_shop(eli_text))
+
+    # WHEN
+    print(f"{len(jes_agenda._partys)=} {len(jes_agenda._beliefs)=}")
+    bob_mrg = get_party_relevant_beliefs(jes_agenda._beliefs, bob_text)
+
+    # THEN
+    assert bob_mrg == {bob_text: -1, swim_text: -1, hike_text: -1}

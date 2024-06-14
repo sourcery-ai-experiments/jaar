@@ -5,9 +5,9 @@ from src.agenda.party import (
     partyunit_shop,
     PartyUnitExternalMetrics,
 )
-from src.agenda.idea import (
-    IdeaID,
-    ideaunit_shop,
+from src.agenda.belief import (
+    BeliefID,
+    beliefunit_shop,
     balancelink_shop,
     get_intersection_of_partys,
 )
@@ -16,7 +16,7 @@ from src.agenda.examples.example_agendas import (
     agenda_v001_with_large_intent as examples_agenda_v001_with_large_intent,
 )
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
-from src.agenda.oath import oathunit_shop, OathUnit
+from src.agenda.idea import ideaunit_shop, IdeaUnit
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
 from copy import deepcopy as copy_deepcopy
@@ -50,13 +50,13 @@ def test_examples_agenda_v001_has_partys():
     assert len(yao_agenda._partys) == 22
 
 
-def test_AgendaUnit_set_party_CorrectlySets_partys_ideas():
+def test_AgendaUnit_set_party_CorrectlySets_partys_beliefs():
     # GIVEN
     x_planck = 0.5
     yao_agenda = agendaunit_shop("Yao", _planck=x_planck)
     yao_agenda.calc_agenda_metrics()
     assert len(yao_agenda._partys) == 0
-    assert len(yao_agenda._ideas) == 0
+    assert len(yao_agenda._beliefs) == 0
 
     # WHEN
     rico_text = "rico"
@@ -69,17 +69,23 @@ def test_AgendaUnit_set_party_CorrectlySets_partys_ideas():
     # THEN
     assert yao_agenda._partys.get(rico_text)._planck == x_planck
     assert len(yao_agenda._partys) == 3
-    assert len(yao_agenda._ideas) == 3
-    assert yao_agenda._ideas["rico"]._party_mirror == True
+    assert len(yao_agenda._beliefs) == 3
+    assert yao_agenda._beliefs["rico"]._party_mirror == True
 
     # WHEN
-    rico_idea = rico_text
-    carm_idea = carm_text
-    patr_idea = patr_text
-    yao_agenda._oathroot.set_balancelink(balancelink_shop(rico_idea, credor_weight=10))
-    yao_agenda._oathroot.set_balancelink(balancelink_shop(carm_idea, credor_weight=10))
-    yao_agenda._oathroot.set_balancelink(balancelink_shop(patr_idea, credor_weight=10))
-    assert len(yao_agenda._oathroot._balancelinks) == 3
+    rico_belief = rico_text
+    carm_belief = carm_text
+    patr_belief = patr_text
+    yao_agenda._idearoot.set_balancelink(
+        balancelink_shop(rico_belief, credor_weight=10)
+    )
+    yao_agenda._idearoot.set_balancelink(
+        balancelink_shop(carm_belief, credor_weight=10)
+    )
+    yao_agenda._idearoot.set_balancelink(
+        balancelink_shop(patr_belief, credor_weight=10)
+    )
+    assert len(yao_agenda._idearoot._balancelinks) == 3
 
 
 def test_AgendaUnit_add_partyunit_CorrectlySets_partys():
@@ -97,8 +103,8 @@ def test_AgendaUnit_add_partyunit_CorrectlySets_partys():
 
     # THEN
     assert len(yao_agenda._partys) == 3
-    assert len(yao_agenda._ideas) == 3
-    assert yao_agenda.get_ideaunit(rico_text)._party_mirror == True
+    assert len(yao_agenda._beliefs) == 3
+    assert yao_agenda.get_beliefunit(rico_text)._party_mirror == True
     assert yao_agenda._partys.get(patr_text).credor_weight == 17
     assert yao_agenda._partys.get(carm_text).debtor_weight == 5
     assert yao_agenda._partys.get(patr_text)._planck == x_planck
@@ -119,15 +125,15 @@ def test_AgendaUnit_party_exists_ReturnsObj():
     assert bob_agenda.party_exists(yao_text)
 
 
-def test_AgendaUnit_set_party_CorrectlyUpdate_party_mirror_IdeaUnit():
+def test_AgendaUnit_set_party_CorrectlyUpdate_party_mirror_BeliefUnit():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"
     before_rico_credor = 7
     before_rico_debtor = 17
     yao_agenda.add_partyunit(rico_text, before_rico_credor, before_rico_debtor)
-    rico_ideaunit = yao_agenda.get_ideaunit(rico_text)
-    rico_partylink = rico_ideaunit.get_partylink(rico_text)
+    rico_beliefunit = yao_agenda.get_beliefunit(rico_text)
+    rico_partylink = rico_beliefunit.get_partylink(rico_text)
     assert rico_partylink.credor_weight != before_rico_credor
     assert rico_partylink.debtor_weight != before_rico_debtor
     assert rico_partylink.credor_weight == 1
@@ -216,19 +222,19 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyLinkAgendaCredAndDebt(
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(rico_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(carm_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(patr_text)))
-    bl_rico = balancelink_shop(idea_id=rico_text, credor_weight=20, debtor_weight=40)
-    bl_carm = balancelink_shop(idea_id=carm_text, credor_weight=10, debtor_weight=5)
-    bl_patr = balancelink_shop(idea_id=patr_text, credor_weight=10, debtor_weight=5)
-    yao_agenda._oathroot.set_balancelink(balancelink=bl_rico)
-    yao_agenda._oathroot.set_balancelink(balancelink=bl_carm)
-    yao_agenda._oathroot.set_balancelink(balancelink=bl_patr)
+    bl_rico = balancelink_shop(belief_id=rico_text, credor_weight=20, debtor_weight=40)
+    bl_carm = balancelink_shop(belief_id=carm_text, credor_weight=10, debtor_weight=5)
+    bl_patr = balancelink_shop(belief_id=patr_text, credor_weight=10, debtor_weight=5)
+    yao_agenda._idearoot.set_balancelink(balancelink=bl_rico)
+    yao_agenda._idearoot.set_balancelink(balancelink=bl_carm)
+    yao_agenda._idearoot.set_balancelink(balancelink=bl_patr)
 
-    rico_ideaunit = yao_agenda.get_ideaunit(rico_text)
-    carm_ideaunit = yao_agenda.get_ideaunit(carm_text)
-    patr_ideaunit = yao_agenda.get_ideaunit(patr_text)
-    rico_partylink = rico_ideaunit._partys.get(rico_text)
-    carm_partylink = carm_ideaunit._partys.get(carm_text)
-    patr_partylink = patr_ideaunit._partys.get(patr_text)
+    rico_beliefunit = yao_agenda.get_beliefunit(rico_text)
+    carm_beliefunit = yao_agenda.get_beliefunit(carm_text)
+    patr_beliefunit = yao_agenda.get_beliefunit(patr_text)
+    rico_partylink = rico_beliefunit._partys.get(rico_text)
+    carm_partylink = carm_beliefunit._partys.get(carm_text)
+    patr_partylink = patr_beliefunit._partys.get(patr_text)
     rico_partylink._agenda_cred is None
     rico_partylink._agenda_debt is None
     carm_partylink._agenda_cred is None
@@ -236,8 +242,8 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyLinkAgendaCredAndDebt(
     patr_partylink._agenda_cred is None
     patr_partylink._agenda_debt is None
 
-    # for idea in yao_agenda._ideas.values():
-    #     for partylink in idea._partys.values():
+    # for belief in yao_agenda._beliefs.values():
+    #     for partylink in belief._partys.values():
     #         assert partylink._agenda_cred is None
     #         assert partylink._agenda_debt is None
 
@@ -245,7 +251,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyLinkAgendaCredAndDebt(
 
     # for balancelink in yao_agenda._balanceheirs.values():
     #     print(
-    #         f"{yao_agenda._agenda_importance=} {balancelink.idea_id=} {balancelink._agenda_cred=} {balancelink._agenda_debt=}"
+    #         f"{yao_agenda._agenda_importance=} {balancelink.belief_id=} {balancelink._agenda_cred=} {balancelink._agenda_debt=}"
     #     )
 
     assert rico_partylink._agenda_cred == 0.5
@@ -257,16 +263,16 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyLinkAgendaCredAndDebt(
 
     # partylink_agenda_cred_sum = 0.0
     # partylink_agenda_debt_sum = 0.0
-    # for idea in yao_agenda._ideas.values():
-    #     # print(f"{idea.idea_id=} {idea._partys=}")
+    # for belief in yao_agenda._beliefs.values():
+    #     # print(f"{belief.belief_id=} {belief._partys=}")
 
-    #     for partylink in idea._partys.values():
+    #     for partylink in belief._partys.values():
     #         assert partylink._agenda_cred != None
     #         assert partylink._agenda_cred in [0.25, 0.5]
     #         assert partylink._agenda_debt != None
     #         assert partylink._agenda_debt in [0.8, 0.1]
     #         # print(
-    #         #     f"{idea.idea_id=} {partylink._agenda_importance=} {idea._agenda_importance=}"
+    #         #     f"{belief.belief_id=} {partylink._agenda_importance=} {belief._agenda_importance=}"
     #         # )
     #         partylink_agenda_cred_sum += partylink._agenda_cred
     #         partylink_agenda_debt_sum += partylink._agenda_debt
@@ -291,16 +297,16 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyLinkAgendaCredAndDebt(
     # WHEN another action, check metrics are as expected
     selena_text = "selena"
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(selena_text)))
-    yao_agenda._oathroot.set_balancelink(
+    yao_agenda._idearoot.set_balancelink(
         balancelink=balancelink_shop(
-            idea_id=IdeaID(selena_text), credor_weight=20, debtor_weight=13
+            belief_id=BeliefID(selena_text), credor_weight=20, debtor_weight=13
         )
     )
     yao_agenda.calc_agenda_metrics()
 
     # THEN
-    selena_ideaunit = yao_agenda.get_ideaunit(selena_text)
-    selena_partylink = selena_ideaunit._partys.get(selena_text)
+    selena_beliefunit = yao_agenda.get_beliefunit(selena_text)
+    selena_partylink = selena_beliefunit._partys.get(selena_text)
 
     assert rico_partylink._agenda_cred != 0.25
     assert rico_partylink._agenda_debt != 0.8
@@ -314,16 +320,16 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyLinkAgendaCredAndDebt(
     # partylink_agenda_cred_sum = 0.0
     # partylink_agenda_debt_sum = 0.0
 
-    # for idea in yao_agenda._ideas.values():
-    #     # print(f"{idea.idea_id=} {idea._partys=}")
+    # for belief in yao_agenda._beliefs.values():
+    #     # print(f"{belief.belief_id=} {belief._partys=}")
 
-    #     for partylink in idea._partys.values():
+    #     for partylink in belief._partys.values():
     #         assert partylink._agenda_cred != None
     #         assert partylink._agenda_cred not in [0.25, 0.5]
     #         assert partylink._agenda_debt != None
     #         assert partylink._agenda_debt not in [0.8, 0.1]
     #         # print(
-    #         #     f"{idea.idea_id=} {partylink._agenda_importance=} {idea._agenda_importance=}"
+    #         #     f"{belief.belief_id=} {partylink._agenda_importance=} {belief._agenda_importance=}"
     #         # )
     #         partylink_agenda_cred_sum += partylink._agenda_cred
     #         partylink_agenda_debt_sum += partylink._agenda_debt
@@ -360,19 +366,19 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance()
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     swim_text = "swim"
-    yao_agenda.add_l1_oath(oathunit_shop(swim_text))
+    yao_agenda.add_l1_idea(ideaunit_shop(swim_text))
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(rico_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(carm_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(patr_text)))
-    bl_rico = balancelink_shop(idea_id=rico_text, credor_weight=20, debtor_weight=40)
-    bl_carm = balancelink_shop(idea_id=carm_text, credor_weight=10, debtor_weight=5)
-    bl_patr = balancelink_shop(idea_id=patr_text, credor_weight=10, debtor_weight=5)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
+    bl_rico = balancelink_shop(belief_id=rico_text, credor_weight=20, debtor_weight=40)
+    bl_carm = balancelink_shop(belief_id=carm_text, credor_weight=10, debtor_weight=5)
+    bl_patr = balancelink_shop(belief_id=patr_text, credor_weight=10, debtor_weight=5)
+    yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
+    yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
+    yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
 
     rico_partyunit = yao_agenda._partys.get(rico_text)
     carm_partyunit = yao_agenda._partys.get(carm_text)
@@ -418,7 +424,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance()
     #     assert partyunit._agenda_debt != None
     #     assert partyunit._agenda_debt in [0.8, 0.1]
     #     # print(
-    #     #     f"{idea.idea_id=} {partyunit._agenda_credor=} {idea._agenda_credor=}"
+    #     #     f"{belief.belief_id=} {partyunit._agenda_credor=} {belief._agenda_credor=}"
     #     # )
     #     print(f"{partyunit.} {partyunit._agenda_cred=} {partyunit._agenda_debt=} ")
     #     # print(f"{partyunit_agenda_cred_sum=}")
@@ -433,9 +439,9 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance()
     # WHEN another action, check metrics are as expected
     selena_text = "selena"
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(selena_text)))
-    yao_agenda._oathroot.set_balancelink(
+    yao_agenda._idearoot.set_balancelink(
         balancelink=balancelink_shop(
-            idea_id=selena_text, credor_weight=20, debtor_weight=10
+            belief_id=selena_text, credor_weight=20, debtor_weight=10
         )
     )
     yao_agenda.calc_agenda_metrics()
@@ -488,7 +494,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance()
     #     assert partyunit._agenda_debt != None
     #     assert partyunit._agenda_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{idea.idea_id=} {partyunit._agenda_credor=} {idea._agenda_credor=}"
+    #     #     f"{belief.belief_id=} {partyunit._agenda_credor=} {belief._agenda_credor=}"
     #     # )
     #     print(f"{partyunit.} {partyunit._agenda_cred=} {partyunit._agenda_debt=} ")
     #     # print(f"{partyunit_agenda_cred_sum=}")
@@ -501,71 +507,71 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyUnitAgendaImportance()
     # assert partyunit_agenda_debt_sum < 1.00000001
 
 
-def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartIdeaedLWPartyUnitAgendaImportance():
+def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartBeliefedLWPartyUnitAgendaImportance():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     swim_text = "swim"
-    yao_agenda.add_l1_oath(oathunit_shop(swim_text))
+    yao_agenda.add_l1_idea(ideaunit_shop(swim_text))
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(rico_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(carm_text)))
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(patr_text)))
-    bl_rico = balancelink_shop(idea_id=rico_text, credor_weight=20, debtor_weight=40)
-    bl_carm = balancelink_shop(idea_id=carm_text, credor_weight=10, debtor_weight=5)
-    bl_patr = balancelink_shop(idea_id=patr_text, credor_weight=10, debtor_weight=5)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
-    yao_agenda._oathroot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
+    bl_rico = balancelink_shop(belief_id=rico_text, credor_weight=20, debtor_weight=40)
+    bl_carm = balancelink_shop(belief_id=carm_text, credor_weight=10, debtor_weight=5)
+    bl_patr = balancelink_shop(belief_id=patr_text, credor_weight=10, debtor_weight=5)
+    yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_rico)
+    yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_carm)
+    yao_agenda._idearoot._kids.get(swim_text).set_balancelink(balancelink=bl_patr)
 
     # no balancelinks attached to this one
     hunt_text = "hunt"
-    yao_agenda.add_l1_oath(oathunit_shop(hunt_text, _weight=3))
+    yao_agenda.add_l1_idea(ideaunit_shop(hunt_text, _weight=3))
 
     # WHEN
     yao_agenda.calc_agenda_metrics()
 
     # THEN
-    rico_ideaunit = yao_agenda.get_ideaunit(rico_text)
-    carm_ideaunit = yao_agenda.get_ideaunit(carm_text)
-    patr_ideaunit = yao_agenda.get_ideaunit(patr_text)
-    assert rico_ideaunit._agenda_cred != 0.5
-    assert rico_ideaunit._agenda_debt != 0.8
-    assert carm_ideaunit._agenda_cred != 0.25
-    assert carm_ideaunit._agenda_debt != 0.1
-    assert patr_ideaunit._agenda_cred != 0.25
-    assert patr_ideaunit._agenda_debt != 0.1
+    rico_beliefunit = yao_agenda.get_beliefunit(rico_text)
+    carm_beliefunit = yao_agenda.get_beliefunit(carm_text)
+    patr_beliefunit = yao_agenda.get_beliefunit(patr_text)
+    assert rico_beliefunit._agenda_cred != 0.5
+    assert rico_beliefunit._agenda_debt != 0.8
+    assert carm_beliefunit._agenda_cred != 0.25
+    assert carm_beliefunit._agenda_debt != 0.1
+    assert patr_beliefunit._agenda_cred != 0.25
+    assert patr_beliefunit._agenda_debt != 0.1
     assert (
-        rico_ideaunit._agenda_cred
-        + carm_ideaunit._agenda_cred
-        + patr_ideaunit._agenda_cred
+        rico_beliefunit._agenda_cred
+        + carm_beliefunit._agenda_cred
+        + patr_beliefunit._agenda_cred
         == 0.25
     )
     assert (
-        rico_ideaunit._agenda_debt
-        + carm_ideaunit._agenda_debt
-        + patr_ideaunit._agenda_debt
+        rico_beliefunit._agenda_debt
+        + carm_beliefunit._agenda_debt
+        + patr_beliefunit._agenda_debt
         == 0.25
     )
 
-    # ideaunit_agenda_cred_sum = 0.0
-    # ideaunit_agenda_debt_sum = 0.0
-    # for ideaunit in yao_agenda._ideas.values():
-    #     assert ideaunit._agenda_cred != None
-    #     assert ideaunit._agenda_cred not in [0.25, 0.5]
-    #     assert ideaunit._agenda_debt != None
-    #     assert ideaunit._agenda_debt not in [0.8, 0.1]
+    # beliefunit_agenda_cred_sum = 0.0
+    # beliefunit_agenda_debt_sum = 0.0
+    # for beliefunit in yao_agenda._beliefs.values():
+    #     assert beliefunit._agenda_cred != None
+    #     assert beliefunit._agenda_cred not in [0.25, 0.5]
+    #     assert beliefunit._agenda_debt != None
+    #     assert beliefunit._agenda_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{idea.idea_id=} {ideaunit._agenda_credor=} {idea._agenda_credor=}"
+    #     #     f"{belief.belief_id=} {beliefunit._agenda_credor=} {belief._agenda_credor=}"
     #     # )
-    #     print(f"{ideaunit.idea_id=} {ideaunit._agenda_cred=} {ideaunit._agenda_debt=} ")
-    #     # print(f"{ideaunit_agenda_cred_sum=}")
-    #     # print(f"{ideaunit_agenda_debt_sum=}")
-    #     ideaunit_agenda_cred_sum += ideaunit._agenda_cred
-    #     ideaunit_agenda_debt_sum += ideaunit._agenda_debt
-    # assert ideaunit_agenda_cred_sum == 0.25
-    # assert ideaunit_agenda_debt_sum == 0.25
+    #     print(f"{beliefunit.belief_id=} {beliefunit._agenda_cred=} {beliefunit._agenda_debt=} ")
+    #     # print(f"{beliefunit_agenda_cred_sum=}")
+    #     # print(f"{beliefunit_agenda_debt_sum=}")
+    #     beliefunit_agenda_cred_sum += beliefunit._agenda_cred
+    #     beliefunit_agenda_debt_sum += beliefunit._agenda_debt
+    # assert beliefunit_agenda_cred_sum == 0.25
+    # assert beliefunit_agenda_debt_sum == 0.25
 
     rico_partyunit = yao_agenda._partys.get(rico_text)
     carm_partyunit = yao_agenda._partys.get(carm_text)
@@ -599,7 +605,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartIdeaedLWPartyUnitAgenda
     #     assert partyunit._agenda_debt != None
     #     assert partyunit._agenda_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{idea.idea_id=} {partyunit._agenda_credor=} {idea._agenda_credor=}"
+    #     #     f"{belief.belief_id=} {partyunit._agenda_credor=} {belief._agenda_credor=}"
     #     # )
     #     print(f"{partyunit.} {partyunit._agenda_cred=} {partyunit._agenda_debt=} ")
     #     # print(f"{partyunit_agenda_cred_sum=}")
@@ -614,7 +620,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartIdeaedLWPartyUnitAgenda
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyAttrs():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
-    yao_agenda.add_l1_oath(oathunit_shop("swim"))
+    yao_agenda.add_l1_idea(ideaunit_shop("swim"))
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -657,7 +663,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsPartyAttrs():
     #     assert partyunit._agenda_debt != None
     #     assert partyunit._agenda_debt not in [0.8, 0.1]
     #     # print(
-    #     #     f"{idea.idea_id=} {partyunit._agenda_credor=} {idea._agenda_credor=}"
+    #     #     f"{belief.belief_id=} {partyunit._agenda_credor=} {belief._agenda_credor=}"
     #     # )
     #     print(f"{partyunit.} {partyunit._agenda_cred=} {partyunit._agenda_debt=} ")
     #     # print(f"{partyunit_agenda_cred_sum=}")
@@ -767,12 +773,12 @@ def test_AgendaUnit_calc_agenda_metrics_DoesNotRaiseError_party_debtor_poolWhenP
     yao_agenda.calc_agenda_metrics()
 
 
-def clear_all_partyunits_ideaunits_agenda_intent_cred_debt(x_agenda: AgendaUnit):
+def clear_all_partyunits_beliefunits_agenda_intent_cred_debt(x_agenda: AgendaUnit):
     # DELETE agenda_intent_debt and agenda_intent_cred
-    for ideaunit_x in x_agenda._ideas.values():
-        ideaunit_x.reset_agenda_cred_debt()
-        # for partylink_x in ideaunit_x._partys.values():
-        #     print(f"{ideaunit_x.idea_id=} {partylink_x.credor_weight=}  {partylink_x._agenda_cred:.6f} {partylink_x.debtor_weight=} {partylink_x._agenda_debt:.6f} {partylink_x.} ")
+    for beliefunit_x in x_agenda._beliefs.values():
+        beliefunit_x.reset_agenda_cred_debt()
+        # for partylink_x in beliefunit_x._partys.values():
+        #     print(f"{beliefunit_x.belief_id=} {partylink_x.credor_weight=}  {partylink_x._agenda_cred:.6f} {partylink_x.debtor_weight=} {partylink_x._agenda_debt:.6f} {partylink_x.} ")
 
     # DELETE agenda_intent_debt and agenda_intent_cred
     for x_partyunit in x_agenda._partys.values():
@@ -780,18 +786,18 @@ def clear_all_partyunits_ideaunits_agenda_intent_cred_debt(x_agenda: AgendaUnit)
 
 
 @dataclass
-class IdeaIntentMetrics:
-    sum_ideaunit_cred: float = 0
-    sum_ideaunit_debt: float = 0
+class BeliefIntentMetrics:
+    sum_beliefunit_cred: float = 0
+    sum_beliefunit_debt: float = 0
     sum_partylink_cred: float = 0
     sum_partylink_debt: float = 0
     partylink_count: int = 0
 
     def set_sums(self, x_agenda: AgendaUnit):
-        for ideaunit_x in x_agenda._ideas.values():
-            self.sum_ideaunit_cred += ideaunit_x._agenda_intent_cred
-            self.sum_ideaunit_debt += ideaunit_x._agenda_intent_debt
-            for partylink_x in ideaunit_x._partys.values():
+        for beliefunit_x in x_agenda._beliefs.values():
+            self.sum_beliefunit_cred += beliefunit_x._agenda_intent_cred
+            self.sum_beliefunit_debt += beliefunit_x._agenda_intent_debt
+            for partylink_x in beliefunit_x._partys.values():
                 self.sum_partylink_cred += partylink_x._agenda_intent_cred
                 self.sum_partylink_debt += partylink_x._agenda_intent_debt
                 self.partylink_count += 1
@@ -820,7 +826,7 @@ class BalanceIntentMetrics:
     intent_no_agenda_i_sum = 0
     intent_yes_agenda_i_sum = 0
 
-    def set_sums(self, intent_dict: dict[RoadUnit:OathUnit]):
+    def set_sums(self, intent_dict: dict[RoadUnit:IdeaUnit]):
         for intent_item in intent_dict.values():
             self.sum_agenda_intent_importance += intent_item._agenda_importance
             if intent_item._balancelines == {}:
@@ -834,15 +840,15 @@ class BalanceIntentMetrics:
 def test_AgendaUnit_intent_cred_debt_IsCorrectlySet():
     # GIVEN
     x_agenda = examples_agenda_v001_with_large_intent()
-    clear_all_partyunits_ideaunits_agenda_intent_cred_debt(x_agenda=x_agenda)
+    clear_all_partyunits_beliefunits_agenda_intent_cred_debt(x_agenda=x_agenda)
 
     # TEST agenda_intent_debt and agenda_intent_cred are empty
-    x_ideaintentmetrics = IdeaIntentMetrics()
-    x_ideaintentmetrics.set_sums(x_agenda=x_agenda)
-    assert x_ideaintentmetrics.sum_ideaunit_cred == 0
-    assert x_ideaintentmetrics.sum_ideaunit_debt == 0
-    assert x_ideaintentmetrics.sum_partylink_cred == 0
-    assert x_ideaintentmetrics.sum_partylink_debt == 0
+    x_beliefintentmetrics = BeliefIntentMetrics()
+    x_beliefintentmetrics.set_sums(x_agenda=x_agenda)
+    assert x_beliefintentmetrics.sum_beliefunit_cred == 0
+    assert x_beliefintentmetrics.sum_beliefunit_debt == 0
+    assert x_beliefintentmetrics.sum_partylink_cred == 0
+    assert x_beliefintentmetrics.sum_partylink_debt == 0
 
     # TEST agenda_intent_debt and agenda_intent_cred are empty
     x_partyintentmetrics = PartyIntentMetrics()
@@ -871,17 +877,17 @@ def test_AgendaUnit_intent_cred_debt_IsCorrectlySet():
     )
     assert x_balanceintentmetrics.sum_agenda_intent_importance == 0.006543772991141412
 
-    x_ideaintentmetrics = IdeaIntentMetrics()
-    x_ideaintentmetrics.set_sums(x_agenda=x_agenda)
-    assert x_ideaintentmetrics.partylink_count == 81
+    x_beliefintentmetrics = BeliefIntentMetrics()
+    x_beliefintentmetrics.set_sums(x_agenda=x_agenda)
+    assert x_beliefintentmetrics.partylink_count == 81
     x_sum = 0.0027965049894874455
-    assert are_equal(x_ideaintentmetrics.sum_ideaunit_cred, x_sum)
-    assert are_equal(x_ideaintentmetrics.sum_ideaunit_debt, x_sum)
-    assert are_equal(x_ideaintentmetrics.sum_partylink_cred, x_sum)
-    assert are_equal(x_ideaintentmetrics.sum_partylink_debt, x_sum)
+    assert are_equal(x_beliefintentmetrics.sum_beliefunit_cred, x_sum)
+    assert are_equal(x_beliefintentmetrics.sum_beliefunit_debt, x_sum)
+    assert are_equal(x_beliefintentmetrics.sum_partylink_cred, x_sum)
+    assert are_equal(x_beliefintentmetrics.sum_partylink_debt, x_sum)
     assert are_equal(
         x_balanceintentmetrics.intent_yes_agenda_i_sum,
-        x_ideaintentmetrics.sum_ideaunit_cred,
+        x_beliefintentmetrics.sum_beliefunit_cred,
     )
 
     assert all_partyunits_have_legitimate_values(x_agenda)
@@ -971,7 +977,7 @@ def test_AgendaUnit_intent_ratio_cred_debt_IsCorrectlySetWhenAgendaIsEmpty():
     assert noa_agenda_patr_party._agenda_intent_ratio_debt == 0.5
 
 
-def test_AgendaUnit_get_party_idea_ids_ReturnsCorrectObj():
+def test_AgendaUnit_get_party_belief_ids_ReturnsCorrectObj():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"
@@ -982,14 +988,14 @@ def test_AgendaUnit_get_party_idea_ids_ReturnsCorrectObj():
     yao_agenda.set_partyunit(partyunit=partyunit_shop(PartyID(patr_text)))
 
     # WHEN / THEN
-    assert yao_agenda.get_party_idea_ids(carm_text) == [carm_text]
+    assert yao_agenda.get_party_belief_ids(carm_text) == [carm_text]
 
     # WHEN / THEN
     swimmers = ",swimmers"
-    swim_idea = ideaunit_shop(idea_id=swimmers)
-    swim_idea.set_partylink(partylink_shop(carm_text))
-    yao_agenda.set_ideaunit(swim_idea)
-    assert yao_agenda.get_party_idea_ids(carm_text) == [carm_text, swimmers]
+    swim_belief = beliefunit_shop(belief_id=swimmers)
+    swim_belief.set_partylink(partylink_shop(carm_text))
+    yao_agenda.set_beliefunit(swim_belief)
+    assert yao_agenda.get_party_belief_ids(carm_text) == [carm_text, swimmers]
 
 
 def test_AgendaUnit_edit_partyunit_party_id_CorrectlyModifiesPartyUnit_party_id():
@@ -1002,9 +1008,9 @@ def test_AgendaUnit_edit_partyunit_party_id_CorrectlyModifiesPartyUnit_party_id(
     assert len(yao_agenda._partys) == 3
     assert yao_agenda._partys.get(rico_text) != None
     assert yao_agenda._partys.get(rico_text).credor_weight == 13
-    assert len(yao_agenda._ideas) == 3
-    assert yao_agenda.get_ideaunit(rico_text) != None
-    assert yao_agenda.get_ideaunit(rico_text)._party_mirror == True
+    assert len(yao_agenda._beliefs) == 3
+    assert yao_agenda.get_beliefunit(rico_text) != None
+    assert yao_agenda.get_beliefunit(rico_text)._party_mirror == True
 
     # WHEN
     beto_text = "beta"
@@ -1012,7 +1018,7 @@ def test_AgendaUnit_edit_partyunit_party_id_CorrectlyModifiesPartyUnit_party_id(
         old_party_id=rico_text,
         new_party_id=beto_text,
         allow_party_overwite=False,
-        allow_nonsingle_idea_overwrite=False,
+        allow_nonsingle_belief_overwrite=False,
     )
 
     # THEN
@@ -1020,10 +1026,10 @@ def test_AgendaUnit_edit_partyunit_party_id_CorrectlyModifiesPartyUnit_party_id(
     assert yao_agenda._partys.get(beto_text).credor_weight == 13
     assert yao_agenda._partys.get(rico_text) is None
     assert len(yao_agenda._partys) == 3
-    assert len(yao_agenda._ideas) == 3
-    assert yao_agenda.get_ideaunit(rico_text) is None
-    assert yao_agenda.get_ideaunit(beto_text) != None
-    assert yao_agenda.get_ideaunit(beto_text)._party_mirror == True
+    assert len(yao_agenda._beliefs) == 3
+    assert yao_agenda.get_beliefunit(rico_text) is None
+    assert yao_agenda.get_beliefunit(beto_text) != None
+    assert yao_agenda.get_beliefunit(beto_text)._party_mirror == True
 
 
 def test_AgendaUnit_PartyUnit_raiseErrorNewparty_idPreviouslyExists():
@@ -1037,9 +1043,9 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewparty_idPreviouslyExists():
     assert len(yao_agenda._partys) == 3
     assert yao_agenda._partys.get(rico_text) != None
     assert yao_agenda._partys.get(rico_text).credor_weight == 13
-    assert len(yao_agenda._ideas) == 3
-    assert yao_agenda.get_ideaunit(rico_text) != None
-    assert yao_agenda.get_ideaunit(rico_text)._party_mirror == True
+    assert len(yao_agenda._beliefs) == 3
+    assert yao_agenda.get_beliefunit(rico_text) != None
+    assert yao_agenda.get_beliefunit(rico_text)._party_mirror == True
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -1047,7 +1053,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewparty_idPreviouslyExists():
             old_party_id=rico_text,
             new_party_id=carmen_text,
             allow_party_overwite=False,
-            allow_nonsingle_idea_overwrite=False,
+            allow_nonsingle_belief_overwrite=False,
         )
     assert (
         str(excinfo.value)
@@ -1055,7 +1061,7 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewparty_idPreviouslyExists():
     )
 
 
-def test_AgendaUnit_PartyUnit_CorrectlyModifiesIdeaUnitPartyLinks():
+def test_AgendaUnit_PartyUnit_CorrectlyModifiesBeliefUnitPartyLinks():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"
@@ -1067,20 +1073,20 @@ def test_AgendaUnit_PartyUnit_CorrectlyModifiesIdeaUnitPartyLinks():
 
     swim_text = ",swimmers"
     carmen_party_dict = {PartyID(carm_text): partylink_shop(carm_text)}
-    swim_idea = ideaunit_shop(idea_id=swim_text, _partys=carmen_party_dict)
-    swim_idea.set_partylink(
+    swim_belief = beliefunit_shop(belief_id=swim_text, _partys=carmen_party_dict)
+    swim_belief.set_partylink(
         partylink_shop(carm_text, credor_weight=5, debtor_weight=18)
     )
-    swim_idea.set_partylink(
+    swim_belief.set_partylink(
         partylink_shop(rico_text, credor_weight=7, debtor_weight=30)
     )
-    yao_agenda.set_ideaunit(y_ideaunit=swim_idea)
+    yao_agenda.set_beliefunit(y_beliefunit=swim_belief)
 
-    swim_idea = yao_agenda.get_ideaunit(swim_text)
-    assert len(swim_idea._partys) == 2
-    assert swim_idea.get_partylink(rico_text) != None
-    assert swim_idea.get_partylink(rico_text).credor_weight == 7
-    assert swim_idea.get_partylink(rico_text).debtor_weight == 30
+    swim_belief = yao_agenda.get_beliefunit(swim_text)
+    assert len(swim_belief._partys) == 2
+    assert swim_belief.get_partylink(rico_text) != None
+    assert swim_belief.get_partylink(rico_text).credor_weight == 7
+    assert swim_belief.get_partylink(rico_text).debtor_weight == 30
 
     # WHEN
     beto_text = "beta"
@@ -1088,15 +1094,15 @@ def test_AgendaUnit_PartyUnit_CorrectlyModifiesIdeaUnitPartyLinks():
         old_party_id=rico_text,
         new_party_id=beto_text,
         allow_party_overwite=False,
-        allow_nonsingle_idea_overwrite=False,
+        allow_nonsingle_belief_overwrite=False,
     )
 
     # THEN
-    assert swim_idea.get_partylink(beto_text) != None
-    assert swim_idea.get_partylink(beto_text).credor_weight == 7
-    assert swim_idea.get_partylink(beto_text).debtor_weight == 30
-    assert swim_idea.get_partylink(rico_text) is None
-    assert len(swim_idea._partys) == 2
+    assert swim_belief.get_partylink(beto_text) != None
+    assert swim_belief.get_partylink(beto_text).credor_weight == 7
+    assert swim_belief.get_partylink(beto_text).debtor_weight == 30
+    assert swim_belief.get_partylink(rico_text) is None
+    assert len(swim_belief._partys) == 2
 
 
 def test_AgendaUnit_PartyUnit_CorrectlyMergesparty_ids():
@@ -1111,14 +1117,14 @@ def test_AgendaUnit_PartyUnit_CorrectlyMergesparty_ids():
 
     swim_text = ",swimmers"
     carmen_party_dict = {PartyID(carm_text): partylink_shop(carm_text)}
-    swim_idea = ideaunit_shop(idea_id=swim_text, _partys=carmen_party_dict)
-    swim_idea.set_partylink(
+    swim_belief = beliefunit_shop(belief_id=swim_text, _partys=carmen_party_dict)
+    swim_belief.set_partylink(
         partylink=partylink_shop(carm_text, credor_weight=5, debtor_weight=18)
     )
-    swim_idea.set_partylink(
+    swim_belief.set_partylink(
         partylink=partylink_shop(rico_text, credor_weight=7, debtor_weight=30)
     )
-    yao_agenda.set_ideaunit(y_ideaunit=swim_idea)
+    yao_agenda.set_beliefunit(y_beliefunit=swim_belief)
 
     assert len(yao_agenda._partys) == 3
     assert yao_agenda._partys.get(rico_text) != None
@@ -1131,7 +1137,7 @@ def test_AgendaUnit_PartyUnit_CorrectlyMergesparty_ids():
         old_party_id=rico_text,
         new_party_id=carm_text,
         allow_party_overwite=True,
-        allow_nonsingle_idea_overwrite=False,
+        allow_nonsingle_belief_overwrite=False,
     )
 
     # THEN
@@ -1141,7 +1147,7 @@ def test_AgendaUnit_PartyUnit_CorrectlyMergesparty_ids():
     assert len(yao_agenda._partys) == 2
 
 
-def test_AgendaUnit_PartyUnit_CorrectlyMergesIdeaUnitPartyLinks():
+def test_AgendaUnit_PartyUnit_CorrectlyMergesBeliefUnitPartyLinks():
     # GIVEN
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
@@ -1154,41 +1160,41 @@ def test_AgendaUnit_PartyUnit_CorrectlyMergesIdeaUnitPartyLinks():
 
     swim_text = ",swimmers"
     carmen_party_dict = {PartyID(carm_text): partylink_shop(carm_text)}
-    swim_idea = ideaunit_shop(idea_id=swim_text, _partys=carmen_party_dict)
-    swim_idea.set_partylink(
+    swim_belief = beliefunit_shop(belief_id=swim_text, _partys=carmen_party_dict)
+    swim_belief.set_partylink(
         partylink=partylink_shop(carm_text, credor_weight=5, debtor_weight=18)
     )
-    swim_idea.set_partylink(
+    swim_belief.set_partylink(
         partylink=partylink_shop(rico_text, credor_weight=7, debtor_weight=30)
     )
-    yao_agenda.set_ideaunit(y_ideaunit=swim_idea)
+    yao_agenda.set_beliefunit(y_beliefunit=swim_belief)
 
-    swim_idea = yao_agenda.get_ideaunit(swim_text)
-    assert len(swim_idea._partys) == 2
-    assert swim_idea.get_partylink(rico_text) != None
-    assert swim_idea.get_partylink(rico_text).credor_weight == 7
-    assert swim_idea.get_partylink(rico_text).debtor_weight == 30
-    assert swim_idea.get_partylink(carm_text) != None
-    assert swim_idea.get_partylink(carm_text).credor_weight == 5
-    assert swim_idea.get_partylink(carm_text).debtor_weight == 18
+    swim_belief = yao_agenda.get_beliefunit(swim_text)
+    assert len(swim_belief._partys) == 2
+    assert swim_belief.get_partylink(rico_text) != None
+    assert swim_belief.get_partylink(rico_text).credor_weight == 7
+    assert swim_belief.get_partylink(rico_text).debtor_weight == 30
+    assert swim_belief.get_partylink(carm_text) != None
+    assert swim_belief.get_partylink(carm_text).credor_weight == 5
+    assert swim_belief.get_partylink(carm_text).debtor_weight == 18
 
     # WHEN
     yao_agenda.edit_partyunit_party_id(
         old_party_id=rico_text,
         new_party_id=carm_text,
         allow_party_overwite=True,
-        allow_nonsingle_idea_overwrite=False,
+        allow_nonsingle_belief_overwrite=False,
     )
 
     # THEN
-    assert swim_idea.get_partylink(carm_text) != None
-    assert swim_idea.get_partylink(carm_text).credor_weight == 12
-    assert swim_idea.get_partylink(carm_text).debtor_weight == 48
-    assert swim_idea.get_partylink(rico_text) is None
-    assert len(swim_idea._partys) == 1
+    assert swim_belief.get_partylink(carm_text) != None
+    assert swim_belief.get_partylink(carm_text).credor_weight == 12
+    assert swim_belief.get_partylink(carm_text).debtor_weight == 48
+    assert swim_belief.get_partylink(rico_text) is None
+    assert len(swim_belief._partys) == 1
 
 
-def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDIdeaUnitPreviouslyExists():
+def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDBeliefUnitPreviouslyExists():
     # GIVEN
     yao_agenda = agendaunit_shop("Yao")
     rico_text = "rico"
@@ -1196,14 +1202,14 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDIdeaUnitPreviouslyExists():
     anna_text = "anna"
     yao_agenda.add_partyunit(anna_text, credor_weight=17)
     carmen_text = ",carmen"
-    carmen_idea = ideaunit_shop(idea_id=carmen_text)
-    carmen_idea.set_partylink(partylink=partylink_shop(rico_text))
-    carmen_idea.set_partylink(partylink=partylink_shop(anna_text))
-    yao_agenda.set_ideaunit(y_ideaunit=carmen_idea)
-    assert len(yao_agenda._ideas) == 3
+    carmen_belief = beliefunit_shop(belief_id=carmen_text)
+    carmen_belief.set_partylink(partylink=partylink_shop(rico_text))
+    carmen_belief.set_partylink(partylink=partylink_shop(anna_text))
+    yao_agenda.set_beliefunit(y_beliefunit=carmen_belief)
+    assert len(yao_agenda._beliefs) == 3
     assert yao_agenda._partys.get(carmen_text) is None
-    assert yao_agenda.get_ideaunit(carmen_text)._party_mirror is False
-    assert len(yao_agenda.get_ideaunit(carmen_text)._partys) == 2
+    assert yao_agenda.get_beliefunit(carmen_text)._party_mirror is False
+    assert len(yao_agenda.get_beliefunit(carmen_text)._partys) == 2
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -1211,15 +1217,15 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDIdeaUnitPreviouslyExists():
             old_party_id=rico_text,
             new_party_id=carmen_text,
             allow_party_overwite=False,
-            allow_nonsingle_idea_overwrite=False,
+            allow_nonsingle_belief_overwrite=False,
         )
     assert (
         str(excinfo.value)
-        == f"Party '{rico_text}' modify to '{carmen_text}' failed since non-single idea '{carmen_text}' exists."
+        == f"Party '{rico_text}' modify to '{carmen_text}' failed since non-single belief '{carmen_text}' exists."
     )
 
 
-# def test_AgendaUnit_PartyUnit_CorrectlyOverwriteNewPersonIDIdeaUnit():
+# def test_AgendaUnit_PartyUnit_CorrectlyOverwriteNewPersonIDBeliefUnit():
 #     # GIVEN
 #     yao_agenda = agendaunit_shop("Yao")
 #     rico_text = "rico"
@@ -1227,25 +1233,25 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDIdeaUnitPreviouslyExists():
 #     anna_text = "anna"
 #     yao_agenda.add_partyunit(anna_text, credor_weight=17)
 #     carmen_text = ",carmen"
-#     carmen_idea = ideaunit_shop(idea_id=carmen_text)
-#     carmen_idea.set_partylink(
+#     carmen_belief = beliefunit_shop(belief_id=carmen_text)
+#     carmen_belief.set_partylink(
 #         partylink=partylink_shop(rico_text, credor_weight=3)
 #     )
-#     carmen_idea.set_partylink(
+#     carmen_belief.set_partylink(
 #         partylink=partylink_shop(anna_text, credor_weight=5)
 #     )
-#     yao_agenda.set_ideaunit(y_ideaunit=carmen_idea)
-#     assert len(yao_agenda._ideas) == 3
+#     yao_agenda.set_beliefunit(y_beliefunit=carmen_belief)
+#     assert len(yao_agenda._beliefs) == 3
 #     assert yao_agenda._partys.get(rico_text) != None
 #     assert yao_agenda._partys.get(carmen_text) is None
-#     assert yao_agenda.get_ideaunit(carmen_text)._party_mirror is False
-#     assert len(yao_agenda.get_ideaunit(carmen_text)._partys) == 2
+#     assert yao_agenda.get_beliefunit(carmen_text)._party_mirror is False
+#     assert len(yao_agenda.get_beliefunit(carmen_text)._partys) == 2
 #     assert (
-#         yao_agenda.get_ideaunit(carmen_text)._partys.get(anna_text).credor_weight
+#         yao_agenda.get_beliefunit(carmen_text)._partys.get(anna_text).credor_weight
 #         == 5
 #     )
 #     assert (
-#         yao_agenda.get_ideaunit(carmen_text)._partys.get(rico_text).credor_weight
+#         yao_agenda.get_beliefunit(carmen_text)._partys.get(rico_text).credor_weight
 #         == 3
 #     )
 
@@ -1254,17 +1260,17 @@ def test_AgendaUnit_PartyUnit_raiseErrorNewPersonIDIdeaUnitPreviouslyExists():
 #         old_rico_text,
 #         new_carmen_text,
 #         allow_party_overwite=False,
-#         allow_nonsingle_idea_overwrite=True,
+#         allow_nonsingle_belief_overwrite=True,
 #     )
 
-#     assert len(yao_agenda._ideas) == 2
+#     assert len(yao_agenda._beliefs) == 2
 #     assert yao_agenda._partys.get(rico_text) is None
 #     assert yao_agenda._partys.get(carmen_text) != None
-#     assert yao_agenda.get_ideaunit(carmen_text)._party_mirror == True
-#     assert len(yao_agenda.get_ideaunit(carmen_text)._partys) == 1
-#     assert yao_agenda.get_ideaunit(carmen_text)._partys.get(rico_text) is None
+#     assert yao_agenda.get_beliefunit(carmen_text)._party_mirror == True
+#     assert len(yao_agenda.get_beliefunit(carmen_text)._partys) == 1
+#     assert yao_agenda.get_beliefunit(carmen_text)._partys.get(rico_text) is None
 #     assert (
-#         yao_agenda.get_ideaunit(carmen_text)._partys.get(carmen_text).credor_weight
+#         yao_agenda.get_beliefunit(carmen_text)._partys.get(carmen_text).credor_weight
 #         == 1
 #     )
 
@@ -1279,10 +1285,10 @@ def test_AgendaUnit_get_partyunits_party_id_list_ReturnsListOfPartyUnits():
     noa_agenda.set_partyunit(partyunit=partyunit_shop(will_text))
     noa_agenda.set_partyunit(partyunit=partyunit_shop(fry_text))
     fun_text = ",fun people"
-    fun_idea = ideaunit_shop(idea_id=fun_text)
-    fun_idea.set_partylink(partylink=partylink_shop(will_text))
-    noa_agenda.set_ideaunit(y_ideaunit=fun_idea)
-    assert len(noa_agenda._ideas) == 4
+    fun_belief = beliefunit_shop(belief_id=fun_text)
+    fun_belief.set_partylink(partylink=partylink_shop(will_text))
+    noa_agenda.set_beliefunit(y_beliefunit=fun_belief)
+    assert len(noa_agenda._beliefs) == 4
     assert len(noa_agenda._partys) == 3
 
     # WHEN

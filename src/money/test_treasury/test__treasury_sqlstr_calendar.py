@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS calendar (
 , report_interval_intent_state_max_count INT NOT NULL
 , time_begin INT NOT NULL
 , time_close INT NOT NULL
-, intent_oath_road VARCHAR(255) NOT NULL
+, intent_idea_road VARCHAR(255) NOT NULL
 , intent_weight INT NOT NULL
 , task INT NOT NULL
 , FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
@@ -67,7 +67,7 @@ def test_get_calendar_table_insert_sqlstr_ReturnsCorrectStr():
         calendarreport=x_calendarreport,
         time_begin=x_time_begin,
         time_close=x_time_close,
-        intent_oath_road=fridge_road,
+        intent_idea_road=fridge_road,
         intent_weight=x_intent_weight,
         task=x_task,
     )
@@ -87,7 +87,7 @@ INSERT INTO calendar (
 , report_interval_intent_state_max_count
 , time_begin
 , time_close
-, intent_oath_road
+, intent_idea_road
 , intent_weight
 , task)
 VALUES (

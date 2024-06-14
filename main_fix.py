@@ -337,20 +337,20 @@
 #             x_list.extend([file] for file in digest_file_list)
 #         return x_list
 
-#     def get_p_oaths_list(self):
+#     def get_p_ideas_list(self):
 #         x_list = []
 #         if self.owner_id_output_agenda != None:
-#             oath_list = self.owner_id_output_agenda.get_oath_tree_ordered_road_list()
+#             idea_list = self.owner_id_output_agenda.get_idea_tree_ordered_road_list()
 
-#             for oath_road in oath_list:
-#                 oath_obj = self.owner_id_output_agenda.get_oath_obj(oath_road)
+#             for idea_road in idea_list:
+#                 idea_obj = self.owner_id_output_agenda.get_idea_obj(idea_road)
 
-#                 if oath_obj._parent_road.find("time") != 3:
+#                 if idea_obj._parent_road.find("time") != 3:
 #                     x_list.append(
 #                         [
-#                             agenda_importance_diplay(oath_obj._agenda_importance),
-#                             oath_road,
-#                             len(oath_obj._balancelinks),
+#                             agenda_importance_diplay(idea_obj._agenda_importance),
+#                             idea_road,
+#                             len(idea_obj._balancelinks),
 #                         ]
 #                     )
 
@@ -369,35 +369,35 @@
 #             )
 #         return x_list
 
-#     def get_p_ideas_list(self):
+#     def get_p_beliefs_list(self):
 #         x_list = []
 #         if self.owner_id_output_agenda != None:
 #             x_list.extend(
 #                 [
-#                     f"{agenda_importance_diplay(ideaunit._agenda_debt)}/{agenda_importance_diplay(ideaunit._agenda_cred)}",
-#                     ideaunit.idea_id,
-#                     len(ideaunit._partys),
+#                     f"{agenda_importance_diplay(beliefunit._agenda_debt)}/{agenda_importance_diplay(beliefunit._agenda_cred)}",
+#                     beliefunit.belief_id,
+#                     len(beliefunit._partys),
 #                 ]
-#                 for ideaunit in self.owner_id_output_agenda._ideas.values()
+#                 for beliefunit in self.owner_id_output_agenda._beliefs.values()
 #             )
 #         return x_list
 
-#     def get_p_beliefs_list(self):
+#     def get_p_facts_list(self):
 #         x_list = []
 #         if self.owner_id_output_agenda != None:
 #             for (
-#                 beliefunit
-#             ) in self.owner_id_output_agenda._oathroot._beliefunits.values():
+#                 factunit
+#             ) in self.owner_id_output_agenda._idearoot._factunits.values():
 #                 open_nigh = ""
-#                 if beliefunit.open is None and beliefunit.nigh is None:
+#                 if factunit.open is None and factunit.nigh is None:
 #                     open_nigh = ""
 #                 else:
-#                     open_nigh = f"{beliefunit.open}-{beliefunit.nigh}"
+#                     open_nigh = f"{factunit.open}-{factunit.nigh}"
 
 #                 x_list.append(
 #                     [
-#                         beliefunit.base,
-#                         beliefunit.pick.replace(beliefunit.base, ""),
+#                         factunit.base,
+#                         factunit.pick.replace(factunit.base, ""),
 #                         open_nigh,
 #                     ]
 #                 )
@@ -454,29 +454,29 @@
 #             ]
 #         self.refresh_x(self.iggnores_table, column_headers, iggnores_list)
 
-#     def _sub_refresh_p_oaths_table(self):
-#         p_oaths_list = self.get_p_oaths_list()
-#         if len(p_oaths_list) >= 0:
+#     def _sub_refresh_p_ideas_table(self):
+#         p_ideas_list = self.get_p_ideas_list()
+#         if len(p_ideas_list) >= 0:
 #             column_headers = [
 #                 "agenda_importance",
-#                 f"Oaths Table ({len(p_oaths_list)})",
+#                 f"Ideas Table ({len(p_ideas_list)})",
 #                 "balancelinks",
 #             ]
 #         else:
 #             column_headers = [
 #                 "agenda_importance",
-#                 "Oaths Table",
+#                 "Ideas Table",
 #                 "balancelinks",
 #             ]
 
-#         self.w_oaths_table.setObjectName("Oaths Table")
-#         self.w_oaths_table.setColumnHidden(0, False)
-#         self.w_oaths_table.setColumnHidden(1, False)
-#         self.w_oaths_table.setColumnHidden(2, False)
+#         self.w_ideas_table.setObjectName("Ideas Table")
+#         self.w_ideas_table.setColumnHidden(0, False)
+#         self.w_ideas_table.setColumnHidden(1, False)
+#         self.w_ideas_table.setColumnHidden(2, False)
 #         self.refresh_x(
-#             table_x=self.w_oaths_table,
+#             table_x=self.w_ideas_table,
 #             column_header=column_headers,
-#             populate_list=p_oaths_list,
+#             populate_list=p_ideas_list,
 #             column_width=[50, 300, 50],
 #         )
 
@@ -495,29 +495,29 @@
 #             column_width=[50, 300, 50],
 #         )
 
-#     def _sub_refresh_p_ideas_table(self):
-#         p_ideas_list = self.get_p_ideas_list()
-#         column_headers = [
-#             "agenda_debt/agenda_cred",
-#             f"ideas ({len(p_ideas_list)})",
-#             "Partys",
-#         ]
-
-#         self.refresh_x(
-#             table_x=self.w_ideas_table,
-#             column_header=column_headers,
-#             populate_list=p_ideas_list,
-#             column_width=[50, 300, 100],
-#         )
-
 #     def _sub_refresh_p_beliefs_table(self):
 #         p_beliefs_list = self.get_p_beliefs_list()
-#         column_headers = [f"Bases ({len(p_beliefs_list)})", "Beliefs", "Open-Nigh"]
+#         column_headers = [
+#             "agenda_debt/agenda_cred",
+#             f"beliefs ({len(p_beliefs_list)})",
+#             "Partys",
+#         ]
 
 #         self.refresh_x(
 #             table_x=self.w_beliefs_table,
 #             column_header=column_headers,
 #             populate_list=p_beliefs_list,
+#             column_width=[50, 300, 100],
+#         )
+
+#     def _sub_refresh_p_facts_table(self):
+#         p_facts_list = self.get_p_facts_list()
+#         column_headers = [f"Bases ({len(p_facts_list)})", "Facts", "Open-Nigh"]
+
+#         self.refresh_x(
+#             table_x=self.w_facts_table,
+#             column_header=column_headers,
+#             populate_list=p_facts_list,
 #             column_width=[200, 100, 200],
 #         )
 
@@ -526,7 +526,7 @@
 #         column_headers = [
 #             "agenda_importance",
 #             f"Agenda ({len(p_intent_list)})",
-#             "Oath parent_road",
+#             "Idea parent_road",
 #         ]
 
 #         self.refresh_x(
@@ -552,10 +552,10 @@
 #         self.owner_id_output_agenda = None
 #         if self.x_FunctionThatBuildsJob != None:
 #             self.owner_id_output_agenda = self.x_FunctionThatBuildsJob.get_remelded_output_agenda()
-#         self._sub_refresh_p_oaths_table()
-#         self._sub_refresh_p_partys_table()
 #         self._sub_refresh_p_ideas_table()
+#         self._sub_refresh_p_partys_table()
 #         self._sub_refresh_p_beliefs_table()
+#         self._sub_refresh_p_facts_table()
 #         self._sub_refresh_p_intent_table()
 
 #     def refresh_econ(self):

@@ -1,7 +1,7 @@
-from src.agenda.reason_oath import (
+from src.agenda.reason_idea import (
     PremiseUnit,
     premiseunit_shop,
-    beliefheir_shop,
+    factheir_shop,
     premiseunit_shop,
     premises_get_from_dict,
 )
@@ -115,31 +115,31 @@ def test_PremiseUnit_is_in_lineage_CorrectlyIdentifiesLineage():
     usa_road = create_road(nation_road, "USA")
     texas_road = create_road(usa_road, "Texas")
     idaho_road = create_road(usa_road, "Idaho")
-    texas_belief = beliefheir_shop(base=usa_road, pick=texas_road)
+    texas_fact = factheir_shop(base=usa_road, pick=texas_road)
 
     # WHEN / THEN
     texas_premise = premiseunit_shop(need=texas_road)
-    assert texas_premise.is_in_lineage(belief_pick=texas_belief.pick)
+    assert texas_premise.is_in_lineage(fact_pick=texas_fact.pick)
 
     # WHEN / THEN
     idaho_premise = premiseunit_shop(need=idaho_road)
-    assert idaho_premise.is_in_lineage(belief_pick=texas_belief.pick) is False
+    assert idaho_premise.is_in_lineage(fact_pick=texas_fact.pick) is False
 
     # WHEN / THEN
     usa_premise = premiseunit_shop(need=usa_road)
-    assert usa_premise.is_in_lineage(belief_pick=texas_belief.pick)
+    assert usa_premise.is_in_lineage(fact_pick=texas_fact.pick)
 
     # GIVEN
     sea_road = create_road("earth", "sea")  # "earth,sea"
     sea_premise = premiseunit_shop(need=sea_road)
 
     # THEN
-    sea_belief = beliefheir_shop(base=sea_road, pick=sea_road)
-    assert sea_premise.is_in_lineage(belief_pick=sea_belief.pick)
+    sea_fact = factheir_shop(base=sea_road, pick=sea_road)
+    assert sea_premise.is_in_lineage(fact_pick=sea_fact.pick)
     seaside_road = create_road("earth", "seaside")  # "earth,seaside,beach"
     seaside_beach_road = create_road(seaside_road, "beach")  # "earth,seaside,beach"
-    seaside_belief = beliefheir_shop(seaside_beach_road, seaside_beach_road)
-    assert sea_premise.is_in_lineage(belief_pick=seaside_belief.pick) is False
+    seaside_fact = factheir_shop(seaside_beach_road, seaside_beach_road)
+    assert sea_premise.is_in_lineage(fact_pick=seaside_fact.pick) is False
 
 
 def test_PremiseUnit_is_in_lineage_CorrectlyIdentifiesLineageWithNonDefaultDelimiter():
@@ -151,19 +151,19 @@ def test_PremiseUnit_is_in_lineage_CorrectlyIdentifiesLineageWithNonDefaultDelim
     idaho_road = create_road(usa_road, "Idaho", delimiter=slash_text)
 
     # WHEN
-    texas_belief = beliefheir_shop(base=usa_road, pick=texas_road)
+    texas_fact = factheir_shop(base=usa_road, pick=texas_road)
 
     # THEN
     texas_premise = premiseunit_shop(need=texas_road, delimiter=slash_text)
-    assert texas_premise.is_in_lineage(belief_pick=texas_belief.pick)
+    assert texas_premise.is_in_lineage(fact_pick=texas_fact.pick)
 
     idaho_premise = premiseunit_shop(need=idaho_road, delimiter=slash_text)
-    assert idaho_premise.is_in_lineage(belief_pick=texas_belief.pick) is False
+    assert idaho_premise.is_in_lineage(fact_pick=texas_fact.pick) is False
 
     usa_premise = premiseunit_shop(need=usa_road, delimiter=slash_text)
     print(f"  {usa_premise.need=}")
-    print(f"{texas_belief.pick=}")
-    assert usa_premise.is_in_lineage(belief_pick=texas_belief.pick)
+    print(f"{texas_fact.pick=}")
+    assert usa_premise.is_in_lineage(fact_pick=texas_fact.pick)
 
     # GIVEN
     # "earth,sea"
@@ -177,10 +177,10 @@ def test_PremiseUnit_is_in_lineage_CorrectlyIdentifiesLineageWithNonDefaultDelim
     sea_premise = premiseunit_shop(need=sea_road, delimiter=slash_text)
 
     # THEN
-    sea_belief = beliefheir_shop(base=sea_road, pick=sea_road)
-    assert sea_premise.is_in_lineage(belief_pick=sea_belief.pick)
-    seaside_belief = beliefheir_shop(seaside_beach_road, seaside_beach_road)
-    assert sea_premise.is_in_lineage(belief_pick=seaside_belief.pick) is False
+    sea_fact = factheir_shop(base=sea_road, pick=sea_road)
+    assert sea_premise.is_in_lineage(fact_pick=sea_fact.pick)
+    seaside_fact = factheir_shop(seaside_beach_road, seaside_beach_road)
+    assert sea_premise.is_in_lineage(fact_pick=seaside_fact.pick) is False
 
 
 def test_PremiseUnit_get_range_segregate_status_ReturnsCorrectStatusBoolForRangePremise():
@@ -190,30 +190,30 @@ def test_PremiseUnit_get_range_segregate_status_ReturnsCorrectStatusBoolForRange
     yr_premise = premiseunit_shop(need=yr_road, open=3, nigh=13)
 
     # WHEN / THEN
-    yr_belief = beliefheir_shop(base=yr_road, open=5, nigh=11, pick=yr_road)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) == True
+    yr_fact = factheir_shop(base=yr_road, open=5, nigh=11, pick=yr_road)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) == True
 
-    yr_belief = beliefheir_shop(base=yr_road, open=1, nigh=11, pick=yr_road)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) == True
+    yr_fact = factheir_shop(base=yr_road, open=1, nigh=11, pick=yr_road)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) == True
 
-    yr_belief = beliefheir_shop(base=yr_road, open=8, nigh=17, pick=yr_road)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) == True
+    yr_fact = factheir_shop(base=yr_road, open=8, nigh=17, pick=yr_road)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) == True
 
-    yr_belief = beliefheir_shop(base=yr_road, open=0, nigh=2, pick=yr_road)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) is False
+    yr_fact = factheir_shop(base=yr_road, open=0, nigh=2, pick=yr_road)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) is False
 
-    yr_belief = beliefheir_shop(base=yr_road, open=15, nigh=19, pick=yr_road)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) is False
+    yr_fact = factheir_shop(base=yr_road, open=15, nigh=19, pick=yr_road)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) is False
 
-    yr_belief = beliefheir_shop(base=yr_road, open=1, nigh=19, pick=yr_road)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) == True
+    yr_fact = factheir_shop(base=yr_road, open=1, nigh=19, pick=yr_road)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) == True
 
     # boundary tests
-    yr_belief = beliefheir_shop(base=yr_road, open=13, nigh=19, pick=yr_road)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) is False
+    yr_fact = factheir_shop(base=yr_road, open=13, nigh=19, pick=yr_road)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) is False
 
-    yr_belief = beliefheir_shop(base=yr_road, open=0, nigh=3, pick=yr_road)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) == True
+    yr_fact = factheir_shop(base=yr_road, open=0, nigh=3, pick=yr_road)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) == True
 
 
 def test_PremiseUnit_get_range_segregate_status_ReturnsCorrectStatusBoolForSegregatePremise():
@@ -223,30 +223,30 @@ def test_PremiseUnit_get_range_segregate_status_ReturnsCorrectStatusBoolForSegre
     yr_premise = premiseunit_shop(need=yr_road, divisor=5, open=0, nigh=0)
 
     # WHEN / THEN
-    yr_belief = beliefheir_shop(base=yr_road, pick=yr_road, open=5, nigh=5)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) == True
+    yr_fact = factheir_shop(base=yr_road, pick=yr_road, open=5, nigh=5)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) == True
 
-    yr_belief = beliefheir_shop(base=yr_road, pick=yr_road, open=6, nigh=6)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) is False
+    yr_fact = factheir_shop(base=yr_road, pick=yr_road, open=6, nigh=6)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) is False
 
-    yr_belief = beliefheir_shop(base=yr_road, pick=yr_road, open=4, nigh=6)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) == True
+    yr_fact = factheir_shop(base=yr_road, pick=yr_road, open=4, nigh=6)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) == True
 
-    yr_belief = beliefheir_shop(base=yr_road, pick=yr_road, open=3, nigh=4)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) is False
+    yr_fact = factheir_shop(base=yr_road, pick=yr_road, open=3, nigh=4)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) is False
 
     # GIVEN
     yr_premise = premiseunit_shop(need=yr_road, divisor=5, open=0, nigh=2)
 
     # WHEN / THEN
-    yr_belief = beliefheir_shop(base=yr_road, pick=yr_road, open=2, nigh=2)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) is False
+    yr_fact = factheir_shop(base=yr_road, pick=yr_road, open=2, nigh=2)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) is False
 
-    yr_belief = beliefheir_shop(base=yr_road, pick=yr_road, open=102, nigh=102)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) is False
+    yr_fact = factheir_shop(base=yr_road, pick=yr_road, open=102, nigh=102)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) is False
 
-    yr_belief = beliefheir_shop(base=yr_road, pick=yr_road, open=1, nigh=4)
-    assert yr_premise._get_range_segregate_status(beliefheir=yr_belief) == True
+    yr_fact = factheir_shop(base=yr_road, pick=yr_road, open=1, nigh=4)
+    assert yr_premise._get_range_segregate_status(factheir=yr_fact) == True
 
 
 def test_PremiseUnitUnit_is_range_or_segregate_ReturnsCorrectBool():
@@ -266,44 +266,44 @@ def test_PremiseUnitUnit_is_range_or_segregate_ReturnsCorrectBool():
 
 
 def test_PremiseUnitUnit_get_premise_status_ReturnsCorrect_active():
-    # WHEN assumes belief is in lineage
+    # WHEN assumes fact is in lineage
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
     wkday_premise = premiseunit_shop(need=wkday_road)
 
     # WHEN / THEN
-    wkday_belief = beliefheir_shop(base=wkday_road, pick=wkday_road)
-    assert wkday_premise._get_active(beliefheir=wkday_belief) == True
-    # if belief has range but premise does not reqquire range, belief's range does not matter
-    wkday_belief = beliefheir_shop(base=wkday_road, pick=wkday_road, open=0, nigh=2)
-    assert wkday_premise._get_active(beliefheir=wkday_belief) == True
+    wkday_fact = factheir_shop(base=wkday_road, pick=wkday_road)
+    assert wkday_premise._get_active(factheir=wkday_fact) == True
+    # if fact has range but premise does not reqquire range, fact's range does not matter
+    wkday_fact = factheir_shop(base=wkday_road, pick=wkday_road, open=0, nigh=2)
+    assert wkday_premise._get_active(factheir=wkday_fact) == True
 
 
 def test_PremiseUnitUnit_get_active_returnsCorrectRanged_active():
-    # GIVEN assumes belief is in lineage
+    # GIVEN assumes fact is in lineage
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
     wkday_premise = premiseunit_shop(need=wkday_road, open=3, nigh=7)
 
     # WHEN / THEN
-    wkday_belief = beliefheir_shop(base=wkday_road, pick=wkday_road)
-    assert wkday_premise._get_active(beliefheir=wkday_belief) is False
-    wkday_belief = beliefheir_shop(base=wkday_road, pick=wkday_road, open=0, nigh=2)
-    assert wkday_premise._get_active(beliefheir=wkday_belief) is False
+    wkday_fact = factheir_shop(base=wkday_road, pick=wkday_road)
+    assert wkday_premise._get_active(factheir=wkday_fact) is False
+    wkday_fact = factheir_shop(base=wkday_road, pick=wkday_road, open=0, nigh=2)
+    assert wkday_premise._get_active(factheir=wkday_fact) is False
 
 
-def test_PremiseUnitUnit_set_status_CorrectlySets_status_WhenBeliefUnitIsNull():
+def test_PremiseUnitUnit_set_status_CorrectlySets_status_WhenFactUnitIsNull():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
     after_text = "afternoon"
     after_road = create_road(wkday_road, after_text)
     premise_2 = premiseunit_shop(need=after_road)
-    agenda_belief_2 = None
+    agenda_fact_2 = None
     assert premise_2._status is None
 
     # WHEN
-    premise_2.set_status(x_beliefheir=agenda_belief_2)
+    premise_2.set_status(x_factheir=agenda_fact_2)
 
     # GIVEN
     assert premise_2._status is False
@@ -316,11 +316,11 @@ def test_PremiseUnitUnit_set_status_CorrectlySetsStatusOfSimple():
     wed_text = "wednesday"
     wed_road = create_road(wkday_road, wed_text)
     wed_premise = premiseunit_shop(need=wed_road)
-    agenda_belief = beliefheir_shop(base=wkday_road, pick=wed_road)
+    agenda_fact = factheir_shop(base=wkday_road, pick=wed_road)
     assert wed_premise._status is None
 
     # WHEN
-    wed_premise.set_status(x_beliefheir=agenda_belief)
+    wed_premise.set_status(x_factheir=agenda_fact)
 
     # THEN
     assert wed_premise._status == True
@@ -338,8 +338,8 @@ def test_PremiseUnit_set_status_CorrectlySetsStatus_2():
     assert wed_after_premise._status is None
 
     # WHEN
-    wed_belief = beliefheir_shop(base=wkday_road, pick=wed_road)
-    wed_after_premise.set_status(x_beliefheir=wed_belief)
+    wed_fact = factheir_shop(base=wkday_road, pick=wed_road)
+    wed_after_premise.set_status(x_factheir=wed_fact)
 
     # THEN
     assert wed_after_premise._status == True
@@ -357,8 +357,8 @@ def test_PremiseUnit_set_status_CorrectlySetsStatus_3():
     assert wed_premise._status is None
 
     # WHEN
-    noon_belief = beliefheir_shop(base=wkday_road, pick=wed_noon_road)
-    wed_premise.set_status(x_beliefheir=noon_belief)
+    noon_fact = factheir_shop(base=wkday_road, pick=wed_noon_road)
+    wed_premise.set_status(x_factheir=noon_fact)
 
     # THEN
     assert wed_premise._status == True
@@ -373,14 +373,14 @@ def test_PremiseUnit_set_status_CorrectlySetsStatus_4():
     thu_text = "thursday"
     thu_road = create_road(wkday_road, thu_text)
     wed_premise = premiseunit_shop(need=wed_road)
-    thu_belief = beliefheir_shop(base=wkday_road, pick=thu_road)
+    thu_fact = factheir_shop(base=wkday_road, pick=thu_road)
     assert wed_premise._status is None
-    assert wed_premise.is_in_lineage(belief_pick=thu_belief.pick) is False
-    assert thu_belief.open is None
-    assert thu_belief.nigh is None
+    assert wed_premise.is_in_lineage(fact_pick=thu_fact.pick) is False
+    assert thu_fact.open is None
+    assert thu_fact.nigh is None
 
     # WHEN
-    wed_premise.set_status(x_beliefheir=thu_belief)
+    wed_premise.set_status(x_factheir=thu_fact)
 
     # THEN
     assert wed_premise._status is False
@@ -400,8 +400,8 @@ def test_PremiseUnit_set_status_CorrectlySetsStatus_5():
     assert wed_sun_premise._status is None
 
     # WHEN
-    wed_rain_belief = beliefheir_shop(base=wkday_road, pick=wed_rain_road)
-    wed_sun_premise.set_status(x_beliefheir=wed_rain_belief)
+    wed_rain_fact = factheir_shop(base=wkday_road, pick=wed_rain_road)
+    wed_sun_premise.set_status(x_factheir=wed_rain_fact)
 
     # THEN
     assert wed_sun_premise._status is False
@@ -417,8 +417,8 @@ def test_PremiseUnit_set_status_CorrectlySetsTimeRangeStatusTrue():
     assert hr24_premise._status is None
 
     # WHEN
-    range_0_to_8_belief = beliefheir_shop(hr24_road, hr24_road, open=0, nigh=8)
-    hr24_premise.set_status(x_beliefheir=range_0_to_8_belief)
+    range_0_to_8_fact = factheir_shop(hr24_road, hr24_road, open=0, nigh=8)
+    hr24_premise.set_status(x_factheir=range_0_to_8_fact)
 
     # THEN
     assert hr24_premise._status == True
@@ -432,8 +432,8 @@ def test_PremiseUnit_set_task_CorrectlySetsTaskBool_01():
     no_range_premise._status = False
 
     # WHEN / THEN
-    no_range_belief = beliefheir_shop(base=hr24_road, pick=hr24_road)
-    assert no_range_premise._get_task_status(beliefheir=no_range_belief) is False
+    no_range_fact = factheir_shop(base=hr24_road, pick=hr24_road)
+    assert no_range_premise._get_task_status(factheir=no_range_fact) is False
 
 
 def test_PremiseUnit_set_task_CorrectlySetsTaskBoolRangeTrue():
@@ -444,8 +444,8 @@ def test_PremiseUnit_set_task_CorrectlySetsTaskBoolRangeTrue():
     range_5_to_31_premise._status = True
 
     # WHEN / THEN
-    range_7_to_41_belief = beliefheir_shop(hr24_road, hr24_road, open=7, nigh=41)
-    assert range_5_to_31_premise._get_task_status(range_7_to_41_belief) == True
+    range_7_to_41_fact = factheir_shop(hr24_road, hr24_road, open=7, nigh=41)
+    assert range_5_to_31_premise._get_task_status(range_7_to_41_fact) == True
 
 
 def test_PremiseUnit_set_task_CorrectlySetsTaskBoolRangeFalse():
@@ -456,8 +456,8 @@ def test_PremiseUnit_set_task_CorrectlySetsTaskBoolRangeFalse():
     range_5_to_31_premise._status = True
 
     # WHEN / THEN
-    range_7_to_21_belief = beliefheir_shop(hr24_road, hr24_road, open=7, nigh=21)
-    assert range_5_to_31_premise._get_task_status(range_7_to_21_belief) is False
+    range_7_to_21_fact = factheir_shop(hr24_road, hr24_road, open=7, nigh=21)
+    assert range_5_to_31_premise._get_task_status(range_7_to_21_fact) is False
 
 
 def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateFalse_01():
@@ -468,8 +468,8 @@ def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateFalse_01():
     o0_n0_d5_premise._status = True
 
     # WHEN / THEN
-    range_3_to_5_belief = beliefheir_shop(hr24_road, hr24_road, open=3, nigh=5)
-    assert o0_n0_d5_premise._get_task_status(range_3_to_5_belief) is False
+    range_3_to_5_fact = factheir_shop(hr24_road, hr24_road, open=3, nigh=5)
+    assert o0_n0_d5_premise._get_task_status(range_3_to_5_fact) is False
 
 
 def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateFalse_03():
@@ -480,8 +480,8 @@ def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateFalse_03():
     o0_n0_d5_premise._status = False
 
     # WHEN / THEN
-    range_5_to_7_belief = beliefheir_shop(hr24_road, hr24_road, open=5, nigh=7)
-    assert o0_n0_d5_premise._get_task_status(range_5_to_7_belief) is False
+    range_5_to_7_fact = factheir_shop(hr24_road, hr24_road, open=5, nigh=7)
+    assert o0_n0_d5_premise._get_task_status(range_5_to_7_fact) is False
 
 
 def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateTrue_01():
@@ -492,8 +492,8 @@ def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateTrue_01():
     o0_n0_d5_premise._status = True
 
     # WHEN / THEN
-    range_5_to_7_belief = beliefheir_shop(hr24_road, hr24_road, open=5, nigh=7)
-    assert o0_n0_d5_premise._get_task_status(range_5_to_7_belief) == True
+    range_5_to_7_fact = factheir_shop(hr24_road, hr24_road, open=5, nigh=7)
+    assert o0_n0_d5_premise._get_task_status(range_5_to_7_fact) == True
 
 
 def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateTrue_02():
@@ -504,8 +504,8 @@ def test_PremiseUnit_set_task_CorrectlySetsTaskBoolSegregateTrue_02():
     o0_n0_d5_premise._status = True
 
     # WHEN / THEN
-    range_5_to_5_belief = beliefheir_shop(hr24_road, hr24_road, open=5, nigh=5)
-    assert o0_n0_d5_premise._get_task_status(beliefheir=range_5_to_5_belief) is False
+    range_5_to_5_fact = factheir_shop(hr24_road, hr24_road, open=5, nigh=5)
+    assert o0_n0_d5_premise._get_task_status(factheir=range_5_to_5_fact) is False
 
 
 def test_PremiseUnit_set_task_NotNull():
@@ -518,10 +518,10 @@ def test_PremiseUnit_set_task_NotNull():
     wed_premise._status = True
 
     # GIVEN
-    beliefheir = beliefheir_shop(base=week_road, pick=wed_road)
+    factheir = factheir_shop(base=week_road, pick=wed_road)
 
     # THEN
-    assert wed_premise._get_task_status(beliefheir=beliefheir) is False
+    assert wed_premise._get_task_status(factheir=factheir) is False
 
 
 def test_PremiseUnit_set_status_CorrectlySetsTimeRangeTaskTrue_v1():
@@ -533,8 +533,8 @@ def test_PremiseUnit_set_status_CorrectlySetsTimeRangeTaskTrue_v1():
     assert range_2_to_7_premise._task is None
 
     # WHEN
-    range_0_to_5_belief = beliefheir_shop(hr24_road, hr24_road, open=0, nigh=5)
-    range_2_to_7_premise.set_status(x_beliefheir=range_0_to_5_belief)
+    range_0_to_5_fact = factheir_shop(hr24_road, hr24_road, open=0, nigh=5)
+    range_2_to_7_premise.set_status(x_factheir=range_0_to_5_fact)
 
     # THEN
     assert range_2_to_7_premise._status == True
@@ -546,27 +546,27 @@ def test_PremiseUnit_set_status_CorrectlySetsTimeRangeTaskTrue_v2():
     hr24_text = "24hr"
     hr24_road = create_road(root_label(), hr24_text)
     range_2_to_7_premise = premiseunit_shop(need=hr24_road, open=2, nigh=7)
-    range_0_to_8_belief = beliefheir_shop(hr24_road, hr24_road, open=0, nigh=8)
+    range_0_to_8_fact = factheir_shop(hr24_road, hr24_road, open=0, nigh=8)
     assert range_2_to_7_premise._status is None
 
     # WHEN
-    range_2_to_7_premise.set_status(x_beliefheir=range_0_to_8_belief)
+    range_2_to_7_premise.set_status(x_factheir=range_0_to_8_fact)
     # THEN
     assert range_2_to_7_premise._status == True
     assert range_2_to_7_premise._task == True
 
     # GIVEN
-    range_3_to_5_belief = beliefheir_shop(hr24_road, hr24_road, open=3, nigh=5)
+    range_3_to_5_fact = factheir_shop(hr24_road, hr24_road, open=3, nigh=5)
     # WHEN
-    range_2_to_7_premise.set_status(x_beliefheir=range_3_to_5_belief)
+    range_2_to_7_premise.set_status(x_factheir=range_3_to_5_fact)
     # THEN
     assert range_2_to_7_premise._status
     assert range_2_to_7_premise._task is False
 
     # GIVEN
-    range_8_to_8_belief = beliefheir_shop(hr24_road, hr24_road, open=8, nigh=8)
+    range_8_to_8_fact = factheir_shop(hr24_road, hr24_road, open=8, nigh=8)
     # WHEN
-    range_2_to_7_premise.set_status(x_beliefheir=range_8_to_8_belief)
+    range_2_to_7_premise.set_status(x_factheir=range_8_to_8_fact)
     assert range_2_to_7_premise._status is False
     assert range_2_to_7_premise._task is False
 
@@ -581,8 +581,8 @@ def test_PremiseUnit_set_status_CorrectlySetsTimeRangeStatusFalse():
     assert hr24_premise._status is None
 
     # WHEN
-    agenda_belief = beliefheir_shop(base=hr24_road, pick=hr24_road, open=8, nigh=10)
-    hr24_premise.set_status(x_beliefheir=agenda_belief)
+    agenda_fact = factheir_shop(base=hr24_road, pick=hr24_road, open=8, nigh=10)
+    hr24_premise.set_status(x_factheir=agenda_fact)
 
     # THEN
     assert hr24_premise._status is False
@@ -598,8 +598,8 @@ def test_PremiseUnit_set_status_CorrectlySetCEDWeekStatusFalse():
     assert o1_n1_d6_premise._status is None
 
     # WHEN
-    range_6_to_6_belief = beliefheir_shop(week_road, week_road, open=6, nigh=6)
-    o1_n1_d6_premise.set_status(x_beliefheir=range_6_to_6_belief)
+    range_6_to_6_fact = factheir_shop(week_road, week_road, open=6, nigh=6)
+    o1_n1_d6_premise.set_status(x_factheir=range_6_to_6_fact)
 
     # THEN
     assert o1_n1_d6_premise._status is False
@@ -612,11 +612,11 @@ def test_PremiseUnit_set_status_CorrectlySetCEDWeekStatusTrue():
     week_text = "ced_week"
     week_road = create_road(timetech_road, week_text)
     week_premise = premiseunit_shop(need=week_road, divisor=6, open=1, nigh=1)
-    agenda_belief = beliefheir_shop(base=week_road, pick=week_road, open=7, nigh=7)
+    agenda_fact = factheir_shop(base=week_road, pick=week_road, open=7, nigh=7)
     assert week_premise._status is None
 
     # WHEN
-    week_premise.set_status(x_beliefheir=agenda_belief)
+    week_premise.set_status(x_factheir=agenda_fact)
 
     # THEN
     assert week_premise._status == True

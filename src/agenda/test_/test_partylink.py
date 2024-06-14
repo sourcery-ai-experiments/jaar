@@ -47,13 +47,13 @@ def test_partylink_shop_set_agenda_cred_debt_SetsAttrCorrectly():
     bikers_party_id = PartyID("Yao")
     bikers_credor_weight = 3.0
     partylinks_sum_credor_weight = 60
-    idea_agenda_cred = 0.5
-    idea_agenda_intent_cred = 0.98
+    belief_agenda_cred = 0.5
+    belief_agenda_intent_cred = 0.98
 
     bikers_debtor_weight = 13.0
     partylinks_sum_debtor_weight = 26.0
-    idea_agenda_debt = 0.9
-    idea_agenda_intent_debt = 0.5151
+    belief_agenda_debt = 0.9
+    belief_agenda_intent_debt = 0.5151
 
     x_partylink = partylink_shop(
         party_id=bikers_party_id,
@@ -69,10 +69,10 @@ def test_partylink_shop_set_agenda_cred_debt_SetsAttrCorrectly():
     x_partylink.set_agenda_cred_debt(
         partylinks_credor_weight_sum=partylinks_sum_credor_weight,
         partylinks_debtor_weight_sum=partylinks_sum_debtor_weight,
-        idea_agenda_cred=idea_agenda_cred,
-        idea_agenda_debt=idea_agenda_debt,
-        idea_agenda_intent_cred=idea_agenda_intent_cred,
-        idea_agenda_intent_debt=idea_agenda_intent_debt,
+        belief_agenda_cred=belief_agenda_cred,
+        belief_agenda_debt=belief_agenda_debt,
+        belief_agenda_intent_cred=belief_agenda_intent_cred,
+        belief_agenda_intent_debt=belief_agenda_intent_debt,
     )
 
     # THEN

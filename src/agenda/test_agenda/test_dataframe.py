@@ -3,7 +3,7 @@ from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels,
     get_agenda_assignment_laundry_example1,
     get_agenda_with_4_levels_and_2reasons,
-    get_agenda_x1_3levels_1reason_1beliefs,
+    get_agenda_x1_3levels_1reason_1facts,
 )
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.report import (

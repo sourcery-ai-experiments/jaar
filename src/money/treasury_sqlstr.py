@@ -800,21 +800,21 @@ def get_river_ledger_unit(
     )
 
 
-# agenda_oathunit
-def get_agenda_oathunit_table_create_sqlstr() -> str:
+# agenda_ideaunit
+def get_agenda_ideaunit_table_create_sqlstr() -> str:
     """table that holds every road and its owner_id"""
     return """
-CREATE TABLE IF NOT EXISTS agenda_oathunit (
+CREATE TABLE IF NOT EXISTS agenda_ideaunit (
   owner_id VARCHAR(255) NOT NULL
-, oath_road VARCHAR(1000) NOT NULL
+, idea_road VARCHAR(1000) NOT NULL
 )
 ;
 """
 
 
-def get_agenda_oathunit_row_count(db_conn: Connection, owner_id: str) -> str:
+def get_agenda_ideaunit_row_count(db_conn: Connection, owner_id: str) -> str:
     sqlstr = f"""
-{get_row_count_sqlstr("agenda_oathunit")} 
+{get_row_count_sqlstr("agenda_ideaunit")} 
 WHERE owner_id = '{owner_id}'
 ;
 """
@@ -822,39 +822,39 @@ WHERE owner_id = '{owner_id}'
 
 
 @dataclass
-class OathCatalog:
+class IdeaCatalog:
     owner_id: str
-    oath_road: str
+    idea_road: str
 
 
-def get_agenda_oathunit_table_insert_sqlstr(
-    agenda_oathunit: OathCatalog,
+def get_agenda_ideaunit_table_insert_sqlstr(
+    agenda_ideaunit: IdeaCatalog,
 ) -> str:
-    # return f"""INSERT INTO agenda_oathunit (owner_id, oath_road) VALUES ('{agenda_oathunit.owner_id}', '{agenda_oathunit.oath_road}');"""
+    # return f"""INSERT INTO agenda_ideaunit (owner_id, idea_road) VALUES ('{agenda_ideaunit.owner_id}', '{agenda_ideaunit.idea_road}');"""
     return f"""
-INSERT INTO agenda_oathunit (
+INSERT INTO agenda_ideaunit (
   owner_id
-, oath_road
+, idea_road
 )
 VALUES (
-  '{agenda_oathunit.owner_id}'
-, '{create_road_without_root_node(agenda_oathunit.oath_road)}'
+  '{agenda_ideaunit.owner_id}'
+, '{create_road_without_root_node(agenda_ideaunit.idea_road)}'
 )
 ;
 """
 
 
-def get_agenda_oathunit_dict(db_conn: Connection, search_road: RoadUnit = None):
+def get_agenda_ideaunit_dict(db_conn: Connection, search_road: RoadUnit = None):
     if search_road is None:
         where_clause = ""
     else:
         search_road_without_root_node = create_road_without_root_node(search_road)
-        where_clause = f"WHERE oath_road = '{search_road_without_root_node}'"
+        where_clause = f"WHERE idea_road = '{search_road_without_root_node}'"
     sqlstr = f"""
 SELECT 
   owner_id
-, oath_road
-FROM agenda_oathunit
+, idea_road
+FROM agenda_ideaunit
 {where_clause}
 ;
 """
@@ -862,17 +862,17 @@ FROM agenda_oathunit
 
     dict_x = {}
     for row in results.fetchall():
-        agenda_oathunit_x = OathCatalog(owner_id=row[0], oath_road=row[1])
-        dict_key = f"{agenda_oathunit_x.owner_id} {agenda_oathunit_x.oath_road}"
-        dict_x[dict_key] = agenda_oathunit_x
+        agenda_ideaunit_x = IdeaCatalog(owner_id=row[0], idea_road=row[1])
+        dict_key = f"{agenda_ideaunit_x.owner_id} {agenda_ideaunit_x.idea_road}"
+        dict_x[dict_key] = agenda_ideaunit_x
     return dict_x
 
 
-# agenda_oath_beliefunit
-def get_agenda_oath_beliefunit_table_create_sqlstr() -> str:
-    """table that holds every belief base and pick of every agenda. missing open/nigh. (clearly not used, maybe add in the future)"""
+# agenda_idea_factunit
+def get_agenda_idea_factunit_table_create_sqlstr() -> str:
+    """table that holds every fact base and pick of every agenda. missing open/nigh. (clearly not used, maybe add in the future)"""
     return """
-CREATE TABLE IF NOT EXISTS agenda_oath_beliefunit (
+CREATE TABLE IF NOT EXISTS agenda_idea_factunit (
   owner_id VARCHAR(255) NOT NULL
 , base VARCHAR(1000) NOT NULL
 , pick VARCHAR(1000) NOT NULL
@@ -881,95 +881,99 @@ CREATE TABLE IF NOT EXISTS agenda_oath_beliefunit (
 """
 
 
-def get_agenda_oath_beliefunit_row_count(db_conn: Connection, owner_id: str) -> str:
+def get_agenda_idea_factunit_row_count(db_conn: Connection, owner_id: str) -> str:
     sqlstr = f"""
-{get_row_count_sqlstr("agenda_oath_beliefunit")} WHERE owner_id = '{owner_id}'
+{get_row_count_sqlstr("agenda_idea_factunit")} WHERE owner_id = '{owner_id}'
 ;
 """
     return get_single_result(db_conn, sqlstr)
 
 
 @dataclass
-class BeliefCatalog:
+class FactCatalog:
     owner_id: str
     base: str
     pick: str
 
 
-def get_agenda_oath_beliefunit_table_insert_sqlstr(
-    agenda_oath_beliefunit: BeliefCatalog,
+def get_agenda_idea_factunit_table_insert_sqlstr(
+    agenda_idea_factunit: FactCatalog,
 ) -> str:
     return f"""
-INSERT INTO agenda_oath_beliefunit (
+INSERT INTO agenda_idea_factunit (
   owner_id
 , base
 , pick
 )
 VALUES (
-  '{agenda_oath_beliefunit.owner_id}'
-, '{agenda_oath_beliefunit.base}'
-, '{agenda_oath_beliefunit.pick}'
+  '{agenda_idea_factunit.owner_id}'
+, '{agenda_idea_factunit.base}'
+, '{agenda_idea_factunit.pick}'
 )
 ;
 """
 
 
-# agenda_ideaunit
-def get_agenda_ideaunit_table_create_sqlstr() -> str:
+# agenda_beliefunit
+def get_agenda_beliefunit_table_create_sqlstr() -> str:
     return """
-CREATE TABLE IF NOT EXISTS agenda_ideaunit (
+CREATE TABLE IF NOT EXISTS agenda_beliefunit (
   owner_id VARCHAR(255) NOT NULL
-, ideaunit_idea_id VARCHAR(1000) NOT NULL
+, beliefunit_belief_id VARCHAR(1000) NOT NULL
 )
 ;
 """
 
 
-def get_agenda_ideaunit_row_count(db_conn: Connection, owner_id: str) -> str:
+def get_agenda_beliefunit_row_count(db_conn: Connection, owner_id: str) -> str:
     sqlstr = f"""
-{get_row_count_sqlstr("agenda_ideaunit")} WHERE owner_id = '{owner_id}'
+{get_row_count_sqlstr("agenda_beliefunit")} WHERE owner_id = '{owner_id}'
 ;
 """
     return get_single_result(db_conn, sqlstr)
 
 
 @dataclass
-class IdeaUnitCatalog:
+class BeliefUnitCatalog:
     owner_id: str
-    ideaunit_idea_id: str
+    beliefunit_belief_id: str
 
 
-def get_agenda_ideaunit_table_insert_sqlstr(
-    agenda_ideaunit: IdeaUnitCatalog,
+def get_agenda_beliefunit_table_insert_sqlstr(
+    agenda_beliefunit: BeliefUnitCatalog,
 ) -> str:
     return f"""
-INSERT INTO agenda_ideaunit (
+INSERT INTO agenda_beliefunit (
   owner_id
-, ideaunit_idea_id
+, beliefunit_belief_id
 )
 VALUES (
-  '{agenda_ideaunit.owner_id}'
-, '{agenda_ideaunit.ideaunit_idea_id}'
+  '{agenda_beliefunit.owner_id}'
+, '{agenda_beliefunit.beliefunit_belief_id}'
 )
 ;
 """
 
 
-def get_agenda_ideaunit_dict(db_conn: Connection) -> dict[str:IdeaUnitCatalog]:
+def get_agenda_beliefunit_dict(db_conn: Connection) -> dict[str:BeliefUnitCatalog]:
     sqlstr = """
 SELECT 
   owner_id
-, ideaunit_idea_id
-FROM agenda_ideaunit
+, beliefunit_belief_id
+FROM agenda_beliefunit
 ;
 """
     results = db_conn.execute(sqlstr)
 
     dict_x = {}
     for row in results.fetchall():
-        agenda_ideaunit_x = IdeaUnitCatalog(owner_id=row[0], ideaunit_idea_id=row[1])
-        dict_key = f"{agenda_ideaunit_x.owner_id} {agenda_ideaunit_x.ideaunit_idea_id}"
-        dict_x[dict_key] = agenda_ideaunit_x
+        agenda_beliefunit_x = BeliefUnitCatalog(
+            owner_id=row[0], beliefunit_belief_id=row[1]
+        )
+        dict_key = (
+            f"{agenda_beliefunit_x.owner_id} {agenda_beliefunit_x.beliefunit_belief_id}"
+        )
+        dict_x[dict_key] = agenda_beliefunit_x
     return dict_x
 
 
@@ -985,7 +989,7 @@ CREATE TABLE IF NOT EXISTS calendar (
 , report_interval_intent_state_max_count INT NOT NULL
 , time_begin INT NOT NULL
 , time_close INT NOT NULL
-, intent_oath_road VARCHAR(255) NOT NULL
+, intent_idea_road VARCHAR(255) NOT NULL
 , intent_weight INT NOT NULL
 , task INT NOT NULL
 , FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
@@ -1023,7 +1027,7 @@ class CalendarIntentUnit:
     calendarreport: CalendarReport
     time_begin: int
     time_close: int
-    intent_oath_road: RoadUnit
+    intent_idea_road: RoadUnit
     intent_weight: float
     task: bool
 
@@ -1040,7 +1044,7 @@ INSERT INTO calendar (
 , report_interval_intent_state_max_count
 , time_begin
 , time_close
-, intent_oath_road
+, intent_idea_road
 , intent_weight
 , task)
 VALUES (
@@ -1053,7 +1057,7 @@ VALUES (
 , {sqlite_null(x_obj.calendarreport.intent_max_count_state)}
 , {sqlite_null(x_obj.time_begin)}
 , {sqlite_null(x_obj.time_close)}
-, '{x_obj.intent_oath_road}'
+, '{x_obj.intent_idea_road}'
 , {sqlite_null(x_obj.intent_weight)}
 , {sqlite_bool(x_obj.task)}
 )
@@ -1114,12 +1118,12 @@ WHERE owner_id = '{calendar_owner_id}'
 
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_agendaunit_table_create_sqlstr()]
-    list_x.append(get_agenda_oath_beliefunit_table_create_sqlstr())
-    list_x.append(get_agenda_oathunit_table_create_sqlstr())
+    list_x.append(get_agenda_idea_factunit_table_create_sqlstr())
+    list_x.append(get_agenda_ideaunit_table_create_sqlstr())
     list_x.append(get_agenda_partyunit_table_create_sqlstr())
     list_x.append(get_river_block_table_create_sqlstr())
     list_x.append(get_river_circle_table_create_sqlstr())
     list_x.append(get_river_reach_table_create_sqlstr())
-    list_x.append(get_agenda_ideaunit_table_create_sqlstr())
+    list_x.append(get_agenda_beliefunit_table_create_sqlstr())
     list_x.append(get_calendar_table_create_sqlstr())
     return list_x

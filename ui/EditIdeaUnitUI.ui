@@ -34,7 +34,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Oaths: Edit or Add Children </string>
+    <string>Ideas: Edit or Add Children </string>
    </property>
   </widget>
   <widget class="QTextEdit" name="yo_deescription">
@@ -147,7 +147,7 @@
     <string>Current Node ID:</string>
    </property>
   </widget>
-  <widget class="QTreeWidget" name="baseoathunit">
+  <widget class="QTreeWidget" name="baseideaunit">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -161,7 +161,7 @@
    </property>
    <column>
     <property name="text">
-     <string>oathunit</string>
+     <string>ideaunit</string>
     </property>
    </column>
   </widget>
@@ -217,7 +217,7 @@
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="oath2idea_table">
+  <widget class="QTableWidget" name="idea2belief_table">
    <property name="geometry">
     <rect>
      <x>1050</x>
@@ -233,12 +233,12 @@
    </property>
    <column>
     <property name="text">
-     <string>Idea_ID</string>
+     <string>Belief_ID</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>Idea</string>
+     <string>Belief</string>
     </property>
    </column>
    <column>
@@ -247,7 +247,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QPushButton" name="oath2idea_delete_button">
+  <widget class="QPushButton" name="idea2belief_delete_button">
    <property name="geometry">
     <rect>
      <x>1440</x>
@@ -262,10 +262,10 @@
     </font>
    </property>
    <property name="text">
-    <string>De-link Idea</string>
+    <string>De-link Belief</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="oath2idea_insert_button">
+  <widget class="QPushButton" name="idea2belief_insert_button">
    <property name="geometry">
     <rect>
      <x>1050</x>
@@ -280,10 +280,10 @@
     </font>
    </property>
    <property name="text">
-    <string>Add Idea to Oath</string>
+    <string>Add Belief to Idea</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="oath2idea_insert_combo">
+  <widget class="QComboBox" name="idea2belief_insert_combo">
    <property name="geometry">
     <rect>
      <x>1200</x>
@@ -334,7 +334,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Idea count</string>
+    <string>Belief count</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="cb_yo_intent">
@@ -520,7 +520,7 @@
     <string>All Day</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_beliefunit_count">
+  <widget class="QCheckBox" name="cb_yo_factunit_count">
    <property name="geometry">
     <rect>
      <x>210</x>
@@ -530,10 +530,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>beliefunits</string>
+    <string>factunits</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_beliefunit_time">
+  <widget class="QCheckBox" name="cb_yo_factunit_time">
    <property name="geometry">
     <rect>
      <x>320</x>
@@ -543,7 +543,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>time beliefunit</string>
+    <string>time factunit</string>
    </property>
   </widget>
   <widget class="QComboBox" name="reason_base_combo">
@@ -1662,7 +1662,7 @@
     <string>apply premiseunit_hregtime_days</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_beliefheir_view">
+  <widget class="QCheckBox" name="cb_factheir_view">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -1672,10 +1672,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Beliefheir:</string>
+    <string>Factheir:</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_beliefheir_count">
+  <widget class="QCheckBox" name="cb_yo_factheir_count">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -1685,7 +1685,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>beliefheirs</string>
+    <string>factheirs</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="yo_active">
@@ -1814,7 +1814,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add Pledge child oath</string>
+    <string>Add Pledge child idea</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_39">

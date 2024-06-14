@@ -1,10 +1,10 @@
 from src._instrument.file import dir_files as file_dir_files
 from src.listen.userhub import userhub_shop
 from src.listen.examples.example_listen_quarks import (
-    get_quark_example_beliefunit_knee,
-    get_quark_example_oathunit_sports,
-    get_quark_example_oathunit_ball,
-    get_quark_example_oathunit_knee,
+    get_quark_example_factunit_knee,
+    get_quark_example_ideaunit_sports,
+    get_quark_example_ideaunit_ball,
+    get_quark_example_ideaunit_knee,
 )
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as reals_dir,
@@ -49,7 +49,7 @@ def test_UserHub_save_valid_quark_file_CorrectlySavesFile(env_dir_setup_cleanup)
     assert os_path_exists(yao_userhub.quark_file_path(one_int)) is False
 
     # WHEN
-    knee_quark = get_quark_example_beliefunit_knee()
+    knee_quark = get_quark_example_factunit_knee()
     quark_num = yao_userhub._save_valid_quark_file(knee_quark, one_int)
 
     # THEN
@@ -66,7 +66,7 @@ def test_UserHub_quark_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     assert yao_userhub.quark_file_exists(five_int) is False
 
     # WHEN
-    yao_userhub._save_valid_quark_file(get_quark_example_beliefunit_knee(), five_int)
+    yao_userhub._save_valid_quark_file(get_quark_example_factunit_knee(), five_int)
 
     # THEN
     assert os_path_exists(yao_userhub.quark_file_path(five_int))
@@ -78,7 +78,7 @@ def test_UserHub_delete_quark_file_CorrectlyDeletesFile(env_dir_setup_cleanup):
     yao_text = "Yao"
     yao_userhub = userhub_shop(reals_dir(), real_id(), yao_text)
     ten_int = 10
-    yao_userhub._save_valid_quark_file(get_quark_example_beliefunit_knee(), ten_int)
+    yao_userhub._save_valid_quark_file(get_quark_example_factunit_knee(), ten_int)
     assert yao_userhub.quark_file_exists(ten_int)
 
     # WHEN
@@ -93,7 +93,7 @@ def test_UserHub_get_max_quark_file_number_ReturnsCorrectObj(env_dir_setup_clean
     yao_text = "Yao"
     yao_userhub = userhub_shop(reals_dir(), real_id(), yao_text)
     ten_int = 10
-    yao_userhub._save_valid_quark_file(get_quark_example_beliefunit_knee(), ten_int)
+    yao_userhub._save_valid_quark_file(get_quark_example_factunit_knee(), ten_int)
     assert yao_userhub.quark_file_exists(ten_int)
 
     # WHEN / THEN
@@ -119,7 +119,7 @@ def test_UserHub_get_next_quark_file_number_ReturnsCorrectObj(env_dir_setup_clea
     assert yao_userhub._get_next_quark_file_number() == 0
 
     ten_int = 10
-    yao_userhub._save_valid_quark_file(get_quark_example_beliefunit_knee(), ten_int)
+    yao_userhub._save_valid_quark_file(get_quark_example_factunit_knee(), ten_int)
     assert yao_userhub.quark_file_exists(ten_int)
 
     # WHEN / THEN
@@ -131,20 +131,20 @@ def test_UserHub_save_quark_file_CorrectlySavesFile(env_dir_setup_cleanup):
     yao_text = "Yao"
     yao_userhub = userhub_shop(reals_dir(), real_id(), yao_text)
     ten_int = 10
-    yao_userhub._save_valid_quark_file(get_quark_example_beliefunit_knee(), ten_int)
+    yao_userhub._save_valid_quark_file(get_quark_example_factunit_knee(), ten_int)
     assert yao_userhub.get_max_quark_file_number() == ten_int
     eleven_int = ten_int + 1
     assert yao_userhub.quark_file_exists(eleven_int) is False
 
     # WHEN
-    quark_num1 = yao_userhub.save_quark_file(get_quark_example_beliefunit_knee())
+    quark_num1 = yao_userhub.save_quark_file(get_quark_example_factunit_knee())
 
     # THEN
     assert yao_userhub.get_max_quark_file_number() != ten_int
     assert yao_userhub.get_max_quark_file_number() == eleven_int
     assert yao_userhub.quark_file_exists(eleven_int)
     assert quark_num1 == eleven_int
-    quark_num2 = yao_userhub.save_quark_file(get_quark_example_beliefunit_knee())
+    quark_num2 = yao_userhub.save_quark_file(get_quark_example_factunit_knee())
     assert quark_num2 == 12
 
 
@@ -165,7 +165,7 @@ def test_UserHub_get_agenda_from_quark_files_ReturnsFileWithZeroQuarks(
     assert yao_agenda._planck == yao_userhub.planck
 
 
-def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_SimpleOath(
+def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_SimpleIdea(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -173,7 +173,7 @@ def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_SimpleOath(
     yao_userhub = userhub_shop(reals_dir(), real_id(), yao_text)
 
     # save quark files
-    sports_quark = get_quark_example_oathunit_sports(yao_userhub.real_id)
+    sports_quark = get_quark_example_ideaunit_sports(yao_userhub.real_id)
     yao_userhub.save_quark_file(sports_quark)
 
     # WHEN
@@ -186,10 +186,10 @@ def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_SimpleOath(
     sports_text = "sports"
     sports_road = yao_agenda.make_l1_road(sports_text)
 
-    assert yao_agenda.oath_exists(sports_road)
+    assert yao_agenda.idea_exists(sports_road)
 
 
-def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_WithBeliefUnit(
+def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_WithFactUnit(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -198,10 +198,10 @@ def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_WithBeliefUnit(
 
     # save quark files
     x_real_id = yao_userhub.real_id
-    yao_userhub.save_quark_file(get_quark_example_oathunit_sports(x_real_id))
-    yao_userhub.save_quark_file(get_quark_example_oathunit_ball(x_real_id))
-    yao_userhub.save_quark_file(get_quark_example_oathunit_knee(x_real_id))
-    yao_userhub.save_quark_file(get_quark_example_beliefunit_knee(x_real_id))
+    yao_userhub.save_quark_file(get_quark_example_ideaunit_sports(x_real_id))
+    yao_userhub.save_quark_file(get_quark_example_ideaunit_ball(x_real_id))
+    yao_userhub.save_quark_file(get_quark_example_ideaunit_knee(x_real_id))
+    yao_userhub.save_quark_file(get_quark_example_factunit_knee(x_real_id))
     print(f"{file_dir_files(yao_userhub.quarks_dir()).keys()=}")
 
     # WHEN
@@ -214,4 +214,4 @@ def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_WithBeliefUnit(
     sports_text = "sports"
     sports_road = yao_agenda.make_l1_road(sports_text)
 
-    assert yao_agenda.oath_exists(sports_road)
+    assert yao_agenda.idea_exists(sports_road)

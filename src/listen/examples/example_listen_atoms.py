@@ -1,9 +1,9 @@
 from src.atom.atom import atomunit_shop, AtomUnit
 from src.listen.examples.example_listen_quarks import (
-    get_quark_example_beliefunit_knee,
-    get_quark_example_oathunit_ball,
-    get_quark_example_oathunit_knee,
-    get_quark_example_oathunit_sports,
+    get_quark_example_factunit_knee,
+    get_quark_example_ideaunit_ball,
+    get_quark_example_ideaunit_knee,
+    get_quark_example_ideaunit_sports,
 )
 
 
@@ -17,29 +17,29 @@ def get_sue_atomunit() -> AtomUnit:
 
 def sue_1quarkunits_atomunit() -> AtomUnit:
     x_atomunit = atomunit_shop(person_id="Sue", _atom_id=53, _faces={"Yao"})
-    x_atomunit._nucunit.set_quarkunit(get_quark_example_oathunit_sports())
+    x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_sports())
     return x_atomunit
 
 
 def sue_2quarkunits_atomunit() -> AtomUnit:
     x_atomunit = atomunit_shop(person_id="Sue", _atom_id=53, _faces={"Yao"})
-    x_atomunit._nucunit.set_quarkunit(get_quark_example_oathunit_knee())
-    x_atomunit._nucunit.set_quarkunit(get_quark_example_oathunit_sports())
+    x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_knee())
+    x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_sports())
     return x_atomunit
 
 
 def sue_3quarkunits_atomunit() -> AtomUnit:
     x_atomunit = atomunit_shop(person_id="Sue", _atom_id=37, _faces={"Yao"})
-    x_atomunit._nucunit.set_quarkunit(get_quark_example_beliefunit_knee())
-    x_atomunit._nucunit.set_quarkunit(get_quark_example_oathunit_ball())
-    x_atomunit._nucunit.set_quarkunit(get_quark_example_oathunit_knee())
+    x_atomunit._nucunit.set_quarkunit(get_quark_example_factunit_knee())
+    x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_ball())
+    x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_knee())
     return x_atomunit
 
 
 def sue_4quarkunits_atomunit() -> AtomUnit:
     x_atomunit = atomunit_shop(person_id="Sue", _atom_id=47, _faces={"Yao"})
-    x_atomunit._nucunit.set_quarkunit(get_quark_example_beliefunit_knee())
-    x_atomunit._nucunit.set_quarkunit(get_quark_example_oathunit_ball())
-    x_atomunit._nucunit.set_quarkunit(get_quark_example_oathunit_knee())
-    x_atomunit._nucunit.set_quarkunit(get_quark_example_oathunit_sports())
+    x_atomunit._nucunit.set_quarkunit(get_quark_example_factunit_knee())
+    x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_ball())
+    x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_knee())
+    x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_sports())
     return x_atomunit

@@ -1,5 +1,5 @@
 from src._road.road import RoadUnit, create_road, get_default_real_id_roadnode, RoadNode
-from src.agenda.oath import oathunit_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
 from src.listen.userhub import userhub_shop, UserHub
 from src.listen.listen import listen_to_person_jobs, create_job_file_from_role_file
@@ -95,7 +95,7 @@ def get_example_yao_agenda() -> AgendaUnit:
     zia_text = "Zia"
     bob_text = "Bob"
     yao_speaker = agendaunit_shop(yao_text, get_default_real_id_roadnode())
-    yao_speaker.add_oath(oathunit_shop(run_text()), casa_road())
+    yao_speaker.add_idea(ideaunit_shop(run_text()), casa_road())
     yao_speaker.add_partyunit(yao_text, debtor_weight=10)
     yao_speaker.add_partyunit(zia_text, debtor_weight=30)
     yao_speaker.add_partyunit(bob_text, debtor_weight=40)
@@ -106,48 +106,48 @@ def get_example_yao_agenda() -> AgendaUnit:
 def get_example_yao_job1_speaker() -> AgendaUnit:
     yao_text = "Yao"
     yao_speaker = get_example_yao_agenda()
-    yao_speaker.del_oath_obj(run_road())
+    yao_speaker.del_idea_obj(run_road())
     yao_speaker.set_party_pool(40)
-    yao_speaker.add_oath(oathunit_shop(cook_text(), pledge=True), casa_road())
-    yao_speaker.add_oath(oathunit_shop(hungry_text()), eat_road())
-    yao_speaker.add_oath(oathunit_shop(full_text()), eat_road())
-    cook_oathunit = yao_speaker.get_oath_obj(cook_road())
-    cook_oathunit._assignedunit.set_suffidea(yao_text)
+    yao_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    yao_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
+    yao_speaker.add_idea(ideaunit_shop(full_text()), eat_road())
+    cook_ideaunit = yao_speaker.get_idea_obj(cook_road())
+    cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     yao_speaker.edit_reason(cook_road(), eat_road(), hungry_road())
-    yao_speaker.set_belief(eat_road(), hungry_road())
+    yao_speaker.set_fact(eat_road(), hungry_road())
     return yao_speaker
 
 
 def get_example_yao_job2_speaker() -> AgendaUnit:
     yao_text = "Yao"
     yao_speaker = get_example_yao_agenda()
-    yao_speaker.del_oath_obj(run_road())
+    yao_speaker.del_idea_obj(run_road())
     yao_speaker.set_party_pool(30)
-    yao_speaker.add_oath(oathunit_shop(cook_text(), pledge=True), casa_road())
-    yao_speaker.add_oath(oathunit_shop(hungry_text()), eat_road())
-    yao_speaker.add_oath(oathunit_shop(full_text()), eat_road())
-    cook_oathunit = yao_speaker.get_oath_obj(cook_road())
-    cook_oathunit._assignedunit.set_suffidea(yao_text)
+    yao_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    yao_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
+    yao_speaker.add_idea(ideaunit_shop(full_text()), eat_road())
+    cook_ideaunit = yao_speaker.get_idea_obj(cook_road())
+    cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     yao_speaker.edit_reason(cook_road(), eat_road(), hungry_road())
-    yao_speaker.set_belief(eat_road(), hungry_road())
+    yao_speaker.set_fact(eat_road(), hungry_road())
 
-    yao_speaker.add_oath(oathunit_shop(sweep_text(), pledge=True), casa_road())
-    yao_speaker.add_oath(oathunit_shop(dirty_text()), sanitation_road())
-    yao_speaker.add_oath(oathunit_shop(clean_text()), sanitation_road())
+    yao_speaker.add_idea(ideaunit_shop(sweep_text(), pledge=True), casa_road())
+    yao_speaker.add_idea(ideaunit_shop(dirty_text()), sanitation_road())
+    yao_speaker.add_idea(ideaunit_shop(clean_text()), sanitation_road())
     yao_speaker.edit_reason(sweep_road(), sanitation_road(), dirty_road())
-    yao_speaker.set_belief(sweep_road(), dirty_road())
+    yao_speaker.set_fact(sweep_road(), dirty_road())
     return yao_speaker
 
 
 def get_example_yao_job3_speaker() -> AgendaUnit:
     yao_speaker = get_example_yao_agenda()
-    yao_speaker.del_oath_obj(run_road())
+    yao_speaker.del_idea_obj(run_road())
     yao_speaker.set_party_pool(10)
-    yao_speaker.add_oath(oathunit_shop(sweep_text(), pledge=True), casa_road())
-    yao_speaker.add_oath(oathunit_shop(dirty_text()), sanitation_road())
-    yao_speaker.add_oath(oathunit_shop(clean_text()), sanitation_road())
+    yao_speaker.add_idea(ideaunit_shop(sweep_text(), pledge=True), casa_road())
+    yao_speaker.add_idea(ideaunit_shop(dirty_text()), sanitation_road())
+    yao_speaker.add_idea(ideaunit_shop(clean_text()), sanitation_road())
     yao_speaker.edit_reason(sweep_road(), sanitation_road(), dirty_road())
-    yao_speaker.set_belief(sweep_road(), dirty_road())
+    yao_speaker.set_fact(sweep_road(), dirty_road())
     return yao_speaker
 
 
@@ -249,15 +249,15 @@ def get_example_yao_duty_with_3_healers():
     yao_text = yao_duty.get_party("Yao").party_id
     bob_text = yao_duty.get_party("Bob").party_id
     zia_text = yao_duty.get_party("Zia").party_id
-    iowa_oath = oathunit_shop(get_iowa_text(), _problem_bool=True)
-    ohio_oath = oathunit_shop(get_ohio_text(), _problem_bool=True)
-    utah_oath = oathunit_shop(get_utah_text(), _problem_bool=True)
-    iowa_oath._healerhold.set_idea_id(get_yao_iowa_userhub().person_id)
-    ohio_oath._healerhold.set_idea_id(get_yao_ohio_userhub().person_id)
-    utah_oath._healerhold.set_idea_id(get_zia_utah_userhub().person_id)
-    yao_duty.add_oath(iowa_oath, get_usa_road())
-    yao_duty.add_oath(ohio_oath, get_usa_road())
-    yao_duty.add_oath(utah_oath, get_usa_road())
+    iowa_idea = ideaunit_shop(get_iowa_text(), _problem_bool=True)
+    ohio_idea = ideaunit_shop(get_ohio_text(), _problem_bool=True)
+    utah_idea = ideaunit_shop(get_utah_text(), _problem_bool=True)
+    iowa_idea._healerhold.set_belief_id(get_yao_iowa_userhub().person_id)
+    ohio_idea._healerhold.set_belief_id(get_yao_ohio_userhub().person_id)
+    utah_idea._healerhold.set_belief_id(get_zia_utah_userhub().person_id)
+    yao_duty.add_idea(iowa_idea, get_usa_road())
+    yao_duty.add_idea(ohio_idea, get_usa_road())
+    yao_duty.add_idea(utah_idea, get_usa_road())
 
     return yao_duty
 
@@ -265,23 +265,23 @@ def get_example_yao_duty_with_3_healers():
 def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     # GIVEN
     # yao0_duty with 3 debotors of different credor_weights
-    # yao_job1 with 1 task, belief that doesn't want that task
-    # yao_job2 with 2 tasks, one is same belief wants task
-    # yao_job3 with 1 new task, belief stays with it
+    # yao_job1 with 1 task, fact that doesn't want that task
+    # yao_job2 with 2 tasks, one is same fact wants task
+    # yao_job3 with 1 new task, fact stays with it
 
     yao_duty0 = get_example_yao_duty_with_3_healers()
-    yao_duty0.del_oath_obj(run_road())
-    yao_duty0.add_l1_oath(oathunit_shop(get_location_text()))
-    yao_duty0.add_oath(oathunit_shop(get_in_ocean_text()), get_location_road())
-    yao_duty0.add_oath(oathunit_shop(get_on_land_text()), get_location_road())
-    yao_duty0.add_l1_oath(oathunit_shop(get_swim_text(), pledge=True))
+    yao_duty0.del_idea_obj(run_road())
+    yao_duty0.add_l1_idea(ideaunit_shop(get_location_text()))
+    yao_duty0.add_idea(ideaunit_shop(get_in_ocean_text()), get_location_road())
+    yao_duty0.add_idea(ideaunit_shop(get_on_land_text()), get_location_road())
+    yao_duty0.add_l1_idea(ideaunit_shop(get_swim_text(), pledge=True))
     yao_duty0.edit_reason(get_swim_road(), get_location_road(), get_in_ocean_road())
     yao_duty0.calc_agenda_metrics()
     assert yao_duty0._econ_dict.get(get_iowa_road())
     assert yao_duty0._econ_dict.get(get_ohio_road())
     assert yao_duty0._econ_dict.get(get_utah_road())
     assert len(yao_duty0._econ_dict) == 3
-    print(f"{yao_duty0._oath_dict.keys()=}")
+    print(f"{yao_duty0._idea_dict.keys()=}")
 
     yao_text = yao_duty0._owner_id
     yao_job1 = get_example_yao_job1_speaker()
@@ -314,14 +314,14 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     yao_work.calc_agenda_metrics()
     assert yao_work._partys.keys() == yao_duty0._partys.keys()
     assert yao_work.get_party(yao_text)._irrational_debtor_weight == 0
-    assert yao_work.get_ideaunits_dict() == yao_duty0.get_ideaunits_dict()
-    assert len(yao_work._oath_dict) == 10
-    print(f"{yao_work._oath_dict.keys()=}")
-    print(f"{yao_work.get_beliefunits_dict().keys()=}")
-    assert yao_work.oath_exists(cook_road())
-    assert yao_work.oath_exists(clean_road())
-    assert yao_work.oath_exists(run_road()) is False
-    assert len(yao_work._oathroot._beliefunits) == 2
+    assert yao_work.get_beliefunits_dict() == yao_duty0.get_beliefunits_dict()
+    assert len(yao_work._idea_dict) == 10
+    print(f"{yao_work._idea_dict.keys()=}")
+    print(f"{yao_work.get_factunits_dict().keys()=}")
+    assert yao_work.idea_exists(cook_road())
+    assert yao_work.idea_exists(clean_road())
+    assert yao_work.idea_exists(run_road()) is False
+    assert len(yao_work._idearoot._factunits) == 2
     assert yao_work != yao_duty0
 
 
@@ -330,25 +330,25 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_duty_CanOnlyReferenceItsel
 ):
     # GIVEN
     # yao0_duty with 3 debotors of different credor_weights
-    # yao_job1 with 1 task, belief that doesn't want that task
-    # yao_job2 with 2 tasks, one is same belief wants task
-    # yao_job3 with 1 new task, belief stays with it
+    # yao_job1 with 1 task, fact that doesn't want that task
+    # yao_job2 with 2 tasks, one is same fact wants task
+    # yao_job3 with 1 new task, fact stays with it
 
     yao_duty0 = get_example_yao_duty_with_3_healers()
-    yao_duty0.add_l1_oath(oathunit_shop(get_location_text()))
-    yao_duty0.add_oath(oathunit_shop(get_in_ocean_text()), get_location_road())
-    yao_duty0.add_oath(oathunit_shop(get_on_land_text()), get_location_road())
-    yao_duty0.add_l1_oath(oathunit_shop(get_swim_text(), pledge=True))
+    yao_duty0.add_l1_idea(ideaunit_shop(get_location_text()))
+    yao_duty0.add_idea(ideaunit_shop(get_in_ocean_text()), get_location_road())
+    yao_duty0.add_idea(ideaunit_shop(get_on_land_text()), get_location_road())
+    yao_duty0.add_l1_idea(ideaunit_shop(get_swim_text(), pledge=True))
     yao_duty0.edit_reason(get_swim_road(), get_location_road(), get_in_ocean_road())
-    yao_duty0.set_belief(get_location_road(), get_in_ocean_road())
-    print(f"{yao_duty0.get_belief(get_location_road())=}")
-    yao_duty0.del_oath_obj(run_road())
+    yao_duty0.set_fact(get_location_road(), get_in_ocean_road())
+    print(f"{yao_duty0.get_fact(get_location_road())=}")
+    yao_duty0.del_idea_obj(run_road())
     assert yao_duty0._econ_dict.get(get_iowa_road())
     assert yao_duty0._econ_dict.get(get_ohio_road())
     assert yao_duty0._econ_dict.get(get_utah_road())
     yao_duty0.calc_agenda_metrics()
     assert len(yao_duty0._econ_dict) == 3
-    # print(f"{yao_duty0._oath_dict.keys()=}")
+    # print(f"{yao_duty0._idea_dict.keys()=}")
 
     yao_text = yao_duty0._owner_id
     yao_job1 = get_example_yao_job1_speaker()
@@ -363,7 +363,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_duty_CanOnlyReferenceItsel
     assert yao_iowa_userhub.job_file_exists(yao_text) is False
     assert yao_ohio_userhub.job_file_exists(yao_text) is False
     assert zia_utah_userhub.job_file_exists(yao_text) is False
-    print(f"{yao_duty0.get_belief(get_location_road())=}")
+    print(f"{yao_duty0.get_fact(get_location_road())=}")
     yao_iowa_userhub.save_duty_agenda(yao_duty0)
     # yao_iowa_userhub.save_job_agenda(yao_job1)
     # yao_ohio_userhub.save_job_agenda(yao_job2)
@@ -382,20 +382,20 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_duty_CanOnlyReferenceItsel
     yao_work.calc_agenda_metrics()
     assert yao_work._partys.keys() == yao_duty0._partys.keys()
     assert yao_work.get_party(yao_text)._irrational_debtor_weight == 0
-    assert yao_work.get_ideaunits_dict() == yao_duty0.get_ideaunits_dict()
-    assert len(yao_work._oath_dict) == 4
-    print(f"{yao_work._oath_dict.keys()=}")
-    print(f"{yao_work.get_beliefunits_dict().keys()=}")
-    assert yao_work.oath_exists(cook_road()) is False
-    assert yao_work.oath_exists(clean_road()) is False
-    assert yao_work.oath_exists(run_road()) is False
-    assert yao_work.oath_exists(get_swim_road())
-    assert yao_work.oath_exists(get_in_ocean_road())
-    assert yao_work.oath_exists(get_on_land_road()) is False
-    assert yao_work.get_belief(get_location_road()) != None
-    assert yao_work.get_belief(get_location_road()).pick == get_in_ocean_road()
+    assert yao_work.get_beliefunits_dict() == yao_duty0.get_beliefunits_dict()
+    assert len(yao_work._idea_dict) == 4
+    print(f"{yao_work._idea_dict.keys()=}")
+    print(f"{yao_work.get_factunits_dict().keys()=}")
+    assert yao_work.idea_exists(cook_road()) is False
+    assert yao_work.idea_exists(clean_road()) is False
+    assert yao_work.idea_exists(run_road()) is False
+    assert yao_work.idea_exists(get_swim_road())
+    assert yao_work.idea_exists(get_in_ocean_road())
+    assert yao_work.idea_exists(get_on_land_road()) is False
+    assert yao_work.get_fact(get_location_road()) != None
+    assert yao_work.get_fact(get_location_road()).pick == get_in_ocean_road()
     assert len(yao_work.get_intent_dict()) == 1
-    assert len(yao_work._oathroot._beliefunits) == 1
+    assert len(yao_work._idearoot._factunits) == 1
     assert yao_work != yao_duty0
 
 

@@ -49,37 +49,37 @@ from src.agenda.party import (
     partylink_shop,
     PartyUnitExternalMetrics,
 )
-from src.agenda.idea import (
+from src.agenda.belief import (
     BalanceLink,
-    IdeaID,
-    IdeaUnit,
-    get_ideaunits_from_dict,
-    ideaunit_shop,
+    BeliefID,
+    BeliefUnit,
+    get_beliefunits_from_dict,
+    beliefunit_shop,
     balancelink_shop,
-    get_party_relevant_ideas,
-    get_partys_relevant_ideas,
+    get_party_relevant_beliefs,
+    get_partys_relevant_beliefs,
     get_intersection_of_partys,
 )
 from src.agenda.healer import HealerHold
-from src.agenda.reason_oath import (
-    BeliefCore,
-    BeliefUnit,
-    BeliefUnit,
+from src.agenda.reason_idea import (
+    FactCore,
+    FactUnit,
+    FactUnit,
     ReasonUnit,
     RoadUnit,
-    beliefunit_shop,
+    factunit_shop,
 )
 from src.agenda.reason_assign import AssignedUnit
 from src.agenda.tree_metrics import TreeMetrics, treemetrics_shop
-from src.agenda.hreg_time import HregTimeOathSource as HregOath
+from src.agenda.hreg_time import HregTimeIdeaSource as HregIdea
 from src.agenda.lemma import lemmas_shop, Lemmas
 from src.agenda.origin import originunit_get_from_dict, originunit_shop, OriginUnit
-from src.agenda.oath import (
-    OathUnit,
-    oathunit_shop,
-    oathattrfilter_shop,
-    OathAttrFilter,
-    get_obj_from_oath_dict,
+from src.agenda.idea import (
+    IdeaUnit,
+    ideaunit_shop,
+    ideaattrfilter_shop,
+    IdeaAttrFilter,
+    get_obj_from_idea_dict,
 )
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
@@ -118,7 +118,7 @@ class _last_atom_idException(Exception):
     pass
 
 
-class healerhold_idea_id_Exception(Exception):
+class healerhold_belief_id_Exception(Exception):
     pass
 
 
@@ -129,8 +129,8 @@ class AgendaUnit:
     _last_atom_id: int = None
     _weight: float = None
     _partys: dict[PartyID:PartyUnit] = None
-    _ideas: dict[IdeaID:IdeaUnit] = None
-    _oathroot: OathUnit = None
+    _beliefs: dict[BeliefID:BeliefUnit] = None
+    _idearoot: IdeaUnit = None
     _max_tree_traverse: int = None
     _road_delimiter: str = None
     _planck: float = None
@@ -141,9 +141,9 @@ class AgendaUnit:
     _meld_strategy: MeldStrategy = None
     _originunit: OriginUnit = None  # In job agendas this shows source
     # calc_agenda_metrics Calculated field begin
-    _oath_dict: dict[RoadUnit:OathUnit] = None
-    _econ_dict: dict[RoadUnit:OathUnit] = None
-    _healers_dict: dict[HealerID : dict[RoadUnit:OathUnit]] = None
+    _idea_dict: dict[RoadUnit:IdeaUnit] = None
+    _econ_dict: dict[RoadUnit:IdeaUnit] = None
+    _healers_dict: dict[HealerID : dict[RoadUnit:IdeaUnit]] = None
     _tree_traverse_count: int = None
     _rational: bool = None
     _econs_justified: bool = None
@@ -285,33 +285,33 @@ class AgendaUnit:
     def set_road_delimiter(self, new_road_delimiter: str):
         self.calc_agenda_metrics()
         if self._road_delimiter != new_road_delimiter:
-            for x_oath_road in self._oath_dict.keys():
-                if is_string_in_road(new_road_delimiter, x_oath_road):
+            for x_idea_road in self._idea_dict.keys():
+                if is_string_in_road(new_road_delimiter, x_idea_road):
                     raise NewDelimiterException(
-                        f"Cannot modify delimiter to '{new_road_delimiter}' because it already exists an oath label '{x_oath_road}'"
+                        f"Cannot modify delimiter to '{new_road_delimiter}' because it already exists an idea label '{x_idea_road}'"
                     )
 
-            # Grab pointers to every oath
-            oath_pointers = {
-                x_oath_road: self.get_oath_obj(x_oath_road)
-                for x_oath_road in self._oath_dict.keys()
+            # Grab pointers to every idea
+            idea_pointers = {
+                x_idea_road: self.get_idea_obj(x_idea_road)
+                for x_idea_road in self._idea_dict.keys()
             }
 
-            # modify all road attributes in oath
+            # modify all road attributes in idea
             # old_road_delimiter = copy_deepcopy(self._road_delimiter)
             self._road_delimiter = default_road_delimiter_if_none(new_road_delimiter)
-            for x_oath in oath_pointers.values():
-                x_oath.set_road_delimiter(self._road_delimiter)
+            for x_idea in idea_pointers.values():
+                x_idea.set_road_delimiter(self._road_delimiter)
 
     def set_real_id(self, real_id: str):
         old_real_id = copy_deepcopy(self._real_id)
         self._real_id = real_id
 
         self.calc_agenda_metrics()
-        for oath_obj in self._oath_dict.values():
-            oath_obj._agenda_real_id = self._real_id
+        for idea_obj in self._idea_dict.values():
+            idea_obj._agenda_real_id = self._real_id
 
-        self.edit_oath_label(old_road=old_real_id, new_label=self._real_id)
+        self.edit_idea_label(old_road=old_real_id, new_label=self._real_id)
         self.calc_agenda_metrics()
 
     def set_partyunit_external_metrics(
@@ -330,22 +330,22 @@ class AgendaUnit:
         else:
             self._max_tree_traverse = int_x
 
-    def get_agenda_sprung_from_single_oath(self, road: RoadUnit) -> any:
+    def get_agenda_sprung_from_single_idea(self, road: RoadUnit) -> any:
         self.calc_agenda_metrics()
-        x_oath = self.get_oath_obj(road)
-        new_weight = self._weight * x_oath._agenda_importance
-        x_agenda = agendaunit_shop(_owner_id=self._oathroot._label, _weight=new_weight)
+        x_idea = self.get_idea_obj(road)
+        new_weight = self._weight * x_idea._agenda_importance
+        x_agenda = agendaunit_shop(_owner_id=self._idearoot._label, _weight=new_weight)
 
         for road_assc in sorted(list(self._get_relevant_roads({road}))):
-            src_yx = self.get_oath_obj(road_assc)
+            src_yx = self.get_idea_obj(road_assc)
             new_yx = copy_deepcopy(src_yx)
             if new_yx._parent_road != "":
-                x_agenda.add_oath(new_yx, parent_road=new_yx._parent_road)
+                x_agenda.add_idea(new_yx, parent_road=new_yx._parent_road)
             x_agenda.calc_agenda_metrics()
 
-        # TODO grab ideas
-        # TODO grab all idea partys
         # TODO grab beliefs
+        # TODO grab all belief partys
+        # TODO grab facts
         return x_agenda
 
     def _get_relevant_roads(self, roads: dict[RoadUnit:]) -> dict[RoadUnit:str]:
@@ -362,8 +362,8 @@ class AgendaUnit:
         # nice to avoid infinite loops from programming errors though...
         while to_evaluate_list != []:
             road_x = to_evaluate_list.pop()
-            x_oath = self.get_oath_obj(road_x)
-            for reasonunit_obj in x_oath._reasonunits.values():
+            x_idea = self.get_idea_obj(road_x)
+            for reasonunit_obj in x_idea._reasonunits.values():
                 reason_base = reasonunit_obj.base
                 self._evaluate_relevancy(
                     to_evaluate_list=to_evaluate_list,
@@ -372,19 +372,19 @@ class AgendaUnit:
                     road_type="reasonunit_base",
                 )
 
-            if x_oath._numeric_road != None:
+            if x_idea._numeric_road != None:
                 self._evaluate_relevancy(
                     to_evaluate_list=to_evaluate_list,
                     to_evaluate_hx_dict=to_evaluate_hx_dict,
-                    to_evaluate_road=x_oath._numeric_road,
+                    to_evaluate_road=x_idea._numeric_road,
                     road_type="numeric_road",
                 )
 
-            if x_oath._range_source_road != None:
+            if x_idea._range_source_road != None:
                 self._evaluate_relevancy(
                     to_evaluate_list=to_evaluate_list,
                     to_evaluate_hx_dict=to_evaluate_hx_dict,
-                    to_evaluate_road=x_oath._range_source_road,
+                    to_evaluate_road=x_idea._range_source_road,
                     road_type="range_source_road",
                 )
 
@@ -412,8 +412,8 @@ class AgendaUnit:
             to_evaluate_hx_dict[to_evaluate_road] = road_type
 
             if road_type == "reasonunit_base":
-                ru_base_oath = self.get_oath_obj(to_evaluate_road)
-                for descendant_road in ru_base_oath.get_descendant_roads_from_kids():
+                ru_base_idea = self.get_idea_obj(to_evaluate_road)
+                for descendant_road in ru_base_idea.get_descendant_roads_from_kids():
                     self._evaluate_relevancy(
                         to_evaluate_list=to_evaluate_list,
                         to_evaluate_hx_dict=to_evaluate_hx_dict,
@@ -421,33 +421,33 @@ class AgendaUnit:
                         road_type="reasonunit_descendant",
                     )
 
-    def all_oaths_relevant_to_pledge_oath(self, road: RoadUnit) -> bool:
-        pledge_oath_assoc_set = set(self._get_relevant_roads({road}))
-        all_oaths_set = set(self.get_oath_tree_ordered_road_list())
-        return all_oaths_set == all_oaths_set.intersection(pledge_oath_assoc_set)
+    def all_ideas_relevant_to_pledge_idea(self, road: RoadUnit) -> bool:
+        pledge_idea_assoc_set = set(self._get_relevant_roads({road}))
+        all_ideas_set = set(self.get_idea_tree_ordered_road_list())
+        return all_ideas_set == all_ideas_set.intersection(pledge_idea_assoc_set)
 
-    def _are_all_partys_ideas_are_in_oath_kid(self, road: RoadUnit) -> bool:
-        oath_kid = self.get_oath_obj(road)
-        # get dict of all oath balanceheirs
-        balanceheir_list = oath_kid._balanceheirs.keys()
+    def _are_all_partys_beliefs_are_in_idea_kid(self, road: RoadUnit) -> bool:
+        idea_kid = self.get_idea_obj(road)
+        # get dict of all idea balanceheirs
+        balanceheir_list = idea_kid._balanceheirs.keys()
         balanceheir_dict = {
-            balanceheir_idea_id: 1 for balanceheir_idea_id in balanceheir_list
+            balanceheir_belief_id: 1 for balanceheir_belief_id in balanceheir_list
         }
-        non_single_ideaunits = {
-            ideaunit.idea_id: ideaunit
-            for ideaunit in self._ideas.values()
-            if ideaunit._party_mirror != True
+        non_single_beliefunits = {
+            beliefunit.belief_id: beliefunit
+            for beliefunit in self._beliefs.values()
+            if beliefunit._party_mirror != True
         }
-        # check all non_party_mirror_ideaunits are in balanceheirs
-        for non_single_idea in non_single_ideaunits.values():
-            if balanceheir_dict.get(non_single_idea.idea_id) is None:
+        # check all non_party_mirror_beliefunits are in balanceheirs
+        for non_single_belief in non_single_beliefunits.values():
+            if balanceheir_dict.get(non_single_belief.belief_id) is None:
                 return False
 
         # get dict of all partylinks that are in all balanceheirs
         balanceheir_partyunits = {}
         for balanceheir_party_id in balanceheir_dict:
-            ideaunit = self.get_ideaunit(balanceheir_party_id)
-            for partylink in ideaunit._partys.values():
+            beliefunit = self.get_beliefunit(balanceheir_party_id)
+            for partylink in beliefunit._partys.values():
                 balanceheir_partyunits[partylink.party_id] = self.get_party(
                     partylink.party_id
                 )
@@ -456,21 +456,21 @@ class AgendaUnit:
         return len(self._partys) == len(balanceheir_partyunits)
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
-        x_hregoath = HregOath(self._road_delimiter)
-        return x_hregoath.get_time_min_from_dt(dt=dt)
+        x_hregidea = HregIdea(self._road_delimiter)
+        return x_hregidea.get_time_min_from_dt(dt=dt)
 
     def get_time_c400_from_min(self, min: int) -> int:
         time_road = self.make_l1_road("time")
         tech_road = self.make_road(time_road, "tech")
         c400_road = self.make_road(tech_road, "400 year segment")
-        c400_oath = self.get_oath_obj(c400_road)
-        c400_min = c400_oath._close
-        return int(min / c400_min), c400_oath, min % c400_min
+        c400_idea = self.get_idea_obj(c400_road)
+        c400_min = c400_idea._close
+        return int(min / c400_min), c400_idea, min % c400_min
 
     def get_time_c400yr_from_min(self, min: int):
         # GIVEN int minutes within 400 year range return year and remainder minutes
-        c400_count, c400_oath, c400yr_min = self.get_time_c400_from_min(min=min)
-        c100_4_96y = c400_oath.get_kids_in_range(begin=c400yr_min, close=c400yr_min)[0]
+        c400_count, c400_idea, c400yr_min = self.get_time_c400_from_min(min=min)
+        c100_4_96y = c400_idea.get_kids_in_range(begin=c400yr_min, close=c400yr_min)[0]
         cXXXyr_min = c400yr_min - c100_4_96y._begin
 
         time_road = self.make_l1_road("time")
@@ -480,45 +480,45 @@ class AgendaUnit:
         if c100_4_96y._close - c100_4_96y._begin in (
             50492160,
             52596000,
-        ):  # 96 year and 100 year oaths
+        ):  # 96 year and 100 year ideas
             yr4_1461_road = self.make_road(tech_road, "4year with leap")
-            yr4_1461_oath = self.get_oath_obj(yr4_1461_road)
-            yr4_segments = int(cXXXyr_min / yr4_1461_oath._close)
-            cXyr_min = cXXXyr_min % yr4_1461_oath._close
-            yr1_oath = yr4_1461_oath.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[
+            yr4_1461_idea = self.get_idea_obj(yr4_1461_road)
+            yr4_segments = int(cXXXyr_min / yr4_1461_idea._close)
+            cXyr_min = cXXXyr_min % yr4_1461_idea._close
+            yr1_idea = yr4_1461_idea.get_kids_in_range(begin=cXyr_min, close=cXyr_min)[
                 0
             ]
         elif c100_4_96y._close - c100_4_96y._begin == 2102400:
             yr4_1460_road = self.make_road(tech_road, "4year wo leap")
-            yr4_1460_oath = self.get_oath_obj(yr4_1460_road)
+            yr4_1460_idea = self.get_idea_obj(yr4_1460_road)
             yr4_segments = 0
-            yr1_oath = yr4_1460_oath.get_kids_in_range(cXXXyr_min, cXXXyr_min)[0]
-            cXyr_min = cXXXyr_min % yr4_1460_oath._close
+            yr1_idea = yr4_1460_idea.get_kids_in_range(cXXXyr_min, cXXXyr_min)[0]
+            cXyr_min = cXXXyr_min % yr4_1460_idea._close
 
-        yr1_rem_min = cXyr_min - yr1_oath._begin
-        yr1_oath_begin = int(yr1_oath._label.split("-")[0]) - 1
+        yr1_rem_min = cXyr_min - yr1_idea._begin
+        yr1_idea_begin = int(yr1_idea._label.split("-")[0]) - 1
 
         c100_4_96y_begin = int(c100_4_96y._label.split("-")[0])
-        year_num = c100_4_96y_begin + (4 * yr4_segments) + yr1_oath_begin
-        return year_num, yr1_oath, yr1_rem_min
+        year_num = c100_4_96y_begin + (4 * yr4_segments) + yr1_idea_begin
+        return year_num, yr1_idea, yr1_rem_min
 
     def get_time_month_from_min(self, min: int):
         time_road = self.make_l1_road("time")
         tech_road = self.make_road(time_road, "tech")
 
-        year_num, yr1_oath, yr1_oath_rem_min = self.get_time_c400yr_from_min(min=min)
+        year_num, yr1_idea, yr1_idea_rem_min = self.get_time_c400yr_from_min(min=min)
         yrx = None
-        if yr1_oath._close - yr1_oath._begin == 525600:
+        if yr1_idea._close - yr1_idea._begin == 525600:
             yr365_road = self.make_road(tech_road, "365 year")
-            yrx = self.get_oath_obj(yr365_road)
-        elif yr1_oath._close - yr1_oath._begin == 527040:
+            yrx = self.get_idea_obj(yr365_road)
+        elif yr1_idea._close - yr1_idea._begin == 527040:
             yr366_road = self.make_road(tech_road, "366 year")
-            yrx = self.get_oath_obj(yr366_road)
-        mon_x = yrx.get_kids_in_range(begin=yr1_oath_rem_min, close=yr1_oath_rem_min)[0]
-        month_rem_min = yr1_oath_rem_min - mon_x._begin
+            yrx = self.get_idea_obj(yr366_road)
+        mon_x = yrx.get_kids_in_range(begin=yr1_idea_rem_min, close=yr1_idea_rem_min)[0]
+        month_rem_min = yr1_idea_rem_min - mon_x._begin
         month_num = int(mon_x._label.split("-")[0])
         day_road = self.make_road(tech_road, "day")
-        day_x = self.get_oath_obj(day_road)
+        day_x = self.get_idea_obj(day_road)
         day_num = int(month_rem_min / day_x._close)
         day_rem_min = month_rem_min % day_x._close
         return month_num, day_num, day_rem_min, day_x
@@ -544,13 +544,13 @@ class AgendaUnit:
 
     def get_jajatime_legible_one_time_event(self, jajatime_min: int) -> str:
         dt_x = self.get_time_dt_from_min(min=jajatime_min)
-        x_hregoath = HregOath(self._road_delimiter)
-        return x_hregoath.get_jajatime_legible_from_dt(dt=dt_x)
+        x_hregidea = HregIdea(self._road_delimiter)
+        return x_hregidea.get_jajatime_legible_from_dt(dt=dt_x)
 
     def get_jajatime_repeating_legible_text(
         self, open: float = None, nigh: float = None, divisor: float = None
     ) -> str:
-        x_hregoath = HregOath(self._road_delimiter)
+        x_hregidea = HregIdea(self._road_delimiter)
         str_x = "test3"
         if divisor is None:
             str_x = self.get_jajatime_legible_one_time_event(jajatime_min=open)
@@ -559,67 +559,67 @@ class AgendaUnit:
         elif divisor != None and divisor % 1440 == 0:
             if divisor == 1440:
                 str_x = (
-                    f"every day at {x_hregoath.convert1440toReadableTime(min1440=open)}"
+                    f"every day at {x_hregidea.convert1440toReadableTime(min1440=open)}"
                 )
             else:
                 num_days = int(divisor / 1440)
-                num_with_letter_ending = x_hregoath.get_number_with_letter_ending(
+                num_with_letter_ending = x_hregidea.get_number_with_letter_ending(
                     num=num_days
                 )
-                str_x = f"every {num_with_letter_ending} day at {x_hregoath.convert1440toReadableTime(min1440=open)}"
+                str_x = f"every {num_with_letter_ending} day at {x_hregidea.convert1440toReadableTime(min1440=open)}"
         else:
             str_x = "unknown"
         return str_x
 
     def _get_jajatime_week_legible_text(self, open: int, divisor: int) -> str:
-        x_hregoath = HregOath(self._road_delimiter)
+        x_hregidea = HregIdea(self._road_delimiter)
         open_in_week = open % divisor
         time_road = self.make_l1_road("time")
         tech_road = self.make_road(time_road, "tech")
         week_road = self.make_road(tech_road, "week")
-        weekday_oaths_dict = self.get_oath_ranged_kids(
-            oath_road=week_road, begin=open_in_week
+        weekday_ideas_dict = self.get_idea_ranged_kids(
+            idea_road=week_road, begin=open_in_week
         )
-        weekday_oath_node = None
-        for oath in weekday_oaths_dict.values():
-            weekday_oath_node = oath
+        weekday_idea_node = None
+        for idea in weekday_ideas_dict.values():
+            weekday_idea_node = idea
 
         if divisor == 10080:
-            return f"every {weekday_oath_node._label} at {x_hregoath.convert1440toReadableTime(min1440=open % 1440)}"
-        num_with_letter_ending = x_hregoath.get_number_with_letter_ending(
+            return f"every {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
+        num_with_letter_ending = x_hregidea.get_number_with_letter_ending(
             num=divisor // 10080
         )
-        return f"every {num_with_letter_ending} {weekday_oath_node._label} at {x_hregoath.convert1440toReadableTime(min1440=open % 1440)}"
+        return f"every {num_with_letter_ending} {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
 
-    def get_partys_metrics(self) -> dict[IdeaID:BalanceLink]:
+    def get_partys_metrics(self) -> dict[BeliefID:BalanceLink]:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.balancelinks_metrics
 
-    def add_to_idea_agenda_cred_debt(
+    def add_to_belief_agenda_cred_debt(
         self,
-        idea_id: IdeaID,
+        belief_id: BeliefID,
         balanceheir_agenda_cred: float,
         balanceheir_agenda_debt: float,
     ):
-        for idea in self._ideas.values():
-            if idea.idea_id == idea_id:
-                idea._agenda_cred += balanceheir_agenda_cred
-                idea._agenda_debt += balanceheir_agenda_debt
+        for belief in self._beliefs.values():
+            if belief.belief_id == belief_id:
+                belief._agenda_cred += balanceheir_agenda_cred
+                belief._agenda_debt += balanceheir_agenda_debt
 
-    def add_to_idea_agenda_intent_cred_debt(
+    def add_to_belief_agenda_intent_cred_debt(
         self,
-        idea_id: IdeaID,
+        belief_id: BeliefID,
         balanceline_agenda_cred: float,
         balanceline_agenda_debt: float,
     ):
-        for idea in self._ideas.values():
+        for belief in self._beliefs.values():
             if (
-                idea.idea_id == idea_id
+                belief.belief_id == belief_id
                 and balanceline_agenda_cred != None
                 and balanceline_agenda_debt != None
             ):
-                idea._agenda_intent_cred += balanceline_agenda_cred
-                idea._agenda_intent_debt += balanceline_agenda_debt
+                belief._agenda_intent_cred += balanceline_agenda_cred
+                belief._agenda_intent_debt += balanceline_agenda_debt
 
     def add_to_partyunit_agenda_cred_debt(
         self,
@@ -639,7 +639,7 @@ class AgendaUnit:
                 )
 
     def del_partyunit(self, party_id: str):
-        self._ideas.pop(party_id)
+        self._beliefs.pop(party_id)
         self._partys.pop(party_id)
 
     def add_partyunit(
@@ -661,19 +661,19 @@ class AgendaUnit:
         self._partys[partyunit.party_id] = partyunit
 
         try:
-            self._ideas[partyunit.party_id]
+            self._beliefs[partyunit.party_id]
         except KeyError:
             partylink = partylink_shop(
                 party_id=PartyID(partyunit.party_id), credor_weight=1, debtor_weight=1
             )
             partylinks = {partylink.party_id: partylink}
-            idea_unit = ideaunit_shop(
+            belief_unit = beliefunit_shop(
                 partyunit.party_id,
                 _party_mirror=True,
                 _partys=partylinks,
                 _road_delimiter=self._road_delimiter,
             )
-            self.set_ideaunit(y_ideaunit=idea_unit)
+            self.set_beliefunit(y_beliefunit=belief_unit)
 
     def party_exists(self, party_id: PartyID) -> bool:
         return self.get_party(party_id) != None
@@ -683,30 +683,30 @@ class AgendaUnit:
         old_party_id: PartyID,
         new_party_id: PartyID,
         allow_party_overwite: bool,
-        allow_nonsingle_idea_overwrite: bool,
+        allow_nonsingle_belief_overwrite: bool,
     ):
         # Handle scenarios: some are unacceptable
         old_party_id_credor_weight = self.get_party(old_party_id).credor_weight
-        new_party_id_ideaunit = self.get_ideaunit(new_party_id)
+        new_party_id_beliefunit = self.get_beliefunit(new_party_id)
         new_party_id_partyunit = self.get_party(new_party_id)
         if not allow_party_overwite and new_party_id_partyunit != None:
             raise InvalidAgendaException(
                 f"Party '{old_party_id}' modify to '{new_party_id}' failed since '{new_party_id}' exists."
             )
         elif (
-            not allow_nonsingle_idea_overwrite
-            and new_party_id_ideaunit != None
-            and new_party_id_ideaunit._party_mirror is False
+            not allow_nonsingle_belief_overwrite
+            and new_party_id_beliefunit != None
+            and new_party_id_beliefunit._party_mirror is False
         ):
             raise InvalidAgendaException(
-                f"Party '{old_party_id}' modify to '{new_party_id}' failed since non-single idea '{new_party_id}' exists."
+                f"Party '{old_party_id}' modify to '{new_party_id}' failed since non-single belief '{new_party_id}' exists."
             )
         elif (
-            allow_nonsingle_idea_overwrite
-            and new_party_id_ideaunit != None
-            and new_party_id_ideaunit._party_mirror is False
+            allow_nonsingle_belief_overwrite
+            and new_party_id_beliefunit != None
+            and new_party_id_beliefunit._party_mirror is False
         ):
-            self.del_ideaunit(idea_id=new_party_id)
+            self.del_beliefunit(belief_id=new_party_id)
         elif self.party_exists(new_party_id):
             old_party_id_credor_weight += new_party_id_partyunit.credor_weight
 
@@ -714,10 +714,10 @@ class AgendaUnit:
         self.add_partyunit(
             party_id=new_party_id, credor_weight=old_party_id_credor_weight
         )
-        # modify all influenced ideaunits partylinks
-        for old_party_idea_id in self.get_party_idea_ids(old_party_id):
-            old_party_ideaunit = self.get_ideaunit(old_party_idea_id)
-            old_party_ideaunit._shift_partylink(old_party_id, new_party_id)
+        # modify all influenced beliefunits partylinks
+        for old_party_belief_id in self.get_party_belief_ids(old_party_id):
+            old_party_beliefunit = self.get_beliefunit(old_party_belief_id)
+            old_party_beliefunit._shift_partylink(old_party_id, new_party_id)
         self.del_partyunit(party_id=old_party_id)
 
     def edit_partyunit(
@@ -744,36 +744,36 @@ class AgendaUnit:
             party_id_dict[party_id_l] for party_id_l in party_id_lowercase_ordered_list
         ]
 
-    def set_ideaunit(
+    def set_beliefunit(
         self,
-        y_ideaunit: IdeaUnit,
+        y_beliefunit: BeliefUnit,
         create_missing_partys: bool = None,
         replace: bool = True,
         add_partylinks: bool = None,
     ):
-        if y_ideaunit._road_delimiter != self._road_delimiter:
-            y_ideaunit._road_delimiter = self._road_delimiter
+        if y_beliefunit._road_delimiter != self._road_delimiter:
+            y_beliefunit._road_delimiter = self._road_delimiter
         if replace is None:
             replace = False
         if add_partylinks is None:
             add_partylinks = False
         if (
-            self.get_ideaunit(y_ideaunit.idea_id) is None
+            self.get_beliefunit(y_beliefunit.belief_id) is None
             or replace
             and not add_partylinks
         ):
-            self._ideas[y_ideaunit.idea_id] = y_ideaunit
+            self._beliefs[y_beliefunit.belief_id] = y_beliefunit
 
         if add_partylinks:
-            x_ideaunit = self.get_ideaunit(y_ideaunit.idea_id)
-            for x_partylink in y_ideaunit._partys.values():
-                x_ideaunit.set_partylink(x_partylink)
+            x_beliefunit = self.get_beliefunit(y_beliefunit.belief_id)
+            for x_partylink in y_beliefunit._partys.values():
+                x_beliefunit.set_partylink(x_partylink)
 
         if create_missing_partys:
-            self._create_missing_partys(partylinks=y_ideaunit._partys)
+            self._create_missing_partys(partylinks=y_beliefunit._partys)
 
-    def get_ideaunit(self, x_idea_id: IdeaID) -> IdeaUnit:
-        return self._ideas.get(x_idea_id)
+    def get_beliefunit(self, x_belief_id: BeliefID) -> BeliefUnit:
+        return self._beliefs.get(x_belief_id)
 
     def _create_missing_partys(self, partylinks: dict[PartyID:PartyLink]):
         for partylink_x in partylinks.values():
@@ -786,125 +786,128 @@ class AgendaUnit:
                     )
                 )
 
-    def del_ideaunit(self, idea_id: IdeaID):
-        self._ideas.pop(idea_id)
+    def del_beliefunit(self, belief_id: BeliefID):
+        self._beliefs.pop(belief_id)
 
-    def edit_ideaunit_idea_id(
-        self, old_idea_id: IdeaID, new_idea_id: IdeaID, allow_idea_overwite: bool
+    def edit_beliefunit_belief_id(
+        self,
+        old_belief_id: BeliefID,
+        new_belief_id: BeliefID,
+        allow_belief_overwite: bool,
     ):
-        if not allow_idea_overwite and self.get_ideaunit(new_idea_id) != None:
+        if not allow_belief_overwite and self.get_beliefunit(new_belief_id) != None:
             raise InvalidAgendaException(
-                f"Idea '{old_idea_id}' modify to '{new_idea_id}' failed since '{new_idea_id}' exists."
+                f"Belief '{old_belief_id}' modify to '{new_belief_id}' failed since '{new_belief_id}' exists."
             )
-        elif self.get_ideaunit(new_idea_id) != None:
-            old_ideaunit = self.get_ideaunit(old_idea_id)
-            old_ideaunit.set_idea_id(idea_id=new_idea_id)
-            self.get_ideaunit(new_idea_id).meld(other_idea=old_ideaunit)
-            self.del_ideaunit(idea_id=old_idea_id)
-        elif self.get_ideaunit(new_idea_id) is None:
-            old_ideaunit = self.get_ideaunit(old_idea_id)
-            ideaunit_x = ideaunit_shop(
-                new_idea_id, old_ideaunit._party_mirror, old_ideaunit._partys
+        elif self.get_beliefunit(new_belief_id) != None:
+            old_beliefunit = self.get_beliefunit(old_belief_id)
+            old_beliefunit.set_belief_id(belief_id=new_belief_id)
+            self.get_beliefunit(new_belief_id).meld(other_belief=old_beliefunit)
+            self.del_beliefunit(belief_id=old_belief_id)
+        elif self.get_beliefunit(new_belief_id) is None:
+            old_beliefunit = self.get_beliefunit(old_belief_id)
+            beliefunit_x = beliefunit_shop(
+                new_belief_id, old_beliefunit._party_mirror, old_beliefunit._partys
             )
-            self.set_ideaunit(y_ideaunit=ideaunit_x)
-            self.del_ideaunit(idea_id=old_idea_id)
+            self.set_beliefunit(y_beliefunit=beliefunit_x)
+            self.del_beliefunit(belief_id=old_belief_id)
 
-        self._edit_balancelinks_idea_id(
-            old_idea_id=old_idea_id,
-            new_idea_id=new_idea_id,
-            allow_idea_overwite=allow_idea_overwite,
+        self._edit_balancelinks_belief_id(
+            old_belief_id=old_belief_id,
+            new_belief_id=new_belief_id,
+            allow_belief_overwite=allow_belief_overwite,
         )
 
-    def _edit_balancelinks_idea_id(
+    def _edit_balancelinks_belief_id(
         self,
-        old_idea_id: IdeaID,
-        new_idea_id: IdeaID,
-        allow_idea_overwite: bool,
+        old_belief_id: BeliefID,
+        new_belief_id: BeliefID,
+        allow_belief_overwite: bool,
     ):
-        for x_oath in self.get_oath_dict().values():
+        for x_idea in self.get_idea_dict().values():
             if (
-                x_oath._balancelinks.get(new_idea_id) != None
-                and x_oath._balancelinks.get(old_idea_id) != None
+                x_idea._balancelinks.get(new_belief_id) != None
+                and x_idea._balancelinks.get(old_belief_id) != None
             ):
-                old_balancelink = x_oath._balancelinks.get(old_idea_id)
-                old_balancelink.idea_id = new_idea_id
-                x_oath._balancelinks.get(new_idea_id).meld(
+                old_balancelink = x_idea._balancelinks.get(old_belief_id)
+                old_balancelink.belief_id = new_belief_id
+                x_idea._balancelinks.get(new_belief_id).meld(
                     other_balancelink=old_balancelink,
                     other_meld_strategy="sum",
                     src_meld_strategy="sum",
                 )
 
-                x_oath.del_balancelink(idea_id=old_idea_id)
+                x_idea.del_balancelink(belief_id=old_belief_id)
             elif (
-                x_oath._balancelinks.get(new_idea_id) is None
-                and x_oath._balancelinks.get(old_idea_id) != None
+                x_idea._balancelinks.get(new_belief_id) is None
+                and x_idea._balancelinks.get(old_belief_id) != None
             ):
-                old_balancelink = x_oath._balancelinks.get(old_idea_id)
+                old_balancelink = x_idea._balancelinks.get(old_belief_id)
                 new_balancelink = balancelink_shop(
-                    idea_id=new_idea_id,
+                    belief_id=new_belief_id,
                     credor_weight=old_balancelink.credor_weight,
                     debtor_weight=old_balancelink.debtor_weight,
                 )
-                x_oath.set_balancelink(balancelink=new_balancelink)
-                x_oath.del_balancelink(idea_id=old_idea_id)
+                x_idea.set_balancelink(balancelink=new_balancelink)
+                x_idea.del_balancelink(belief_id=old_belief_id)
 
-    def set_time_beliefs(self, open: datetime = None, nigh: datetime = None) -> None:
+    def set_time_facts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
         nigh_minutes = self.get_time_min_from_dt(dt=nigh) if nigh != None else None
         time_road = self.make_l1_road("time")
-        minutes_belief = self.make_road(time_road, "jajatime")
-        self.set_belief(
-            base=minutes_belief,
-            pick=minutes_belief,
+        minutes_fact = self.make_road(time_road, "jajatime")
+        self.set_fact(
+            base=minutes_fact,
+            pick=minutes_fact,
             open=open_minutes,
             nigh=nigh_minutes,
         )
 
-    def _is_oath_rangeroot(self, oath_road: RoadUnit) -> bool:
-        if self._real_id == oath_road:
+    def _is_idea_rangeroot(self, idea_road: RoadUnit) -> bool:
+        if self._real_id == idea_road:
             raise InvalidAgendaException(
-                "its difficult to foresee a scenario where oathroot is rangeroot"
+                "its difficult to foresee a scenario where idearoot is rangeroot"
             )
-        parent_road = get_parent_road(oath_road)
-        parent_oath = self.get_oath_obj(parent_road)
-        x_oath = self.get_oath_obj(oath_road)
-        return x_oath._numeric_road is None and not parent_oath.is_arithmetic()
+        parent_road = get_parent_road(idea_road)
+        parent_idea = self.get_idea_obj(parent_road)
+        x_idea = self.get_idea_obj(idea_road)
+        return x_idea._numeric_road is None and not parent_idea.is_arithmetic()
 
-    def _get_rangeroot_beliefunits(self) -> list[BeliefUnit]:
+    def _get_rangeroot_factunits(self) -> list[FactUnit]:
         return [
-            belief
-            for belief in self._oathroot._beliefunits.values()
-            if belief.open != None
-            and belief.nigh != None
-            and self._is_oath_rangeroot(oath_road=belief.base)
+            fact
+            for fact in self._idearoot._factunits.values()
+            if fact.open != None
+            and fact.nigh != None
+            and self._is_idea_rangeroot(idea_road=fact.base)
         ]
 
     def _get_rangeroot_1stlevel_associates(
-        self, ranged_beliefunits: list[OathUnit]
+        self, ranged_factunits: list[IdeaUnit]
     ) -> Lemmas:
         x_lemmas = lemmas_shop()
-        # lemma_oaths = {}
-        for belief in ranged_beliefunits:
-            belief_oath = self.get_oath_obj(belief.base)
-            for kid in belief_oath._kids.values():
-                x_lemmas.eval(x_oath=kid, src_belief=belief, src_oath=belief_oath)
+        # lemma_ideas = {}
+        for fact in ranged_factunits:
+            fact_idea = self.get_idea_obj(fact.base)
+            for kid in fact_idea._kids.values():
+                x_lemmas.eval(x_idea=kid, src_fact=fact, src_idea=fact_idea)
 
-            if belief_oath._range_source_road != None:
+            if fact_idea._range_source_road != None:
                 x_lemmas.eval(
-                    x_oath=self.get_oath_obj(belief_oath._range_source_road),
-                    src_belief=belief,
-                    src_oath=belief_oath,
+                    x_idea=self.get_idea_obj(fact_idea._range_source_road),
+                    src_fact=fact,
+                    src_idea=fact_idea,
                 )
         return x_lemmas
 
-    def _get_lemma_beliefunits(self) -> dict[RoadUnit:BeliefUnit]:
+    def _get_lemma_factunits(self) -> dict[RoadUnit:FactUnit]:
         # get all range-root first level kids and range_source_road
         x_lemmas = self._get_rangeroot_1stlevel_associates(
-            self._get_rangeroot_beliefunits()
+            self._get_rangeroot_factunits()
         )
 
         # Now get associates (all their descendants and range_source_roads)
-        lemma_beliefunits = {}  # belief.base : beliefUnit
+        lemma_factunits = {}  # fact.base : factUnit
         count_x = 0
         while count_x < 10000 and x_lemmas.is_lemmas_evaluated() is False:
             count_x += 1
@@ -912,155 +915,153 @@ class AgendaUnit:
                 raise InvalidAgendaException("lemma loop failed")
 
             y_lemma = x_lemmas.get_unevaluated_lemma()
-            lemma_oath = y_lemma.x_oath
-            belief_x = y_lemma.calc_belief
+            lemma_idea = y_lemma.x_idea
+            fact_x = y_lemma.calc_fact
 
-            road_x = self.make_road(lemma_oath._parent_road, lemma_oath._label)
-            lemma_beliefunits[road_x] = belief_x
+            road_x = self.make_road(lemma_idea._parent_road, lemma_idea._label)
+            lemma_factunits[road_x] = fact_x
 
-            for kid2 in lemma_oath._kids.values():
-                x_lemmas.eval(x_oath=kid2, src_belief=belief_x, src_oath=lemma_oath)
-            if lemma_oath._range_source_road not in [None, ""]:
+            for kid2 in lemma_idea._kids.values():
+                x_lemmas.eval(x_idea=kid2, src_fact=fact_x, src_idea=lemma_idea)
+            if lemma_idea._range_source_road not in [None, ""]:
                 x_lemmas.eval(
-                    x_oath=self.get_oath_obj(lemma_oath._range_source_road),
-                    src_belief=belief_x,
-                    src_oath=lemma_oath,
+                    x_idea=self.get_idea_obj(lemma_idea._range_source_road),
+                    src_fact=fact_x,
+                    src_idea=lemma_idea,
                 )
 
-        return lemma_beliefunits
+        return lemma_factunits
 
-    def set_belief(
+    def set_fact(
         self,
         base: RoadUnit,
         pick: RoadUnit = None,
         open: float = None,
         nigh: float = None,
-        create_missing_oaths: bool = None,
+        create_missing_ideas: bool = None,
     ):
         if pick is None:
             pick = base
-        if create_missing_oaths:
-            self._set_oathkid_if_empty(road=base)
-            self._set_oathkid_if_empty(road=pick)
+        if create_missing_ideas:
+            self._set_ideakid_if_empty(road=base)
+            self._set_ideakid_if_empty(road=pick)
 
         self._execute_tree_traverse()
-        belief_base_oath = self.get_oath_obj(base)
-        x_oathroot = self.get_oath_obj(self._real_id)
+        fact_base_idea = self.get_idea_obj(base)
+        x_idearoot = self.get_idea_obj(self._real_id)
         x_open = None
         if nigh != None and open is None:
-            x_open = x_oathroot._beliefunits.get(base).open
+            x_open = x_idearoot._factunits.get(base).open
         else:
             x_open = open
         x_nigh = None
         if open != None and nigh is None:
-            x_nigh = x_oathroot._beliefunits.get(base).nigh
+            x_nigh = x_idearoot._factunits.get(base).nigh
         else:
             x_nigh = nigh
-        x_beliefunit = beliefunit_shop(base=base, pick=pick, open=x_open, nigh=x_nigh)
+        x_factunit = factunit_shop(base=base, pick=pick, open=x_open, nigh=x_nigh)
 
-        if belief_base_oath.is_arithmetic() is False:
-            x_oathroot.set_beliefunit(x_beliefunit)
+        if fact_base_idea.is_arithmetic() is False:
+            x_idearoot.set_factunit(x_factunit)
 
-        # if belief's oath no range or is a "range-root" then allow belief to be set
-        elif (
-            belief_base_oath.is_arithmetic() and self._is_oath_rangeroot(base) is False
-        ):
+        # if fact's idea no range or is a "range-root" then allow fact to be set
+        elif fact_base_idea.is_arithmetic() and self._is_idea_rangeroot(base) is False:
             raise InvalidAgendaException(
-                f"Non range-root belief:{base} can only be set by range-root belief"
+                f"Non range-root fact:{base} can only be set by range-root fact"
             )
 
-        elif belief_base_oath.is_arithmetic() and self._is_oath_rangeroot(base):
-            # WHEN oath is "range-root" identify any reason.bases that are descendants
-            # calculate and set those descendant beliefs
+        elif fact_base_idea.is_arithmetic() and self._is_idea_rangeroot(base):
+            # WHEN idea is "range-root" identify any reason.bases that are descendants
+            # calculate and set those descendant facts
             # example: timeline range (0-, 1.5e9) is range-root
             # example: "timeline,weeks" (spllt 10080) is range-descendant
             # there exists a reason base "timeline,weeks" with premise.need = "timeline,weeks"
             # and (1,2) divisor=2 (every other week)
             #
-            # should not set "timeline,weeks" belief, only "timeline" belief and
+            # should not set "timeline,weeks" fact, only "timeline" fact and
             # "timeline,weeks" should be set automatica_lly since there exists a reason
             # that has that base.
-            x_oathroot.set_beliefunit(x_beliefunit)
+            x_idearoot.set_factunit(x_factunit)
 
-            # Find all Belief descendants and any range_source_road connections "Lemmas"
-            lemmas_dict = self._get_lemma_beliefunits()
-            missing_beliefs = self.get_missing_belief_bases().keys()
-            x_oathroot._apply_any_range_source_road_connections(
-                lemmas_dict, missing_beliefs
+            # Find all Fact descendants and any range_source_road connections "Lemmas"
+            lemmas_dict = self._get_lemma_factunits()
+            missing_facts = self.get_missing_fact_bases().keys()
+            x_idearoot._apply_any_range_source_road_connections(
+                lemmas_dict, missing_facts
             )
 
         self.calc_agenda_metrics()
 
-    def get_belief(self, base: RoadUnit) -> BeliefUnit:
-        return self._oathroot._beliefunits.get(base)
+    def get_fact(self, base: RoadUnit) -> FactUnit:
+        return self._idearoot._factunits.get(base)
 
-    def del_belief(self, base: RoadUnit):
-        self._oathroot.del_beliefunit(base)
+    def del_fact(self, base: RoadUnit):
+        self._idearoot.del_factunit(base)
 
-    def get_oath_dict(self, problem: bool = None) -> dict[RoadUnit:OathUnit]:
+    def get_idea_dict(self, problem: bool = None) -> dict[RoadUnit:IdeaUnit]:
         self.calc_agenda_metrics()
         if not problem:
-            return self._oath_dict
+            return self._idea_dict
         if self._econs_justified is False:
             raise Exception_econs_justified(
                 f"Cannot return problem set because _econs_justified={self._econs_justified}."
             )
 
         return {
-            x_oath.get_road(): x_oath
-            for x_oath in self._oath_dict.values()
-            if x_oath._problem_bool
+            x_idea.get_road(): x_idea
+            for x_idea in self._idea_dict.values()
+            if x_idea._problem_bool
         }
 
     def get_tree_metrics(self) -> TreeMetrics:
         tree_metrics = treemetrics_shop()
         tree_metrics.evaluate_node(
-            level=self._oathroot._level,
-            reasons=self._oathroot._reasonunits,
-            balancelinks=self._oathroot._balancelinks,
-            uid=self._oathroot._uid,
-            pledge=self._oathroot.pledge,
-            oath_road=self._oathroot.get_road(),
+            level=self._idearoot._level,
+            reasons=self._idearoot._reasonunits,
+            balancelinks=self._idearoot._balancelinks,
+            uid=self._idearoot._uid,
+            pledge=self._idearoot.pledge,
+            idea_road=self._idearoot.get_road(),
         )
 
-        x_oath_list = [self._oathroot]
-        while x_oath_list != []:
-            parent_oath = x_oath_list.pop()
-            for oath_kid in parent_oath._kids.values():
+        x_idea_list = [self._idearoot]
+        while x_idea_list != []:
+            parent_idea = x_idea_list.pop()
+            for idea_kid in parent_idea._kids.values():
                 self._eval_tree_metrics(
-                    parent_oath, oath_kid, tree_metrics, x_oath_list
+                    parent_idea, idea_kid, tree_metrics, x_idea_list
                 )
         return tree_metrics
 
-    def _eval_tree_metrics(self, parent_oath, oath_kid, tree_metrics, x_oath_list):
-        oath_kid._level = parent_oath._level + 1
+    def _eval_tree_metrics(self, parent_idea, idea_kid, tree_metrics, x_idea_list):
+        idea_kid._level = parent_idea._level + 1
         tree_metrics.evaluate_node(
-            level=oath_kid._level,
-            reasons=oath_kid._reasonunits,
-            balancelinks=oath_kid._balancelinks,
-            uid=oath_kid._uid,
-            pledge=oath_kid.pledge,
-            oath_road=oath_kid.get_road(),
+            level=idea_kid._level,
+            reasons=idea_kid._reasonunits,
+            balancelinks=idea_kid._balancelinks,
+            uid=idea_kid._uid,
+            pledge=idea_kid.pledge,
+            idea_road=idea_kid.get_road(),
         )
-        x_oath_list.append(oath_kid)
+        x_idea_list.append(idea_kid)
 
-    def get_oath_uid_max(self) -> int:
+    def get_idea_uid_max(self) -> int:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.uid_max
 
-    def set_all_oath_uids_unique(self):
+    def set_all_idea_uids_unique(self):
         tree_metrics = self.get_tree_metrics()
-        oath_uid_max = tree_metrics.uid_max
-        oath_uid_dict = tree_metrics.uid_dict
+        idea_uid_max = tree_metrics.uid_max
+        idea_uid_dict = tree_metrics.uid_dict
 
-        for x_oath in self.get_oath_dict().values():
-            if x_oath._uid is None or oath_uid_dict.get(x_oath._uid) > 1:
-                new_oath_uid_max = oath_uid_max + 1
-                self.edit_oath_attr(road=x_oath.get_road(), uid=new_oath_uid_max)
-                oath_uid_max = new_oath_uid_max
+        for x_idea in self.get_idea_dict().values():
+            if x_idea._uid is None or idea_uid_dict.get(x_idea._uid) > 1:
+                new_idea_uid_max = idea_uid_max + 1
+                self.edit_idea_attr(road=x_idea.get_road(), uid=new_idea_uid_max)
+                idea_uid_max = new_idea_uid_max
 
-    def get_oath_count(self) -> int:
-        return len(self._oath_dict)
+    def get_idea_count(self) -> int:
+        return len(self._idea_dict)
 
     def get_level_count(self, level) -> int:
         tree_metrics = self.get_tree_metrics()
@@ -1075,165 +1076,167 @@ class AgendaUnit:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.reason_bases
 
-    def get_missing_belief_bases(self) -> dict[RoadUnit:int]:
+    def get_missing_fact_bases(self) -> dict[RoadUnit:int]:
         tree_metrics = self.get_tree_metrics()
         reason_bases = tree_metrics.reason_bases
         missing_bases = {}
         for base, base_count in reason_bases.items():
             try:
-                self._oathroot._beliefunits[base]
+                self._idearoot._factunits[base]
             except KeyError:
                 missing_bases[base] = base_count
 
         return missing_bases
 
-    def add_l1_oath(
+    def add_l1_idea(
         self,
-        oath_kid: OathUnit,
-        create_missing_oaths: bool = None,
+        idea_kid: IdeaUnit,
         create_missing_ideas: bool = None,
+        create_missing_beliefs: bool = None,
         adoptees: list[str] = None,
         bundling: bool = True,
         create_missing_ancestors: bool = True,
     ):
-        self.add_oath(
-            oath_kid=oath_kid,
+        self.add_idea(
+            idea_kid=idea_kid,
             parent_road=self._real_id,
-            create_missing_oaths=create_missing_oaths,
             create_missing_ideas=create_missing_ideas,
+            create_missing_beliefs=create_missing_beliefs,
             adoptees=adoptees,
             bundling=bundling,
             create_missing_ancestors=create_missing_ancestors,
         )
 
-    def add_oath(
+    def add_idea(
         self,
-        oath_kid: OathUnit,
+        idea_kid: IdeaUnit,
         parent_road: RoadUnit,
+        create_missing_beliefs: bool = None,
         create_missing_ideas: bool = None,
-        create_missing_oaths: bool = None,
         adoptees: list[str] = None,
         bundling: bool = True,
         create_missing_ancestors: bool = True,
     ):
-        if RoadNode(oath_kid._label).is_node(self._road_delimiter) is False:
+        if RoadNode(idea_kid._label).is_node(self._road_delimiter) is False:
             raise InvalidAgendaException(
-                f"add_oath failed because '{oath_kid._label}' is not a RoadNode."
+                f"add_idea failed because '{idea_kid._label}' is not a RoadNode."
             )
 
-        if self._oathroot._label != get_root_node_from_road(
+        if self._idearoot._label != get_root_node_from_road(
             parent_road, self._road_delimiter
         ):
             raise InvalidAgendaException(
-                f"add_oath failed because parent_road '{parent_road}' has an invalid root node"
+                f"add_idea failed because parent_road '{parent_road}' has an invalid root node"
             )
 
-        oath_kid._road_delimiter = self._road_delimiter
-        if oath_kid._agenda_real_id != self._real_id:
-            oath_kid._agenda_real_id = self._real_id
-        if not create_missing_ideas:
-            oath_kid = self._get_filtered_balancelinks_oath(oath_kid)
-        oath_kid.set_parent_road(parent_road=parent_road)
+        idea_kid._road_delimiter = self._road_delimiter
+        if idea_kid._agenda_real_id != self._real_id:
+            idea_kid._agenda_real_id = self._real_id
+        if not create_missing_beliefs:
+            idea_kid = self._get_filtered_balancelinks_idea(idea_kid)
+        idea_kid.set_parent_road(parent_road=parent_road)
 
-        # create any missing oaths
-        if not create_missing_ancestors and self.oath_exists(parent_road) is False:
+        # create any missing ideas
+        if not create_missing_ancestors and self.idea_exists(parent_road) is False:
             raise InvalidAgendaException(
-                f"add_oath failed because '{parent_road}' oath does not exist."
+                f"add_idea failed because '{parent_road}' idea does not exist."
             )
-        parent_road_oath = self.get_oath_obj(parent_road, create_missing_ancestors)
-        if parent_road_oath._root is False:
-            parent_road_oath
-        parent_road_oath.add_kid(oath_kid)
+        parent_road_idea = self.get_idea_obj(parent_road, create_missing_ancestors)
+        if parent_road_idea._root is False:
+            parent_road_idea
+        parent_road_idea.add_kid(idea_kid)
 
-        kid_road = self.make_road(parent_road, oath_kid._label)
+        kid_road = self.make_road(parent_road, idea_kid._label)
         if adoptees != None:
             weight_sum = 0
             for adoptee_label in adoptees:
                 adoptee_road = self.make_road(parent_road, adoptee_label)
-                adoptee_oath = self.get_oath_obj(adoptee_road)
-                weight_sum += adoptee_oath._weight
+                adoptee_idea = self.get_idea_obj(adoptee_road)
+                weight_sum += adoptee_idea._weight
                 new_adoptee_parent_road = self.make_road(kid_road, adoptee_label)
-                self.add_oath(adoptee_oath, new_adoptee_parent_road)
-                self.edit_oath_attr(
-                    road=new_adoptee_parent_road, weight=adoptee_oath._weight
+                self.add_idea(adoptee_idea, new_adoptee_parent_road)
+                self.edit_idea_attr(
+                    road=new_adoptee_parent_road, weight=adoptee_idea._weight
                 )
-                self.del_oath_obj(adoptee_road)
+                self.del_idea_obj(adoptee_road)
 
             if bundling:
-                self.edit_oath_attr(road=kid_road, weight=weight_sum)
+                self.edit_idea_attr(road=kid_road, weight=weight_sum)
 
-        if create_missing_oaths:
-            self._create_missing_oaths(road=kid_road)
         if create_missing_ideas:
-            self._create_missing_ideas_partys(balancelinks=oath_kid._balancelinks)
+            self._create_missing_ideas(road=kid_road)
+        if create_missing_beliefs:
+            self._create_missing_beliefs_partys(balancelinks=idea_kid._balancelinks)
 
-    def _get_filtered_balancelinks_oath(self, x_oath: OathUnit) -> OathUnit:
+    def _get_filtered_balancelinks_idea(self, x_idea: IdeaUnit) -> IdeaUnit:
         _balancelinks_to_delete = [
-            _balancelink_idea_id
-            for _balancelink_idea_id in x_oath._balancelinks.keys()
-            if self.get_ideaunit(_balancelink_idea_id) is None
+            _balancelink_belief_id
+            for _balancelink_belief_id in x_idea._balancelinks.keys()
+            if self.get_beliefunit(_balancelink_belief_id) is None
         ]
-        for _balancelink_idea_id in _balancelinks_to_delete:
-            x_oath._balancelinks.pop(_balancelink_idea_id)
+        for _balancelink_belief_id in _balancelinks_to_delete:
+            x_idea._balancelinks.pop(_balancelink_belief_id)
 
-        if x_oath._assignedunit != None:
-            _suffideas_to_delete = [
-                _suffidea_idea_id
-                for _suffidea_idea_id in x_oath._assignedunit._suffideas.keys()
-                if self.get_ideaunit(_suffidea_idea_id) is None
+        if x_idea._assignedunit != None:
+            _suffbeliefs_to_delete = [
+                _suffbelief_belief_id
+                for _suffbelief_belief_id in x_idea._assignedunit._suffbeliefs.keys()
+                if self.get_beliefunit(_suffbelief_belief_id) is None
             ]
-            for _suffidea_idea_id in _suffideas_to_delete:
-                x_oath._assignedunit.del_suffidea(_suffidea_idea_id)
+            for _suffbelief_belief_id in _suffbeliefs_to_delete:
+                x_idea._assignedunit.del_suffbelief(_suffbelief_belief_id)
 
-        return x_oath
+        return x_idea
 
-    def _create_missing_ideas_partys(self, balancelinks: dict[IdeaID:BalanceLink]):
+    def _create_missing_beliefs_partys(self, balancelinks: dict[BeliefID:BalanceLink]):
         for balancelink_x in balancelinks.values():
-            if self.get_ideaunit(balancelink_x.idea_id) is None:
-                ideaunit_x = ideaunit_shop(idea_id=balancelink_x.idea_id, _partys={})
-                self.set_ideaunit(y_ideaunit=ideaunit_x)
+            if self.get_beliefunit(balancelink_x.belief_id) is None:
+                beliefunit_x = beliefunit_shop(
+                    belief_id=balancelink_x.belief_id, _partys={}
+                )
+                self.set_beliefunit(y_beliefunit=beliefunit_x)
 
-    def _create_missing_oaths(self, road):
+    def _create_missing_ideas(self, road):
         self.calc_agenda_metrics()
-        posted_oath = self.get_oath_obj(road)
+        posted_idea = self.get_idea_obj(road)
 
-        for reason_x in posted_oath._reasonunits.values():
-            self._set_oathkid_if_empty(road=reason_x.base)
+        for reason_x in posted_idea._reasonunits.values():
+            self._set_ideakid_if_empty(road=reason_x.base)
             for premise_x in reason_x.premises.values():
-                self._set_oathkid_if_empty(road=premise_x.need)
-        if posted_oath._range_source_road != None:
-            self._set_oathkid_if_empty(road=posted_oath._range_source_road)
-        if posted_oath._numeric_road != None:
-            self._set_oathkid_if_empty(road=posted_oath._numeric_road)
+                self._set_ideakid_if_empty(road=premise_x.need)
+        if posted_idea._range_source_road != None:
+            self._set_ideakid_if_empty(road=posted_idea._range_source_road)
+        if posted_idea._numeric_road != None:
+            self._set_ideakid_if_empty(road=posted_idea._numeric_road)
 
-    def _set_oathkid_if_empty(self, road: RoadUnit):
-        if self.oath_exists(road) is False:
-            self.add_oath(
-                oathunit_shop(get_terminus_node(road, self._road_delimiter)),
+    def _set_ideakid_if_empty(self, road: RoadUnit):
+        if self.idea_exists(road) is False:
+            self.add_idea(
+                ideaunit_shop(get_terminus_node(road, self._road_delimiter)),
                 parent_road=get_parent_road(road),
             )
 
-    def del_oath_obj(self, road: RoadUnit, del_children: bool = True):
-        if road == self._oathroot.get_road():
-            raise InvalidAgendaException("Oathroot cannot be deleted")
+    def del_idea_obj(self, road: RoadUnit, del_children: bool = True):
+        if road == self._idearoot.get_road():
+            raise InvalidAgendaException("Idearoot cannot be deleted")
         parent_road = get_parent_road(road)
-        if self.oath_exists(road):
+        if self.idea_exists(road):
             if not del_children:
-                self._shift_oath_kids(x_road=road)
-            parent_oath = self.get_oath_obj(parent_road)
-            parent_oath.del_kid(get_terminus_node(road, self._road_delimiter))
+                self._shift_idea_kids(x_road=road)
+            parent_idea = self.get_idea_obj(parent_road)
+            parent_idea.del_kid(get_terminus_node(road, self._road_delimiter))
         self.calc_agenda_metrics()
 
-    def _shift_oath_kids(self, x_road: RoadUnit):
+    def _shift_idea_kids(self, x_road: RoadUnit):
         parent_road = get_parent_road(x_road)
-        d_temp_oath = self.get_oath_obj(x_road)
-        for kid in d_temp_oath._kids.values():
-            self.add_oath(kid, parent_road=parent_road)
+        d_temp_idea = self.get_idea_obj(x_road)
+        for kid in d_temp_idea._kids.values():
+            self.add_idea(kid, parent_road=parent_road)
 
     def set_owner_id(self, new_owner_id):
         self._owner_id = new_owner_id
 
-    def edit_oath_label(
+    def edit_idea_label(
         self,
         old_road: RoadUnit,
         new_label: RoadNode,
@@ -1242,8 +1245,8 @@ class AgendaUnit:
             raise InvalidLabelException(
                 f"Cannot modify '{old_road}' because new_label {new_label} contains delimiter {self._road_delimiter}"
             )
-        if self.oath_exists(old_road) is False:
-            raise InvalidAgendaException(f"Oath {old_road=} does not exist")
+        if self.idea_exists(old_road) is False:
+            raise InvalidAgendaException(f"Idea {old_road=} does not exist")
 
         parent_road = get_parent_road(road=old_road)
         new_road = (
@@ -1253,84 +1256,84 @@ class AgendaUnit:
         )
         if old_road != new_road:
             if parent_road == "":
-                self._oathroot.set_oath_label(new_label)
+                self._idearoot.set_idea_label(new_label)
             else:
-                self._non_root_oath_label_edit(old_road, new_label, parent_road)
-            self._oathroot_find_replace_road(old_road=old_road, new_road=new_road)
-            self._oathroot._beliefunits = find_replace_road_key_dict(
-                dict_x=self._oathroot._beliefunits,
+                self._non_root_idea_label_edit(old_road, new_label, parent_road)
+            self._idearoot_find_replace_road(old_road=old_road, new_road=new_road)
+            self._idearoot._factunits = find_replace_road_key_dict(
+                dict_x=self._idearoot._factunits,
                 old_road=old_road,
                 new_road=new_road,
             )
 
-    def _non_root_oath_label_edit(
+    def _non_root_idea_label_edit(
         self, old_road: RoadUnit, new_label: RoadNode, parent_road: RoadUnit
     ):
-        x_oath = self.get_oath_obj(old_road)
-        x_oath.set_oath_label(new_label)
-        x_oath._parent_road = parent_road
-        oath_parent = self.get_oath_obj(get_parent_road(old_road))
-        oath_parent._kids.pop(get_terminus_node(old_road, self._road_delimiter))
-        oath_parent._kids[x_oath._label] = x_oath
+        x_idea = self.get_idea_obj(old_road)
+        x_idea.set_idea_label(new_label)
+        x_idea._parent_road = parent_road
+        idea_parent = self.get_idea_obj(get_parent_road(old_road))
+        idea_parent._kids.pop(get_terminus_node(old_road, self._road_delimiter))
+        idea_parent._kids[x_idea._label] = x_idea
 
-    def _oathroot_find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
-        self._oathroot.find_replace_road(old_road=old_road, new_road=new_road)
+    def _idearoot_find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
+        self._idearoot.find_replace_road(old_road=old_road, new_road=new_road)
 
-        oath_iter_list = [self._oathroot]
-        while oath_iter_list != []:
-            listed_oath = oath_iter_list.pop()
-            # put all oath_children in oath list
-            if listed_oath._kids != None:
-                for oath_kid in listed_oath._kids.values():
-                    oath_iter_list.append(oath_kid)
+        idea_iter_list = [self._idearoot]
+        while idea_iter_list != []:
+            listed_idea = idea_iter_list.pop()
+            # put all idea_children in idea list
+            if listed_idea._kids != None:
+                for idea_kid in listed_idea._kids.values():
+                    idea_iter_list.append(idea_kid)
                     if is_sub_road(
-                        ref_road=oath_kid._parent_road,
+                        ref_road=idea_kid._parent_road,
                         sub_road=old_road,
                     ):
-                        oath_kid._parent_road = rebuild_road(
-                            subj_road=oath_kid._parent_road,
+                        idea_kid._parent_road = rebuild_road(
+                            subj_road=idea_kid._parent_road,
                             old_road=old_road,
                             new_road=new_road,
                         )
-                    oath_kid.find_replace_road(old_road=old_road, new_road=new_road)
+                    idea_kid.find_replace_road(old_road=old_road, new_road=new_road)
 
-    def _set_oathattrfilter_premise_ranges(self, x_oathattrfilter: OathAttrFilter):
-        premise_oath = self.get_oath_obj(x_oathattrfilter.get_premise_need())
-        x_oathattrfilter.set_premise_range_attributes_influenced_by_premise_oath(
-            premise_open=premise_oath._begin,
-            premise_nigh=premise_oath._close,
-            # premise_numor=premise_oath.anc_numor,
-            premise_denom=premise_oath._denom,
-            # anc_reest=premise_oath.anc_reest,
+    def _set_ideaattrfilter_premise_ranges(self, x_ideaattrfilter: IdeaAttrFilter):
+        premise_idea = self.get_idea_obj(x_ideaattrfilter.get_premise_need())
+        x_ideaattrfilter.set_premise_range_attributes_influenced_by_premise_idea(
+            premise_open=premise_idea._begin,
+            premise_nigh=premise_idea._close,
+            # premise_numor=premise_idea.anc_numor,
+            premise_denom=premise_idea._denom,
+            # anc_reest=premise_idea.anc_reest,
         )
 
-    def _set_oathattrfilter_begin_close(
-        self, oathattrfilter: OathAttrFilter, oath_road: RoadUnit
+    def _set_ideaattrfilter_begin_close(
+        self, ideaattrfilter: IdeaAttrFilter, idea_road: RoadUnit
     ) -> set[float, float]:
-        x_iaf = oathattrfilter
-        anc_roads = get_ancestor_roads(road=oath_road)
+        x_iaf = ideaattrfilter
+        anc_roads = get_ancestor_roads(road=idea_road)
         if (
             x_iaf.addin != None
             or x_iaf.numor != None
             or x_iaf.denom != None
             or x_iaf.reest != None
         ) and len(anc_roads) == 1:
-            raise InvalidAgendaException("Root Oath cannot have numor denom reest.")
+            raise InvalidAgendaException("Root Idea cannot have numor denom reest.")
         parent_road = self._real_id if len(anc_roads) == 1 else anc_roads[1]
 
         parent_has_range = None
-        parent_oath = self.get_oath_obj(parent_road)
-        parent_begin = parent_oath._begin
-        parent_close = parent_oath._close
+        parent_idea = self.get_idea_obj(parent_road)
+        parent_begin = parent_idea._begin
+        parent_close = parent_idea._close
         parent_has_range = parent_begin is not None and parent_close is not None
 
         numeric_begin = None
         numeric_close = None
         numeric_range = None
         if x_iaf.numeric_road != None:
-            numeric_oath = self.get_oath_obj(x_iaf.numeric_road)
-            numeric_begin = numeric_oath._begin
-            numeric_close = numeric_oath._close
+            numeric_idea = self.get_idea_obj(x_iaf.numeric_road)
+            numeric_begin = numeric_idea._begin
+            numeric_close = numeric_idea._close
             numeric_range = numeric_begin != None and numeric_close != None
 
         if parent_has_range and x_iaf.addin not in [None, 0]:
@@ -1353,14 +1356,14 @@ class AgendaUnit:
 
         if parent_has_range and numeric_range:
             raise InvalidAgendaException(
-                "Oath has begin-close range parent, cannot have numeric_road"
+                "Idea has begin-close range parent, cannot have numeric_road"
             )
         elif not parent_has_range and not numeric_range and x_iaf.numor != None:
             raise InvalidAgendaException(
-                f"Oath cannot edit numor={x_iaf.numor}/denom/reest of '{oath_road}' if parent '{parent_road}' or oathunit._numeric_road does not have begin/close range"
+                f"Idea cannot edit numor={x_iaf.numor}/denom/reest of '{idea_road}' if parent '{parent_road}' or ideaunit._numeric_road does not have begin/close range"
             )
-        oathattrfilter.begin = x_begin
-        oathattrfilter.close = x_close
+        ideaattrfilter.begin = x_begin
+        ideaattrfilter.close = x_close
 
     def _transform_begin_close(
         self,
@@ -1415,7 +1418,7 @@ class AgendaUnit:
         reason_premise_nigh: float = None,
         reason_premise_divisor: int = None,
     ):
-        self.edit_oath_attr(
+        self.edit_idea_attr(
             road=road,
             reason_base=reason_base,
             reason_premise=reason_premise,
@@ -1424,7 +1427,7 @@ class AgendaUnit:
             reason_premise_divisor=reason_premise_divisor,
         )
 
-    def edit_oath_attr(
+    def edit_idea_attr(
         self,
         road: RoadUnit,
         weight: int = None,
@@ -1437,7 +1440,7 @@ class AgendaUnit:
         reason_premise_divisor: int = None,
         reason_del_premise_base: RoadUnit = None,
         reason_del_premise_need: RoadUnit = None,
-        reason_suff_oath_active: str = None,
+        reason_suff_idea_active: str = None,
         assignedunit: AssignedUnit = None,
         healerhold: HealerHold = None,
         begin: float = None,
@@ -1449,24 +1452,24 @@ class AgendaUnit:
         numeric_road: RoadUnit = None,
         range_source_road: float = None,
         pledge: bool = None,
-        beliefunit: BeliefUnit = None,
+        factunit: FactUnit = None,
         descendant_pledge_count: int = None,
         all_party_cred: bool = None,
         all_party_debt: bool = None,
         balancelink: BalanceLink = None,
-        balancelink_del: IdeaID = None,
+        balancelink_del: BeliefID = None,
         is_expanded: bool = None,
         meld_strategy: MeldStrategy = None,
         problem_bool: bool = None,
     ):
         if healerhold != None:
-            for x_idea_id in healerhold._idea_ids:
-                if self._ideas.get(x_idea_id) is None:
-                    raise healerhold_idea_id_Exception(
-                        f"Oath cannot edit healerhold because idea_id '{x_idea_id}' does not exist as idea in Agenda"
+            for x_belief_id in healerhold._belief_ids:
+                if self._beliefs.get(x_belief_id) is None:
+                    raise healerhold_belief_id_Exception(
+                        f"Idea cannot edit healerhold because belief_id '{x_belief_id}' does not exist as belief in Agenda"
                     )
 
-        x_oathattrfilter = oathattrfilter_shop(
+        x_ideaattrfilter = ideaattrfilter_shop(
             weight=weight,
             uid=uid,
             reason=reason,
@@ -1477,7 +1480,7 @@ class AgendaUnit:
             reason_premise_divisor=reason_premise_divisor,
             reason_del_premise_base=reason_del_premise_base,
             reason_del_premise_need=reason_del_premise_need,
-            reason_suff_oath_active=reason_suff_oath_active,
+            reason_suff_idea_active=reason_suff_idea_active,
             assignedunit=assignedunit,
             healerhold=healerhold,
             begin=begin,
@@ -1495,16 +1498,16 @@ class AgendaUnit:
             balancelink_del=balancelink_del,
             is_expanded=is_expanded,
             pledge=pledge,
-            beliefunit=beliefunit,
+            factunit=factunit,
             meld_strategy=meld_strategy,
             problem_bool=problem_bool,
         )
-        if x_oathattrfilter.has_numeric_attrs():
-            self._set_oathattrfilter_begin_close(x_oathattrfilter, road)
-        if x_oathattrfilter.has_reason_premise():
-            self._set_oathattrfilter_premise_ranges(x_oathattrfilter)
-        x_oath = self.get_oath_obj(road)
-        x_oath._set_oath_attr(oath_attr=x_oathattrfilter)
+        if x_ideaattrfilter.has_numeric_attrs():
+            self._set_ideaattrfilter_begin_close(x_ideaattrfilter, road)
+        if x_ideaattrfilter.has_reason_premise():
+            self._set_ideaattrfilter_premise_ranges(x_ideaattrfilter)
+        x_idea = self.get_idea_obj(road)
+        x_idea._set_idea_attr(idea_attr=x_ideaattrfilter)
 
         # deleting or setting a balancelink reqquires a tree traverse to correctly set balanceheirs and balancelines
         if balancelink_del != None or balancelink != None:
@@ -1515,22 +1518,22 @@ class AgendaUnit:
         base: RoadUnit = None,
         intent_enterprise: bool = True,
         intent_state: bool = True,
-    ) -> dict[RoadUnit:OathUnit]:
+    ) -> dict[RoadUnit:IdeaUnit]:
         self.calc_agenda_metrics()
         return {
-            x_oath.get_road(): x_oath
-            for x_oath in self._oath_dict.values()
-            if x_oath.is_intent_item(necessary_base=base)
+            x_idea.get_road(): x_idea
+            for x_idea in self._idea_dict.values()
+            if x_idea.is_intent_item(necessary_base=base)
         }
 
-    def get_all_pledges(self) -> dict[RoadUnit:OathUnit]:
+    def get_all_pledges(self) -> dict[RoadUnit:IdeaUnit]:
         self.calc_agenda_metrics()
-        all_oaths = self._oath_dict.values()
-        return {x_oath.get_road(): x_oath for x_oath in all_oaths if x_oath.pledge}
+        all_ideas = self._idea_dict.values()
+        return {x_idea.get_road(): x_idea for x_idea in all_ideas if x_idea.pledge}
 
     def set_intent_task_complete(self, task_road: RoadUnit, base: RoadUnit):
-        pledge_item = self.get_oath_obj(task_road)
-        pledge_item.set_beliefunit_to_complete(self._oathroot._beliefunits[base])
+        pledge_item = self.get_idea_obj(task_road)
+        pledge_item.set_factunit_to_complete(self._idearoot._factunits[base])
 
     def is_partyunits_credor_weight_sum_correct(self) -> bool:
         x_sum = self.get_partyunits_credor_weight_sum()
@@ -1546,17 +1549,17 @@ class AgendaUnit:
     def get_partyunits_debtor_weight_sum(self) -> float:
         return sum(partyunit.get_debtor_weight() for partyunit in self._partys.values())
 
-    def _add_to_partyunits_agenda_cred_debt(self, oath_agenda_importance: float):
+    def _add_to_partyunits_agenda_cred_debt(self, idea_agenda_importance: float):
         sum_partyunit_credor_weight = self.get_partyunits_credor_weight_sum()
         sum_partyunit_debtor_weight = self.get_partyunits_debtor_weight_sum()
 
         for x_partyunit in self._partys.values():
             au_agenda_cred = (
-                oath_agenda_importance * x_partyunit.get_credor_weight()
+                idea_agenda_importance * x_partyunit.get_credor_weight()
             ) / sum_partyunit_credor_weight
 
             au_agenda_debt = (
-                oath_agenda_importance * x_partyunit.get_debtor_weight()
+                idea_agenda_importance * x_partyunit.get_debtor_weight()
             ) / sum_partyunit_debtor_weight
 
             x_partyunit.add_agenda_cred_debt(
@@ -1566,17 +1569,17 @@ class AgendaUnit:
                 agenda_intent_debt=0,
             )
 
-    def _add_to_partyunits_agenda_intent_cred_debt(self, oath_agenda_importance: float):
+    def _add_to_partyunits_agenda_intent_cred_debt(self, idea_agenda_importance: float):
         sum_partyunit_credor_weight = self.get_partyunits_credor_weight_sum()
         sum_partyunit_debtor_weight = self.get_partyunits_debtor_weight_sum()
 
         for x_partyunit in self._partys.values():
             au_agenda_intent_cred = (
-                oath_agenda_importance * x_partyunit.get_credor_weight()
+                idea_agenda_importance * x_partyunit.get_credor_weight()
             ) / sum_partyunit_credor_weight
 
             au_agenda_intent_debt = (
-                oath_agenda_importance * x_partyunit.get_debtor_weight()
+                idea_agenda_importance * x_partyunit.get_debtor_weight()
             ) / sum_partyunit_debtor_weight
 
             x_partyunit.add_agenda_cred_debt(
@@ -1604,41 +1607,43 @@ class AgendaUnit:
                 agenda_intent_debt=au_agenda_intent_debt,
             )
 
-    def _reset_ideaunits_agenda_cred_debt(self):
-        for balancelink_obj in self._ideas.values():
+    def _reset_beliefunits_agenda_cred_debt(self):
+        for balancelink_obj in self._beliefs.values():
             balancelink_obj.reset_agenda_cred_debt()
 
-    def _set_ideaunits_agenda_importance(self, balanceheirs: dict[IdeaID:BalanceLink]):
+    def _set_beliefunits_agenda_importance(
+        self, balanceheirs: dict[BeliefID:BalanceLink]
+    ):
         for balancelink_obj in balanceheirs.values():
-            self.add_to_idea_agenda_cred_debt(
-                idea_id=balancelink_obj.idea_id,
+            self.add_to_belief_agenda_cred_debt(
+                belief_id=balancelink_obj.belief_id,
                 balanceheir_agenda_cred=balancelink_obj._agenda_cred,
                 balanceheir_agenda_debt=balancelink_obj._agenda_debt,
             )
 
     def _allot_agenda_intent_importance(self):
-        for oath in self._oath_dict.values():
-            # If there are no balancelines associated with oath
+        for idea in self._idea_dict.values():
+            # If there are no balancelines associated with idea
             # allot agenda_importance via general partyunit
             # cred ratio and debt ratio
-            # if oath.is_intent_item() and oath._balancelines == {}:
-            if oath.is_intent_item():
-                if oath._balancelines == {}:
+            # if idea.is_intent_item() and idea._balancelines == {}:
+            if idea.is_intent_item():
+                if idea._balancelines == {}:
                     self._add_to_partyunits_agenda_intent_cred_debt(
-                        oath._agenda_importance
+                        idea._agenda_importance
                     )
                 else:
-                    for x_balanceline in oath._balancelines.values():
-                        self.add_to_idea_agenda_intent_cred_debt(
-                            idea_id=x_balanceline.idea_id,
+                    for x_balanceline in idea._balancelines.values():
+                        self.add_to_belief_agenda_intent_cred_debt(
+                            belief_id=x_balanceline.belief_id,
                             balanceline_agenda_cred=x_balanceline._agenda_cred,
                             balanceline_agenda_debt=x_balanceline._agenda_debt,
                         )
 
-    def _allot_ideas_agenda_importance(self):
-        for idea_obj in self._ideas.values():
-            idea_obj._set_partylink_agenda_cred_debt()
-            for partylink in idea_obj._partys.values():
+    def _allot_beliefs_agenda_importance(self):
+        for belief_obj in self._beliefs.values():
+            belief_obj._set_partylink_agenda_cred_debt()
+            for partylink in belief_obj._partys.values():
                 self.add_to_partyunit_agenda_cred_debt(
                     partyunit_party_id=partylink.party_id,
                     agenda_cred=partylink._agenda_cred,
@@ -1663,22 +1668,22 @@ class AgendaUnit:
                 agenda_partyunit_total_debtor_weight=self.get_partyunits_debtor_weight_sum(),
             )
 
-    def get_party_idea_ids(self, party_id: PartyID) -> list[IdeaID]:
+    def get_party_belief_ids(self, party_id: PartyID) -> list[BeliefID]:
         return [
-            x_ideaunit.idea_id
-            for x_ideaunit in self._ideas.values()
-            if x_ideaunit.partylink_exists(party_id)
+            x_beliefunit.belief_id
+            for x_beliefunit in self._beliefs.values()
+            if x_beliefunit.partylink_exists(party_id)
         ]
 
     def _reset_partyunit_agenda_cred_debt(self):
         for partyunit in self._partys.values():
             partyunit.reset_agenda_cred_debt()
 
-    def oath_exists(self, road: RoadUnit) -> bool:
+    def idea_exists(self, road: RoadUnit) -> bool:
         if road is None:
             return False
         root_road_label = get_root_node_from_road(road, delimiter=self._road_delimiter)
-        if root_road_label != self._oathroot._label:
+        if root_road_label != self._idearoot._label:
             return False
 
         nodes = get_all_road_nodes(road, delimiter=self._road_delimiter)
@@ -1686,171 +1691,173 @@ class AgendaUnit:
         if nodes == []:
             return True
 
-        oath_label = nodes.pop(0)
-        x_oath = self._oathroot.get_kid(oath_label)
-        if x_oath is None:
+        idea_label = nodes.pop(0)
+        x_idea = self._idearoot.get_kid(idea_label)
+        if x_idea is None:
             return False
         while nodes != []:
-            oath_label = nodes.pop(0)
-            x_oath = x_oath.get_kid(oath_label)
-            if x_oath is None:
+            idea_label = nodes.pop(0)
+            x_idea = x_idea.get_kid(idea_label)
+            if x_idea is None:
                 return False
         return True
 
-    def get_oath_obj(self, road: RoadUnit, if_missing_create: bool = False) -> OathUnit:
+    def get_idea_obj(self, road: RoadUnit, if_missing_create: bool = False) -> IdeaUnit:
         if road is None:
-            raise InvalidAgendaException("get_oath_obj received road=None")
-        if self.oath_exists(road) is False and not if_missing_create:
-            raise InvalidAgendaException(f"get_oath_obj failed. no item at '{road}'")
+            raise InvalidAgendaException("get_idea_obj received road=None")
+        if self.idea_exists(road) is False and not if_missing_create:
+            raise InvalidAgendaException(f"get_idea_obj failed. no item at '{road}'")
         roadnodes = get_all_road_nodes(road, delimiter=self._road_delimiter)
         if len(roadnodes) == 1:
-            return self._oathroot
+            return self._idearoot
 
         roadnodes.pop(0)
-        oath_label = roadnodes.pop(0)
-        x_oath = self._oathroot.get_kid(oath_label, if_missing_create)
+        idea_label = roadnodes.pop(0)
+        x_idea = self._idearoot.get_kid(idea_label, if_missing_create)
         while roadnodes != []:
-            x_oath = x_oath.get_kid(roadnodes.pop(0), if_missing_create)
+            x_idea = x_idea.get_kid(roadnodes.pop(0), if_missing_create)
 
-        return x_oath
+        return x_idea
 
-    def get_oath_ranged_kids(
-        self, oath_road: str, begin: float = None, close: float = None
-    ) -> dict[OathUnit]:
-        parent_oath = self.get_oath_obj(oath_road)
+    def get_idea_ranged_kids(
+        self, idea_road: str, begin: float = None, close: float = None
+    ) -> dict[IdeaUnit]:
+        parent_idea = self.get_idea_obj(idea_road)
         if begin is None and close is None:
-            begin = parent_oath._begin
-            close = parent_oath._close
+            begin = parent_idea._begin
+            close = parent_idea._close
         elif begin != None and close is None:
             close = begin
 
-        oath_list = parent_oath.get_kids_in_range(begin=begin, close=close)
-        return {x_oath._label: x_oath for x_oath in oath_list}
+        idea_list = parent_idea.get_kids_in_range(begin=begin, close=close)
+        return {x_idea._label: x_idea for x_idea in idea_list}
 
     def _set_ancestors_metrics(self, road: RoadUnit, econ_exceptions: bool = False):
         task_count = 0
         child_balancelines = None
-        idea_everyone = None
+        belief_everyone = None
         ancestor_roads = get_ancestor_roads(road=road)
         econ_justified_by_problem = True
         healerhold_count = 0
 
         while ancestor_roads != []:
             youngest_road = ancestor_roads.pop(0)
-            # _set_non_root_ancestor_metrics(youngest_road, task_count, idea_everyone)
-            x_oath_obj = self.get_oath_obj(road=youngest_road)
-            x_oath_obj.add_to_descendant_pledge_count(task_count)
-            if x_oath_obj.is_kidless():
-                x_oath_obj.set_kidless_balancelines()
-                child_balancelines = x_oath_obj._balancelines
+            # _set_non_root_ancestor_metrics(youngest_road, task_count, belief_everyone)
+            x_idea_obj = self.get_idea_obj(road=youngest_road)
+            x_idea_obj.add_to_descendant_pledge_count(task_count)
+            if x_idea_obj.is_kidless():
+                x_idea_obj.set_kidless_balancelines()
+                child_balancelines = x_idea_obj._balancelines
             else:
-                x_oath_obj.set_balancelines(child_balancelines=child_balancelines)
+                x_idea_obj.set_balancelines(child_balancelines=child_balancelines)
 
-            if x_oath_obj._task:
+            if x_idea_obj._task:
                 task_count += 1
 
             if (
-                idea_everyone != False
-                and x_oath_obj._all_party_cred != False
-                and x_oath_obj._all_party_debt != False
-                and x_oath_obj._balanceheirs != {}
+                belief_everyone != False
+                and x_idea_obj._all_party_cred != False
+                and x_idea_obj._all_party_debt != False
+                and x_idea_obj._balanceheirs != {}
             ) or (
-                idea_everyone != False
-                and x_oath_obj._all_party_cred is False
-                and x_oath_obj._all_party_debt is False
+                belief_everyone != False
+                and x_idea_obj._all_party_cred is False
+                and x_idea_obj._all_party_debt is False
             ):
-                idea_everyone = False
-            elif idea_everyone != False:
-                idea_everyone = True
-            x_oath_obj._all_party_cred = idea_everyone
-            x_oath_obj._all_party_debt = idea_everyone
+                belief_everyone = False
+            elif belief_everyone != False:
+                belief_everyone = True
+            x_idea_obj._all_party_cred = belief_everyone
+            x_idea_obj._all_party_debt = belief_everyone
 
-            if x_oath_obj._healerhold.any_idea_id_exists():
+            if x_idea_obj._healerhold.any_belief_id_exists():
                 econ_justified_by_problem = False
                 healerhold_count += 1
-                self._sum_healerhold_importance += x_oath_obj._agenda_importance
-            if x_oath_obj._problem_bool:
+                self._sum_healerhold_importance += x_idea_obj._agenda_importance
+            if x_idea_obj._problem_bool:
                 econ_justified_by_problem = True
 
         if econ_justified_by_problem is False or healerhold_count > 1:
             if econ_exceptions:
                 raise Exception_econs_justified(
-                    f"OathUnit '{road}' cannot sponsor ancestor econs."
+                    f"IdeaUnit '{road}' cannot sponsor ancestor econs."
                 )
             self._econs_justified = False
 
     def _set_root_attributes(self, econ_exceptions: bool):
-        x_oathroot = self._oathroot
-        x_oathroot._level = 0
-        x_oathroot.set_parent_road(parent_road="")
-        x_oathroot.set_oathroot_inherit_reasonheirs()
-        x_oathroot.set_assignedheir(parent_assignheir=None, agenda_ideas=self._ideas)
-        x_oathroot.set_beliefheirs(beliefs=self._oathroot._beliefunits)
-        x_oathroot.inherit_balanceheirs()
-        x_oathroot.clear_balancelines()
-        x_oathroot._weight = 1
-        x_oathroot.set_kids_total_weight()
-        x_oathroot.set_sibling_total_weight(1)
-        x_oathroot.set_active(
+        x_idearoot = self._idearoot
+        x_idearoot._level = 0
+        x_idearoot.set_parent_road(parent_road="")
+        x_idearoot.set_idearoot_inherit_reasonheirs()
+        x_idearoot.set_assignedheir(
+            parent_assignheir=None, agenda_beliefs=self._beliefs
+        )
+        x_idearoot.set_factheirs(facts=self._idearoot._factunits)
+        x_idearoot.inherit_balanceheirs()
+        x_idearoot.clear_balancelines()
+        x_idearoot._weight = 1
+        x_idearoot.set_kids_total_weight()
+        x_idearoot.set_sibling_total_weight(1)
+        x_idearoot.set_active(
             tree_traverse_count=self._tree_traverse_count,
-            agenda_ideaunits=self._ideas,
+            agenda_beliefunits=self._beliefs,
             agenda_owner_id=self._owner_id,
         )
-        x_oathroot.set_agenda_importance(fund_onset_x=0, parent_fund_cease=1)
-        x_oathroot.set_balanceheirs_agenda_cred_debt()
-        x_oathroot.set_ancestor_pledge_count(0, False)
-        x_oathroot.clear_descendant_pledge_count()
-        x_oathroot.clear_all_party_cred_debt()
-        x_oathroot.pledge = False
+        x_idearoot.set_agenda_importance(fund_onset_x=0, parent_fund_cease=1)
+        x_idearoot.set_balanceheirs_agenda_cred_debt()
+        x_idearoot.set_ancestor_pledge_count(0, False)
+        x_idearoot.clear_descendant_pledge_count()
+        x_idearoot.clear_all_party_cred_debt()
+        x_idearoot.pledge = False
 
-        if x_oathroot.is_kidless():
-            self._set_ancestors_metrics(self._oathroot.get_road(), econ_exceptions)
-            self._allot_agenda_importance(oath=self._oathroot)
+        if x_idearoot.is_kidless():
+            self._set_ancestors_metrics(self._idearoot.get_road(), econ_exceptions)
+            self._allot_agenda_importance(idea=self._idearoot)
 
     def _set_kids_attributes(
         self,
-        oath_kid: OathUnit,
+        idea_kid: IdeaUnit,
         fund_onset: float,
         parent_fund_cease: float,
-        parent_oath: OathUnit,
+        parent_idea: IdeaUnit,
         econ_exceptions: bool,
     ):
-        oath_kid.set_level(parent_level=parent_oath._level)
-        oath_kid.set_parent_road(parent_oath.get_road())
-        oath_kid.set_beliefheirs(beliefs=parent_oath._beliefheirs)
-        oath_kid.set_reasonheirs(self._oath_dict, parent_oath._reasonheirs)
-        oath_kid.set_assignedheir(parent_oath._assignedheir, self._ideas)
-        oath_kid.inherit_balanceheirs(parent_oath._balanceheirs)
-        oath_kid.clear_balancelines()
-        oath_kid.set_active(
+        idea_kid.set_level(parent_level=parent_idea._level)
+        idea_kid.set_parent_road(parent_idea.get_road())
+        idea_kid.set_factheirs(facts=parent_idea._factheirs)
+        idea_kid.set_reasonheirs(self._idea_dict, parent_idea._reasonheirs)
+        idea_kid.set_assignedheir(parent_idea._assignedheir, self._beliefs)
+        idea_kid.inherit_balanceheirs(parent_idea._balanceheirs)
+        idea_kid.clear_balancelines()
+        idea_kid.set_active(
             tree_traverse_count=self._tree_traverse_count,
-            agenda_ideaunits=self._ideas,
+            agenda_beliefunits=self._beliefs,
             agenda_owner_id=self._owner_id,
         )
-        oath_kid.set_sibling_total_weight(parent_oath._kids_total_weight)
-        oath_kid.set_agenda_importance(
+        idea_kid.set_sibling_total_weight(parent_idea._kids_total_weight)
+        idea_kid.set_agenda_importance(
             fund_onset_x=fund_onset,
-            parent_agenda_importance=parent_oath._agenda_importance,
+            parent_agenda_importance=parent_idea._agenda_importance,
             parent_fund_cease=parent_fund_cease,
         )
-        oath_kid.set_ancestor_pledge_count(
-            parent_oath._ancestor_pledge_count, parent_oath.pledge
+        idea_kid.set_ancestor_pledge_count(
+            parent_idea._ancestor_pledge_count, parent_idea.pledge
         )
-        oath_kid.clear_descendant_pledge_count()
-        oath_kid.clear_all_party_cred_debt()
+        idea_kid.clear_descendant_pledge_count()
+        idea_kid.clear_all_party_cred_debt()
 
-        if oath_kid.is_kidless():
-            # set oath's ancestor metrics using agenda root as common reference
-            self._set_ancestors_metrics(oath_kid.get_road(), econ_exceptions)
-            self._allot_agenda_importance(oath=oath_kid)
+        if idea_kid.is_kidless():
+            # set idea's ancestor metrics using agenda root as common reference
+            self._set_ancestors_metrics(idea_kid.get_road(), econ_exceptions)
+            self._allot_agenda_importance(idea=idea_kid)
 
-    def _allot_agenda_importance(self, oath: OathUnit):
+    def _allot_agenda_importance(self, idea: IdeaUnit):
         # TODO manage situations where balanceheir.credor_weight is None for all balanceheirs
         # TODO manage situations where balanceheir.debtor_weight is None for all balanceheirs
-        if oath.is_balanceheirless() is False:
-            self._set_ideaunits_agenda_importance(oath._balanceheirs)
-        elif oath.is_balanceheirless():
-            self._add_to_partyunits_agenda_cred_debt(oath._agenda_importance)
+        if idea.is_balanceheirless() is False:
+            self._set_beliefunits_agenda_importance(idea._balanceheirs)
+        elif idea.is_balanceheirless():
+            self._add_to_partyunits_agenda_cred_debt(idea._agenda_importance)
 
     def get_agenda_importance(
         self, parent_agenda_importance: float, weight: int, sibling_total_weight: int
@@ -1861,7 +1868,7 @@ class AgendaUnit:
     def _set_tree_traverse_starting_point(self):
         self._rational = False
         self._tree_traverse_count = 0
-        self._oath_dict = {self._oathroot.get_road(): self._oathroot}
+        self._idea_dict = {self._idearoot.get_road(): self._idearoot}
 
     def _clear_agenda_base_metrics(self):
         self._econs_justified = True
@@ -1877,7 +1884,7 @@ class AgendaUnit:
         while not self._rational and self._tree_traverse_count < max_count:
             self._clear_agenda_base_metrics()
             self._execute_tree_traverse(econ_exceptions)
-            self._check_if_any_oath_active_status_has_altered()
+            self._check_if_any_idea_active_status_has_altered()
             self._tree_traverse_count += 1
         self._after_all_tree_traverses_set_cred_debt()
         self._after_all_tree_traverses_set_healerhold_importance()
@@ -1886,53 +1893,53 @@ class AgendaUnit:
         self._pre_tree_traverse_cred_debt_reset()
         self._set_root_attributes(econ_exceptions)
 
-        fund_onset = self._oathroot._agenda_fund_onset
-        parent_fund_cease = self._oathroot._agenda_fund_cease
+        fund_onset = self._idearoot._agenda_fund_onset
+        parent_fund_cease = self._idearoot._agenda_fund_cease
 
-        cache_oath_list = []
-        for oath_kid in self._oathroot._kids.values():
+        cache_idea_list = []
+        for idea_kid in self._idearoot._kids.values():
             self._set_kids_attributes(
-                oath_kid=oath_kid,
+                idea_kid=idea_kid,
                 fund_onset=fund_onset,
                 parent_fund_cease=parent_fund_cease,
-                parent_oath=self._oathroot,
+                parent_idea=self._idearoot,
                 econ_exceptions=econ_exceptions,
             )
-            cache_oath_list.append(oath_kid)
-            fund_onset += oath_kid._agenda_importance
+            cache_idea_list.append(idea_kid)
+            fund_onset += idea_kid._agenda_importance
 
         # no function recursion, recursion by iterateing over list that can be added to by iterations
-        while cache_oath_list != []:
-            parent_oath = cache_oath_list.pop()
+        while cache_idea_list != []:
+            parent_idea = cache_idea_list.pop()
             if self._tree_traverse_count == 0:
-                self._oath_dict[parent_oath.get_road()] = parent_oath
+                self._idea_dict[parent_idea.get_road()] = parent_idea
 
-            if parent_oath._kids != None:
-                fund_onset = parent_oath._agenda_fund_onset
-                parent_fund_cease = parent_oath._agenda_fund_cease
-                for oath_kid in parent_oath._kids.values():
+            if parent_idea._kids != None:
+                fund_onset = parent_idea._agenda_fund_onset
+                parent_fund_cease = parent_idea._agenda_fund_cease
+                for idea_kid in parent_idea._kids.values():
                     self._set_kids_attributes(
-                        oath_kid=oath_kid,
+                        idea_kid=idea_kid,
                         fund_onset=fund_onset,
                         parent_fund_cease=parent_fund_cease,
-                        parent_oath=parent_oath,
+                        parent_idea=parent_idea,
                         econ_exceptions=econ_exceptions,
                     )
-                    cache_oath_list.append(oath_kid)
-                    fund_onset += oath_kid._agenda_importance
+                    cache_idea_list.append(idea_kid)
+                    fund_onset += idea_kid._agenda_importance
 
-    def _check_if_any_oath_active_status_has_altered(self):
-        any_oath_active_status_has_altered = False
-        for oath in self._oath_dict.values():
-            if oath._active_hx.get(self._tree_traverse_count) != None:
-                any_oath_active_status_has_altered = True
+    def _check_if_any_idea_active_status_has_altered(self):
+        any_idea_active_status_has_altered = False
+        for idea in self._idea_dict.values():
+            if idea._active_hx.get(self._tree_traverse_count) != None:
+                any_idea_active_status_has_altered = True
 
-        if any_oath_active_status_has_altered is False:
+        if any_idea_active_status_has_altered is False:
             self._rational = True
 
     def _after_all_tree_traverses_set_cred_debt(self):
         self._allot_agenda_intent_importance()
-        self._allot_ideas_agenda_importance()
+        self._allot_beliefs_agenda_importance()
         self._set_agenda_intent_ratio_cred_debt()
 
     def _after_all_tree_traverses_set_healerhold_importance(self):
@@ -1943,26 +1950,26 @@ class AgendaUnit:
     def _set_econ_dict(self):
         if self._econs_justified is False:
             self._sum_healerhold_importance = 0
-        for x_oath in self._oath_dict.values():
+        for x_idea in self._idea_dict.values():
             if self._sum_healerhold_importance == 0:
-                x_oath._healerhold_importance = 0
+                x_idea._healerhold_importance = 0
             else:
                 x_sum = self._sum_healerhold_importance
-                x_oath._healerhold_importance = x_oath._agenda_importance / x_sum
-            if self._econs_justified and x_oath._healerhold.any_idea_id_exists():
-                self._econ_dict[x_oath.get_road()] = x_oath
+                x_idea._healerhold_importance = x_idea._agenda_importance / x_sum
+            if self._econs_justified and x_idea._healerhold.any_belief_id_exists():
+                self._econ_dict[x_idea.get_road()] = x_idea
 
-    def _get_healers_dict(self) -> dict[HealerID : dict[RoadUnit:OathUnit]]:
+    def _get_healers_dict(self) -> dict[HealerID : dict[RoadUnit:IdeaUnit]]:
         _healers_dict = {}
-        for x_econ_road, x_econ_oath in self._econ_dict.items():
-            for x_idea_id in x_econ_oath._healerhold._idea_ids:
-                x_ideaunit = self.get_ideaunit(x_idea_id)
-                for x_party_id in x_ideaunit._partys.keys():
+        for x_econ_road, x_econ_idea in self._econ_dict.items():
+            for x_belief_id in x_econ_idea._healerhold._belief_ids:
+                x_beliefunit = self.get_beliefunit(x_belief_id)
+                for x_party_id in x_beliefunit._partys.keys():
                     if _healers_dict.get(x_party_id) is None:
-                        _healers_dict[x_party_id] = {x_econ_road: x_econ_oath}
+                        _healers_dict[x_party_id] = {x_econ_road: x_econ_idea}
                     else:
                         healer_dict = _healers_dict.get(x_party_id)
-                        healer_dict[x_econ_road] = x_econ_oath
+                        healer_dict[x_econ_road] = x_econ_idea
         return _healers_dict
 
     def _get_buildable_econs(self) -> bool:
@@ -1980,19 +1987,19 @@ class AgendaUnit:
             raise PartyUnitsCredorDebtorSumException(
                 f"'{self._owner_id}' is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={self._party_debtor_pool}. partyunits_debtor_weight_sum={self.get_partyunits_debtor_weight_sum()}"
             )
-        self._reset_ideaunits_agenda_cred_debt()
-        self._reset_ideaunits_agenda_cred_debt()
+        self._reset_beliefunits_agenda_cred_debt()
+        self._reset_beliefunits_agenda_cred_debt()
         self._reset_partyunit_agenda_cred_debt()
 
     def get_heir_road_list(self, x_road: RoadUnit) -> list[RoadUnit]:
-        road_list = self.get_oath_tree_ordered_road_list()
-        return [oath_road for oath_road in road_list if is_sub_road(oath_road, x_road)]
+        road_list = self.get_idea_tree_ordered_road_list()
+        return [idea_road for idea_road in road_list if is_sub_road(idea_road, x_road)]
 
-    def get_oath_tree_ordered_road_list(
+    def get_idea_tree_ordered_road_list(
         self, no_range_descendants: bool = False
     ) -> list[RoadUnit]:
-        oath_list = list(self.get_oath_dict().values())
-        node_dict = {oath.get_road().lower(): oath.get_road() for oath in oath_list}
+        idea_list = list(self.get_idea_dict().values())
+        node_dict = {idea.get_road().lower(): idea.get_road() for idea in idea_list}
         node_lowercase_ordered_list = sorted(list(node_dict))
         node_orginalcase_ordered_list = [
             node_dict[node_l] for node_l in node_lowercase_ordered_list
@@ -2007,20 +2014,20 @@ class AgendaUnit:
                 if len(anc_list) == 1:
                     list_x.append(road)
                 elif len(anc_list) == 2:
-                    if self._oathroot._begin is None and self._oathroot._close is None:
+                    if self._idearoot._begin is None and self._idearoot._close is None:
                         list_x.append(road)
                 else:
-                    parent_oath = self.get_oath_obj(road=anc_list[1])
-                    if parent_oath._begin is None and parent_oath._close is None:
+                    parent_idea = self.get_idea_obj(road=anc_list[1])
+                    if parent_idea._begin is None and parent_idea._close is None:
                         list_x.append(road)
 
         return list_x
 
-    def get_beliefunits_dict(self) -> dict[str:str]:
+    def get_factunits_dict(self) -> dict[str:str]:
         x_dict = {}
-        if self._oathroot._beliefunits != None:
-            for belief_road, belief_obj in self._oathroot._beliefunits.items():
-                x_dict[belief_road] = belief_obj.get_dict()
+        if self._idearoot._factunits != None:
+            for fact_road, fact_obj in self._idearoot._factunits.items():
+                x_dict[fact_road] = fact_obj.get_dict()
         return x_dict
 
     def get_partys_dict(self, all_attrs: bool = False) -> dict[str:str]:
@@ -2030,17 +2037,17 @@ class AgendaUnit:
                 x_dict[party_id] = party_obj.get_dict(all_attrs)
         return x_dict
 
-    def get_ideaunits_dict(self) -> dict[str:str]:
+    def get_beliefunits_dict(self) -> dict[str:str]:
         return {
-            idea_idea_id: idea_obj.get_dict()
-            for idea_idea_id, idea_obj in self._ideas.items()
-            if idea_obj._party_mirror is False
+            belief_belief_id: belief_obj.get_dict()
+            for belief_belief_id, belief_obj in self._beliefs.items()
+            if belief_obj._party_mirror is False
         }
 
     def get_dict(self) -> dict[str:str]:
         x_dict = {
             "_partys": self.get_partys_dict(),
-            "_ideas": self.get_ideaunits_dict(),
+            "_beliefs": self.get_beliefunits_dict(),
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
             "_planck": self._planck,
@@ -2049,7 +2056,7 @@ class AgendaUnit:
             "_real_id": self._real_id,
             "_max_tree_traverse": self._max_tree_traverse,
             "_road_delimiter": self._road_delimiter,
-            "_oathroot": self._oathroot.get_dict(),
+            "_idearoot": self._idearoot.get_dict(),
         }
         if self._party_credor_pool != None:
             x_dict["_party_credor_pool"] = self._party_credor_pool
@@ -2066,16 +2073,16 @@ class AgendaUnit:
         x_dict = self.get_dict()
         return get_json_from_dict(dict_x=x_dict)
 
-    def set_time_hreg_oaths(self, c400_count: int):
-        x_hregoath = HregOath(self._road_delimiter)
-        oathbase_list = x_hregoath._get_time_hreg_src_oath(c400_count=c400_count)
-        while len(oathbase_list) != 0:
-            yb = oathbase_list.pop(0)
+    def set_time_hreg_ideas(self, c400_count: int):
+        x_hregidea = HregIdea(self._road_delimiter)
+        ideabase_list = x_hregidea._get_time_hreg_src_idea(c400_count=c400_count)
+        while len(ideabase_list) != 0:
+            yb = ideabase_list.pop(0)
             range_source_road_x = None
             if yb.sr != None:
                 range_source_road_x = self.make_l1_road(yb.sr)
 
-            x_oath = oathunit_shop(
+            x_idea = ideaunit_shop(
                 _label=yb.n,
                 _begin=yb.b,
                 _close=yb.c,
@@ -2088,16 +2095,16 @@ class AgendaUnit:
                 _range_source_road=range_source_road_x,
             )
             road_x = self.make_l1_road(yb.rr)
-            self.add_oath(x_oath, parent_road=road_x)
+            self.add_idea(x_idea, parent_road=road_x)
 
             numeric_road_x = None
             if yb.nr != None:
                 numeric_road_x = self.make_l1_road(yb.nr)
-                self.edit_oath_attr(
+                self.edit_idea_attr(
                     road=self.make_road(road_x, yb.n), numeric_road=numeric_road_x
                 )
             if yb.a != None:
-                self.edit_oath_attr(
+                self.edit_idea_attr(
                     road=self.make_road(road_x, yb.n),
                     addin=yb.a,
                     denom=yb.md,
@@ -2106,27 +2113,27 @@ class AgendaUnit:
 
         self.calc_agenda_metrics()
 
-    def get_agenda4party(self, party_id: PartyID, beliefs: dict[RoadUnit:BeliefCore]):
+    def get_agenda4party(self, party_id: PartyID, facts: dict[RoadUnit:FactCore]):
         self.calc_agenda_metrics()
         agenda4party = agendaunit_shop(_owner_id=party_id)
-        agenda4party._oathroot._agenda_importance = self._oathroot._agenda_importance
+        agenda4party._idearoot._agenda_importance = self._idearoot._agenda_importance
         # get party's partys: partyzone
 
-        # get partyzone ideas
-        party_ideas = self.get_party_idea_ids(party_id=party_id)
+        # get partyzone beliefs
+        party_beliefs = self.get_party_belief_ids(party_id=party_id)
 
-        # set agenda4party by traversing the oath tree and selecting associated ideas
+        # set agenda4party by traversing the idea tree and selecting associated beliefs
         # set root
         not_included_agenda_importance = 0
-        agenda4party._oathroot.clear_kids()
-        for ykx in self._oathroot._kids.values():
+        agenda4party._idearoot.clear_kids()
+        for ykx in self._idearoot._kids.values():
             y4a_included = any(
-                idea_ancestor.idea_id in party_ideas
-                for idea_ancestor in ykx._balancelines.values()
+                belief_ancestor.belief_id in party_beliefs
+                for belief_ancestor in ykx._balancelines.values()
             )
 
             if y4a_included:
-                y4a_new = oathunit_shop(
+                y4a_new = ideaunit_shop(
                     _label=ykx._label,
                     _agenda_importance=ykx._agenda_importance,
                     _reasonunits=ykx._reasonunits,
@@ -2136,31 +2143,31 @@ class AgendaUnit:
                     pledge=ykx.pledge,
                     _task=ykx._task,
                 )
-                agenda4party._oathroot._kids[ykx._label] = y4a_new
+                agenda4party._idearoot._kids[ykx._label] = y4a_new
             else:
                 not_included_agenda_importance += ykx._agenda_importance
 
         if not_included_agenda_importance > 0:
-            y4a_other = oathunit_shop(
+            y4a_other = ideaunit_shop(
                 _label="__other__",
                 _agenda_importance=not_included_agenda_importance,
             )
-            agenda4party._oathroot._kids[y4a_other._label] = y4a_other
+            agenda4party._idearoot._kids[y4a_other._label] = y4a_other
 
         return agenda4party
 
-    def set_dominate_pledge_oath(self, oath_kid: OathUnit):
-        oath_kid.pledge = True
-        self.add_oath(
-            oath_kid=oath_kid,
-            parent_road=self.make_road(oath_kid._parent_road),
+    def set_dominate_pledge_idea(self, idea_kid: IdeaUnit):
+        idea_kid.pledge = True
+        self.add_idea(
+            idea_kid=idea_kid,
+            parent_road=self.make_road(idea_kid._parent_road),
+            create_missing_beliefs=True,
             create_missing_ideas=True,
-            create_missing_oaths=True,
         )
 
-    def get_oath_list_without_oathroot(self) -> list[OathUnit]:
+    def get_idea_list_without_idearoot(self) -> list[IdeaUnit]:
         self.calc_agenda_metrics()
-        x_list = list(self._oath_dict.values())
+        x_list = list(self._idea_dict.values())
         x_list.pop(0)
         return x_list
 
@@ -2170,11 +2177,11 @@ class AgendaUnit:
     def meld(
         self, other_agenda, party_weight: float = None, ignore_partyunits: bool = False
     ):
-        self._meld_ideas(other_agenda)
+        self._meld_beliefs(other_agenda)
         if not ignore_partyunits:
             self._meld_partys(other_agenda)
-        self._meld_oaths(other_agenda, party_weight)
-        self._meld_beliefs(other_agenda)
+        self._meld_ideas(other_agenda, party_weight)
+        self._meld_facts(other_agenda)
         self._weight = get_meld_weight(
             src_weight=self._weight,
             src_meld_strategy="default",
@@ -2183,26 +2190,26 @@ class AgendaUnit:
         )
         self._meld_originlinks(other_agenda._owner_id, party_weight)
 
-    def _meld_oaths(self, other_agenda, party_weight: float):
-        # meld oathroot
-        self._oathroot.meld(other_oath=other_agenda._oathroot, _oathroot=True)
+    def _meld_ideas(self, other_agenda, party_weight: float):
+        # meld idearoot
+        self._idearoot.meld(other_idea=other_agenda._idearoot, _idearoot=True)
 
-        # meld all other oaths
+        # meld all other ideas
         party_id = other_agenda._owner_id
-        o_oath_list = other_agenda.get_oath_list_without_oathroot()
-        for o_oath in o_oath_list:
+        o_idea_list = other_agenda.get_idea_list_without_idearoot()
+        for o_idea in o_idea_list:
             o_road = road_validate(
-                self.make_road(o_oath._parent_road, o_oath._label),
+                self.make_road(o_idea._parent_road, o_idea._label),
                 self._road_delimiter,
                 self._real_id,
             )
             try:
-                main_oath = self.get_oath_obj(o_road)
-                main_oath.meld(o_oath, False, party_id, party_weight)
+                main_idea = self.get_idea_obj(o_road)
+                main_idea.meld(o_idea, False, party_id, party_weight)
             except Exception:
-                self.add_oath(oath_kid=o_oath, parent_road=o_oath._parent_road)
-                main_oath = self.get_oath_obj(o_road)
-                main_oath._originunit.set_originlink(party_id, party_weight)
+                self.add_idea(idea_kid=o_idea, parent_road=o_idea._parent_road)
+                main_idea = self.get_idea_obj(o_road)
+                main_idea._originunit.set_originlink(party_id, party_weight)
 
     def _meld_partys(self, other_agenda):
         for partyunit in other_agenda._partys.values():
@@ -2211,21 +2218,19 @@ class AgendaUnit:
             else:
                 self.get_party(partyunit.party_id).meld(partyunit)
 
-    def _meld_ideas(self, other_agenda):
-        for brx in other_agenda._ideas.values():
-            if self.get_ideaunit(brx.idea_id) is None:
-                self.set_ideaunit(y_ideaunit=brx)
-            else:
-                self.get_ideaunit(brx.idea_id).meld(brx)
-
     def _meld_beliefs(self, other_agenda):
-        for hx in other_agenda._oathroot._beliefunits.values():
-            if self._oathroot._beliefunits.get(hx.base) is None:
-                self.set_belief(
-                    base=hx.base, pick=hx.belief, open=hx.open, nigh=hx.nigh
-                )
+        for brx in other_agenda._beliefs.values():
+            if self.get_beliefunit(brx.belief_id) is None:
+                self.set_beliefunit(y_beliefunit=brx)
             else:
-                self._oathroot._beliefunits.get(hx.base).meld(hx)
+                self.get_beliefunit(brx.belief_id).meld(brx)
+
+    def _meld_facts(self, other_agenda):
+        for hx in other_agenda._idearoot._factunits.values():
+            if self._idearoot._factunits.get(hx.base) is None:
+                self.set_fact(base=hx.base, pick=hx.fact, open=hx.open, nigh=hx.nigh)
+            else:
+                self._idearoot._factunits.get(hx.base).meld(hx)
 
     def _meld_originlinks(self, party_id: PartyID, party_weight: float):
         if party_id != None:
@@ -2239,30 +2244,30 @@ class AgendaUnit:
     ) -> any:
         self.calc_agenda_metrics()
         self._set_assignment_partys(agenda_x, assignor_partys, assignor_party_id)
-        self._set_assignment_ideas(agenda_x)
-        assignor_pledges = self._get_assignor_pledge_oaths(agenda_x, assignor_party_id)
+        self._set_assignment_beliefs(agenda_x)
+        assignor_pledges = self._get_assignor_pledge_ideas(agenda_x, assignor_party_id)
         relevant_roads = self._get_relevant_roads(assignor_pledges)
-        self._set_assignment_oaths(agenda_x, relevant_roads)
+        self._set_assignment_ideas(agenda_x, relevant_roads)
         return agenda_x
 
-    def _set_assignment_oaths(self, x_agenda, relevant_roads: dict[RoadUnit:str]):
+    def _set_assignment_ideas(self, x_agenda, relevant_roads: dict[RoadUnit:str]):
         sorted_relevants = sorted(list(relevant_roads))
-        # difficult to know how to manage root oath attributes...
+        # difficult to know how to manage root idea attributes...
         if sorted_relevants != []:
             root_road = sorted_relevants.pop(0)
 
         for relevant_road in sorted_relevants:
-            relevant_oath = copy_deepcopy(self.get_oath_obj(relevant_road))
-            relevant_oath.find_replace_road(
+            relevant_idea = copy_deepcopy(self.get_idea_obj(relevant_road))
+            relevant_idea.find_replace_road(
                 old_road=get_root_node_from_road(relevant_road, self._road_delimiter),
                 new_road=x_agenda._real_id,
             )
-            relevant_oath.clear_kids()
-            x_agenda.add_oath(relevant_oath, parent_road=relevant_oath._parent_road)
+            relevant_idea.clear_kids()
+            x_agenda.add_idea(relevant_idea, parent_road=relevant_idea._parent_road)
 
-        for afu in self._oathroot._beliefunits.values():
+        for afu in self._idearoot._factunits.values():
             if relevant_roads.get(afu.base) != None:
-                x_agenda.set_belief(
+                x_agenda.set_fact(
                     base=rebuild_road(afu.base, self._real_id, x_agenda._real_id),
                     pick=rebuild_road(afu.pick, self._real_id, x_agenda._real_id),
                     open=afu.open,
@@ -2282,23 +2287,25 @@ class AgendaUnit:
                 agenda_x.set_partyunit(partyunit=self.get_party(party_id_x))
         return agenda_x
 
-    def _set_assignment_ideas(self, agenda_x):
-        revelant_ideas = get_partys_relevant_ideas(self._ideas, agenda_x._partys)
-        for idea_idea_id, idea_partys in revelant_ideas.items():
-            if agenda_x._ideas.get(idea_idea_id) is None:
-                idea_x = ideaunit_shop(idea_id=idea_idea_id)
-                for party_id in idea_partys:
-                    idea_x.set_partylink(partylink_shop(party_id=party_id))
-                agenda_x.set_ideaunit(idea_x)
+    def _set_assignment_beliefs(self, agenda_x):
+        revelant_beliefs = get_partys_relevant_beliefs(self._beliefs, agenda_x._partys)
+        for belief_belief_id, belief_partys in revelant_beliefs.items():
+            if agenda_x._beliefs.get(belief_belief_id) is None:
+                belief_x = beliefunit_shop(belief_id=belief_belief_id)
+                for party_id in belief_partys:
+                    belief_x.set_partylink(partylink_shop(party_id=party_id))
+                agenda_x.set_beliefunit(belief_x)
 
-    def _get_assignor_pledge_oaths(
-        self, agenda_x, assignor_party_id: IdeaID
+    def _get_assignor_pledge_ideas(
+        self, agenda_x, assignor_party_id: BeliefID
     ) -> dict[RoadUnit:int]:
-        assignor_ideas = get_party_relevant_ideas(agenda_x._ideas, assignor_party_id)
+        assignor_beliefs = get_party_relevant_beliefs(
+            agenda_x._beliefs, assignor_party_id
+        )
         return {
-            oath_road: -1
-            for oath_road, x_oath in self._oath_dict.items()
-            if (x_oath.assignor_in(assignor_ideas) and x_oath.pledge)
+            idea_road: -1
+            for idea_road, x_idea in self._idea_dict.items()
+            if (x_idea.assignor_in(assignor_beliefs) and x_idea.pledge)
         }
 
 
@@ -2323,8 +2330,8 @@ def agendaunit_shop(
         _weight=get_1_if_None(_weight),
         _real_id=_real_id,
         _partys=get_empty_dict_if_none(None),
-        _ideas=get_empty_dict_if_none(None),
-        _oath_dict=get_empty_dict_if_none(None),
+        _beliefs=get_empty_dict_if_none(None),
+        _idea_dict=get_empty_dict_if_none(None),
         _econ_dict=get_empty_dict_if_none(None),
         _healers_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
@@ -2335,10 +2342,10 @@ def agendaunit_shop(
         _econs_buildable=get_False_if_None(),
         _sum_healerhold_importance=get_0_if_None(),
     )
-    x_agenda._oathroot = oathunit_shop(
+    x_agenda._idearoot = ideaunit_shop(
         _root=True, _uid=1, _level=0, _agenda_real_id=x_agenda._real_id
     )
-    x_agenda._oathroot._road_delimiter = x_agenda._road_delimiter
+    x_agenda._idearoot._road_delimiter = x_agenda._road_delimiter
     x_agenda.set_max_tree_traverse(3)
     x_agenda._rational = False
     x_agenda._originunit = originunit_shop()
@@ -2383,84 +2390,84 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
         agenda_dict, dict_key="_partys", _road_delimiter=x_agenda._road_delimiter
     ).values():
         x_agenda.set_partyunit(x_partyunit)
-    for x_ideaunit in get_obj_from_agenda_dict(
-        agenda_dict, dict_key="_ideas", _road_delimiter=x_agenda._road_delimiter
+    for x_beliefunit in get_obj_from_agenda_dict(
+        agenda_dict, dict_key="_beliefs", _road_delimiter=x_agenda._road_delimiter
     ).values():
-        x_agenda.set_ideaunit(x_ideaunit)
+        x_agenda.set_beliefunit(x_beliefunit)
     x_agenda._originunit = get_obj_from_agenda_dict(agenda_dict, "_originunit")
 
-    set_oathroot_from_agenda_dict(x_agenda, agenda_dict)
+    set_idearoot_from_agenda_dict(x_agenda, agenda_dict)
     x_agenda.calc_agenda_metrics()  # clean up tree traverse defined fields
     return x_agenda
 
 
-def set_oathroot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
-    oathroot_dict = agenda_dict.get("_oathroot")
-    x_agenda._oathroot = oathunit_shop(
+def set_idearoot_from_agenda_dict(x_agenda: AgendaUnit, agenda_dict: dict):
+    idearoot_dict = agenda_dict.get("_idearoot")
+    x_agenda._idearoot = ideaunit_shop(
         _root=True,
         _label=x_agenda._real_id,
-        _uid=get_obj_from_oath_dict(oathroot_dict, "_uid"),
-        _weight=get_obj_from_oath_dict(oathroot_dict, "_weight"),
-        _begin=get_obj_from_oath_dict(oathroot_dict, "_begin"),
-        _close=get_obj_from_oath_dict(oathroot_dict, "_close"),
-        _numor=get_obj_from_oath_dict(oathroot_dict, "_numor"),
-        _denom=get_obj_from_oath_dict(oathroot_dict, "_denom"),
-        _reest=get_obj_from_oath_dict(oathroot_dict, "_reest"),
-        _problem_bool=get_obj_from_oath_dict(oathroot_dict, "_problem_bool"),
-        _range_source_road=get_obj_from_oath_dict(oathroot_dict, "_range_source_road"),
-        _numeric_road=get_obj_from_oath_dict(oathroot_dict, "_numeric_road"),
-        _reasonunits=get_obj_from_oath_dict(oathroot_dict, "_reasonunits"),
-        _assignedunit=get_obj_from_oath_dict(oathroot_dict, "_assignedunit"),
-        _healerhold=get_obj_from_oath_dict(oathroot_dict, "_healerhold"),
-        _beliefunits=get_obj_from_oath_dict(oathroot_dict, "_beliefunits"),
-        _balancelinks=get_obj_from_oath_dict(oathroot_dict, "_balancelinks"),
-        _is_expanded=get_obj_from_oath_dict(oathroot_dict, "_is_expanded"),
-        _road_delimiter=get_obj_from_oath_dict(oathroot_dict, "_road_delimiter"),
+        _uid=get_obj_from_idea_dict(idearoot_dict, "_uid"),
+        _weight=get_obj_from_idea_dict(idearoot_dict, "_weight"),
+        _begin=get_obj_from_idea_dict(idearoot_dict, "_begin"),
+        _close=get_obj_from_idea_dict(idearoot_dict, "_close"),
+        _numor=get_obj_from_idea_dict(idearoot_dict, "_numor"),
+        _denom=get_obj_from_idea_dict(idearoot_dict, "_denom"),
+        _reest=get_obj_from_idea_dict(idearoot_dict, "_reest"),
+        _problem_bool=get_obj_from_idea_dict(idearoot_dict, "_problem_bool"),
+        _range_source_road=get_obj_from_idea_dict(idearoot_dict, "_range_source_road"),
+        _numeric_road=get_obj_from_idea_dict(idearoot_dict, "_numeric_road"),
+        _reasonunits=get_obj_from_idea_dict(idearoot_dict, "_reasonunits"),
+        _assignedunit=get_obj_from_idea_dict(idearoot_dict, "_assignedunit"),
+        _healerhold=get_obj_from_idea_dict(idearoot_dict, "_healerhold"),
+        _factunits=get_obj_from_idea_dict(idearoot_dict, "_factunits"),
+        _balancelinks=get_obj_from_idea_dict(idearoot_dict, "_balancelinks"),
+        _is_expanded=get_obj_from_idea_dict(idearoot_dict, "_is_expanded"),
+        _road_delimiter=get_obj_from_idea_dict(idearoot_dict, "_road_delimiter"),
         _agenda_real_id=x_agenda._real_id,
     )
-    set_oathroot_kids_from_dict(x_agenda, oathroot_dict)
+    set_idearoot_kids_from_dict(x_agenda, idearoot_dict)
 
 
-def set_oathroot_kids_from_dict(x_agenda: AgendaUnit, oathroot_dict: dict):
-    to_evaluate_oath_dicts = []
+def set_idearoot_kids_from_dict(x_agenda: AgendaUnit, idearoot_dict: dict):
+    to_evaluate_idea_dicts = []
     parent_road_text = "parent_road"
     # for every kid dict, set parent_road in dict, add to to_evaluate_list
-    for x_dict in get_obj_from_oath_dict(oathroot_dict, "_kids").values():
+    for x_dict in get_obj_from_idea_dict(idearoot_dict, "_kids").values():
         x_dict[parent_road_text] = x_agenda._real_id
-        to_evaluate_oath_dicts.append(x_dict)
+        to_evaluate_idea_dicts.append(x_dict)
 
-    while to_evaluate_oath_dicts != []:
-        oath_dict = to_evaluate_oath_dicts.pop(0)
+    while to_evaluate_idea_dicts != []:
+        idea_dict = to_evaluate_idea_dicts.pop(0)
         # for every kid dict, set parent_road in dict, add to to_evaluate_list
-        for kid_dict in get_obj_from_oath_dict(oath_dict, "_kids").values():
-            parent_road = get_obj_from_oath_dict(oath_dict, parent_road_text)
-            kid_label = get_obj_from_oath_dict(oath_dict, "_label")
+        for kid_dict in get_obj_from_idea_dict(idea_dict, "_kids").values():
+            parent_road = get_obj_from_idea_dict(idea_dict, parent_road_text)
+            kid_label = get_obj_from_idea_dict(idea_dict, "_label")
             kid_dict[parent_road_text] = x_agenda.make_road(parent_road, kid_label)
-            to_evaluate_oath_dicts.append(kid_dict)
+            to_evaluate_idea_dicts.append(kid_dict)
 
-        x_oathkid = oathunit_shop(
-            _label=get_obj_from_oath_dict(oath_dict, "_label"),
-            _weight=get_obj_from_oath_dict(oath_dict, "_weight"),
-            _uid=get_obj_from_oath_dict(oath_dict, "_uid"),
-            _begin=get_obj_from_oath_dict(oath_dict, "_begin"),
-            _close=get_obj_from_oath_dict(oath_dict, "_close"),
-            _numor=get_obj_from_oath_dict(oath_dict, "_numor"),
-            _denom=get_obj_from_oath_dict(oath_dict, "_denom"),
-            _reest=get_obj_from_oath_dict(oath_dict, "_reest"),
-            pledge=get_obj_from_oath_dict(oath_dict, "pledge"),
-            _problem_bool=get_obj_from_oath_dict(oath_dict, "_problem_bool"),
-            _reasonunits=get_obj_from_oath_dict(oath_dict, "_reasonunits"),
-            _assignedunit=get_obj_from_oath_dict(oath_dict, "_assignedunit"),
-            _healerhold=get_obj_from_oath_dict(oath_dict, "_healerhold"),
-            _originunit=get_obj_from_oath_dict(oath_dict, "_originunit"),
-            _balancelinks=get_obj_from_oath_dict(oath_dict, "_balancelinks"),
-            _beliefunits=get_obj_from_oath_dict(oath_dict, "_beliefunits"),
-            _is_expanded=get_obj_from_oath_dict(oath_dict, "_is_expanded"),
-            _range_source_road=get_obj_from_oath_dict(oath_dict, "_range_source_road"),
-            _numeric_road=get_obj_from_oath_dict(oath_dict, "_numeric_road"),
+        x_ideakid = ideaunit_shop(
+            _label=get_obj_from_idea_dict(idea_dict, "_label"),
+            _weight=get_obj_from_idea_dict(idea_dict, "_weight"),
+            _uid=get_obj_from_idea_dict(idea_dict, "_uid"),
+            _begin=get_obj_from_idea_dict(idea_dict, "_begin"),
+            _close=get_obj_from_idea_dict(idea_dict, "_close"),
+            _numor=get_obj_from_idea_dict(idea_dict, "_numor"),
+            _denom=get_obj_from_idea_dict(idea_dict, "_denom"),
+            _reest=get_obj_from_idea_dict(idea_dict, "_reest"),
+            pledge=get_obj_from_idea_dict(idea_dict, "pledge"),
+            _problem_bool=get_obj_from_idea_dict(idea_dict, "_problem_bool"),
+            _reasonunits=get_obj_from_idea_dict(idea_dict, "_reasonunits"),
+            _assignedunit=get_obj_from_idea_dict(idea_dict, "_assignedunit"),
+            _healerhold=get_obj_from_idea_dict(idea_dict, "_healerhold"),
+            _originunit=get_obj_from_idea_dict(idea_dict, "_originunit"),
+            _balancelinks=get_obj_from_idea_dict(idea_dict, "_balancelinks"),
+            _factunits=get_obj_from_idea_dict(idea_dict, "_factunits"),
+            _is_expanded=get_obj_from_idea_dict(idea_dict, "_is_expanded"),
+            _range_source_road=get_obj_from_idea_dict(idea_dict, "_range_source_road"),
+            _numeric_road=get_obj_from_idea_dict(idea_dict, "_numeric_road"),
             _agenda_real_id=x_agenda._real_id,
         )
-        x_agenda.add_oath(x_oathkid, parent_road=oath_dict[parent_road_text])
+        x_agenda.add_idea(x_ideakid, parent_road=idea_dict[parent_road_text])
 
 
 def get_obj_from_agenda_dict(
@@ -2478,11 +2485,11 @@ def get_obj_from_agenda_dict(
             if x_dict.get(dict_key) != None
             else partyunits_get_from_dict(x_dict[dict_key], _road_delimiter)
         )
-    elif dict_key == "_ideas":
+    elif dict_key == "_beliefs":
         return (
-            get_ideaunits_from_dict(x_dict[dict_key], _road_delimiter)
+            get_beliefunits_from_dict(x_dict[dict_key], _road_delimiter)
             if x_dict.get(dict_key) != None
-            else get_ideaunits_from_dict(x_dict[dict_key], _road_delimiter)
+            else get_beliefunits_from_dict(x_dict[dict_key], _road_delimiter)
         )
     elif dict_key == "_max_tree_traverse":
         return (

@@ -1,10 +1,10 @@
 from src._road.road import RoadUnit
-from src.agenda.oath import oathunit_shop
-from src.agenda.reason_oath import (
-    beliefunit_shop,
+from src.agenda.idea import ideaunit_shop
+from src.agenda.reason_idea import (
+    factunit_shop,
     premiseunit_shop,
     reasonunit_shop,
-    beliefunit_shop,
+    factunit_shop,
 )
 from src.agenda.agenda import (
     AgendaUnit,
@@ -32,18 +32,18 @@ def agenda_v001_with_large_intent() -> AgendaUnit:
     ced_week_road = yao_agenda.make_l1_road("ced_week")
     weekdays_road = yao_agenda.make_l1_road("weekdays")
 
-    yao_agenda.set_belief(base=aaron_road, pick=aaron_road)
-    yao_agenda.set_belief(base=ced_week_road, pick=ced_week_road, open=0, nigh=53)
-    yao_agenda.set_belief(base=day_minute_road, pick=day_minute_road, open=0, nigh=1399)
-    # yao_agenda.set_belief(base=internet, pick=internet)
-    yao_agenda.set_belief(base=month_week_road, pick=month_week_road, open=0, nigh=5)
-    yao_agenda.set_belief(base=mood_road, pick=mood_road)
-    # yao_agenda.set_belief(base=movie, pick=movie)
-    yao_agenda.set_belief(base=nations_road, pick=nations_road)
-    yao_agenda.set_belief(base=season_road, pick=season_road)
-    yao_agenda.set_belief(base=year_month_road, pick=year_month_road, open=0, nigh=12)
-    # yao_agenda.set_belief(base=water, pick=water)
-    yao_agenda.set_belief(base=weekdays_road, pick=weekdays_road)
+    yao_agenda.set_fact(base=aaron_road, pick=aaron_road)
+    yao_agenda.set_fact(base=ced_week_road, pick=ced_week_road, open=0, nigh=53)
+    yao_agenda.set_fact(base=day_minute_road, pick=day_minute_road, open=0, nigh=1399)
+    # yao_agenda.set_fact(base=internet, pick=internet)
+    yao_agenda.set_fact(base=month_week_road, pick=month_week_road, open=0, nigh=5)
+    yao_agenda.set_fact(base=mood_road, pick=mood_road)
+    # yao_agenda.set_fact(base=movie, pick=movie)
+    yao_agenda.set_fact(base=nations_road, pick=nations_road)
+    yao_agenda.set_fact(base=season_road, pick=season_road)
+    yao_agenda.set_fact(base=year_month_road, pick=year_month_road, open=0, nigh=12)
+    # yao_agenda.set_fact(base=water, pick=water)
+    yao_agenda.set_fact(base=weekdays_road, pick=weekdays_road)
     return yao_agenda
 
 
@@ -57,17 +57,17 @@ def get_agenda_with_4_levels() -> AgendaUnit:
     sue_agenda = agendaunit_shop(_owner_id="Sue", _weight=10)
 
     casa = "casa"
-    oath_kid_casa = oathunit_shop(casa, _weight=30, pledge=True)
-    sue_agenda.add_l1_oath(oath_kid_casa)
+    idea_kid_casa = ideaunit_shop(casa, _weight=30, pledge=True)
+    sue_agenda.add_l1_idea(idea_kid_casa)
 
     cat = "feed cat"
-    oath_kid_feedcat = oathunit_shop(cat, _weight=30, pledge=True)
-    sue_agenda.add_l1_oath(oath_kid_feedcat)
+    idea_kid_feedcat = ideaunit_shop(cat, _weight=30, pledge=True)
+    sue_agenda.add_l1_idea(idea_kid_feedcat)
 
     week_text = "weekdays"
     week_road = sue_agenda.make_l1_road(week_text)
-    oath_kid_weekdays = oathunit_shop(week_text, _weight=40)
-    sue_agenda.add_l1_oath(oath_kid_weekdays)
+    idea_kid_weekdays = ideaunit_shop(week_text, _weight=40)
+    sue_agenda.add_l1_idea(idea_kid_weekdays)
 
     sun_text = "Sunday"
     mon_text = "Monday"
@@ -77,44 +77,44 @@ def get_agenda_with_4_levels() -> AgendaUnit:
     fri_text = "Friday"
     sat_text = "Saturday"
 
-    oath_grandkidU = oathunit_shop(sun_text, _weight=20)
-    oath_grandkidM = oathunit_shop(mon_text, _weight=20)
-    oath_grandkidT = oathunit_shop(tue_text, _weight=20)
-    oath_grandkidW = oathunit_shop(wed_text, _weight=20)
-    oath_grandkidR = oathunit_shop(thu_text, _weight=30)
-    oath_grandkidF = oathunit_shop(fri_text, _weight=40)
-    oath_grandkidA = oathunit_shop(sat_text, _weight=50)
+    idea_grandkidU = ideaunit_shop(sun_text, _weight=20)
+    idea_grandkidM = ideaunit_shop(mon_text, _weight=20)
+    idea_grandkidT = ideaunit_shop(tue_text, _weight=20)
+    idea_grandkidW = ideaunit_shop(wed_text, _weight=20)
+    idea_grandkidR = ideaunit_shop(thu_text, _weight=30)
+    idea_grandkidF = ideaunit_shop(fri_text, _weight=40)
+    idea_grandkidA = ideaunit_shop(sat_text, _weight=50)
 
-    sue_agenda.add_oath(oath_grandkidU, week_road)
-    sue_agenda.add_oath(oath_grandkidM, week_road)
-    sue_agenda.add_oath(oath_grandkidT, week_road)
-    sue_agenda.add_oath(oath_grandkidW, week_road)
-    sue_agenda.add_oath(oath_grandkidR, week_road)
-    sue_agenda.add_oath(oath_grandkidF, week_road)
-    sue_agenda.add_oath(oath_grandkidA, week_road)
+    sue_agenda.add_idea(idea_grandkidU, week_road)
+    sue_agenda.add_idea(idea_grandkidM, week_road)
+    sue_agenda.add_idea(idea_grandkidT, week_road)
+    sue_agenda.add_idea(idea_grandkidW, week_road)
+    sue_agenda.add_idea(idea_grandkidR, week_road)
+    sue_agenda.add_idea(idea_grandkidF, week_road)
+    sue_agenda.add_idea(idea_grandkidA, week_road)
 
     states_text = "nation-state"
     states_road = sue_agenda.make_l1_road(states_text)
-    oath_kid_states = oathunit_shop(states_text, _weight=30)
-    sue_agenda.add_l1_oath(oath_kid_states)
+    idea_kid_states = ideaunit_shop(states_text, _weight=30)
+    sue_agenda.add_l1_idea(idea_kid_states)
 
     usa_text = "USA"
     usa_road = sue_agenda.make_road(states_road, usa_text)
     france_text = "France"
     brazil_text = "Brazil"
-    oath_grandkid_usa = oathunit_shop(usa_text, _weight=50)
-    oath_grandkid_france = oathunit_shop(france_text, _weight=50)
-    oath_grandkid_brazil = oathunit_shop(brazil_text, _weight=50)
-    sue_agenda.add_oath(oath_grandkid_france, states_road)
-    sue_agenda.add_oath(oath_grandkid_brazil, states_road)
-    sue_agenda.add_oath(oath_grandkid_usa, states_road)
+    idea_grandkid_usa = ideaunit_shop(usa_text, _weight=50)
+    idea_grandkid_france = ideaunit_shop(france_text, _weight=50)
+    idea_grandkid_brazil = ideaunit_shop(brazil_text, _weight=50)
+    sue_agenda.add_idea(idea_grandkid_france, states_road)
+    sue_agenda.add_idea(idea_grandkid_brazil, states_road)
+    sue_agenda.add_idea(idea_grandkid_usa, states_road)
 
     texas_text = "Texas"
     oregon_text = "Oregon"
-    oath_grandgrandkid_usa_texas = oathunit_shop(texas_text, _weight=50)
-    oath_grandgrandkid_usa_oregon = oathunit_shop(oregon_text, _weight=50)
-    sue_agenda.add_oath(oath_grandgrandkid_usa_texas, usa_road)
-    sue_agenda.add_oath(oath_grandgrandkid_usa_oregon, usa_road)
+    idea_grandgrandkid_usa_texas = ideaunit_shop(texas_text, _weight=50)
+    idea_grandgrandkid_usa_oregon = ideaunit_shop(oregon_text, _weight=50)
+    sue_agenda.add_idea(idea_grandgrandkid_usa_texas, usa_road)
+    sue_agenda.add_idea(idea_grandgrandkid_usa_oregon, usa_road)
     return sue_agenda
 
 
@@ -136,12 +136,12 @@ def get_agenda_with_4_levels_and_2reasons() -> AgendaUnit:
 
     casa_text = "casa"
     casa_road = sue_agenda.make_l1_road(casa_text)
-    sue_agenda.edit_oath_attr(road=casa_road, reason=week_reason)
-    sue_agenda.edit_oath_attr(road=casa_road, reason=nation_reason)
+    sue_agenda.edit_idea_attr(road=casa_road, reason=week_reason)
+    sue_agenda.edit_idea_attr(road=casa_road, reason=nation_reason)
     return sue_agenda
 
 
-def get_agenda_with_4_levels_and_2reasons_2beliefs() -> AgendaUnit:
+def get_agenda_with_4_levels_and_2reasons_2facts() -> AgendaUnit:
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
     week_text = "weekdays"
     week_road = sue_agenda.make_l1_road(week_text)
@@ -151,21 +151,21 @@ def get_agenda_with_4_levels_and_2reasons_2beliefs() -> AgendaUnit:
     states_road = sue_agenda.make_l1_road(states_text)
     usa_text = "USA"
     usa_road = sue_agenda.make_road(states_road, usa_text)
-    sue_agenda.set_belief(base=week_road, pick=wed_road)
-    sue_agenda.set_belief(base=states_road, pick=usa_road)
+    sue_agenda.set_fact(base=week_road, pick=wed_road)
+    sue_agenda.set_fact(base=states_road, pick=usa_road)
     return sue_agenda
 
 
 def get_agenda_with7amCleanTableReason() -> AgendaUnit:
-    sue_agenda = get_agenda_with_4_levels_and_2reasons_2beliefs()
+    sue_agenda = get_agenda_with_4_levels_and_2reasons_2facts()
 
     time_text = "timetech"
     time_road = sue_agenda.make_l1_road(time_text)
-    time_oath = oathunit_shop(time_text)
+    time_idea = ideaunit_shop(time_text)
 
     day24hr_text = "24hr day"
     day24hr_road = sue_agenda.make_road(time_road, day24hr_text)
-    day24hr_oath = oathunit_shop(day24hr_text, _begin=0.0, _close=24.0)
+    day24hr_idea = ideaunit_shop(day24hr_text, _begin=0.0, _close=24.0)
 
     am_text = "am"
     am_road = sue_agenda.make_road(day24hr_road, am_text)
@@ -173,19 +173,19 @@ def get_agenda_with7amCleanTableReason() -> AgendaUnit:
     n1_text = "1"
     n2_text = "2"
     n3_text = "3"
-    am_oath = oathunit_shop(am_text, _begin=0, _close=12)
-    pm_oath = oathunit_shop(pm_text, _begin=12, _close=24)
-    n1_oath = oathunit_shop(n1_text, _begin=1, _close=2)
-    n2_oath = oathunit_shop(n2_text, _begin=2, _close=3)
-    n3_oath = oathunit_shop(n3_text, _begin=3, _close=4)
+    am_idea = ideaunit_shop(am_text, _begin=0, _close=12)
+    pm_idea = ideaunit_shop(pm_text, _begin=12, _close=24)
+    n1_idea = ideaunit_shop(n1_text, _begin=1, _close=2)
+    n2_idea = ideaunit_shop(n2_text, _begin=2, _close=3)
+    n3_idea = ideaunit_shop(n3_text, _begin=3, _close=4)
 
-    sue_agenda.add_l1_oath(time_oath)
-    sue_agenda.add_oath(day24hr_oath, time_road)
-    sue_agenda.add_oath(am_oath, day24hr_road)
-    sue_agenda.add_oath(pm_oath, day24hr_road)
-    sue_agenda.add_oath(n1_oath, am_road)  # oath_am
-    sue_agenda.add_oath(n2_oath, am_road)  # oath_am
-    sue_agenda.add_oath(n3_oath, am_road)  # oath_am
+    sue_agenda.add_l1_idea(time_idea)
+    sue_agenda.add_idea(day24hr_idea, time_road)
+    sue_agenda.add_idea(am_idea, day24hr_road)
+    sue_agenda.add_idea(pm_idea, day24hr_road)
+    sue_agenda.add_idea(n1_idea, am_road)  # idea_am
+    sue_agenda.add_idea(n2_idea, am_road)  # idea_am
+    sue_agenda.add_idea(n3_idea, am_road)  # idea_am
 
     house_text = "housemanagement"
     house_road = sue_agenda.make_l1_road(house_text)
@@ -196,17 +196,17 @@ def get_agenda_with7amCleanTableReason() -> AgendaUnit:
     soap_road = sue_agenda.make_road(clean_road, soap_text)
     grab_text = "grab soap"
     grab_road = sue_agenda.make_road(soap_road, grab_text)
-    house_oath = oathunit_shop(house_text)
-    clean_oath = oathunit_shop(clean_text, pledge=True)
-    dish_oath = oathunit_shop(dish_text, pledge=True)
-    soap_oath = oathunit_shop(soap_text, pledge=True)
-    grab_oath = oathunit_shop(grab_text, pledge=True)
+    house_idea = ideaunit_shop(house_text)
+    clean_idea = ideaunit_shop(clean_text, pledge=True)
+    dish_idea = ideaunit_shop(dish_text, pledge=True)
+    soap_idea = ideaunit_shop(soap_text, pledge=True)
+    grab_idea = ideaunit_shop(grab_text, pledge=True)
 
-    sue_agenda.add_l1_oath(house_oath)
-    sue_agenda.add_oath(clean_oath, house_road)
-    sue_agenda.add_oath(dish_oath, clean_road)
-    sue_agenda.add_oath(soap_oath, clean_road)
-    sue_agenda.add_oath(grab_oath, soap_road)
+    sue_agenda.add_l1_idea(house_idea)
+    sue_agenda.add_idea(clean_idea, house_road)
+    sue_agenda.add_idea(dish_idea, clean_road)
+    sue_agenda.add_idea(soap_idea, clean_road)
+    sue_agenda.add_idea(grab_idea, soap_road)
 
     clean_table_7am_base = day24hr_road
     clean_table_7am_premise_road = day24hr_road
@@ -218,55 +218,55 @@ def get_agenda_with7amCleanTableReason() -> AgendaUnit:
         open=clean_table_7am_premise_open,
         nigh=clean_table_7am_premise_nigh,
     )
-    sue_agenda.edit_oath_attr(road=clean_road, reason=clean_table_7am_reason)
+    sue_agenda.edit_idea_attr(road=clean_road, reason=clean_table_7am_reason)
     casa_text = "casa"
     casa_road = sue_agenda.make_l1_road(casa_text)
-    sue_agenda.edit_oath_attr(road=casa_road, reason=clean_table_7am_reason)
+    sue_agenda.edit_idea_attr(road=casa_road, reason=clean_table_7am_reason)
     return sue_agenda
 
 
-def get_agenda_1Task_1CE0MinutesReason_1Belief() -> AgendaUnit:
+def get_agenda_1Task_1CE0MinutesReason_1Fact() -> AgendaUnit:
     bob_agenda = agendaunit_shop(_owner_id="Bob", _weight=10)
     ced_min_label = "CE0_minutes"
-    ced_minutes = oathunit_shop(ced_min_label)
+    ced_minutes = ideaunit_shop(ced_min_label)
     ced_road = bob_agenda.make_l1_road(ced_min_label)
-    bob_agenda.add_l1_oath(ced_minutes)
+    bob_agenda.add_l1_idea(ced_minutes)
     mail_label = "obtain mail"
-    mail_task = oathunit_shop(mail_label, pledge=True)
-    bob_agenda.add_l1_oath(mail_task)
+    mail_task = ideaunit_shop(mail_label, pledge=True)
+    bob_agenda.add_l1_idea(mail_task)
 
     premise_x = premiseunit_shop(need=ced_road, open=80, nigh=90)
     x_task_reason = reasonunit_shop(
         base=premise_x.need, premises={premise_x.need: premise_x}
     )
     mail_road = bob_agenda.make_l1_road(mail_label)
-    bob_agenda.edit_oath_attr(road=mail_road, reason=x_task_reason)
+    bob_agenda.edit_idea_attr(road=mail_road, reason=x_task_reason)
 
-    x_belief = beliefunit_shop(base=ced_road, pick=ced_road, open=85, nigh=95)
+    x_fact = factunit_shop(base=ced_road, pick=ced_road, open=85, nigh=95)
     # print(
-    #     f"1Task_1CE0MinutesReason_1Belief 2. {len(bob_agenda._oathroot._kids)=} {x_belief.base=}"
+    #     f"1Task_1CE0MinutesReason_1Fact 2. {len(bob_agenda._idearoot._kids)=} {x_fact.base=}"
     # )
-    bob_agenda.set_belief(
-        base=x_belief.base,
-        pick=x_belief.pick,
-        open=x_belief.open,
-        nigh=x_belief.nigh,
+    bob_agenda.set_fact(
+        base=x_fact.base,
+        pick=x_fact.pick,
+        open=x_fact.open,
+        nigh=x_fact.nigh,
     )
-    # print(f"1Task_1CE0MinutesReason_1Belief 3. {len(bob_agenda._oathroot._kids)=}")
+    # print(f"1Task_1CE0MinutesReason_1Fact 3. {len(bob_agenda._idearoot._kids)=}")
 
     return bob_agenda
 
 
-def get_agenda_x1_3levels_1reason_1beliefs() -> AgendaUnit:
+def get_agenda_x1_3levels_1reason_1facts() -> AgendaUnit:
     zia_agenda = agendaunit_shop(_owner_id="Zia", _weight=10)
     shave_text = "shave"
     shave_road = zia_agenda.make_l1_road(shave_text)
-    oath_kid_shave = oathunit_shop(shave_text, _weight=30, pledge=True)
-    zia_agenda.add_l1_oath(oath_kid_shave)
+    idea_kid_shave = ideaunit_shop(shave_text, _weight=30, pledge=True)
+    zia_agenda.add_l1_idea(idea_kid_shave)
     week_text = "weekdays"
     week_road = zia_agenda.make_l1_road(week_text)
-    week_oath = oathunit_shop(week_text, _weight=40)
-    zia_agenda.add_l1_oath(week_oath)
+    week_idea = ideaunit_shop(week_text, _weight=40)
+    zia_agenda.add_l1_idea(week_idea)
 
     sun_text = "Sunday"
     sun_road = zia_agenda.make_road(week_road, sun_text)
@@ -274,29 +274,29 @@ def get_agenda_x1_3levels_1reason_1beliefs() -> AgendaUnit:
     church_road = zia_agenda.make_road(sun_road, church_text)
     mon_text = "Monday"
     mon_road = zia_agenda.make_road(week_road, mon_text)
-    oath_grandkidU = oathunit_shop(sun_text, _weight=20)
-    oath_grandkidM = oathunit_shop(mon_text, _weight=20)
-    zia_agenda.add_oath(oath_grandkidU, week_road)
-    zia_agenda.add_oath(oath_grandkidM, week_road)
+    idea_grandkidU = ideaunit_shop(sun_text, _weight=20)
+    idea_grandkidM = ideaunit_shop(mon_text, _weight=20)
+    zia_agenda.add_idea(idea_grandkidU, week_road)
+    zia_agenda.add_idea(idea_grandkidM, week_road)
 
     shave_reason = reasonunit_shop(week_road)
     shave_reason.set_premise(mon_road)
 
-    zia_agenda.edit_oath_attr(road=shave_road, reason=shave_reason)
-    zia_agenda.set_belief(base=week_road, pick=sun_road)
-    beliefunit_x = beliefunit_shop(base=week_road, pick=church_road)
-    zia_agenda.edit_oath_attr(road=shave_road, beliefunit=beliefunit_x)
+    zia_agenda.edit_idea_attr(road=shave_road, reason=shave_reason)
+    zia_agenda.set_fact(base=week_road, pick=sun_road)
+    factunit_x = factunit_shop(base=week_road, pick=church_road)
+    zia_agenda.edit_idea_attr(road=shave_road, factunit=factunit_x)
     return zia_agenda
 
 
 def get_agenda_base_time_example() -> AgendaUnit:
     sue_agenda = agendaunit_shop(_owner_id="Sue")
-    sue_agenda.add_l1_oath(oathunit_shop("casa"))
+    sue_agenda.add_l1_idea(ideaunit_shop("casa"))
     return sue_agenda
 
 
 def get_agenda_irrational_example() -> AgendaUnit:
-    # this agenda has no conclusive intent because 2 pledge oaths are in contradiction
+    # this agenda has no conclusive intent because 2 pledge ideas are in contradiction
     # "egg first" is true when "chicken first" is false
     # "chicken first" is true when "egg first" is true
     # Step 0: if chicken._active == True, egg._active is set to False
@@ -313,26 +313,26 @@ def get_agenda_irrational_example() -> AgendaUnit:
 
     egg_text = "egg first"
     egg_road = hatter_agenda.make_l1_road(egg_text)
-    hatter_agenda.add_l1_oath(oathunit_shop(egg_text))
+    hatter_agenda.add_l1_idea(ideaunit_shop(egg_text))
 
     chicken_text = "chicken first"
     chicken_road = hatter_agenda.make_l1_road(chicken_text)
-    hatter_agenda.add_l1_oath(oathunit_shop(chicken_text))
+    hatter_agenda.add_l1_idea(ideaunit_shop(chicken_text))
 
     # set egg pledge is True when chicken first is False
-    hatter_agenda.edit_oath_attr(
+    hatter_agenda.edit_idea_attr(
         road=egg_road,
         pledge=True,
         reason_base=chicken_road,
-        reason_suff_oath_active=True,
+        reason_suff_idea_active=True,
     )
 
     # set chick pledge is True when egg first is False
-    hatter_agenda.edit_oath_attr(
+    hatter_agenda.edit_idea_attr(
         road=chicken_road,
         pledge=True,
         reason_base=egg_road,
-        reason_suff_oath_active=False,
+        reason_suff_idea_active=False,
     )
 
     return hatter_agenda
@@ -344,24 +344,24 @@ def get_assignment_agenda_example1():
     casa_road = neo_agenda.make_l1_road(casa_text)
     floor_text = "mop floor"
     floor_road = neo_agenda.make_road(casa_road, floor_text)
-    floor_oath = oathunit_shop(floor_text, pledge=True)
-    neo_agenda.add_oath(floor_oath, casa_road)
-    neo_agenda.add_l1_oath(oathunit_shop("unimportant"))
+    floor_idea = ideaunit_shop(floor_text, pledge=True)
+    neo_agenda.add_idea(floor_idea, casa_road)
+    neo_agenda.add_l1_idea(ideaunit_shop("unimportant"))
 
     status_text = "cleaniness status"
     status_road = neo_agenda.make_road(casa_road, status_text)
-    neo_agenda.add_oath(oathunit_shop(status_text), casa_road)
+    neo_agenda.add_idea(ideaunit_shop(status_text), casa_road)
 
     clean_text = "clean"
     clean_road = neo_agenda.make_road(status_road, clean_text)
-    neo_agenda.add_oath(oathunit_shop(clean_text), status_road)
-    neo_agenda.add_oath(oathunit_shop("very_much"), clean_road)
-    neo_agenda.add_oath(oathunit_shop("moderately"), clean_road)
-    neo_agenda.add_oath(oathunit_shop("dirty"), status_road)
+    neo_agenda.add_idea(ideaunit_shop(clean_text), status_road)
+    neo_agenda.add_idea(ideaunit_shop("very_much"), clean_road)
+    neo_agenda.add_idea(ideaunit_shop("moderately"), clean_road)
+    neo_agenda.add_idea(ideaunit_shop("dirty"), status_road)
 
     floor_reason = reasonunit_shop(status_road)
     floor_reason.set_premise(premise=status_road)
-    neo_agenda.edit_oath_attr(road=floor_road, reason=floor_reason)
+    neo_agenda.edit_idea_attr(road=floor_road, reason=floor_reason)
     return neo_agenda
 
 
@@ -385,37 +385,37 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     b_full_road = amos_agenda.make_road(basket_road, b_full_text)
     b_smel_road = amos_agenda.make_road(basket_road, b_smel_text)
     laundry_task_road = amos_agenda.make_road(casa_road, do_laundry_text)
-    amos_agenda.add_l1_oath(oathunit_shop(casa_text))
-    amos_agenda.add_oath(oathunit_shop(basket_text), casa_road)
-    amos_agenda.add_oath(oathunit_shop(b_full_text), basket_road)
-    amos_agenda.add_oath(oathunit_shop(b_smel_text), basket_road)
-    amos_agenda.add_oath(oathunit_shop(b_bare_text), basket_road)
-    amos_agenda.add_oath(oathunit_shop(b_fine_text), basket_road)
-    amos_agenda.add_oath(oathunit_shop(b_half_text), basket_road)
-    amos_agenda.add_oath(oathunit_shop(do_laundry_text, pledge=True), casa_road)
+    amos_agenda.add_l1_idea(ideaunit_shop(casa_text))
+    amos_agenda.add_idea(ideaunit_shop(basket_text), casa_road)
+    amos_agenda.add_idea(ideaunit_shop(b_full_text), basket_road)
+    amos_agenda.add_idea(ideaunit_shop(b_smel_text), basket_road)
+    amos_agenda.add_idea(ideaunit_shop(b_bare_text), basket_road)
+    amos_agenda.add_idea(ideaunit_shop(b_fine_text), basket_road)
+    amos_agenda.add_idea(ideaunit_shop(b_half_text), basket_road)
+    amos_agenda.add_idea(ideaunit_shop(do_laundry_text, pledge=True), casa_road)
 
     # laundry requirement
-    amos_agenda.edit_oath_attr(
+    amos_agenda.edit_idea_attr(
         road=laundry_task_road, reason_base=basket_road, reason_premise=b_full_road
     )
     # laundry requirement
-    amos_agenda.edit_oath_attr(
+    amos_agenda.edit_idea_attr(
         road=laundry_task_road, reason_base=basket_road, reason_premise=b_smel_road
     )
     # assign Cali to task
     cali_assignunit = assignedunit_shop()
-    cali_assignunit.set_suffidea(cali_text)
-    amos_agenda.edit_oath_attr(road=laundry_task_road, assignedunit=cali_assignunit)
+    cali_assignunit.set_suffbelief(cali_text)
+    amos_agenda.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
     # print(f"{basket_road=}")
     # print(f"{amos_agenda._real_id=}")
-    amos_agenda.set_belief(base=basket_road, pick=b_full_road)
+    amos_agenda.set_fact(base=basket_road, pick=b_full_road)
 
     return amos_agenda
 
 
 def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
     bob_agenda = agendaunit_shop("Bob")
-    bob_agenda.set_time_hreg_oaths(7)
+    bob_agenda.set_time_hreg_ideas(7)
 
     casa_text = "casa"
     casa_road = bob_agenda.make_l1_road(casa_text)
@@ -423,12 +423,12 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
     laundry_road = bob_agenda.make_road(casa_road, laundry_text)
     chill_text = "chill"
     chill_road = bob_agenda.make_road(casa_road, chill_text)
-    bob_agenda.add_l1_oath(oathunit_shop(casa_text))
+    bob_agenda.add_l1_idea(ideaunit_shop(casa_text))
     jajatime_road = bob_agenda.make_road(bob_agenda.make_l1_road("time"), "jajatime")
-    bob_agenda.set_belief(jajatime_road, jajatime_road, 1064131200, 1064136133)
+    bob_agenda.set_fact(jajatime_road, jajatime_road, 1064131200, 1064136133)
 
-    bob_agenda.add_oath(oathunit_shop(laundry_text, pledge=True), casa_road)
-    bob_agenda.edit_oath_attr(
+    bob_agenda.add_idea(ideaunit_shop(laundry_text, pledge=True), casa_road)
+    bob_agenda.edit_idea_attr(
         road=laundry_road,
         reason_base=jajatime_road,
         reason_premise=jajatime_road,
@@ -436,8 +436,8 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
         reason_premise_nigh=5760.0,
         reason_premise_divisor=10080.0,
     )
-    bob_agenda.add_oath(oathunit_shop(chill_text, pledge=True), casa_road)
-    bob_agenda.edit_oath_attr(
+    bob_agenda.add_idea(ideaunit_shop(chill_text, pledge=True), casa_road)
+    bob_agenda.edit_idea_attr(
         road=chill_road,
         reason_base=jajatime_road,
         reason_premise=jajatime_road,
@@ -445,20 +445,20 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
         reason_premise_nigh=7160.0,
         reason_premise_divisor=10080.0,
     )
-    # # print(f"{bob_agenda._oathroot._beliefunits.values()=}")
-    # laundry_reasonunit = bob_agenda.get_oath_obj(laundry_road).get_reasonunit(
+    # # print(f"{bob_agenda._idearoot._factunits.values()=}")
+    # laundry_reasonunit = bob_agenda.get_idea_obj(laundry_road).get_reasonunit(
     #     jajatime_road
     # )
     # laundry_premise = laundry_reasonunit.get_premise(jajatime_road)
     # # print(f"{laundry_reasonunit.base=} {laundry_premise=}")
     # bob_agenda.calc_agenda_metrics()
-    # for x_oathunit in bob_agenda._oath_dict.values():
-    #     if x_oathunit._label in [laundry_text]:
-    # print(f"{x_oathunit._label=} {x_oathunit._begin=} {x_oathunit._close=}")
-    # print(f"{x_oathunit._kids.keys()=}")
-    # jaja_beliefheir = x_oathunit._beliefheirs.get(jajatime_road)
-    # print(f"{jaja_beliefheir.open % 10080=}")
-    # print(f"{jaja_beliefheir.nigh % 10080=}")
+    # for x_ideaunit in bob_agenda._idea_dict.values():
+    #     if x_ideaunit._label in [laundry_text]:
+    # print(f"{x_ideaunit._label=} {x_ideaunit._begin=} {x_ideaunit._close=}")
+    # print(f"{x_ideaunit._kids.keys()=}")
+    # jaja_factheir = x_ideaunit._factheirs.get(jajatime_road)
+    # print(f"{jaja_factheir.open % 10080=}")
+    # print(f"{jaja_factheir.nigh % 10080=}")
 
     # print(f"{bob_agenda.get_intent_dict().keys()=}")
 
@@ -467,106 +467,106 @@ def get_agenda_with_tuesday_cleaning_task() -> AgendaUnit:
 
 # class YR:
 def from_list_get_active(
-    road: RoadUnit, oath_dict: dict, asse_bool: bool = None
+    road: RoadUnit, idea_dict: dict, asse_bool: bool = None
 ) -> bool:
     active = None
-    temp_oath = None
+    temp_idea = None
 
     active_true_count = 0
     active_false_count = 0
-    for oath in oath_dict.values():
-        if oath.get_road() == road:
-            temp_oath = oath
+    for idea in idea_dict.values():
+        if idea.get_road() == road:
+            temp_idea = idea
             print(
-                f"searched for OathUnit {temp_oath.get_road()} found {temp_oath._active=}"
+                f"searched for IdeaUnit {temp_idea.get_road()} found {temp_idea._active=}"
             )
 
-        if oath._active:
+        if idea._active:
             active_true_count += 1
-        elif oath._active is False:
+        elif idea._active is False:
             active_false_count += 1
 
-    active = temp_oath._active
+    active = temp_idea._active
     print(
-        f"Set active: {oath._label=} {active} {active_true_count=} {active_false_count=}"
+        f"Set active: {idea._label=} {active} {active_true_count=} {active_false_count=}"
     )
 
     if asse_bool in {True, False}:
         if active != asse_bool:
-            yr_elucidation(temp_oath)
+            yr_elucidation(temp_idea)
 
         assert active == asse_bool
     else:
-        yr_elucidation(temp_oath)
+        yr_elucidation(temp_idea)
     return active
 
 
-def yr_print_oath_base_info(oath, filter: bool):
-    for l in oath._reasonheirs.values():
+def yr_print_idea_base_info(idea, filter: bool):
+    for l in idea._reasonheirs.values():
         if l._status == filter:
             print(
                 f"  ReasonHeir '{l.base}' Base LH:{l._status} W:{len(l.premises)}"  # \t_task {l._task}"
             )
-            if str(type(oath)).find(".oath.OathUnit'>") > 0:
-                yr_print_belief(
+            if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
+                yr_print_fact(
                     lh_base=l.base,
                     lh_status=l._status,
                     premises=l.premises,
-                    beliefheirs=oath._beliefheirs,
+                    factheirs=idea._factheirs,
                 )
 
 
-def yr_elucidation(oath):
-    str1 = f"'{yr_d(oath._parent_road)}' oath"
-    str2 = f" has ReasonU:{yr_x(oath._reasonunits)} LH:{yr_x(oath._reasonheirs)}"
-    str3 = f" {str(type(oath))}"
+def yr_elucidation(idea):
+    str1 = f"'{yr_d(idea._parent_road)}' idea"
+    str2 = f" has ReasonU:{yr_x(idea._reasonunits)} LH:{yr_x(idea._reasonheirs)}"
+    str3 = f" {str(type(idea))}"
     str4 = " "
-    if str(type(oath)).find(".oath.OathUnit'>") > 0:
-        str3 = f" Beliefs:{yr_x(oath._beliefheirs)} Status: {oath._active}"
+    if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
+        str3 = f" Facts:{yr_x(idea._factheirs)} Status: {idea._active}"
 
         print(f"\n{str1}{str2}{str3}")
         hh_wo_matched_reason = []
-        for hh in oath._beliefheirs.values():
+        for hh in idea._factheirs.values():
             hh_wo_matched_reason = []
             try:
-                oath._reasonheirs[hh.base]
+                idea._reasonheirs[hh.base]
             except Exception:
                 hh_wo_matched_reason.append(hh.base)
 
         for base in hh_wo_matched_reason:
-            print(f"Beliefs that don't matter to this Oath: {base}")
+            print(f"Facts that don't matter to this Idea: {base}")
 
-    # if oath._reasonunits != None:
-    #     for lu in oath._reasonunits.values():
+    # if idea._reasonunits != None:
+    #     for lu in idea._reasonunits.values():
     #         print(f"  ReasonUnit   '{lu.base}' premises: {len(lu.premises)} ")
-    if oath._reasonheirs != None:
+    if idea._reasonheirs != None:
         filter_x = True
-        yr_print_oath_base_info(oath=oath, filter=True)
+        yr_print_idea_base_info(idea=idea, filter=True)
 
         filter_x = False
         print("\nReasons that failed:")
 
-        for l in oath._reasonheirs.values():
+        for l in idea._reasonheirs.values():
             if l._status == filter_x:
                 print(
                     f"  ReasonHeir '{l.base}' Base LH:{l._status} W:{len(l.premises)}"  # \t_task {l._task}"
                 )
-                if str(type(oath)).find(".oath.OathUnit'>") > 0:
-                    yr_print_belief(
+                if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
+                    yr_print_fact(
                         lh_base=l.base,
                         lh_status=l._status,
                         premises=l.premises,
-                        beliefheirs=oath._beliefheirs,
+                        factheirs=idea._factheirs,
                     )
                 print("")
-    # print(oath._beliefheirs)
-    # print(f"{(oath._beliefheirs != None)=}")
-    # print(f"{len(oath._beliefheirs)=} ")
+    # print(idea._factheirs)
+    # print(f"{(idea._factheirs != None)=}")
+    # print(f"{len(idea._factheirs)=} ")
 
     print("")
 
 
-def yr_print_belief(lh_base, lh_status, premises, beliefheirs):
+def yr_print_fact(lh_base, lh_status, premises, factheirs):
     for ww in premises.values():
         ww_open = ""
         ww_open = f"\topen:{ww.open}" if ww.open != None else ""
@@ -580,7 +580,7 @@ def yr_print_belief(lh_base, lh_status, premises, beliefheirs):
             f"\t    '{lh_base}' Premise LH:{lh_status} W:{ww._status}\tneed:{ww.need}{ww_open}{ww_nigh}"
         )
 
-        for hh in beliefheirs.values():
+        for hh in factheirs.values():
             if hh.base == lh_base:
                 if hh.open != None:
                     hh_open = f"\topen:{hh.open}"
@@ -589,10 +589,10 @@ def yr_print_belief(lh_base, lh_status, premises, beliefheirs):
                 hh_pick = hh.pick
                 # if hh_pick != "":
                 print(
-                    f"\t    '{hh.base}' Belief LH:{lh_status} W:{ww._status}\tBelief:{hh_pick}{hh_open}{hh_nigh}"
+                    f"\t    '{hh.base}' Fact LH:{lh_status} W:{ww._status}\tFact:{hh_pick}{hh_open}{hh_nigh}"
                 )
         if hh_pick == "":
-            print(f"\t    Base: No Belief")
+            print(f"\t    Base: No Fact")
 
 
 def yr_d(self):

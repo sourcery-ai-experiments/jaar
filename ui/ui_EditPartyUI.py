@@ -90,9 +90,9 @@ class Ui_Form(object):
         self.party2partyTrue.setHorizontalHeaderItem(5, item)
         item = QtWidgets.QTableWidgetItem()
         self.party2partyTrue.setHorizontalHeaderItem(6, item)
-        self.edit_idea_button = QtWidgets.QPushButton(Form)
-        self.edit_idea_button.setGeometry(QtCore.QRect(500, 320, 181, 31))
-        self.edit_idea_button.setObjectName("edit_idea_button")
+        self.edit_belief_button = QtWidgets.QPushButton(Form)
+        self.edit_belief_button.setGeometry(QtCore.QRect(500, 320, 181, 31))
+        self.edit_belief_button.setObjectName("edit_belief_button")
         self.label_2 = QtWidgets.QLabel(Form)
         self.label_2.setGeometry(QtCore.QRect(20, 680, 47, 13))
         self.label_2.setObjectName("label_2")
@@ -104,7 +104,7 @@ class Ui_Form(object):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.party_gui_insert_button.setText(_translate("Form", "Add new Party"))
-        self.label.setText(_translate("Form", "Click to see Idea partyship"))
+        self.label.setText(_translate("Form", "Click to see Belief partyship"))
         self.party_update_button.setText(
             _translate("Form", "update old party pid to new")
         )
@@ -144,5 +144,5 @@ class Ui_Form(object):
         item.setText(_translate("Form", "relative_weight"))
         item = self.party2partyTrue.horizontalHeaderItem(6)
         item.setText(_translate("Form", "party_id_for_target"))
-        self.edit_idea_button.setText(_translate("Form", "Edit Idea Partyship"))
+        self.edit_belief_button.setText(_translate("Form", "Edit Belief Partyship"))
         self.label_2.setText(_translate("Form", "party_id ="))

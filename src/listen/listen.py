@@ -4,7 +4,7 @@ from src._road.road import (
     get_root_node_from_road,
     PersonID,
 )
-from src.agenda.oath import OathUnit
+from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit, PartyUnit
 from src.listen.basis_agendas import create_empty_agenda, create_listen_basis
 from src.listen.userhub import UserHub, userhub_shop
@@ -16,19 +16,19 @@ class Missing_party_debtor_poolException(Exception):
     pass
 
 
-def generate_perspective_intent(perspective_agenda: AgendaUnit) -> list[OathUnit]:
-    for x_beliefunit in perspective_agenda._oathroot._beliefunits.values():
-        x_beliefunit.set_pick_to_base()
+def generate_perspective_intent(perspective_agenda: AgendaUnit) -> list[IdeaUnit]:
+    for x_factunit in perspective_agenda._idearoot._factunits.values():
+        x_factunit.set_pick_to_base()
     return list(perspective_agenda.get_intent_dict().values())
 
 
 def _ingest_perspective_intent(
-    listener: AgendaUnit, intent: list[OathUnit]
+    listener: AgendaUnit, intent: list[IdeaUnit]
 ) -> AgendaUnit:
     debtor_amount = listener._party_debtor_pool
     ingest_list = generate_ingest_list(intent, debtor_amount, listener._planck)
-    for ingest_oathunit in ingest_list:
-        _ingest_single_oathunit(listener, ingest_oathunit)
+    for ingest_ideaunit in ingest_list:
+        _ingest_single_ideaunit(listener, ingest_ideaunit)
     return listener
 
 
@@ -61,55 +61,55 @@ def _get_planck_scaled_weight(
     return int(x_ingest_weight / planck) * planck
 
 
-def _allot_ingest(x_list: list[OathUnit], nonallocated_ingest: float, planck: float):
+def _allot_ingest(x_list: list[IdeaUnit], nonallocated_ingest: float, planck: float):
     # TODO very slow needs to be optimized
     if x_list:
         x_count = 0
         while nonallocated_ingest > 0:
-            x_oathunit = x_list[x_count]
-            x_oathunit._weight += planck
+            x_ideaunit = x_list[x_count]
+            x_ideaunit._weight += planck
             nonallocated_ingest -= planck
             x_count += 1
             if x_count == len(x_list):
                 x_count = 0
 
 
-def create_ingest_oath(
-    x_oathunit: OathUnit, debtor_amount: float, planck: float
-) -> OathUnit:
-    x_oathunit._weight = _get_planck_scaled_weight(
-        x_agenda_importance=x_oathunit._agenda_importance,
+def create_ingest_idea(
+    x_ideaunit: IdeaUnit, debtor_amount: float, planck: float
+) -> IdeaUnit:
+    x_ideaunit._weight = _get_planck_scaled_weight(
+        x_agenda_importance=x_ideaunit._agenda_importance,
         debtor_amount=debtor_amount,
         planck=planck,
     )
-    return x_oathunit
+    return x_ideaunit
 
 
 def generate_ingest_list(
-    item_list: list[OathUnit], debtor_amount: float, planck: float
-) -> list[OathUnit]:
+    item_list: list[IdeaUnit], debtor_amount: float, planck: float
+) -> list[IdeaUnit]:
     x_list = [
-        create_ingest_oath(x_oathunit, debtor_amount, planck)
-        for x_oathunit in item_list
+        create_ingest_idea(x_ideaunit, debtor_amount, planck)
+        for x_ideaunit in item_list
     ]
-    sum_scaled_ingest = sum(x_oathunit._weight for x_oathunit in item_list)
+    sum_scaled_ingest = sum(x_ideaunit._weight for x_ideaunit in item_list)
     nonallocated_ingest = debtor_amount - sum_scaled_ingest
     _allot_ingest(x_list, nonallocated_ingest, planck)
     return x_list
 
 
-def _ingest_single_oathunit(listener: AgendaUnit, ingest_oathunit: OathUnit):
-    weight_data = _create_weight_data(listener, ingest_oathunit.get_road())
+def _ingest_single_ideaunit(listener: AgendaUnit, ingest_ideaunit: IdeaUnit):
+    weight_data = _create_weight_data(listener, ingest_ideaunit.get_road())
 
-    if listener.oath_exists(ingest_oathunit.get_road()) is False:
-        x_parent_road = ingest_oathunit._parent_road
-        listener.add_oath(ingest_oathunit, x_parent_road, create_missing_oaths=True)
+    if listener.idea_exists(ingest_ideaunit.get_road()) is False:
+        x_parent_road = ingest_ideaunit._parent_road
+        listener.add_idea(ingest_ideaunit, x_parent_road, create_missing_ideas=True)
 
-    _add_and_replace_oathunit_weights(
+    _add_and_replace_ideaunit_weights(
         listener=listener,
         replace_weight_list=weight_data.replace_weight_list,
         add_to_weight_list=weight_data.add_to_weight_list,
-        x_weight=ingest_oathunit._weight,
+        x_weight=ingest_ideaunit._weight,
     )
 
 
@@ -127,24 +127,24 @@ def _create_weight_data(listener: AgendaUnit, x_road: RoadUnit) -> list:
     root_road = get_root_node_from_road(x_road)
     for ancestor_road in ancestor_roads:
         if ancestor_road != root_road:
-            if listener.oath_exists(ancestor_road):
+            if listener.idea_exists(ancestor_road):
                 weight_data.add_to_weight_list.append(ancestor_road)
             else:
                 weight_data.replace_weight_list.append(ancestor_road)
     return weight_data
 
 
-def _add_and_replace_oathunit_weights(
+def _add_and_replace_ideaunit_weights(
     listener: AgendaUnit,
     replace_weight_list: list[RoadUnit],
     add_to_weight_list: list[RoadUnit],
     x_weight: float,
 ):
-    for oath_road in replace_weight_list:
-        listener.edit_oath_attr(oath_road, weight=x_weight)
-    for oath_road in add_to_weight_list:
-        x_oathunit = listener.get_oath_obj(oath_road)
-        x_oathunit._weight += x_weight
+    for idea_road in replace_weight_list:
+        listener.edit_idea_attr(idea_road, weight=x_weight)
+    for idea_road in add_to_weight_list:
+        x_ideaunit = listener.get_idea_obj(idea_road)
+        x_ideaunit._weight += x_weight
 
 
 def get_debtors_roll(x_role: AgendaUnit) -> list[PartyUnit]:
@@ -161,35 +161,35 @@ def get_ordered_debtors_roll(x_agenda: AgendaUnit) -> list[PartyUnit]:
     return partys_ordered_list
 
 
-def migrate_all_beliefs(src_listener: AgendaUnit, dst_listener: AgendaUnit):
-    for x_beliefunit in src_listener._oathroot._beliefunits.values():
-        base_road = x_beliefunit.base
-        pick_road = x_beliefunit.pick
-        if dst_listener.oath_exists(base_road) is False:
-            base_oath = src_listener.get_oath_obj(base_road)
-            dst_listener.add_oath(base_oath, base_oath._parent_road)
-        if dst_listener.oath_exists(pick_road) is False:
-            pick_oath = src_listener.get_oath_obj(pick_road)
-            dst_listener.add_oath(pick_oath, pick_oath._parent_road)
-        dst_listener.set_belief(base_road, pick_road)
+def migrate_all_facts(src_listener: AgendaUnit, dst_listener: AgendaUnit):
+    for x_factunit in src_listener._idearoot._factunits.values():
+        base_road = x_factunit.base
+        pick_road = x_factunit.pick
+        if dst_listener.idea_exists(base_road) is False:
+            base_idea = src_listener.get_idea_obj(base_road)
+            dst_listener.add_idea(base_idea, base_idea._parent_road)
+        if dst_listener.idea_exists(pick_road) is False:
+            pick_idea = src_listener.get_idea_obj(pick_road)
+            dst_listener.add_idea(pick_idea, pick_idea._parent_road)
+        dst_listener.set_fact(base_road, pick_road)
 
 
-def listen_to_speaker_belief(
+def listen_to_speaker_fact(
     listener: AgendaUnit,
     speaker: AgendaUnit,
-    missing_belief_bases: list[RoadUnit] = None,
+    missing_fact_bases: list[RoadUnit] = None,
 ) -> AgendaUnit:
-    if missing_belief_bases is None:
-        missing_belief_bases = list(listener.get_missing_belief_bases())
-    for missing_belief_base in missing_belief_bases:
-        x_beliefunit = speaker.get_belief(missing_belief_base)
-        if x_beliefunit != None:
-            listener.set_belief(
-                base=x_beliefunit.base,
-                pick=x_beliefunit.pick,
-                open=x_beliefunit.open,
-                nigh=x_beliefunit.nigh,
-                create_missing_oaths=True,
+    if missing_fact_bases is None:
+        missing_fact_bases = list(listener.get_missing_fact_bases())
+    for missing_fact_base in missing_fact_bases:
+        x_factunit = speaker.get_fact(missing_fact_base)
+        if x_factunit != None:
+            listener.set_fact(
+                base=x_factunit.base,
+                pick=x_factunit.pick,
+                open=x_factunit.open,
+                nigh=x_factunit.nigh,
+                create_missing_ideas=True,
             )
 
 
@@ -239,24 +239,24 @@ def listen_to_intents_role_job(listener_job: AgendaUnit, healer_userhub: UserHub
             listen_to_speaker_intent(listener_job, speaker_job)
 
 
-def listen_to_beliefs_role_job(new_job: AgendaUnit, healer_userhub: UserHub):
+def listen_to_facts_role_job(new_job: AgendaUnit, healer_userhub: UserHub):
     role = healer_userhub.get_role_agenda(new_job._owner_id)
-    migrate_all_beliefs(role, new_job)
+    migrate_all_facts(role, new_job)
     for x_partyunit in get_ordered_debtors_roll(new_job):
         if x_partyunit.party_id != new_job._owner_id:
             speaker_job = healer_userhub.get_job_agenda(x_partyunit.party_id)
             if speaker_job != None:
-                listen_to_speaker_belief(new_job, speaker_job)
+                listen_to_speaker_fact(new_job, speaker_job)
 
 
-def listen_to_beliefs_duty_work(new_work: AgendaUnit, listener_userhub: UserHub):
-    migrate_all_beliefs(listener_userhub.get_duty_agenda(), new_work)
+def listen_to_facts_duty_work(new_work: AgendaUnit, listener_userhub: UserHub):
+    migrate_all_facts(listener_userhub.get_duty_agenda(), new_work)
     for x_partyunit in get_ordered_debtors_roll(new_work):
         speaker_id = x_partyunit.party_id
         if speaker_id != new_work._owner_id:
             speaker_work = listener_userhub.dw_speaker_agenda(speaker_id)
             if speaker_work != None:
-                listen_to_speaker_belief(new_work, speaker_work)
+                listen_to_speaker_fact(new_work, speaker_work)
 
 
 def listen_to_debtors_roll_duty_work(listener_userhub: UserHub) -> AgendaUnit:
@@ -265,7 +265,7 @@ def listen_to_debtors_roll_duty_work(listener_userhub: UserHub) -> AgendaUnit:
     if duty._party_debtor_pool is None:
         return new_agenda
     listen_to_intents_duty_work(new_agenda, listener_userhub)
-    listen_to_beliefs_duty_work(new_agenda, listener_userhub)
+    listen_to_facts_duty_work(new_agenda, listener_userhub)
     return new_agenda
 
 
@@ -277,7 +277,7 @@ def listen_to_debtors_roll_role_job(
     if role._party_debtor_pool is None:
         return new_role
     listen_to_intents_role_job(new_role, healer_userhub)
-    listen_to_beliefs_role_job(new_role, healer_userhub)
+    listen_to_facts_role_job(new_role, healer_userhub)
     return new_role
 
 
@@ -297,7 +297,7 @@ def listen_to_person_jobs(listener_userhub: UserHub) -> None:
     if new_work.get_dict() == pre_work_dict:
         intent = list(duty.get_intent_dict().values())
         _ingest_perspective_intent(new_work, intent)
-        listen_to_speaker_belief(new_work, duty)
+        listen_to_speaker_fact(new_work, duty)
 
     listener_userhub.save_work_agenda(new_work)
 
@@ -325,13 +325,13 @@ def pick_econ_job_and_listen(
 
 
 def listen_to_job_intent(listener: AgendaUnit, job: AgendaUnit):
-    for x_oath in job._oath_dict.values():
-        if listener.oath_exists(x_oath.get_road()) is False:
-            listener.add_oath(x_oath, x_oath._parent_road)
-        if listener.get_belief(x_oath.get_road()) is False:
-            listener.add_oath(x_oath, x_oath._parent_road)
-    for x_belief_road, x_belief_unit in job._oathroot._beliefunits.items():
-        listener._oathroot.set_beliefunit(x_belief_unit)
+    for x_idea in job._idea_dict.values():
+        if listener.idea_exists(x_idea.get_road()) is False:
+            listener.add_idea(x_idea, x_idea._parent_road)
+        if listener.get_fact(x_idea.get_road()) is False:
+            listener.add_idea(x_idea, x_idea._parent_road)
+    for x_fact_road, x_fact_unit in job._idearoot._factunits.items():
+        listener._idearoot.set_factunit(x_fact_unit)
     listener.calc_agenda_metrics()
 
 

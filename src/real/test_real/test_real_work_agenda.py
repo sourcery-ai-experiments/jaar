@@ -1,5 +1,5 @@
 from src.agenda.healer import healerhold_shop
-from src.agenda.oath import oathunit_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.listen.userhub import userhub_shop
 from src.real.real import realunit_shop
@@ -89,9 +89,9 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(env_dir_setup_cle
     texas_road = bob_duty_agenda.make_l1_road(texas_text)
     elpaso_text = "el paso"
     elpaso_road = bob_duty_agenda.make_road(texas_road, elpaso_text)
-    elpaso_oath = oathunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
-    bob_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
-    bob_duty_agenda.add_oath(elpaso_oath, texas_road)
+    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
+    bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    bob_duty_agenda.add_idea(elpaso_idea, texas_road)
     bob_userhub.save_duty_agenda(bob_duty_agenda)
     after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
 
@@ -119,19 +119,19 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
     texas_road = bob_duty_agenda.make_l1_road(texas_text)
     elpaso_text = "el paso"
     elpaso_road = bob_duty_agenda.make_road(texas_road, elpaso_text)
-    elpaso_oath = oathunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
+    elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
 
     bob_duty_agenda = bob_userhub.get_duty_agenda()
     bob_duty_agenda.add_partyunit(bob_text)
-    bob_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
-    bob_duty_agenda.add_oath(elpaso_oath, texas_road)
+    bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    bob_duty_agenda.add_idea(elpaso_idea, texas_road)
     bob_userhub.save_duty_agenda(bob_duty_agenda)
 
     sue_duty_agenda = sue_userhub.get_duty_agenda()
     sue_duty_agenda.add_partyunit(sue_text)
     sue_duty_agenda.add_partyunit(bob_text)
-    sue_duty_agenda.add_l1_oath(oathunit_shop(texas_text, _problem_bool=True))
-    sue_duty_agenda.add_oath(elpaso_oath, texas_road)
+    sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     sue_userhub.save_duty_agenda(sue_duty_agenda)
 
     before_bob_work_agenda = music_real.get_work_file_agenda(bob_text)

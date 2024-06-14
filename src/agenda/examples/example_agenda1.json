@@ -1,5 +1,5 @@
 {
-    "_ideas": {
+    "_beliefs": {
         ",ACME DevOps": {
             "_party_mirror": false,
             "_partys": {
@@ -54,7 +54,7 @@
                     "party_id": "WIlliam Wallace"
                 }
             },
-            "idea_id": ",ACME DevOps"
+            "belief_id": ",ACME DevOps"
         },
         ",ACME General": {
             "_party_mirror": false,
@@ -80,7 +80,7 @@
                     "party_id": "Sam zamora"
                 }
             },
-            "idea_id": ",ACME General"
+            "belief_id": ",ACME General"
         },
         ",appreciates US DOLLAR": {
             "_party_mirror": false,
@@ -106,7 +106,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "idea_id": ",appreciates US DOLLAR"
+            "belief_id": ",appreciates US DOLLAR"
         },
         ",Climate Death": {
             "_party_mirror": false,
@@ -127,7 +127,7 @@
                     "party_id": "Thomas OSU"
                 }
             },
-            "idea_id": ",Climate Death"
+            "belief_id": ",Climate Death"
         },
         ",Everyone": {
             "_party_mirror": false,
@@ -243,7 +243,7 @@
                     "party_id": "WIlliam Wallace"
                 }
             },
-            "idea_id": ",Everyone"
+            "belief_id": ",Everyone"
         },
         ",Family": {
             "_party_mirror": false,
@@ -264,7 +264,7 @@
                     "party_id": "Travis Fox"
                 }
             },
-            "idea_id": ",Family"
+            "belief_id": ",Family"
         },
         ",Friends": {
             "_party_mirror": false,
@@ -285,7 +285,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "idea_id": ",Friends"
+            "belief_id": ",Friends"
         },
         ",hurt by us dollar": {
             "_party_mirror": false,
@@ -296,7 +296,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "idea_id": ",hurt by us dollar"
+            "belief_id": ",hurt by us dollar"
         },
         ",OceanVista Apt": {
             "_party_mirror": false,
@@ -317,7 +317,7 @@
                     "party_id": "Norberto"
                 }
             },
-            "idea_id": ",OceanVista Apt"
+            "belief_id": ",OceanVista Apt"
         },
         ",People who identify by UTEP": {
             "_party_mirror": false,
@@ -328,7 +328,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "idea_id": ",People who identify by UTEP"
+            "belief_id": ",People who identify by UTEP"
         },
         ",Philosophy": {
             "_party_mirror": false,
@@ -354,7 +354,7 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "idea_id": ",Philosophy"
+            "belief_id": ",Philosophy"
         },
         ",SHOW ME2": {
             "_party_mirror": false,
@@ -365,11 +365,11 @@
                     "party_id": "Renee Elise Goldsberry"
                 }
             },
-            "idea_id": ",SHOW ME2"
+            "belief_id": ",SHOW ME2"
         }
     },
-    "_oathroot": {
-        "_beliefunits": {
+    "_idearoot": {
+        "_factunits": {
             "music,day_hour": {
                 "base": "music,day_hour",
                 "nigh": 23,
@@ -1612,7 +1612,7 @@
                             "Perrison": {
                                 "credor_weight": 1.0,
                                 "debtor_weight": 1.0,
-                                "idea_id": "Perrison"
+                                "belief_id": "Perrison"
                             }
                         },
                         "_is_expanded": true,
@@ -1675,7 +1675,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -1757,7 +1757,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -1807,7 +1807,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -1846,7 +1846,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -1896,7 +1896,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -1946,7 +1946,7 @@
                                     "Perrison": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": "Perrison"
+                                        "belief_id": "Perrison"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2007,7 +2007,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2057,7 +2057,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2118,7 +2118,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2168,7 +2168,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2218,7 +2218,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2268,7 +2268,7 @@
                                     "Travis Fox": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": "Travis Fox"
+                                        "belief_id": "Travis Fox"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2318,7 +2318,7 @@
                                     "America": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": "America"
+                                        "belief_id": "America"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2400,7 +2400,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2439,7 +2439,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2489,7 +2489,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2539,7 +2539,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2589,7 +2589,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2639,7 +2639,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2689,7 +2689,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2762,7 +2762,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2790,7 +2790,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2818,7 +2818,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2857,7 +2857,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2885,7 +2885,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": false,
@@ -2936,7 +2936,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -2985,7 +2985,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -3024,7 +3024,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -3063,7 +3063,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -3102,7 +3102,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -3130,7 +3130,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -3172,7 +3172,7 @@
                                             ",Family": {
                                                 "credor_weight": 1.0,
                                                 "debtor_weight": 1.0,
-                                                "idea_id": ",Family"
+                                                "belief_id": ",Family"
                                             }
                                         },
                                         "_is_expanded": true,
@@ -3211,7 +3211,7 @@
                                             ",Family": {
                                                 "credor_weight": 1.0,
                                                 "debtor_weight": 1.0,
-                                                "idea_id": ",Family"
+                                                "belief_id": ",Family"
                                             }
                                         },
                                         "_is_expanded": false,
@@ -3300,7 +3300,7 @@
                                             ",Family": {
                                                 "credor_weight": 1.0,
                                                 "debtor_weight": 1.0,
-                                                "idea_id": ",Family"
+                                                "belief_id": ",Family"
                                             }
                                         },
                                         "_is_expanded": true,
@@ -3339,7 +3339,7 @@
                                             ",Family": {
                                                 "credor_weight": 1.0,
                                                 "debtor_weight": 1.0,
-                                                "idea_id": ",Family"
+                                                "belief_id": ",Family"
                                             }
                                         },
                                         "_is_expanded": false,
@@ -3367,7 +3367,7 @@
                                             ",Family": {
                                                 "credor_weight": 1.0,
                                                 "debtor_weight": 1.0,
-                                                "idea_id": ",Family"
+                                                "belief_id": ",Family"
                                             }
                                         },
                                         "_is_expanded": false,
@@ -3424,7 +3424,7 @@
                                             ",Family": {
                                                 "credor_weight": 1.0,
                                                 "debtor_weight": 1.0,
-                                                "idea_id": ",Family"
+                                                "belief_id": ",Family"
                                             }
                                         },
                                         "_is_expanded": true,
@@ -3480,7 +3480,7 @@
                                     "Perrison": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": "Perrison"
+                                        "belief_id": "Perrison"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -3519,7 +3519,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -3558,7 +3558,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -3597,7 +3597,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -3643,7 +3643,7 @@
                             ",OceanVista Apt": {
                                 "credor_weight": 1.0,
                                 "debtor_weight": 1.0,
-                                "idea_id": ",OceanVista Apt"
+                                "belief_id": ",OceanVista Apt"
                             }
                         },
                         "_is_expanded": false,
@@ -3696,7 +3696,7 @@
                                                             "Norberto": {
                                                                 "credor_weight": 1.0,
                                                                 "debtor_weight": 1.0,
-                                                                "idea_id": "Norberto"
+                                                                "belief_id": "Norberto"
                                                             }
                                                         },
                                                         "_is_expanded": true,
@@ -3843,7 +3843,7 @@
                                     "America": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": "America"
+                                        "belief_id": "America"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -3904,7 +3904,7 @@
                                     ",Family": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Family"
+                                        "belief_id": ",Family"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -4006,7 +4006,7 @@
                             ",Family": {
                                 "credor_weight": 1.0,
                                 "debtor_weight": 1.0,
-                                "idea_id": ",Family"
+                                "belief_id": ",Family"
                             }
                         },
                         "_is_expanded": true,
@@ -4082,17 +4082,17 @@
                     ",Climate Death": {
                         "credor_weight": 1.0,
                         "debtor_weight": 1.0,
-                        "idea_id": ",Climate Death"
+                        "belief_id": ",Climate Death"
                     },
                     ",Family": {
                         "credor_weight": 1.0,
                         "debtor_weight": 1.0,
-                        "idea_id": ",Family"
+                        "belief_id": ",Family"
                     },
                     "America": {
                         "credor_weight": 1.0,
                         "debtor_weight": 1.0,
-                        "idea_id": "America"
+                        "belief_id": "America"
                     }
                 },
                 "_is_expanded": false,
@@ -4102,7 +4102,7 @@
                             "Renee Elise Goldsberry": {
                                 "credor_weight": 1.0,
                                 "debtor_weight": 1.0,
-                                "idea_id": "Renee Elise Goldsberry"
+                                "belief_id": "Renee Elise Goldsberry"
                             }
                         },
                         "_is_expanded": false,
@@ -4112,7 +4112,7 @@
                                     "Renee Elise Goldsberry": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": "Renee Elise Goldsberry"
+                                        "belief_id": "Renee Elise Goldsberry"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -4160,7 +4160,7 @@
                             ",hurt by us dollar": {
                                 "credor_weight": 1.0,
                                 "debtor_weight": 1.0,
-                                "idea_id": ",hurt by us dollar"
+                                "belief_id": ",hurt by us dollar"
                             }
                         },
                         "_is_expanded": true,
@@ -4236,7 +4236,7 @@
                                     ",Climate Death": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Climate Death"
+                                        "belief_id": ",Climate Death"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -4341,7 +4341,7 @@
                                     "Renee Elise Goldsberry": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": "Renee Elise Goldsberry"
+                                        "belief_id": "Renee Elise Goldsberry"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -4351,7 +4351,7 @@
                                             "Renee Elise Goldsberry": {
                                                 "credor_weight": 1.0,
                                                 "debtor_weight": 1.0,
-                                                "idea_id": "Renee Elise Goldsberry"
+                                                "belief_id": "Renee Elise Goldsberry"
                                             }
                                         },
                                         "_is_expanded": true,
@@ -4390,12 +4390,12 @@
                                             ",Climate Death": {
                                                 "credor_weight": 1.0,
                                                 "debtor_weight": 1.0,
-                                                "idea_id": ",Climate Death"
+                                                "belief_id": ",Climate Death"
                                             },
                                             "Renee Elise Goldsberry": {
                                                 "credor_weight": 1.0,
                                                 "debtor_weight": 1.0,
-                                                "idea_id": "Renee Elise Goldsberry"
+                                                "belief_id": "Renee Elise Goldsberry"
                                             }
                                         },
                                         "_is_expanded": true,
@@ -4488,7 +4488,7 @@
                                     ",Climate Death": {
                                         "credor_weight": 1.0,
                                         "debtor_weight": 1.0,
-                                        "idea_id": ",Climate Death"
+                                        "belief_id": ",Climate Death"
                                     }
                                 },
                                 "_is_expanded": true,
@@ -4574,7 +4574,7 @@
             },
             "day_minute": {
                 "_begin": 0,
-                "_beliefunits": {
+                "_factunits": {
                     "music,day_minute": {
                         "base": "music,day_minute",
                         "nigh": 59,

@@ -1,7 +1,7 @@
 from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from src._road.road import create_road, get_default_real_id_roadnode as root_label
 from src.agenda.examples.example_agendas import (
-    get_agenda_1Task_1CE0MinutesReason_1Belief,
+    get_agenda_1Task_1CE0MinutesReason_1Fact,
     get_agenda_with_tuesday_cleaning_task,
 )
 from src.money.money import moneyunit_shop
@@ -115,7 +115,7 @@ def test_CalendarIntentUnit_exists():
         calendarreport=x_calendarreport,
         time_begin=x_time_begin,
         time_close=x_time_close,
-        intent_oath_road=fridge_road,
+        intent_idea_road=fridge_road,
         intent_weight=x_intent_weight,
         task=x_task,
     )
@@ -124,7 +124,7 @@ def test_CalendarIntentUnit_exists():
     assert x_calendarintentunit.calendarreport == x_calendarreport
     assert x_calendarintentunit.time_begin == x_time_begin
     assert x_calendarintentunit.time_close == x_time_close
-    assert x_calendarintentunit.intent_oath_road == fridge_road
+    assert x_calendarintentunit.intent_idea_road == fridge_road
     assert x_calendarintentunit.intent_weight == x_intent_weight
     assert x_calendarintentunit.task == x_task
 
@@ -169,7 +169,7 @@ def test_MoneyUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecor
         calendarreport=x_calendarreport,
         time_begin=x_time_begin,
         time_close=x_time_close,
-        intent_oath_road=fridge_road,
+        intent_idea_road=fridge_road,
         intent_weight=x_intent_weight,
         task=x_task,
     )
@@ -201,7 +201,7 @@ def test_MoneyUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistEr
     x_money.create_treasury_db(in_memory=True)
     x_money.refresh_treasury_job_agendas_data()
 
-    amos_agenda = get_agenda_1Task_1CE0MinutesReason_1Belief()
+    amos_agenda = get_agenda_1Task_1CE0MinutesReason_1Fact()
 
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
     assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 0
