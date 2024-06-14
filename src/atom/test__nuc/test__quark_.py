@@ -27,10 +27,6 @@ def test_quark_config_HasCorrect_category():
         "agenda_idea_suffgroup",
         "agenda_idea_healerhold",
         "agenda_idea_beliefunit",
-        "calendar",
-        "river_block",
-        "river_circle",
-        "river_reach",
     }
     assert "agenda_partyunit" in category_ref()
     assert is_category_ref("idearoot") is False
