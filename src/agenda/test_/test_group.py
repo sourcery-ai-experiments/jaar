@@ -43,7 +43,6 @@ def test_GroupUnit_exists():
     assert swim_groupunit._agenda_debt is None
     assert swim_groupunit._agenda_intent_cred is None
     assert swim_groupunit._agenda_intent_debt is None
-    assert swim_groupunit._treasury_partylinks is None
     assert swim_groupunit._road_delimiter is None
 
 
@@ -54,7 +53,7 @@ def test_groupunit_shop_ReturnsCorrectObj():
     usa_road = create_road(nation_road, "USA")
 
     # WHEN
-    swim_groupunit = groupunit_shop(group_id=swim_text, _treasury_partylinks=usa_road)
+    swim_groupunit = groupunit_shop(group_id=swim_text)
 
     # THEN
     print(f"{swim_text}")
@@ -65,7 +64,6 @@ def test_groupunit_shop_ReturnsCorrectObj():
     assert swim_groupunit._agenda_debt == 0
     assert swim_groupunit._agenda_intent_cred == 0
     assert swim_groupunit._agenda_intent_debt == 0
-    assert swim_groupunit._treasury_partylinks == usa_road
     assert swim_groupunit._road_delimiter == default_road_delimiter_if_none()
 
 
@@ -122,40 +120,6 @@ def test_GroupUnit_set_group_id_SetsAttrCorrectly():
 
     # THEN
     assert swim_group.group_id == water_text
-
-
-def test_GroupUnit_set_attr_SetsAttrCorrectly():
-    # GIVEN
-    swim_text = ",swimmers"
-    swim_group = groupunit_shop(group_id=swim_text)
-    assert swim_group._treasury_partylinks is None
-
-    # WHEN
-    sports_road = create_road(root_label(), "sports")
-    water_road = create_road(sports_road, "water")
-    swim_group.set_attr(_treasury_partylinks=water_road)
-
-    # THEN
-    assert swim_group._treasury_partylinks == water_road
-
-
-def test_groupunit_shop_WhenSinglePartyCorrectlyDeletes_treasury_partylinks():
-    # GIVEN
-    swim_text = ",swimmers"
-    nation_road = create_road(root_label(), "nation-states")
-    usa_road = create_road(nation_road, "USA")
-
-    # WHEN/THEN
-    with pytest_raises(Exception) as excinfo:
-        swimmers_group = groupunit_shop(
-            group_id=swim_text,
-            _party_mirror=True,
-            _treasury_partylinks=usa_road,
-        )
-    assert (
-        str(excinfo.value)
-        == f"_treasury_partylinks cannot be '{usa_road}' for a single_party GroupUnit. It must have no value."
-    )
 
 
 def test_GroupUnit_set_partylink_CorrectlySetsAttr():
@@ -408,13 +372,10 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     todd_group = groupunit_shop(group_id=todd_text, _party_mirror=True)
     sue_text = "Sue"
     todd_group.set_partylink(partylink_shop(party_id=sue_text))
-    x_treasury_partylinks = 44
-    todd_group.set_attr(x_treasury_partylinks)
 
     assert todd_group.group_id == todd_text
     assert todd_group._party_mirror
     assert len(todd_group._partys) == 1
-    assert todd_group._treasury_partylinks == x_treasury_partylinks
 
     # WHEN
     todd_dict = todd_group.get_dict()
@@ -423,7 +384,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     assert todd_dict["group_id"] == todd_text
     assert todd_dict["_party_mirror"]
     assert len(todd_dict["_partys"]) == 1
-    assert todd_dict["_treasury_partylinks"] == x_treasury_partylinks
 
 
 def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
@@ -432,7 +392,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     swim_group = groupunit_shop(group_id=swim_text)
     assert swim_group._party_mirror is False
     assert swim_group._partys == {}
-    assert swim_group._treasury_partylinks is None
 
     # WHEN
     swim_dict = swim_group.get_dict()
@@ -440,7 +399,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # THEN
     assert swim_dict.get("_party_mirror") is None
     assert swim_dict.get("_partys") is None
-    assert swim_dict.get("_treasury_partylinks") is None
 
 
 def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
@@ -476,7 +434,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     teachers_group = groupunit_shop(
         group_id=teacher_text,
         _partys=partylinks_dict,
-        _treasury_partylinks=swim_road,
     )
 
     # WHEN
@@ -487,7 +444,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     assert teachers_dict == {
         "group_id": teacher_text,
         "_partys": marie_json_dict,
-        "_treasury_partylinks": swim_road,
     }
 
 
@@ -516,18 +472,11 @@ def test_GroupUnit_get_from_JSON_ReturnsCorrectObj_SimpleExample():
 
     teacher_text = ",teachers"
     swim_road = "swim"
-    teacher_group = groupunit_shop(
-        group_id=teacher_text,
-        _partys=partylinks_dict,
-        _treasury_partylinks=swim_road,
-    )
+    teacher_group = groupunit_shop(group_id=teacher_text, _partys=partylinks_dict)
     teacher_dict = teacher_group.get_dict()
-    _treasury_partylinks_text = "_treasury_partylinks"
-    print(f"{teacher_dict.get(_treasury_partylinks_text)=}")
     groups_dict = {teacher_text: teacher_dict}
 
     teachers_json = get_json_from_dict(dict_x=groups_dict)
-    print(f"{teachers_json.find(_treasury_partylinks_text)=}")
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
 
@@ -538,8 +487,6 @@ def test_GroupUnit_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     assert groupunits_obj_dict != None
     teachers_obj_check_dict = {teacher_group.group_id: teacher_group}
     print(f"    {groupunits_obj_dict=}")
-    treasury_partylinks_text = "_treasury_partylinks"
-    print(f"{teachers_obj_check_dict.get(treasury_partylinks_text)=}")
     print(f"{teachers_obj_check_dict=}")
     assert groupunits_obj_dict == teachers_obj_check_dict
 

@@ -41,10 +41,6 @@
             "quark_order": 2
         },
         "optional_args": {
-            "_treasury_partylinks": {
-                "python_type": "RoadUnit",
-                "sqlite_datatype": "TEXT"
-            }
         },
         "required_args": {
             "group_id": {

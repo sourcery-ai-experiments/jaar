@@ -920,7 +920,6 @@ def get_agenda_groupunit_table_create_sqlstr() -> str:
 CREATE TABLE IF NOT EXISTS agenda_groupunit (
   owner_id VARCHAR(255) NOT NULL
 , groupunit_group_id VARCHAR(1000) NOT NULL
-, treasury_partylinks VARCHAR(1000) NULL
 )
 ;
 """
@@ -938,7 +937,6 @@ def get_agenda_groupunit_row_count(db_conn: Connection, owner_id: str) -> str:
 class GroupUnitCatalog:
     owner_id: str
     groupunit_group_id: str
-    treasury_partylinks: str
 
 
 def get_agenda_groupunit_table_insert_sqlstr(
@@ -948,12 +946,10 @@ def get_agenda_groupunit_table_insert_sqlstr(
 INSERT INTO agenda_groupunit (
   owner_id
 , groupunit_group_id
-, treasury_partylinks
 )
 VALUES (
   '{agenda_groupunit.owner_id}'
 , '{agenda_groupunit.groupunit_group_id}'
-, '{agenda_groupunit.treasury_partylinks}'
 )
 ;
 """
@@ -964,7 +960,6 @@ def get_agenda_groupunit_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog]
 SELECT 
   owner_id
 , groupunit_group_id
-, treasury_partylinks
 FROM agenda_groupunit
 ;
 """
@@ -973,9 +968,7 @@ FROM agenda_groupunit
     dict_x = {}
     for row in results.fetchall():
         agenda_groupunit_x = GroupUnitCatalog(
-            owner_id=row[0],
-            groupunit_group_id=row[1],
-            treasury_partylinks=row[2],
+            owner_id=row[0], groupunit_group_id=row[1]
         )
         dict_key = (
             f"{agenda_groupunit_x.owner_id} {agenda_groupunit_x.groupunit_group_id}"

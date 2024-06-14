@@ -3,8 +3,7 @@
         "agenda_groupunit": {
             "columns": {
                 "groupunit_group_id": {},
-                "owner_id": {},
-                "treasury_partylinks": {}
+                "owner_id": {}
             }
         },
         "agenda_idea_beliefunit": {

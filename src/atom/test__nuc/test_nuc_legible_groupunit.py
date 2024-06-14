@@ -3,7 +3,7 @@ from src.atom.nuc import nucunit_shop, create_legible_list
 from src.agenda.agenda import agendaunit_shop
 
 
-def test_create_legible_list_ReturnsObj_groupunit_INSERT_Without_treasury_partylinks():
+def test_create_legible_list_ReturnsObj_groupunit_INSERT():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
 
@@ -21,81 +21,6 @@ def test_create_legible_list_ReturnsObj_groupunit_INSERT_Without_treasury_partyl
 
     # THEN
     x_str = f"The group '{swim_text}' was created."
-    print(f"{x_str=}")
-    assert legible_list[0] == x_str
-
-
-def test_create_legible_list_ReturnsObj_groupunit_INSERT_With_treasury_partylinks():
-    # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-
-    category = "agenda_groupunit"
-    group_id_text = "group_id"
-    _treasury_partylinks_text = "_treasury_partylinks"
-    _treasury_partylinks_road = sue_agenda.make_l1_road("sports")
-    swim_text = f"{sue_agenda._road_delimiter}Swimmers"
-    swim_quarkunit = quarkunit_shop(category, quark_insert())
-    swim_quarkunit.set_arg(group_id_text, swim_text)
-    swim_quarkunit.set_arg(_treasury_partylinks_text, _treasury_partylinks_road)
-    # print(f"{rico_quarkunit=}")
-    x_nucunit = nucunit_shop()
-    x_nucunit.set_quarkunit(swim_quarkunit)
-
-    # WHEN
-    legible_list = create_legible_list(x_nucunit, sue_agenda)
-
-    # THEN
-    x_str = f"The group '{swim_text}' was created and has {_treasury_partylinks_text}={_treasury_partylinks_road}."
-    print(f"{x_str=}")
-    assert legible_list[0] == x_str
-
-
-def test_create_legible_list_ReturnsObj_groupunit_UPDATE_With_treasury_partylinks_Populated():
-    # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-
-    category = "agenda_groupunit"
-    group_id_text = "group_id"
-    _treasury_partylinks_text = "_treasury_partylinks"
-    _treasury_partylinks_road = sue_agenda.make_l1_road("sports")
-    swim_text = f"{sue_agenda._road_delimiter}Swimmers"
-    swim_quarkunit = quarkunit_shop(category, quark_update())
-    swim_quarkunit.set_arg(group_id_text, swim_text)
-    swim_quarkunit.set_arg(_treasury_partylinks_text, _treasury_partylinks_road)
-    # print(f"{rico_quarkunit=}")
-    x_nucunit = nucunit_shop()
-    x_nucunit.set_quarkunit(swim_quarkunit)
-
-    # WHEN
-    legible_list = create_legible_list(x_nucunit, sue_agenda)
-
-    # THEN
-    x_str = f"The group '{swim_text}' now has {_treasury_partylinks_text}={_treasury_partylinks_road}."
-    print(f"{x_str=}")
-    assert legible_list[0] == x_str
-
-
-def test_create_legible_list_ReturnsObj_groupunit_UPDATE_With_treasury_partylinks_Empty():
-    # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-
-    category = "agenda_groupunit"
-    group_id_text = "group_id"
-    _treasury_partylinks_text = "_treasury_partylinks"
-    _treasury_partylinks_road = None
-    swim_text = f"{sue_agenda._road_delimiter}Swimmers"
-    swim_quarkunit = quarkunit_shop(category, quark_update())
-    swim_quarkunit.set_arg(group_id_text, swim_text)
-    swim_quarkunit.set_arg(_treasury_partylinks_text, _treasury_partylinks_road)
-    # print(f"{rico_quarkunit=}")
-    x_nucunit = nucunit_shop()
-    x_nucunit.set_quarkunit(swim_quarkunit)
-
-    # WHEN
-    legible_list = create_legible_list(x_nucunit, sue_agenda)
-
-    # THEN
-    x_str = f"The group '{swim_text}' no longer has {_treasury_partylinks_text}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 

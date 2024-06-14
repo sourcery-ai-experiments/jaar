@@ -316,7 +316,6 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_groupunit
     # WHEN
     x_quarkunit = quarkunit_shop("agenda_groupunit", quark_insert())
     x_quarkunit.set_required_arg("group_id", fly_text)
-    x_quarkunit.set_optional_arg("_treasury_partylinks", "Yao")
     print(f"{x_quarkunit=}")
     sue_nucunit = nucunit_shop()
     sue_nucunit.set_quarkunit(x_quarkunit)
@@ -333,20 +332,18 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_groupunit
     before_sue_agendaunit = agendaunit_shop(sue_text)
     run_text = ",runners"
     before_sue_agendaunit.set_groupunit(groupunit_shop(run_text))
-    assert before_sue_agendaunit.get_groupunit(run_text)._treasury_partylinks is None
 
     # WHEN
     yao_text = "Yao"
     x_quarkunit = quarkunit_shop("agenda_groupunit", quark_update())
     x_quarkunit.set_required_arg("group_id", run_text)
-    x_quarkunit.set_optional_arg("_treasury_partylinks", yao_text)
     print(f"{x_quarkunit=}")
     sue_nucunit = nucunit_shop()
     sue_nucunit.set_quarkunit(x_quarkunit)
     after_sue_agendaunit = sue_nucunit.get_edited_agenda(before_sue_agendaunit)
 
-    # THEN
-    assert after_sue_agendaunit.get_groupunit(run_text)._treasury_partylinks == yao_text
+    # THEN # keep as proof functions do not fail with arguments above
+    assert after_sue_agendaunit != None
 
 
 def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_groupunit():

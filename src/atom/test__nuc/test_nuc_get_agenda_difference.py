@@ -195,8 +195,7 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_group_partylink_
     after_sue_agendaunit.add_partyunit(rico_text)
     after_sue_agendaunit.add_partyunit(carm_text)
     run_text = ",runners"
-    x_treasury_partylinks = "Yao"
-    run_groupunit = groupunit_shop(run_text, _treasury_partylinks=x_treasury_partylinks)
+    run_groupunit = groupunit_shop(run_text)
     rico_credor_weight = 77
     rico_debtor_weight = 88
     rico_partylink = partylink_shop(rico_text, rico_credor_weight, rico_debtor_weight)
@@ -217,7 +216,6 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_group_partylink_
     assert rico_quarkunit.get_value("group_id") == run_text
     # print(f"\n{sue_nucunit.quarkunits=}")
     print(f"\n{rico_quarkunit=}")
-    assert rico_quarkunit.get_value("_treasury_partylinks") == x_treasury_partylinks
 
     x_keylist = [quark_insert(), "agenda_group_partylink", run_text, rico_text]
     rico_quarkunit = get_nested_value(sue_nucunit.quarkunits, x_keylist)
@@ -243,8 +241,7 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_group_partylink_
     before_sue_agendaunit.add_partyunit(rico_text)
     before_sue_agendaunit.add_partyunit(carm_text)
     run_text = ",runners"
-    x_treasury_partylinks = "Yao"
-    run_groupunit = groupunit_shop(run_text, _treasury_partylinks=x_treasury_partylinks)
+    run_groupunit = groupunit_shop(run_text)
     before_rico_credor_weight = 77
     before_rico_debtor_weight = 88
     run_groupunit.set_partylink(
@@ -254,8 +251,6 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_group_partylink_
     before_sue_agendaunit.set_groupunit(run_groupunit)
     after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
     after_run_groupunit = after_sue_agendaunit.get_groupunit(run_text)
-    swim_text = "swimming"
-    after_run_groupunit._treasury_partylinks = swim_text
     after_rico_credor_weight = 55
     after_rico_debtor_weight = 66
     after_run_groupunit.edit_partylink(
@@ -269,12 +264,11 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_group_partylink_
     )
 
     # THEN
-    x_keylist = [quark_update(), "agenda_groupunit", run_text]
-    rico_quarkunit = get_nested_value(sue_nucunit.quarkunits, x_keylist)
-    assert rico_quarkunit.get_value("group_id") == run_text
+    # x_keylist = [quark_update(), "agenda_groupunit", run_text]
+    # rico_quarkunit = get_nested_value(sue_nucunit.quarkunits, x_keylist)
+    # assert rico_quarkunit.get_value("group_id") == run_text
     # print(f"\n{sue_nucunit.quarkunits=}")
-    print(f"\n{rico_quarkunit=}")
-    assert rico_quarkunit.get_value("_treasury_partylinks") == swim_text
+    # print(f"\n{rico_quarkunit=}")
 
     x_keylist = [quark_update(), "agenda_group_partylink", run_text, rico_text]
     rico_quarkunit = get_nested_value(sue_nucunit.quarkunits, x_keylist)
@@ -284,7 +278,7 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_group_partylink_
     assert rico_quarkunit.get_value("debtor_weight") == after_rico_debtor_weight
 
     print(f"{get_quarkunit_total_count(sue_nucunit)=}")
-    assert get_quarkunit_total_count(sue_nucunit) == 2
+    assert get_quarkunit_total_count(sue_nucunit) == 1
 
 
 def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_group_partylink_delete():

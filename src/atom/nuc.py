@@ -260,11 +260,6 @@ class NucUnit:
             insert_groupunit = after_agenda.get_groupunit(insert_group_id)
             x_quarkunit = quarkunit_shop("agenda_groupunit", quark_insert())
             x_quarkunit.set_required_arg("group_id", insert_groupunit.group_id)
-            if insert_groupunit._treasury_partylinks != None:
-                x_quarkunit.set_optional_arg(
-                    "_treasury_partylinks",
-                    insert_groupunit._treasury_partylinks,
-                )
             self.set_quarkunit(x_quarkunit)
             self.add_quarkunit_partylinks_inserts(
                 after_groupunit=insert_groupunit,
@@ -282,10 +277,6 @@ class NucUnit:
             ):
                 x_quarkunit = quarkunit_shop("agenda_groupunit", quark_update())
                 x_quarkunit.set_required_arg("group_id", after_groupunit.group_id)
-                x_quarkunit.set_optional_arg(
-                    "_treasury_partylinks",
-                    after_groupunit._treasury_partylinks,
-                )
                 self.set_quarkunit(x_quarkunit)
 
             self.add_quarkunit_groupunit_update_partylinks(
@@ -1237,10 +1228,7 @@ def add_agenda_groupunit_insert_to_legible_list(
 ):
     for groupunit_quark in groupunit_dict.values():
         group_id = groupunit_quark.get_value("group_id")
-        _treasury_partylinks_value = groupunit_quark.get_value("_treasury_partylinks")
         x_str = f"The group '{group_id}' was created"
-        if _treasury_partylinks_value != None:
-            x_str += f" and has _treasury_partylinks={_treasury_partylinks_value}"
         x_str += "."
         legible_list.append(x_str)
 
@@ -1250,12 +1238,7 @@ def add_agenda_groupunit_update_to_legible_list(
 ):
     for groupunit_quark in groupunit_dict.values():
         group_id = groupunit_quark.get_value("group_id")
-        _treasury_partylinks_value = groupunit_quark.get_value("_treasury_partylinks")
         x_str = f"The group '{group_id}'"
-        if _treasury_partylinks_value != None:
-            x_str += f" now has _treasury_partylinks={_treasury_partylinks_value}"
-        elif _treasury_partylinks_value is None:
-            x_str += " no longer has _treasury_partylinks"
         x_str += "."
         legible_list.append(x_str)
 

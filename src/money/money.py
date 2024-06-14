@@ -203,7 +203,6 @@ class MoneyUnit:
                 agenda_groupunit_x = GroupUnitCatalog(
                     owner_id=agendaunit_x._owner_id,
                     groupunit_group_id=groupunit_x.group_id,
-                    treasury_partylinks=groupunit_x._treasury_partylinks,
                 )
                 sqlstr = get_agenda_groupunit_table_insert_sqlstr(agenda_groupunit_x)
                 cur.execute(sqlstr)
@@ -298,23 +297,6 @@ class MoneyUnit:
             for count_x, x_partyunit in enumerate(owner_role._partys.values()):
                 x_partyunit.set_treasury_voice_rank(count_x)
             self.userhub.save_role_agenda(owner_role)
-
-    def set_agenda_treasury_attrs(self, x_owner_id: OwnerID):
-        x_agenda = self.userhub.get_job_agenda(x_owner_id)
-
-        for groupunit_x in x_agenda._groups.values():
-            if groupunit_x._treasury_partylinks != None:
-                groupunit_x.clear_partylinks()
-                ic = get_agenda_ideaunit_dict(
-                    self.get_treasury_conn(),
-                    groupunit_x._treasury_partylinks,
-                )
-                for agenda_ideaunit in ic.values():
-                    if x_owner_id != agenda_ideaunit.owner_id:
-                        partylink_x = partylink_shop(party_id=agenda_ideaunit.owner_id)
-                        groupunit_x.set_partylink(partylink_x)
-        self.userhub.save_job_agenda(x_agenda)
-        self.refresh_treasury_job_agendas_data()
 
 
 def moneyunit_shop(x_userhub: UserHub, in_memory_treasury: bool = None) -> MoneyUnit:

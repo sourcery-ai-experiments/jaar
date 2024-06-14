@@ -356,14 +356,10 @@ def _modify_agenda_groupunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
 
 def _modify_agenda_groupunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_groupunit = x_agenda.get_groupunit(x_quark.get_value("group_id"))
-    x_groupunit._treasury_partylinks = x_quark.get_value("_treasury_partylinks")
 
 
 def _modify_agenda_groupunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_groupunit = groupunit_shop(
-        group_id=x_quark.get_value("group_id"),
-        _treasury_partylinks=x_quark.get_value("_treasury_partylinks"),
-    )
+    x_groupunit = groupunit_shop(group_id=x_quark.get_value("group_id"))
     x_agenda.set_groupunit(
         x_groupunit, create_missing_partys=False, replace=False, add_partylinks=False
     )
@@ -708,8 +704,6 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj._party_debtor_pool != y_obj._party_debtor_pool
             or x_obj._planck != y_obj._planck
         )
-    elif category == "agenda_groupunit":
-        return x_obj._treasury_partylinks != y_obj._treasury_partylinks
     elif category in {"agenda_group_partylink", "agenda_idea_balancelink"}:
         return (x_obj.credor_weight != y_obj.credor_weight) or (
             x_obj.debtor_weight != y_obj.debtor_weight
