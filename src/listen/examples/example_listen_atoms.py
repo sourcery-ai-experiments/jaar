@@ -8,28 +8,28 @@ from src.listen.examples.example_listen_quarks import (
 
 
 def yao_sue_atomunit() -> AtomUnit:
-    return atomunit_shop(_giver="Yao", _atom_id=37, _faces={"Sue"})
+    return atomunit_shop(person_id="Yao", _atom_id=37, _faces={"Sue"})
 
 
 def get_sue_atomunit() -> AtomUnit:
-    return atomunit_shop(_giver="Sue", _atom_id=37, _faces={"Yao"})
+    return atomunit_shop(person_id="Sue", _atom_id=37, _faces={"Yao"})
 
 
 def sue_1quarkunits_atomunit() -> AtomUnit:
-    x_atomunit = atomunit_shop(_giver="Sue", _atom_id=53, _faces={"Yao"})
+    x_atomunit = atomunit_shop(person_id="Sue", _atom_id=53, _faces={"Yao"})
     x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_sports())
     return x_atomunit
 
 
 def sue_2quarkunits_atomunit() -> AtomUnit:
-    x_atomunit = atomunit_shop(_giver="Sue", _atom_id=53, _faces={"Yao"})
+    x_atomunit = atomunit_shop(person_id="Sue", _atom_id=53, _faces={"Yao"})
     x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_knee())
     x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_sports())
     return x_atomunit
 
 
 def sue_3quarkunits_atomunit() -> AtomUnit:
-    x_atomunit = atomunit_shop(_giver="Sue", _atom_id=37, _faces={"Yao"})
+    x_atomunit = atomunit_shop(person_id="Sue", _atom_id=37, _faces={"Yao"})
     x_atomunit._nucunit.set_quarkunit(get_quark_example_beliefunit_knee())
     x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_ball())
     x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_knee())
@@ -37,7 +37,7 @@ def sue_3quarkunits_atomunit() -> AtomUnit:
 
 
 def sue_4quarkunits_atomunit() -> AtomUnit:
-    x_atomunit = atomunit_shop(_giver="Sue", _atom_id=47, _faces={"Yao"})
+    x_atomunit = atomunit_shop(person_id="Sue", _atom_id=47, _faces={"Yao"})
     x_atomunit._nucunit.set_quarkunit(get_quark_example_beliefunit_knee())
     x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_ball())
     x_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_knee())

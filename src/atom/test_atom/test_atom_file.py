@@ -115,7 +115,7 @@ def test_AtomUnit_save_atom_file_SavesCorrectFile(env_dir_setup_cleanup):
     sue_atom6_path = f"{sue_atoms_dir}/{six_filename}"
     print(f"{sue_atom2_path=}")
     print(f"{sue_atom6_path=}")
-    farm_atomunit = atomunit_shop(sue_text, sue_atom_id, _atoms_dir=sue_atoms_dir)
+    farm_atomunit = atomunit_shop(sue_text, None, sue_atom_id, _atoms_dir=sue_atoms_dir)
     assert os_path_exists(sue_atom2_path) is False
     assert os_path_exists(sue_atom6_path) is False
 
@@ -129,7 +129,7 @@ def test_AtomUnit_save_atom_file_SavesCorrectFile(env_dir_setup_cleanup):
     atom_file_dict = get_dict_from_json(atom_file_json)
     print(f"{atom_file_dict=}")
     assert atom_file_dict.get("nuc_quark_numbers") == []
-    assert atom_file_dict.get("giver") == sue_text
+    assert atom_file_dict.get("person_id") == sue_text
     assert atom_file_dict.get("faces") == {}
 
 
@@ -263,6 +263,6 @@ def test_create_atomunit_from_files_ReturnsCorrectObj(env_dir_setup_cleanup):
     )
 
     # THEN
-    assert src_sue_atomunit._giver == new_sue_atomunit._giver
+    assert src_sue_atomunit.person_id == new_sue_atomunit.person_id
     assert src_sue_atomunit._faces == new_sue_atomunit._faces
     assert src_sue_atomunit._nucunit == new_sue_atomunit._nucunit

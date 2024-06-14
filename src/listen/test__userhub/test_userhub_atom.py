@@ -69,7 +69,7 @@ def test_UserHub_save_atom_file_SaveCorrectObj(env_dir_setup_cleanup):
     print(f"{sue_atom2_path=}")
     print(f"{sue_atom0_path=}")
     sue_atomunit = atomunit_shop(
-        _giver=sue_text,
+        person_id=sue_text,
         _atom_id=two_int,
         _quarks_dir=sue_userhub.quarks_dir(),
         _atoms_dir=sue_userhub.atoms_dir(),
@@ -97,7 +97,7 @@ def test_UserHub_save_atom_file_RaisesErrorIfAtomUnit_quarks_dir_IsWrong(
     sue_atom0_path = f"{sue_userhub.atoms_dir()}/{six_filename}"
     print(f"{sue_atom0_path=}")
     sue_atomunit = atomunit_shop(
-        _giver=sue_text,
+        person_id=sue_text,
         _atom_id=x_atom_id,
         _quarks_dir="src/world",
         _atoms_dir=sue_userhub.atoms_dir(),
@@ -122,7 +122,7 @@ def test_UserHub_save_atom_file_RaisesErrorIfAtomUnit_atoms_dir_IsWrong(
     sue_atom0_path = f"{sue_userhub.atoms_dir()}/{six_filename}"
     print(f"{sue_atom0_path=}")
     sue_atomunit = atomunit_shop(
-        _giver=sue_text,
+        person_id=sue_text,
         _atom_id=x_atom_id,
         _quarks_dir=sue_userhub.quarks_dir(),
         _atoms_dir="src/world",
@@ -137,7 +137,7 @@ def test_UserHub_save_atom_file_RaisesErrorIfAtomUnit_atoms_dir_IsWrong(
     )
 
 
-def test_UserHub_save_atom_file_RaisesErrorIfAtomUnit_giver_IsWrong(
+def test_UserHub_save_atom_file_RaisesErrorIfAtomUnit_person_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     sue_text = "Sue"
@@ -148,7 +148,7 @@ def test_UserHub_save_atom_file_RaisesErrorIfAtomUnit_giver_IsWrong(
     print(f"{sue_atom0_path=}")
     bob_text = "Bob"
     sue_atomunit = atomunit_shop(
-        _giver=bob_text,
+        person_id=bob_text,
         _atom_id=x_atom_id,
         _quarks_dir=sue_userhub.quarks_dir(),
         _atoms_dir=sue_userhub.atoms_dir(),
@@ -159,7 +159,7 @@ def test_UserHub_save_atom_file_RaisesErrorIfAtomUnit_giver_IsWrong(
         sue_userhub.save_atom_file(sue_atomunit, correct_invalid_attrs=False)
     assert (
         str(excinfo.value)
-        == f"AtomUnit file cannot be saved because atomunit._giver is incorrect: {sue_atomunit._giver}. It must be {sue_text}."
+        == f"AtomUnit file cannot be saved because atomunit.person_id is incorrect: {sue_atomunit.person_id}. It must be {sue_text}."
     )
 
 
@@ -172,7 +172,7 @@ def test_UserHub_save_atom_file_RaisesErrorIf_replace_IsFalse(
     x_atom_id = 0
     six_filename = get_json_filename(x_atom_id)
     sue_atomunit = atomunit_shop(
-        _giver=sue_text,
+        person_id=sue_text,
         _atom_id=x_atom_id,
         _quarks_dir=sue_userhub.quarks_dir(),
         _atoms_dir=sue_userhub.atoms_dir(),
@@ -205,7 +205,7 @@ def test_UserHub_validate_atomunit_ReturnsObjWithAttributesFixed(
 
     # WHEN
     invalid_sue_atomunit = atomunit_shop(
-        _giver="Bob",
+        person_id="Bob",
         _atom_id=sue_userhub._get_next_atom_file_number() - 5,
         _quarks_dir=f"{sue_userhub.econs_dir()}/swimming",
         _atoms_dir=f"{sue_userhub.econs_dir()}/swimming",
@@ -217,7 +217,7 @@ def test_UserHub_validate_atomunit_ReturnsObjWithAttributesFixed(
     assert valid_atomunit._atoms_dir == sue_userhub.atoms_dir()
     assert valid_atomunit._atom_id == sue_userhub._get_next_atom_file_number()
     correct_sue_atomunit = atomunit_shop(
-        _giver=sue_text,
+        person_id=sue_text,
         _atom_id=sue_userhub._get_next_atom_file_number(),
         _quarks_dir=sue_userhub.quarks_dir(),
         _atoms_dir=sue_userhub.atoms_dir(),
@@ -239,7 +239,7 @@ def test_UserHub_save_atom_file_SaveCorrectObj_correct_invalid_attrs_IsTrue(
 
     # WHEN
     invalid_sue_atomunit = atomunit_shop(
-        _giver="Bob",
+        person_id="Bob",
         _atom_id=sue_userhub._get_next_atom_file_number() - 5,
         _quarks_dir=f"{sue_userhub.econs_dir()}/swimming",
         _atoms_dir=f"{sue_userhub.econs_dir()}/swimming",
@@ -263,7 +263,7 @@ def test_UserHub_default_atomunit_ReturnsObjWithCorrect_atom_id_WhenNoatomFilesE
     sue_atomunit = sue_userhub._default_atomunit()
 
     # THEN
-    assert sue_atomunit._giver == sue_text
+    assert sue_atomunit.person_id == sue_text
     assert sue_atomunit._atom_id == init_atom_id()
     assert sue_atomunit._atom_id == 0
     assert sue_atomunit._atom_id == sue_userhub._get_next_atom_file_number()
@@ -290,7 +290,7 @@ def test_UserHub_default_atomunit_ReturnsObjWithCorrect_atom_id_WhenatomFilesExi
     sue_atomunit = sue_userhub._default_atomunit()
 
     # THEN
-    assert sue_atomunit._giver == sue_text
+    assert sue_atomunit.person_id == sue_text
     assert sue_atomunit._atom_id == init_atom_id() + 1
     assert sue_atomunit._atom_id == 1
     assert sue_atomunit._atom_id == sue_userhub._get_next_atom_file_number()
@@ -358,7 +358,7 @@ def test_UserHub_del_atom_file_DeletesatomjsonAndNotQuarkUnitjsons(
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
     six_int = 6
     sue_atomunit = atomunit_shop(
-        _giver=sue_text,
+        person_id=sue_text,
         _atom_id=six_int,
         _quarks_dir=sue_userhub.quarks_dir(),
         _atoms_dir=sue_userhub.atoms_dir(),
@@ -413,7 +413,7 @@ def test_UserHub_save_atom_file_ReturnsValidObj(env_dir_setup_cleanup):
     sue2_atomunit = sue_2quarkunits_atomunit()
     sue2_atomunit._quarks_dir = f"{sue_userhub.econs_dir()}/swimming"
     sue2_atomunit._atoms_dir = f"{sue_userhub.econs_dir()}/swimming"
-    sue2_atomunit._giver = "Bob"
+    sue2_atomunit.person_id = "Bob"
     sue2_atomunit._atom_id = sue_userhub._get_next_atom_file_number() - 5
     prev_sue2_atomunit = copy_deepcopy(sue2_atomunit)
 
@@ -436,7 +436,7 @@ def test_UserHub_create_save_atom_file_SaveCorrectObj(env_dir_setup_cleanup):
     print(f"{sue_userhub.atom_file_path(two_int)=}")
     print(f"{sue_userhub.atom_file_path(three_int)=}")
     sue_atomunit = atomunit_shop(
-        _giver=sue_text,
+        person_id=sue_text,
         _atom_id=two_int,
         _quarks_dir=sue_userhub.quarks_dir(),
         _atoms_dir=sue_userhub.atoms_dir(),
