@@ -8,7 +8,7 @@ from src.atom.quark import (
     category_ref,
     is_category_ref,
     get_quark_config_dict,
-    get_quark_order,
+    get_quark_order as q_order,
     set_mog,
     get_quark_columns_build,
 )
@@ -123,41 +123,35 @@ def test_get_quark_config_dict_EveryCrudOperationHasNucOrderGroup():
     # set_mog("groupunit", quark_delete(), mog, 27)
     # set_mog("agendaunit", quark_update(), mog, 28)
 
-    assert 0 == get_quark_order("agenda_partyunit", quark_insert(), mog, 0)
-    assert 1 == get_quark_order("agenda_group_partylink", quark_insert(), mog, 1)
-    assert 2 == get_quark_order("agenda_groupunit", quark_insert(), mog, 2)
-    assert 3 == get_quark_order("agenda_ideaunit", quark_insert(), mog, 3)
-    assert 4 == get_quark_order("agenda_idea_balancelink", quark_insert(), mog, 4)
-    assert 5 == get_quark_order("agenda_idea_suffgroup", quark_insert(), mog, 5)
-    assert 6 == get_quark_order("agenda_idea_healerhold", quark_insert(), mog, 6)
-    assert 7 == get_quark_order("agenda_idea_beliefunit", quark_insert(), mog, 7)
-    assert 8 == get_quark_order("agenda_idea_reasonunit", quark_insert(), mog, 8)
-    assert 9 == get_quark_order(
-        "agenda_idea_reason_premiseunit", quark_insert(), mog, 9
-    )
-    assert 10 == get_quark_order("agenda_partyunit", quark_update(), mog, 10)
-    assert 11 == get_quark_order("agenda_groupunit", quark_update(), mog, 11)
-    assert 12 == get_quark_order("agenda_group_partylink", quark_update(), mog, 12)
-    assert 13 == get_quark_order("agenda_ideaunit", quark_update(), mog, 13)
-    assert 14 == get_quark_order("agenda_idea_balancelink", quark_update(), mog, 14)
-    assert 15 == get_quark_order("agenda_idea_beliefunit", quark_update(), mog, 15)
-    assert 16 == get_quark_order(
-        "agenda_idea_reason_premiseunit", quark_update(), mog, 16
-    )
-    assert 17 == get_quark_order("agenda_idea_reasonunit", quark_update(), mog, 17)
-    assert 18 == get_quark_order(
-        "agenda_idea_reason_premiseunit", quark_delete(), mog, 18
-    )
-    assert 19 == get_quark_order("agenda_idea_reasonunit", quark_delete(), mog, 19)
-    assert 20 == get_quark_order("agenda_idea_beliefunit", quark_delete(), mog, 20)
-    assert 21 == get_quark_order("agenda_idea_suffgroup", quark_delete(), mog, 21)
-    assert 22 == get_quark_order("agenda_idea_healerhold", quark_delete(), mog, 22)
-    assert 23 == get_quark_order("agenda_idea_balancelink", quark_delete(), mog, 23)
-    assert 24 == get_quark_order("agenda_ideaunit", quark_delete(), mog, 24)
-    assert 25 == get_quark_order("agenda_group_partylink", quark_delete(), mog, 25)
-    assert 26 == get_quark_order("agenda_partyunit", quark_delete(), mog, 26)
-    assert 27 == get_quark_order("agenda_groupunit", quark_delete(), mog, 27)
-    assert 28 == get_quark_order("agendaunit", quark_update(), mog, 28)
+    assert 0 == q_order("agenda_partyunit", quark_insert(), mog, 0)
+    assert 1 == q_order("agenda_group_partylink", quark_insert(), mog, 1)
+    assert 2 == q_order("agenda_groupunit", quark_insert(), mog, 2)
+    assert 3 == q_order("agenda_ideaunit", quark_insert(), mog, 3)
+    assert 4 == q_order("agenda_idea_balancelink", quark_insert(), mog, 4)
+    assert 5 == q_order("agenda_idea_suffgroup", quark_insert(), mog, 5)
+    assert 6 == q_order("agenda_idea_healerhold", quark_insert(), mog, 6)
+    assert 7 == q_order("agenda_idea_beliefunit", quark_insert(), mog, 7)
+    assert 8 == q_order("agenda_idea_reasonunit", quark_insert(), mog, 8)
+    assert 9 == q_order("agenda_idea_reason_premiseunit", quark_insert(), mog, 9)
+    assert 10 == q_order("agenda_partyunit", quark_update(), mog, 10)
+    assert 11 == q_order("agenda_groupunit", quark_update(), mog, 11)
+    assert 12 == q_order("agenda_group_partylink", quark_update(), mog, 12)
+    assert 13 == q_order("agenda_ideaunit", quark_update(), mog, 13)
+    assert 14 == q_order("agenda_idea_balancelink", quark_update(), mog, 14)
+    assert 15 == q_order("agenda_idea_beliefunit", quark_update(), mog, 15)
+    assert 16 == q_order("agenda_idea_reason_premiseunit", quark_update(), mog, 16)
+    assert 17 == q_order("agenda_idea_reasonunit", quark_update(), mog, 17)
+    assert 18 == q_order("agenda_idea_reason_premiseunit", quark_delete(), mog, 18)
+    assert 19 == q_order("agenda_idea_reasonunit", quark_delete(), mog, 19)
+    assert 20 == q_order("agenda_idea_beliefunit", quark_delete(), mog, 20)
+    assert 21 == q_order("agenda_idea_suffgroup", quark_delete(), mog, 21)
+    assert 22 == q_order("agenda_idea_healerhold", quark_delete(), mog, 22)
+    assert 23 == q_order("agenda_idea_balancelink", quark_delete(), mog, 23)
+    assert 24 == q_order("agenda_ideaunit", quark_delete(), mog, 24)
+    assert 25 == q_order("agenda_group_partylink", quark_delete(), mog, 25)
+    assert 26 == q_order("agenda_partyunit", quark_delete(), mog, 26)
+    assert 27 == q_order("agenda_groupunit", quark_delete(), mog, 27)
+    assert 28 == q_order("agendaunit", quark_update(), mog, 28)
 
 
 def _every_category_dict_has_arg_elements(category_dict: dict) -> bool:
@@ -210,11 +204,11 @@ def test_QuarkUnit_exists():
     x_quarkunit = QuarkUnit()
 
     # THEN
-    x_quarkunit.category is None
-    x_quarkunit.crud_text is None
-    x_quarkunit.required_args is None
-    x_quarkunit.optional_args is None
-    x_quarkunit.quark_order is None
+    assert x_quarkunit.category is None
+    assert x_quarkunit.crud_text is None
+    assert x_quarkunit.required_args is None
+    assert x_quarkunit.optional_args is None
+    assert x_quarkunit.quark_order is None
 
 
 def test_quarkunit_shop_ReturnsCorrectObj():
