@@ -93,7 +93,7 @@ class IdeaAttrFilter:
     pledge: bool = None
     beliefunit: BeliefUnit = None
     descendant_pledge_count: int = None
-    all_party_credit: bool = None
+    all_party_cred: bool = None
     all_party_debt: bool = None
     balancelink: BalanceLink = None
     balancelink_del: GroupID = None
@@ -177,7 +177,7 @@ def ideaattrfilter_shop(
     pledge: bool = None,
     beliefunit: BeliefUnit = None,
     descendant_pledge_count: int = None,
-    all_party_credit: bool = None,
+    all_party_cred: bool = None,
     all_party_debt: bool = None,
     balancelink: BalanceLink = None,
     balancelink_del: GroupID = None,
@@ -210,7 +210,7 @@ def ideaattrfilter_shop(
         pledge=pledge,
         beliefunit=beliefunit,
         descendant_pledge_count=descendant_pledge_count,
-        all_party_credit=all_party_credit,
+        all_party_cred=all_party_cred,
         all_party_debt=all_party_debt,
         balancelink=balancelink,
         balancelink_del=balancelink_del,
@@ -264,7 +264,7 @@ class IdeaUnit:
     _active: bool = None
     _ancestor_pledge_count: int = None
     _descendant_pledge_count: int = None
-    _all_party_credit: bool = None
+    _all_party_cred: bool = None
     _all_party_debt: bool = None
     _is_expanded: bool = None
     _sibling_total_weight: int = None
@@ -377,7 +377,7 @@ class IdeaUnit:
         self._agenda_fund_onset = fund_onset_x
         self._agenda_fund_cease = self._agenda_fund_onset + self._agenda_importance
         self._agenda_fund_cease = min(self._agenda_fund_cease, parent_fund_cease)
-        self.set_balanceheirs_agenda_credit_debt()
+        self.set_balanceheirs_agenda_cred_debt()
 
     def get_kids_in_range(self, begin: float, close: float) -> list:
         return [
@@ -430,8 +430,8 @@ class IdeaUnit:
 
         return descendant_roads
 
-    def clear_all_party_credit_debt(self):
-        self._all_party_credit = None
+    def clear_all_party_cred_debt(self):
+        self._all_party_cred = None
         self._all_party_debt = None
 
     def set_ancestor_pledge_count(
@@ -460,7 +460,7 @@ class IdeaUnit:
         for ib in parent_balanceheirs.values():
             balanceheir = balanceheir_shop(
                 group_id=ib.group_id,
-                creditor_weight=ib.creditor_weight,
+                credor_weight=ib.credor_weight,
                 debtor_weight=ib.debtor_weight,
             )
             self._balanceheirs[balanceheir.group_id] = balanceheir
@@ -468,7 +468,7 @@ class IdeaUnit:
         for ib in self._balancelinks.values():
             balanceheir = balanceheir_shop(
                 group_id=ib.group_id,
-                creditor_weight=ib.creditor_weight,
+                credor_weight=ib.credor_weight,
                 debtor_weight=ib.debtor_weight,
             )
             self._balanceheirs[balanceheir.group_id] = balanceheir
@@ -478,7 +478,7 @@ class IdeaUnit:
         for bh in self._balanceheirs.values():
             x_balanceline = balanceline_shop(
                 group_id=bh.group_id,
-                _agenda_credit=bh._agenda_credit,
+                _agenda_cred=bh._agenda_cred,
                 _agenda_debt=bh._agenda_debt,
             )
             self._balancelines[x_balanceline.group_id] = x_balanceline
@@ -492,12 +492,12 @@ class IdeaUnit:
             if self._balancelines.get(bl.group_id) is None:
                 self._balancelines[bl.group_id] = balanceline_shop(
                     group_id=bl.group_id,
-                    _agenda_credit=0,
+                    _agenda_cred=0,
                     _agenda_debt=0,
                 )
 
-            self._balancelines[bl.group_id].add_agenda_credit_debt(
-                agenda_credit=bl._agenda_credit, agenda_debt=bl._agenda_debt
+            self._balancelines[bl.group_id].add_agenda_cred_debt(
+                agenda_cred=bl._agenda_cred, agenda_debt=bl._agenda_debt
             )
 
     def set_kids_total_weight(self):
@@ -505,9 +505,9 @@ class IdeaUnit:
         for x_idea in self._kids.values():
             self._kids_total_weight += x_idea._weight
 
-    def get_balanceheirs_creditor_weight_sum(self) -> float:
+    def get_balanceheirs_credor_weight_sum(self) -> float:
         return sum(
-            balancelink.creditor_weight for balancelink in self._balanceheirs.values()
+            balancelink.credor_weight for balancelink in self._balanceheirs.values()
         )
 
     def get_balanceheirs_debtor_weight_sum(self) -> float:
@@ -515,13 +515,13 @@ class IdeaUnit:
             balancelink.debtor_weight for balancelink in self._balanceheirs.values()
         )
 
-    def set_balanceheirs_agenda_credit_debt(self):
-        balanceheirs_creditor_weight_sum = self.get_balanceheirs_creditor_weight_sum()
+    def set_balanceheirs_agenda_cred_debt(self):
+        balanceheirs_credor_weight_sum = self.get_balanceheirs_credor_weight_sum()
         balanceheirs_debtor_weight_sum = self.get_balanceheirs_debtor_weight_sum()
         for balanceheir_x in self._balanceheirs.values():
-            balanceheir_x.set_agenda_credit_debt(
+            balanceheir_x.set_agenda_cred_debt(
                 idea_agenda_importance=self._agenda_importance,
-                balanceheirs_creditor_weight_sum=balanceheirs_creditor_weight_sum,
+                balanceheirs_credor_weight_sum=balanceheirs_credor_weight_sum,
                 balanceheirs_debtor_weight_sum=balanceheirs_debtor_weight_sum,
             )
 
@@ -744,8 +744,8 @@ class IdeaUnit:
             self._range_source_road = idea_attr.range_source_road
         if idea_attr.descendant_pledge_count != None:
             self._descendant_pledge_count = idea_attr.descendant_pledge_count
-        if idea_attr.all_party_credit != None:
-            self._all_party_credit = idea_attr.all_party_credit
+        if idea_attr.all_party_cred != None:
+            self._all_party_cred = idea_attr.all_party_cred
         if idea_attr.all_party_debt != None:
             self._all_party_debt = idea_attr.all_party_debt
         if idea_attr.balancelink != None:
@@ -1124,7 +1124,7 @@ def ideaunit_shop(
     _active: bool = None,
     _ancestor_pledge_count: int = None,
     _descendant_pledge_count: int = None,
-    _all_party_credit: bool = None,
+    _all_party_cred: bool = None,
     _all_party_debt: bool = None,
     _is_expanded: bool = True,
     _sibling_total_weight: int = None,
@@ -1179,7 +1179,7 @@ def ideaunit_shop(
         _active=_active,
         _ancestor_pledge_count=_ancestor_pledge_count,
         _descendant_pledge_count=_descendant_pledge_count,
-        _all_party_credit=_all_party_credit,
+        _all_party_cred=_all_party_cred,
         _all_party_debt=_all_party_debt,
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,

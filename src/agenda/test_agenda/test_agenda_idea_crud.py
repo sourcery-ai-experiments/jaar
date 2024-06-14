@@ -471,13 +471,13 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     ]._descendant_pledge_count
     assert _descendant_pledge_count_new == 67
 
-    # _all_party_credit: bool = None,
-    sue_agenda._idearoot._kids[casa_text]._all_party_credit = 74
-    x_all_party_credit = sue_agenda._idearoot._kids[casa_text]._all_party_credit
-    assert x_all_party_credit == 74
-    sue_agenda.edit_idea_attr(road=casa_road, all_party_credit=59)
-    _all_party_credit_new = sue_agenda._idearoot._kids[casa_text]._all_party_credit
-    assert _all_party_credit_new == 59
+    # _all_party_cred: bool = None,
+    sue_agenda._idearoot._kids[casa_text]._all_party_cred = 74
+    x_all_party_cred = sue_agenda._idearoot._kids[casa_text]._all_party_cred
+    assert x_all_party_cred == 74
+    sue_agenda.edit_idea_attr(road=casa_road, all_party_cred=59)
+    _all_party_cred_new = sue_agenda._idearoot._kids[casa_text]._all_party_cred
+    assert _all_party_cred_new == 59
 
     # _all_party_debt: bool = None,
     sue_agenda._idearoot._kids[casa_text]._all_party_debt = 74
@@ -489,20 +489,18 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
 
     # _balancelink: dict = None,
     sue_agenda._idearoot._kids[casa_text]._balancelinks = {
-        "fun": balancelink_shop(group_id="fun", creditor_weight=1, debtor_weight=7)
+        "fun": balancelink_shop(group_id="fun", credor_weight=1, debtor_weight=7)
     }
     _balancelinks = sue_agenda._idearoot._kids[casa_text]._balancelinks
     assert _balancelinks == {
-        "fun": balancelink_shop(group_id="fun", creditor_weight=1, debtor_weight=7)
+        "fun": balancelink_shop(group_id="fun", credor_weight=1, debtor_weight=7)
     }
     sue_agenda.edit_idea_attr(
         road=casa_road,
-        balancelink=balancelink_shop(
-            group_id="fun", creditor_weight=4, debtor_weight=8
-        ),
+        balancelink=balancelink_shop(group_id="fun", credor_weight=4, debtor_weight=8),
     )
     assert sue_agenda._idearoot._kids[casa_text]._balancelinks == {
-        "fun": balancelink_shop(group_id="fun", creditor_weight=4, debtor_weight=8)
+        "fun": balancelink_shop(group_id="fun", credor_weight=4, debtor_weight=8)
     }
 
     # _is_expanded: dict = None,

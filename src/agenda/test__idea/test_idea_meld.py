@@ -34,7 +34,7 @@ def arbitrarily_set_idea_attr(
     numeric_road: RoadUnit = None,
     range_source_road: float = None,
     descendant_pledge_count: int = None,
-    all_party_credit: bool = None,
+    all_party_cred: bool = None,
     all_party_debt: bool = None,
     balancelink: BalanceLink = None,
     balancelink_del: GroupID = None,
@@ -63,7 +63,7 @@ def arbitrarily_set_idea_attr(
         numeric_road=numeric_road,
         range_source_road=range_source_road,
         descendant_pledge_count=descendant_pledge_count,
-        all_party_credit=all_party_credit,
+        all_party_cred=all_party_cred,
         all_party_debt=all_party_debt,
         balancelink=balancelink,
         balancelink_del=balancelink_del,
@@ -197,19 +197,19 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strat
     default_text = "default"
     arbitrarily_set_idea_attr(idea=x1_idea, meld_strategy=default_text)
     arbitrarily_set_idea_attr(
-        idea=x1_idea, balancelink=balancelink_shop(group_id=br1, creditor_weight=2)
+        idea=x1_idea, balancelink=balancelink_shop(group_id=br1, credor_weight=2)
     )
     x2_idea = ideaunit_shop("Swimming")
     arbitrarily_set_idea_attr(idea=x2_idea, meld_strategy=default_text)
     arbitrarily_set_idea_attr(
-        idea=x2_idea, balancelink=balancelink_shop(group_id=br1, creditor_weight=3)
+        idea=x2_idea, balancelink=balancelink_shop(group_id=br1, credor_weight=3)
     )
 
     # WHEN
     x1_idea.meld(other_idea=x2_idea)
 
     # THEN
-    bl_x = balancelink_shop(group_id=br1, creditor_weight=2)
+    bl_x = balancelink_shop(group_id=br1, credor_weight=2)
     assert x1_idea._balancelinks[br1] == bl_x
 
 
@@ -223,20 +223,20 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strat
     arbitrarily_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     arbitrarily_set_idea_attr(
         idea=x1_idea,
-        balancelink=balancelink_shop(group_id=br1, creditor_weight=2, debtor_weight=3),
+        balancelink=balancelink_shop(group_id=br1, credor_weight=2, debtor_weight=3),
     )
     x2_idea = ideaunit_shop("Swimming")
     arbitrarily_set_idea_attr(idea=x2_idea, meld_strategy=sum_text)
     arbitrarily_set_idea_attr(
         idea=x2_idea,
-        balancelink=balancelink_shop(group_id=br1, creditor_weight=2, debtor_weight=3),
+        balancelink=balancelink_shop(group_id=br1, credor_weight=2, debtor_weight=3),
     )
 
     # WHEN
     x1_idea.meld(other_idea=x2_idea)
 
     # THEN
-    lu_x = balancelink_shop(group_id=br1, creditor_weight=4, debtor_weight=6)
+    lu_x = balancelink_shop(group_id=br1, credor_weight=4, debtor_weight=6)
     assert x1_idea._balancelinks[br1] == lu_x
 
 
@@ -249,22 +249,22 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_TwoGroupsScenario_balancelink():
     br1 = "Running"
     arbitrarily_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     arbitrarily_set_idea_attr(
-        idea=x1_idea, balancelink=balancelink_shop(group_id=br1, creditor_weight=2)
+        idea=x1_idea, balancelink=balancelink_shop(group_id=br1, credor_weight=2)
     )
 
     br2 = "Bears"
     x2_idea = ideaunit_shop("Swimming")
     arbitrarily_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     arbitrarily_set_idea_attr(
-        idea=x2_idea, balancelink=balancelink_shop(group_id=br2, creditor_weight=2)
+        idea=x2_idea, balancelink=balancelink_shop(group_id=br2, credor_weight=2)
     )
 
     # WHEN
     x1_idea.meld(other_idea=x2_idea)
 
     # THEN
-    lu_x1 = balancelink_shop(group_id=br1, creditor_weight=2)
-    lu_x2 = balancelink_shop(group_id=br2, creditor_weight=2)
+    lu_x1 = balancelink_shop(group_id=br1, credor_weight=2)
+    lu_x2 = balancelink_shop(group_id=br2, credor_weight=2)
     assert x1_idea._balancelinks[br1] == lu_x1
     assert x1_idea._balancelinks[br2] == lu_x2
 
@@ -330,7 +330,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
     plate_road = create_road(tech_road, plate_text)
 
     x_uid = "uid1xx"
-    x_all_party_credit = "am_cx"
+    x_all_party_cred = "am_cx"
     x_all_party_debt = "am_dx"
 
     label1_text = "clean"
@@ -349,7 +349,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
         range_source_road=plate_road,
         numeric_road=bowl_road,
         pledge=True,
-        all_party_credit=x_all_party_credit,
+        all_party_cred=x_all_party_cred,
         all_party_debt=x_all_party_debt,
         is_expanded=True,
     )
@@ -369,7 +369,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
         range_source_road=plate_road,
         numeric_road=bowl_road,
         pledge=True,
-        all_party_credit=x_all_party_credit,
+        all_party_cred=x_all_party_cred,
         all_party_debt=x_all_party_debt,
         is_expanded=True,
     )
@@ -389,7 +389,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
     assert x1_idea._range_source_road == plate_road
     assert x1_idea._numeric_road == bowl_road
     assert x1_idea.pledge == True
-    assert x1_idea._all_party_credit == x_all_party_credit
+    assert x1_idea._all_party_cred == x_all_party_cred
     assert x1_idea._all_party_debt == x_all_party_debt
     assert x1_idea._is_expanded == True
     assert x1_idea._agenda_real_id == texas_text
@@ -402,7 +402,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
     plate_road = create_road(tech_road, "plate")
 
     x_uid = "uid1xx"
-    x_all_party_credit = "am_cx"
+    x_all_party_cred = "am_cx"
     x_all_party_debt = "am_dx"
 
     label1_text = "clean"
@@ -421,7 +421,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
         range_source_road=plate_road,
         numeric_road=bowl_road,
         pledge=True,
-        all_party_credit=x_all_party_credit,
+        all_party_cred=x_all_party_cred,
         all_party_debt=x_all_party_debt,
         is_expanded=True,
     )
@@ -443,7 +443,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
         range_source_road=plate_road,
         numeric_road=bowl_road,
         pledge=True,
-        all_party_credit=x_all_party_credit,
+        all_party_cred=x_all_party_cred,
         all_party_debt=x_all_party_debt,
         is_expanded=True,
         meld_strategy=override_text,
@@ -464,7 +464,7 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
     assert x1_idea._range_source_road == plate_road
     assert x1_idea._numeric_road == bowl_road
     assert x1_idea.pledge == True
-    assert x1_idea._all_party_credit == x_all_party_credit
+    assert x1_idea._all_party_cred == x_all_party_cred
     assert x1_idea._all_party_debt == x_all_party_debt
     assert x1_idea._is_expanded == True
     assert x1_idea._agenda_real_id == texas_text
@@ -647,14 +647,14 @@ def test_IdeaUnit_meld_FailRaisesError_action():
     )
 
 
-# def test_IdeaUnit_meld_FailRaisesError_all_party_credit():
+# def test_IdeaUnit_meld_FailRaisesError_all_party_cred():
 # def test_IdeaUnit_meld_FailRaisesError_all_party_debt():
-#     x_attr = "_all_party_credit"
+#     x_attr = "_all_party_cred"
 #     x_attr = "_all_party_debt"
-#     x_val = "test_all_party_credit1"
+#     x_val = "test_all_party_cred1"
 #     x_val = "test_all_party_debt1"
 #     x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
-#     arbitrarily_set_idea_attr(idea=x1_idea, all_party_credit=x_val)
+#     arbitrarily_set_idea_attr(idea=x1_idea, all_party_cred=x_val)
 #     arbitrarily_set_idea_attr(idea=x1_idea, all_party_debt=x_val)
 #     x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 

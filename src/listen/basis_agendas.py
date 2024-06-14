@@ -26,8 +26,8 @@ def create_listen_basis(x_role: AgendaUnit) -> AgendaUnit:
     x_listen._groups = x_role._groups
     x_listen.set_monetary_desc(x_role._monetary_desc)
     x_listen.set_max_tree_traverse(x_role._max_tree_traverse)
-    if x_role._party_creditor_pool != None:
-        x_listen.set_party_creditor_pool(x_role._party_creditor_pool)
+    if x_role._party_credor_pool != None:
+        x_listen.set_party_credor_pool(x_role._party_credor_pool)
     if x_role._party_debtor_pool != None:
         x_listen.set_party_debtor_pool(x_role._party_debtor_pool)
     for x_partyunit in x_listen._partys.values():
@@ -38,6 +38,6 @@ def create_listen_basis(x_role: AgendaUnit) -> AgendaUnit:
 def get_default_work_agenda(duty: AgendaUnit) -> AgendaUnit:
     default_work_agenda = create_listen_basis(duty)
     default_work_agenda._last_atom_id = duty._last_atom_id
-    default_work_agenda._party_creditor_pool = None
+    default_work_agenda._party_credor_pool = None
     default_work_agenda._party_debtor_pool = None
     return default_work_agenda

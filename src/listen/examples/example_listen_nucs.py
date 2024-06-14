@@ -28,7 +28,7 @@ def get_nucunit_carm_example() -> NucUnit:
 
     agendaunit_text = "agendaunit"
     pool_quarkunit = quarkunit_shop(agendaunit_text, quark_update())
-    pool_attribute = "_party_creditor_pool"
+    pool_attribute = "_party_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 77)
     sue_nucunit.set_quarkunit(pool_quarkunit)
 
@@ -49,7 +49,7 @@ def get_nucunit_example1() -> NucUnit:
     x_quarkunit.set_optional_arg(weight_name, 55)
     x_attribute = "_max_tree_traverse"
     x_quarkunit.set_optional_arg(x_attribute, 66)
-    x_attribute = "_party_creditor_pool"
+    x_attribute = "_party_credor_pool"
     x_quarkunit.set_optional_arg(x_attribute, 77)
     x_attribute = "_party_debtor_pool"
     x_quarkunit.set_optional_arg(x_attribute, 88)
@@ -70,7 +70,7 @@ def get_nucunit_example2() -> NucUnit:
 
     agendaunit_text = "agendaunit"
     x_quarkunit = quarkunit_shop(agendaunit_text, quark_update())
-    x_attribute = "_party_creditor_pool"
+    x_attribute = "_party_credor_pool"
     x_quarkunit.set_optional_arg(x_attribute, 77)
 
     category = "agenda_partyunit"

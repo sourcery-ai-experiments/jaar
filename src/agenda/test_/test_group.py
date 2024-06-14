@@ -39,11 +39,10 @@ def test_GroupUnit_exists():
     assert swim_groupunit.group_id == swim_text
     assert swim_groupunit._party_mirror is None
     assert swim_groupunit._partys is None
-    assert swim_groupunit._agenda_credit is None
+    assert swim_groupunit._agenda_cred is None
     assert swim_groupunit._agenda_debt is None
-    assert swim_groupunit._agenda_intent_credit is None
+    assert swim_groupunit._agenda_intent_cred is None
     assert swim_groupunit._agenda_intent_debt is None
-    assert swim_groupunit._treasury_partylinks is None
     assert swim_groupunit._road_delimiter is None
 
 
@@ -54,18 +53,17 @@ def test_groupunit_shop_ReturnsCorrectObj():
     usa_road = create_road(nation_road, "USA")
 
     # WHEN
-    swim_groupunit = groupunit_shop(group_id=swim_text, _treasury_partylinks=usa_road)
+    swim_groupunit = groupunit_shop(group_id=swim_text)
 
     # THEN
     print(f"{swim_text}")
     assert swim_groupunit != None
     assert swim_groupunit.group_id != None
     assert swim_groupunit.group_id == swim_text
-    assert swim_groupunit._agenda_credit == 0
+    assert swim_groupunit._agenda_cred == 0
     assert swim_groupunit._agenda_debt == 0
-    assert swim_groupunit._agenda_intent_credit == 0
+    assert swim_groupunit._agenda_intent_cred == 0
     assert swim_groupunit._agenda_intent_debt == 0
-    assert swim_groupunit._treasury_partylinks == usa_road
     assert swim_groupunit._road_delimiter == default_road_delimiter_if_none()
 
 
@@ -124,46 +122,12 @@ def test_GroupUnit_set_group_id_SetsAttrCorrectly():
     assert swim_group.group_id == water_text
 
 
-def test_GroupUnit_set_attr_SetsAttrCorrectly():
-    # GIVEN
-    swim_text = ",swimmers"
-    swim_group = groupunit_shop(group_id=swim_text)
-    assert swim_group._treasury_partylinks is None
-
-    # WHEN
-    sports_road = create_road(root_label(), "sports")
-    water_road = create_road(sports_road, "water")
-    swim_group.set_attr(_treasury_partylinks=water_road)
-
-    # THEN
-    assert swim_group._treasury_partylinks == water_road
-
-
-def test_groupunit_shop_WhenSinglePartyCorrectlyDeletes_treasury_partylinks():
-    # GIVEN
-    swim_text = ",swimmers"
-    nation_road = create_road(root_label(), "nation-states")
-    usa_road = create_road(nation_road, "USA")
-
-    # WHEN/THEN
-    with pytest_raises(Exception) as excinfo:
-        swimmers_group = groupunit_shop(
-            group_id=swim_text,
-            _party_mirror=True,
-            _treasury_partylinks=usa_road,
-        )
-    assert (
-        str(excinfo.value)
-        == f"_treasury_partylinks cannot be '{usa_road}' for a single_party GroupUnit. It must have no value."
-    )
-
-
 def test_GroupUnit_set_partylink_CorrectlySetsAttr():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(party_id=todd_text, creditor_weight=13, debtor_weight=7)
-    mery_party = partylink_shop(party_id=mery_text, creditor_weight=23, debtor_weight=5)
+    todd_party = partylink_shop(party_id=todd_text, credor_weight=13, debtor_weight=7)
+    mery_party = partylink_shop(party_id=mery_text, credor_weight=23, debtor_weight=5)
 
     swimmers_group = groupunit_shop(group_id=",swimmers", _partys={})
 
@@ -193,23 +157,23 @@ def test_GroupUnit_get_partylink_ReturnsCorrectObj():
 def test_GroupUnit_edit_partylink_CorrectlySetsAttr():
     # GIVEN
     todd_text = "Todd"
-    old_todd_creditor_weight = 13
+    old_todd_credor_weight = 13
     todd_debtor_weight = 7
     swimmers_group = groupunit_shop(group_id=",swimmers")
     swimmers_group.set_partylink(
-        partylink_shop(todd_text, old_todd_creditor_weight, todd_debtor_weight)
+        partylink_shop(todd_text, old_todd_credor_weight, todd_debtor_weight)
     )
     todd_partylink = swimmers_group.get_partylink(todd_text)
-    assert todd_partylink.creditor_weight == old_todd_creditor_weight
+    assert todd_partylink.credor_weight == old_todd_credor_weight
 
     # WHEN
-    new_todd_creditor_weight = 17
+    new_todd_credor_weight = 17
     swimmers_group.edit_partylink(
-        party_id=todd_text, creditor_weight=new_todd_creditor_weight
+        party_id=todd_text, credor_weight=new_todd_credor_weight
     )
 
     # THEN
-    assert todd_partylink.creditor_weight == new_todd_creditor_weight
+    assert todd_partylink.credor_weight == new_todd_credor_weight
 
 
 def test_partylink_exists_ReturnsCorrectObj():
@@ -272,23 +236,23 @@ def test_GroupUnit_reset_agenda_importance_SetsAttrCorrectly():
     # GIVEN
     maria_group_id = "maria"
     maria_groupunit = groupunit_shop(group_id=maria_group_id, _party_mirror=True)
-    maria_groupunit._agenda_credit = 0.33
+    maria_groupunit._agenda_cred = 0.33
     maria_groupunit._agenda_debt = 0.44
-    maria_groupunit._agenda_intent_credit = 0.13
+    maria_groupunit._agenda_intent_cred = 0.13
     maria_groupunit._agenda_intent_debt = 0.23
     print(f"{maria_groupunit}")
-    assert maria_groupunit._agenda_credit == 0.33
+    assert maria_groupunit._agenda_cred == 0.33
     assert maria_groupunit._agenda_debt == 0.44
-    assert maria_groupunit._agenda_intent_credit == 0.13
+    assert maria_groupunit._agenda_intent_cred == 0.13
     assert maria_groupunit._agenda_intent_debt == 0.23
 
     # WHEN
-    maria_groupunit.reset_agenda_credit_debt()
+    maria_groupunit.reset_agenda_cred_debt()
 
     # THEN
-    assert maria_groupunit._agenda_credit == 0
+    assert maria_groupunit._agenda_cred == 0
     assert maria_groupunit._agenda_debt == 0
-    assert maria_groupunit._agenda_intent_credit == 0
+    assert maria_groupunit._agenda_intent_cred == 0
     assert maria_groupunit._agenda_intent_debt == 0
 
 
@@ -298,51 +262,51 @@ def test_GroupUnit_reset_agenda_importance_reset_partylinks():
     mery_text = "Merry"
     todd_party = partylink_shop(
         party_id=todd_text,
-        _agenda_credit=0.13,
+        _agenda_cred=0.13,
         _agenda_debt=0.7,
-        _agenda_intent_credit=0.53,
+        _agenda_intent_cred=0.53,
         _agenda_intent_debt=0.77,
     )
     mery_party = partylink_shop(
         party_id=mery_text,
-        _agenda_credit=0.23,
+        _agenda_cred=0.23,
         _agenda_debt=0.5,
-        _agenda_intent_credit=0.54,
+        _agenda_intent_cred=0.54,
         _agenda_intent_debt=0.57,
     )
     bikers_partys = {todd_party.party_id: todd_party, mery_party.party_id: mery_party}
     bikers_group_id = ",bikers"
     bikers_groupunit = groupunit_shop(group_id=bikers_group_id)
-    bikers_groupunit._agenda_credit = (0.33,)
+    bikers_groupunit._agenda_cred = (0.33,)
     bikers_groupunit._agenda_debt = (0.44,)
-    bikers_groupunit._agenda_intent_credit = (0.1,)
+    bikers_groupunit._agenda_intent_cred = (0.1,)
     bikers_groupunit._agenda_intent_debt = (0.2,)
     bikers_groupunit.set_partylink(partylink=todd_party)
     bikers_groupunit.set_partylink(partylink=mery_party)
     print(f"{bikers_groupunit}")
     biker_partylink_todd = bikers_groupunit._partys.get(todd_text)
-    assert biker_partylink_todd._agenda_credit == 0.13
+    assert biker_partylink_todd._agenda_cred == 0.13
     assert biker_partylink_todd._agenda_debt == 0.7
-    assert biker_partylink_todd._agenda_intent_credit == 0.53
+    assert biker_partylink_todd._agenda_intent_cred == 0.53
     assert biker_partylink_todd._agenda_intent_debt == 0.77
 
     biker_partylink_mery = bikers_groupunit._partys.get(mery_text)
-    assert biker_partylink_mery._agenda_credit == 0.23
+    assert biker_partylink_mery._agenda_cred == 0.23
     assert biker_partylink_mery._agenda_debt == 0.5
-    assert biker_partylink_mery._agenda_intent_credit == 0.54
+    assert biker_partylink_mery._agenda_intent_cred == 0.54
     assert biker_partylink_mery._agenda_intent_debt == 0.57
 
     # WHEN
-    bikers_groupunit.reset_agenda_credit_debt()
+    bikers_groupunit.reset_agenda_cred_debt()
 
     # THEN
-    assert biker_partylink_todd._agenda_credit == 0
+    assert biker_partylink_todd._agenda_cred == 0
     assert biker_partylink_todd._agenda_debt == 0
-    assert biker_partylink_todd._agenda_intent_credit == 0
+    assert biker_partylink_todd._agenda_intent_cred == 0
     assert biker_partylink_todd._agenda_intent_debt == 0
-    assert biker_partylink_mery._agenda_credit == 0
+    assert biker_partylink_mery._agenda_cred == 0
     assert biker_partylink_mery._agenda_debt == 0
-    assert biker_partylink_mery._agenda_intent_credit == 0
+    assert biker_partylink_mery._agenda_intent_cred == 0
     assert biker_partylink_mery._agenda_intent_debt == 0
 
 
@@ -369,8 +333,8 @@ def test_partylink_meld_ReturnsCorrectObj_GainScenario():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(party_id=todd_text, creditor_weight=13, debtor_weight=7)
-    mery_party = partylink_shop(party_id=mery_text, creditor_weight=23, debtor_weight=5)
+    todd_party = partylink_shop(party_id=todd_text, credor_weight=13, debtor_weight=7)
+    mery_party = partylink_shop(party_id=mery_text, credor_weight=23, debtor_weight=5)
     bikers_group_id = ",bikers"
     bikers_group = groupunit_shop(group_id=bikers_group_id, _partys={})
 
@@ -408,13 +372,10 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     todd_group = groupunit_shop(group_id=todd_text, _party_mirror=True)
     sue_text = "Sue"
     todd_group.set_partylink(partylink_shop(party_id=sue_text))
-    x_treasury_partylinks = 44
-    todd_group.set_attr(x_treasury_partylinks)
 
     assert todd_group.group_id == todd_text
     assert todd_group._party_mirror
     assert len(todd_group._partys) == 1
-    assert todd_group._treasury_partylinks == x_treasury_partylinks
 
     # WHEN
     todd_dict = todd_group.get_dict()
@@ -423,7 +384,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     assert todd_dict["group_id"] == todd_text
     assert todd_dict["_party_mirror"]
     assert len(todd_dict["_partys"]) == 1
-    assert todd_dict["_treasury_partylinks"] == x_treasury_partylinks
 
 
 def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
@@ -432,7 +392,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     swim_group = groupunit_shop(group_id=swim_text)
     assert swim_group._party_mirror is False
     assert swim_group._partys == {}
-    assert swim_group._treasury_partylinks is None
 
     # WHEN
     swim_dict = swim_group.get_dict()
@@ -440,7 +399,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # THEN
     assert swim_dict.get("_party_mirror") is None
     assert swim_dict.get("_partys") is None
-    assert swim_dict.get("_treasury_partylinks") is None
 
 
 def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
@@ -460,13 +418,13 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     sue_text = "Marie"
     marie_partylink = partylink_shop(
-        party_id=sue_text, creditor_weight=29, debtor_weight=3
+        party_id=sue_text, credor_weight=29, debtor_weight=3
     )
     partylinks_dict = {marie_partylink.party_id: marie_partylink}
     marie_json_dict = {
         sue_text: {
             "party_id": sue_text,
-            "creditor_weight": 29,
+            "credor_weight": 29,
             "debtor_weight": 3,
         }
     }
@@ -476,7 +434,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     teachers_group = groupunit_shop(
         group_id=teacher_text,
         _partys=partylinks_dict,
-        _treasury_partylinks=swim_road,
     )
 
     # WHEN
@@ -487,7 +444,6 @@ def test_GroupUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     assert teachers_dict == {
         "group_id": teacher_text,
         "_partys": marie_json_dict,
-        "_treasury_partylinks": swim_road,
     }
 
 
@@ -510,24 +466,17 @@ def test_GroupUnit_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     # GIVEN
     sue_text = "Sue"
     marie_partylink = partylink_shop(
-        party_id=sue_text, creditor_weight=29, debtor_weight=3
+        party_id=sue_text, credor_weight=29, debtor_weight=3
     )
     partylinks_dict = {marie_partylink.party_id: marie_partylink}
 
     teacher_text = ",teachers"
     swim_road = "swim"
-    teacher_group = groupunit_shop(
-        group_id=teacher_text,
-        _partys=partylinks_dict,
-        _treasury_partylinks=swim_road,
-    )
+    teacher_group = groupunit_shop(group_id=teacher_text, _partys=partylinks_dict)
     teacher_dict = teacher_group.get_dict()
-    _treasury_partylinks_text = "_treasury_partylinks"
-    print(f"{teacher_dict.get(_treasury_partylinks_text)=}")
     groups_dict = {teacher_text: teacher_dict}
 
     teachers_json = get_json_from_dict(dict_x=groups_dict)
-    print(f"{teachers_json.find(_treasury_partylinks_text)=}")
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
 
@@ -538,8 +487,6 @@ def test_GroupUnit_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     assert groupunits_obj_dict != None
     teachers_obj_check_dict = {teacher_group.group_id: teacher_group}
     print(f"    {groupunits_obj_dict=}")
-    treasury_partylinks_text = "_treasury_partylinks"
-    print(f"{teachers_obj_check_dict.get(treasury_partylinks_text)=}")
     print(f"{teachers_obj_check_dict=}")
     assert groupunits_obj_dict == teachers_obj_check_dict
 
@@ -573,62 +520,62 @@ def test_BalanceLink_exists():
 
     # THEN
     assert bikers_balancelink.group_id == bikers_group_id
-    assert bikers_balancelink.creditor_weight == 1.0
+    assert bikers_balancelink.credor_weight == 1.0
     assert bikers_balancelink.debtor_weight == 1.0
 
 
 def test_balancelink_shop_ReturnsCorrectObj():
     # GIVEN
     bikers_group_id = GroupID("bikers")
-    bikers_creditor_weight = 3.0
+    bikers_credor_weight = 3.0
     bikers_debtor_weight = 5.0
 
     # WHEN
     bikers_balancelink = balancelink_shop(
         group_id=bikers_group_id,
-        creditor_weight=bikers_creditor_weight,
+        credor_weight=bikers_credor_weight,
         debtor_weight=bikers_debtor_weight,
     )
 
     # THEN
-    assert bikers_balancelink.creditor_weight == bikers_creditor_weight
+    assert bikers_balancelink.credor_weight == bikers_credor_weight
     assert bikers_balancelink.debtor_weight == bikers_debtor_weight
 
 
 def test_BalanceHeir_set_agenda_importance_CorrectlySetsAttr():
     # GIVEN
     bikers_group_id = GroupID("bikers")
-    bikers_creditor_weight = 3.0
+    bikers_credor_weight = 3.0
     bikers_debt_weight = 6.0
-    balancelinks_sum_creditor_weight = 60
+    balancelinks_sum_credor_weight = 60
     balancelinks_sum_debtor_weight = 60
     idea_agenda_importance = 1
     group_heir_x = balanceheir_shop(
         group_id=bikers_group_id,
-        creditor_weight=bikers_creditor_weight,
+        credor_weight=bikers_credor_weight,
         debtor_weight=bikers_debt_weight,
     )
 
     # WHEN
-    group_heir_x.set_agenda_credit_debt(
+    group_heir_x.set_agenda_cred_debt(
         idea_agenda_importance=idea_agenda_importance,
-        balanceheirs_creditor_weight_sum=balancelinks_sum_creditor_weight,
+        balanceheirs_credor_weight_sum=balancelinks_sum_credor_weight,
         balanceheirs_debtor_weight_sum=balancelinks_sum_debtor_weight,
     )
 
     # THEN
-    assert group_heir_x._agenda_credit == 0.05
+    assert group_heir_x._agenda_cred == 0.05
     assert group_heir_x._agenda_debt == 0.1
 
 
 def test_BalanceLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     bikers_group_id = GroupID("bikers")
-    bikers_creditor_weight = 3.0
+    bikers_credor_weight = 3.0
     bikers_debtor_weight = 5.0
     bikers_link = balancelink_shop(
         group_id=bikers_group_id,
-        creditor_weight=bikers_creditor_weight,
+        credor_weight=bikers_credor_weight,
         debtor_weight=bikers_debtor_weight,
     )
 
@@ -641,7 +588,7 @@ def test_BalanceLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     assert biker_dict != None
     assert biker_dict == {
         "group_id": bikers_link.group_id,
-        "creditor_weight": bikers_link.creditor_weight,
+        "credor_weight": bikers_link.credor_weight,
         "debtor_weight": bikers_link.debtor_weight,
     }
 
@@ -650,7 +597,7 @@ def test_balancelinks_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     # GIVEN
     teacher_text = "teachers"
     teacher_balancelink = balancelink_shop(
-        group_id=teacher_text, creditor_weight=103, debtor_weight=155
+        group_id=teacher_text, credor_weight=103, debtor_weight=155
     )
     teacher_dict = teacher_balancelink.get_dict()
     balancelinks_dict = {teacher_balancelink.group_id: teacher_dict}
@@ -673,19 +620,19 @@ def test_balancelinks_get_from_JSON_ReturnsCorrectObj_SimpleExample():
 def test_BalanceLine_exists():
     # GIVEN
     bikers_group_id = GroupID("bikers")
-    bikers_agenda_credit = 0.33
+    bikers_agenda_cred = 0.33
     bikers_agenda_debt = 0.55
 
     # WHEN
     bikers_balanceline = BalanceLine(
         group_id=bikers_group_id,
-        _agenda_credit=bikers_agenda_credit,
+        _agenda_cred=bikers_agenda_cred,
         _agenda_debt=bikers_agenda_debt,
     )
 
     # THEN
     assert bikers_balanceline.group_id == bikers_group_id
-    assert bikers_balanceline._agenda_credit == bikers_agenda_credit
+    assert bikers_balanceline._agenda_cred == bikers_agenda_cred
     assert bikers_balanceline._agenda_debt == bikers_agenda_debt
 
 
@@ -693,35 +640,35 @@ def test_balanceline_shop_ReturnsCorrectObj_exists():
     # GIVEN
     bikers_group_id = GroupID("bikers")
     bikers_group_id = bikers_group_id
-    bikers_agenda_credit = 0.33
+    bikers_agenda_cred = 0.33
     bikers_agenda_debt = 0.55
 
     # WHEN
     biker_balanceline = balanceline_shop(
         group_id=bikers_group_id,
-        _agenda_credit=bikers_agenda_credit,
+        _agenda_cred=bikers_agenda_cred,
         _agenda_debt=bikers_agenda_debt,
     )
 
     assert biker_balanceline != None
     assert biker_balanceline.group_id == bikers_group_id
-    assert biker_balanceline._agenda_credit == bikers_agenda_credit
+    assert biker_balanceline._agenda_cred == bikers_agenda_cred
     assert biker_balanceline._agenda_debt == bikers_agenda_debt
 
 
-def test_BalanceLine_add_agenda_credit_debt_CorrectlyModifiesAttr():
+def test_BalanceLine_add_agenda_cred_debt_CorrectlyModifiesAttr():
     # GIVEN
     bikers_group_id = GroupID("bikers")
     bikers_balanceline = balanceline_shop(
-        group_id=bikers_group_id, _agenda_credit=0.33, _agenda_debt=0.55
+        group_id=bikers_group_id, _agenda_cred=0.33, _agenda_debt=0.55
     )
     assert bikers_balanceline.group_id == bikers_group_id
-    assert bikers_balanceline._agenda_credit == 0.33
+    assert bikers_balanceline._agenda_cred == 0.33
     assert bikers_balanceline._agenda_debt == 0.55
 
     # WHEN
-    bikers_balanceline.add_agenda_credit_debt(agenda_credit=0.11, agenda_debt=0.2)
+    bikers_balanceline.add_agenda_cred_debt(agenda_cred=0.11, agenda_debt=0.2)
 
     # THEN
-    assert bikers_balanceline._agenda_credit == 0.44
+    assert bikers_balanceline._agenda_cred == 0.44
     assert bikers_balanceline._agenda_debt == 0.75

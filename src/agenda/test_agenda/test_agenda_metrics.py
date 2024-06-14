@@ -64,13 +64,13 @@ def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     zia_agenda.set_partyunit(partyunit=au_carm)
     zia_agenda.set_partyunit(partyunit=au_patr)
     zia_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(group_id=GroupID(rico_text), creditor_weight=10)
+        balancelink=balancelink_shop(group_id=GroupID(rico_text), credor_weight=10)
     )
     zia_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(group_id=GroupID(carm_text), creditor_weight=10)
+        balancelink=balancelink_shop(group_id=GroupID(carm_text), credor_weight=10)
     )
     zia_agenda._idearoot.set_balancelink(
-        balancelink=balancelink_shop(group_id=GroupID(patr_text), creditor_weight=10)
+        balancelink=balancelink_shop(group_id=GroupID(patr_text), credor_weight=10)
     )
 
     # WHEN

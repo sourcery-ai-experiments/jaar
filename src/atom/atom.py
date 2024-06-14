@@ -5,7 +5,7 @@ from src._instrument.python import (
     get_dict_from_json,
 )
 from src._road.jaar_config import get_init_atom_id_if_None, get_json_filename
-from src._road.road import PersonID
+from src._road.road import PersonID, RealID, get_default_real_id_roadnode
 from src.atom.quark import QuarkUnit, get_from_json as quarkunit_get_from_json
 from src.atom.nuc import NucUnit, nucunit_shop
 from dataclasses import dataclass
@@ -14,7 +14,8 @@ from os.path import exists as os_path_exists
 
 @dataclass
 class AtomUnit:
-    _giver: PersonID = None
+    real_id: RealID = None
+    person_id: PersonID = None
     _atom_id: int = None
     _faces: set[PersonID] = None
     _nucunit: NucUnit = None
@@ -45,7 +46,8 @@ class AtomUnit:
 
     def get_step_dict(self) -> dict[str:]:
         return {
-            "giver": self._giver,
+            "real_id": self.real_id,
+            "person_id": self.person_id,
             "faces": {x_face: 1 for x_face in self._faces},
             "nuc": self._nucunit.get_ordered_quarkunits(self._nuc_start),
         }
@@ -57,7 +59,7 @@ class AtomUnit:
     def get_nucmetric_dict(self) -> dict:
         x_dict = self.get_step_dict()
         return {
-            "giver": x_dict.get("giver"),
+            "person_id": x_dict.get("person_id"),
             "faces": x_dict.get("faces"),
             "nuc_quark_numbers": self.get_nuc_quark_numbers(x_dict),
         }
@@ -107,7 +109,8 @@ class AtomUnit:
 
 
 def atomunit_shop(
-    _giver: PersonID,
+    person_id: PersonID,
+    real_id: RealID = None,
     _atom_id: int = None,
     _faces: set[PersonID] = None,
     _nucunit: NucUnit = None,
@@ -117,8 +120,11 @@ def atomunit_shop(
 ):
     if _nucunit is None:
         _nucunit = nucunit_shop()
+    if real_id is None:
+        real_id = get_default_real_id_roadnode()
     x_atomunit = AtomUnit(
-        _giver=_giver,
+        real_id=real_id,
+        person_id=person_id,
         _atom_id=get_init_atom_id_if_None(_atom_id),
         _faces=get_empty_set_if_none(_faces),
         _nucunit=_nucunit,
@@ -136,9 +142,16 @@ def create_atomunit_from_files(
 ) -> AtomUnit:
     atom_filename = get_json_filename(atom_id)
     atom_dict = get_dict_from_json(open_file(atoms_dir, atom_filename))
-    x_giver = atom_dict.get("giver")
+    x_person_id = atom_dict.get("person_id")
+    x_real_id = atom_dict.get("real_id")
     x_faces = set(atom_dict.get("faces").keys())
     nuc_quark_numbers_list = atom_dict.get("nuc_quark_numbers")
-    x_atomunit = atomunit_shop(x_giver, atom_id, x_faces, _quarks_dir=quarks_dir)
+    x_atomunit = atomunit_shop(
+        person_id=x_person_id,
+        real_id=x_real_id,
+        _atom_id=atom_id,
+        _faces=x_faces,
+        _quarks_dir=quarks_dir,
+    )
     x_atomunit._create_nucunit_from_quark_files(nuc_quark_numbers_list)
     return x_atomunit

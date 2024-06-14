@@ -274,8 +274,8 @@ class UserHub:
             x_atomunit._atoms_dir = self.atoms_dir()
         if x_atomunit._atom_id != self._get_next_atom_file_number():
             x_atomunit._atom_id = self._get_next_atom_file_number()
-        if x_atomunit._giver != self.person_id:
-            x_atomunit._giver = self.person_id
+        if x_atomunit.person_id != self.person_id:
+            x_atomunit.person_id = self.person_id
         if x_atomunit._nuc_start != self._get_next_quark_file_number():
             x_atomunit._nuc_start = self._get_next_quark_file_number()
         return x_atomunit
@@ -297,9 +297,9 @@ class UserHub:
             raise SaveAtomFileException(
                 f"AtomUnit file cannot be saved because atomunit._atoms_dir is incorrect: {x_atom._atoms_dir}. It must be {self.atoms_dir()}."
             )
-        if x_atom._giver != self.person_id:
+        if x_atom.person_id != self.person_id:
             raise SaveAtomFileException(
-                f"AtomUnit file cannot be saved because atomunit._giver is incorrect: {x_atom._giver}. It must be {self.person_id}."
+                f"AtomUnit file cannot be saved because atomunit.person_id is incorrect: {x_atom.person_id}. It must be {self.person_id}."
             )
         atom_filename = self.atom_file_name(x_atom._atom_id)
         if not replace and self.atom_file_exists(x_atom._atom_id):
@@ -314,7 +314,7 @@ class UserHub:
 
     def _default_atomunit(self) -> AtomUnit:
         return atomunit_shop(
-            _giver=self.person_id,
+            person_id=self.person_id,
             _atom_id=self._get_next_atom_file_number(),
             _quarks_dir=self.quarks_dir(),
             _atoms_dir=self.atoms_dir(),
@@ -350,7 +350,7 @@ class UserHub:
 
     def _create_initial_atom_files_from_default(self):
         x_atomunit = atomunit_shop(
-            _giver=self.person_id,
+            person_id=self.person_id,
             _atom_id=get_init_atom_id_if_None(),
             _atoms_dir=self.atoms_dir(),
             _quarks_dir=self.quarks_dir(),
@@ -478,37 +478,6 @@ class UserHub:
     def delete_treasury_db_file(self):
         delete_dir(self.treasury_db_path())
 
-    def rolejob_role_file_name(self, speaker_id: PersonID) -> str:
-        return get_json_filename(speaker_id)
-
-    def rolejob_role_dir(self, healer_id: PersonID) -> str:
-        healer_userhub = userhub_shop(
-            self.reals_dir, self.real_id, healer_id, self.econ_road
-        )
-        return healer_userhub.jobs_dir()
-
-    def rj_speaker_file_path(self, healer_id: PersonID, speaker_id: PersonID) -> str:
-        reals_dir = self.reals_dir
-        real_id = self.real_id
-        healer_userhub = userhub_shop(reals_dir, real_id, healer_id, self.econ_road)
-        return healer_userhub.job_path(owner_id=speaker_id)
-
-    def dw_speaker_file_name(self, person_id: PersonID) -> str:
-        return get_json_filename(person_id)
-
-    def dw_speaker_dir(self, x_person_id: PersonID) -> str:
-        speaker_userhub = userhub_shop(
-            reals_dir=self.reals_dir,
-            real_id=self.real_id,
-            person_id=x_person_id,
-            road_delimiter=self.road_delimiter,
-            planck=self.planck,
-        )
-        return speaker_userhub.work_dir()
-
-    def dw_speaker_file_path(self, x_person_id: PersonID) -> str:
-        return f"{self.dw_speaker_dir(x_person_id)}/{self.dw_speaker_file_name(x_person_id)}"
-
     def dw_speaker_agenda(self, speaker_id: PersonID) -> AgendaUnit:
         speaker_userhub = userhub_shop(
             reals_dir=self.reals_dir,
@@ -518,21 +487,6 @@ class UserHub:
             planck=self.planck,
         )
         return speaker_userhub.get_work_agenda()
-
-    def jw_speaker_dir(self, x_person_id: PersonID, x_econ_path: RoadUnit) -> str:
-        speaker_userhub = userhub_shop(
-            reals_dir=self.reals_dir,
-            real_id=self.real_id,
-            person_id=x_person_id,
-            econ_road=x_econ_path,
-            road_delimiter=self.road_delimiter,
-            planck=self.planck,
-        )
-        return speaker_userhub.jobs_dir()
-
-    def jw_speaker_file_path(self, x_person_id: PersonID, x_econ_path: RoadUnit) -> str:
-        jw_dir = self.jw_speaker_dir(x_person_id, x_econ_path)
-        return f"{jw_dir}/{self.owner_file_name(self.person_id)}"
 
     def get_perspective_agenda(self, speaker: AgendaUnit) -> AgendaUnit:
         # get copy of agenda without any metrics

@@ -29,10 +29,10 @@ from src.listen.listen import (
 def test_allocate_irrational_debtor_weight_CorrectlySetsAgendaAttr():
     yao_text = "Yao"
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     yao_agenda = agendaunit_shop(yao_text)
-    yao_agenda.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_agenda.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     zia_partyunit = yao_agenda.get_party(zia_text)
     assert zia_partyunit._irrational_debtor_weight == 0
 

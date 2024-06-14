@@ -29,7 +29,7 @@ def test_AgendaUnit_Exists():
     assert x_agenda._planck is None
     assert x_agenda._penny is None
     assert x_agenda._monetary_desc is None
-    assert x_agenda._party_creditor_pool is None
+    assert x_agenda._party_credor_pool is None
     assert x_agenda._party_debtor_pool is None
     assert x_agenda._last_atom_id is None
     assert x_agenda._meld_strategy is None
@@ -76,7 +76,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._planck == five_planck
     assert x_agenda._penny == penny_float
     assert x_agenda._monetary_desc is None
-    assert x_agenda._party_creditor_pool is None
+    assert x_agenda._party_credor_pool is None
     assert x_agenda._party_debtor_pool is None
     assert x_agenda._last_atom_id is None
     assert x_agenda._meld_strategy == override_meld_strategy

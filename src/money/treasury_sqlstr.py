@@ -258,16 +258,16 @@ WHERE cash_master = '{cash_owner_id}'
 
 def get_river_block_table_create_sqlstr() -> str:
     """Table that stores each block of cash from src_owner_id to dst_owner_id.
-    cash_master: every cash starts with a owner_id as credit source
+    cash_master: every cash starts with a owner_id as cred source
         All river blocks with destination cash owner_id stop. For that cash range
         there is no more block
-    src_owner_id: owner_id that is source of credit
-    dst_owner_id: owner_id that is destination of credit.
+    src_owner_id: owner_id that is source of cred
+    dst_owner_id: owner_id that is destination of cred.
     cash_start: range of cash influenced start
     cash_close: range of cash influenced close
     block_num: the sequence number of transactions before this one
     parent_block_num: river blocks can have multiple children but only one parent
-    river_tree_level: how many ancestors between cash_master first credit outblock
+    river_tree_level: how many ancestors between cash_master first cred outblock
         and this river block
     JSchalk 24 Oct 2023
     """
@@ -396,8 +396,8 @@ def get_river_circle_table_insert_sqlstr(cash_owner_id: str) -> str:
     """Table that stores discontinuous cash ranges that circle back from source (cash_master)
     to final destination (cash_master)
     Columns
-    cash_master: every cash starts with a owner_id as credit source
-    dst_owner_id: owner_id that is destination of credit.
+    cash_master: every cash starts with a owner_id as cred source
+    dst_owner_id: owner_id that is destination of cred.
         All river blocks with destination owner_id are summed into ranges called circles
     circle_num: all destination owner_id circles have a unique number. (sequential 0, 1, 2...)
     cash_start: range of circle start
@@ -485,7 +485,7 @@ class PartyTreasuryUnit:
     due_total: float
     debt: float
     due_diff: float
-    credit_score: float
+    cred_score: float
     voice_rank: int
 
 
@@ -514,7 +514,7 @@ WHERE cash_master = '{cash_owner_id}'
             due_total=row[2],
             debt=row[3],
             due_diff=row[4],
-            credit_score=None,
+            cred_score=None,
             voice_rank=None,
         )
         dict_x[partytreasuryunit_x.due_owner_id] = partytreasuryunit_x
@@ -596,17 +596,17 @@ def get_agenda_partyunit_table_create_sqlstr() -> str:
 CREATE TABLE IF NOT EXISTS agenda_partyunit (
   owner_id VARCHAR(255) NOT NULL 
 , party_id VARCHAR(255) NOT NULL
-, _agenda_credit FLOAT
+, _agenda_cred FLOAT
 , _agenda_debt FLOAT
-, _agenda_intent_credit FLOAT
+, _agenda_intent_cred FLOAT
 , _agenda_intent_debt FLOAT
-, _agenda_intent_ratio_credit FLOAT
+, _agenda_intent_ratio_cred FLOAT
 , _agenda_intent_ratio_debt FLOAT
-, _creditor_operational INT
+, _credor_operational INT
 , _debtor_operational INT
 , _treasury_due_paid FLOAT
 , _treasury_due_diff FLOAT
-, _treasury_credit_score FLOAT
+, _treasury_cred_score FLOAT
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
 , FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
@@ -639,12 +639,12 @@ WHERE EXISTS (
 """
 
 
-def get_agenda_partyunit_table_update_credit_score_sqlstr(
+def get_agenda_partyunit_table_update_cred_score_sqlstr(
     cash_owner_id: PersonID,
 ) -> str:
     return f"""
 UPDATE agenda_partyunit
-SET _treasury_credit_score = (
+SET _treasury_cred_score = (
     SELECT SUM(reach_coin_close - reach_coin_start) range_sum
     FROM river_reach reach
     WHERE reach.cash_master = agenda_partyunit.owner_id
@@ -665,7 +665,7 @@ SET _treasury_voice_rank =
     SELECT rn
     FROM (
         SELECT p2.party_id
-        , row_number() over (order by p2._treasury_credit_score DESC) rn
+        , row_number() over (order by p2._treasury_cred_score DESC) rn
         FROM agenda_partyunit p2
         WHERE p2.owner_id = '{owner_id}'
     ) p3
@@ -679,39 +679,39 @@ WHERE agenda_partyunit.owner_id = '{owner_id}'
 def get_agenda_partyunit_table_insert_sqlstr(
     x_agenda: AgendaUnit, x_partyunit: PartyUnit
 ) -> str:
-    """Create table that holds a the output credit metrics."""
+    """Create table that holds a the output cred metrics."""
     return f"""
 INSERT INTO agenda_partyunit (
   owner_id
 , party_id
-, _agenda_credit
+, _agenda_cred
 , _agenda_debt
-, _agenda_intent_credit
+, _agenda_intent_cred
 , _agenda_intent_debt
-, _agenda_intent_ratio_credit
+, _agenda_intent_ratio_cred
 , _agenda_intent_ratio_debt
-, _creditor_operational
+, _credor_operational
 , _debtor_operational
 , _treasury_due_paid
 , _treasury_due_diff
-, _treasury_credit_score
+, _treasury_cred_score
 , _treasury_voice_rank
 , _treasury_voice_hx_lowest_rank
 )
 VALUES (
   '{x_agenda._owner_id}' 
 , '{x_partyunit.party_id}'
-, {sqlite_null(x_partyunit._agenda_credit)} 
+, {sqlite_null(x_partyunit._agenda_cred)} 
 , {sqlite_null(x_partyunit._agenda_debt)}
-, {sqlite_null(x_partyunit._agenda_intent_credit)}
+, {sqlite_null(x_partyunit._agenda_intent_cred)}
 , {sqlite_null(x_partyunit._agenda_intent_debt)}
-, {sqlite_null(x_partyunit._agenda_intent_ratio_credit)}
+, {sqlite_null(x_partyunit._agenda_intent_ratio_cred)}
 , {sqlite_null(x_partyunit._agenda_intent_ratio_debt)}
-, {sqlite_bool(x_partyunit._creditor_operational)}
+, {sqlite_bool(x_partyunit._credor_operational)}
 , {sqlite_bool(x_partyunit._debtor_operational)}
 , {sqlite_null(x_partyunit._treasury_due_paid)}
 , {sqlite_null(x_partyunit._treasury_due_diff)}
-, {sqlite_null(x_partyunit._treasury_credit_score)}
+, {sqlite_null(x_partyunit._treasury_cred_score)}
 , {sqlite_null(x_partyunit._treasury_voice_rank)}
 , {sqlite_null(x_partyunit._treasury_voice_hx_lowest_rank)}
 )
@@ -731,17 +731,17 @@ def get_partyview_dict(
 SELECT 
   owner_id
 , party_id
-, _agenda_credit
+, _agenda_cred
 , _agenda_debt
-, _agenda_intent_credit
+, _agenda_intent_cred
 , _agenda_intent_debt
-, _agenda_intent_ratio_credit
+, _agenda_intent_ratio_cred
 , _agenda_intent_ratio_debt
-, _creditor_operational
+, _credor_operational
 , _debtor_operational
 , _treasury_due_paid
 , _treasury_due_diff
-, _treasury_credit_score
+, _treasury_cred_score
 , _treasury_voice_rank
 , _treasury_voice_hx_lowest_rank
 FROM agenda_partyunit
@@ -755,17 +755,17 @@ WHERE owner_id = '{payer_owner_id}'
         partyview_x = PartyDBUnit(
             owner_id=row[0],
             party_id=row[1],
-            _agenda_credit=row[2],
+            _agenda_cred=row[2],
             _agenda_debt=row[3],
-            _agenda_intent_credit=row[4],
+            _agenda_intent_cred=row[4],
             _agenda_intent_debt=row[5],
-            _agenda_intent_ratio_credit=row[6],
+            _agenda_intent_ratio_cred=row[6],
             _agenda_intent_ratio_debt=row[7],
-            _creditor_operational=row[8],
+            _credor_operational=row[8],
             _debtor_operational=row[9],
             _treasury_due_paid=row[10],
             _treasury_due_diff=row[11],
-            _treasury_credit_score=row[12],
+            _treasury_cred_score=row[12],
             _treasury_voice_rank=row[13],
             _treasury_voice_hx_lowest_rank=row[14],
         )
@@ -920,7 +920,6 @@ def get_agenda_groupunit_table_create_sqlstr() -> str:
 CREATE TABLE IF NOT EXISTS agenda_groupunit (
   owner_id VARCHAR(255) NOT NULL
 , groupunit_group_id VARCHAR(1000) NOT NULL
-, treasury_partylinks VARCHAR(1000) NULL
 )
 ;
 """
@@ -938,7 +937,6 @@ def get_agenda_groupunit_row_count(db_conn: Connection, owner_id: str) -> str:
 class GroupUnitCatalog:
     owner_id: str
     groupunit_group_id: str
-    treasury_partylinks: str
 
 
 def get_agenda_groupunit_table_insert_sqlstr(
@@ -948,12 +946,10 @@ def get_agenda_groupunit_table_insert_sqlstr(
 INSERT INTO agenda_groupunit (
   owner_id
 , groupunit_group_id
-, treasury_partylinks
 )
 VALUES (
   '{agenda_groupunit.owner_id}'
 , '{agenda_groupunit.groupunit_group_id}'
-, '{agenda_groupunit.treasury_partylinks}'
 )
 ;
 """
@@ -964,7 +960,6 @@ def get_agenda_groupunit_dict(db_conn: Connection) -> dict[str:GroupUnitCatalog]
 SELECT 
   owner_id
 , groupunit_group_id
-, treasury_partylinks
 FROM agenda_groupunit
 ;
 """
@@ -973,9 +968,7 @@ FROM agenda_groupunit
     dict_x = {}
     for row in results.fetchall():
         agenda_groupunit_x = GroupUnitCatalog(
-            owner_id=row[0],
-            groupunit_group_id=row[1],
-            treasury_partylinks=row[2],
+            owner_id=row[0], groupunit_group_id=row[1]
         )
         dict_key = (
             f"{agenda_groupunit_x.owner_id} {agenda_groupunit_x.groupunit_group_id}"
@@ -1075,39 +1068,39 @@ VALUES (
 def get_agenda_partyunit_table_insert_sqlstr(
     x_agenda: AgendaUnit, x_partyunit: PartyUnit
 ) -> str:
-    """Create table that holds a the output credit metrics."""
+    """Create table that holds a the output cred metrics."""
     return f"""
 INSERT INTO agenda_partyunit (
   owner_id
 , party_id
-, _agenda_credit
+, _agenda_cred
 , _agenda_debt
-, _agenda_intent_credit
+, _agenda_intent_cred
 , _agenda_intent_debt
-, _agenda_intent_ratio_credit
+, _agenda_intent_ratio_cred
 , _agenda_intent_ratio_debt
-, _creditor_operational
+, _credor_operational
 , _debtor_operational
 , _treasury_due_paid
 , _treasury_due_diff
-, _treasury_credit_score
+, _treasury_cred_score
 , _treasury_voice_rank
 , _treasury_voice_hx_lowest_rank
 )
 VALUES (
   '{x_agenda._owner_id}' 
 , '{x_partyunit.party_id}'
-, {sqlite_null(x_partyunit._agenda_credit)} 
+, {sqlite_null(x_partyunit._agenda_cred)} 
 , {sqlite_null(x_partyunit._agenda_debt)}
-, {sqlite_null(x_partyunit._agenda_intent_credit)}
+, {sqlite_null(x_partyunit._agenda_intent_cred)}
 , {sqlite_null(x_partyunit._agenda_intent_debt)}
-, {sqlite_null(x_partyunit._agenda_intent_ratio_credit)}
+, {sqlite_null(x_partyunit._agenda_intent_ratio_cred)}
 , {sqlite_null(x_partyunit._agenda_intent_ratio_debt)}
-, {sqlite_bool(x_partyunit._creditor_operational)}
+, {sqlite_bool(x_partyunit._credor_operational)}
 , {sqlite_bool(x_partyunit._debtor_operational)}
 , {sqlite_null(x_partyunit._treasury_due_paid)}
 , {sqlite_null(x_partyunit._treasury_due_diff)}
-, {sqlite_null(x_partyunit._treasury_credit_score)}
+, {sqlite_null(x_partyunit._treasury_cred_score)}
 , {sqlite_null(x_partyunit._treasury_voice_rank)}
 , {sqlite_null(x_partyunit._treasury_voice_hx_lowest_rank)}
 )

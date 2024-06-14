@@ -88,7 +88,7 @@ def get_nucunit_carm_example() -> NucUnit:
 
     agendaunit_text = "agendaunit"
     pool_quarkunit = quarkunit_shop(agendaunit_text, quark_update())
-    pool_attribute = "_party_creditor_pool"
+    pool_attribute = "_party_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 77)
     sue_nucunit.set_quarkunit(pool_quarkunit)
 

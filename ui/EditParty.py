@@ -111,18 +111,18 @@ class EditParty(qtw.QTableWidget, Ui_Form):
 
             self.party_table.setRowCount(row)
             self.party_table.setItem(row - 1, 0, qtw.QTableWidgetItem(party.pid))
-            qt_agenda_credit = qtw.QTableWidgetItem(
-                agenda_importance_diplay(party._agenda_credit)
+            qt_agenda_cred = qtw.QTableWidgetItem(
+                agenda_importance_diplay(party._agenda_cred)
             )
             qt_agenda_debt = qtw.QTableWidgetItem(
                 agenda_importance_diplay(party._agenda_debt)
             )
             self.party_table.setItem(row - 1, 1, qtw.QTableWidgetItem(single_group))
             self.party_table.setItem(row - 1, 2, qtw.QTableWidgetItem("#"))
-            self.party_table.setItem(row - 1, 3, qt_agenda_credit)
+            self.party_table.setItem(row - 1, 3, qt_agenda_cred)
             # self.party_table.setItem(row - 1, 3, qt_agenda_debt)
             self.party_table.setItem(
-                row - 1, 4, qtw.QTableWidgetItem(f"{party.creditor_weight}")
+                row - 1, 4, qtw.QTableWidgetItem(f"{party.credor_weight}")
             )
             # self.party_table.setItem(
             #     row - 1, 4, qtw.QTableWidgetItem(f"{party.debtor_weight}")

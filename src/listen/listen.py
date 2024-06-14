@@ -41,9 +41,11 @@ def _allocate_irrational_debtor_weight(
     return listener
 
 
-def _allocate_missing_debtor_weight(listener: AgendaUnit, speaker_owner_id: PersonID):
+def _allocate_inallocable_debtor_weight(
+    listener: AgendaUnit, speaker_owner_id: PersonID
+):
     speaker_partyunit = listener.get_party(speaker_owner_id)
-    speaker_partyunit.add_missing_debtor_weight(speaker_partyunit.debtor_weight)
+    speaker_partyunit.add_inallocable_debtor_weight(speaker_partyunit.debtor_weight)
     return listener
 
 
@@ -199,15 +201,14 @@ def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> Agend
     perspective_agenda = get_speaker_perspective(speaker, listener._owner_id)
     if perspective_agenda._rational is False:
         return _allocate_irrational_debtor_weight(listener, speaker._owner_id)
-
     if listener._party_debtor_pool is None:
-        return _allocate_missing_debtor_weight(listener, speaker._owner_id)
+        return _allocate_inallocable_debtor_weight(listener, speaker._owner_id)
     if listener._owner_id != speaker._owner_id:
         intent = generate_perspective_intent(perspective_agenda)
     else:
         intent = list(perspective_agenda.get_all_pledges().values())
     if len(intent) == 0:
-        return _allocate_missing_debtor_weight(listener, speaker._owner_id)
+        return _allocate_inallocable_debtor_weight(listener, speaker._owner_id)
     return _ingest_perspective_intent(listener, intent)
 
 

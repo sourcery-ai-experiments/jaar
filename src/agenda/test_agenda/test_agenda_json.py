@@ -38,9 +38,9 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     x_agenda._originunit.set_originlink(yao_text, 1)
     agenda_weight = 23
     x_agenda._weight = agenda_weight
-    x_party_creditor_pool = 22
+    x_party_credor_pool = 22
     x_party_debtor_pool = 22
-    x_agenda.set_party_creditor_pool(x_party_creditor_pool)
+    x_agenda.set_party_credor_pool(x_party_credor_pool)
     x_agenda.set_party_debtor_pool(x_party_debtor_pool)
     override_text = "override"
     x_agenda.set_meld_strategy(override_text)
@@ -59,7 +59,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     assert agenda_dict["_weight"] == agenda_weight
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
     assert agenda_dict["_road_delimiter"] == x_agenda._road_delimiter
-    assert agenda_dict["_party_creditor_pool"] == x_agenda._party_creditor_pool
+    assert agenda_dict["_party_credor_pool"] == x_agenda._party_credor_pool
     assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
     assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
     assert agenda_dict["_meld_strategy"] == x_agenda._meld_strategy
@@ -213,8 +213,8 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     assert agenda_dict["_planck"] == zia_agenda._planck
     assert agenda_dict["_penny"] == zia_agenda._penny
     with pytest_raises(Exception) as excinfo:
-        agenda_dict["_party_creditor_pool"]
-    assert str(excinfo.value) == "'_party_creditor_pool'"
+        agenda_dict["_party_credor_pool"]
+    assert str(excinfo.value) == "'_party_credor_pool'"
     with pytest_raises(Exception) as excinfo:
         agenda_dict["_party_debtor_pool"]
     assert str(excinfo.value) == "'_party_debtor_pool'"
@@ -304,9 +304,9 @@ def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():
     zia_agenda._planck = zia_planck
     zia_penny = 0.07
     zia_agenda._penny = zia_penny
-    zia_party_creditor_pool = 2
+    zia_party_credor_pool = 2
     zia_party_debtor_pool = 2
-    zia_agenda.set_party_creditor_pool(zia_party_creditor_pool)
+    zia_agenda.set_party_credor_pool(zia_party_credor_pool)
     zia_agenda.set_party_debtor_pool(zia_party_debtor_pool)
     zia_last_atom_id = 73
     zia_agenda.set_last_atom_id(zia_last_atom_id)
@@ -366,9 +366,9 @@ def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_agenda._max_tree_traverse == 23
     assert json_agenda._max_tree_traverse == zia_agenda._max_tree_traverse
     assert json_agenda._road_delimiter == zia_agenda._road_delimiter
-    assert json_agenda._party_creditor_pool == zia_agenda._party_creditor_pool
+    assert json_agenda._party_credor_pool == zia_agenda._party_credor_pool
     assert json_agenda._party_debtor_pool == zia_agenda._party_debtor_pool
-    assert json_agenda._party_creditor_pool == zia_party_creditor_pool
+    assert json_agenda._party_credor_pool == zia_party_credor_pool
     assert json_agenda._party_debtor_pool == zia_party_debtor_pool
     assert json_agenda._meld_strategy == zia_agenda._meld_strategy
     assert json_agenda._meld_strategy == override_text

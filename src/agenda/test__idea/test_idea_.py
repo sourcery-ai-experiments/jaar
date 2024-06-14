@@ -24,7 +24,7 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._weight is None
     assert x_ideaunit._label is None
     assert x_ideaunit._uid is None
-    assert x_ideaunit._all_party_credit is None
+    assert x_ideaunit._all_party_cred is None
     assert x_ideaunit._all_party_debt is None
     assert x_ideaunit._begin is None
     assert x_ideaunit._close is None
@@ -71,7 +71,7 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._weight >= 1
     assert x_ideaunit._label is None
     assert x_ideaunit._uid is None
-    assert x_ideaunit._all_party_credit is None
+    assert x_ideaunit._all_party_cred is None
     assert x_ideaunit._all_party_debt is None
     assert x_ideaunit._begin is None
     assert x_ideaunit._close is None
@@ -173,20 +173,20 @@ def test_IdeaUnit_set_parent_road_ReturnsCorrectObj():
 
 def test_IdeaUnit_balancelinks_exist():
     # GIVEN
-    biker_creditor_weight = 12
+    biker_credor_weight = 12
     biker_debtor_weight = 15
     biker_link = balancelink_shop(
         group_id=GroupID("bikers2"),
-        creditor_weight=biker_creditor_weight,
+        credor_weight=biker_credor_weight,
         debtor_weight=biker_debtor_weight,
     )
 
     swimmer_group_id = GroupID("swimmers")
-    swimmer_creditor_weight = 29
+    swimmer_credor_weight = 29
     swimmer_debtor_weight = 32
     swimmer_link = balancelink_shop(
         group_id=swimmer_group_id,
-        creditor_weight=swimmer_creditor_weight,
+        credor_weight=swimmer_credor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
 
@@ -202,22 +202,22 @@ def test_IdeaUnit_balancelinks_exist():
 
 def test_IdeaUnit_get_inherited_balanceheirs_weight_sum_SetsAttrCorrectly_WithValues():
     # GIVEN
-    biker_creditor_weight = 12
+    biker_credor_weight = 12
     biker_debtor_weight = 15
     biker_text = "bikers2"
     biker_link = balanceheir_shop(
         group_id=GroupID(biker_text),
-        creditor_weight=biker_creditor_weight,
+        credor_weight=biker_credor_weight,
         debtor_weight=biker_debtor_weight,
     )
 
     swimmer_text = "swimmers"
     swimmer_group_id = GroupID(swimmer_text)
-    swimmer_creditor_weight = 29
+    swimmer_credor_weight = 29
     swimmer_debtor_weight = 32
     swimmer_link = balanceheir_shop(
         group_id=swimmer_group_id,
-        creditor_weight=swimmer_creditor_weight,
+        credor_weight=swimmer_credor_weight,
         debtor_weight=swimmer_debtor_weight,
     )
 
@@ -228,31 +228,31 @@ def test_IdeaUnit_get_inherited_balanceheirs_weight_sum_SetsAttrCorrectly_WithVa
     sport_idea = ideaunit_shop(_label=sport_text, _balanceheirs=group_links)
 
     # THEN
-    assert sport_idea.get_balanceheirs_creditor_weight_sum() != None
-    assert sport_idea.get_balanceheirs_creditor_weight_sum() == 41
+    assert sport_idea.get_balanceheirs_credor_weight_sum() != None
+    assert sport_idea.get_balanceheirs_credor_weight_sum() == 41
     assert sport_idea.get_balanceheirs_debtor_weight_sum() != None
     assert sport_idea.get_balanceheirs_debtor_weight_sum() == 47
 
     assert len(sport_idea._balanceheirs) == 2
 
     swimmer_balanceheir = sport_idea._balanceheirs.get(swimmer_text)
-    assert swimmer_balanceheir._agenda_credit is None
+    assert swimmer_balanceheir._agenda_cred is None
     assert swimmer_balanceheir._agenda_debt is None
     biker_balanceheir = sport_idea._balanceheirs.get(biker_text)
-    assert biker_balanceheir._agenda_credit is None
+    assert biker_balanceheir._agenda_cred is None
     assert biker_balanceheir._agenda_debt is None
 
     # WHEN
     sport_idea._agenda_importance = 0.25
-    sport_idea.set_balanceheirs_agenda_credit_debt()
+    sport_idea.set_balanceheirs_agenda_cred_debt()
 
     # THEN
     print(f"{len(sport_idea._balanceheirs)=}")
     swimmer_balanceheir = sport_idea._balanceheirs.get(swimmer_text)
-    assert swimmer_balanceheir._agenda_credit != None
+    assert swimmer_balanceheir._agenda_cred != None
     assert swimmer_balanceheir._agenda_debt != None
     biker_balanceheir = sport_idea._balanceheirs.get(biker_text)
-    assert biker_balanceheir._agenda_credit != None
+    assert biker_balanceheir._agenda_cred != None
     assert biker_balanceheir._agenda_debt != None
 
 
@@ -260,12 +260,12 @@ def test_IdeaUnit_get_balancelinks_weight_sum_ReturnsCorrectObj_NoValues():
     # GIVEN /WHEN
     sport_text = "sport"
     sport_idea = ideaunit_shop(_label=sport_text)
-    assert sport_idea.get_balanceheirs_creditor_weight_sum() != None
+    assert sport_idea.get_balanceheirs_credor_weight_sum() != None
     assert sport_idea.get_balanceheirs_debtor_weight_sum() != None
 
     # WHEN / THEN
     # does not crash with empty set
-    sport_idea.set_balanceheirs_agenda_credit_debt()
+    sport_idea.set_balanceheirs_agenda_cred_debt()
 
 
 def test_IdeaUnit_set_reasonheirsCorrectlySourcesFromOutside():
@@ -344,20 +344,18 @@ def test_IdeaUnit_add_to_descendant_pledge_count_CorrectlyAdds():
     assert ball_idea._descendant_pledge_count == 77
 
 
-def test_IdeaUnit_clear_all_party_credit_debt_ClearsCorrectly():
+def test_IdeaUnit_clear_all_party_cred_debt_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
-    ball_idea = ideaunit_shop(
-        _label=ball_text, _all_party_credit=55, _all_party_debt=33
-    )
-    assert ball_idea._all_party_credit == 55
+    ball_idea = ideaunit_shop(_label=ball_text, _all_party_cred=55, _all_party_debt=33)
+    assert ball_idea._all_party_cred == 55
     assert ball_idea._all_party_debt == 33
 
     # WHEN
-    ball_idea.clear_all_party_credit_debt()
+    ball_idea.clear_all_party_cred_debt()
 
     # THEN
-    assert ball_idea._all_party_credit is None
+    assert ball_idea._all_party_cred is None
     assert ball_idea._all_party_debt is None
 
 
@@ -462,17 +460,17 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         ),
     }
     biker_group_id = GroupID("bikers")
-    biker_creditor_weight = 3.0
+    biker_credor_weight = 3.0
     biker_debtor_weight = 7.0
     biker_link = balancelink_shop(
-        biker_group_id, biker_creditor_weight, biker_debtor_weight
+        biker_group_id, biker_credor_weight, biker_debtor_weight
     )
     flyer_group_id = GroupID("flyers")
-    flyer_creditor_weight = 6.0
+    flyer_credor_weight = 6.0
     flyer_debtor_weight = 9.0
     flyer_link = balancelink_shop(
         group_id=flyer_group_id,
-        creditor_weight=flyer_creditor_weight,
+        credor_weight=flyer_credor_weight,
         debtor_weight=flyer_debtor_weight,
     )
     biker_and_flyer_balancelinks = {
@@ -481,12 +479,12 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     }
     biker_get_dict = {
         "group_id": biker_link.group_id,
-        "creditor_weight": biker_link.creditor_weight,
+        "credor_weight": biker_link.credor_weight,
         "debtor_weight": biker_link.debtor_weight,
     }
     flyer_get_dict = {
         "group_id": flyer_link.group_id,
-        "creditor_weight": flyer_link.creditor_weight,
+        "credor_weight": flyer_link.credor_weight,
         "debtor_weight": flyer_link.debtor_weight,
     }
     x1_balancelinks = {biker_group_id: biker_get_dict, flyer_group_id: flyer_get_dict}

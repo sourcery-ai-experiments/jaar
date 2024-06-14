@@ -9,7 +9,7 @@ from src.money.treasury_sqlstr import (
     get_river_reach_table_final_insert_sqlstr,
     get_agenda_partyunit_table_create_sqlstr,
     get_agenda_partyunit_table_insert_sqlstr as party_insert_sqlstr,
-    get_agenda_partyunit_table_update_credit_score_sqlstr,
+    get_agenda_partyunit_table_update_cred_score_sqlstr,
     get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr,
 )
 from sqlite3 import connect as sqlite3_connect
@@ -42,7 +42,7 @@ SELECT
         assert 1 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))
 
 
-def test_get_agenda_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutError():
+def test_get_agenda_partyunit_table_update_cred_score_sqlstr_UpdatesWithoutError():
     # GIVEN
     x_db = sqlite3_connect(":memory:")
     partyunit_text = "agenda_partyunit"
@@ -91,7 +91,7 @@ def test_get_agenda_partyunit_table_update_credit_score_sqlstr_UpdatesWithoutErr
 SELECT 
   owner_id
 , party_id
-, _treasury_credit_score
+, _treasury_cred_score
 FROM agenda_partyunit
 WHERE owner_id = '{yao_text}'
 """
@@ -113,7 +113,7 @@ WHERE owner_id = '{yao_text}'
 
     # WHEN
     with x_db as x_conn:
-        x_conn.execute(get_agenda_partyunit_table_update_credit_score_sqlstr(yao_text))
+        x_conn.execute(get_agenda_partyunit_table_update_cred_score_sqlstr(yao_text))
 
     # THEN
     with x_db as x_conn:
@@ -146,21 +146,21 @@ def test_get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr_UpdatesWit
     cal_close = 0.33
     dee_close1 = 0.44
     dee_close2 = 0.61
-    bob_credit_score = bob_close - bob_s
-    cal_credit_score = cal_close - cal_s
-    dee_credit_score = (dee_close1 - dee_s1) + (dee_close2 - dee_s2)
-    print(f"{bob_credit_score=}")
-    print(f"{cal_credit_score=}")
-    print(f"{dee_credit_score=}")
+    bob_cred_score = bob_close - bob_s
+    cal_cred_score = cal_close - cal_s
+    dee_cred_score = (dee_close1 - dee_s1) + (dee_close2 - dee_s2)
+    print(f"{bob_cred_score=}")
+    print(f"{cal_cred_score=}")
+    print(f"{dee_cred_score=}")
     bob_partyunit = partyunit_shop(bob_text)
     cal_partyunit = partyunit_shop(cal_text)
     dee_partyunit = partyunit_shop(dee_text)
-    bob_partyunit.set_treasury_attr(None, None, bob_credit_score, None)
-    cal_partyunit.set_treasury_attr(None, None, cal_credit_score, None)
-    dee_partyunit.set_treasury_attr(None, None, dee_credit_score, None)
-    print(f"{bob_partyunit._treasury_credit_score=}")
-    print(f"{cal_partyunit._treasury_credit_score=}")
-    print(f"{dee_partyunit._treasury_credit_score=}")
+    bob_partyunit.set_treasury_attr(None, None, bob_cred_score, None)
+    cal_partyunit.set_treasury_attr(None, None, cal_cred_score, None)
+    dee_partyunit.set_treasury_attr(None, None, dee_cred_score, None)
+    print(f"{bob_partyunit._treasury_cred_score=}")
+    print(f"{cal_partyunit._treasury_cred_score=}")
+    print(f"{dee_partyunit._treasury_cred_score=}")
 
     partyunit_text = "agenda_partyunit"
     x_db = sqlite3_connect(":memory:")
@@ -175,7 +175,7 @@ def test_get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr_UpdatesWit
 SELECT 
   owner_id
 , party_id
-, _treasury_credit_score
+, _treasury_cred_score
 , _treasury_voice_rank
 FROM agenda_partyunit
 WHERE owner_id = '{yao_text}'
@@ -192,9 +192,9 @@ WHERE owner_id = '{yao_text}'
     assert x_rows[0][1] == bob_text
     assert x_rows[1][1] == cal_text
     assert x_rows[2][1] == dee_text
-    assert x_rows[0][2] - bob_partyunit._treasury_credit_score < 0.000001
-    assert x_rows[1][2] == cal_partyunit._treasury_credit_score
-    assert x_rows[2][2] == dee_partyunit._treasury_credit_score
+    assert x_rows[0][2] - bob_partyunit._treasury_cred_score < 0.000001
+    assert x_rows[1][2] == cal_partyunit._treasury_cred_score
+    assert x_rows[2][2] == dee_partyunit._treasury_cred_score
     assert x_rows[0][3] is None
     assert x_rows[1][3] is None
     assert x_rows[2][3] is None
@@ -250,7 +250,7 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     #     # ex6_text = "ex6"
     #     # x_money = moneyunit_shop(real_id=ex6_text, econ_dir=temp_reals_dir())
     #     # x_money.set_road_nodes(sal_text)
-    #     # x_money.set_credit_flow_for_agenda(sal_text, max_blocks_count=100)
+    #     # x_money.set_cred_flow_for_agenda(sal_text, max_blocks_count=100)
 
     #     # WHEN
     #     reach_sqlstr = get_river_reach_table_touch_select_sqlstr(sal_text)

@@ -390,7 +390,7 @@ def test_AgendaUnit_meld_ReturnsCorrectObj_LargeExample():
     family_text = ",Family"
     yao_family_bl = yao_agendar_bl.get(family_text)
 
-    print(f"Before {yao_family_bl._agenda_credit=} {yao_idearoot._kids_total_weight=}")
+    print(f"Before {yao_family_bl._agenda_cred=} {yao_idearoot._kids_total_weight=}")
     print(f"Before   {yao_family_bl._agenda_debt=} {yao_idearoot._kids_total_weight=}")
 
     # WHEN
@@ -398,7 +398,7 @@ def test_AgendaUnit_meld_ReturnsCorrectObj_LargeExample():
     bob_agenda.get_tree_metrics()
 
     # THEN
-    print(f"After  {yao_family_bl._agenda_credit=} {yao_idearoot._kids_total_weight=}")
+    print(f"After  {yao_family_bl._agenda_cred=} {yao_idearoot._kids_total_weight=}")
     print(f"After    {yao_family_bl._agenda_debt=} {yao_idearoot._kids_total_weight=}")
     assert bob_agenda._weight == yao_agenda._weight
     assert bob_idearoot._kids == yao_idearoot._kids
@@ -424,12 +424,12 @@ def test_AgendaUnit_meld_ReturnsCorrectObj_LargeExample():
 
     assert bob_family_bl != None
     # assert bob_family_bl == yao_family_bl
-    # assert bob_family_bl.agenda_credit == yao_family_bl .agenda_credit
-    print(f"{bob_family_bl._agenda_credit=} {bob_idearoot._kids_total_weight=}")
-    print(f"{yao_family_bl._agenda_credit=} {bob_idearoot._kids_total_weight=}")
+    # assert bob_family_bl.agenda_cred == yao_family_bl .agenda_cred
+    print(f"{bob_family_bl._agenda_cred=} {bob_idearoot._kids_total_weight=}")
+    print(f"{yao_family_bl._agenda_cred=} {bob_idearoot._kids_total_weight=}")
     print(f"  {bob_family_bl._agenda_debt=} {bob_idearoot._kids_total_weight=}")
     print(f"  {yao_family_bl._agenda_debt=} {bob_idearoot._kids_total_weight=}")
-    assert abs(bob_family_bl._agenda_credit - yao_family_bl._agenda_credit) < 0.0001
+    assert abs(bob_family_bl._agenda_cred - yao_family_bl._agenda_cred) < 0.0001
     assert abs(bob_family_bl._agenda_debt - yao_family_bl._agenda_debt) < 0.0001
 
     # for balanceline in bob_agendar_bl.values():

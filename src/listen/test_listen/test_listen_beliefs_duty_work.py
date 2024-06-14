@@ -30,10 +30,10 @@ def test_listen_to_beliefs_role_job_SetsSingleBeliefUnit_v1(env_dir_setup_cleanu
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_role.set_party_pool(zia_pool)
     sue_texas_userhub = get_texas_userhub()
     sue_texas_userhub.save_role_agenda(yao_role)
@@ -60,11 +60,11 @@ def test_listen_to_beliefs_role_job_SetsSingleBeliefUnitWithOtherTask(
     # GIVEN
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
-    yao_creditor_weight = 47
+    yao_credor_weight = 47
     yao_debtor_weight = 41
     yao_pool = 87
     zia_text = "Zia"
-    yao_role.add_partyunit(zia_text, yao_creditor_weight, yao_debtor_weight)
+    yao_role.add_partyunit(zia_text, yao_credor_weight, yao_debtor_weight)
     yao_role.set_party_pool(yao_pool)
     sue_texas_userhub = get_texas_userhub()
     sue_texas_userhub.save_role_agenda(yao_role)

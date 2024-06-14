@@ -8,7 +8,7 @@
             "quark_order": 1
         },
         "optional_args": {
-            "creditor_weight": {
+            "credor_weight": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
@@ -41,10 +41,6 @@
             "quark_order": 2
         },
         "optional_args": {
-            "_treasury_partylinks": {
-                "python_type": "RoadUnit",
-                "sqlite_datatype": "TEXT"
-            }
         },
         "required_args": {
             "group_id": {
@@ -66,7 +62,7 @@
             "quark_order": 4
         },
         "optional_args": {
-            "creditor_weight": {
+            "credor_weight": {
                 "python_type": "float",
                 "sqlite_datatype": "REAL"
             },
@@ -321,7 +317,7 @@
             "quark_order": 0
         },
         "optional_args": {
-            "creditor_weight": {
+            "credor_weight": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
@@ -356,7 +352,7 @@
                 "python_type": "str",
                 "sqlite_datatype": "TEXT"
             },
-            "_party_creditor_pool": {
+            "_party_credor_pool": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
@@ -382,119 +378,5 @@
         "UPDATE": {
             "quark_order": 28
         }
-    },
-    "calendar": {
-        "calculated_attrs": {},
-        "required_args": {
-            "intent_idea_road": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "intent_weight": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "owner_id": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "report_date_range_cease": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "report_date_range_start": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "report_interval_intent_state_max_count": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "report_interval_intent_task_max_count": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "report_interval_length": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "report_time_road": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "task": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "time_begin": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "time_close": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            }
-        },
-        "treasury_only": true
-    },
-    "river_block": {
-        "calculated_attrs": {},
-        "required_args": {
-            "block_num": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "cash_close": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "cash_master": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "cash_start": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "dst_owner_id": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "parent_block_num": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "river_tree_level": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            },
-            "src_owner_id": {
-                "python_type": "int",
-                "sqlite_datatype": "INTEGER"
-            }
-        },
-        "treasury_only": true
-    },
-    "river_circle": {
-        "calculated_attrs": {},
-        "required_args": {
-            "cash_master": {},
-            "circle_num": {},
-            "coin_close": {},
-            "coin_start": {},
-            "dst_owner_id": {}
-        },
-        "treasury_only": true
-    },
-    "river_reach": {
-        "calculated_attrs": {},
-        "required_args": {
-            "cash_master": {},
-            "reach_coin_close": {},
-            "reach_coin_start": {},
-            "set_num": {},
-            "src_owner_id": {}
-        },
-        "treasury_only": true
     }
 }

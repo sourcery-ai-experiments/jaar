@@ -44,7 +44,7 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasury
     tom_text = "Tom"
 
     bob_agentunit = agendaunit_shop(bob_text)
-    bob_agentunit.add_partyunit(tom_text, creditor_weight=3, debtor_weight=1)
+    bob_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
     x_money.userhub.save_job_agenda(bob_agentunit)
     x_money.refresh_treasury_job_agendas_data()
     partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
@@ -68,7 +68,7 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasury
     tom_text = "Tom"
 
     bob_agentunit = agendaunit_shop(bob_text)
-    bob_agentunit.add_partyunit(tom_text, creditor_weight=3, debtor_weight=1)
+    bob_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
     x_money.userhub.save_job_agenda(bob_agentunit)
     x_money.refresh_treasury_job_agendas_data()
     partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
@@ -94,27 +94,27 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunit
     elu_text = "Elu"
 
     bob_agentunit = agendaunit_shop(bob_text)
-    bob_agentunit.add_partyunit(tom_text, creditor_weight=3, debtor_weight=1)
-    bob_agentunit.add_partyunit(sal_text, creditor_weight=1, debtor_weight=4)
-    bob_agentunit.add_partyunit(elu_text, creditor_weight=1, debtor_weight=4)
+    bob_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
+    bob_agentunit.add_partyunit(sal_text, credor_weight=1, debtor_weight=4)
+    bob_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(bob_agentunit)
 
     sal_agentunit = agendaunit_shop(sal_text)
-    sal_agentunit.add_partyunit(bob_text, creditor_weight=1, debtor_weight=4)
-    sal_agentunit.add_partyunit(tom_text, creditor_weight=3, debtor_weight=1)
-    sal_agentunit.add_partyunit(elu_text, creditor_weight=1, debtor_weight=4)
+    sal_agentunit.add_partyunit(bob_text, credor_weight=1, debtor_weight=4)
+    sal_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
+    sal_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(sal_agentunit)
 
     tom_agentunit = agendaunit_shop(tom_text)
-    tom_agentunit.add_partyunit(bob_text, creditor_weight=3, debtor_weight=1)
-    tom_agentunit.add_partyunit(sal_text, creditor_weight=1, debtor_weight=4)
-    tom_agentunit.add_partyunit(elu_text, creditor_weight=1, debtor_weight=4)
+    tom_agentunit.add_partyunit(bob_text, credor_weight=3, debtor_weight=1)
+    tom_agentunit.add_partyunit(sal_text, credor_weight=1, debtor_weight=4)
+    tom_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(tom_agentunit)
 
     elu_agentunit = agendaunit_shop(elu_text)
-    elu_agentunit.add_partyunit(bob_text, creditor_weight=3, debtor_weight=1)
-    elu_agentunit.add_partyunit(tom_text, creditor_weight=1, debtor_weight=4)
-    elu_agentunit.add_partyunit(elu_text, creditor_weight=1, debtor_weight=4)
+    elu_agentunit.add_partyunit(bob_text, credor_weight=3, debtor_weight=1)
+    elu_agentunit.add_partyunit(tom_text, credor_weight=1, debtor_weight=4)
+    elu_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(elu_agentunit)
 
     partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
@@ -207,74 +207,6 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_g
 
     # THEN
     assert get_single_result(x_money.get_treasury_conn(), sqlstr) == 3
-
-
-def test_MoneyUnit_set_agenda_treasury_attrs_CorrectlyPopulatesAgenda_partylinks(
-    env_dir_setup_cleanup,
-):
-    # GIVEN
-    x_money = moneyunit_shop(get_texas_userhub())
-    x_money.create_treasury_db(in_memory=True)
-
-    # create 4 agendas, 1 with group "swimming expert" linked to 1 party
-    # two others have idea create_road(root_label()},sports,swimming"
-    # run set_treasury_metrics
-    # assert
-    # _treasury_partylinks
-    # assert group "swimming expert" has 1 party
-    # modify groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()}sports,swimmer"
-    # run set_treasury_metrics
-    # assert group "swimming expert" has 2 different party
-    x_real_id = x_money.userhub.real_id
-
-    sal_text = "Sal"
-    bob_text = "Bob"
-    tom_text = "Tom"
-    ava_text = "Ava"
-
-    sal_agenda = agendaunit_shop(sal_text, x_real_id)
-    bob_agenda = agendaunit_shop(bob_text, x_real_id)
-    tom_agenda = agendaunit_shop(tom_text, x_real_id)
-    ava_agenda = agendaunit_shop(ava_text, x_real_id)
-
-    swim_text = "swimming"
-    sports_text = "sports"
-    sal_sports_road = create_road(x_real_id, sports_text)
-    bob_sports_road = create_road(x_real_id, sports_text)
-    tom_sports_road = create_road(x_real_id, sports_text)
-
-    sal_agenda.add_idea(ideaunit_shop(swim_text), parent_road=sal_sports_road)
-    bob_agenda.add_idea(ideaunit_shop(swim_text), parent_road=bob_sports_road)
-    tom_agenda.add_idea(ideaunit_shop(swim_text), parent_road=tom_sports_road)
-
-    sal_agenda.add_partyunit(party_id=bob_text, creditor_weight=2, debtor_weight=2)
-
-    swim_group_text = ",swimming experts"
-    swim_group_unit = groupunit_shop(group_id=swim_group_text)
-    bob_link = partylink_shop(party_id=bob_text)
-    swim_group_unit.set_partylink(partylink=bob_link)
-    sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
-
-    x_money.userhub.save_job_agenda(sal_agenda)
-    x_money.userhub.save_job_agenda(bob_agenda)
-    x_money.userhub.save_job_agenda(tom_agenda)
-    x_money.userhub.save_job_agenda(ava_agenda)
-
-    x_money.set_agenda_treasury_attrs(x_owner_id=sal_text)
-    e1_sal_agenda = x_money.userhub.get_job_agenda(owner_id=sal_text)
-    assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 1
-
-    # WHEN
-    # modify groupunit "swimming expert" _treasury_partylinks ==  create_road(root_label()},sports,swimmer"
-    sal_swim_road = create_road(sal_sports_road, swim_text)
-    swim_group_unit.set_attr(_treasury_partylinks=sal_swim_road)
-    sal_agenda.set_groupunit(y_groupunit=swim_group_unit)
-    x_money.userhub.save_job_agenda(sal_agenda)
-    x_money.set_agenda_treasury_attrs(x_owner_id=sal_text)
-
-    # THEN
-    e1_sal_agenda = x_money.userhub.get_job_agenda(owner_id=sal_text)
-    assert len(e1_sal_agenda._groups.get(swim_group_text)._partys) == 2
 
 
 def test_MoneyUnit_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
@@ -472,7 +404,6 @@ def test_MoneyUnit_get_agenda_groupunit_table_insert_sqlstr_CorrectlyPopulatesTa
     bob_group_x = GroupUnitCatalog(
         owner_id=bob_text,
         groupunit_group_id="US Dollar",
-        treasury_partylinks=create_road(temp_real_id(), "USA"),
     )
     bob_group_sqlstr = get_agenda_groupunit_table_insert_sqlstr(bob_group_x)
     with x_money.get_treasury_conn() as treasury_conn:

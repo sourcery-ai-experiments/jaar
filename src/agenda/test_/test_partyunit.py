@@ -23,19 +23,19 @@ def test_PartyUnit_exists():
     assert bob_partyunit != None
     assert bob_partyunit.party_id != None
     assert bob_partyunit.party_id == bob_text
-    assert bob_partyunit.creditor_weight is None
+    assert bob_partyunit.credor_weight is None
     assert bob_partyunit.debtor_weight is None
     assert bob_partyunit._irrational_debtor_weight is None
-    assert bob_partyunit._missing_debtor_weight is None
-    assert bob_partyunit._agenda_credit is None
+    assert bob_partyunit._inallocable_debtor_weight is None
+    assert bob_partyunit._agenda_cred is None
     assert bob_partyunit._agenda_debt is None
-    assert bob_partyunit._agenda_intent_credit is None
+    assert bob_partyunit._agenda_intent_cred is None
     assert bob_partyunit._agenda_intent_debt is None
-    assert bob_partyunit._creditor_operational is None
+    assert bob_partyunit._credor_operational is None
     assert bob_partyunit._debtor_operational is None
     assert bob_partyunit._treasury_due_paid is None
     assert bob_partyunit._treasury_due_diff is None
-    assert bob_partyunit._treasury_credit_score is None
+    assert bob_partyunit._treasury_cred_score is None
     assert bob_partyunit._treasury_voice_rank is None
     assert bob_partyunit._treasury_voice_hx_lowest_rank is None
     assert bob_partyunit._output_agenda_meld_order is None
@@ -78,12 +78,12 @@ def test_partyunit_shop_CorrectlySetsAttributes():
 
     # THEN
     assert todd_partyunit._irrational_debtor_weight == 0
-    assert todd_partyunit._missing_debtor_weight == 0
-    assert todd_partyunit._agenda_credit == 0
+    assert todd_partyunit._inallocable_debtor_weight == 0
+    assert todd_partyunit._agenda_cred == 0
     assert todd_partyunit._agenda_debt == 0
-    assert todd_partyunit._agenda_intent_credit == 0
+    assert todd_partyunit._agenda_intent_cred == 0
     assert todd_partyunit._agenda_intent_debt == 0
-    assert todd_partyunit._agenda_intent_ratio_credit == 0
+    assert todd_partyunit._agenda_intent_ratio_cred == 0
     assert todd_partyunit._agenda_intent_ratio_debt == 0
     assert todd_partyunit._road_delimiter == default_road_delimiter_if_none()
     assert todd_partyunit._planck == default_planck_if_none()
@@ -151,33 +151,33 @@ def test_PartyUnit_clear_output_agenda_meld_order_CorrectlySetsAttribute():
     assert bob_partyunit._output_agenda_meld_order is None
 
 
-def test_PartyUnit_set_creditor_weight_CorrectlySetsAttribute():
+def test_PartyUnit_set_credor_weight_CorrectlySetsAttribute():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
 
     # WHEN
-    x_creditor_weight = 23
-    bob_partyunit.set_creditor_weight(x_creditor_weight)
+    x_credor_weight = 23
+    bob_partyunit.set_credor_weight(x_credor_weight)
 
     # THEN
-    assert bob_partyunit.creditor_weight == x_creditor_weight
+    assert bob_partyunit.credor_weight == x_credor_weight
 
 
-def test_PartyUnit_set_creditor_weight_RaisesErrorWhen_creditor_weight_IsNotMultiple():
+def test_PartyUnit_set_credor_weight_RaisesErrorWhen_credor_weight_IsNotMultiple():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
-    x_creditor_weight = 23
-    bob_partyunit.set_creditor_weight(x_creditor_weight)
+    x_credor_weight = 23
+    bob_partyunit.set_credor_weight(x_credor_weight)
     assert bob_partyunit._planck == 1
-    assert bob_partyunit.creditor_weight == x_creditor_weight
+    assert bob_partyunit.credor_weight == x_credor_weight
 
     # WHEN
-    new_creditor_weight = 13.5
+    new_credor_weight = 13.5
     with pytest_raises(Exception) as excinfo:
-        bob_partyunit.set_creditor_weight(new_creditor_weight)
+        bob_partyunit.set_credor_weight(new_credor_weight)
     assert (
         str(excinfo.value)
-        == f"'{new_creditor_weight}' is not divisible by planck '{bob_partyunit._planck}'"
+        == f"'{new_credor_weight}' is not divisible by planck '{bob_partyunit._planck}'"
     )
 
 
@@ -211,39 +211,39 @@ def test_PartyUnit_set_debtor_weight_RaisesErrorWhen_debtor_weight_IsNotMultiple
     )
 
 
-def test_PartyUnit_set_creditor_debtor_weight_CorrectlySetsAttributeNoNulls():
+def test_PartyUnit_set_credor_debtor_weight_CorrectlySetsAttributeNoNulls():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
 
     # WHEN
-    bob_partyunit.set_creditor_debtor_weight(creditor_weight=23, debtor_weight=34)
+    bob_partyunit.set_credor_debtor_weight(credor_weight=23, debtor_weight=34)
 
     # THEN
-    assert bob_partyunit.creditor_weight == 23
+    assert bob_partyunit.credor_weight == 23
     assert bob_partyunit.debtor_weight == 34
 
 
-def test_PartyUnit_set_creditor_debtor_weight_CorrectlySetsAttributeWithNullsAndStartingValues():
+def test_PartyUnit_set_credor_debtor_weight_CorrectlySetsAttributeWithNullsAndStartingValues():
     # GIVEN
-    bob_partyunit = partyunit_shop("Bob", creditor_weight=45, debtor_weight=56)
+    bob_partyunit = partyunit_shop("Bob", credor_weight=45, debtor_weight=56)
 
     # WHEN
-    bob_partyunit.set_creditor_debtor_weight(creditor_weight=None, debtor_weight=None)
+    bob_partyunit.set_credor_debtor_weight(credor_weight=None, debtor_weight=None)
 
     # THEN
-    assert bob_partyunit.creditor_weight == 45
+    assert bob_partyunit.credor_weight == 45
     assert bob_partyunit.debtor_weight == 56
 
 
-def test_PartyUnit_set_creditor_debtor_weight_CorrectlySetsAttributeWithNullsAndNoStartingValues():
+def test_PartyUnit_set_credor_debtor_weight_CorrectlySetsAttributeWithNullsAndNoStartingValues():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
 
     # WHEN
-    bob_partyunit.set_creditor_debtor_weight(creditor_weight=None, debtor_weight=None)
+    bob_partyunit.set_credor_debtor_weight(credor_weight=None, debtor_weight=None)
 
     # THEN
-    assert bob_partyunit.creditor_weight == 1
+    assert bob_partyunit.credor_weight == 1
     assert bob_partyunit.debtor_weight == 1
 
 
@@ -267,24 +267,24 @@ def test_PartyUnit_add_irrational_debtor_weight_SetsAttrCorrectly():
     assert bob_partyunit._irrational_debtor_weight == bob_int1 + bob_int2
 
 
-def test_PartyUnit_add_missing_debtor_weight_SetsAttrCorrectly():
+def test_PartyUnit_add_inallocable_debtor_weight_SetsAttrCorrectly():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
-    assert bob_partyunit._missing_debtor_weight == 0
+    assert bob_partyunit._inallocable_debtor_weight == 0
 
     # WHEN
     bob_int1 = 11
-    bob_partyunit.add_missing_debtor_weight(bob_int1)
+    bob_partyunit.add_inallocable_debtor_weight(bob_int1)
 
     # THEN
-    assert bob_partyunit._missing_debtor_weight == bob_int1
+    assert bob_partyunit._inallocable_debtor_weight == bob_int1
 
     # WHEN
     bob_int2 = 22
-    bob_partyunit.add_missing_debtor_weight(bob_int2)
+    bob_partyunit.add_inallocable_debtor_weight(bob_int2)
 
     # THEN
-    assert bob_partyunit._missing_debtor_weight == bob_int1 + bob_int2
+    assert bob_partyunit._inallocable_debtor_weight == bob_int1 + bob_int2
 
 
 def test_PartyUnit_reset_listen_calculated_attrs_SetsAttrCorrectly():
@@ -293,160 +293,160 @@ def test_PartyUnit_reset_listen_calculated_attrs_SetsAttrCorrectly():
     bob_int1 = 11
     bob_int2 = 22
     bob_partyunit.add_irrational_debtor_weight(bob_int1)
-    bob_partyunit.add_missing_debtor_weight(bob_int2)
+    bob_partyunit.add_inallocable_debtor_weight(bob_int2)
     assert bob_partyunit._irrational_debtor_weight == bob_int1
-    assert bob_partyunit._missing_debtor_weight == bob_int2
+    assert bob_partyunit._inallocable_debtor_weight == bob_int2
 
     # WHEN
     bob_partyunit.reset_listen_calculated_attrs()
 
     # THEN
     assert bob_partyunit._irrational_debtor_weight == 0
-    assert bob_partyunit._missing_debtor_weight == 0
+    assert bob_partyunit._inallocable_debtor_weight == 0
 
 
-def test_PartyUnit_reset_agenda_credit_debt_SetsAttrCorrectly():
+def test_PartyUnit_reset_agenda_cred_debt_SetsAttrCorrectly():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
-    bob_partyunit._agenda_credit = 0.27
+    bob_partyunit._agenda_cred = 0.27
     bob_partyunit._agenda_debt = 0.37
-    bob_partyunit._agenda_intent_credit = 0.41
+    bob_partyunit._agenda_intent_cred = 0.41
     bob_partyunit._agenda_intent_debt = 0.51
-    bob_partyunit._agenda_intent_ratio_credit = 0.433
+    bob_partyunit._agenda_intent_ratio_cred = 0.433
     bob_partyunit._agenda_intent_ratio_debt = 0.533
-    assert bob_partyunit._agenda_credit == 0.27
+    assert bob_partyunit._agenda_cred == 0.27
     assert bob_partyunit._agenda_debt == 0.37
-    assert bob_partyunit._agenda_intent_credit == 0.41
+    assert bob_partyunit._agenda_intent_cred == 0.41
     assert bob_partyunit._agenda_intent_debt == 0.51
-    assert bob_partyunit._agenda_intent_ratio_credit == 0.433
+    assert bob_partyunit._agenda_intent_ratio_cred == 0.433
     assert bob_partyunit._agenda_intent_ratio_debt == 0.533
 
     # WHEN
-    bob_partyunit.reset_agenda_credit_debt()
+    bob_partyunit.reset_agenda_cred_debt()
 
     # THEN
-    assert bob_partyunit._agenda_credit == 0
+    assert bob_partyunit._agenda_cred == 0
     assert bob_partyunit._agenda_debt == 0
-    assert bob_partyunit._agenda_intent_credit == 0
+    assert bob_partyunit._agenda_intent_cred == 0
     assert bob_partyunit._agenda_intent_debt == 0
-    assert bob_partyunit._agenda_intent_ratio_credit == 0
+    assert bob_partyunit._agenda_intent_ratio_cred == 0
     assert bob_partyunit._agenda_intent_ratio_debt == 0
 
 
-def test_PartyUnit_add_agenda_credit_debt_SetsAttrCorrectly():
+def test_PartyUnit_add_agenda_cred_debt_SetsAttrCorrectly():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
-    bob_partyunit._agenda_credit = 0.4106
+    bob_partyunit._agenda_cred = 0.4106
     bob_partyunit._agenda_debt = 0.1106
-    bob_partyunit._agenda_intent_credit = 0.41
+    bob_partyunit._agenda_intent_cred = 0.41
     bob_partyunit._agenda_intent_debt = 0.51
-    assert bob_partyunit._agenda_intent_credit == 0.41
+    assert bob_partyunit._agenda_intent_cred == 0.41
     assert bob_partyunit._agenda_intent_debt == 0.51
 
     # WHEN
-    bob_partyunit.add_agenda_credit_debt(
-        agenda_credit=0.33,
+    bob_partyunit.add_agenda_cred_debt(
+        agenda_cred=0.33,
         agenda_debt=0.055,
-        agenda_intent_credit=0.3,
+        agenda_intent_cred=0.3,
         agenda_intent_debt=0.05,
     )
 
     # THEN
-    assert bob_partyunit._agenda_credit == 0.7406
+    assert bob_partyunit._agenda_cred == 0.7406
     assert bob_partyunit._agenda_debt == 0.1656
-    assert bob_partyunit._agenda_intent_credit == 0.71
+    assert bob_partyunit._agenda_intent_cred == 0.71
     assert bob_partyunit._agenda_intent_debt == 0.56
 
 
-def test_PartyUnit_set_agenda_intent_ratio_credit_debt_SetsAttrCorrectly():
+def test_PartyUnit_set_agenda_intent_ratio_cred_debt_SetsAttrCorrectly():
     # GIVEN
-    bob_partyunit = partyunit_shop("Bob", creditor_weight=15, debtor_weight=7)
-    bob_partyunit._agenda_credit = 0.4106
+    bob_partyunit = partyunit_shop("Bob", credor_weight=15, debtor_weight=7)
+    bob_partyunit._agenda_cred = 0.4106
     bob_partyunit._agenda_debt = 0.1106
-    bob_partyunit._agenda_intent_credit = 0.041
+    bob_partyunit._agenda_intent_cred = 0.041
     bob_partyunit._agenda_intent_debt = 0.051
-    bob_partyunit._agenda_intent_ratio_credit = 0
+    bob_partyunit._agenda_intent_ratio_cred = 0
     bob_partyunit._agenda_intent_ratio_debt = 0
-    assert bob_partyunit._agenda_intent_ratio_credit == 0
+    assert bob_partyunit._agenda_intent_ratio_cred == 0
     assert bob_partyunit._agenda_intent_ratio_debt == 0
 
     # WHEN
-    bob_partyunit.set_agenda_intent_ratio_credit_debt(
-        agenda_intent_ratio_credit_sum=0.2,
+    bob_partyunit.set_agenda_intent_ratio_cred_debt(
+        agenda_intent_ratio_cred_sum=0.2,
         agenda_intent_ratio_debt_sum=0.5,
-        agenda_partyunit_total_creditor_weight=20,
+        agenda_partyunit_total_credor_weight=20,
         agenda_partyunit_total_debtor_weight=14,
     )
 
     # THEN
-    assert bob_partyunit._agenda_intent_ratio_credit == 0.205
+    assert bob_partyunit._agenda_intent_ratio_cred == 0.205
     assert bob_partyunit._agenda_intent_ratio_debt == 0.102
 
     # WHEN
-    bob_partyunit.set_agenda_intent_ratio_credit_debt(
-        agenda_intent_ratio_credit_sum=0,
+    bob_partyunit.set_agenda_intent_ratio_cred_debt(
+        agenda_intent_ratio_cred_sum=0,
         agenda_intent_ratio_debt_sum=0,
-        agenda_partyunit_total_creditor_weight=20,
+        agenda_partyunit_total_credor_weight=20,
         agenda_partyunit_total_debtor_weight=14,
     )
 
     # THEN
-    assert bob_partyunit._agenda_intent_ratio_credit == 0.75
+    assert bob_partyunit._agenda_intent_ratio_cred == 0.75
     assert bob_partyunit._agenda_intent_ratio_debt == 0.5
 
 
 def test_PartyUnit_set_treasury_attr_SetsAttrCorrectly():
     # GIVEN
-    x_agenda_intent_ratio_credit = 0.077
+    x_agenda_intent_ratio_cred = 0.077
     x_agenda_intent_ratio_debt = 0.066
 
     bob_partyunit = partyunit_shop("Bob")
-    bob_partyunit._agenda_intent_ratio_credit = x_agenda_intent_ratio_credit
+    bob_partyunit._agenda_intent_ratio_cred = x_agenda_intent_ratio_cred
     bob_partyunit._agenda_intent_ratio_debt = x_agenda_intent_ratio_debt
-    assert bob_partyunit._agenda_intent_ratio_credit == 0.077
+    assert bob_partyunit._agenda_intent_ratio_cred == 0.077
     assert bob_partyunit._agenda_intent_ratio_debt == 0.066
     assert bob_partyunit._treasury_due_paid is None
     assert bob_partyunit._treasury_due_diff is None
-    assert bob_partyunit._treasury_credit_score is None
+    assert bob_partyunit._treasury_cred_score is None
     assert bob_partyunit._treasury_voice_rank is None
     assert bob_partyunit._treasury_voice_hx_lowest_rank is None
 
     # WHEN
     x_due_paid = 0.2
     x_due_diff = 0.123
-    x_treasury_credit_score = 900
+    x_treasury_cred_score = 900
     x_treasury_voice_rank = 45
     bob_partyunit.set_treasury_attr(
         due_paid=x_due_paid,
         due_diff=x_due_diff,
-        credit_score=x_treasury_credit_score,
+        cred_score=x_treasury_cred_score,
         voice_rank=x_treasury_voice_rank,
     )
     # THEN
-    assert bob_partyunit._agenda_intent_ratio_credit == x_agenda_intent_ratio_credit
+    assert bob_partyunit._agenda_intent_ratio_cred == x_agenda_intent_ratio_cred
     assert bob_partyunit._agenda_intent_ratio_debt == x_agenda_intent_ratio_debt
     assert bob_partyunit._treasury_due_paid == x_due_paid
     assert bob_partyunit._treasury_due_diff == x_due_diff
-    assert bob_partyunit._treasury_credit_score == x_treasury_credit_score
+    assert bob_partyunit._treasury_cred_score == x_treasury_cred_score
     assert bob_partyunit._treasury_voice_rank == x_treasury_voice_rank
     assert bob_partyunit._treasury_voice_hx_lowest_rank == x_treasury_voice_rank
 
 
 def test_PartyUnit_set_treasury_attr_CorrectlyDecreasesOrIgnores_treasury_voice_hx_lowest_rank():
     # GIVEN
-    x_agenda_intent_ratio_credit = 0.077
+    x_agenda_intent_ratio_cred = 0.077
     x_agenda_intent_ratio_debt = 0.066
     bob_partyunit = partyunit_shop("Bob")
-    bob_partyunit._agenda_intent_ratio_credit = x_agenda_intent_ratio_credit
+    bob_partyunit._agenda_intent_ratio_cred = x_agenda_intent_ratio_cred
     bob_partyunit._agenda_intent_ratio_debt = x_agenda_intent_ratio_debt
     x_due_paid = 0.2
     x_due_diff = 0.123
-    x_treasury_credit_score = 900
+    x_treasury_cred_score = 900
     old_x_treasury_voice_rank = 45
     bob_partyunit.set_treasury_attr(
         due_paid=x_due_paid,
         due_diff=x_due_diff,
-        credit_score=x_treasury_credit_score,
+        cred_score=x_treasury_cred_score,
         voice_rank=old_x_treasury_voice_rank,
     )
     assert bob_partyunit._treasury_voice_hx_lowest_rank == old_x_treasury_voice_rank
@@ -456,7 +456,7 @@ def test_PartyUnit_set_treasury_attr_CorrectlyDecreasesOrIgnores_treasury_voice_
     bob_partyunit.set_treasury_attr(
         due_paid=x_due_paid,
         due_diff=x_due_diff,
-        credit_score=x_treasury_credit_score,
+        cred_score=x_treasury_cred_score,
         voice_rank=new_x_treasury_voice_rank,
     )
     # THEN
@@ -467,7 +467,7 @@ def test_PartyUnit_set_treasury_attr_CorrectlyDecreasesOrIgnores_treasury_voice_
     bob_partyunit.set_treasury_attr(
         due_paid=x_due_paid,
         due_diff=x_due_diff,
-        credit_score=x_treasury_credit_score,
+        cred_score=x_treasury_cred_score,
         voice_rank=not_lower_x_treasury_voice_rank,
     )
     # THEN
@@ -477,19 +477,19 @@ def test_PartyUnit_set_treasury_attr_CorrectlyDecreasesOrIgnores_treasury_voice_
 def test_PartyUnit_clear_treasurying_data_SetsAttrCorrectly_Method():
     # GIVEN
     bob_partyunit = partyunit_shop("Bob")
-    bob_partyunit._agenda_intent_ratio_credit = 0.355
+    bob_partyunit._agenda_intent_ratio_cred = 0.355
     bob_partyunit._agenda_intent_ratio_debt = 0.066
-    x_treasury_credit_score = 900
+    x_treasury_cred_score = 900
     x_treasury_voice_rank = 45
     bob_partyunit.set_treasury_attr(
         due_paid=0.399,
         due_diff=0.044,
-        credit_score=x_treasury_credit_score,
+        cred_score=x_treasury_cred_score,
         voice_rank=x_treasury_voice_rank,
     )
     assert bob_partyunit._treasury_due_paid == 0.399
     assert bob_partyunit._treasury_due_diff == 0.044
-    assert bob_partyunit._treasury_credit_score == x_treasury_credit_score
+    assert bob_partyunit._treasury_cred_score == x_treasury_cred_score
     assert bob_partyunit._treasury_voice_rank == x_treasury_voice_rank
 
     # WHEN
@@ -498,7 +498,7 @@ def test_PartyUnit_clear_treasurying_data_SetsAttrCorrectly_Method():
     # THEN
     assert bob_partyunit._treasury_due_paid is None
     assert bob_partyunit._treasury_due_diff is None
-    assert bob_partyunit._treasury_credit_score is None
+    assert bob_partyunit._treasury_cred_score is None
     assert bob_partyunit._treasury_voice_rank is None
 
 
@@ -510,20 +510,20 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     bob_partyunit = partyunit_shop(bob_text)
     bob_partyunit._treasury_due_paid = bob_treasury_due_paid
     bob_partyunit._treasury_due_diff = bob_treasury_due_diff
-    bob_creditor_operational = False
+    bob_credor_operational = False
     bob_debtor_operational = True
-    bob_partyunit._creditor_operational = bob_creditor_operational
+    bob_partyunit._credor_operational = bob_credor_operational
     bob_partyunit._debtor_operational = bob_debtor_operational
 
-    bob_creditor_weight = 13
+    bob_credor_weight = 13
     bob_debtor_weight = 17
-    bob_partyunit.set_creditor_weight(bob_creditor_weight)
+    bob_partyunit.set_credor_weight(bob_credor_weight)
     bob_partyunit.set_debtor_weight(bob_debtor_weight)
 
-    bob_treasury_credit_score = 7000
+    bob_treasury_cred_score = 7000
     bob_treasury_voice_rank = 898
     bob_treasury_voice_hx_lowest_rank = 740
-    bob_partyunit._treasury_credit_score = bob_treasury_credit_score
+    bob_partyunit._treasury_cred_score = bob_treasury_cred_score
     bob_partyunit._treasury_voice_rank = bob_treasury_voice_rank
     bob_partyunit._treasury_voice_hx_lowest_rank = bob_treasury_voice_hx_lowest_rank
     print(f"{bob_text}")
@@ -536,13 +536,13 @@ def test_PartyUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     assert x_dict != None
     assert x_dict == {
         "party_id": bob_text,
-        "creditor_weight": bob_creditor_weight,
+        "credor_weight": bob_credor_weight,
         "debtor_weight": bob_debtor_weight,
-        "_creditor_operational": bob_creditor_operational,
+        "_credor_operational": bob_credor_operational,
         "_debtor_operational": bob_debtor_operational,
         "_treasury_due_paid": bob_treasury_due_paid,
         "_treasury_due_diff": bob_treasury_due_diff,
-        "_treasury_credit_score": bob_treasury_credit_score,
+        "_treasury_cred_score": bob_treasury_cred_score,
         "_treasury_voice_rank": bob_treasury_voice_rank,
         "_treasury_voice_hx_lowest_rank": bob_treasury_voice_hx_lowest_rank,
     }
@@ -556,40 +556,40 @@ def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
     bob_partyunit = partyunit_shop(bob_text)
     bob_partyunit._treasury_due_paid = bob_treasury_due_paid
     bob_partyunit._treasury_due_diff = bob_treasury_due_diff
-    bob_creditor_operational = False
+    bob_credor_operational = False
     bob_debtor_operational = True
-    bob_partyunit._creditor_operational = bob_creditor_operational
+    bob_partyunit._credor_operational = bob_credor_operational
     bob_partyunit._debtor_operational = bob_debtor_operational
 
-    bob_creditor_weight = 13
+    bob_credor_weight = 13
     bob_debtor_weight = 17
-    bob_partyunit.set_creditor_weight(bob_creditor_weight)
+    bob_partyunit.set_credor_weight(bob_credor_weight)
     bob_partyunit.set_debtor_weight(bob_debtor_weight)
     bob_irrational_debtor_weight = 87
-    bob_missing_debtor_weight = 97
+    bob_inallocable_debtor_weight = 97
     bob_partyunit.add_irrational_debtor_weight(bob_irrational_debtor_weight)
-    bob_partyunit.add_missing_debtor_weight(bob_missing_debtor_weight)
+    bob_partyunit.add_inallocable_debtor_weight(bob_inallocable_debtor_weight)
 
-    bob_treasury_credit_score = 7000
+    bob_treasury_cred_score = 7000
     bob_treasury_voice_rank = 898
     bob_treasury_voice_hx_lowest_rank = 740
-    bob_partyunit._treasury_credit_score = bob_treasury_credit_score
+    bob_partyunit._treasury_cred_score = bob_treasury_cred_score
     bob_partyunit._treasury_voice_rank = bob_treasury_voice_rank
     bob_partyunit._treasury_voice_hx_lowest_rank = bob_treasury_voice_hx_lowest_rank
 
-    bob_agenda_credit = 55
+    bob_agenda_cred = 55
     bob_agenda_debt = 47
-    bob_agenda_intent_credit = 51
+    bob_agenda_intent_cred = 51
     bob_agenda_intent_debt = 67
-    bob_agenda_intent_ratio_credit = 71
+    bob_agenda_intent_ratio_cred = 71
     bob_agenda_intent_ratio_debt = 73
     bob_output_agenda_meld_order = 79
 
-    bob_partyunit._agenda_credit = bob_agenda_credit
+    bob_partyunit._agenda_cred = bob_agenda_cred
     bob_partyunit._agenda_debt = bob_agenda_debt
-    bob_partyunit._agenda_intent_credit = bob_agenda_intent_credit
+    bob_partyunit._agenda_intent_cred = bob_agenda_intent_cred
     bob_partyunit._agenda_intent_debt = bob_agenda_intent_debt
-    bob_partyunit._agenda_intent_ratio_credit = bob_agenda_intent_ratio_credit
+    bob_partyunit._agenda_intent_ratio_cred = bob_agenda_intent_ratio_cred
     bob_partyunit._agenda_intent_ratio_debt = bob_agenda_intent_ratio_debt
     bob_partyunit._output_agenda_meld_order = bob_output_agenda_meld_order
 
@@ -603,22 +603,22 @@ def test_PartyUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
     assert x_dict != None
     assert x_dict == {
         "party_id": bob_text,
-        "creditor_weight": bob_creditor_weight,
+        "credor_weight": bob_credor_weight,
         "debtor_weight": bob_debtor_weight,
         "_irrational_debtor_weight": bob_irrational_debtor_weight,
-        "_missing_debtor_weight": bob_missing_debtor_weight,
-        "_agenda_credit": bob_agenda_credit,
+        "_inallocable_debtor_weight": bob_inallocable_debtor_weight,
+        "_agenda_cred": bob_agenda_cred,
         "_agenda_debt": bob_agenda_debt,
-        "_agenda_intent_credit": bob_agenda_intent_credit,
+        "_agenda_intent_cred": bob_agenda_intent_cred,
         "_agenda_intent_debt": bob_agenda_intent_debt,
-        "_agenda_intent_ratio_credit": bob_agenda_intent_ratio_credit,
+        "_agenda_intent_ratio_cred": bob_agenda_intent_ratio_cred,
         "_agenda_intent_ratio_debt": bob_agenda_intent_ratio_debt,
-        "_creditor_operational": bob_creditor_operational,
+        "_credor_operational": bob_credor_operational,
         "_debtor_operational": bob_debtor_operational,
         "_output_agenda_meld_order": bob_output_agenda_meld_order,
         "_treasury_due_paid": bob_treasury_due_paid,
         "_treasury_due_diff": bob_treasury_due_diff,
-        "_treasury_credit_score": bob_treasury_credit_score,
+        "_treasury_cred_score": bob_treasury_cred_score,
         "_treasury_voice_rank": bob_treasury_voice_rank,
         "_treasury_voice_hx_lowest_rank": bob_treasury_voice_hx_lowest_rank,
     }
@@ -629,16 +629,16 @@ def test_PartyUnit_get_dict_ReturnsDictWith_irrational_missing_job_ValuesIsZerp(
     bob_text = "Bob"
     bob_partyunit = partyunit_shop(bob_text)
     assert bob_partyunit._irrational_debtor_weight == 0
-    assert bob_partyunit._missing_debtor_weight == 0
+    assert bob_partyunit._inallocable_debtor_weight == 0
 
     # WHEN
     x_dict = bob_partyunit.get_dict(all_attrs=True)
 
     # THEN
     x_irrational_debtor_weight = "_irrational_debtor_weight"
-    x_missing_debtor_weight = "_missing_debtor_weight"
+    x_inallocable_debtor_weight = "_inallocable_debtor_weight"
     assert x_dict.get(x_irrational_debtor_weight) is None
-    assert x_dict.get(x_missing_debtor_weight) is None
+    assert x_dict.get(x_inallocable_debtor_weight) is None
     assert len(x_dict.keys()) == 17
 
 
@@ -647,18 +647,18 @@ def test_PartyUnit_get_dict_ReturnsDictWith_irrational_missing_job_ValuesIsNumbe
     bob_text = "Bob"
     bob_partyunit = partyunit_shop(bob_text)
     bob_irrational_debtor_weight = 87
-    bob_missing_debtor_weight = 97
+    bob_inallocable_debtor_weight = 97
     bob_partyunit.add_irrational_debtor_weight(bob_irrational_debtor_weight)
-    bob_partyunit.add_missing_debtor_weight(bob_missing_debtor_weight)
+    bob_partyunit.add_inallocable_debtor_weight(bob_inallocable_debtor_weight)
 
     # WHEN
     x_dict = bob_partyunit.get_dict(all_attrs=True)
 
     # THEN
     x_irrational_debtor_weight = "_irrational_debtor_weight"
-    x_missing_debtor_weight = "_missing_debtor_weight"
+    x_inallocable_debtor_weight = "_inallocable_debtor_weight"
     assert x_dict.get(x_irrational_debtor_weight) == bob_irrational_debtor_weight
-    assert x_dict.get(x_missing_debtor_weight) == bob_missing_debtor_weight
+    assert x_dict.get(x_inallocable_debtor_weight) == bob_inallocable_debtor_weight
     assert len(x_dict.keys()) == 19
 
 
@@ -667,16 +667,16 @@ def test_PartyUnit_get_dict_ReturnsDictWith_irrational_missing_job_ValuesIsNone(
     bob_text = "Bob"
     bob_partyunit = partyunit_shop(bob_text)
     bob_partyunit._irrational_debtor_weight = None
-    bob_partyunit._missing_debtor_weight = None
+    bob_partyunit._inallocable_debtor_weight = None
 
     # WHEN
     x_dict = bob_partyunit.get_dict(all_attrs=True)
 
     # THEN
     x_irrational_debtor_weight = "_irrational_debtor_weight"
-    x_missing_debtor_weight = "_missing_debtor_weight"
+    x_inallocable_debtor_weight = "_inallocable_debtor_weight"
     assert x_dict.get(x_irrational_debtor_weight) is None
-    assert x_dict.get(x_missing_debtor_weight) is None
+    assert x_dict.get(x_inallocable_debtor_weight) is None
     assert len(x_dict.keys()) == 17
 
 
@@ -714,29 +714,29 @@ def test_partyunits_get_from_dict_ReturnsCorrectObjWith_road_delimiter():
 def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteData():
     # GIVEN
     yao_text = "Yao"
-    yao_creditor_weight = 13
+    yao_credor_weight = 13
     yao_debtor_weight = 17
     yao_irrational_debtor_weight = 87
-    yao_missing_debtor_weight = 97
-    yao_creditor_operational = False
+    yao_inallocable_debtor_weight = 97
+    yao_credor_operational = False
     yao_debtor_operational = True
     yao_treasury_due_paid = 0.55
     yao_treasury_due_diff = 0.66
-    yao_treasury_credit_score = 7000
+    yao_treasury_cred_score = 7000
     yao_treasury_voice_rank = 898
     yao_treasury_voice_hx_lowest_rank = 740
     yao_json_dict = {
         yao_text: {
             "party_id": yao_text,
-            "creditor_weight": yao_creditor_weight,
+            "credor_weight": yao_credor_weight,
             "debtor_weight": yao_debtor_weight,
             "_irrational_debtor_weight": yao_irrational_debtor_weight,
-            "_missing_debtor_weight": yao_missing_debtor_weight,
-            "_creditor_operational": yao_creditor_operational,
+            "_inallocable_debtor_weight": yao_inallocable_debtor_weight,
+            "_credor_operational": yao_credor_operational,
             "_debtor_operational": yao_debtor_operational,
             "_treasury_due_paid": yao_treasury_due_paid,
             "_treasury_due_diff": yao_treasury_due_diff,
-            "_treasury_credit_score": yao_treasury_credit_score,
+            "_treasury_cred_score": yao_treasury_cred_score,
             "_treasury_voice_rank": yao_treasury_voice_rank,
             "_treasury_voice_hx_lowest_rank": yao_treasury_voice_hx_lowest_rank,
         }
@@ -752,15 +752,15 @@ def test_partyunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteD
     yao_partyunit = yao_obj_dict[yao_text]
 
     assert yao_partyunit.party_id == yao_text
-    assert yao_partyunit.creditor_weight == yao_creditor_weight
+    assert yao_partyunit.credor_weight == yao_credor_weight
     assert yao_partyunit.debtor_weight == yao_debtor_weight
     assert yao_partyunit._irrational_debtor_weight == yao_irrational_debtor_weight
-    assert yao_partyunit._missing_debtor_weight == yao_missing_debtor_weight
-    assert yao_partyunit._creditor_operational == yao_creditor_operational
+    assert yao_partyunit._inallocable_debtor_weight == yao_inallocable_debtor_weight
+    assert yao_partyunit._credor_operational == yao_credor_operational
     assert yao_partyunit._debtor_operational == yao_debtor_operational
     assert yao_partyunit._treasury_due_paid == yao_treasury_due_paid
     assert yao_partyunit._treasury_due_diff == yao_treasury_due_diff
-    assert yao_partyunit._treasury_credit_score == yao_treasury_credit_score
+    assert yao_partyunit._treasury_cred_score == yao_treasury_cred_score
     assert yao_partyunit._treasury_voice_rank == yao_treasury_voice_rank
     assert (
         yao_partyunit._treasury_voice_hx_lowest_rank
@@ -787,34 +787,34 @@ def test_PartyUnit_meld_RaiseSameparty_idException():
 def test_PartyUnit_meld_CorrectlySumsWeights():
     # GIVEN
     todd_text = "Todd"
-    todd_party1 = partyunit_shop(todd_text, creditor_weight=7, debtor_weight=19)
-    todd_party2 = partyunit_shop(todd_text, creditor_weight=5, debtor_weight=3)
+    todd_party1 = partyunit_shop(todd_text, credor_weight=7, debtor_weight=19)
+    todd_party2 = partyunit_shop(todd_text, credor_weight=5, debtor_weight=3)
 
     todd1_irrational_debtor_weight = 44
     todd2_irrational_debtor_weight = 33
     todd_party1.add_irrational_debtor_weight(todd1_irrational_debtor_weight)
     todd_party2.add_irrational_debtor_weight(todd2_irrational_debtor_weight)
-    todd1_missing_debtor_weight = 11
-    todd2_missing_debtor_weight = 22
-    todd_party1.add_missing_debtor_weight(todd1_missing_debtor_weight)
-    todd_party2.add_missing_debtor_weight(todd2_missing_debtor_weight)
+    todd1_inallocable_debtor_weight = 11
+    todd2_inallocable_debtor_weight = 22
+    todd_party1.add_inallocable_debtor_weight(todd1_inallocable_debtor_weight)
+    todd_party2.add_inallocable_debtor_weight(todd2_inallocable_debtor_weight)
 
     todd_party2
-    assert todd_party1.creditor_weight == 7
+    assert todd_party1.credor_weight == 7
     assert todd_party1.debtor_weight == 19
     assert todd_party1._irrational_debtor_weight == todd1_irrational_debtor_weight
-    assert todd_party1._missing_debtor_weight == todd1_missing_debtor_weight
+    assert todd_party1._inallocable_debtor_weight == todd1_inallocable_debtor_weight
 
     # WHEN
     todd_party1.meld(todd_party2)
 
     # THEN
-    assert todd_party1.creditor_weight == 12
+    assert todd_party1.credor_weight == 12
     assert todd_party1.debtor_weight == 22
     assert todd_party1._irrational_debtor_weight != todd1_irrational_debtor_weight
-    assert todd_party1._missing_debtor_weight != todd1_missing_debtor_weight
+    assert todd_party1._inallocable_debtor_weight != todd1_inallocable_debtor_weight
 
     irrational_sum = todd1_irrational_debtor_weight + todd2_irrational_debtor_weight
-    missing_job_sum = todd1_missing_debtor_weight + todd2_missing_debtor_weight
+    missing_job_sum = todd1_inallocable_debtor_weight + todd2_inallocable_debtor_weight
     assert todd_party1._irrational_debtor_weight == irrational_sum
-    assert todd_party1._missing_debtor_weight == missing_job_sum
+    assert todd_party1._inallocable_debtor_weight == missing_job_sum

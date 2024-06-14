@@ -1,5 +1,6 @@
 from src._instrument.python import x_is_json
 from src._road.jaar_config import init_atom_id, get_atoms_folder
+from src._road.road import get_default_real_id_roadnode as root_label
 from src.atom.nuc import nucunit_shop
 from src.atom.atom import AtomUnit, atomunit_shop, get_init_atom_id_if_None
 from src.atom.examples.example_quarks import get_quark_example_ideaunit_sports
@@ -28,8 +29,9 @@ def test_AtomUnit_exists():
     x_atomunit = AtomUnit()
 
     # THEN
+    assert x_atomunit.real_id is None
+    assert x_atomunit.person_id is None
     assert x_atomunit._atom_id is None
-    assert x_atomunit._giver is None
     assert x_atomunit._faces is None
     assert x_atomunit._nucunit is None
     assert x_atomunit._nuc_start is None
@@ -42,11 +44,12 @@ def test_atomunit_shop_ReturnsCorrectObjGivenEmptyArgs():
     bob_text = "Bob"
 
     # WHEN
-    farm_atomunit = atomunit_shop(_giver=bob_text)
+    farm_atomunit = atomunit_shop(person_id=bob_text)
 
     # THEN
+    assert farm_atomunit.real_id == root_label()
+    assert farm_atomunit.person_id == bob_text
     assert farm_atomunit._atom_id == 0
-    assert farm_atomunit._giver == bob_text
     assert farm_atomunit._faces == set()
     assert farm_atomunit._nucunit == nucunit_shop()
     assert farm_atomunit._nuc_start == 0
@@ -63,10 +66,12 @@ def test_atomunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     bob_nuc_start = 6
     bob_atoms_dir = "exampletext7"
     bob_quarks_dir = "exampletext9"
+    music_text = "music"
 
     # WHEN
     farm_atomunit = atomunit_shop(
-        bob_text,
+        real_id=music_text,
+        person_id=bob_text,
         _atom_id=bob_atom_id,
         _faces=bob_faces,
         _nucunit=bob_nucunit,
@@ -76,7 +81,8 @@ def test_atomunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     )
 
     # THEN
-    assert farm_atomunit._giver == bob_text
+    assert farm_atomunit.real_id == music_text
+    assert farm_atomunit.person_id == bob_text
     assert farm_atomunit._atom_id == bob_atom_id
     assert farm_atomunit._faces == bob_faces
     assert farm_atomunit._nucunit == bob_nucunit
@@ -93,17 +99,17 @@ def test_atomunit_shop_ReturnsCorrectObjGivenSomeArgs_v1():
     x_faces = {bob_text, tim_text, yao_text}
 
     # WHEN
-    farm_atomunit = atomunit_shop(_giver=bob_text, _faces=x_faces)
+    farm_atomunit = atomunit_shop(person_id=bob_text, _faces=x_faces)
 
     # THEN
-    assert farm_atomunit._giver == bob_text
+    assert farm_atomunit.person_id == bob_text
     assert farm_atomunit._faces == x_faces
 
 
 def test_AtomUnit_set_face_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
-    farm_atomunit = atomunit_shop(_giver=bob_text)
+    farm_atomunit = atomunit_shop(person_id=bob_text)
     tim_text = "Tim"
     assert farm_atomunit._faces == set()
     assert tim_text not in farm_atomunit._faces
@@ -118,7 +124,7 @@ def test_AtomUnit_set_face_SetsAttribute():
 def test_AtomUnit_face_exists_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    farm_atomunit = atomunit_shop(_giver=bob_text)
+    farm_atomunit = atomunit_shop(person_id=bob_text)
     tim_text = "Tim"
     assert farm_atomunit._faces == set()
     assert tim_text not in farm_atomunit._faces
@@ -134,7 +140,7 @@ def test_AtomUnit_face_exists_ReturnsCorrectObj():
 def test_AtomUnit_del_face_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
-    farm_atomunit = atomunit_shop(_giver=bob_text)
+    farm_atomunit = atomunit_shop(person_id=bob_text)
     tim_text = "Tim"
     yao_text = "Yao"
     farm_atomunit.set_face(tim_text)
@@ -153,7 +159,7 @@ def test_AtomUnit_del_face_SetsAttribute():
 def test_AtomUnit_set_nucunit_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
-    farm_atomunit = atomunit_shop(_giver=bob_text)
+    farm_atomunit = atomunit_shop(person_id=bob_text)
     assert farm_atomunit._nucunit == nucunit_shop()
 
     # WHEN
@@ -183,7 +189,7 @@ def test_AtomUnit_quarkunit_exists_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     farm_nucunit = nucunit_shop()
-    farm_atomunit = atomunit_shop(_giver=bob_text)
+    farm_atomunit = atomunit_shop(person_id=bob_text)
     farm_atomunit.set_nucunit(farm_nucunit)
 
     # WHEN
@@ -205,7 +211,7 @@ def test_AtomUnit_del_nucunit_SetsAttribute():
     bob_text = "Bob"
     farm_nucunit = nucunit_shop()
     farm_nucunit.set_quarkunit(get_quark_example_ideaunit_sports())
-    farm_atomunit = atomunit_shop(_giver=bob_text, _nucunit=farm_nucunit)
+    farm_atomunit = atomunit_shop(person_id=bob_text, _nucunit=farm_nucunit)
     assert farm_atomunit._nucunit != nucunit_shop()
     assert farm_atomunit._nucunit == farm_nucunit
 
@@ -221,7 +227,8 @@ def test_AtomUnit_get_step_dict_ReturnsCorrectObj_Simple():
     bob_text = "Bob"
     tim_text = "Tim"
     yao_text = "Yao"
-    farm_atomunit = atomunit_shop(_giver=bob_text)
+    music_text = "music"
+    farm_atomunit = atomunit_shop(real_id=music_text, person_id=bob_text)
     farm_atomunit.set_face(tim_text)
     farm_atomunit.set_face(yao_text)
 
@@ -229,9 +236,13 @@ def test_AtomUnit_get_step_dict_ReturnsCorrectObj_Simple():
     x_dict = farm_atomunit.get_step_dict()
 
     # THEN
-    giver_text = "giver"
-    assert x_dict.get(giver_text) != None
-    assert x_dict.get(giver_text) == bob_text
+    real_id_text = "real_id"
+    assert x_dict.get(real_id_text) != None
+    assert x_dict.get(real_id_text) == music_text
+
+    person_id_text = "person_id"
+    assert x_dict.get(person_id_text) != None
+    assert x_dict.get(person_id_text) == bob_text
 
     faces_text = "faces"
     assert x_dict.get(faces_text) != None
@@ -330,9 +341,9 @@ def test_AtomUnit_get_nucmetric_dict_ReturnsCorrectObj():
     x_dict = farm_atomunit.get_nucmetric_dict()
 
     # THEN
-    giver_text = "giver"
-    assert x_dict.get(giver_text) != None
-    assert x_dict.get(giver_text) == bob_text
+    person_id_text = "person_id"
+    assert x_dict.get(person_id_text) != None
+    assert x_dict.get(person_id_text) == bob_text
 
     faces_text = "faces"
     assert x_dict.get(faces_text) != None

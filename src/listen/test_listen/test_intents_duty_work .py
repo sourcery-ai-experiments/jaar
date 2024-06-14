@@ -34,10 +34,10 @@ def test_listen_to_intents_duty_work_AddsTasksToAgendaWhenNo_suffgroupIsSet(
     yao_text = "Yao"
     yao_duty = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_duty.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_duty.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_duty.set_party_pool(zia_pool)
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_duty_agenda(yao_duty)
@@ -65,10 +65,10 @@ def test_listen_to_intents_duty_work_AddsTasksToAgenda(env_dir_setup_cleanup):
     yao_text = "Yao"
     yao_duty = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_duty.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_duty.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_duty.set_party_pool(zia_pool)
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_duty_agenda(yao_duty)
@@ -162,13 +162,13 @@ def test_listen_to_intents_duty_work_ProcessesIrrationalAgenda(env_dir_setup_cle
     yao_text = "Yao"
     yao_duty = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     sue_text = "Sue"
-    sue_creditor_weight = 57
+    sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_duty.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_duty.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_duty.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
     yao_duty.set_party_pool(yao_pool)
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
@@ -244,12 +244,12 @@ def test_listen_to_intents_duty_work_ProcessesMissingDebtorAgenda(
     yao_duty = agendaunit_shop(yao_text)
     zia_text = "Zia"
     sue_text = "Sue"
-    zia_creditor_weight = 47
-    sue_creditor_weight = 57
+    zia_credor_weight = 47
+    sue_credor_weight = 57
     zia_debtor_weight = 41
     sue_debtor_weight = 51
-    yao_duty.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_duty.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_duty.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
     yao_duty.set_party_pool(yao_pool)
     yao_userhub.save_duty_agenda(yao_duty)
@@ -275,9 +275,9 @@ def test_listen_to_intents_duty_work_ProcessesMissingDebtorAgenda(
     zia_partyunit = new_yao_work.get_party(zia_text)
     sue_partyunit = new_yao_work.get_party(sue_text)
     print(f"{sue_partyunit.debtor_weight=}")
-    print(f"{sue_partyunit._missing_debtor_weight=}")
-    assert zia_partyunit._missing_debtor_weight == 0
-    assert sue_partyunit._missing_debtor_weight == 51
+    print(f"{sue_partyunit._inallocable_debtor_weight=}")
+    assert zia_partyunit._inallocable_debtor_weight == 0
+    assert sue_partyunit._inallocable_debtor_weight == 51
 
 
 def test_listen_to_intents_duty_work_ListensToOwner_duty_AndNotOwner_work(
@@ -287,13 +287,13 @@ def test_listen_to_intents_duty_work_ListensToOwner_duty_AndNotOwner_work(
     yao_text = "Yao"
     yao_duty = agendaunit_shop(yao_text)
     yao_text = "Yao"
-    yao_creditor_weight = 57
+    yao_credor_weight = 57
     yao_debtor_weight = 51
-    yao_duty.add_partyunit(yao_text, yao_creditor_weight, yao_debtor_weight)
+    yao_duty.add_partyunit(yao_text, yao_credor_weight, yao_debtor_weight)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
-    yao_duty.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_duty.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_pool = 87
     yao_duty.set_party_pool(yao_pool)
     # save yao without task to roles

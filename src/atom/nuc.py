@@ -150,9 +150,9 @@ class NucUnit:
             x_quarkunit.set_optional_arg("_meld_strategy", after_agenda._meld_strategy)
         if before_agenda._monetary_desc != after_agenda._monetary_desc:
             x_quarkunit.set_optional_arg("_monetary_desc", after_agenda._monetary_desc)
-        if before_agenda._party_creditor_pool != after_agenda._party_creditor_pool:
+        if before_agenda._party_credor_pool != after_agenda._party_credor_pool:
             x_quarkunit.set_optional_arg(
-                "_party_creditor_pool", after_agenda._party_creditor_pool
+                "_party_credor_pool", after_agenda._party_credor_pool
             )
         if before_agenda._party_debtor_pool != after_agenda._party_debtor_pool:
             x_quarkunit.set_optional_arg(
@@ -190,10 +190,8 @@ class NucUnit:
             x_partyunit = after_agenda.get_party(insert_party_id)
             x_quarkunit = quarkunit_shop("agenda_partyunit", quark_insert())
             x_quarkunit.set_required_arg("party_id", x_partyunit.party_id)
-            if x_partyunit.creditor_weight != None:
-                x_quarkunit.set_optional_arg(
-                    "creditor_weight", x_partyunit.creditor_weight
-                )
+            if x_partyunit.credor_weight != None:
+                x_quarkunit.set_optional_arg("credor_weight", x_partyunit.credor_weight)
             if x_partyunit.debtor_weight != None:
                 x_quarkunit.set_optional_arg("debtor_weight", x_partyunit.debtor_weight)
             self.set_quarkunit(x_quarkunit)
@@ -209,9 +207,9 @@ class NucUnit:
             ):
                 x_quarkunit = quarkunit_shop("agenda_partyunit", quark_update())
                 x_quarkunit.set_required_arg("party_id", after_partyunit.party_id)
-                if before_partyunit.creditor_weight != after_partyunit.creditor_weight:
+                if before_partyunit.credor_weight != after_partyunit.credor_weight:
                     x_quarkunit.set_optional_arg(
-                        "creditor_weight", after_partyunit.creditor_weight
+                        "credor_weight", after_partyunit.credor_weight
                     )
                 if before_partyunit.debtor_weight != after_partyunit.debtor_weight:
                     x_quarkunit.set_optional_arg(
@@ -262,11 +260,6 @@ class NucUnit:
             insert_groupunit = after_agenda.get_groupunit(insert_group_id)
             x_quarkunit = quarkunit_shop("agenda_groupunit", quark_insert())
             x_quarkunit.set_required_arg("group_id", insert_groupunit.group_id)
-            if insert_groupunit._treasury_partylinks != None:
-                x_quarkunit.set_optional_arg(
-                    "_treasury_partylinks",
-                    insert_groupunit._treasury_partylinks,
-                )
             self.set_quarkunit(x_quarkunit)
             self.add_quarkunit_partylinks_inserts(
                 after_groupunit=insert_groupunit,
@@ -284,10 +277,6 @@ class NucUnit:
             ):
                 x_quarkunit = quarkunit_shop("agenda_groupunit", quark_update())
                 x_quarkunit.set_required_arg("group_id", after_groupunit.group_id)
-                x_quarkunit.set_optional_arg(
-                    "_treasury_partylinks",
-                    after_groupunit._treasury_partylinks,
-                )
                 self.set_quarkunit(x_quarkunit)
 
             self.add_quarkunit_groupunit_update_partylinks(
@@ -347,9 +336,9 @@ class NucUnit:
             x_quarkunit = quarkunit_shop("agenda_group_partylink", quark_insert())
             x_quarkunit.set_required_arg("group_id", after_group_id)
             x_quarkunit.set_required_arg("party_id", after_partylink.party_id)
-            if after_partylink.creditor_weight != None:
+            if after_partylink.credor_weight != None:
                 x_quarkunit.set_optional_arg(
-                    "creditor_weight", after_partylink.creditor_weight
+                    "credor_weight", after_partylink.credor_weight
                 )
             if after_partylink.debtor_weight != None:
                 x_quarkunit.set_optional_arg(
@@ -366,10 +355,8 @@ class NucUnit:
         x_quarkunit = quarkunit_shop("agenda_group_partylink", quark_update())
         x_quarkunit.set_required_arg("group_id", group_id)
         x_quarkunit.set_required_arg("party_id", after_partylink.party_id)
-        if after_partylink.creditor_weight != before_partylink.creditor_weight:
-            x_quarkunit.set_optional_arg(
-                "creditor_weight", after_partylink.creditor_weight
-            )
+        if after_partylink.credor_weight != before_partylink.credor_weight:
+            x_quarkunit.set_optional_arg("credor_weight", after_partylink.credor_weight)
         if after_partylink.debtor_weight != before_partylink.debtor_weight:
             x_quarkunit.set_optional_arg("debtor_weight", after_partylink.debtor_weight)
         self.set_quarkunit(x_quarkunit)
@@ -792,7 +779,7 @@ class NucUnit:
             x_quarkunit.set_required_arg("road", after_ideaunit.get_road())
             x_quarkunit.set_required_arg("group_id", after_balancelink.group_id)
             x_quarkunit.set_optional_arg(
-                "creditor_weight", after_balancelink.creditor_weight
+                "credor_weight", after_balancelink.credor_weight
             )
             x_quarkunit.set_optional_arg(
                 "debtor_weight", after_balancelink.debtor_weight
@@ -818,12 +805,9 @@ class NucUnit:
                 x_quarkunit = quarkunit_shop("agenda_idea_balancelink", quark_update())
                 x_quarkunit.set_required_arg("road", before_ideaunit.get_road())
                 x_quarkunit.set_required_arg("group_id", after_balancelink.group_id)
-                if (
-                    before_balancelink.creditor_weight
-                    != after_balancelink.creditor_weight
-                ):
+                if before_balancelink.credor_weight != after_balancelink.credor_weight:
                     x_quarkunit.set_optional_arg(
-                        "creditor_weight", after_balancelink.creditor_weight
+                        "credor_weight", after_balancelink.credor_weight
                     )
                 if before_balancelink.debtor_weight != after_balancelink.debtor_weight:
                     x_quarkunit.set_optional_arg(
@@ -1146,13 +1130,13 @@ def add_agendaunit_legible_list(
     _max_tree_traverse_text = "_max_tree_traverse"
     _meld_strategy_text = "_meld_strategy"
     _monetary_desc_text = "_monetary_desc"
-    _party_creditor_pool_text = "_party_creditor_pool"
+    _party_credor_pool_text = "_party_credor_pool"
     _party_debtor_pool_text = "_party_debtor_pool"
 
     _max_tree_traverse_value = optional_args.get(_max_tree_traverse_text)
     _meld_strategy_value = optional_args.get(_meld_strategy_text)
     _monetary_desc_value = optional_args.get(_monetary_desc_text)
-    _party_creditor_pool_value = optional_args.get(_party_creditor_pool_text)
+    _party_credor_pool_value = optional_args.get(_party_credor_pool_text)
     _party_debtor_pool_value = optional_args.get(_party_debtor_pool_text)
     _weight_value = optional_args.get(_weight_text)
 
@@ -1173,16 +1157,16 @@ def add_agendaunit_legible_list(
             f"{x_agenda._owner_id}'s monetary_desc is now called '{_monetary_desc_value}'"
         )
     if (
-        _party_creditor_pool_value != None
+        _party_credor_pool_value != None
         and _party_debtor_pool_value != None
-        and _party_creditor_pool_value == _party_debtor_pool_value
+        and _party_credor_pool_value == _party_debtor_pool_value
     ):
         legible_list.append(
-            f"{x_monetary_desc} total pool is now {_party_creditor_pool_value}"
+            f"{x_monetary_desc} total pool is now {_party_credor_pool_value}"
         )
-    elif _party_creditor_pool_value != None:
+    elif _party_credor_pool_value != None:
         legible_list.append(
-            f"{x_monetary_desc} creditor pool is now {_party_creditor_pool_value}"
+            f"{x_monetary_desc} credor pool is now {_party_credor_pool_value}"
         )
     elif _party_debtor_pool_value != None:
         legible_list.append(
@@ -1202,9 +1186,9 @@ def add_agenda_partyunit_insert_to_legible_list(
         x_monetary_desc = "monetary_desc"
     for partyunit_quark in partyunit_dict.values():
         party_id = partyunit_quark.get_value("party_id")
-        creditor_weight_value = partyunit_quark.get_value("creditor_weight")
+        credor_weight_value = partyunit_quark.get_value("credor_weight")
         debtor_weight_value = partyunit_quark.get_value("debtor_weight")
-        x_str = f"{party_id} was added with {creditor_weight_value} {x_monetary_desc} credit and {debtor_weight_value} {x_monetary_desc} debt"
+        x_str = f"{party_id} was added with {credor_weight_value} {x_monetary_desc} cred and {debtor_weight_value} {x_monetary_desc} debt"
         legible_list.append(x_str)
 
 
@@ -1216,15 +1200,13 @@ def add_agenda_partyunit_update_to_legible_list(
         x_monetary_desc = "monetary_desc"
     for partyunit_quark in partyunit_dict.values():
         party_id = partyunit_quark.get_value("party_id")
-        creditor_weight_value = partyunit_quark.get_value("creditor_weight")
+        credor_weight_value = partyunit_quark.get_value("credor_weight")
         debtor_weight_value = partyunit_quark.get_value("debtor_weight")
-        if creditor_weight_value != None and debtor_weight_value != None:
-            x_str = f"{party_id} now has {creditor_weight_value} {x_monetary_desc} credit and {debtor_weight_value} {x_monetary_desc} debt."
-        elif creditor_weight_value != None and debtor_weight_value is None:
-            x_str = (
-                f"{party_id} now has {creditor_weight_value} {x_monetary_desc} credit."
-            )
-        elif creditor_weight_value is None and debtor_weight_value != None:
+        if credor_weight_value != None and debtor_weight_value != None:
+            x_str = f"{party_id} now has {credor_weight_value} {x_monetary_desc} cred and {debtor_weight_value} {x_monetary_desc} debt."
+        elif credor_weight_value != None and debtor_weight_value is None:
+            x_str = f"{party_id} now has {credor_weight_value} {x_monetary_desc} cred."
+        elif credor_weight_value is None and debtor_weight_value != None:
             x_str = f"{party_id} now has {debtor_weight_value} {x_monetary_desc} debt."
         legible_list.append(x_str)
 
@@ -1246,10 +1228,7 @@ def add_agenda_groupunit_insert_to_legible_list(
 ):
     for groupunit_quark in groupunit_dict.values():
         group_id = groupunit_quark.get_value("group_id")
-        _treasury_partylinks_value = groupunit_quark.get_value("_treasury_partylinks")
         x_str = f"The group '{group_id}' was created"
-        if _treasury_partylinks_value != None:
-            x_str += f" and has _treasury_partylinks={_treasury_partylinks_value}"
         x_str += "."
         legible_list.append(x_str)
 
@@ -1259,12 +1238,7 @@ def add_agenda_groupunit_update_to_legible_list(
 ):
     for groupunit_quark in groupunit_dict.values():
         group_id = groupunit_quark.get_value("group_id")
-        _treasury_partylinks_value = groupunit_quark.get_value("_treasury_partylinks")
         x_str = f"The group '{group_id}'"
-        if _treasury_partylinks_value != None:
-            x_str += f" now has _treasury_partylinks={_treasury_partylinks_value}"
-        elif _treasury_partylinks_value is None:
-            x_str += " no longer has _treasury_partylinks"
         x_str += "."
         legible_list.append(x_str)
 
@@ -1288,9 +1262,9 @@ def add_agenda_group_partylink_insert_to_legible_list(
         for group_partylink_quark in group_partylink_dict.values():
             group_id = group_partylink_quark.get_value("group_id")
             party_id = group_partylink_quark.get_value("party_id")
-            creditor_weight_value = group_partylink_quark.get_value("creditor_weight")
+            credor_weight_value = group_partylink_quark.get_value("credor_weight")
             debtor_weight_value = group_partylink_quark.get_value("debtor_weight")
-            x_str = f"Group '{group_id}' has new member {party_id} with group_credit={creditor_weight_value} and group_debt={debtor_weight_value}."
+            x_str = f"Group '{group_id}' has new member {party_id} with group_cred={credor_weight_value} and group_debt={debtor_weight_value}."
             legible_list.append(x_str)
 
 
@@ -1301,13 +1275,13 @@ def add_agenda_group_partylink_update_to_legible_list(
         for group_partylink_quark in group_partylink_dict.values():
             group_id = group_partylink_quark.get_value("group_id")
             party_id = group_partylink_quark.get_value("party_id")
-            creditor_weight_value = group_partylink_quark.get_value("creditor_weight")
+            credor_weight_value = group_partylink_quark.get_value("credor_weight")
             debtor_weight_value = group_partylink_quark.get_value("debtor_weight")
-            if creditor_weight_value != None and debtor_weight_value != None:
-                x_str = f"Group '{group_id}' member {party_id} has new group_credit={creditor_weight_value} and group_debt={debtor_weight_value}."
-            elif creditor_weight_value != None and debtor_weight_value is None:
-                x_str = f"Group '{group_id}' member {party_id} has new group_credit={creditor_weight_value}."
-            elif creditor_weight_value is None and debtor_weight_value != None:
+            if credor_weight_value != None and debtor_weight_value != None:
+                x_str = f"Group '{group_id}' member {party_id} has new group_cred={credor_weight_value} and group_debt={debtor_weight_value}."
+            elif credor_weight_value != None and debtor_weight_value is None:
+                x_str = f"Group '{group_id}' member {party_id} has new group_cred={credor_weight_value}."
+            elif credor_weight_value is None and debtor_weight_value != None:
                 x_str = f"Group '{group_id}' member {party_id} has new group_debt={debtor_weight_value}."
             legible_list.append(x_str)
 
@@ -1469,9 +1443,9 @@ def add_agenda_idea_balancelink_insert_to_legible_list(
         for idea_balancelink_quark in road_dict.values():
             group_id_value = idea_balancelink_quark.get_value("group_id")
             road_value = idea_balancelink_quark.get_value("road")
-            creditor_weight_value = idea_balancelink_quark.get_value("creditor_weight")
+            credor_weight_value = idea_balancelink_quark.get_value("credor_weight")
             debtor_weight_value = idea_balancelink_quark.get_value("debtor_weight")
-            x_str = f"Balancelink created for group {group_id_value} for idea '{road_value}' with creditor_weight={creditor_weight_value} and debtor_weight={debtor_weight_value}."
+            x_str = f"Balancelink created for group {group_id_value} for idea '{road_value}' with credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
             legible_list.append(x_str)
 
 
@@ -1482,13 +1456,13 @@ def add_agenda_idea_balancelink_update_to_legible_list(
         for idea_balancelink_quark in road_dict.values():
             group_id_value = idea_balancelink_quark.get_value("group_id")
             road_value = idea_balancelink_quark.get_value("road")
-            creditor_weight_value = idea_balancelink_quark.get_value("creditor_weight")
+            credor_weight_value = idea_balancelink_quark.get_value("credor_weight")
             debtor_weight_value = idea_balancelink_quark.get_value("debtor_weight")
-            if creditor_weight_value != None and debtor_weight_value != None:
-                x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value} and debtor_weight={debtor_weight_value}."
-            elif creditor_weight_value != None and debtor_weight_value is None:
-                x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now creditor_weight={creditor_weight_value}."
-            elif creditor_weight_value is None and debtor_weight_value != None:
+            if credor_weight_value != None and debtor_weight_value != None:
+                x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
+            elif credor_weight_value != None and debtor_weight_value is None:
+                x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value}."
+            elif credor_weight_value is None and debtor_weight_value != None:
                 x_str = f"Balancelink has been transited for group {group_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
             legible_list.append(x_str)
 

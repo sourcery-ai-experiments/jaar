@@ -273,7 +273,7 @@
 #             FunctionThatBuildsJob_id=FunctionThatBuildsJob_id_x,
 #             party_id=self.deiepotlink_pid.text(),
 #             deiepotlink_type=self.deiepotlink_type_combo.currentText(),
-#             creditor_weight=self.deiepotlink_weight.text(),
+#             credor_weight=self.deiepotlink_weight.text(),
 #             debtor_weight=self.deiepotlink_weight.text(),
 #         )
 #         self.econ_x.save_FunctionThatBuildsJobunit_file(FunctionThatBuildsJob_id=FunctionThatBuildsJob_id_x)
@@ -361,9 +361,9 @@
 #         if self.owner_id_output_agenda != None:
 #             x_list.extend(
 #                 [
-#                     f"{agenda_importance_diplay(partyunit._agenda_credit)}/{agenda_importance_diplay(partyunit._agenda_debt)}",
+#                     f"{agenda_importance_diplay(partyunit._agenda_cred)}/{agenda_importance_diplay(partyunit._agenda_debt)}",
 #                     partyunit.party_id,
-#                     f"{partyunit.creditor_weight}/{partyunit.debtor_weight}",
+#                     f"{partyunit.credor_weight}/{partyunit.debtor_weight}",
 #                 ]
 #                 for partyunit in self.owner_id_output_agenda._partys.values()
 #             )
@@ -374,7 +374,7 @@
 #         if self.owner_id_output_agenda != None:
 #             x_list.extend(
 #                 [
-#                     f"{agenda_importance_diplay(groupunit._agenda_debt)}/{agenda_importance_diplay(groupunit._agenda_credit)}",
+#                     f"{agenda_importance_diplay(groupunit._agenda_debt)}/{agenda_importance_diplay(groupunit._agenda_cred)}",
 #                     groupunit.group_id,
 #                     len(groupunit._partys),
 #                 ]
@@ -483,9 +483,9 @@
 #     def _sub_refresh_p_partys_table(self):
 #         p_partys_list = self.get_p_partys_list()
 #         column_headers = [
-#             "agenda_debt/agenda_credit",
+#             "agenda_debt/agenda_cred",
 #             f"Partys ({len(p_partys_list)})",
-#             "creditor_weight/debtor_weight",
+#             "credor_weight/debtor_weight",
 #         ]
 
 #         self.refresh_x(
@@ -498,7 +498,7 @@
 #     def _sub_refresh_p_groups_table(self):
 #         p_groups_list = self.get_p_groups_list()
 #         column_headers = [
-#             "agenda_debt/agenda_credit",
+#             "agenda_debt/agenda_cred",
 #             f"groups ({len(p_groups_list)})",
 #             "Partys",
 #         ]

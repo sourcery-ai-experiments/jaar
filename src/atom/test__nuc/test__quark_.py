@@ -8,7 +8,7 @@ from src.atom.quark import (
     category_ref,
     is_category_ref,
     get_quark_config_dict,
-    get_quark_order,
+    get_quark_order as q_order,
     set_mog,
     get_quark_columns_build,
 )
@@ -27,10 +27,6 @@ def test_quark_config_HasCorrect_category():
         "agenda_idea_suffgroup",
         "agenda_idea_healerhold",
         "agenda_idea_beliefunit",
-        "calendar",
-        "river_block",
-        "river_circle",
-        "river_reach",
     }
     assert "agenda_partyunit" in category_ref()
     assert is_category_ref("idearoot") is False
@@ -127,41 +123,35 @@ def test_get_quark_config_dict_EveryCrudOperationHasNucOrderGroup():
     # set_mog("groupunit", quark_delete(), mog, 27)
     # set_mog("agendaunit", quark_update(), mog, 28)
 
-    assert 0 == get_quark_order("agenda_partyunit", quark_insert(), mog, 0)
-    assert 1 == get_quark_order("agenda_group_partylink", quark_insert(), mog, 1)
-    assert 2 == get_quark_order("agenda_groupunit", quark_insert(), mog, 2)
-    assert 3 == get_quark_order("agenda_ideaunit", quark_insert(), mog, 3)
-    assert 4 == get_quark_order("agenda_idea_balancelink", quark_insert(), mog, 4)
-    assert 5 == get_quark_order("agenda_idea_suffgroup", quark_insert(), mog, 5)
-    assert 6 == get_quark_order("agenda_idea_healerhold", quark_insert(), mog, 6)
-    assert 7 == get_quark_order("agenda_idea_beliefunit", quark_insert(), mog, 7)
-    assert 8 == get_quark_order("agenda_idea_reasonunit", quark_insert(), mog, 8)
-    assert 9 == get_quark_order(
-        "agenda_idea_reason_premiseunit", quark_insert(), mog, 9
-    )
-    assert 10 == get_quark_order("agenda_partyunit", quark_update(), mog, 10)
-    assert 11 == get_quark_order("agenda_groupunit", quark_update(), mog, 11)
-    assert 12 == get_quark_order("agenda_group_partylink", quark_update(), mog, 12)
-    assert 13 == get_quark_order("agenda_ideaunit", quark_update(), mog, 13)
-    assert 14 == get_quark_order("agenda_idea_balancelink", quark_update(), mog, 14)
-    assert 15 == get_quark_order("agenda_idea_beliefunit", quark_update(), mog, 15)
-    assert 16 == get_quark_order(
-        "agenda_idea_reason_premiseunit", quark_update(), mog, 16
-    )
-    assert 17 == get_quark_order("agenda_idea_reasonunit", quark_update(), mog, 17)
-    assert 18 == get_quark_order(
-        "agenda_idea_reason_premiseunit", quark_delete(), mog, 18
-    )
-    assert 19 == get_quark_order("agenda_idea_reasonunit", quark_delete(), mog, 19)
-    assert 20 == get_quark_order("agenda_idea_beliefunit", quark_delete(), mog, 20)
-    assert 21 == get_quark_order("agenda_idea_suffgroup", quark_delete(), mog, 21)
-    assert 22 == get_quark_order("agenda_idea_healerhold", quark_delete(), mog, 22)
-    assert 23 == get_quark_order("agenda_idea_balancelink", quark_delete(), mog, 23)
-    assert 24 == get_quark_order("agenda_ideaunit", quark_delete(), mog, 24)
-    assert 25 == get_quark_order("agenda_group_partylink", quark_delete(), mog, 25)
-    assert 26 == get_quark_order("agenda_partyunit", quark_delete(), mog, 26)
-    assert 27 == get_quark_order("agenda_groupunit", quark_delete(), mog, 27)
-    assert 28 == get_quark_order("agendaunit", quark_update(), mog, 28)
+    assert 0 == q_order("agenda_partyunit", quark_insert(), mog, 0)
+    assert 1 == q_order("agenda_group_partylink", quark_insert(), mog, 1)
+    assert 2 == q_order("agenda_groupunit", quark_insert(), mog, 2)
+    assert 3 == q_order("agenda_ideaunit", quark_insert(), mog, 3)
+    assert 4 == q_order("agenda_idea_balancelink", quark_insert(), mog, 4)
+    assert 5 == q_order("agenda_idea_suffgroup", quark_insert(), mog, 5)
+    assert 6 == q_order("agenda_idea_healerhold", quark_insert(), mog, 6)
+    assert 7 == q_order("agenda_idea_beliefunit", quark_insert(), mog, 7)
+    assert 8 == q_order("agenda_idea_reasonunit", quark_insert(), mog, 8)
+    assert 9 == q_order("agenda_idea_reason_premiseunit", quark_insert(), mog, 9)
+    assert 10 == q_order("agenda_partyunit", quark_update(), mog, 10)
+    assert 11 == q_order("agenda_groupunit", quark_update(), mog, 11)
+    assert 12 == q_order("agenda_group_partylink", quark_update(), mog, 12)
+    assert 13 == q_order("agenda_ideaunit", quark_update(), mog, 13)
+    assert 14 == q_order("agenda_idea_balancelink", quark_update(), mog, 14)
+    assert 15 == q_order("agenda_idea_beliefunit", quark_update(), mog, 15)
+    assert 16 == q_order("agenda_idea_reason_premiseunit", quark_update(), mog, 16)
+    assert 17 == q_order("agenda_idea_reasonunit", quark_update(), mog, 17)
+    assert 18 == q_order("agenda_idea_reason_premiseunit", quark_delete(), mog, 18)
+    assert 19 == q_order("agenda_idea_reasonunit", quark_delete(), mog, 19)
+    assert 20 == q_order("agenda_idea_beliefunit", quark_delete(), mog, 20)
+    assert 21 == q_order("agenda_idea_suffgroup", quark_delete(), mog, 21)
+    assert 22 == q_order("agenda_idea_healerhold", quark_delete(), mog, 22)
+    assert 23 == q_order("agenda_idea_balancelink", quark_delete(), mog, 23)
+    assert 24 == q_order("agenda_ideaunit", quark_delete(), mog, 24)
+    assert 25 == q_order("agenda_group_partylink", quark_delete(), mog, 25)
+    assert 26 == q_order("agenda_partyunit", quark_delete(), mog, 26)
+    assert 27 == q_order("agenda_groupunit", quark_delete(), mog, 27)
+    assert 28 == q_order("agendaunit", quark_update(), mog, 28)
 
 
 def _every_category_dict_has_arg_elements(category_dict: dict) -> bool:
@@ -204,8 +194,8 @@ def test_get_quark_columns_build_ReturnsCorrectObj():
     quark_columns = get_quark_columns_build()
 
     # THEN
-    assert len(quark_columns) == 113
-    assert quark_columns.get("agendaunit_UPDATE__party_creditor_pool") == "INTEGER"
+    assert len(quark_columns) == 111
+    assert quark_columns.get("agendaunit_UPDATE__party_credor_pool") == "INTEGER"
     # print(f"{quark_columns.keys()=}")
 
 
@@ -214,20 +204,20 @@ def test_QuarkUnit_exists():
     x_quarkunit = QuarkUnit()
 
     # THEN
-    x_quarkunit.category is None
-    x_quarkunit.crud_text is None
-    x_quarkunit.required_args is None
-    x_quarkunit.optional_args is None
-    x_quarkunit.quark_order is None
+    assert x_quarkunit.category is None
+    assert x_quarkunit.crud_text is None
+    assert x_quarkunit.required_args is None
+    assert x_quarkunit.optional_args is None
+    assert x_quarkunit.quark_order is None
 
 
 def test_quarkunit_shop_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    bob_creditor_weight = 55
+    bob_credor_weight = 55
     bob_debtor_weight = 66
-    bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
-    cw_text = "_creditor_weight"
+    bob_partyunit = partyunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
+    cw_text = "_credor_weight"
     dw_text = "_debtor_weight"
     bob_required_dict = {"party_id": "huh"}
     bob_optional_dict = {cw_text: bob_partyunit.get_dict().get(cw_text)}
@@ -299,7 +289,7 @@ def test_QuarkUnit_is_optional_args_valid_ReturnsCorrectBoolean():
     assert bob_insert_quarkunit.is_optional_args_valid()
 
     # WHEN
-    bob_insert_quarkunit.set_optional_arg("creditor_weight", 55)
+    bob_insert_quarkunit.set_optional_arg("credor_weight", 55)
     # THEN
     assert len(bob_insert_quarkunit.optional_args) == 1
     assert bob_insert_quarkunit.is_optional_args_valid()
@@ -319,9 +309,9 @@ def test_QuarkUnit_is_optional_args_valid_ReturnsCorrectBoolean():
 
 def test_QuarkUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
     bob_text = "Bob"
-    bob_creditor_weight = 55
+    bob_credor_weight = 55
     bob_debtor_weight = 66
-    bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
+    bob_partyunit = partyunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
     partyunit_text = "agenda_partyunit"
 
     # WHEN
@@ -351,7 +341,7 @@ def test_QuarkUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
 
     # WHEN
     bob_insert_quarkunit.optional_args = {}
-    cw_text = "creditor_weight"
+    cw_text = "credor_weight"
     dw_text = "debtor_weight"
     bob_insert_quarkunit.set_optional_arg(
         cw_text, bob_partyunit.get_dict().get(cw_text)
@@ -383,13 +373,13 @@ def test_QuarkUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_INSERT():
 def test_QuarkUnit_get_value_ReturnsObj():
     # GIVEN
     bob_text = "Bob"
-    bob_creditor_weight = 55
+    bob_credor_weight = 55
     bob_debtor_weight = 66
-    bob_partyunit = partyunit_shop(bob_text, bob_creditor_weight, bob_debtor_weight)
+    bob_partyunit = partyunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
     partyunit_text = "agenda_partyunit"
     bob_insert_quarkunit = quarkunit_shop(partyunit_text, quark_insert())
     party_id_text = "party_id"
-    cw_text = "creditor_weight"
+    cw_text = "credor_weight"
     dw_text = "debtor_weight"
     print(f"{bob_partyunit.get_dict()=}")
     # bob_partyunit_dict = {party_id_text: bob_partyunit.get_dict().get(party_id_text)}
@@ -404,7 +394,7 @@ def test_QuarkUnit_get_value_ReturnsObj():
     assert bob_insert_quarkunit.is_valid()
 
     # WHEN / THEN
-    assert bob_insert_quarkunit.get_value(cw_text) == bob_creditor_weight
+    assert bob_insert_quarkunit.get_value(cw_text) == bob_credor_weight
     assert bob_insert_quarkunit.get_value(dw_text) == bob_debtor_weight
 
 
@@ -431,42 +421,42 @@ def test_QuarkUnit_is_valid_ReturnsCorrectBoolean_PartyUnit_DELETE():
 def test_QuarkUnit_set_quark_order_SetCorrectAttr():
     # GIVEN
     bob_text = "Bob"
-    bob_creditor_weight = 55
+    bob_credor_weight = 55
     bob_debtor_weight = 66
     partyunit_text = "agenda_partyunit"
     bob_insert_quarkunit = quarkunit_shop(partyunit_text, quark_insert())
     party_id_text = "party_id"
-    cw_text = "creditor_weight"
+    cw_text = "credor_weight"
     dw_text = "debtor_weight"
     bob_insert_quarkunit.set_required_arg(party_id_text, bob_text)
-    bob_insert_quarkunit.set_optional_arg(cw_text, bob_creditor_weight)
+    bob_insert_quarkunit.set_optional_arg(cw_text, bob_credor_weight)
     bob_insert_quarkunit.set_optional_arg(dw_text, bob_debtor_weight)
     assert bob_insert_quarkunit.is_valid()
 
     # WHEN / THEN
-    assert bob_insert_quarkunit.get_value(cw_text) == bob_creditor_weight
+    assert bob_insert_quarkunit.get_value(cw_text) == bob_credor_weight
     assert bob_insert_quarkunit.get_value(dw_text) == bob_debtor_weight
 
 
 def test_QuarkUnit_set_arg_SetsAny_required_arg_optional_arg():
     # GIVEN
     bob_text = "Bob"
-    bob_creditor_weight = 55
+    bob_credor_weight = 55
     bob_debtor_weight = 66
     partyunit_text = "agenda_partyunit"
     bob_insert_quarkunit = quarkunit_shop(partyunit_text, quark_insert())
     party_id_text = "party_id"
-    cw_text = "creditor_weight"
+    cw_text = "credor_weight"
     dw_text = "debtor_weight"
 
     # WHEN
     bob_insert_quarkunit.set_arg(party_id_text, bob_text)
-    bob_insert_quarkunit.set_arg(cw_text, bob_creditor_weight)
+    bob_insert_quarkunit.set_arg(cw_text, bob_credor_weight)
     bob_insert_quarkunit.set_arg(dw_text, bob_debtor_weight)
 
     # THEN
     assert bob_insert_quarkunit.get_value(party_id_text) == bob_text
-    assert bob_insert_quarkunit.get_value(cw_text) == bob_creditor_weight
+    assert bob_insert_quarkunit.get_value(cw_text) == bob_credor_weight
     assert bob_insert_quarkunit.get_value(dw_text) == bob_debtor_weight
     assert bob_insert_quarkunit.get_value(party_id_text) == bob_text
     assert bob_insert_quarkunit.is_valid()

@@ -13,9 +13,9 @@ def test_get_debtors_roll_ReturnsObj():
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_role.calc_agenda_metrics()
 
     # WHEN
@@ -31,13 +31,13 @@ def test_get_debtors_roll_ReturnsObjIgnoresZero_debtor_weight():
     yao_text = "Yao"
     yao_role = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     wei_text = "Wei"
-    wei_creditor_weight = 67
+    wei_credor_weight = 67
     wei_debtor_weight = 0
-    yao_role.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_role.add_partyunit(wei_text, wei_creditor_weight, wei_debtor_weight)
+    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_partyunit(wei_text, wei_credor_weight, wei_debtor_weight)
     yao_role.calc_agenda_metrics()
 
     # WHEN
@@ -53,13 +53,13 @@ def test_get_ordered_debtors_roll_ReturnsObjsInOrder():
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    zia_creditor_weight = 47
+    zia_credor_weight = 47
     zia_debtor_weight = 41
     sue_text = "Sue"
-    sue_creditor_weight = 57
+    sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_agenda.add_partyunit(zia_text, zia_creditor_weight, zia_debtor_weight)
-    yao_agenda.add_partyunit(sue_text, sue_creditor_weight, sue_debtor_weight)
+    yao_agenda.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_agenda.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
     yao_agenda.set_party_pool(yao_pool)
 

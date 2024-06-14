@@ -16,7 +16,7 @@ def create_example_real1() -> RealUnit:
     yao_userhub = userhub_shop(None, music_text, yao_text, None)
     yao_duty_agenda = yao_userhub.get_duty_agenda()
 
-    yao_duty_agenda.set_party_creditor_pool(101)
+    yao_duty_agenda.set_party_credor_pool(101)
     yao_duty_agenda.set_party_debtor_pool(1000)
 
     yao_duty_agenda.add_partyunit(yao_text, 34, 600)
@@ -70,9 +70,9 @@ def create_example_real2() -> RealUnit:
     wei_duty_agenda = wei_userhub.get_duty_agenda()
     zia_duty_agenda = zia_userhub.get_duty_agenda()
 
-    yao_duty_agenda.set_party_creditor_pool(101)
-    wei_duty_agenda.set_party_creditor_pool(75)
-    zia_duty_agenda.set_party_creditor_pool(52)
+    yao_duty_agenda.set_party_credor_pool(101)
+    wei_duty_agenda.set_party_credor_pool(75)
+    zia_duty_agenda.set_party_credor_pool(52)
     yao_duty_agenda.set_party_debtor_pool(1000)
     wei_duty_agenda.set_party_debtor_pool(750)
     zia_duty_agenda.set_party_debtor_pool(500)
@@ -208,9 +208,9 @@ def create_example_real4() -> RealUnit:
     zia_duty_agenda.add_idea(ideaunit_shop(hall_text, pledge=True), clean_road)
 
     # display_ideatree(yao_duty_agenda, mode="Econ").show()
-    yao_duty_agenda.set_party_creditor_pool(101)
-    wei_duty_agenda.set_party_creditor_pool(75)
-    zia_duty_agenda.set_party_creditor_pool(52)
+    yao_duty_agenda.set_party_credor_pool(101)
+    wei_duty_agenda.set_party_credor_pool(75)
+    zia_duty_agenda.set_party_credor_pool(52)
     yao_duty_agenda.set_party_debtor_pool(1000)
     wei_duty_agenda.set_party_debtor_pool(750)
     zia_duty_agenda.set_party_debtor_pool(500)

@@ -98,7 +98,7 @@ class NewDelimiterException(Exception):
     pass
 
 
-class PartyUnitsCreditorDebtorSumException(Exception):
+class PartyUnitsCredorDebtorSumException(Exception):
     pass
 
 
@@ -136,7 +136,7 @@ class AgendaUnit:
     _planck: float = None
     _penny: float = None
     _monetary_desc: str = None
-    _party_creditor_pool: int = None
+    _party_credor_pool: int = None
     _party_debtor_pool: int = None
     _meld_strategy: MeldStrategy = None
     _originunit: OriginUnit = None  # In job agendas this shows source
@@ -165,9 +165,9 @@ class AgendaUnit:
         self._monetary_desc = x_monetary_desc
 
     def set_party_pool(self, x_party_pool: int):
-        self.set_party_creditor_pool(
-            new_party_creditor_pool=x_party_pool,
-            update_partys_creditor_weight=True,
+        self.set_party_credor_pool(
+            new_party_credor_pool=x_party_pool,
+            update_partys_credor_weight=True,
             correct_planck_issues=True,
         )
         self.set_party_debtor_pool(
@@ -176,45 +176,45 @@ class AgendaUnit:
             correct_planck_issues=True,
         )
 
-    def set_party_creditor_pool(
+    def set_party_credor_pool(
         self,
-        new_party_creditor_pool: int,
-        update_partys_creditor_weight: bool = False,
+        new_party_credor_pool: int,
+        update_partys_credor_weight: bool = False,
         correct_planck_issues: bool = False,
     ):
-        if (new_party_creditor_pool / self._planck).is_integer() is False:
+        if (new_party_credor_pool / self._planck).is_integer() is False:
             raise _planck_RatioException(
-                f"Agenda '{self._owner_id}' cannot set _party_creditor_pool='{new_party_creditor_pool}'. It is not divisible by planck '{self._planck}'"
+                f"Agenda '{self._owner_id}' cannot set _party_credor_pool='{new_party_credor_pool}'. It is not divisible by planck '{self._planck}'"
             )
 
-        if update_partys_creditor_weight:
-            old_party_creditor_pool = self.get_partyunits_creditor_weight_sum()
-            if old_party_creditor_pool != 0:
-                x_ratio = new_party_creditor_pool / old_party_creditor_pool
+        if update_partys_credor_weight:
+            old_party_credor_pool = self.get_partyunits_credor_weight_sum()
+            if old_party_credor_pool != 0:
+                x_ratio = new_party_credor_pool / old_party_credor_pool
                 for x_party in self._partys.values():
-                    new_party_creditor_weight = trim_planck_excess(
-                        num=x_party.creditor_weight * x_ratio, planck=x_party._planck
+                    new_party_credor_weight = trim_planck_excess(
+                        num=x_party.credor_weight * x_ratio, planck=x_party._planck
                     )
-                    x_party.set_creditor_weight(new_party_creditor_weight)
+                    x_party.set_credor_weight(new_party_credor_weight)
 
-        self._party_creditor_pool = new_party_creditor_pool
+        self._party_credor_pool = new_party_credor_pool
         if correct_planck_issues:
-            self._correct_any_creditor_planck_issues()
+            self._correct_any_credor_planck_issues()
 
-    def _correct_any_creditor_planck_issues(self):
-        if self.get_partyunits_creditor_weight_sum() != self._party_creditor_pool:
-            missing_creditor_weight = (
-                self._party_creditor_pool - self.get_partyunits_creditor_weight_sum()
+    def _correct_any_credor_planck_issues(self):
+        if self.get_partyunits_credor_weight_sum() != self._party_credor_pool:
+            missing_credor_weight = (
+                self._party_credor_pool - self.get_partyunits_credor_weight_sum()
             )
             if len(self._partys) > 0:
                 partyunits = list(self._partys.values())
                 # partys_count = len(self._partys)
-                # planck_count = missing_creditor_weight / self._planck
+                # planck_count = missing_credor_weight / self._planck
                 # if planck_count <= partys_count:
-                for _ in range(0, missing_creditor_weight, self._planck):
+                for _ in range(0, missing_credor_weight, self._planck):
                     x_partyunit = partyunits.pop()
-                    x_partyunit.set_creditor_weight(
-                        x_partyunit.creditor_weight + self._planck
+                    x_partyunit.set_credor_weight(
+                        x_partyunit.credor_weight + self._planck
                     )
 
     def set_party_debtor_pool(
@@ -318,7 +318,7 @@ class AgendaUnit:
         self, external_metrics: PartyUnitExternalMetrics
     ):
         party_x = self.get_party(external_metrics.internal_party_id)
-        party_x._creditor_operational = external_metrics.creditor_operational
+        party_x._credor_operational = external_metrics.credor_operational
         party_x._debtor_operational = external_metrics.debtor_operational
         # self.set_partyunit(partyunit=party_x)
 
@@ -595,46 +595,46 @@ class AgendaUnit:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.balancelinks_metrics
 
-    def add_to_group_agenda_credit_debt(
+    def add_to_group_agenda_cred_debt(
         self,
         group_id: GroupID,
-        balanceheir_agenda_credit: float,
+        balanceheir_agenda_cred: float,
         balanceheir_agenda_debt: float,
     ):
         for group in self._groups.values():
             if group.group_id == group_id:
-                group._agenda_credit += balanceheir_agenda_credit
+                group._agenda_cred += balanceheir_agenda_cred
                 group._agenda_debt += balanceheir_agenda_debt
 
-    def add_to_group_agenda_intent_credit_debt(
+    def add_to_group_agenda_intent_cred_debt(
         self,
         group_id: GroupID,
-        balanceline_agenda_credit: float,
+        balanceline_agenda_cred: float,
         balanceline_agenda_debt: float,
     ):
         for group in self._groups.values():
             if (
                 group.group_id == group_id
-                and balanceline_agenda_credit != None
+                and balanceline_agenda_cred != None
                 and balanceline_agenda_debt != None
             ):
-                group._agenda_intent_credit += balanceline_agenda_credit
+                group._agenda_intent_cred += balanceline_agenda_cred
                 group._agenda_intent_debt += balanceline_agenda_debt
 
-    def add_to_partyunit_agenda_credit_debt(
+    def add_to_partyunit_agenda_cred_debt(
         self,
         partyunit_party_id: PartyID,
-        agenda_credit,
+        agenda_cred,
         agenda_debt: float,
-        agenda_intent_credit: float,
+        agenda_intent_cred: float,
         agenda_intent_debt: float,
     ):
         for partyunit in self._partys.values():
             if partyunit.party_id == partyunit_party_id:
-                partyunit.add_agenda_credit_debt(
-                    agenda_credit=agenda_credit,
+                partyunit.add_agenda_cred_debt(
+                    agenda_cred=agenda_cred,
                     agenda_debt=agenda_debt,
-                    agenda_intent_credit=agenda_intent_credit,
+                    agenda_intent_cred=agenda_intent_cred,
                     agenda_intent_debt=agenda_intent_debt,
                 )
 
@@ -643,11 +643,11 @@ class AgendaUnit:
         self._partys.pop(party_id)
 
     def add_partyunit(
-        self, party_id: PartyID, creditor_weight: int = None, debtor_weight: int = None
+        self, party_id: PartyID, credor_weight: int = None, debtor_weight: int = None
     ):
         partyunit = partyunit_shop(
             party_id=party_id,
-            creditor_weight=creditor_weight,
+            credor_weight=credor_weight,
             debtor_weight=debtor_weight,
             _road_delimiter=self._road_delimiter,
         )
@@ -664,7 +664,7 @@ class AgendaUnit:
             self._groups[partyunit.party_id]
         except KeyError:
             partylink = partylink_shop(
-                party_id=PartyID(partyunit.party_id), creditor_weight=1, debtor_weight=1
+                party_id=PartyID(partyunit.party_id), credor_weight=1, debtor_weight=1
             )
             partylinks = {partylink.party_id: partylink}
             group_unit = groupunit_shop(
@@ -686,7 +686,7 @@ class AgendaUnit:
         allow_nonsingle_group_overwrite: bool,
     ):
         # Handle scenarios: some are unacceptable
-        old_party_id_creditor_weight = self.get_party(old_party_id).creditor_weight
+        old_party_id_credor_weight = self.get_party(old_party_id).credor_weight
         new_party_id_groupunit = self.get_groupunit(new_party_id)
         new_party_id_partyunit = self.get_party(new_party_id)
         if not allow_party_overwite and new_party_id_partyunit != None:
@@ -708,11 +708,11 @@ class AgendaUnit:
         ):
             self.del_groupunit(group_id=new_party_id)
         elif self.party_exists(new_party_id):
-            old_party_id_creditor_weight += new_party_id_partyunit.creditor_weight
+            old_party_id_credor_weight += new_party_id_partyunit.credor_weight
 
         # upsert new partyunit
         self.add_partyunit(
-            party_id=new_party_id, creditor_weight=old_party_id_creditor_weight
+            party_id=new_party_id, credor_weight=old_party_id_credor_weight
         )
         # modify all influenced groupunits partylinks
         for old_party_group_id in self.get_party_group_ids(old_party_id):
@@ -721,13 +721,13 @@ class AgendaUnit:
         self.del_partyunit(party_id=old_party_id)
 
     def edit_partyunit(
-        self, party_id: PartyID, creditor_weight: int = None, debtor_weight: int = None
+        self, party_id: PartyID, credor_weight: int = None, debtor_weight: int = None
     ):
         if self._partys.get(party_id) is None:
             raise PartyMissingException(f"PartyUnit '{party_id}' does not exist.")
         x_partyunit = self.get_party(party_id)
-        if creditor_weight != None:
-            x_partyunit.set_creditor_weight(creditor_weight)
+        if credor_weight != None:
+            x_partyunit.set_credor_weight(credor_weight)
         if debtor_weight != None:
             x_partyunit.set_debtor_weight(debtor_weight)
         self.set_partyunit(x_partyunit)
@@ -781,7 +781,7 @@ class AgendaUnit:
                 self.set_partyunit(
                     partyunit=partyunit_shop(
                         party_id=partylink_x.party_id,
-                        creditor_weight=partylink_x.creditor_weight,
+                        credor_weight=partylink_x.credor_weight,
                         debtor_weight=partylink_x.debtor_weight,
                     )
                 )
@@ -842,7 +842,7 @@ class AgendaUnit:
                 old_balancelink = x_idea._balancelinks.get(old_group_id)
                 new_balancelink = balancelink_shop(
                     group_id=new_group_id,
-                    creditor_weight=old_balancelink.creditor_weight,
+                    credor_weight=old_balancelink.credor_weight,
                     debtor_weight=old_balancelink.debtor_weight,
                 )
                 x_idea.set_balancelink(balancelink=new_balancelink)
@@ -1453,7 +1453,7 @@ class AgendaUnit:
         pledge: bool = None,
         beliefunit: BeliefUnit = None,
         descendant_pledge_count: int = None,
-        all_party_credit: bool = None,
+        all_party_cred: bool = None,
         all_party_debt: bool = None,
         balancelink: BalanceLink = None,
         balancelink_del: GroupID = None,
@@ -1491,7 +1491,7 @@ class AgendaUnit:
             numeric_road=numeric_road,
             range_source_road=range_source_road,
             descendant_pledge_count=descendant_pledge_count,
-            all_party_credit=all_party_credit,
+            all_party_cred=all_party_cred,
             all_party_debt=all_party_debt,
             balancelink=balancelink,
             balancelink_del=balancelink_del,
@@ -1534,95 +1534,89 @@ class AgendaUnit:
         pledge_item = self.get_idea_obj(task_road)
         pledge_item.set_beliefunit_to_complete(self._idearoot._beliefunits[base])
 
-    def is_partyunits_creditor_weight_sum_correct(self) -> bool:
-        x_sum = self.get_partyunits_creditor_weight_sum()
-        return (
-            x_sum in (0, self._party_creditor_pool) or self._party_creditor_pool is None
-        )
+    def is_partyunits_credor_weight_sum_correct(self) -> bool:
+        x_sum = self.get_partyunits_credor_weight_sum()
+        return x_sum in (0, self._party_credor_pool) or self._party_credor_pool is None
 
     def is_partyunits_debtor_weight_sum_correct(self) -> bool:
         x_sum = self.get_partyunits_debtor_weight_sum()
         return self._party_debtor_pool is None or x_sum in (self._party_debtor_pool, 0)
 
-    def get_partyunits_creditor_weight_sum(self) -> float:
-        return sum(
-            partyunit.get_creditor_weight() for partyunit in self._partys.values()
-        )
+    def get_partyunits_credor_weight_sum(self) -> float:
+        return sum(partyunit.get_credor_weight() for partyunit in self._partys.values())
 
     def get_partyunits_debtor_weight_sum(self) -> float:
         return sum(partyunit.get_debtor_weight() for partyunit in self._partys.values())
 
-    def _add_to_partyunits_agenda_credit_debt(self, idea_agenda_importance: float):
-        sum_partyunit_creditor_weight = self.get_partyunits_creditor_weight_sum()
+    def _add_to_partyunits_agenda_cred_debt(self, idea_agenda_importance: float):
+        sum_partyunit_credor_weight = self.get_partyunits_credor_weight_sum()
         sum_partyunit_debtor_weight = self.get_partyunits_debtor_weight_sum()
 
         for x_partyunit in self._partys.values():
-            au_agenda_credit = (
-                idea_agenda_importance * x_partyunit.get_creditor_weight()
-            ) / sum_partyunit_creditor_weight
+            au_agenda_cred = (
+                idea_agenda_importance * x_partyunit.get_credor_weight()
+            ) / sum_partyunit_credor_weight
 
             au_agenda_debt = (
                 idea_agenda_importance * x_partyunit.get_debtor_weight()
             ) / sum_partyunit_debtor_weight
 
-            x_partyunit.add_agenda_credit_debt(
-                agenda_credit=au_agenda_credit,
+            x_partyunit.add_agenda_cred_debt(
+                agenda_cred=au_agenda_cred,
                 agenda_debt=au_agenda_debt,
-                agenda_intent_credit=0,
+                agenda_intent_cred=0,
                 agenda_intent_debt=0,
             )
 
-    def _add_to_partyunits_agenda_intent_credit_debt(
-        self, idea_agenda_importance: float
-    ):
-        sum_partyunit_creditor_weight = self.get_partyunits_creditor_weight_sum()
+    def _add_to_partyunits_agenda_intent_cred_debt(self, idea_agenda_importance: float):
+        sum_partyunit_credor_weight = self.get_partyunits_credor_weight_sum()
         sum_partyunit_debtor_weight = self.get_partyunits_debtor_weight_sum()
 
         for x_partyunit in self._partys.values():
-            au_agenda_intent_credit = (
-                idea_agenda_importance * x_partyunit.get_creditor_weight()
-            ) / sum_partyunit_creditor_weight
+            au_agenda_intent_cred = (
+                idea_agenda_importance * x_partyunit.get_credor_weight()
+            ) / sum_partyunit_credor_weight
 
             au_agenda_intent_debt = (
                 idea_agenda_importance * x_partyunit.get_debtor_weight()
             ) / sum_partyunit_debtor_weight
 
-            x_partyunit.add_agenda_credit_debt(
-                agenda_credit=0,
+            x_partyunit.add_agenda_cred_debt(
+                agenda_cred=0,
                 agenda_debt=0,
-                agenda_intent_credit=au_agenda_intent_credit,
+                agenda_intent_cred=au_agenda_intent_cred,
                 agenda_intent_debt=au_agenda_intent_debt,
             )
 
     def _set_partyunits_agenda_intent_importance(self, agenda_intent_importance: float):
-        sum_partyunit_creditor_weight = self.get_partyunits_creditor_weight_sum()
+        sum_partyunit_credor_weight = self.get_partyunits_credor_weight_sum()
         sum_partyunit_debtor_weight = self.get_partyunits_debtor_weight_sum()
 
         for x_partyunit in self._partys.values():
-            au_agenda_intent_credit = (
-                agenda_intent_importance * x_partyunit.get_creditor_weight()
-            ) / sum_partyunit_creditor_weight
+            au_agenda_intent_cred = (
+                agenda_intent_importance * x_partyunit.get_credor_weight()
+            ) / sum_partyunit_credor_weight
 
             au_agenda_intent_debt = (
                 agenda_intent_importance * x_partyunit.get_debtor_weight()
             ) / sum_partyunit_debtor_weight
 
-            x_partyunit.add_agenda_intent_credit_debt(
-                agenda_intent_credit=au_agenda_intent_credit,
+            x_partyunit.add_agenda_intent_cred_debt(
+                agenda_intent_cred=au_agenda_intent_cred,
                 agenda_intent_debt=au_agenda_intent_debt,
             )
 
-    def _reset_groupunits_agenda_credit_debt(self):
+    def _reset_groupunits_agenda_cred_debt(self):
         for balancelink_obj in self._groups.values():
-            balancelink_obj.reset_agenda_credit_debt()
+            balancelink_obj.reset_agenda_cred_debt()
 
     def _set_groupunits_agenda_importance(
         self, balanceheirs: dict[GroupID:BalanceLink]
     ):
         for balancelink_obj in balanceheirs.values():
-            self.add_to_group_agenda_credit_debt(
+            self.add_to_group_agenda_cred_debt(
                 group_id=balancelink_obj.group_id,
-                balanceheir_agenda_credit=balancelink_obj._agenda_credit,
+                balanceheir_agenda_cred=balancelink_obj._agenda_cred,
                 balanceheir_agenda_debt=balancelink_obj._agenda_debt,
             )
 
@@ -1630,46 +1624,46 @@ class AgendaUnit:
         for idea in self._idea_dict.values():
             # If there are no balancelines associated with idea
             # allot agenda_importance via general partyunit
-            # credit ratio and debt ratio
+            # cred ratio and debt ratio
             # if idea.is_intent_item() and idea._balancelines == {}:
             if idea.is_intent_item():
                 if idea._balancelines == {}:
-                    self._add_to_partyunits_agenda_intent_credit_debt(
+                    self._add_to_partyunits_agenda_intent_cred_debt(
                         idea._agenda_importance
                     )
                 else:
                     for x_balanceline in idea._balancelines.values():
-                        self.add_to_group_agenda_intent_credit_debt(
+                        self.add_to_group_agenda_intent_cred_debt(
                             group_id=x_balanceline.group_id,
-                            balanceline_agenda_credit=x_balanceline._agenda_credit,
+                            balanceline_agenda_cred=x_balanceline._agenda_cred,
                             balanceline_agenda_debt=x_balanceline._agenda_debt,
                         )
 
     def _allot_groups_agenda_importance(self):
         for group_obj in self._groups.values():
-            group_obj._set_partylink_agenda_credit_debt()
+            group_obj._set_partylink_agenda_cred_debt()
             for partylink in group_obj._partys.values():
-                self.add_to_partyunit_agenda_credit_debt(
+                self.add_to_partyunit_agenda_cred_debt(
                     partyunit_party_id=partylink.party_id,
-                    agenda_credit=partylink._agenda_credit,
+                    agenda_cred=partylink._agenda_cred,
                     agenda_debt=partylink._agenda_debt,
-                    agenda_intent_credit=partylink._agenda_intent_credit,
+                    agenda_intent_cred=partylink._agenda_intent_cred,
                     agenda_intent_debt=partylink._agenda_intent_debt,
                 )
 
-    def _set_agenda_intent_ratio_credit_debt(self):
-        agenda_intent_ratio_credit_sum = 0
+    def _set_agenda_intent_ratio_cred_debt(self):
+        agenda_intent_ratio_cred_sum = 0
         agenda_intent_ratio_debt_sum = 0
 
         for x_partyunit in self._partys.values():
-            agenda_intent_ratio_credit_sum += x_partyunit._agenda_intent_credit
+            agenda_intent_ratio_cred_sum += x_partyunit._agenda_intent_cred
             agenda_intent_ratio_debt_sum += x_partyunit._agenda_intent_debt
 
         for x_partyunit in self._partys.values():
-            x_partyunit.set_agenda_intent_ratio_credit_debt(
-                agenda_intent_ratio_credit_sum=agenda_intent_ratio_credit_sum,
+            x_partyunit.set_agenda_intent_ratio_cred_debt(
+                agenda_intent_ratio_cred_sum=agenda_intent_ratio_cred_sum,
                 agenda_intent_ratio_debt_sum=agenda_intent_ratio_debt_sum,
-                agenda_partyunit_total_creditor_weight=self.get_partyunits_creditor_weight_sum(),
+                agenda_partyunit_total_credor_weight=self.get_partyunits_credor_weight_sum(),
                 agenda_partyunit_total_debtor_weight=self.get_partyunits_debtor_weight_sum(),
             )
 
@@ -1680,9 +1674,9 @@ class AgendaUnit:
             if x_groupunit.partylink_exists(party_id)
         ]
 
-    def _reset_partyunit_agenda_credit_debt(self):
+    def _reset_partyunit_agenda_cred_debt(self):
         for partyunit in self._partys.values():
-            partyunit.reset_agenda_credit_debt()
+            partyunit.reset_agenda_cred_debt()
 
     def idea_exists(self, road: RoadUnit) -> bool:
         if road is None:
@@ -1761,18 +1755,18 @@ class AgendaUnit:
 
             if (
                 group_everyone != False
-                and x_idea_obj._all_party_credit != False
+                and x_idea_obj._all_party_cred != False
                 and x_idea_obj._all_party_debt != False
                 and x_idea_obj._balanceheirs != {}
             ) or (
                 group_everyone != False
-                and x_idea_obj._all_party_credit is False
+                and x_idea_obj._all_party_cred is False
                 and x_idea_obj._all_party_debt is False
             ):
                 group_everyone = False
             elif group_everyone != False:
                 group_everyone = True
-            x_idea_obj._all_party_credit = group_everyone
+            x_idea_obj._all_party_cred = group_everyone
             x_idea_obj._all_party_debt = group_everyone
 
             if x_idea_obj._healerhold.any_group_id_exists():
@@ -1807,10 +1801,10 @@ class AgendaUnit:
             agenda_owner_id=self._owner_id,
         )
         x_idearoot.set_agenda_importance(fund_onset_x=0, parent_fund_cease=1)
-        x_idearoot.set_balanceheirs_agenda_credit_debt()
+        x_idearoot.set_balanceheirs_agenda_cred_debt()
         x_idearoot.set_ancestor_pledge_count(0, False)
         x_idearoot.clear_descendant_pledge_count()
-        x_idearoot.clear_all_party_credit_debt()
+        x_idearoot.clear_all_party_cred_debt()
         x_idearoot.pledge = False
 
         if x_idearoot.is_kidless():
@@ -1847,7 +1841,7 @@ class AgendaUnit:
             parent_idea._ancestor_pledge_count, parent_idea.pledge
         )
         idea_kid.clear_descendant_pledge_count()
-        idea_kid.clear_all_party_credit_debt()
+        idea_kid.clear_all_party_cred_debt()
 
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using agenda root as common reference
@@ -1855,12 +1849,12 @@ class AgendaUnit:
             self._allot_agenda_importance(idea=idea_kid)
 
     def _allot_agenda_importance(self, idea: IdeaUnit):
-        # TODO manage situations where balanceheir.creditor_weight is None for all balanceheirs
+        # TODO manage situations where balanceheir.credor_weight is None for all balanceheirs
         # TODO manage situations where balanceheir.debtor_weight is None for all balanceheirs
         if idea.is_balanceheirless() is False:
             self._set_groupunits_agenda_importance(idea._balanceheirs)
         elif idea.is_balanceheirless():
-            self._add_to_partyunits_agenda_credit_debt(idea._agenda_importance)
+            self._add_to_partyunits_agenda_cred_debt(idea._agenda_importance)
 
     def get_agenda_importance(
         self, parent_agenda_importance: float, weight: int, sibling_total_weight: int
@@ -1889,11 +1883,11 @@ class AgendaUnit:
             self._execute_tree_traverse(econ_exceptions)
             self._check_if_any_idea_active_status_has_altered()
             self._tree_traverse_count += 1
-        self._after_all_tree_traverses_set_credit_debt()
+        self._after_all_tree_traverses_set_cred_debt()
         self._after_all_tree_traverses_set_healerhold_importance()
 
     def _execute_tree_traverse(self, econ_exceptions: bool = False):
-        self._pre_tree_traverse_credit_debt_reset()
+        self._pre_tree_traverse_cred_debt_reset()
         self._set_root_attributes(econ_exceptions)
 
         fund_onset = self._idearoot._agenda_fund_onset
@@ -1940,10 +1934,10 @@ class AgendaUnit:
         if any_idea_active_status_has_altered is False:
             self._rational = True
 
-    def _after_all_tree_traverses_set_credit_debt(self):
+    def _after_all_tree_traverses_set_cred_debt(self):
         self._allot_agenda_intent_importance()
         self._allot_groups_agenda_importance()
-        self._set_agenda_intent_ratio_credit_debt()
+        self._set_agenda_intent_ratio_cred_debt()
 
     def _after_all_tree_traverses_set_healerhold_importance(self):
         self._set_econ_dict()
@@ -1981,18 +1975,18 @@ class AgendaUnit:
             for econ_road in self._econ_dict.keys()
         )
 
-    def _pre_tree_traverse_credit_debt_reset(self):
-        if self.is_partyunits_creditor_weight_sum_correct() is False:
-            raise PartyUnitsCreditorDebtorSumException(
-                f"'{self._owner_id}' is_partyunits_creditor_weight_sum_correct is False. _party_creditor_pool={self._party_creditor_pool}. partyunits_creditor_weight_sum={self.get_partyunits_creditor_weight_sum()}"
+    def _pre_tree_traverse_cred_debt_reset(self):
+        if self.is_partyunits_credor_weight_sum_correct() is False:
+            raise PartyUnitsCredorDebtorSumException(
+                f"'{self._owner_id}' is_partyunits_credor_weight_sum_correct is False. _party_credor_pool={self._party_credor_pool}. partyunits_credor_weight_sum={self.get_partyunits_credor_weight_sum()}"
             )
         if self.is_partyunits_debtor_weight_sum_correct() is False:
-            raise PartyUnitsCreditorDebtorSumException(
+            raise PartyUnitsCredorDebtorSumException(
                 f"'{self._owner_id}' is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={self._party_debtor_pool}. partyunits_debtor_weight_sum={self.get_partyunits_debtor_weight_sum()}"
             )
-        self._reset_groupunits_agenda_credit_debt()
-        self._reset_groupunits_agenda_credit_debt()
-        self._reset_partyunit_agenda_credit_debt()
+        self._reset_groupunits_agenda_cred_debt()
+        self._reset_groupunits_agenda_cred_debt()
+        self._reset_partyunit_agenda_cred_debt()
 
     def get_heir_road_list(self, x_road: RoadUnit) -> list[RoadUnit]:
         road_list = self.get_idea_tree_ordered_road_list()
@@ -2061,8 +2055,8 @@ class AgendaUnit:
             "_road_delimiter": self._road_delimiter,
             "_idearoot": self._idearoot.get_dict(),
         }
-        if self._party_creditor_pool != None:
-            x_dict["_party_creditor_pool"] = self._party_creditor_pool
+        if self._party_credor_pool != None:
+            x_dict["_party_credor_pool"] = self._party_credor_pool
         if self._party_debtor_pool != None:
             x_dict["_party_debtor_pool"] = self._party_debtor_pool
         if self._meld_strategy != get_meld_default():
@@ -2376,8 +2370,8 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda._penny = default_penny_if_none(
         get_obj_from_agenda_dict(agenda_dict, "_penny")
     )
-    x_agenda._party_creditor_pool = get_obj_from_agenda_dict(
-        agenda_dict, "_party_creditor_pool"
+    x_agenda._party_credor_pool = get_obj_from_agenda_dict(
+        agenda_dict, "_party_credor_pool"
     )
     x_agenda._party_debtor_pool = get_obj_from_agenda_dict(
         agenda_dict, "_party_debtor_pool"

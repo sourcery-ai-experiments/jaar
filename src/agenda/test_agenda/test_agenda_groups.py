@@ -167,9 +167,9 @@ def test_AgendaUnit_set_balancelink_correctly_sets_balancelinks():
     assert len(sue_agenda._groups) == 3
     swim_text = "swim"
     sue_agenda.add_l1_idea(ideaunit_shop(swim_text))
-    balancelink_rico = balancelink_shop(group_id=GroupID(rico_text), creditor_weight=10)
-    balancelink_carm = balancelink_shop(group_id=GroupID(carm_text), creditor_weight=10)
-    balancelink_patr = balancelink_shop(group_id=GroupID(patr_text), creditor_weight=10)
+    balancelink_rico = balancelink_shop(group_id=GroupID(rico_text), credor_weight=10)
+    balancelink_carm = balancelink_shop(group_id=GroupID(carm_text), credor_weight=10)
+    balancelink_patr = balancelink_shop(group_id=GroupID(patr_text), credor_weight=10)
     swim_road = sue_agenda.make_l1_road(swim_text)
     sue_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
     sue_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
@@ -216,9 +216,9 @@ def test_AgendaUnit_set_balancelink_correctly_deletes_balancelinks():
     swim_road = x_agenda.make_road(prom_text, swim_text)
 
     x_agenda.add_l1_idea(ideaunit_shop(swim_text))
-    balancelink_rico = balancelink_shop(group_id=GroupID(rico_text), creditor_weight=10)
-    balancelink_carm = balancelink_shop(group_id=GroupID(carm_text), creditor_weight=10)
-    balancelink_patr = balancelink_shop(group_id=GroupID(patr_text), creditor_weight=10)
+    balancelink_rico = balancelink_shop(group_id=GroupID(rico_text), credor_weight=10)
+    balancelink_carm = balancelink_shop(group_id=GroupID(carm_text), credor_weight=10)
+    balancelink_patr = balancelink_shop(group_id=GroupID(patr_text), credor_weight=10)
 
     swim_idea = x_agenda.get_idea_obj(swim_road)
     x_agenda.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
@@ -258,13 +258,9 @@ def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgend
     sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
     sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
     sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
-    blink_rico = balancelink_shop(
-        group_id=rico_text, creditor_weight=20, debtor_weight=6
-    )
-    blink_carm = balancelink_shop(
-        group_id=carm_text, creditor_weight=10, debtor_weight=1
-    )
-    blink_patr = balancelink_shop(group_id=patr_text, creditor_weight=10)
+    blink_rico = balancelink_shop(group_id=rico_text, credor_weight=20, debtor_weight=6)
+    blink_carm = balancelink_shop(group_id=carm_text, credor_weight=10, debtor_weight=1)
+    blink_patr = balancelink_shop(group_id=patr_text, credor_weight=10)
     sue_agenda._idearoot.set_balancelink(balancelink=blink_rico)
     sue_agenda._idearoot.set_balancelink(balancelink=blink_carm)
     sue_agenda._idearoot.set_balancelink(balancelink=blink_patr)
@@ -281,34 +277,31 @@ def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgend
     bheir_rico = idea_prom._balanceheirs.get(rico_text)
     bheir_carm = idea_prom._balanceheirs.get(carm_text)
     bheir_patr = idea_prom._balanceheirs.get(patr_text)
-    assert bheir_rico._agenda_credit == 0.5
+    assert bheir_rico._agenda_cred == 0.5
     assert bheir_rico._agenda_debt == 0.75
-    assert bheir_carm._agenda_credit == 0.25
+    assert bheir_carm._agenda_cred == 0.25
     assert bheir_carm._agenda_debt == 0.125
-    assert bheir_patr._agenda_credit == 0.25
+    assert bheir_patr._agenda_cred == 0.25
     assert bheir_patr._agenda_debt == 0.125
     assert (
-        bheir_rico._agenda_credit
-        + bheir_carm._agenda_credit
-        + bheir_patr._agenda_credit
-        == 1
+        bheir_rico._agenda_cred + bheir_carm._agenda_cred + bheir_patr._agenda_cred == 1
     )
     assert (
         bheir_rico._agenda_debt + bheir_carm._agenda_debt + bheir_patr._agenda_debt == 1
     )
 
-    # agenda_credit_sum = 0
+    # agenda_cred_sum = 0
     # agenda_debt_sum = 0
     # for group in x_agenda._idearoot._balanceheirs.values():
     #     print(f"{group=}")
-    #     assert group._agenda_credit != None
-    #     assert group._agenda_credit in [0.25, 0.5]
+    #     assert group._agenda_cred != None
+    #     assert group._agenda_cred in [0.25, 0.5]
     #     assert group._agenda_debt != None
     #     assert group._agenda_debt in [0.75, 0.125]
-    #     agenda_credit_sum += group._agenda_credit
+    #     agenda_cred_sum += group._agenda_cred
     #     agenda_debt_sum += group._agenda_debt
 
-    # assert agenda_credit_sum == 1
+    # assert agenda_cred_sum == 1
     # assert agenda_debt_sum == 1
 
 
@@ -323,13 +316,9 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImpo
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
-    blink_rico = balancelink_shop(
-        group_id=rico_text, creditor_weight=20, debtor_weight=6
-    )
-    blink_carm = balancelink_shop(
-        group_id=carm_text, creditor_weight=10, debtor_weight=1
-    )
-    blink_patr = balancelink_shop(group_id=patr_text, creditor_weight=10)
+    blink_rico = balancelink_shop(group_id=rico_text, credor_weight=20, debtor_weight=6)
+    blink_carm = balancelink_shop(group_id=carm_text, credor_weight=10, debtor_weight=1)
+    blink_patr = balancelink_shop(group_id=patr_text, credor_weight=10)
     x_agenda._idearoot.set_balancelink(balancelink=blink_rico)
     x_agenda._idearoot.set_balancelink(balancelink=blink_carm)
     x_agenda._idearoot.set_balancelink(balancelink=blink_patr)
@@ -343,17 +332,14 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImpo
     group_rico = x_agenda.get_groupunit(rico_text)
     group_carm = x_agenda.get_groupunit(carm_text)
     group_patr = x_agenda.get_groupunit(patr_text)
-    assert group_rico._agenda_credit == 0.5
+    assert group_rico._agenda_cred == 0.5
     assert group_rico._agenda_debt == 0.75
-    assert group_carm._agenda_credit == 0.25
+    assert group_carm._agenda_cred == 0.25
     assert group_carm._agenda_debt == 0.125
-    assert group_patr._agenda_credit == 0.25
+    assert group_patr._agenda_cred == 0.25
     assert group_patr._agenda_debt == 0.125
     assert (
-        group_rico._agenda_credit
-        + group_carm._agenda_credit
-        + group_patr._agenda_credit
-        == 1
+        group_rico._agenda_cred + group_carm._agenda_cred + group_patr._agenda_cred == 1
     )
     assert (
         group_rico._agenda_debt + group_carm._agenda_debt + group_patr._agenda_debt == 1
@@ -361,26 +347,26 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaGroupAgendaImpo
 
     # WHEN
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(sele_text)))
-    bl_sele = balancelink_shop(group_id=sele_text, creditor_weight=37)
+    bl_sele = balancelink_shop(group_id=sele_text, credor_weight=37)
     x_agenda._idearoot.set_balancelink(balancelink=bl_sele)
     assert len(x_agenda._groups) == 4
     x_agenda.calc_agenda_metrics()
 
     # THEN
     group_sele = x_agenda.get_groupunit(sele_text)
-    assert group_rico._agenda_credit != 0.5
+    assert group_rico._agenda_cred != 0.5
     assert group_rico._agenda_debt != 0.75
-    assert group_carm._agenda_credit != 0.25
+    assert group_carm._agenda_cred != 0.25
     assert group_carm._agenda_debt != 0.125
-    assert group_patr._agenda_credit != 0.25
+    assert group_patr._agenda_cred != 0.25
     assert group_patr._agenda_debt != 0.125
-    assert group_sele._agenda_credit != None
+    assert group_sele._agenda_cred != None
     assert group_sele._agenda_debt != None
     assert (
-        group_rico._agenda_credit
-        + group_carm._agenda_credit
-        + group_patr._agenda_credit
-        + group_sele._agenda_credit
+        group_rico._agenda_cred
+        + group_carm._agenda_cred
+        + group_patr._agenda_cred
+        + group_sele._agenda_cred
         == 1
     )
     assert (
@@ -406,12 +392,12 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImpo
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
     rico_balancelink = balancelink_shop(
-        group_id=rico_text, creditor_weight=20, debtor_weight=6
+        group_id=rico_text, credor_weight=20, debtor_weight=6
     )
     carm_balancelink = balancelink_shop(
-        group_id=carm_text, creditor_weight=10, debtor_weight=1
+        group_id=carm_text, credor_weight=10, debtor_weight=1
     )
-    parm_balancelink = balancelink_shop(group_id=patr_text, creditor_weight=10)
+    parm_balancelink = balancelink_shop(group_id=patr_text, credor_weight=10)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
@@ -424,17 +410,14 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates3levelAgendaGroupAgendaImpo
     group_rico = x_agenda.get_groupunit(rico_text)
     group_carm = x_agenda.get_groupunit(carm_text)
     group_patr = x_agenda.get_groupunit(patr_text)
-    assert group_rico._agenda_credit == 0.5
+    assert group_rico._agenda_cred == 0.5
     assert group_rico._agenda_debt == 0.75
-    assert group_carm._agenda_credit == 0.25
+    assert group_carm._agenda_cred == 0.25
     assert group_carm._agenda_debt == 0.125
-    assert group_patr._agenda_credit == 0.25
+    assert group_patr._agenda_cred == 0.25
     assert group_patr._agenda_debt == 0.125
     assert (
-        group_rico._agenda_credit
-        + group_carm._agenda_credit
-        + group_patr._agenda_credit
-        == 1
+        group_rico._agenda_cred + group_carm._agenda_cred + group_patr._agenda_cred == 1
     )
     assert (
         group_rico._agenda_debt + group_carm._agenda_debt + group_patr._agenda_debt == 1
@@ -455,12 +438,12 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwith
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
     x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
     rico_balancelink = balancelink_shop(
-        group_id=rico_text, creditor_weight=20, debtor_weight=6
+        group_id=rico_text, credor_weight=20, debtor_weight=6
     )
     carm_balancelink = balancelink_shop(
-        group_id=carm_text, creditor_weight=10, debtor_weight=1
+        group_id=carm_text, credor_weight=10, debtor_weight=1
     )
-    parm_balancelink = balancelink_shop(group_id=patr_text, creditor_weight=10)
+    parm_balancelink = balancelink_shop(group_id=patr_text, credor_weight=10)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
     x_agenda._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
@@ -496,16 +479,14 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculatesGroupAgendaImportanceLWwith
     group_rico = x_agenda.get_groupunit(rico_text)
     group_carm = x_agenda.get_groupunit(carm_text)
     group_patr = x_agenda.get_groupunit(patr_text)
-    assert group_rico._agenda_credit == 0.125
+    assert group_rico._agenda_cred == 0.125
     assert group_rico._agenda_debt == 0.1875
-    assert group_carm._agenda_credit == 0.0625
+    assert group_carm._agenda_cred == 0.0625
     assert group_carm._agenda_debt == 0.03125
-    assert group_patr._agenda_credit == 0.0625
+    assert group_patr._agenda_cred == 0.0625
     assert group_patr._agenda_debt == 0.03125
     assert (
-        group_rico._agenda_credit
-        + group_carm._agenda_credit
-        + group_patr._agenda_credit
+        group_rico._agenda_cred + group_carm._agenda_cred + group_patr._agenda_cred
         == 0.25
     )
     assert (
@@ -575,15 +556,13 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyMeldPersonIDs():
     swim_text = ",swimmers"
     swim_group = groupunit_shop(group_id=swim_text)
     swim_group.set_partylink(
-        partylink=partylink_shop(party_id=rico_text, creditor_weight=5, debtor_weight=3)
+        partylink=partylink_shop(party_id=rico_text, credor_weight=5, debtor_weight=3)
     )
     agenda.set_groupunit(swim_group)
     jog_text = ",jog"
     jog_group = groupunit_shop(group_id=jog_text)
     jog_group.set_partylink(
-        partylink=partylink_shop(
-            party_id=rico_text, creditor_weight=7, debtor_weight=10
-        )
+        partylink=partylink_shop(party_id=rico_text, credor_weight=7, debtor_weight=10)
     )
     agenda.set_groupunit(jog_group)
     print(f"{agenda.get_groupunit(jog_text)._partys.get(rico_text)=}")
@@ -603,7 +582,7 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyMeldPersonIDs():
     assert len(agenda._groups) == 2
     assert agenda.get_groupunit(jog_text)._party_mirror is False
     assert len(agenda.get_groupunit(jog_text)._partys) == 1
-    assert agenda.get_groupunit(jog_text)._partys.get(rico_text).creditor_weight == 12
+    assert agenda.get_groupunit(jog_text)._partys.get(rico_text).credor_weight == 12
     assert agenda.get_groupunit(jog_text)._partys.get(rico_text).debtor_weight == 13
 
 
@@ -623,11 +602,11 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyModifiesBalanceLinks():
 
     camping_idea = x_agenda.get_idea_obj(camping_road)
     swim_balancelink = balancelink_shop(
-        group_id=swim_groupunit.group_id, creditor_weight=5, debtor_weight=3
+        group_id=swim_groupunit.group_id, credor_weight=5, debtor_weight=3
     )
     camping_idea.set_balancelink(swim_balancelink)
     assert camping_idea._balancelinks.get(swim_text) != None
-    assert camping_idea._balancelinks.get(swim_text).creditor_weight == 5
+    assert camping_idea._balancelinks.get(swim_text).credor_weight == 5
     assert camping_idea._balancelinks.get(swim_text).debtor_weight == 3
 
     # WHEN
@@ -639,7 +618,7 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyModifiesBalanceLinks():
     # THEN
     assert camping_idea._balancelinks.get(swim_text) is None
     assert camping_idea._balancelinks.get(jog_text) != None
-    assert camping_idea._balancelinks.get(jog_text).creditor_weight == 5
+    assert camping_idea._balancelinks.get(jog_text).credor_weight == 5
     assert camping_idea._balancelinks.get(jog_text).debtor_weight == 3
 
 
@@ -664,18 +643,18 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyMeldsBalanceLinesBalanceLin
 
     camping_idea = x_agenda.get_idea_obj(camping_road)
     swim_balancelink = balancelink_shop(
-        group_id=swim_groupunit.group_id, creditor_weight=5, debtor_weight=3
+        group_id=swim_groupunit.group_id, credor_weight=5, debtor_weight=3
     )
     camping_idea.set_balancelink(swim_balancelink)
     jog_balancelink = balancelink_shop(
-        group_id=jog_groupunit.group_id, creditor_weight=7, debtor_weight=10
+        group_id=jog_groupunit.group_id, credor_weight=7, debtor_weight=10
     )
     camping_idea.set_balancelink(jog_balancelink)
     assert camping_idea._balancelinks.get(swim_text) != None
-    assert camping_idea._balancelinks.get(swim_text).creditor_weight == 5
+    assert camping_idea._balancelinks.get(swim_text).credor_weight == 5
     assert camping_idea._balancelinks.get(swim_text).debtor_weight == 3
     assert camping_idea._balancelinks.get(jog_text) != None
-    assert camping_idea._balancelinks.get(jog_text).creditor_weight == 7
+    assert camping_idea._balancelinks.get(jog_text).credor_weight == 7
     assert camping_idea._balancelinks.get(jog_text).debtor_weight == 10
 
     # WHEN
@@ -686,7 +665,7 @@ def test_AgendaUnit_edit_groupunit_group_id_CorrectlyMeldsBalanceLinesBalanceLin
     # THEN
     assert camping_idea._balancelinks.get(swim_text) is None
     assert camping_idea._balancelinks.get(jog_text) != None
-    assert camping_idea._balancelinks.get(jog_text).creditor_weight == 12
+    assert camping_idea._balancelinks.get(jog_text).credor_weight == 12
     assert camping_idea._balancelinks.get(jog_text).debtor_weight == 13
 
 
@@ -834,18 +813,16 @@ def test_AgendaUnit_set_groupunit_create_missing_partys_DoesCreateMissingPartys(
     beto_text = "beto"
     groupunit_z = groupunit_shop(group_id=family_text)
     groupunit_z.set_partylink(
-        partylink=partylink_shop(party_id=anna_text, creditor_weight=3, debtor_weight=7)
+        partylink=partylink_shop(party_id=anna_text, credor_weight=3, debtor_weight=7)
     )
     groupunit_z.set_partylink(
-        partylink=partylink_shop(
-            party_id=beto_text, creditor_weight=5, debtor_weight=11
-        )
+        partylink=partylink_shop(party_id=beto_text, credor_weight=5, debtor_weight=11)
     )
 
-    assert groupunit_z._partys.get(anna_text).creditor_weight == 3
+    assert groupunit_z._partys.get(anna_text).credor_weight == 3
     assert groupunit_z._partys.get(anna_text).debtor_weight == 7
 
-    assert groupunit_z._partys.get(beto_text).creditor_weight == 5
+    assert groupunit_z._partys.get(beto_text).credor_weight == 5
     assert groupunit_z._partys.get(beto_text).debtor_weight == 11
 
     assert len(bob_agenda._partys) == 0
@@ -857,10 +834,10 @@ def test_AgendaUnit_set_groupunit_create_missing_partys_DoesCreateMissingPartys(
     # THEN
     assert len(bob_agenda._partys) == 2
     assert len(bob_agenda._groups) == 3
-    assert bob_agenda._partys.get(anna_text).creditor_weight == 3
+    assert bob_agenda._partys.get(anna_text).credor_weight == 3
     assert bob_agenda._partys.get(anna_text).debtor_weight == 7
 
-    assert bob_agenda._partys.get(beto_text).creditor_weight == 5
+    assert bob_agenda._partys.get(beto_text).credor_weight == 5
     assert bob_agenda._partys.get(beto_text).debtor_weight == 11
 
 
@@ -871,29 +848,27 @@ def test_AgendaUnit_set_groupunit_create_missing_partys_DoesNotReplacePartys():
     anna_text = "anna"
     beto_text = "beto"
     bob_agenda.set_partyunit(
-        partyunit_shop(party_id=anna_text, creditor_weight=17, debtor_weight=88)
+        partyunit_shop(party_id=anna_text, credor_weight=17, debtor_weight=88)
     )
     bob_agenda.set_partyunit(
-        partyunit_shop(party_id=beto_text, creditor_weight=46, debtor_weight=71)
+        partyunit_shop(party_id=beto_text, credor_weight=46, debtor_weight=71)
     )
     groupunit_z = groupunit_shop(group_id=family_text)
     groupunit_z.set_partylink(
-        partylink=partylink_shop(party_id=anna_text, creditor_weight=3, debtor_weight=7)
+        partylink=partylink_shop(party_id=anna_text, credor_weight=3, debtor_weight=7)
     )
     groupunit_z.set_partylink(
-        partylink=partylink_shop(
-            party_id=beto_text, creditor_weight=5, debtor_weight=11
-        )
+        partylink=partylink_shop(party_id=beto_text, credor_weight=5, debtor_weight=11)
     )
 
-    assert groupunit_z._partys.get(anna_text).creditor_weight == 3
+    assert groupunit_z._partys.get(anna_text).credor_weight == 3
     assert groupunit_z._partys.get(anna_text).debtor_weight == 7
-    assert groupunit_z._partys.get(beto_text).creditor_weight == 5
+    assert groupunit_z._partys.get(beto_text).credor_weight == 5
     assert groupunit_z._partys.get(beto_text).debtor_weight == 11
     assert len(bob_agenda._partys) == 2
-    assert bob_agenda._partys.get(anna_text).creditor_weight == 17
+    assert bob_agenda._partys.get(anna_text).credor_weight == 17
     assert bob_agenda._partys.get(anna_text).debtor_weight == 88
-    assert bob_agenda._partys.get(beto_text).creditor_weight == 46
+    assert bob_agenda._partys.get(beto_text).credor_weight == 46
     assert bob_agenda._partys.get(beto_text).debtor_weight == 71
 
     # WHEN
@@ -901,9 +876,9 @@ def test_AgendaUnit_set_groupunit_create_missing_partys_DoesNotReplacePartys():
 
     # THEN
     assert len(bob_agenda._partys) == 2
-    assert bob_agenda._partys.get(anna_text).creditor_weight == 17
+    assert bob_agenda._partys.get(anna_text).credor_weight == 17
     assert bob_agenda._partys.get(anna_text).debtor_weight == 88
-    assert bob_agenda._partys.get(beto_text).creditor_weight == 46
+    assert bob_agenda._partys.get(beto_text).credor_weight == 46
     assert bob_agenda._partys.get(beto_text).debtor_weight == 71
 
 
