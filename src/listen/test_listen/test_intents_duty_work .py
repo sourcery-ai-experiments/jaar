@@ -275,9 +275,9 @@ def test_listen_to_intents_duty_work_ProcessesMissingDebtorAgenda(
     zia_partyunit = new_yao_work.get_party(zia_text)
     sue_partyunit = new_yao_work.get_party(sue_text)
     print(f"{sue_partyunit.debtor_weight=}")
-    print(f"{sue_partyunit._missing_debtor_weight=}")
-    assert zia_partyunit._missing_debtor_weight == 0
-    assert sue_partyunit._missing_debtor_weight == 51
+    print(f"{sue_partyunit._inallocable_debtor_weight=}")
+    assert zia_partyunit._inallocable_debtor_weight == 0
+    assert sue_partyunit._inallocable_debtor_weight == 51
 
 
 def test_listen_to_intents_duty_work_ListensToOwner_duty_AndNotOwner_work(

@@ -95,7 +95,7 @@ def test_get_real_works_partys_dataframe_ReturnsCorrectObj(
         "_treasury_cred_score",
         "_treasury_voice_rank",
         "_treasury_voice_hx_lowest_rank",
-        "_missing_debtor_weight",
+        "_inallocable_debtor_weight",
     }
     print(f"{set(x_df.columns)=}")
     print(x_df)
