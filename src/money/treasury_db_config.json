@@ -1,21 +1,21 @@
 {
     "tables": {
-        "agenda_ideaunit": {
+        "agenda_beliefunit": {
             "columns": {
-                "ideaunit_idea_id": {},
+                "beliefunit_belief_id": {},
                 "owner_id": {}
             }
         },
-        "agenda_fact_beliefunit": {
+        "agenda_idea_factunit": {
             "columns": {
                 "base": {},
                 "owner_id": {},
                 "pick": {}
             }
         },
-        "agenda_factunit": {
+        "agenda_ideaunit": {
             "columns": {
-                "fact_road": {},
+                "idea_road": {},
                 "owner_id": {}
             }
         },
@@ -47,7 +47,7 @@
         },
         "calendar": {
             "columns": {
-                "intent_fact_road": {},
+                "intent_idea_road": {},
                 "intent_weight": {},
                 "owner_id": {},
                 "report_date_range_cease": {},

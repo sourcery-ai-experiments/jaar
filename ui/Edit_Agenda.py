@@ -4,7 +4,7 @@ from PyQt5.QtCore import pyqtSignal as qsig
 from PyQt5.QtWidgets import QWidget as qw
 from PyQt5.QtWidgets import QTableWidgetItem as qti
 from ui.pyqt_func import num2str, agenda_importance_diplay
-from src.agenda.hreg_time import PremiseUnitHregTime, HregTimeFactSource
+from src.agenda.hreg_time import PremiseUnitHregTime, HregTimeIdeaSource
 
 
 class Edit_Agenda(qw, Ui_Form):
@@ -18,16 +18,16 @@ class Edit_Agenda(qw, Ui_Form):
         self.intent_table.itemClicked.connect(self.select_intent_item)
         self.intent_table.setObjectName("Current Agenda")
         self.intent_table.setRowCount(0)
-        self.belief_base_update_combo.currentTextAtomd.connect(self.refreshAgendaTable)
-        self.cb_beliefbase_display.stateAtomd.connect(self.refresh_all)
-        self.belief_base_update_init_road = "time,jajatime"
+        self.fact_base_update_combo.currentTextAtomd.connect(self.refreshAgendaTable)
+        self.cb_factbase_display.stateAtomd.connect(self.refresh_all)
+        self.fact_base_update_init_road = "time,jajatime"
         # self.refresh_all()
 
     def select_intent_item(self):
         _road = self.intent_table.item(self.intent_table.currentRow(), 1).text()
         _label = self.intent_table.item(self.intent_table.currentRow(), 0).text()
         # base_x = f"{self.x_agenda._real_id},time,jajatime"
-        base_x = self.belief_base_update_combo.currentText()
+        base_x = self.fact_base_update_combo.currentText()
         self.x_agenda.set_intent_task_complete(
             task_road=self.x_agenda.make_road(_road, _label), base=base_x
         )
@@ -47,29 +47,25 @@ class Edit_Agenda(qw, Ui_Form):
         self.refreshAgendaTable()
 
     def refreshReasonBaseCombo(self):
-        if self.belief_base_update_init_road is None:
-            temp_x = self.belief_base_update_combo.currentText()
+        if self.fact_base_update_init_road is None:
+            temp_x = self.fact_base_update_combo.currentText()
 
-        self.belief_base_update_combo.clear()
+        self.fact_base_update_combo.clear()
         reason_bases = list(self.x_agenda.get_reason_bases())
         reason_bases.sort(key=lambda x: x, reverse=False)
-        self.belief_base_update_combo.addItems(reason_bases)
-        if self.belief_base_update_init_road is None:
-            self.belief_base_update_combo.setCurrentText(temp_x)
+        self.fact_base_update_combo.addItems(reason_bases)
+        if self.fact_base_update_init_road is None:
+            self.fact_base_update_combo.setCurrentText(temp_x)
 
         else:
-            self.belief_base_update_init_road = (
-                f"{self.x_agenda._real_id},time,jajatime"
-            )
-            self.belief_base_update_combo.setCurrentText(
-                self.belief_base_update_init_road
-            )
-            self.belief_base_update_init_road = None
+            self.fact_base_update_init_road = f"{self.x_agenda._real_id},time,jajatime"
+            self.fact_base_update_combo.setCurrentText(self.fact_base_update_init_road)
+            self.fact_base_update_init_road = None
 
     def refreshAgendaTable(self):
         self.intent_table.clear()
         self.intent_table.setRowCount(0)
-        base_x = self.belief_base_update_combo.currentText()
+        base_x = self.fact_base_update_combo.currentText()
         if base_x == "":
             base_x = None
 
@@ -98,7 +94,7 @@ class Edit_Agenda(qw, Ui_Form):
             agenda_importance=a._agenda_importance
         )
 
-        display_beliefbase = self.cb_beliefbase_display.checkState() != 2
+        display_factbase = self.cb_factbase_display.checkState() != 2
 
         if reasonheir_x != None:
             for premise in reasonheir_x.premises.values():
@@ -158,18 +154,18 @@ class Edit_Agenda(qw, Ui_Form):
         self.intent_table.setColumnHidden(1, False)
         self.intent_table.setColumnHidden(2, False)
         self.intent_table.setColumnHidden(3, True)
-        self.intent_table.setColumnHidden(4, display_beliefbase)
-        self.intent_table.setColumnHidden(5, display_beliefbase)
-        self.intent_table.setColumnHidden(6, display_beliefbase)
-        self.intent_table.setColumnHidden(7, display_beliefbase)
-        self.intent_table.setColumnHidden(8, not display_beliefbase)
+        self.intent_table.setColumnHidden(4, display_factbase)
+        self.intent_table.setColumnHidden(5, display_factbase)
+        self.intent_table.setColumnHidden(6, display_factbase)
+        self.intent_table.setColumnHidden(7, display_factbase)
+        self.intent_table.setColumnHidden(8, not display_factbase)
         self.intent_table.setHorizontalHeaderLabels(
             [
                 "_label",
                 "road",
                 "agenda_importance",
                 "weight",
-                "belief",
+                "fact",
                 "open",
                 "nigh",
                 "divisor",

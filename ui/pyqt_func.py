@@ -1,4 +1,4 @@
-from src.agenda.agenda import AgendaUnit, FactUnit
+from src.agenda.agenda import AgendaUnit, IdeaUnit
 from PyQt5.QtWidgets import QTreeWidgetItem
 from dataclasses import dataclass
 
@@ -9,13 +9,13 @@ class InvalidPyQtException(Exception):
 
 @dataclass
 class PYQTTreeHolder:
-    factunit: FactUnit
+    ideaunit: IdeaUnit
     yo_action_flag: str
     yo_intent_flag: str
     yo_complete_flag: str
-    yo_beliefunit_time_flag: str
-    yo_beliefunit_count_flag: str
-    yo_beliefheir_count_flag: str
+    yo_factunit_time_flag: str
+    yo_factunit_count_flag: str
+    yo_factheir_count_flag: str
     yo2bd_count_flag: str
     yo2bd_view_bd_flag: str
     yo2bd_view_bd_id: str
@@ -23,13 +23,13 @@ class PYQTTreeHolder:
     reason_count_flag: str
     reason_view_flag: str
     reason_view_person_id: str
-    beliefheir_view_flag: str
+    factheir_view_flag: str
     root_percent_flag: str
     source_agenda: str
 
 
 def get_pyqttree(
-    factroot: FactUnit,
+    idearoot: IdeaUnit,
     root_percent_flag: bool = None,
     yo2bd_count_flag: bool = None,
     yo2bd_view_bd_flag: bool = None,
@@ -37,24 +37,24 @@ def get_pyqttree(
     yo_action_flag: bool = None,
     yo_intent_flag: bool = None,
     yo_complete_flag: bool = None,
-    yo_beliefunit_time_flag: bool = None,
-    yo_beliefunit_count_flag: bool = None,
-    yo_beliefheir_count_flag: bool = None,
+    yo_factunit_time_flag: bool = None,
+    yo_factunit_count_flag: bool = None,
+    yo_factheir_count_flag: bool = None,
     reasonheir_count_flag: bool = None,
     reason_count_flag: bool = None,
     reason_view_flag: bool = None,
     reason_view_person_id: bool = None,
-    beliefheir_view_flag: bool = None,
+    factheir_view_flag: bool = None,
     source_agenda: AgendaUnit = None,
 ) -> QTreeWidgetItem:
     pyqttree_holder = PYQTTreeHolder(
-        factunit=factroot,
+        ideaunit=idearoot,
         yo_action_flag=yo_action_flag,
         yo_intent_flag=yo_intent_flag,
         yo_complete_flag=yo_complete_flag,
-        yo_beliefunit_time_flag=yo_beliefunit_time_flag,
-        yo_beliefunit_count_flag=yo_beliefunit_count_flag,
-        yo_beliefheir_count_flag=yo_beliefheir_count_flag,
+        yo_factunit_time_flag=yo_factunit_time_flag,
+        yo_factunit_count_flag=yo_factunit_count_flag,
+        yo_factheir_count_flag=yo_factheir_count_flag,
         yo2bd_count_flag=yo2bd_count_flag,
         yo2bd_view_bd_flag=yo2bd_view_bd_flag,
         yo2bd_view_bd_id=yo2bd_view_bd_id,
@@ -62,7 +62,7 @@ def get_pyqttree(
         reason_count_flag=reason_count_flag,
         reason_view_flag=reason_view_flag,
         reason_view_person_id=reason_view_person_id,
-        beliefheir_view_flag=beliefheir_view_flag,
+        factheir_view_flag=factheir_view_flag,
         root_percent_flag=root_percent_flag,
         source_agenda=source_agenda,
     )
@@ -73,36 +73,36 @@ def get_pyqttree(
 def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
     treenode_l = _create_treenode_l(pth)
     item = QTreeWidgetItem([treenode_l])
-    item.setData(2, 10, pth.factunit._label)
-    item.setData(2, 11, pth.factunit._parent_road)
-    # item.setData(2, 12, factunit._weight)
-    # item.setData(2, 13, factunit._begin)
-    # item.setData(2, 14, factunit._close)
-    item.setData(2, 20, pth.factunit._is_expanded)
-    if pth.factunit._reasonunits is None:
+    item.setData(2, 10, pth.ideaunit._label)
+    item.setData(2, 11, pth.ideaunit._parent_road)
+    # item.setData(2, 12, ideaunit._weight)
+    # item.setData(2, 13, ideaunit._begin)
+    # item.setData(2, 14, ideaunit._close)
+    item.setData(2, 20, pth.ideaunit._is_expanded)
+    if pth.ideaunit._reasonunits is None:
         item.setData(2, 21, 0)
     else:
-        item.setData(2, 21, len(pth.factunit._reasonunits))
-    if pth.factunit._kids is None:
-        raise InvalidPyQtException(f"Fact {pth.factunit._label} has null kids.")
+        item.setData(2, 21, len(pth.ideaunit._reasonunits))
+    if pth.ideaunit._kids is None:
+        raise InvalidPyQtException(f"Idea {pth.ideaunit._label} has null kids.")
 
-    sort_facts_list = list(pth.factunit._kids.values())
-    # print(f"{len(sort_facts_list)=}")
-    # print(f"{type(sort_facts_list)=}")
-    # print(f"{len(unsorted_facts_list.sort(key=lambda x: x._label, reverse=False))=}")
-    sort_facts_list.sort(key=lambda x: x._label.lower(), reverse=False)
-    # print(f"{len(sorted_facts_list)=}")
+    sort_ideas_list = list(pth.ideaunit._kids.values())
+    # print(f"{len(sort_ideas_list)=}")
+    # print(f"{type(sort_ideas_list)=}")
+    # print(f"{len(unsorted_ideas_list.sort(key=lambda x: x._label, reverse=False))=}")
+    sort_ideas_list.sort(key=lambda x: x._label.lower(), reverse=False)
+    # print(f"{len(sorted_ideas_list)=}")
 
-    for kid_fact in sort_facts_list:
-        # for kid_fact in sort_facts_list.sort(key=lambda x: x._agenda_importance, reverse=True):
+    for kid_idea in sort_ideas_list:
+        # for kid_idea in sort_ideas_list.sort(key=lambda x: x._agenda_importance, reverse=True):
         child_pth = PYQTTreeHolder(
-            factunit=kid_fact,
+            ideaunit=kid_idea,
             yo_action_flag=pth.yo_action_flag,
             yo_intent_flag=pth.yo_intent_flag,
             yo_complete_flag=pth.yo_complete_flag,
-            yo_beliefunit_time_flag=pth.yo_beliefunit_time_flag,
-            yo_beliefunit_count_flag=pth.yo_beliefunit_count_flag,
-            yo_beliefheir_count_flag=pth.yo_beliefheir_count_flag,
+            yo_factunit_time_flag=pth.yo_factunit_time_flag,
+            yo_factunit_count_flag=pth.yo_factunit_count_flag,
+            yo_factheir_count_flag=pth.yo_factheir_count_flag,
             yo2bd_count_flag=pth.yo2bd_count_flag,
             yo2bd_view_bd_flag=pth.yo2bd_view_bd_flag,
             yo2bd_view_bd_id=pth.yo2bd_view_bd_id,
@@ -110,7 +110,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
             reason_count_flag=pth.reason_count_flag,
             reason_view_flag=pth.reason_view_flag,
             reason_view_person_id=pth.reason_view_person_id,
-            beliefheir_view_flag=pth.beliefheir_view_flag,
+            factheir_view_flag=pth.factheir_view_flag,
             root_percent_flag=pth.root_percent_flag,
             source_agenda=pth.source_agenda,
         )
@@ -170,16 +170,16 @@ def agenda_importance_diplay(agenda_importance: float):
 
 def _get_treenode_l_reason_count(treenode_l, pth: PYQTTreeHolder) -> str:
     premise_count = sum(
-        reason.get_premises_count() for reason in pth.factunit._reasonunits.values()
+        reason.get_premises_count() for reason in pth.ideaunit._reasonunits.values()
     )
-    reason_count = len(pth.factunit._reasonunits)
+    reason_count = len(pth.ideaunit._reasonunits)
     if reason_count != 0:
-        treenode_l += f" (lim {len(pth.factunit._reasonunits)}/c{premise_count})"
+        treenode_l += f" (lim {len(pth.ideaunit._reasonunits)}/c{premise_count})"
     return treenode_l
 
 
 def _get_treenode_l_reason_view(treenode_l, pth: PYQTTreeHolder) -> str:
-    reasonheir = pth.factunit._reasonheirs.get(pth.reason_view_person_id)
+    reasonheir = pth.ideaunit._reasonheirs.get(pth.reason_view_person_id)
     if reasonheir != None:
         # treenode_l += f"{get_terminus_node(reasonheir.base)}"
         grabed_premise = None
@@ -191,70 +191,70 @@ def _get_treenode_l_reason_view(treenode_l, pth: PYQTTreeHolder) -> str:
     return treenode_l
 
 
-def _get_treenode_l_beliefheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
-    beliefheir = pth.factunit._beliefheirs.get(pth.reason_view_person_id)
-    if beliefheir != None:
-        time_road = f"{pth.source_agenda._factroot._label},time,jajatime"
+def _get_treenode_l_factheir_view(treenode_l, pth: PYQTTreeHolder) -> str:
+    factheir = pth.ideaunit._factheirs.get(pth.reason_view_person_id)
+    if factheir != None:
+        time_road = f"{pth.source_agenda._idearoot._label},time,jajatime"
         if (
-            beliefheir.base == time_road
-            and beliefheir.open != None
-            and beliefheir.nigh != None
+            factheir.base == time_road
+            and factheir.open != None
+            and factheir.nigh != None
         ):
             hc_open_text = pth.source_agenda.get_jajatime_legible_one_time_event(
-                jajatime_min=beliefheir.open
+                jajatime_min=factheir.open
             )
             hc_nigh_text = pth.source_agenda.get_jajatime_legible_one_time_event(
-                jajatime_min=beliefheir.nigh
+                jajatime_min=factheir.nigh
             )
-            # treenode_l += f"{get_terminus_node(beliefheir.base)}"
+            # treenode_l += f"{get_terminus_node(factheir.base)}"
             treenode_l += f" ({hc_open_text}-{hc_nigh_text})"
         elif (
-            beliefheir.base != time_road
-            and beliefheir.open != None
-            and beliefheir.nigh != None
+            factheir.base != time_road
+            and factheir.open != None
+            and factheir.nigh != None
         ):
-            treenode_l += f" ({beliefheir.open}-{beliefheir.nigh})"
+            treenode_l += f" ({factheir.open}-{factheir.nigh})"
     return treenode_l
 
 
 def _create_treenode_l(pth: PYQTTreeHolder):
-    treenode_l = pth.factunit._label
+    treenode_l = pth.ideaunit._label
 
     if pth.root_percent_flag:
-        treenode_l += f" ({agenda_importance_diplay(pth.factunit._agenda_importance)})"
+        treenode_l += f" ({agenda_importance_diplay(pth.ideaunit._agenda_importance)})"
     elif pth.yo2bd_count_flag:
-        treenode_l += f" ({len(pth.factunit._balancelinks)})"
+        treenode_l += f" ({len(pth.ideaunit._balancelinks)})"
     elif pth.reason_count_flag:
         treenode_l = _get_treenode_l_reason_count(treenode_l, pth)
     elif pth.reason_view_flag:
         treenode_l = _get_treenode_l_reason_view(treenode_l, pth)
-    elif pth.beliefheir_view_flag and pth.factunit._parent_road != "":
-        treenode_l = _get_treenode_l_beliefheir_view(treenode_l, pth)
-    elif pth.yo_action_flag and pth.factunit.pledge:
-        treenode_l += " (task)" if pth.factunit._task else " (state)"
-    elif pth.yo_beliefunit_count_flag:
-        treenode_l += f" ({len(pth.factunit._beliefunits)})"
-    elif pth.yo_beliefheir_count_flag and pth.factunit._parent_road != "":
-        treenode_l += f" ({len(pth.factunit._beliefheirs)})"
+    elif pth.factheir_view_flag and pth.ideaunit._parent_road != "":
+        treenode_l = _get_treenode_l_factheir_view(treenode_l, pth)
+    elif pth.yo_action_flag and pth.ideaunit.pledge:
+        treenode_l += " (task)" if pth.ideaunit._task else " (state)"
+    elif pth.yo_factunit_count_flag:
+        treenode_l += f" ({len(pth.ideaunit._factunits)})"
+    elif pth.yo_factheir_count_flag and pth.ideaunit._parent_road != "":
+        treenode_l += f" ({len(pth.ideaunit._factheirs)})"
 
-    if pth.reasonheir_count_flag and pth.factunit._parent_road not in (None, ""):
+    if pth.reasonheir_count_flag and pth.ideaunit._parent_road not in (None, ""):
         # reasonunit_count = sum(
         #     str(type(reasonheir)) == "<class 'src.agenda.reason.ReasonUnit'>"
-        #     for reasonheir in pth.factunit._reasonheirs.values()
+        #     for reasonheir in pth.ideaunit._reasonheirs.values()
         # )
-        treenode_l += f" (ReasonHeirs {len(pth.factunit._reasonheirs)})"
+        treenode_l += f" (ReasonHeirs {len(pth.ideaunit._reasonheirs)})"
 
-    if pth.yo_beliefunit_time_flag:
-        time_road = f"{pth.source_agenda._factroot._label},time,jajatime"
-        beliefunit_time_obj = pth.factunit._beliefunits.get(time_road)
-        if beliefunit_time_obj != None:
+    if pth.yo_factunit_time_flag:
+        time_road = f"{pth.source_agenda._idearoot._label},time,jajatime"
+        factunit_time_obj = pth.ideaunit._factunits.get(time_road)
+        if factunit_time_obj != None:
             hc_open_text = pth.source_agenda.get_jajatime_legible_one_time_event(
-                jajatime_min=beliefunit_time_obj.open
+                jajatime_min=factunit_time_obj.open
             )
             hc_nigh_text = pth.source_agenda.get_jajatime_legible_one_time_event(
-                jajatime_min=beliefunit_time_obj.nigh
+                jajatime_min=factunit_time_obj.nigh
             )
-            # treenode_l += f" ({beliefunit.base=} {beliefunit.open}-{beliefunit.nigh})"
+            # treenode_l += f" ({factunit.base=} {factunit.open}-{factunit.nigh})"
             treenode_l += f" ({hc_open_text}-{hc_nigh_text})"
 
     return treenode_l

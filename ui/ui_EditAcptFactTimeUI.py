@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'c:\dev\reddibrush\ui\EditBeliefTimeUI.ui'
+# Form implementation generated from reading ui file 'c:\dev\reddibrush\ui\EditFactTimeUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -187,7 +187,7 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form"))
         self.label.setText(
             _translate(
-                "Form", "Reset Current Date for entire factunit (American standard)"
+                "Form", "Reset Current Date for entire ideaunit (American standard)"
             )
         )
         self.label_2.setText(_translate("Form", "Year"))
@@ -200,7 +200,7 @@ class Ui_Form(object):
         )
         self.label_7.setText(
             _translate(
-                "Form", "Reset Current Date for entire factunit (My Day Listing)"
+                "Form", "Reset Current Date for entire ideaunit (My Day Listing)"
             )
         )
         self.label_8.setText(_translate("Form", "Day ID"))
@@ -210,7 +210,7 @@ class Ui_Form(object):
         self.label_9.setText(_translate("Form", "Day_Min ID"))
         self.label_10.setText(
             _translate(
-                "Form", "Reset Previous Date for entire factunit (My Day Listing)"
+                "Form", "Reset Previous Date for entire ideaunit (My Day Listing)"
             )
         )
         self.prev_local_update.setText(
@@ -224,7 +224,7 @@ class Ui_Form(object):
         self.label_12.setText(_translate("Form", "Day ID"))
         self.label_14.setText(
             _translate(
-                "Form", "Reset Previous Date for entire factunit (American standard)"
+                "Form", "Reset Previous Date for entire ideaunit (American standard)"
             )
         )
         self.label_15.setText(_translate("Form", "Year"))

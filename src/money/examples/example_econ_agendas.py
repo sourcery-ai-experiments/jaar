@@ -1,9 +1,9 @@
 from src._instrument.file import delete_dir
-from src.agenda.agenda import AgendaUnit, agendaunit_shop, factunit_shop, RealID
+from src.agenda.agenda import AgendaUnit, agendaunit_shop, ideaunit_shop, RealID
 from src.agenda.examples.example_agendas import (
     get_agenda_with7amCleanTableReason,
     get_agenda_base_time_example,
-    get_agenda_x1_3levels_1reason_1beliefs,
+    get_agenda_x1_3levels_1reason_1facts,
 )
 from src.money.money import moneyunit_shop
 from src.money.examples.econ_env import temp_real_id, get_texas_userhub
@@ -20,7 +20,7 @@ def get_1node_agenda() -> AgendaUnit:
 def get_Jnode2node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("J")
     x_agenda.set_real_id(temp_real_id())
-    x_agenda.add_l1_fact(factunit_shop("A"))
+    x_agenda.add_l1_idea(ideaunit_shop("A"))
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -32,8 +32,8 @@ def get_2node_agenda(real_id: RealID = None) -> AgendaUnit:
     b_text = "B"
     x_agenda = agendaunit_shop(_owner_id=a_text)
     x_agenda.set_real_id(real_id)
-    fact_b = factunit_shop(b_text)
-    x_agenda.add_fact(fact_b, parent_road=temp_real_id())
+    idea_b = ideaunit_shop(b_text)
+    x_agenda.add_idea(idea_b, parent_road=temp_real_id())
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -42,8 +42,8 @@ def get_3node_agenda() -> AgendaUnit:
     a_text = "A"
     x_agenda = agendaunit_shop(a_text)
     x_agenda.set_real_id(temp_real_id())
-    x_agenda.add_l1_fact(factunit_shop("B"))
-    x_agenda.add_l1_fact(factunit_shop("C"))
+    x_agenda.add_l1_idea(ideaunit_shop("B"))
+    x_agenda.add_l1_idea(ideaunit_shop("C"))
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -52,8 +52,8 @@ def get_3node_D_E_F_agenda() -> AgendaUnit:
     d_text = "D"
     x_agenda = agendaunit_shop(d_text)
     x_agenda.set_real_id(temp_real_id())
-    x_agenda.add_l1_fact(factunit_shop("E"))
-    x_agenda.add_l1_fact(factunit_shop("F"))
+    x_agenda.add_l1_idea(ideaunit_shop("E"))
+    x_agenda.add_l1_idea(ideaunit_shop("F"))
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -61,12 +61,12 @@ def get_3node_D_E_F_agenda() -> AgendaUnit:
 def get_6node_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("A")
     x_agenda.set_real_id(temp_real_id())
-    x_agenda.add_l1_fact(factunit_shop("B"))
-    x_agenda.add_l1_fact(factunit_shop("C"))
+    x_agenda.add_l1_idea(ideaunit_shop("B"))
+    x_agenda.add_l1_idea(ideaunit_shop("C"))
     c_road = x_agenda.make_l1_road("C")
-    x_agenda.add_fact(factunit_shop("D"), c_road)
-    x_agenda.add_fact(factunit_shop("E"), c_road)
-    x_agenda.add_fact(factunit_shop("F"), c_road)
+    x_agenda.add_idea(ideaunit_shop("D"), c_road)
+    x_agenda.add_idea(ideaunit_shop("E"), c_road)
+    x_agenda.add_idea(ideaunit_shop("F"), c_road)
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -74,13 +74,13 @@ def get_6node_agenda() -> AgendaUnit:
 def get_7nodeInsertH_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("A")
     x_agenda.set_real_id(temp_real_id())
-    x_agenda.add_l1_fact(factunit_shop("B"))
-    x_agenda.add_l1_fact(factunit_shop("C"))
+    x_agenda.add_l1_idea(ideaunit_shop("B"))
+    x_agenda.add_l1_idea(ideaunit_shop("C"))
     c_road = x_agenda.make_l1_road("C")
-    x_agenda.add_fact(factunit_shop("H"), c_road)
-    x_agenda.add_fact(factunit_shop("D"), c_road)
-    x_agenda.add_fact(factunit_shop("E"), c_road)
-    x_agenda.add_fact(factunit_shop("F"), x_agenda.make_road(c_road, "H"))
+    x_agenda.add_idea(ideaunit_shop("H"), c_road)
+    x_agenda.add_idea(ideaunit_shop("D"), c_road)
+    x_agenda.add_idea(ideaunit_shop("E"), c_road)
+    x_agenda.add_idea(ideaunit_shop("F"), x_agenda.make_road(c_road, "H"))
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -88,11 +88,11 @@ def get_7nodeInsertH_agenda() -> AgendaUnit:
 def get_5nodeHG_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("A")
     x_agenda.set_real_id(temp_real_id())
-    x_agenda.add_l1_fact(factunit_shop("B"))
-    x_agenda.add_l1_fact(factunit_shop("C"))
+    x_agenda.add_l1_idea(ideaunit_shop("B"))
+    x_agenda.add_l1_idea(ideaunit_shop("C"))
     c_road = x_agenda.make_l1_road("C")
-    x_agenda.add_fact(factunit_shop("H"), c_road)
-    x_agenda.add_fact(factunit_shop("G"), c_road)
+    x_agenda.add_idea(ideaunit_shop("H"), c_road)
+    x_agenda.add_idea(ideaunit_shop("G"), c_road)
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -100,15 +100,15 @@ def get_5nodeHG_agenda() -> AgendaUnit:
 def get_7nodeJRoot_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("J")
     x_agenda.set_real_id(temp_real_id())
-    x_agenda.add_l1_fact(factunit_shop("A"))
+    x_agenda.add_l1_idea(ideaunit_shop("A"))
 
     a_road = x_agenda.make_l1_road("A")
-    x_agenda.add_fact(factunit_shop("B"), a_road)
-    x_agenda.add_fact(factunit_shop("C"), a_road)
+    x_agenda.add_idea(ideaunit_shop("B"), a_road)
+    x_agenda.add_idea(ideaunit_shop("C"), a_road)
     c_road = x_agenda.make_l1_road("C")
-    x_agenda.add_fact(factunit_shop("D"), c_road)
-    x_agenda.add_fact(factunit_shop("E"), c_road)
-    x_agenda.add_fact(factunit_shop("F"), c_road)
+    x_agenda.add_idea(ideaunit_shop("D"), c_road)
+    x_agenda.add_idea(ideaunit_shop("E"), c_road)
+    x_agenda.add_idea(ideaunit_shop("F"), c_road)
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -116,15 +116,15 @@ def get_7nodeJRoot_agenda() -> AgendaUnit:
 def get_7nodeJRootWithH_agenda() -> AgendaUnit:
     x_agenda = agendaunit_shop("J")
     x_agenda.set_real_id(temp_real_id())
-    x_agenda.add_l1_fact(factunit_shop("A"))
+    x_agenda.add_l1_idea(ideaunit_shop("A"))
 
     a_road = x_agenda.make_l1_road("A")
-    x_agenda.add_fact(factunit_shop("B"), a_road)
-    x_agenda.add_fact(factunit_shop("C"), a_road)
+    x_agenda.add_idea(ideaunit_shop("B"), a_road)
+    x_agenda.add_idea(ideaunit_shop("C"), a_road)
     c_road = x_agenda.make_l1_road("C")
-    x_agenda.add_fact(factunit_shop("E"), c_road)
-    x_agenda.add_fact(factunit_shop("F"), c_road)
-    x_agenda.add_fact(factunit_shop("H"), c_road)
+    x_agenda.add_idea(ideaunit_shop("E"), c_road)
+    x_agenda.add_idea(ideaunit_shop("F"), c_road)
+    x_agenda.add_idea(ideaunit_shop("H"), c_road)
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -133,14 +133,14 @@ def get_agenda_2CleanNodesRandomWeights(_owner_id: str = None) -> AgendaUnit:
     owner_id = _owner_id if _owner_id != None else "ernie"
     x_agenda = agendaunit_shop(owner_id)
     casa_text = "casa"
-    x_agenda.add_l1_fact(factunit_shop(casa_text))
+    x_agenda.add_l1_idea(ideaunit_shop(casa_text))
     casa_road = x_agenda.make_l1_road(casa_text)
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
-    cookery_fact = factunit_shop(cookery_text, _weight=randrange(1, 50), pledge=True)
-    bedroom_fact = factunit_shop(bedroom_text, _weight=randrange(1, 50), pledge=True)
-    x_agenda.add_fact(cookery_fact, parent_road=casa_road)
-    x_agenda.add_fact(bedroom_fact, parent_road=casa_road)
+    cookery_idea = ideaunit_shop(cookery_text, _weight=randrange(1, 50), pledge=True)
+    bedroom_idea = ideaunit_shop(bedroom_text, _weight=randrange(1, 50), pledge=True)
+    x_agenda.add_idea(cookery_idea, parent_road=casa_road)
+    x_agenda.add_idea(bedroom_idea, parent_road=casa_road)
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -149,17 +149,17 @@ def get_agenda_3CleanNodesRandomWeights(_owner_id: str = None) -> AgendaUnit:
     owner_id = _owner_id if _owner_id != None else "ernie"
     x_agenda = agendaunit_shop(owner_id)
     casa_text = "casa"
-    x_agenda.add_l1_fact(factunit_shop(casa_text))
+    x_agenda.add_l1_idea(ideaunit_shop(casa_text))
     casa_road = x_agenda.make_l1_road(casa_text)
     cookery_text = "clean cookery"
     bedroom_text = "clean bedroom"
     nursery_text = "clean nursery"
-    cookery_fact = factunit_shop(cookery_text, _weight=randrange(1, 50), pledge=True)
-    bedroom_fact = factunit_shop(bedroom_text, _weight=randrange(1, 50), pledge=True)
-    nursery_fact = factunit_shop(nursery_text, _weight=randrange(1, 50), pledge=True)
-    x_agenda.add_fact(cookery_fact, parent_road=casa_road)
-    x_agenda.add_fact(bedroom_fact, parent_road=casa_road)
-    x_agenda.add_fact(nursery_fact, parent_road=casa_road)
+    cookery_idea = ideaunit_shop(cookery_text, _weight=randrange(1, 50), pledge=True)
+    bedroom_idea = ideaunit_shop(bedroom_text, _weight=randrange(1, 50), pledge=True)
+    nursery_idea = ideaunit_shop(nursery_text, _weight=randrange(1, 50), pledge=True)
+    x_agenda.add_idea(cookery_idea, parent_road=casa_road)
+    x_agenda.add_idea(bedroom_idea, parent_road=casa_road)
+    x_agenda.add_idea(nursery_idea, parent_road=casa_road)
     x_agenda.calc_agenda_metrics()
     return x_agenda
 
@@ -181,7 +181,7 @@ def _delete_and_set_ex4():
     x_money.userhub.save_job_agenda(get_7nodeJRootWithH_agenda())
     x_money.userhub.save_job_agenda(get_agenda_with7amCleanTableReason())
     x_money.userhub.save_job_agenda(get_agenda_base_time_example())
-    x_money.userhub.save_job_agenda(get_agenda_x1_3levels_1reason_1beliefs())
+    x_money.userhub.save_job_agenda(get_agenda_x1_3levels_1reason_1facts())
 
 
 def _delete_and_set_ex6(ex6_id: str = None):

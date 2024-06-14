@@ -1,10 +1,10 @@
 from src.agenda.healer import healerhold_shop
-from src.agenda.fact import FactAttrFilter, factattrfilter_shop
+from src.agenda.idea import IdeaAttrFilter, ideaattrfilter_shop
 from pytest import raises as pytest_raise
 
 
-def test_FactAttrFilter_Exists():
-    new_obj = FactAttrFilter()
+def test_IdeaAttrFilter_Exists():
+    new_obj = IdeaAttrFilter()
     assert new_obj.weight is None
     assert new_obj.uid is None
     assert new_obj.reason is None
@@ -15,7 +15,7 @@ def test_FactAttrFilter_Exists():
     assert new_obj.reason_premise_divisor is None
     assert new_obj.reason_del_premise_base is None
     assert new_obj.reason_del_premise_need is None
-    assert new_obj.reason_suff_fact_active is None
+    assert new_obj.reason_suff_idea_active is None
     assert new_obj.assignedunit is None
     assert new_obj.healerhold is None
     assert new_obj.begin is None
@@ -27,7 +27,7 @@ def test_FactAttrFilter_Exists():
     assert new_obj.numeric_road is None
     assert new_obj.range_source_road is None
     assert new_obj.pledge is None
-    assert new_obj.beliefunit is None
+    assert new_obj.factunit is None
     assert new_obj.descendant_pledge_count is None
     assert new_obj.all_party_cred is None
     assert new_obj.all_party_debt is None
@@ -37,36 +37,36 @@ def test_FactAttrFilter_Exists():
     assert new_obj.meld_strategy is None
 
 
-def test_FactAttrFilter_CorrectlyCalculatesPremiseRanges():
+def test_IdeaAttrFilter_CorrectlyCalculatesPremiseRanges():
     # GIVEN
-    fact_attr = FactAttrFilter(reason_premise="some_road")
-    assert fact_attr.reason_premise_open is None
-    assert fact_attr.reason_premise_nigh is None
-    # assert fact_attr.reason_premise_numor is None
-    assert fact_attr.reason_premise_divisor is None
-    # assert fact_attr.reason_premise_reest is None
+    idea_attr = IdeaAttrFilter(reason_premise="some_road")
+    assert idea_attr.reason_premise_open is None
+    assert idea_attr.reason_premise_nigh is None
+    # assert idea_attr.reason_premise_numor is None
+    assert idea_attr.reason_premise_divisor is None
+    # assert idea_attr.reason_premise_reest is None
 
     # WHEN
-    fact_attr.set_premise_range_attributes_influenced_by_premise_fact(
+    idea_attr.set_premise_range_attributes_influenced_by_premise_idea(
         premise_open=5.0,
         premise_nigh=20.0,
         # premise_numor,
         premise_denom=4.0,
         # premise_reest,
     )
-    assert fact_attr.reason_premise_open == 5.0
-    assert fact_attr.reason_premise_nigh == 20.0
-    # assert fact_attr.reason_premise_numor is None
-    assert fact_attr.reason_premise_divisor == 4.0
-    # assert fact_attr.reason_premise_reest is None
+    assert idea_attr.reason_premise_open == 5.0
+    assert idea_attr.reason_premise_nigh == 20.0
+    # assert idea_attr.reason_premise_numor is None
+    assert idea_attr.reason_premise_divisor == 4.0
+    # assert idea_attr.reason_premise_reest is None
 
 
-def test_factattrfilter_shop_ReturnsCorrectObj():
+def test_ideaattrfilter_shop_ReturnsCorrectObj():
     # GIVEN
     sue_healerhold = healerhold_shop({"Sue", "Yim"})
 
     # WHEN
-    x_factattrfilter = factattrfilter_shop(healerhold=sue_healerhold)
+    x_ideaattrfilter = ideaattrfilter_shop(healerhold=sue_healerhold)
 
     # THEN
-    assert x_factattrfilter.healerhold == sue_healerhold
+    assert x_ideaattrfilter.healerhold == sue_healerhold

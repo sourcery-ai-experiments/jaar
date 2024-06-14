@@ -23,7 +23,7 @@
 #     #     assert get_row_count(journal_conn, quark_hx_table_name()) == 0
 
 #     # WHEN
-#     x_quark = get_quark_example_beliefunit_knee()
+#     x_quark = get_quark_example_factunit_knee()
 #     # with music_real.get_journal_conn() as treasury_conn:
 #     #     treasury_conn.execute(get_quark_hx_table_insert_sqlstr(x_quark))
 

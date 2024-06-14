@@ -1,9 +1,9 @@
-from src.agenda.reason_fact import (
+from src.agenda.reason_idea import (
     ReasonCore,
     reasoncore_shop,
     reasonheir_shop,
     reasonunit_shop,
-    beliefheir_shop,
+    factheir_shop,
     premiseunit_shop,
     reasons_get_from_dict,
 )
@@ -26,13 +26,13 @@ def test_ReasonCore_attributesExist():
 
     # WHEN
     wkday_reason = ReasonCore(
-        base=wkday_road, premises=premises, suff_fact_active=False
+        base=wkday_road, premises=premises, suff_idea_active=False
     )
 
     # THEN
     assert wkday_reason.base == wkday_road
     assert wkday_reason.premises == premises
-    assert wkday_reason.suff_fact_active is False
+    assert wkday_reason.suff_idea_active is False
     assert wkday_reason.delimiter is None
 
 
@@ -84,7 +84,7 @@ def test_ReasonHeir_clear_CorrectlyClearsField():
     casa_reason.clear_status()
     # THEN
     assert casa_reason._status is None
-    assert casa_reason._base_fact_active is None
+    assert casa_reason._base_idea_active is None
 
 
 def test_ReasonHeir_set_status_CorrectlySetsStatus():
@@ -104,9 +104,9 @@ def test_ReasonHeir_set_status_CorrectlySetsStatus():
     wkday_reason = reasonheir_shop(base=wkday_road, premises=wed_premises)
     assert wkday_reason._status is None
     # WHEN
-    wkday_belief = beliefheir_shop(base=wkday_road, pick=wed_noon_road)
-    wkday_beliefs = {wkday_belief.base: wkday_belief}
-    wkday_reason.set_status(beliefs=wkday_beliefs)
+    wkday_fact = factheir_shop(base=wkday_road, pick=wed_noon_road)
+    wkday_facts = {wkday_fact.base: wkday_fact}
+    wkday_reason.set_status(facts=wkday_facts)
     # THEN
     assert wkday_reason._status == True
 
@@ -116,9 +116,9 @@ def test_ReasonHeir_set_status_CorrectlySetsStatus():
     two_reason = reasonheir_shop(base=wkday_road, premises=two_premises)
     assert two_reason._status is None
     # WHEN
-    noon_belief = beliefheir_shop(base=wkday_road, pick=wed_noon_road)
-    noon_beliefs = {noon_belief.base: noon_belief}
-    two_reason.set_status(beliefs=noon_beliefs)
+    noon_fact = factheir_shop(base=wkday_road, pick=wed_noon_road)
+    noon_facts = {noon_fact.base: noon_fact}
+    two_reason.set_status(facts=noon_facts)
     # THEN
     assert two_reason._status == True
 
@@ -126,14 +126,14 @@ def test_ReasonHeir_set_status_CorrectlySetsStatus():
     two_reason.clear_status()
     assert two_reason._status is None
     # WHEN
-    fri_belief = beliefheir_shop(base=wkday_road, pick=fri_road)
-    fri_beliefs = {fri_belief.base: fri_belief}
-    two_reason.set_status(beliefs=fri_beliefs)
+    fri_fact = factheir_shop(base=wkday_road, pick=fri_road)
+    fri_facts = {fri_fact.base: fri_fact}
+    two_reason.set_status(facts=fri_facts)
     # THEN
     assert two_reason._status is False
 
 
-def test_ReasonHeir_set_status_EmptyBeliefCorrectlySetsStatus():
+def test_ReasonHeir_set_status_EmptyFactCorrectlySetsStatus():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
@@ -143,34 +143,34 @@ def test_ReasonHeir_set_status_EmptyBeliefCorrectlySetsStatus():
     wed_premises = {wed_premise.need: wed_premise}
     wkday_reason = reasonheir_shop(base=wkday_road, premises=wed_premises)
     assert wkday_reason._status is None
-    wkday_reason.set_status(beliefs=None)
+    wkday_reason.set_status(facts=None)
     assert wkday_reason._status is False
 
 
-def test_ReasonHeir_set_base_fact_active_Correctly():
+def test_ReasonHeir_set_base_idea_active_Correctly():
     # GIVEN
     day_text = "day"
     day_road = create_road(root_label(), day_text)
     day_reason = reasonheir_shop(base=day_road)
-    assert day_reason._base_fact_active is None
+    assert day_reason._base_idea_active is None
 
     # WHEN
-    day_reason.set_base_fact_active(bool_x=True)
+    day_reason.set_base_idea_active(bool_x=True)
 
     # THEN
-    assert day_reason._base_fact_active
+    assert day_reason._base_idea_active
 
 
 def test_ReasonHeir_set_status_AgendaTrueCorrectlySetsStatusTrue():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
-    week_reason = reasonheir_shop(base=wkday_road, suff_fact_active=True)
-    week_reason.set_base_fact_active(bool_x=True)
+    week_reason = reasonheir_shop(base=wkday_road, suff_idea_active=True)
+    week_reason.set_base_idea_active(bool_x=True)
     assert week_reason._status is None
 
     # WHEN
-    week_reason.set_status(beliefs=None)
+    week_reason.set_status(facts=None)
 
     # THEN
     assert week_reason._status == True
@@ -180,12 +180,12 @@ def test_ReasonHeir_set_status_AgendaFalseCorrectlySetsStatusTrue():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
-    wkday_reason = reasonheir_shop(wkday_road, suff_fact_active=False)
-    wkday_reason.set_base_fact_active(bool_x=False)
+    wkday_reason = reasonheir_shop(wkday_road, suff_idea_active=False)
+    wkday_reason.set_base_idea_active(bool_x=False)
     assert wkday_reason._status is None
 
     # WHEN
-    wkday_reason.set_status(beliefs=None)
+    wkday_reason.set_status(facts=None)
 
     # THEN
     assert wkday_reason._status == True
@@ -195,12 +195,12 @@ def test_ReasonHeir_set_status_AgendaTrueCorrectlySetsStatusFalse():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
-    wkday_reason = reasonheir_shop(wkday_road, suff_fact_active=True)
-    wkday_reason.set_base_fact_active(bool_x=False)
+    wkday_reason = reasonheir_shop(wkday_road, suff_idea_active=True)
+    wkday_reason.set_base_idea_active(bool_x=False)
     assert wkday_reason._status is None
 
     # WHEN
-    wkday_reason.set_status(beliefs=None)
+    wkday_reason.set_status(facts=None)
 
     # THEN
     assert wkday_reason._status is False
@@ -210,12 +210,12 @@ def test_ReasonHeir_set_status_AgendaNoneCorrectlySetsStatusFalse():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
-    wkday_reason = reasonheir_shop(wkday_road, suff_fact_active=True)
-    wkday_reason.set_base_fact_active(bool_x=None)
+    wkday_reason = reasonheir_shop(wkday_road, suff_idea_active=True)
+    wkday_reason.set_base_idea_active(bool_x=None)
     assert wkday_reason._status is None
 
     # WHEN
-    wkday_reason.set_status(beliefs={})
+    wkday_reason.set_status(facts={})
 
     # THEN
     assert wkday_reason._status is False
@@ -257,12 +257,12 @@ def test_ReasonUnit_get_dict_ReturnsCorrectDictWithSinglethu_premiseequireds():
     assert wkday_reason_dict == static_wkday_reason_dict
 
 
-def test_ReasonUnit_get_dict_ReturnsCorrectDictWith_suff_fact_active():
+def test_ReasonUnit_get_dict_ReturnsCorrectDictWith_suff_idea_active():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
-    wkday_suff_fact_active = True
-    wkday_reason = reasonunit_shop(wkday_road, suff_fact_active=wkday_suff_fact_active)
+    wkday_suff_idea_active = True
+    wkday_reason = reasonunit_shop(wkday_road, suff_idea_active=wkday_suff_idea_active)
 
     # WHEN
     wkday_reason_dict = wkday_reason.get_dict()
@@ -271,7 +271,7 @@ def test_ReasonUnit_get_dict_ReturnsCorrectDictWith_suff_fact_active():
     assert wkday_reason_dict != None
     static_wkday_reason_dict = {
         "base": wkday_road,
-        "suff_fact_active": wkday_suff_fact_active,
+        "suff_idea_active": wkday_suff_idea_active,
     }
     print(wkday_reason_dict)
     assert wkday_reason_dict == static_wkday_reason_dict
@@ -307,16 +307,16 @@ def test_reasons_get_from_dict_ReturnsCorrectObj():
     # GIVEN
     wkday_text = "weekday"
     wkday_road = create_road(root_label(), wkday_text)
-    wkday_suff_fact_active = False
+    wkday_suff_idea_active = False
     wkday_reasonunit = reasonunit_shop(
-        wkday_road, suff_fact_active=wkday_suff_fact_active
+        wkday_road, suff_idea_active=wkday_suff_idea_active
     )
     x_wkday_reasonunits_dict = {wkday_reasonunit.base: wkday_reasonunit.get_dict()}
     assert x_wkday_reasonunits_dict != None
     static_wkday_reason_dict = {
         wkday_road: {
             "base": wkday_road,
-            "suff_fact_active": wkday_suff_fact_active,
+            "suff_idea_active": wkday_suff_idea_active,
         }
     }
     assert x_wkday_reasonunits_dict == static_wkday_reason_dict
@@ -339,25 +339,25 @@ def test_ReasonHeir_correctSetsActionState():
     assert range_3_to_6_reason._status is None
 
     # WHEN
-    range_5_to_8_belief = beliefheir_shop(day_road, day_road, open=5, nigh=8)
-    range_5_to_8_beliefs = {range_5_to_8_belief.base: range_5_to_8_belief}
-    range_3_to_6_reason.set_status(beliefs=range_5_to_8_beliefs)
+    range_5_to_8_fact = factheir_shop(day_road, day_road, open=5, nigh=8)
+    range_5_to_8_facts = {range_5_to_8_fact.base: range_5_to_8_fact}
+    range_3_to_6_reason.set_status(facts=range_5_to_8_facts)
     # THEN
     assert range_3_to_6_reason._status == True
     assert range_3_to_6_reason._task == True
 
     # WHEN
-    range_5_to_6_belief = beliefheir_shop(day_road, day_road, open=5, nigh=6)
-    range_5_to_6_beliefs = {range_5_to_6_belief.base: range_5_to_6_belief}
-    range_3_to_6_reason.set_status(beliefs=range_5_to_6_beliefs)
+    range_5_to_6_fact = factheir_shop(day_road, day_road, open=5, nigh=6)
+    range_5_to_6_facts = {range_5_to_6_fact.base: range_5_to_6_fact}
+    range_3_to_6_reason.set_status(facts=range_5_to_6_facts)
     # THEN
     assert range_3_to_6_reason._status == True
     assert range_3_to_6_reason._task is False
 
     # WHEN
-    range_0_to_1_belief = beliefheir_shop(day_road, day_road, open=0, nigh=1)
-    range_0_to_1_beliefs = {range_0_to_1_belief.base: range_0_to_1_belief}
-    range_3_to_6_reason.set_status(beliefs=range_0_to_1_beliefs)
+    range_0_to_1_fact = factheir_shop(day_road, day_road, open=0, nigh=1)
+    range_0_to_1_facts = {range_0_to_1_fact.base: range_0_to_1_fact}
+    range_3_to_6_reason.set_status(facts=range_0_to_1_facts)
     # THEN
     assert range_3_to_6_reason._status is False
     assert range_3_to_6_reason._task is None

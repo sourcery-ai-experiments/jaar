@@ -1,14 +1,14 @@
-# command to for converting ui form to python file: pyuic5 ui\EditFactUnitUI.ui -o ui\EditFactUnitUI.py
+# command to for converting ui form to python file: pyuic5 ui\EditIdeaUnitUI.ui -o ui\EditIdeaUnitUI.py
 import sys
-from src.agenda.fact import factunit_shop, factattrfilter_shop
-from ui.EditFactUnitUI import Ui_Form
+from src.agenda.idea import ideaunit_shop, ideaattrfilter_shop
+from ui.EditIdeaUnitUI import Ui_Form
 from PyQt5 import QtWidgets as qtw, QtCore
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1, QTableWidget as qtw0
 from src._road.road import create_road
 from src.agenda.hreg_time import PremiseUnitHregTime
-from src.agenda.idea import BalanceLink, IdeaID
-from src.agenda.reason_fact import RoadUnit
-from src.agenda.hreg_time import HregTimeFactSource  # get_24hr, get_60min
+from src.agenda.belief import BalanceLink, BeliefID
+from src.agenda.reason_idea import RoadUnit
+from src.agenda.hreg_time import HregTimeIdeaSource  # get_24hr, get_60min
 from ui.pyqt_func import (
     num2str,
     bool_val,
@@ -24,7 +24,7 @@ class PyQtUIException(Exception):
     pass
 
 
-class EditFactUnit(qtw0, Ui_Form):
+class EditIdeaUnit(qtw0, Ui_Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -34,31 +34,31 @@ class EditFactUnit(qtw0, Ui_Form):
         self.close_button.clicked.connect(self.close)
         self.quit_button.clicked.connect(sys.exit)
 
-        self.basefactunit.itemClicked.connect(self.yo_tree_item_selected)
-        self.basefactunit.itemActivated.connect(self.yo_tree_item_expanded)
-        self.submit_node_update.clicked.connect(self.fact_update)
-        self.submit_node_delete.clicked.connect(self.fact_delete)
-        self.submit_child_insert.clicked.connect(self.fact_insert)
-        self.submit_pledge_insert.clicked.connect(self.fact_pledge_insert)
+        self.baseideaunit.itemClicked.connect(self.yo_tree_item_selected)
+        self.baseideaunit.itemActivated.connect(self.yo_tree_item_expanded)
+        self.submit_node_update.clicked.connect(self.idea_update)
+        self.submit_node_delete.clicked.connect(self.idea_delete)
+        self.submit_child_insert.clicked.connect(self.idea_insert)
+        self.submit_pledge_insert.clicked.connect(self.idea_pledge_insert)
 
         self.cb_rootadmiration.stateAtomd.connect(self.refresh_tree)
         self.cb_yo_id.stateAtomd.connect(self.refresh_tree)
         self.cb_yo_intent.stateAtomd.connect(self.refresh_tree)
         self.cb_yo_action.stateAtomd.connect(self.refresh_tree)
         self.cb_yo_complete.stateAtomd.connect(self.refresh_tree)
-        self.cb_yo_beliefunit_time.stateAtomd.connect(self.refresh_tree)
-        self.cb_yo_beliefunit_count.stateAtomd.connect(self.refresh_tree)
-        self.cb_yo_beliefheir_count.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo_factunit_time.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo_factunit_count.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo_factheir_count.stateAtomd.connect(self.refresh_tree)
         self.cb_reasonheir_count.stateAtomd.connect(self.refresh_tree)
         self.cb_reason_count.stateAtomd.connect(self.refresh_tree)
         self.cb_reason_view.stateAtomd.connect(self.refresh_tree)
-        self.cb_beliefheir_view.stateAtomd.connect(self.refresh_tree)
+        self.cb_factheir_view.stateAtomd.connect(self.refresh_tree)
         self.cb_yo2bd_count.stateAtomd.connect(self.refresh_tree)
         self.combo_dim_root.currentTextAtomd.connect(self.refresh_tree)
 
-        self.fact2idea_table.itemClicked.connect(self.fact2idea_table_select)
-        self.fact2idea_delete_button.clicked.connect(self.fact2idea_delete)
-        self.fact2idea_insert_button.clicked.connect(self.fact2idea_update)
+        self.idea2belief_table.itemClicked.connect(self.idea2belief_table_select)
+        self.idea2belief_delete_button.clicked.connect(self.idea2belief_delete)
+        self.idea2belief_insert_button.clicked.connect(self.idea2belief_update)
         self.reason_table.itemClicked.connect(self.reason_table_select)
         self.reason_base_combo.currentTextAtomd.connect(self.reason_premise_combo_load)
         self.reason_premise_combo.currentTextAtomd.connect(
@@ -88,7 +88,7 @@ class EditFactUnit(qtw0, Ui_Form):
 
         self.yo_tree_item_setHidden(setHiddenBool=True)
         self.show
-        self.x_fact = None
+        self.x_idea = None
 
     def toogle_reasonheir_tables(self):
         self.reasonheir_table_hidden = self.reasonheir_table_hidden is False
@@ -98,7 +98,7 @@ class EditFactUnit(qtw0, Ui_Form):
         self.reason_base_combo.setCurrentText(f"{self.x_agenda._real_id},time,jajatime")
 
     def add_hreg_to_agenda(self):
-        self.x_agenda.set_time_hreg_facts(c400_count=7)
+        self.x_agenda.set_time_hreg_ideas(c400_count=7)
         self.refresh_tree()
 
     def yo_tree_item_setHidden(self, setHiddenBool):
@@ -144,12 +144,12 @@ class EditFactUnit(qtw0, Ui_Form):
         self.hreg_length_hr.setHidden(setHiddenBool)
         self.hreg_length_min.setHidden(setHiddenBool)
         self.submit_child_insert.setHidden(setHiddenBool)
-        self.fact2idea_table.setHidden(setHiddenBool)
-        self.fact2idea_table.clear()
-        self.fact2idea_table.setRowCount(1)
-        self.fact2idea_insert_combo.setHidden(setHiddenBool)
-        self.fact2idea_delete_button.setHidden(setHiddenBool)
-        self.fact2idea_insert_button.setHidden(setHiddenBool)
+        self.idea2belief_table.setHidden(setHiddenBool)
+        self.idea2belief_table.clear()
+        self.idea2belief_table.setRowCount(1)
+        self.idea2belief_insert_combo.setHidden(setHiddenBool)
+        self.idea2belief_delete_button.setHidden(setHiddenBool)
+        self.idea2belief_insert_button.setHidden(setHiddenBool)
         self.reasonheir_table.setHidden(True)
         self.reason_table.setHidden(setHiddenBool)
         self.reason_base_combo.setHidden(setHiddenBool)
@@ -172,18 +172,18 @@ class EditFactUnit(qtw0, Ui_Form):
         self.submit_child_insert.setHidden(setHiddenBool)
         self.submit_node_update.setHidden(setHiddenBool)
         self.submit_node_delete.setHidden(setHiddenBool)
-        hregfact = HregTimeFactSource(",")
+        hregidea = HregTimeIdeaSource(",")
         self.hreg_open_hr.clear()
-        self.hreg_open_hr.addItems(hregfact.get_24hr())
+        self.hreg_open_hr.addItems(hregidea.get_24hr())
         self.hreg_open_hr.setCurrentText("")
         self.hreg_open_min.clear()
-        self.hreg_open_min.addItems(hregfact.get_60min())
+        self.hreg_open_min.addItems(hregidea.get_60min())
         self.hreg_open_min.setCurrentText("")
         self.hreg_length_hr.clear()
-        self.hreg_length_hr.addItems(hregfact.get_24hr())
+        self.hreg_length_hr.addItems(hregidea.get_24hr())
         self.hreg_length_hr.setCurrentText("")
         self.hreg_length_min.clear()
-        self.hreg_length_min.addItems(hregfact.get_60min())
+        self.hreg_length_min.addItems(hregidea.get_60min())
         self.hreg_length_min.setCurrentText("")
         self.hreg_weekday.clear()
         self.hreg_weekday.addItems(
@@ -204,7 +204,7 @@ class EditFactUnit(qtw0, Ui_Form):
         self.prom_l_02.setText("")
         self.yo_action_cb.setChecked(False)
         self.yo_deescription.setText("")
-        self.fact_label_on_populate = ""
+        self.idea_label_on_populate = ""
         self.yo_weight.setText("")
         # self.reason_base_combo.setText("")
         # self.reason_premise_combo.setText("")
@@ -218,67 +218,67 @@ class EditFactUnit(qtw0, Ui_Form):
         self.reason_premise_open_combo.clear()
         self.reason_premise_nigh_combo.clear()
         self.reason_premise_divisor_combo.clear()
-        self.fact2idea_insert_combo.clear()
+        self.idea2belief_insert_combo.clear()
 
         if setHiddenBool is False:
-            self.x_fact_populate()
+            self.x_idea_populate()
 
-    def x_fact_populate(self):
-        self.label_parent_id.setText(f"Current Node road : {self.x_fact._parent_road}")
-        self.yo_deescription.setText(self.x_fact._label)
-        # self.fact_label_on_populate = self.x_fact._label
-        self.yo_parent_road.setText(self.x_fact._parent_road)
-        self.yo_weight.setText(num2str(self.x_fact._weight))
-        self.yo_begin.setText(num2str(self.x_fact._begin))
+    def x_idea_populate(self):
+        self.label_parent_id.setText(f"Current Node road : {self.x_idea._parent_road}")
+        self.yo_deescription.setText(self.x_idea._label)
+        # self.idea_label_on_populate = self.x_idea._label
+        self.yo_parent_road.setText(self.x_idea._parent_road)
+        self.yo_weight.setText(num2str(self.x_idea._weight))
+        self.yo_begin.setText(num2str(self.x_idea._begin))
         self.yo_range_source_road.clear()
         self.yo_numeric_road.clear()
-        if f"{type(self.x_fact)}" != "<class 'lw.agenda.AgendaUnit'>":
-            self.populate_fact_kid_actions()
-        self.yo_close.setText(num2str(self.x_fact._close))
-        self.yo_action_cb.setChecked(self.x_fact.pledge)
-        self.yo_task_status.setText(str(self.x_fact._task))
-        self.yo_active.setText(str(self.x_fact._active))
-        self.submit_child_insert.setText(f"Add child {self.x_fact._label:8}")
+        if f"{type(self.x_idea)}" != "<class 'lw.agenda.AgendaUnit'>":
+            self.populate_idea_kid_actions()
+        self.yo_close.setText(num2str(self.x_idea._close))
+        self.yo_action_cb.setChecked(self.x_idea.pledge)
+        self.yo_task_status.setText(str(self.x_idea._task))
+        self.yo_active.setText(str(self.x_idea._active))
+        self.submit_child_insert.setText(f"Add child {self.x_idea._label:8}")
         self.reason_table_load()
         self.reasonheir_table_load()
         self.reason_base_combo_load()
-        self.fact2idea_table_load()
-        self.fact2idea_insert_combo_load()
+        self.idea2belief_table_load()
+        self.idea2belief_insert_combo_load()
         if self.combo_dim_root.currentText() == "":
             self.combo_dim_root.addItems(list(self.x_agenda.get_reason_bases()))
 
-    def populate_fact_kid_actions(self):
-        self.yo_addin.setText(num2str(self.x_fact._addin))
-        self.yo_numor.setText(num2str(self.x_fact._numor))
-        self.yo_denom.setText(num2str(self.x_fact._denom))
-        self.yo_reest.setChecked(bool_val(self.x_fact._reest))
-        fact_road_list = self.x_agenda.get_fact_tree_ordered_road_list()
-        fact_road_list.append("")
-        self.yo_range_source_road.addItems(fact_road_list)
-        self.yo_range_source_road.setCurrentText(self.x_fact._range_source_road)
-        self.yo_numeric_road.addItems(fact_road_list)
-        self.yo_numeric_road.setCurrentText(self.x_fact._numeric_road)
+    def populate_idea_kid_actions(self):
+        self.yo_addin.setText(num2str(self.x_idea._addin))
+        self.yo_numor.setText(num2str(self.x_idea._numor))
+        self.yo_denom.setText(num2str(self.x_idea._denom))
+        self.yo_reest.setChecked(bool_val(self.x_idea._reest))
+        idea_road_list = self.x_agenda.get_idea_tree_ordered_road_list()
+        idea_road_list.append("")
+        self.yo_range_source_road.addItems(idea_road_list)
+        self.yo_range_source_road.setCurrentText(self.x_idea._range_source_road)
+        self.yo_numeric_road.addItems(idea_road_list)
+        self.yo_numeric_road.setCurrentText(self.x_idea._numeric_road)
 
     def yo_tree_item_selected(self):
-        fact_label = self.basefactunit.currentItem().data(2, 10)
-        fact_parent_road = self.basefactunit.currentItem().data(2, 11)
-        if fact_parent_road not in ("", None):
-            self.x_fact = self.x_agenda.get_fact_obj(
-                road=create_road(fact_parent_road, fact_label)
+        idea_label = self.baseideaunit.currentItem().data(2, 10)
+        idea_parent_road = self.baseideaunit.currentItem().data(2, 11)
+        if idea_parent_road not in ("", None):
+            self.x_idea = self.x_agenda.get_idea_obj(
+                road=create_road(idea_parent_road, idea_label)
             )
         else:
-            self.x_fact = self.x_agenda._factroot
+            self.x_idea = self.x_agenda._idearoot
         self.yo_tree_item_setHidden(setHiddenBool=False)
 
     def yo_tree_item_expanded(self):
-        root = self.basefactunit.invisibleRootItem()
-        self.fact_tree_set_is_expanded(root)
+        root = self.baseideaunit.invisibleRootItem()
+        self.idea_tree_set_is_expanded(root)
 
     def reason_base_combo_load(self):
-        # create list of all fact roads (road+_label)
+        # create list of all idea roads (road+_label)
         self.reason_base_combo.clear()
         self.reason_base_combo.addItems([""])
-        self.reason_base_combo.addItems(self.x_agenda.get_fact_tree_ordered_road_list())
+        self.reason_base_combo.addItems(self.x_agenda.get_idea_tree_ordered_road_list())
 
     def reason_premise_combo_load(self):
         self.reason_premise_combo.clear()
@@ -293,12 +293,12 @@ class EditFactUnit(qtw0, Ui_Form):
             self.x_agenda._owner_id,
             "",
         ]:
-            premise_fact = self.x_agenda.get_fact_obj(
+            premise_idea = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_combo.currentText()
             )
-            if premise_fact._range_source_road != None:
+            if premise_idea._range_source_road != None:
                 filtered_list = self.x_agenda.get_heir_road_list(
-                    premise_fact._range_source_road
+                    premise_idea._range_source_road
                 )
         self.reason_premise_open_combo.clear()
         self.reason_premise_nigh_combo.clear()
@@ -322,40 +322,40 @@ class EditFactUnit(qtw0, Ui_Form):
             self.reason_premise_open_combo_sel_actions()
 
     def reason_premise_open_combo_sel_actions(self):
-        open_fact_x = self.x_agenda.get_fact_obj(
+        open_idea_x = self.x_agenda.get_idea_obj(
             road=self.reason_premise_open_combo.currentText()
         )
-        if open_fact_x._begin != None:
-            self.reason_premise_open.setText(str(open_fact_x._begin))
-        if open_fact_x._close != None:
-            self.reason_premise_nigh.setText(str(open_fact_x._close))
-        if open_fact_x._addin != None:
-            self.reason_premise_divisor.setText(str(open_fact_x._addin))
-        if open_fact_x._numor != None:
-            self.reason_premise_divisor.setText(str(open_fact_x._numor))
-        if open_fact_x._denom != None:
-            self.reason_premise_divisor.setText(str(open_fact_x._denom))
-        if open_fact_x._reest != None:
-            self.reason_premise_divisor.setText(str(open_fact_x._reest))
+        if open_idea_x._begin != None:
+            self.reason_premise_open.setText(str(open_idea_x._begin))
+        if open_idea_x._close != None:
+            self.reason_premise_nigh.setText(str(open_idea_x._close))
+        if open_idea_x._addin != None:
+            self.reason_premise_divisor.setText(str(open_idea_x._addin))
+        if open_idea_x._numor != None:
+            self.reason_premise_divisor.setText(str(open_idea_x._numor))
+        if open_idea_x._denom != None:
+            self.reason_premise_divisor.setText(str(open_idea_x._denom))
+        if open_idea_x._reest != None:
+            self.reason_premise_divisor.setText(str(open_idea_x._reest))
 
     def numeric_road_combo_select(self):
         if self.reason_premise_open_combo.currentText() not in [
             self.x_agenda._owner_id,
             "",
         ]:
-            open_fact_x = self.x_agenda.get_fact_obj(
+            open_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_open_combo.currentText()
             )
-            # nigh_fact_x = self.x_agenda.get_fact_obj(
+            # nigh_idea_x = self.x_agenda.get_idea_obj(
             #     road=self.reason_premise_nigh_combo.currentText()
             # )
-            # divisor_fact_x = self.x_agenda.get_fact_obj(
+            # divisor_idea_x = self.x_agenda.get_idea_obj(
             #     road=self.reason_premise_divisor_combo.currentText()
             # )
-            # if open_fact_x._begin != None:
-            #     self.reason_premise_open.setText(str(open_fact_x._begin))
-            # if open_fact_x._close != None:
-            #     self.reason_premise_nigh.setText(str(open_fact_x._close))
+            # if open_idea_x._begin != None:
+            #     self.reason_premise_open.setText(str(open_idea_x._begin))
+            # if open_idea_x._close != None:
+            #     self.reason_premise_nigh.setText(str(open_idea_x._close))
 
     def set_premise_open_combo(self):
         if (
@@ -366,15 +366,15 @@ class EditFactUnit(qtw0, Ui_Form):
             ]
             and self.reason_premise_open.toPlainText() != ""
         ):
-            open_fact_x = self.x_agenda.get_fact_obj(
+            open_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_open_combo.currentText()
             )
             open_int = str2float(self.reason_premise_open.toPlainText())
-            open_kids = open_fact_x.get_kids_in_range(begin=open_int, close=open_int)
+            open_kids = open_idea_x.get_kids_in_range(begin=open_int, close=open_int)
             if len(open_kids) == 1:
-                fact_x = open_kids[0]
+                idea_x = open_kids[0]
                 self.reason_premise_open_combo.setCurrentText(
-                    f"{fact_x._parent_road},{fact_x._label}"
+                    f"{idea_x._parent_road},{idea_x._label}"
                 )
 
     def set_premise_nigh_combo(self):
@@ -386,15 +386,15 @@ class EditFactUnit(qtw0, Ui_Form):
             ]
             and self.reason_premise_nigh.toPlainText() != ""
         ):
-            nigh_fact_x = self.x_agenda.get_fact_obj(
+            nigh_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_nigh_combo.currentText()
             )
             nigh_int = int(self.reason_premise_nigh.toPlainText())
-            nigh_kids = nigh_fact_x.get_kids_in_range(begin=nigh_int, close=nigh_int)
+            nigh_kids = nigh_idea_x.get_kids_in_range(begin=nigh_int, close=nigh_int)
             if len(nigh_kids) == 1:
-                fact_x = nigh_kids[0]
+                idea_x = nigh_kids[0]
                 self.reason_premise_nigh_combo.setCurrentText(
-                    f"{fact_x._parent_road},{fact_x._label}"
+                    f"{idea_x._parent_road},{idea_x._label}"
                 )
 
     def set_premise_divisor_combo(self):
@@ -406,17 +406,17 @@ class EditFactUnit(qtw0, Ui_Form):
             ]
             and self.reason_premise_divisor.toPlainText() != ""
         ):
-            divisor_fact_x = self.x_agenda.get_fact_obj(
+            divisor_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_divisor_combo.currentText()
             )
             divisor_int = int(self.reason_premise_divisor.toPlainText())
-            divisor_kids = divisor_fact_x.get_kids_in_range(
+            divisor_kids = divisor_idea_x.get_kids_in_range(
                 begin=divisor_int, close=divisor_int
             )
             if len(divisor_kids) == 1:
-                fact_x = divisor_kids[0]
+                idea_x = divisor_kids[0]
                 self.reason_premise_divisor_combo.setCurrentText(
-                    f"{fact_x._parent_road},{fact_x._label}"
+                    f"{idea_x._parent_road},{idea_x._label}"
                 )
 
     def reason_premise_nigh_combo_select(self):
@@ -425,11 +425,11 @@ class EditFactUnit(qtw0, Ui_Form):
             self.x_agenda._owner_id,
             "",
         ]:
-            nigh_fact_x = self.x_agenda.get_fact_obj(
+            nigh_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_nigh_combo.currentText()
             )
-            if nigh_fact_x._close != None:
-                self.reason_premise_nigh.setText(str(nigh_fact_x._close))
+            if nigh_idea_x._close != None:
+                self.reason_premise_nigh.setText(str(nigh_idea_x._close))
 
     def reason_premise_divisor_combo_select(self):
         self.reason_premise_divisor.setText("")
@@ -437,17 +437,17 @@ class EditFactUnit(qtw0, Ui_Form):
             self.x_agenda._owner_id,
             "",
         ]:
-            divisor_fact_x = self.x_agenda.get_fact_obj(
+            divisor_idea_x = self.x_agenda.get_idea_obj(
                 road=self.reason_premise_divisor_combo.currentText()
             )
-            if divisor_fact_x._denom != None:
-                self.reason_premise_divisor.setText(str(divisor_fact_x._denom))
+            if divisor_idea_x._denom != None:
+                self.reason_premise_divisor.setText(str(divisor_idea_x._denom))
 
     def reason_table_load(self):
         self.reason_table.clear()
         row = 0
-        for reason in self.x_fact._reasonunits.values():
-            reasonheir = self.x_fact._reasonheirs.get(reason.base)
+        for reason in self.x_idea._reasonunits.values():
+            reasonheir = self.x_idea._reasonheirs.get(reason.base)
             for premise in reason.premises.values():
                 reason_text = reason.base.replace(f"{self.x_agenda._owner_id}", "")
                 reason_text = reason_text[1:]
@@ -530,7 +530,7 @@ class EditFactUnit(qtw0, Ui_Form):
     def reasonheir_table_load(self):
         self.reasonheir_table.clear()
         row = 0
-        for reasonheir in self.x_fact._reasonheirs.values():
+        for reasonheir in self.x_idea._reasonheirs.values():
             for premise in reasonheir.premises.values():
                 reasonheir_text = reasonheir.base.replace(
                     f"{self.x_agenda._owner_id}", ""
@@ -692,10 +692,10 @@ class EditFactUnit(qtw0, Ui_Form):
             open_x = str2float(self.reason_premise_open.toPlainText())
             nigh_x = str2float(self.reason_premise_nigh.toPlainText())
             divisor_x = str2float(self.reason_premise_divisor.toPlainText())
-            fact_label = self.basefactunit.currentItem().data(2, 10)
-            fact_parent_road = self.basefactunit.currentItem().data(2, 11)
-            self.x_agenda.edit_fact_attr(
-                road=f"{fact_parent_road},{fact_label}",
+            idea_label = self.baseideaunit.currentItem().data(2, 10)
+            idea_parent_road = self.baseideaunit.currentItem().data(2, 11)
+            self.x_agenda.edit_idea_attr(
+                road=f"{idea_parent_road},{idea_label}",
                 reason_base=base_x,
                 reason_premise=premise_x,
                 reason_premise_open=open_x,
@@ -703,7 +703,7 @@ class EditFactUnit(qtw0, Ui_Form):
                 reason_premise_divisor=divisor_x,
             )
 
-            # self.x_fact.set_reason_premise(
+            # self.x_idea.set_reason_premise(
             #     base=base_x,
             #     need=premise_x,
             #     open=open_x,
@@ -718,105 +718,105 @@ class EditFactUnit(qtw0, Ui_Form):
             self.reason_base_combo.currentText() != ""
             and self.reason_premise_combo.currentText() != ""
         ):
-            self.x_fact.del_reasonunit_premise(
+            self.x_idea.del_reasonunit_premise(
                 base=self.reason_base_combo.currentText(),
                 need=self.reason_premise_combo.currentText(),
             )
             self.reason_table_load()
 
-    def fact2idea_table_select(self):
-        self.fact2idea_delete_button.setText(
-            f"""Delete {self.fact2idea_table.item(self.fact2idea_table.currentRow(), 1).text()}"""
+    def idea2belief_table_select(self):
+        self.idea2belief_delete_button.setText(
+            f"""Delete {self.idea2belief_table.item(self.idea2belief_table.currentRow(), 1).text()}"""
         )
 
-    def fact2idea_table_load(self):
-        # fact2idea_table is qtw.QTableWidget()
-        self.fact2idea_table.clear()
-        self.fact2idea_table.sortItems(1, QtCore.Qt.AscendingOrder)
-        self.fact2idea_table.horizontalHeaderVisible = False
-        self.fact2idea_table.verticalHeaderVisible = False
-        self.fact2idea_table.setColumnWidth(0, 150)
-        self.fact2idea_table.setColumnHidden(1, True)
-        self.fact2idea_table.setColumnWidth(1, 50)
-        self.fact2idea_table.setColumnWidth(2, 70)
-        self.fact2idea_table.setHorizontalHeaderLabels(
-            ["Idea display", "idea_pid", "LW Force"]
+    def idea2belief_table_load(self):
+        # idea2belief_table is qtw.QTableWidget()
+        self.idea2belief_table.clear()
+        self.idea2belief_table.sortItems(1, QtCore.Qt.AscendingOrder)
+        self.idea2belief_table.horizontalHeaderVisible = False
+        self.idea2belief_table.verticalHeaderVisible = False
+        self.idea2belief_table.setColumnWidth(0, 150)
+        self.idea2belief_table.setColumnHidden(1, True)
+        self.idea2belief_table.setColumnWidth(1, 50)
+        self.idea2belief_table.setColumnWidth(2, 70)
+        self.idea2belief_table.setHorizontalHeaderLabels(
+            ["Belief display", "belief_pid", "LW Force"]
         )
-        # print(f"{self.x_fact._balancelinks=}")
-        # print(f"{self.x_fact._balanceheirs=}")
-        balancelinks_list = list(self.x_fact._balancelinks.values())
-        balancelinks_list.sort(key=lambda x: x.idea_id, reverse=False)
-        balanceheirs_list = list(self.x_fact._balanceheirs.values())
-        balanceheirs_list.sort(key=lambda x: x.idea_id, reverse=False)
+        # print(f"{self.x_idea._balancelinks=}")
+        # print(f"{self.x_idea._balanceheirs=}")
+        balancelinks_list = list(self.x_idea._balancelinks.values())
+        balancelinks_list.sort(key=lambda x: x.belief_id, reverse=False)
+        balanceheirs_list = list(self.x_idea._balanceheirs.values())
+        balanceheirs_list.sort(key=lambda x: x.belief_id, reverse=False)
         # print(f"{balancelinks_list=}")
         # print(f"{balanceheirs_list=}")
 
         for row, balanceheir in enumerate(balanceheirs_list, start=1):
-            self.fact2idea_table.setRowCount(row)
-            x_text = f"  Heir: {balanceheir.idea_id}"
+            self.idea2belief_table.setRowCount(row)
+            x_text = f"  Heir: {balanceheir.belief_id}"
             for balancelink in balancelinks_list:
-                if balancelink.idea_id == balanceheir.idea_id:
-                    x_text = f"{balanceheir.idea_id}"
-            self.fact2idea_table.setItem(row - 1, 0, qtw1(x_text))
-            self.fact2idea_table.setItem(row - 1, 1, qtw1(balanceheir.idea_id))
-            self.fact2idea_table.setItem(
+                if balancelink.belief_id == balanceheir.belief_id:
+                    x_text = f"{balanceheir.belief_id}"
+            self.idea2belief_table.setItem(row - 1, 0, qtw1(x_text))
+            self.idea2belief_table.setItem(row - 1, 1, qtw1(balanceheir.belief_id))
+            self.idea2belief_table.setItem(
                 row - 1,
                 2,
                 qtw1(agenda_importance_diplay(balanceheir._agenda_cred)),
             )
 
-        self.fact2idea_table.sortItems(1, QtCore.Qt.AscendingOrder)
+        self.idea2belief_table.sortItems(1, QtCore.Qt.AscendingOrder)
 
-    def fact2idea_insert_combo_load(self):
-        # ideaunits_list = list(self.x_agenda._ideaunits.values())
-        ideaunits_pids_list = []
-        for ideaunit in self.x_agenda._ideas.values():
-            idea_previously_selected = any(
-                ideaunit.idea_id == balancelink.idea_id
-                for balancelink in self.x_fact._balancelinks.values()
+    def idea2belief_insert_combo_load(self):
+        # beliefunits_list = list(self.x_agenda._beliefunits.values())
+        beliefunits_pids_list = []
+        for beliefunit in self.x_agenda._beliefs.values():
+            belief_previously_selected = any(
+                beliefunit.belief_id == balancelink.belief_id
+                for balancelink in self.x_idea._balancelinks.values()
             )
-            if not idea_previously_selected:
-                ideaunits_pids_list.append(ideaunit.idea_id)
-        ideaunits_pids_list.sort(key=lambda x: x.lower(), reverse=False)
+            if not belief_previously_selected:
+                beliefunits_pids_list.append(beliefunit.belief_id)
+        beliefunits_pids_list.sort(key=lambda x: x.lower(), reverse=False)
 
-        self.fact2idea_insert_combo.clear()
-        self.fact2idea_insert_combo.addItems(ideaunits_pids_list)
+        self.idea2belief_insert_combo.clear()
+        self.idea2belief_insert_combo.addItems(beliefunits_pids_list)
 
-    def fact2idea_update(self):
-        bd_pid_new = self.fact2idea_insert_combo.currentText()
+    def idea2belief_update(self):
+        bd_pid_new = self.idea2belief_insert_combo.currentText()
         if bd_pid_new == "":
-            raise PyQtUIException("bd_pid is empty, fact2bd cannot be updated")
-        balancelink_new = BalanceLink(idea_id=IdeaID(bd_pid_new), weight=1)
-        self.x_agenda.edit_fact_attr(
-            road=f"{self.x_fact._parent_road},{self.x_fact._label}",
+            raise PyQtUIException("bd_pid is empty, idea2bd cannot be updated")
+        balancelink_new = BalanceLink(belief_id=BeliefID(bd_pid_new), weight=1)
+        self.x_agenda.edit_idea_attr(
+            road=f"{self.x_idea._parent_road},{self.x_idea._label}",
             balancelink=balancelink_new,
         )
-        self.fact2idea_insert_combo_load()
-        self.fact2idea_table_load()
+        self.idea2belief_insert_combo_load()
+        self.idea2belief_table_load()
 
-    def fact2idea_delete(self):
-        delete_idea_pid = ""
-        if self.fact2idea_table.currentRow() != None:
-            delete_idea_pid = self.fact2idea_table.item(
-                self.fact2idea_table.currentRow(), 1
+    def idea2belief_delete(self):
+        delete_belief_pid = ""
+        if self.idea2belief_table.currentRow() != None:
+            delete_belief_pid = self.idea2belief_table.item(
+                self.idea2belief_table.currentRow(), 1
             ).text()
-            self.x_agenda.edit_fact_attr(
-                road=f"{self.x_fact._parent_road},{self.x_fact._label}",
-                balancelink_del=delete_idea_pid,
+            self.x_agenda.edit_idea_attr(
+                road=f"{self.x_idea._parent_road},{self.x_idea._label}",
+                balancelink_del=delete_belief_pid,
             )
-            self.fact2idea_insert_combo_load()
-            self.fact2idea_table_load()
+            self.idea2belief_insert_combo_load()
+            self.idea2belief_table_load()
 
-    def fact_delete(self):
-        self.x_agenda.del_fact_obj(
-            road=f"{self.x_fact._parent_road},{self.x_fact._label}"
+    def idea_delete(self):
+        self.x_agenda.del_idea_obj(
+            road=f"{self.x_idea._parent_road},{self.x_idea._label}"
         )
-        self.basefactunit.clear()
+        self.baseideaunit.clear()
         self.refresh_tree(disable_is_expanded=True)
 
-    def fact_edit_nonroad_data(self, fact_road):
-        self.x_agenda.edit_fact_attr(
-            road=fact_road,
+    def idea_edit_nonroad_data(self, idea_road):
+        self.x_agenda.edit_idea_attr(
+            road=idea_road,
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
             close=str2float(self.yo_close.toPlainText()),
@@ -843,9 +843,9 @@ class EditFactUnit(qtw0, Ui_Form):
             is_expanded=None,
         )
 
-    def fact_edit_road(self, fact_road):
-        self.x_agenda.edit_fact_label(
-            old_road=fact_road,
+    def idea_edit_road(self, idea_road):
+        self.x_agenda.edit_idea_label(
+            old_road=idea_road,
             new_label=self.yo_deescription.toPlainText(),
         )
 
@@ -853,49 +853,49 @@ class EditFactUnit(qtw0, Ui_Form):
         self.refresh_tree(disable_is_expanded=True)
         self.yo_tree_item_setHidden(setHiddenBool=True)
 
-    def fact_update(self):
-        fact_road = None
-        if self.x_fact._parent_road not in (None, ""):
-            fact_road = f"{self.x_fact._parent_road},{self.x_fact._label}"
+    def idea_update(self):
+        idea_road = None
+        if self.x_idea._parent_road not in (None, ""):
+            idea_road = f"{self.x_idea._parent_road},{self.x_idea._label}"
         else:
-            fact_road = f"{self.x_fact._label}"
-        self.fact_edit_nonroad_data(fact_road=fact_road)
+            idea_road = f"{self.x_idea._label}"
+        self.idea_edit_nonroad_data(idea_road=idea_road)
         # if (
-        #     self.fact_label_on_populate != self.yo_deescription.toPlainText()
-        #     and self.fact_label_on_populate != ""
-        #     and self.fact_label_on_populate != None
+        #     self.idea_label_on_populate != self.yo_deescription.toPlainText()
+        #     and self.idea_label_on_populate != ""
+        #     and self.idea_label_on_populate != None
         # ):
-        #     self.fact_edit_road()
-        if self.x_fact._label != self.yo_deescription.toPlainText():
-            self.fact_edit_road(fact_road=fact_road)
+        #     self.idea_edit_road()
+        if self.x_idea._label != self.yo_deescription.toPlainText():
+            self.idea_edit_road(idea_road=idea_road)
 
-    def fact_pledge_insert(self):
-        new_parent_road = f"{self.x_fact._label}"
-        if self.x_fact._parent_road not in ("", None):
-            new_parent_road = f"{self.x_fact._parent_road},{self.x_fact._label}"
+    def idea_pledge_insert(self):
+        new_parent_road = f"{self.x_idea._label}"
+        if self.x_idea._parent_road not in ("", None):
+            new_parent_road = f"{self.x_idea._parent_road},{self.x_idea._label}"
         new_road = f"{new_parent_road},{self.yo_deescription.toPlainText()}"
-        self.fact_insert()
+        self.idea_insert()
 
         # add done/not_done children
         not_done_text = "not done"
-        self.x_agenda.add_fact(factunit_shop(not_done_text), new_road)
+        self.x_agenda.add_idea(ideaunit_shop(not_done_text), new_road)
         done_text = "done"
-        self.x_agenda.add_fact(factunit_shop(done_text), new_road)
+        self.x_agenda.add_idea(ideaunit_shop(done_text), new_road)
         # set reason to "not done"
-        self.x_agenda.edit_fact_attr(
+        self.x_agenda.edit_idea_attr(
             road=new_road,
             reason_base=new_road,
             reason_premise=f"{new_road},{not_done_text}",
         )
-        self.x_agenda.set_belief(
+        self.x_agenda.set_fact(
             base=new_road,
             pick=f"{new_road},{not_done_text}",
         )
         self.refresh_tree()
 
-    def fact_insert(self):
-        new_fact = factunit_shop(self.yo_deescription.toPlainText())
-        fact_attr_x = factattrfilter_shop(
+    def idea_insert(self):
+        new_idea = ideaunit_shop(self.yo_deescription.toPlainText())
+        idea_attr_x = ideaattrfilter_shop(
             weight=float(self.yo_weight.toPlainText()),
             begin=str2float(self.yo_begin.toPlainText()),
             close=str2float(self.yo_close.toPlainText()),
@@ -925,11 +925,11 @@ class EditFactUnit(qtw0, Ui_Form):
             is_expanded=None,
             meld_strategy=None,
         )
-        new_fact._set_fact_attr(fact_attr=fact_attr_x)
-        new_parent_road = f"{self.x_fact._label}"
-        if self.x_fact._parent_road not in ("", None):
-            new_parent_road = f"{self.x_fact._parent_road},{self.x_fact._label}"
-        self.x_agenda.add_fact(new_fact, new_parent_road)
+        new_idea._set_idea_attr(idea_attr=idea_attr_x)
+        new_parent_road = f"{self.x_idea._label}"
+        if self.x_idea._parent_road not in ("", None):
+            new_parent_road = f"{self.x_idea._parent_road},{self.x_idea._label}"
+        self.x_agenda.add_idea(new_idea, new_parent_road)
         self.refresh_tree()
 
     def refresh_tree(self, disable_is_expanded: bool = False):
@@ -940,43 +940,43 @@ class EditFactUnit(qtw0, Ui_Form):
         yo2bd_count_flag = self.cb_yo2bd_count.checkState() == 2
         # yo2bd_spec1_flag = self.yo2bd_spec1_flag.checkState() == 2
         yo_complete_flag = self.cb_yo_complete.checkState() == 2
-        yo_beliefunit_time_flag = self.cb_yo_beliefunit_time.checkState() == 2
-        yo_beliefunit_count_flag = self.cb_yo_beliefunit_count.checkState() == 2
-        yo_beliefheir_count_flag = self.cb_yo_beliefheir_count.checkState() == 2
+        yo_factunit_time_flag = self.cb_yo_factunit_time.checkState() == 2
+        yo_factunit_count_flag = self.cb_yo_factunit_count.checkState() == 2
+        yo_factheir_count_flag = self.cb_yo_factheir_count.checkState() == 2
         reasonheir_count_flag = self.cb_reasonheir_count.checkState() == 2
         reason_count_flag = self.cb_reason_count.checkState() == 2
         reason_view_flag = self.cb_reason_view.checkState() == 2
         reason_view_base = self.combo_dim_root.currentText()
-        beliefheir_view_flag = self.cb_beliefheir_view.checkState() == 2
+        factheir_view_flag = self.cb_factheir_view.checkState() == 2
 
-        # root = self.basefactunit.invisibleRootItem()
+        # root = self.baseideaunit.invisibleRootItem()
         # self.yo_tree_isExpanded(node=root, level=1)
-        root = self.basefactunit.invisibleRootItem()
+        root = self.baseideaunit.invisibleRootItem()
         if not disable_is_expanded:
-            self.fact_tree_set_is_expanded(root)
+            self.idea_tree_set_is_expanded(root)
 
         tree_root = get_pyqttree(
-            factroot=self.x_agenda._factroot,
+            idearoot=self.x_agenda._idearoot,
             yo_intent_flag=yo_intent_flag,
             yo_action_flag=yo_action_flag,
-            yo_beliefunit_time_flag=yo_beliefunit_time_flag,
-            yo_beliefunit_count_flag=yo_beliefunit_count_flag,
-            yo_beliefheir_count_flag=yo_beliefheir_count_flag,
+            yo_factunit_time_flag=yo_factunit_time_flag,
+            yo_factunit_count_flag=yo_factunit_count_flag,
+            yo_factheir_count_flag=yo_factheir_count_flag,
             yo_complete_flag=yo_complete_flag,
             yo2bd_count_flag=yo2bd_count_flag,
             reasonheir_count_flag=reasonheir_count_flag,
             reason_count_flag=reason_count_flag,
             reason_view_flag=reason_view_flag,
             reason_view_person_id=reason_view_base,
-            beliefheir_view_flag=beliefheir_view_flag,
+            factheir_view_flag=factheir_view_flag,
             root_percent_flag=root_percent_flag,
             source_agenda=self.x_agenda,
         )
 
-        self.basefactunit.clear()
-        self.basefactunit.insertTopLevelItems(0, [tree_root])
+        self.baseideaunit.clear()
+        self.baseideaunit.insertTopLevelItems(0, [tree_root])
 
-        root = self.basefactunit.invisibleRootItem()
+        root = self.baseideaunit.invisibleRootItem()
         self.pyqt_tree_setExpanded(root)
         # self.yo_tree_item_setHidden(setHiddenBool=True)
 
@@ -988,7 +988,7 @@ class EditFactUnit(qtw0, Ui_Form):
             item.setExpanded(item.data(2, 20))
             self.pyqt_tree_setExpanded(item)
 
-    def fact_tree_set_is_expanded(self, root):
+    def idea_tree_set_is_expanded(self, root):
         child_count = root.childCount()
         for i in range(child_count):
             item = root.child(i)
@@ -1000,8 +1000,8 @@ class EditFactUnit(qtw0, Ui_Form):
             # print(f"road={road_x},{label_x}")
             # print(f"{_road=}")
 
-            self.x_agenda.edit_fact_attr(road=_road, is_expanded=is_expanded)
-            self.fact_tree_set_is_expanded(item)
+            self.x_agenda.edit_idea_attr(road=_road, is_expanded=is_expanded)
+            self.idea_tree_set_is_expanded(item)
 
     def reason_table_select(self):
         self.reason_base_combo_load()

@@ -1,6 +1,6 @@
-from src.agenda.idea import ideaunit_shop
+from src.agenda.belief import beliefunit_shop
 from src.agenda.party import partylink_shop
-from src.agenda.fact import factunit_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.listen.basis_agendas import (
     create_empty_agenda,
@@ -15,7 +15,7 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     slash_text = "/"
     penny_float = 0.7
     yao_duty = agendaunit_shop(yao_text, _road_delimiter=slash_text, _penny=penny_float)
-    yao_duty.add_l1_fact(factunit_shop("Iowa"))
+    yao_duty.add_l1_idea(ideaunit_shop("Iowa"))
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
@@ -27,9 +27,9 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     role_zia_partyunit = yao_duty.get_party(zia_text)
     role_zia_partyunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
     role_zia_partyunit.add_inallocable_debtor_weight(zia_inallocable_debtor_weight)
-    swim_idea = ideaunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
-    swim_idea.set_partylink(partylink_shop(zia_text))
-    yao_duty.set_ideaunit(swim_idea)
+    swim_belief = beliefunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
+    swim_belief.set_partylink(partylink_shop(zia_text))
+    yao_duty.set_beliefunit(swim_belief)
     yao_duty.set_party_credor_pool(zia_credor_pool, True)
     yao_duty.set_party_debtor_pool(zia_debtor_pool, True)
 
@@ -41,7 +41,7 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     assert yao_empty_job._owner_id == zia_text
     assert yao_empty_job._real_id == yao_duty._real_id
     assert yao_empty_job._last_atom_id is None
-    assert yao_empty_job.get_ideaunits_dict() == {}
+    assert yao_empty_job.get_beliefunits_dict() == {}
     assert yao_empty_job._road_delimiter == yao_duty._road_delimiter
     assert yao_empty_job._planck == yao_duty._planck
     assert yao_empty_job._penny == yao_duty._penny
@@ -59,7 +59,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     yao_text = "Yao"
     slash_text = "/"
     yao_role = agendaunit_shop(yao_text, _road_delimiter=slash_text)
-    yao_role.add_l1_fact(factunit_shop("Iowa"))
+    yao_role.add_l1_idea(ideaunit_shop("Iowa"))
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
@@ -71,9 +71,9 @@ def test_create_listen_basis_ReturnsCorrectObj():
     role_zia_partyunit = yao_role.get_party(zia_text)
     role_zia_partyunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
     role_zia_partyunit.add_inallocable_debtor_weight(zia_inallocable_debtor_weight)
-    swim_idea = ideaunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
-    swim_idea.set_partylink(partylink_shop(zia_text))
-    yao_role.set_ideaunit(swim_idea)
+    swim_belief = beliefunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
+    swim_belief.set_partylink(partylink_shop(zia_text))
+    yao_role.set_beliefunit(swim_belief)
     yao_role.set_party_credor_pool(zia_credor_pool, True)
     yao_role.set_party_debtor_pool(zia_debtor_pool, True)
 
@@ -84,15 +84,15 @@ def test_create_listen_basis_ReturnsCorrectObj():
     assert yao_basis_job._owner_id == yao_role._owner_id
     assert yao_basis_job._real_id == yao_role._real_id
     assert yao_basis_job._last_atom_id == yao_role._last_atom_id
-    assert yao_basis_job.get_ideaunits_dict() == yao_role.get_ideaunits_dict()
+    assert yao_basis_job.get_beliefunits_dict() == yao_role.get_beliefunits_dict()
     assert yao_basis_job._road_delimiter == yao_role._road_delimiter
     assert yao_basis_job._planck == yao_role._planck
     assert yao_basis_job._monetary_desc == yao_role._monetary_desc
     assert yao_basis_job._party_credor_pool == yao_role._party_credor_pool
     assert yao_basis_job._party_debtor_pool == yao_role._party_debtor_pool
     yao_basis_job.calc_agenda_metrics()
-    assert len(yao_basis_job._fact_dict) != len(yao_role._fact_dict)
-    assert len(yao_basis_job._fact_dict) == 1
+    assert len(yao_basis_job._idea_dict) != len(yao_role._idea_dict)
+    assert len(yao_basis_job._idea_dict) == 1
     job_zia_partyunit = yao_basis_job.get_party(zia_text)
     assert yao_basis_job.get_partys_dict().keys() == yao_role.get_partys_dict().keys()
     assert job_zia_partyunit._irrational_debtor_weight == 0
@@ -114,11 +114,11 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     sue_agendaunit.set_last_atom_id(last_atom_id)
     sue_agendaunit.add_partyunit(bob_text, 3, 4)
     swim_text = "/swimmers"
-    swim_ideaunit = ideaunit_shop(swim_text, _road_delimiter=slash_text)
-    swim_ideaunit.edit_partylink(bob_text)
-    sue_agendaunit.set_ideaunit(swim_ideaunit)
+    swim_beliefunit = beliefunit_shop(swim_text, _road_delimiter=slash_text)
+    swim_beliefunit.edit_partylink(bob_text)
+    sue_agendaunit.set_beliefunit(swim_beliefunit)
     sue_agendaunit.set_party_pool(sue_party_pool)
-    sue_agendaunit.add_l1_fact(factunit_shop(casa_text))
+    sue_agendaunit.add_l1_idea(ideaunit_shop(casa_text))
     sue_agendaunit.set_max_tree_traverse(sue_max_tree_traverse)
 
     # WHEN
@@ -136,5 +136,5 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     assert default_work_agenda._party_debtor_pool is None
     assert default_work_agenda._max_tree_traverse == sue_max_tree_traverse
     assert len(default_work_agenda.get_partys_dict()) == 1
-    assert len(default_work_agenda.get_ideaunits_dict()) == 1
-    assert len(default_work_agenda._fact_dict) == 1
+    assert len(default_work_agenda.get_beliefunits_dict()) == 1
+    assert len(default_work_agenda._idea_dict) == 1

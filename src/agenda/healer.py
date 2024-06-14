@@ -1,35 +1,35 @@
 from src._instrument.python import get_empty_set_if_none
-from src.agenda.idea import IdeaID
+from src.agenda.belief import BeliefID
 from dataclasses import dataclass
 
 
 @dataclass
 class HealerHold:
-    _idea_ids: set[IdeaID]
+    _belief_ids: set[BeliefID]
 
-    def set_idea_id(self, x_idea_id: IdeaID):
-        self._idea_ids.add(x_idea_id)
+    def set_belief_id(self, x_belief_id: BeliefID):
+        self._belief_ids.add(x_belief_id)
 
-    def idea_id_exists(self, x_idea_id: IdeaID) -> bool:
-        return x_idea_id in self._idea_ids
+    def belief_id_exists(self, x_belief_id: BeliefID) -> bool:
+        return x_belief_id in self._belief_ids
 
-    def any_idea_id_exists(self) -> bool:
-        return len(self._idea_ids) > 0
+    def any_belief_id_exists(self) -> bool:
+        return len(self._belief_ids) > 0
 
-    def del_idea_id(self, x_idea_id: IdeaID):
-        self._idea_ids.remove(x_idea_id)
+    def del_belief_id(self, x_belief_id: BeliefID):
+        self._belief_ids.remove(x_belief_id)
 
     def get_dict(self):
-        return {"healerhold_idea_ids": list(self._idea_ids)}
+        return {"healerhold_belief_ids": list(self._belief_ids)}
 
 
-def healerhold_shop(_idea_ids: set[IdeaID] = None) -> HealerHold:
-    return HealerHold(_idea_ids=get_empty_set_if_none(_idea_ids))
+def healerhold_shop(_belief_ids: set[BeliefID] = None) -> HealerHold:
+    return HealerHold(_belief_ids=get_empty_set_if_none(_belief_ids))
 
 
 def healerhold_get_from_dict(x_dict: dict[str:set]) -> HealerHold:
     x_healerhold = healerhold_shop()
-    if x_dict.get("healerhold_idea_ids") != None:
-        for x_idea_id in x_dict.get("healerhold_idea_ids"):
-            x_healerhold.set_idea_id(x_idea_id=x_idea_id)
+    if x_dict.get("healerhold_belief_ids") != None:
+        for x_belief_id in x_dict.get("healerhold_belief_ids"):
+            x_healerhold.set_belief_id(x_belief_id=x_belief_id)
     return x_healerhold

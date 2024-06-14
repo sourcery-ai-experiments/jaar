@@ -31,11 +31,11 @@ def test_get_econ_path_ReturnsCorrectObj():
     dallas_text = "dallas"
     elpaso_text = "el paso"
     kern_text = "kern"
-    factroot = get_rootpart_of_econ_dir()
-    texas_road = create_road_from_nodes([factroot, texas_text])
-    dallas_road = create_road_from_nodes([factroot, texas_text, dallas_text])
-    elpaso_road = create_road_from_nodes([factroot, texas_text, elpaso_text])
-    kern_road = create_road_from_nodes([factroot, texas_text, elpaso_text, kern_text])
+    idearoot = get_rootpart_of_econ_dir()
+    texas_road = create_road_from_nodes([idearoot, texas_text])
+    dallas_road = create_road_from_nodes([idearoot, texas_text, dallas_text])
+    elpaso_road = create_road_from_nodes([idearoot, texas_text, elpaso_text])
+    kern_road = create_road_from_nodes([idearoot, texas_text, elpaso_text, kern_text])
 
     # WHEN
     texas_path = get_econ_path(sue_userhub, texas_road)
@@ -44,13 +44,13 @@ def test_get_econ_path_ReturnsCorrectObj():
     kern_path = get_econ_path(sue_userhub, kern_road)
 
     # THEN
-    factroot_dir = f"{sue_userhub.econs_dir()}/{get_rootpart_of_econ_dir()}"
+    idearoot_dir = f"{sue_userhub.econs_dir()}/{get_rootpart_of_econ_dir()}"
     print(f"{kern_road=}")
-    print(f"{factroot_dir=}")
-    assert texas_path == f"{factroot_dir}/{texas_text}"
-    assert dallas_path == f"{factroot_dir}/{texas_text}/{dallas_text}"
-    assert elpaso_path == f"{factroot_dir}/{texas_text}/{elpaso_text}"
-    assert kern_path == f"{factroot_dir}/{texas_text}/{elpaso_text}/{kern_text}"
+    print(f"{idearoot_dir=}")
+    assert texas_path == f"{idearoot_dir}/{texas_text}"
+    assert dallas_path == f"{idearoot_dir}/{texas_text}/{dallas_text}"
+    assert elpaso_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}"
+    assert kern_path == f"{idearoot_dir}/{texas_text}/{elpaso_text}/{kern_text}"
 
     # WHEN / THEN
     diff_root_texas_road = create_road_from_nodes([peru_text, texas_text])

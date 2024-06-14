@@ -72,27 +72,27 @@ AgendaUnit objects
 
 AgendaUnit PartyUnit objects
 
+AgendaUnit BeliefUnit objects
+
 AgendaUnit IdeaUnit objects
 
-AgendaUnit FactUnit objects
+AgendaUnit IdeaUnit hierarchical structure
 
-AgendaUnit FactUnit hierarchical structure
+AgendaUnit IdeaUnit BalanceLink objects
 
-AgendaUnit FactUnit BalanceLink objects
+AgendaUnit IdeaUnit BalanceLine objects
 
-AgendaUnit FactUnit BalanceLine objects
+AgendaUnit IdeaUnit BalanceHeir objects
 
-AgendaUnit FactUnit BalanceHeir objects
+AgendaUnit IdeaUnit BalanceHeir objects
 
-AgendaUnit FactUnit BalanceHeir objects
+AgendaUnit IdeaUnit Reason PremiseUnit objects
 
-AgendaUnit FactUnit Reason PremiseUnit objects
+AgendaUnit IdeaUnit Reason PremiseHeir objects
 
-AgendaUnit FactUnit Reason PremiseHeir objects
+AgendaUnit IdeaUnit FactUnit objects
 
-AgendaUnit FactUnit BeliefUnit objects
-
-AgendaUnit FactUnit BeliefHeir objects
+AgendaUnit IdeaUnit FactHeir objects
 
 
 ## 1.3 Test-Driven-Development

@@ -4,10 +4,10 @@ from src._road.jaar_config import get_json_filename
 from datetime import datetime, timedelta
 from ui.MainWindowUI import Ui_MainWindow
 from ui.EditMain import EditMainView
-from ui.EditBeliefTime import EditBeliefTime
+from ui.EditFactTime import EditFactTime
 from ui.Edit_Agenda import Edit_Agenda
 from src.agenda.agenda import get_from_json, agendaunit_shop, AgendaUnit
-from src.agenda.hreg_time import HregTimeFactSource
+from src.agenda.hreg_time import HregTimeIdeaSource
 from ui.pyqt_func import (
     agenda_importance_diplay as pyqt_func_agenda_importance_diplay,
     str2float as pyqt_func_str2float,
@@ -49,9 +49,9 @@ class MainApp(QApplication):
         # create slot for editmain visibility
         self.main_window.open_edit_intent.connect(self.edit_intent_show)
 
-        self.edittime_view = EditBeliefTime()
+        self.edittime_view = EditFactTime()
         # create slot for editmain visibility
-        self.main_window.open_edittime.connect(self.editbelief_show)
+        self.main_window.open_edittime.connect(self.editfact_show)
         self.edittime_view.root_modify_submitted.connect(self.main_window.refresh_all)
 
     def editmain_show(self):
@@ -64,9 +64,9 @@ class MainApp(QApplication):
         self.edit_intent_view.refresh_all()
         self.edit_intent_view.show()
 
-    def editbelief_show(self):
+    def editfact_show(self):
         self.edittime_view.x_agenda = self.main_window.x_agenda
-        self.edittime_view.display_belief_time()
+        self.edittime_view.display_fact_time()
         self.edittime_view.show()
 
 
@@ -86,10 +86,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_close_button.clicked.connect(self.save_file_and_quit)
         self.editmain_button.clicked.connect(self.open_editmain)
         self.edit_intent_button.clicked.connect(self.open_edit_intent)
-        self.belief_nigh_now.clicked.connect(self.set_belief_time_nigh_now)
-        self.belief_open_5daysago.clicked.connect(self.set_belief_time_open_5daysago)
-        self.belief_open_lower_spec1.clicked.connect(self.set_belief_time_open_midnight)
-        self.belief_open_soft_spec1.clicked.connect(self.set_belief_time_open_soft)
+        self.fact_nigh_now.clicked.connect(self.set_fact_time_nigh_now)
+        self.fact_open_5daysago.clicked.connect(self.set_fact_time_open_5daysago)
+        self.fact_open_lower_spec1.clicked.connect(self.set_fact_time_open_midnight)
+        self.fact_open_soft_spec1.clicked.connect(self.set_fact_time_open_soft)
         self.root_datetime_view.clicked.connect(self.open_edittime)
         self.intent_task_complete.clicked.connect(self.set_intent_item_complete)
         self.cb_update_now_repeat.clicked.connect(self.startTimer)
@@ -101,27 +101,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.save_as.triggered.connect(self.save_as_file)
         self.fm_new.triggered.connect(self.agenda_new)
 
-        # self.beliefs_table.itemClicked.connect(self.belief_base_combo_set)
-        self.beliefs_table.setObjectName("Agenda Beliefs")
-        self.beliefs_table.setColumnWidth(0, 300)
-        self.beliefs_table.setColumnWidth(1, 300)
-        self.beliefs_table.setColumnWidth(2, 30)
-        self.beliefs_table.setColumnWidth(3, 30)
-        self.beliefs_table.setColumnWidth(4, 30)
-        self.beliefs_table.setColumnWidth(5, 30)
-        self.beliefs_table.setColumnHidden(0, False)
-        self.beliefs_table.setColumnHidden(1, False)
-        self.beliefs_table.setColumnHidden(2, True)
-        self.beliefs_table.setColumnHidden(3, True)
-        self.beliefs_table.setColumnHidden(4, True)
-        self.beliefs_table.setColumnHidden(5, True)
-        self.beliefs_table.horizontalHeaderVisible = True
-        self.beliefs_table.setHorizontalHeaderLabels(
-            ["BeliefBase", "BeliefSelect", "Base", "Belief", "Open", "Nigh"]
+        # self.facts_table.itemClicked.connect(self.fact_base_combo_set)
+        self.facts_table.setObjectName("Agenda Facts")
+        self.facts_table.setColumnWidth(0, 300)
+        self.facts_table.setColumnWidth(1, 300)
+        self.facts_table.setColumnWidth(2, 30)
+        self.facts_table.setColumnWidth(3, 30)
+        self.facts_table.setColumnWidth(4, 30)
+        self.facts_table.setColumnWidth(5, 30)
+        self.facts_table.setColumnHidden(0, False)
+        self.facts_table.setColumnHidden(1, False)
+        self.facts_table.setColumnHidden(2, True)
+        self.facts_table.setColumnHidden(3, True)
+        self.facts_table.setColumnHidden(4, True)
+        self.facts_table.setColumnHidden(5, True)
+        self.facts_table.horizontalHeaderVisible = True
+        self.facts_table.setHorizontalHeaderLabels(
+            ["FactBase", "FactSelect", "Base", "Fact", "Open", "Nigh"]
         )
-        self.beliefs_table.setRowCount(0)
+        self.facts_table.setRowCount(0)
         self.intent_states.itemClicked.connect(self.intent_task_display)
-        # self.belief_update_combo.activated.connect(self.belief_update_heir)
+        # self.fact_update_combo.activated.connect(self.fact_update_heir)
 
         self.x_agenda_json = None
         # if "delete me this is for dev only":
@@ -143,7 +143,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         time = qtc.QDateTime.currentDateTime()
         t_x = time.toString("yyyy-MM-dd hh:mm dddd")
         self.label_time_display.setText(t_x)
-        self.set_belief_time_nigh_now()
+        self.set_fact_time_nigh_now()
 
     def startTimer(self):
         self.timer.stop()
@@ -166,24 +166,24 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.label_last_label.setText(self.operating_task_road)
         self.refresh_all()
 
-    def set_belief_time_open_5daysago(self):
+    def set_fact_time_open_5daysago(self):
         days5ago_x = datetime.now() - timedelta(days=5)
         road_minute = f"{self.x_agenda._real_id},time,jajatime"
         # self.root_datetime_now_l.setText(f"Now: {str(now_x)}")
-        self.x_agenda.set_belief(
+        self.x_agenda.set_fact(
             base=road_minute,
             pick=road_minute,
             open=self.x_agenda.get_time_min_from_dt(dt=days5ago_x),
         )
         self.refresh_all()
 
-    def _set_belief_time_open_midnight_attr(self):
+    def _set_fact_time_open_midnight_attr(self):
         road_minute = f"{self.x_agenda._real_id},time,jajatime"
         open_dt = self.x_agenda.get_time_dt_from_min(
-            self.x_agenda._factroot._beliefunits[road_minute].open
+            self.x_agenda._idearoot._factunits[road_minute].open
         )
         nigh_dt = self.x_agenda.get_time_dt_from_min(
-            self.x_agenda._factroot._beliefunits[road_minute].nigh
+            self.x_agenda._idearoot._factunits[road_minute].nigh
         )
         open_midnight = datetime(
             year=open_dt.year,
@@ -197,36 +197,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             open_minutes = self.x_agenda.get_time_min_from_dt(open_midnight)
         else:
             open_minutes = self.x_agenda.get_time_min_from_dt(dt=nigh_dt)
-        self.x_agenda.set_belief(
+        self.x_agenda.set_fact(
             base=road_minute,
             pick=road_minute,
             open=open_minutes,
         )
 
-    def set_belief_time_open_midnight(self):
+    def set_fact_time_open_midnight(self):
         try:
-            self._set_belief_time_open_midnight_attr()
+            self._set_fact_time_open_midnight_attr()
         except Exception:
-            print("agenda does not have jajatime factunits")
+            print("agenda does not have jajatime ideaunits")
         self.refresh_all()
 
-    def set_belief_time_open_soft(self):
+    def set_fact_time_open_soft(self):
         # now_x = datetime.now()
         # road_minute = f"{self.x_agenda._real_id},time,jajatime"
         # self.root_datetime_now_l.setText(f"Now: {str(now_x)}")
-        # self.x_agenda.set_belief(
+        # self.x_agenda.set_fact(
         #     base=road_minute,
         #     pick=road_minute,
         #     open=self.x_agenda.get_time_min_from_dt(dt=now_x),
         # )
         self.refresh_all()
 
-    def set_belief_time_nigh_now(self):
+    def set_fact_time_nigh_now(self):
         now_x = datetime.now()
         time_minute = self.x_agenda.make_l1_road("time")
         jajatime_minute = self.x_agenda.make_road(time_minute, "jajatime")
         print(f"{self.x_agenda.get_time_min_from_dt(dt=now_x)=}")
-        self.x_agenda.set_belief(
+        self.x_agenda.set_fact(
             base=jajatime_minute,
             pick=jajatime_minute,
             nigh=self.x_agenda.get_time_min_from_dt(dt=now_x),
@@ -271,9 +271,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def agenda_new(self):
         self.x_agenda = agendaunit_shop(_owner_id="new")
-        self.x_agenda.set_time_hreg_facts(c400_count=7)
+        self.x_agenda.set_time_hreg_ideas(c400_count=7)
         road_minute = f"{self.x_agenda._real_id},time,jajatime"
-        self.x_agenda.set_belief(
+        self.x_agenda.set_fact(
             base=road_minute, pick=road_minute, open=1000000, nigh=1000000
         )
         self.refresh_all()
@@ -281,10 +281,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def refresh_datetime_display(self):
         road_minute = f"{self.x_agenda._real_id},time,jajatime"
         jajatime_open = self.x_agenda.get_time_dt_from_min(
-            self.x_agenda._factroot._beliefunits[road_minute].open
+            self.x_agenda._idearoot._factunits[road_minute].open
         )
         jajatime_nigh = self.x_agenda.get_time_dt_from_min(
-            self.x_agenda._factroot._beliefunits[road_minute].nigh
+            self.x_agenda._idearoot._factunits[road_minute].nigh
         )
         week_days = ("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
         self.root_datetime_now_l.setText(
@@ -300,7 +300,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         with contextlib.suppress(Exception):
             self.refresh_datetime_display()
         self.agenda_owner_id.setText(self.x_agenda._owner_id)
-        self.beliefs_table_load()
+        self.facts_table_load()
         self.intent_states_load()
 
     def agenda_load(self, x_agenda_json: str):
@@ -308,60 +308,58 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.pledge_items = self.x_agenda.get_intent_dict()
         self.refresh_all()
 
-    def get_beliefs_list(self):
-        return self.x_agenda._factroot._beliefunits.values()
+    def get_facts_list(self):
+        return self.x_agenda._idearoot._factunits.values()
 
-    def beliefs_table_load(self):
-        self.beliefs_table.setRowCount(0)
+    def facts_table_load(self):
+        self.facts_table.setRowCount(0)
 
         row = 0
-        for belief in self.get_beliefs_list():
-            base_text = belief.base.replace(f"{self.x_agenda._owner_id}", "")
+        for fact in self.get_facts_list():
+            base_text = fact.base.replace(f"{self.x_agenda._owner_id}", "")
             base_text = base_text[1:]
-            belief_text = belief.pick.replace(belief.base, "")
-            belief_text = belief_text[1:]
-            if belief.open is None:
-                belief_text = f"{belief_text}"
+            fact_text = fact.pick.replace(fact.base, "")
+            fact_text = fact_text[1:]
+            if fact.open is None:
+                fact_text = f"{fact_text}"
             elif base_text == "time,jajatime":
-                belief_text = f"{self.x_agenda.get_jajatime_legible_one_time_event(belief.open)}-{self.x_agenda.get_jajatime_repeating_legible_text(belief.nigh)}"
+                fact_text = f"{self.x_agenda.get_jajatime_legible_one_time_event(fact.open)}-{self.x_agenda.get_jajatime_repeating_legible_text(fact.nigh)}"
             else:
-                belief_text = f"{belief_text} Open-Nigh {belief.open}-{belief.nigh}"
+                fact_text = f"{fact_text} Open-Nigh {fact.open}-{fact.nigh}"
 
-            self._beliefs_table_set_row_and_2_columns(row, base_text, belief_text)
-            self.beliefs_table.setItem(row, 2, qtw1(belief.base))
-            self.beliefs_table.setItem(row, 3, qtw1(belief.pick))
-            self.beliefs_table.setItem(row, 4, qtw1(pyqt_func_num2str(belief.open)))
-            self.beliefs_table.setItem(row, 5, qtw1(pyqt_func_num2str(belief.nigh)))
+            self._facts_table_set_row_and_2_columns(row, base_text, fact_text)
+            self.facts_table.setItem(row, 2, qtw1(fact.base))
+            self.facts_table.setItem(row, 3, qtw1(fact.pick))
+            self.facts_table.setItem(row, 4, qtw1(pyqt_func_num2str(fact.open)))
+            self.facts_table.setItem(row, 5, qtw1(pyqt_func_num2str(fact.nigh)))
             row += 1
 
-        for base, count in self.x_agenda.get_missing_belief_bases().items():
+        for base, count in self.x_agenda.get_missing_fact_bases().items():
             base_text = base.replace(f"{self.x_agenda._owner_id}", "")
             base_text = base_text[1:]
 
             base_lecture_text = f"{base_text} ({count} nodes)"
-            self._beliefs_table_set_row_and_2_columns(row, base_lecture_text, "")
-            self.beliefs_table.setItem(row, 2, qtw1(base))
-            self.beliefs_table.setItem(row, 3, qtw1(""))
-            self.beliefs_table.setItem(row, 4, qtw1(""))
-            self.beliefs_table.setItem(row, 5, qtw1(""))
+            self._facts_table_set_row_and_2_columns(row, base_lecture_text, "")
+            self.facts_table.setItem(row, 2, qtw1(base))
+            self.facts_table.setItem(row, 3, qtw1(""))
+            self.facts_table.setItem(row, 4, qtw1(""))
+            self.facts_table.setItem(row, 5, qtw1(""))
             row += 1
 
-    def _beliefs_table_set_row_and_2_columns(self, row, base_text, belief_text):
-        self.beliefs_table.setRowCount(row + 1)
-        self.beliefs_table.setItem(row, 0, qtw1(base_text))
-        self.beliefs_table.setItem(row, 1, qtw1(belief_text))
-        self.beliefs_table.setColumnWidth(0, 140)
-        self.beliefs_table.setColumnWidth(1, 450)
+    def _facts_table_set_row_and_2_columns(self, row, base_text, fact_text):
+        self.facts_table.setRowCount(row + 1)
+        self.facts_table.setItem(row, 0, qtw1(base_text))
+        self.facts_table.setItem(row, 1, qtw1(fact_text))
+        self.facts_table.setColumnWidth(0, 140)
+        self.facts_table.setColumnWidth(1, 450)
 
-    def belief_update_heir(self, base_road):
-        if self.belief_update_combo.currentText() == "":
-            raise MainAppException("No comboup selection for belief update.")
-        if self.beliefs_table.item(self.beliefs_table.currentRow(), 2).text() is None:
-            raise MainAppException("No table selection for belief update.")
-        belief_update_combo_text = self.belief_update_combo.currentText()
-        self.x_agenda._factroot._beliefunits[base_road].belief = (
-            belief_update_combo_text
-        )
+    def fact_update_heir(self, base_road):
+        if self.fact_update_combo.currentText() == "":
+            raise MainAppException("No comboup selection for fact update.")
+        if self.facts_table.item(self.facts_table.currentRow(), 2).text() is None:
+            raise MainAppException("No table selection for fact update.")
+        fact_update_combo_text = self.fact_update_combo.currentText()
+        self.x_agenda._idearoot._factunits[base_road].fact = fact_update_combo_text
         self.base_road = None
         self.refresh_all
 
@@ -395,7 +393,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.intent_states.setRowCount(row + 1)
         self.intent_states.setItem(row, 0, qtw1(str(ax._uid)))
         self.intent_states.setItem(row, 1, qtw1(ax._label))
-        x_hregfact = HregTimeFactSource(",")
+        x_hregidea = HregTimeIdeaSource(",")
 
         if ax._reasonunits.get(f"{self.x_agenda._real_id},time,jajatime") != None:
             jajatime_reason = ax._reasonunits.get(
@@ -413,7 +411,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     )
                 )
                 self.intent_states.setItem(row, 2, tw_open)
-                tw_nigh = qtw1(x_hregfact.convert1440toHHMM(min1440=premise_x.nigh))
+                tw_nigh = qtw1(x_hregidea.convert1440toHHMM(min1440=premise_x.nigh))
                 self.intent_states.setItem(row, 3, tw_nigh)
 
         self.intent_states.setItem(
@@ -445,13 +443,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "jajatime",
                 "jaja_nigh",
                 "agenda_importance",
-                "fact_road",
-                "fact_percent",
+                "idea_road",
+                "idea_percent",
             ]
         )
 
     def intent_task_display(self, intent_item):
-        x_hregfact = HregTimeFactSource(",")
+        x_hregidea = HregTimeIdeaSource(",")
         self.label_intent_label_data.setText(intent_item._label)
         if (
             intent_item._reasonunits.get(f"{self.x_agenda._real_id},time,jajatime")
@@ -466,10 +464,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if premise_x != None:
                 self.label_intent_day_data.setText("day_stuff")
                 self.label_intent_time_data.setText(
-                    x_hregfact.convert1440toHHMM(min1440=premise_x.open)
+                    x_hregidea.convert1440toHHMM(min1440=premise_x.open)
                 )
                 self.label_intent_end_data.setText(
-                    x_hregfact.convert1440toHHMM(min1440=premise_x.nigh)
+                    x_hregidea.convert1440toHHMM(min1440=premise_x.nigh)
                 )
         self.label_intent_agenda_importance_data.setText(
             str(intent_item._agenda_importance)

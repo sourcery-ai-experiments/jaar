@@ -3,10 +3,10 @@ from src.atom.nuc import nucunit_shop, create_legible_list
 from src.agenda.agenda import agendaunit_shop
 
 
-def test_create_legible_list_ReturnsObj_fact_beliefunit_INSERT_WithOutNumericArgs():
+def test_create_legible_list_ReturnsObj_idea_factunit_INSERT_WithOutNumericArgs():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_fact_beliefunit"
+    category = "agenda_idea_factunit"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -27,15 +27,15 @@ def test_create_legible_list_ReturnsObj_fact_beliefunit_INSERT_WithOutNumericArg
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"BeliefUnit '{pick_value}' created for base '{base_value}' for fact '{road_value}'."
+    x_str = f"FactUnit '{pick_value}' created for base '{base_value}' for idea '{road_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_fact_beliefunit_INSERT_WithNumericArgs():
+def test_create_legible_list_ReturnsObj_idea_factunit_INSERT_WithNumericArgs():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_fact_beliefunit"
+    category = "agenda_idea_factunit"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -62,15 +62,15 @@ def test_create_legible_list_ReturnsObj_fact_beliefunit_INSERT_WithNumericArgs()
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"BeliefUnit '{pick_value}' created for base '{base_value}' for fact '{road_value}'. Open={open_value}. Nigh={nigh_value}."
+    x_str = f"FactUnit '{pick_value}' created for base '{base_value}' for idea '{road_value}'. Open={open_value}. Nigh={nigh_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_fact_beliefunit_UPDATE_WithOutNumericArgs():
+def test_create_legible_list_ReturnsObj_idea_factunit_UPDATE_WithOutNumericArgs():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_fact_beliefunit"
+    category = "agenda_idea_factunit"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -91,15 +91,15 @@ def test_create_legible_list_ReturnsObj_fact_beliefunit_UPDATE_WithOutNumericArg
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"BeliefUnit '{pick_value}' updated for base '{base_value}' for fact '{road_value}'."
+    x_str = f"FactUnit '{pick_value}' updated for base '{base_value}' for idea '{road_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_fact_beliefunit_UPDATE_WithNumericArgs():
+def test_create_legible_list_ReturnsObj_idea_factunit_UPDATE_WithNumericArgs():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_fact_beliefunit"
+    category = "agenda_idea_factunit"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -126,15 +126,15 @@ def test_create_legible_list_ReturnsObj_fact_beliefunit_UPDATE_WithNumericArgs()
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"BeliefUnit '{pick_value}' updated for base '{base_value}' for fact '{road_value}'. Open={open_value}. Nigh={nigh_value}."
+    x_str = f"FactUnit '{pick_value}' updated for base '{base_value}' for idea '{road_value}'. Open={open_value}. Nigh={nigh_value}."
     print(f"{x_str=}")
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_fact_beliefunit_DELETE():
+def test_create_legible_list_ReturnsObj_idea_factunit_DELETE():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_fact_beliefunit"
+    category = "agenda_idea_factunit"
     road_text = "road"
     casa_road = sue_agenda.make_l1_road("casa")
     road_value = sue_agenda.make_road(casa_road, "clean fridge")
@@ -155,6 +155,6 @@ def test_create_legible_list_ReturnsObj_fact_beliefunit_DELETE():
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"BeliefUnit '{pick_value}' deleted from base '{base_value}' for fact '{road_value}'."
+    x_str = f"FactUnit '{pick_value}' deleted from base '{base_value}' for idea '{road_value}'."
     print(f"{x_str=}")
     assert legible_list[0] == x_str

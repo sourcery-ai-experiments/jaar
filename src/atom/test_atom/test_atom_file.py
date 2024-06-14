@@ -4,9 +4,9 @@ from src._road.jaar_config import get_atoms_folder, get_test_real_id as real_id
 from src.atom.nuc import nucunit_shop
 from src.atom.atom import atomunit_shop, create_atomunit_from_files
 from src.atom.examples.example_quarks import (
-    get_quark_example_factunit_sports,
-    get_quark_example_factunit_knee,
-    get_quark_example_factunit_ball,
+    get_quark_example_ideaunit_sports,
+    get_quark_example_ideaunit_knee,
+    get_quark_example_ideaunit_ball,
 )
 from src.atom.examples.atom_env import (
     get_atom_temp_env_dir as reals_dir,
@@ -35,7 +35,7 @@ def test_AtomUnit_save_quark_file_SavesCorrectFile(env_dir_setup_cleanup):
     assert os_path_exists(sue_quark6_path) is False
 
     # WHEN
-    sports_quark = get_quark_example_factunit_sports()
+    sports_quark = get_quark_example_ideaunit_sports()
     farm_atomunit._save_quark_file(two_int, sports_quark)
 
     # THEN
@@ -65,7 +65,7 @@ def test_AtomUnit_quark_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     assert farm_atomunit.quark_file_exists(two_int) is False
 
     # WHEN
-    sports_quark = get_quark_example_factunit_sports()
+    sports_quark = get_quark_example_ideaunit_sports()
     farm_atomunit._save_quark_file(two_int, sports_quark)
 
     # THEN
@@ -88,7 +88,7 @@ def test_AtomUnit_open_quark_file_ReturnsCorrectObj(env_dir_setup_cleanup):
     print(f"{sue_quark2_path=}")
     print(f"{sue_quark6_path=}")
     farm_atomunit = atomunit_shop(sue_text, _quarks_dir=sue_quarks_dir)
-    sports_quark = get_quark_example_factunit_sports()
+    sports_quark = get_quark_example_ideaunit_sports()
     farm_atomunit._save_quark_file(two_int, sports_quark)
     assert farm_atomunit.quark_file_exists(two_int)
 
@@ -179,8 +179,8 @@ def test_AtomUnit_save_files_CorrectlySavesFiles(env_dir_setup_cleanup):
     farm_atomunit.set_face(yao_text)
     four_int = 4
     five_int = 5
-    four_quark = get_quark_example_factunit_sports()
-    five_quark = get_quark_example_factunit_knee()
+    four_quark = get_quark_example_ideaunit_sports()
+    five_quark = get_quark_example_ideaunit_knee()
     farm_atomunit._nucunit.set_quarkunit(four_quark)
     farm_atomunit._nucunit.set_quarkunit(five_quark)
     assert farm_atomunit.atom_file_exists() is False
@@ -208,9 +208,9 @@ def test_AtomUnit_create_nucunit_from_quark_files_SetsAttr(env_dir_setup_cleanup
     four_int = 4
     five_int = 5
     nine_int = 9
-    four_quark = get_quark_example_factunit_sports()
-    five_quark = get_quark_example_factunit_knee()
-    nine_quark = get_quark_example_factunit_ball()
+    four_quark = get_quark_example_ideaunit_sports()
+    five_quark = get_quark_example_ideaunit_knee()
+    nine_quark = get_quark_example_ideaunit_ball()
     sue_atomunit._save_quark_file(four_int, four_quark)
     sue_atomunit._save_quark_file(five_int, five_quark)
     sue_atomunit._save_quark_file(nine_int, nine_quark)
@@ -247,9 +247,9 @@ def test_create_atomunit_from_files_ReturnsCorrectObj(env_dir_setup_cleanup):
     src_sue_atomunit.set_nuc_start(sue_nuc_start)
     src_sue_atomunit.set_face(tim_text)
     src_sue_atomunit.set_face(yao_text)
-    sports_quark = get_quark_example_factunit_sports()
-    knee_quark = get_quark_example_factunit_knee()
-    ball_quark = get_quark_example_factunit_ball()
+    sports_quark = get_quark_example_ideaunit_sports()
+    knee_quark = get_quark_example_ideaunit_knee()
+    ball_quark = get_quark_example_ideaunit_ball()
     src_sue_atomunit._nucunit.set_quarkunit(sports_quark)
     src_sue_atomunit._nucunit.set_quarkunit(knee_quark)
     src_sue_atomunit._nucunit.set_quarkunit(ball_quark)

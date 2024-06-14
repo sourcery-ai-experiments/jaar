@@ -36,7 +36,7 @@
     <string>Refresh All</string>
    </property>
   </widget>
-  <widget class="QTreeWidget" name="basefactunit">
+  <widget class="QTreeWidget" name="baseideaunit">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -74,7 +74,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="open_ideaedit_button">
+  <widget class="QPushButton" name="open_beliefedit_button">
    <property name="geometry">
     <rect>
      <x>430</x>
@@ -84,10 +84,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Open Idea Edit</string>
+    <string>Open Belief Edit</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="beliefs_table">
+  <widget class="QTableWidget" name="facts_table">
    <property name="geometry">
     <rect>
      <x>690</x>
@@ -98,12 +98,12 @@
    </property>
    <column>
     <property name="text">
-     <string>BeliefBase</string>
+     <string>FactBase</string>
     </property>
    </column>
    <column>
     <property name="text">
-     <string>BeliefPick</string>
+     <string>FactPick</string>
     </property>
    </column>
    <column>
@@ -127,7 +127,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QComboBox" name="belief_pick_update_combo">
+  <widget class="QComboBox" name="fact_pick_update_combo">
    <property name="geometry">
     <rect>
      <x>760</x>
@@ -150,7 +150,7 @@
     <string>Open</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="belief_nigh">
+  <widget class="QLineEdit" name="fact_nigh">
    <property name="geometry">
     <rect>
      <x>1030</x>
@@ -160,7 +160,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="belief_delete_button">
+  <widget class="QPushButton" name="fact_delete_button">
    <property name="geometry">
     <rect>
      <x>1190</x>
@@ -170,10 +170,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Del Belief</string>
+    <string>Del Fact</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="belief_open">
+  <widget class="QLineEdit" name="fact_open">
    <property name="geometry">
     <rect>
      <x>760</x>
@@ -193,7 +193,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Belief Pick:</string>
+    <string>Fact Pick:</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_6">
@@ -206,7 +206,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Belief Base:</string>
+    <string>Fact Base:</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_11">
@@ -232,10 +232,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Modification what is belief</string>
+    <string>Modification what is fact</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="belief_update_button">
+  <widget class="QPushButton" name="fact_update_button">
    <property name="geometry">
     <rect>
      <x>1190</x>
@@ -245,10 +245,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Set Belief</string>
+    <string>Set Fact</string>
    </property>
   </widget>
-  <widget class="QComboBox" name="belief_base_update_combo">
+  <widget class="QComboBox" name="fact_base_update_combo">
    <property name="geometry">
     <rect>
      <x>760</x>

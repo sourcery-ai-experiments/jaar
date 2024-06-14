@@ -5,7 +5,7 @@ from random import randint
 
 def test_time_get_time_min_from_dt_ReturnsCorrectObj():
     kia_agenda = agendaunit_shop(_owner_id="Kia")
-    kia_agenda.set_time_hreg_facts(c400_count=6)
+    kia_agenda.set_time_hreg_ideas(c400_count=6)
     assert kia_agenda.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
     assert kia_agenda.get_time_min_from_dt(dt=datetime(1, 1, 1, 0, 0)) == 527040
     assert kia_agenda.get_time_min_from_dt(dt=datetime(1, 1, 2, 0, 0)) == 527040 + 1440
@@ -16,7 +16,7 @@ def test_time_get_time_min_from_dt_ReturnsCorrectObj():
 
 def test_get_time_400Yearsegment_from_min_ReturnsCorrectObj():
     kia_agenda = agendaunit_shop("Kia")
-    kia_agenda.set_time_hreg_facts(c400_count=6)
+    kia_agenda.set_time_hreg_ideas(c400_count=6)
     assert kia_agenda.get_time_c400_from_min(min=0)[0] == 0
     assert kia_agenda.get_time_c400_from_min(min=210379680)[0] == 1
     assert kia_agenda.get_time_c400_from_min(min=210379681)[0] == 1
@@ -25,7 +25,7 @@ def test_get_time_400Yearsegment_from_min_ReturnsCorrectObj():
 
 def test_get_time_c400year_from_min_ReturnsCorrectObj():
     kia_agenda = agendaunit_shop("Kia")
-    kia_agenda.set_time_hreg_facts(c400_count=6)
+    kia_agenda.set_time_hreg_ideas(c400_count=6)
     assert kia_agenda.get_time_c400yr_from_min(min=0)[0] == 0
     assert kia_agenda.get_time_c400yr_from_min(min=1)[0] == 0
     assert kia_agenda.get_time_c400yr_from_min(min=1)[2] == 1
@@ -52,7 +52,7 @@ def _check_time_conversion_with_random_inputs(x_agenda: AgendaUnit):
 
 def test_get_time_dt_from_min_ReturnsCorrectObj():
     kia_agenda = agendaunit_shop(_owner_id="Kia")
-    kia_agenda.set_time_hreg_facts(c400_count=6)
+    kia_agenda.set_time_hreg_ideas(c400_count=6)
     assert kia_agenda.get_time_dt_from_min(min=5000000)
     # assert kia_agenda.get_time_dt_from_min(
     #     min=kia_agenda.get_time_min_from_dt(dt=datetime(2000, 1, 1, 0, 0))
@@ -105,17 +105,17 @@ def test_get_time_dt_from_min_ReturnsCorrectObj():
 def test_get_time_():
     # GIVEN
     kia_agenda = agendaunit_shop(_owner_id="Kia")
-    kia_agenda.set_time_hreg_facts(c400_count=6)
+    kia_agenda.set_time_hreg_ideas(c400_count=6)
 
     kia_agenda.calc_agenda_metrics()
-    # for fact_x in fact_list:
-    #     if fact_x._label in ["min2010", "years"]:
+    # for idea_x in idea_list:
+    #     if idea_x._label in ["min2010", "years"]:
     #         print(
-    #             f"{fact_x._parent_road=} \t{fact_x._label=} {fact_x._begin=} {fact_x._close=} {fact_x._addin=}"
+    #             f"{idea_x._parent_road=} \t{idea_x._label=} {idea_x._begin=} {idea_x._close=} {idea_x._addin=}"
     #         )
 
     # WHEN
-    kia_agenda.set_time_beliefs(
+    kia_agenda.set_time_facts(
         open=datetime(2000, 1, 1, 0, 0), nigh=datetime(2003, 11, 15, 4, 0)
     )
 
@@ -124,16 +124,16 @@ def test_get_time_():
     time_road = kia_agenda.make_l1_road(time_text)
     jaja_text = "jajatime"
     jaja_road = kia_agenda.make_road(time_road, jaja_text)
-    assert kia_agenda._factroot._beliefunits[jaja_road]
-    assert kia_agenda._factroot._beliefunits[jaja_road].open == 1051898400  # - 1440
-    assert kia_agenda._factroot._beliefunits[jaja_road].nigh == 1053934800  # - 1440
+    assert kia_agenda._idearoot._factunits[jaja_road]
+    assert kia_agenda._idearoot._factunits[jaja_road].open == 1051898400  # - 1440
+    assert kia_agenda._idearoot._factunits[jaja_road].nigh == 1053934800  # - 1440
 
 
 # def test_time_hreg_set_exists():
 #     x_agenda = agendaunit_shop(_owner_id=bob_text)
-#     x_agenda.set_time_hreg_facts(c400_count=6)
-#     fact_x = x_agenda.get_fact_obj(x_agenda.make_l1_road("hreg")
-#     assert fact_x != None
+#     x_agenda.set_time_hreg_ideas(c400_count=6)
+#     idea_x = x_agenda.get_idea_obj(x_agenda.make_l1_road("hreg")
+#     assert idea_x != None
 #     assert x_agenda.get_kid("hreg"]
 #     for kid in x_agenda.get_kid("hreg"]._kids.values():
 #         print(f"hreg kid= {kid._label=}")
@@ -141,7 +141,7 @@ def test_get_time_():
 #     assert len(x_agenda.get_kid("hreg"]._kids) > 0
 
 
-# def test_time_hreg_set_creates_fact():
+# def test_time_hreg_set_creates_idea():
 #     x_agenda = examples.get_agenda_base_time_example()
 
 #     hreg_label = "hreg"
@@ -149,18 +149,18 @@ def test_get_time_():
 #         x_agenda.get_kid(hreg_label]
 #     assert str(excinfo.value) == f"'{hreg_label}'"
 #     print(f"added {hreg_label}")
-#     x_agenda.set_time_hreg_facts(c400_count=6)
-#     hreg_fact = x_agenda.get_kid(hreg_label]
-#     assert hreg_fact != None
-#     assert hreg_fact._begin == 0
-#     assert hreg_fact._close == 1262278080
+#     x_agenda.set_time_hreg_ideas(c400_count=6)
+#     hreg_idea = x_agenda.get_kid(hreg_label]
+#     assert hreg_idea != None
+#     assert hreg_idea._begin == 0
+#     assert hreg_idea._close == 1262278080
 
 
-# def test_time_hreg_set_CorrectlyCreatesWeekdayFact():
+# def test_time_hreg_set_CorrectlyCreatesWeekdayIdea():
 #     x_agenda = examples.get_agenda_base_time_example()
-#     x_agenda.set_time_hreg_facts(c400_count=6)
+#     x_agenda.set_time_hreg_ideas(c400_count=6)
 #     weekday_label = "weekday"
-#     weekday = x_agenda.get_fact_obj(x_agenda.make_l1_road("hreg,{weekday_label}")
+#     weekday = x_agenda.get_idea_obj(x_agenda.make_l1_road("hreg,{weekday_label}")
 #     assert weekday != None
 #     assert weekday._begin == 0
 #     assert weekday._close == 7
@@ -176,12 +176,12 @@ def test_get_time_():
 # def test_time_hreg_set_CorrectlyCreates400YearsegmentCount():
 #     x_agenda = examples.get_agenda_base_time_example()
 #     c400_count = 6
-#     x_agenda.set_time_hreg_facts(c400_count=c400_count)
+#     x_agenda.set_time_hreg_ideas(c400_count=c400_count)
 
 #     timetech_label = "400 year segment"
 #     timetech_road = x_agenda.make_l1_road("hreg,{timetech_label}"
 #     print(f"{timetech_road=}")
-#     timetech = x_agenda.get_fact_obj(timetech_road)
+#     timetech = x_agenda.get_idea_obj(timetech_road)
 #     assert timetech != None
 #     assert timetech._begin == 0
 #     assert timetech._close == c400_count
@@ -190,117 +190,117 @@ def test_get_time_():
 # def test_time_hreg_set_CorrectlyCreates400YearsegmentYears():
 #     h_x_agenda = examples.get_agenda_base_time_example()
 #     c400_count = 6
-#     h_x_agenda.set_time_hreg_facts(c400_count=c400_count)
+#     h_x_agenda.set_time_hreg_ideas(c400_count=c400_count)
 
 #     hy400_label = "segment400year_years"
 #     hy400_road = x_agenda.make_l1_road("hreg,{hy400_label}"
 #     print(f"{hy400_road=}")
-#     hy400_fact = h_x_agenda.get_fact_obj(hy400_road)
-#     assert hy400_fact != None
-#     assert hy400_fact._begin is None
-#     assert hy400_fact._close is None
-#     assert hy400_fact.divisor == 400
+#     hy400_idea = h_x_agenda.get_idea_obj(hy400_road)
+#     assert hy400_idea != None
+#     assert hy400_idea._begin is None
+#     assert hy400_idea._close is None
+#     assert hy400_idea.divisor == 400
 
 #     hy400c1_label = "100yr regular"
 #     hy400c1_road = create_road(hy400_road,hy400c1_label)
 #     print(f"{hy400c1_road=}")
-#     hy400c1_fact = hy400_fact.get_kid(hy400c1_label]
-#     assert hy400c1_fact != None
-#     assert hy400c1_fact._begin == 0
-#     assert hy400c1_fact._close == 100
-#     assert hy400c1_fact.divisor is None
+#     hy400c1_idea = hy400_idea.get_kid(hy400c1_label]
+#     assert hy400c1_idea != None
+#     assert hy400c1_idea._begin == 0
+#     assert hy400c1_idea._close == 100
+#     assert hy400c1_idea.divisor is None
 
 #     hy400c14y_label = "regular 4yr"
 #     hy400c14y_road = create_road(hy400c1_road,hy400c14y_label}"
 #     print(f"{hy400c14y_road=}")
-#     hy400c14y_fact = hy400c1_fact.get_kid(hy400c14y_label]
-#     assert hy400c14y_fact != None
-#     assert hy400c14y_fact._begin is None
-#     assert hy400c14y_fact._close is None
-#     assert hy400c14y_fact.divisor == 4
+#     hy400c14y_idea = hy400c1_idea.get_kid(hy400c14y_label]
+#     assert hy400c14y_idea != None
+#     assert hy400c14y_idea._begin is None
+#     assert hy400c14y_idea._close is None
+#     assert hy400c14y_idea.divisor == 4
 
 #     hy400c3_label = "300yr range"
 #     hy400c3_road = create_road(hy400_road,hy400c3_label}"
 #     print(f"{hy400c3_road=}")
-#     hy400c3_fact = hy400_fact.get_kid(hy400c3_label]
-#     assert hy400c3_fact != None
-#     assert hy400c3_fact._begin == 100
-#     assert hy400c3_fact._close == 400
-#     assert hy400c3_fact.divisor is None
+#     hy400c3_idea = hy400_idea.get_kid(hy400c3_label]
+#     assert hy400c3_idea != None
+#     assert hy400c3_idea._begin == 100
+#     assert hy400c3_idea._close == 400
+#     assert hy400c3_idea.divisor is None
 
 #     hy400c3c1_label = "100yr no century leap"
 #     hy400c3c1_road = create_road(hy400c3_road,hy400c3c1_label}"
 #     print(f"{hy400c3c1_road=}")
-#     hy400c3c1_fact = hy400c3_fact.get_kid(hy400c3c1_label]
-#     assert hy400c3c1_fact != None
-#     assert hy400c3c1_fact._begin is None
-#     assert hy400c3c1_fact._close is None
-#     assert hy400c3c1_fact.divisor == 100
+#     hy400c3c1_idea = hy400c3_idea.get_kid(hy400c3c1_label]
+#     assert hy400c3c1_idea != None
+#     assert hy400c3c1_idea._begin is None
+#     assert hy400c3c1_idea._close is None
+#     assert hy400c3c1_idea.divisor == 100
 
 #     hy400c3c14y_label = "4yr no leap"
 #     hy400c3c14y_road = create_road(hy400c3c1_road,hy400c3c14y_label}"
 #     print(f"{hy400c3c14y_road=}")
-#     hy400c3c14y_fact = hy400c3c1_fact.get_kid(hy400c3c14y_label]
-#     assert hy400c3c14y_fact != None
-#     assert hy400c3c14y_fact._begin == 0
-#     assert hy400c3c14y_fact._close == 4
-#     assert hy400c3c14y_fact.divisor is None
+#     hy400c3c14y_idea = hy400c3c1_idea.get_kid(hy400c3c14y_label]
+#     assert hy400c3c14y_idea != None
+#     assert hy400c3c14y_idea._begin == 0
+#     assert hy400c3c14y_idea._close == 4
+#     assert hy400c3c14y_idea.divisor is None
 
 #     hy400c3c196_label = "96yr range"
 #     hy400c3c196_road = create_road(hy400c3c1_road,hy400c3c196_label}"
 #     print(f"{hy400c3c196_road=}")
-#     hy400c3c196_fact = hy400c3c1_fact.get_kid(hy400c3c196_label]
-#     assert hy400c3c196_fact != None
-#     assert hy400c3c196_fact._begin == 4
-#     assert hy400c3c196_fact._close == 100
-#     assert hy400c3c196_fact.divisor is None
+#     hy400c3c196_idea = hy400c3c1_idea.get_kid(hy400c3c196_label]
+#     assert hy400c3c196_idea != None
+#     assert hy400c3c196_idea._begin == 4
+#     assert hy400c3c196_idea._close == 100
+#     assert hy400c3c196_idea.divisor is None
 
 #     hy400c3c196ry_label = "regular 4yr"
 #     hy400c3c196ry_road = create_road(hy400c3c196_road,hy400c3c196ry_label}"
 #     print(f"{hy400c3c196ry_road=}")
-#     hy400c3c196ry_fact = hy400c3c196_fact.get_kid(hy400c3c196ry_label]
-#     assert hy400c3c196ry_fact != None
-#     assert hy400c3c196ry_fact._begin is None
-#     assert hy400c3c196ry_fact._close is None
-#     assert hy400c3c196ry_fact.divisor == 4
+#     hy400c3c196ry_idea = hy400c3c196_idea.get_kid(hy400c3c196ry_label]
+#     assert hy400c3c196ry_idea != None
+#     assert hy400c3c196ry_idea._begin is None
+#     assert hy400c3c196ry_idea._close is None
+#     assert hy400c3c196ry_idea.divisor == 4
 
 
 # def test_time_hreg_set_CorrectlyCreates400YearsegmentYears():
 #     h_x_agenda = examples.get_agenda_base_time_example()
 #     c400_count = 6
-#     h_x_agenda.set_time_hreg_facts(c400_count=c400_count)
+#     h_x_agenda.set_time_hreg_ideas(c400_count=c400_count)
 
 #     hy400_label = "segment400year_days"
 #     hy400_road = x_agenda.make_l1_road("hreg,{hy400_label}"
 #     print(f"{hy400_road=}")
-#     hy400_fact = h_x_agenda.get_fact_obj(hy400_road)
-#     assert hy400_fact != None
-#     assert hy400_fact._begin is None
-#     assert hy400_fact._close is None
-#     assert hy400_fact.divisor == 146097
+#     hy400_idea = h_x_agenda.get_idea_obj(hy400_road)
+#     assert hy400_idea != None
+#     assert hy400_idea._begin is None
+#     assert hy400_idea._close is None
+#     assert hy400_idea.divisor == 146097
 
 
 # def test_time_hreg_set_CorrectlyCreatesDayRange():
 #     x_agenda = examples.get_agenda_base_time_example()
-#     x_agenda.set_time_hreg_facts(c400_count=6)
-#     timetech = x_agenda.get_fact_obj(x_agenda.make_l1_road("hreg,day_range")
+#     x_agenda.set_time_hreg_ideas(c400_count=6)
+#     timetech = x_agenda.get_idea_obj(x_agenda.make_l1_road("hreg,day_range")
 #     assert timetech != None
 #     assert timetech._begin == 0
 #     assert timetech._close == 876582
 
 # x_x_agenda = agendaunit_shop()
-# x_agenda.get_fact_obj({x_agenda.make_l1_road("hreg,weekday"})
+# x_agenda.get_idea_obj({x_agenda.make_l1_road("hreg,weekday"})
 
 # wed_premise_x = premiseunit_shop(need=wednesday_road)
 # woork_wk_reason = reasonunit_shop(weekday_road, premises={wed_premise.need: wed_premise})
 # print(f"{type(woork_wk_reason.base)=}")
 # print(f"{woork_wk_reason.base=}")
-# agenda_x.edit_fact_attr(road=woork_road, reason=woork_wk_reason)
-# woork_fact = agenda_x.get_kid("woork"]
-# assert woork_fact._reasonunits != None
-# print(woork_fact._reasonunits)
-# assert woork_fact._reasonunits[weekday_road] != None
-# assert woork_fact._reasonunits[weekday_road] == woork_wk_reason
+# agenda_x.edit_idea_attr(road=woork_road, reason=woork_wk_reason)
+# woork_idea = agenda_x.get_kid("woork"]
+# assert woork_idea._reasonunits != None
+# print(woork_idea._reasonunits)
+# assert woork_idea._reasonunits[weekday_road] != None
+# assert woork_idea._reasonunits[weekday_road] == woork_wk_reason
 
 # x_agenda = examples.get_agenda_gregorian_years()
 
@@ -308,7 +308,7 @@ def test_get_time_():
 def test_get_jajatime_repeating_legible_text_correctlyText():
     # GIVEN
     noa_agenda = agendaunit_shop(_owner_id="Noa")
-    noa_agenda.set_time_hreg_facts(c400_count=7)
+    noa_agenda.set_time_hreg_ideas(c400_count=7)
 
     # WHEN / THEN
     every_day_8am_text = noa_agenda.get_jajatime_repeating_legible_text(

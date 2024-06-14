@@ -1,4 +1,4 @@
-from src.agenda.fact import factunit_shop
+from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.listen.listen import listen_to_speaker_intent, create_empty_agenda
 from copy import deepcopy as copy_deepcopy
@@ -46,11 +46,11 @@ def test_listen_to_speaker_intent_ReturnsSingleTaskAgenda():
     yao_party_debtor_weight = 77
     before_yao_agendaunit.set_party_pool(yao_party_debtor_weight)
     clean_text = "clean"
-    zia_clean_factunit = factunit_shop(clean_text, pledge=True)
-    zia_clean_factunit._assignedunit.set_suffidea(yao_text)
+    zia_clean_ideaunit = ideaunit_shop(clean_text, pledge=True)
+    zia_clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_agendaunit = agendaunit_shop(zia_text)
     zia_agendaunit.add_partyunit(yao_text)
-    zia_agendaunit.add_l1_fact(zia_clean_factunit)
+    zia_agendaunit.add_l1_idea(zia_clean_ideaunit)
     assert len(zia_agendaunit.get_intent_dict()) == 0
     zia_yao_agendaunit = copy_deepcopy(zia_agendaunit)
     zia_yao_agendaunit.set_owner_id(yao_text)
@@ -64,10 +64,10 @@ def test_listen_to_speaker_intent_ReturnsSingleTaskAgenda():
 
     # THEN
     clean_road = zia_agendaunit.make_l1_road(clean_text)
-    yao_clean_factunit = after_yao_agendaunit.get_fact_obj(clean_road)
-    print(f"{yao_clean_factunit._weight=}")
-    assert yao_clean_factunit._weight != zia_clean_factunit._weight
-    assert yao_clean_factunit._weight == yao_party_debtor_weight
+    yao_clean_ideaunit = after_yao_agendaunit.get_idea_obj(clean_road)
+    print(f"{yao_clean_ideaunit._weight=}")
+    assert yao_clean_ideaunit._weight != zia_clean_ideaunit._weight
+    assert yao_clean_ideaunit._weight == yao_party_debtor_weight
     assert after_yao_agendaunit == before_yao_agendaunit
     assert len(after_yao_agendaunit.get_intent_dict()) == 1
 
@@ -83,10 +83,10 @@ def test_listen_to_speaker_intent_ReturnsLevel2TaskAgenda():
     zia_agendaunit = agendaunit_shop(zia_text)
     zia_agendaunit.add_partyunit(yao_text)
     clean_text = "clean"
-    zia_clean_factunit = factunit_shop(clean_text, pledge=True)
-    zia_clean_factunit._assignedunit.set_suffidea(yao_text)
+    zia_clean_ideaunit = ideaunit_shop(clean_text, pledge=True)
+    zia_clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     casa_road = zia_agendaunit.make_l1_road("casa")
-    zia_agendaunit.add_fact(zia_clean_factunit, casa_road)
+    zia_agendaunit.add_idea(zia_clean_ideaunit, casa_road)
     assert len(zia_agendaunit.get_intent_dict()) == 0
     zia_yao_agendaunit = copy_deepcopy(zia_agendaunit)
     zia_yao_agendaunit.set_owner_id(yao_text)
@@ -100,19 +100,19 @@ def test_listen_to_speaker_intent_ReturnsLevel2TaskAgenda():
 
     # THEN
     clean_road = zia_agendaunit.make_road(casa_road, clean_text)
-    yao_clean_factunit = after_yao_agendaunit.get_fact_obj(clean_road)
-    print(f"{yao_clean_factunit._weight=}")
-    assert yao_clean_factunit._weight != zia_clean_factunit._weight
-    assert yao_clean_factunit._weight == yao_debtor_weight
-    after_casa_factunit = after_yao_agendaunit.get_fact_obj(casa_road)
-    print(f"{after_casa_factunit._weight=}")
-    assert after_casa_factunit._weight != 1
-    assert after_casa_factunit._weight == yao_debtor_weight
+    yao_clean_ideaunit = after_yao_agendaunit.get_idea_obj(clean_road)
+    print(f"{yao_clean_ideaunit._weight=}")
+    assert yao_clean_ideaunit._weight != zia_clean_ideaunit._weight
+    assert yao_clean_ideaunit._weight == yao_debtor_weight
+    after_casa_ideaunit = after_yao_agendaunit.get_idea_obj(casa_road)
+    print(f"{after_casa_ideaunit._weight=}")
+    assert after_casa_ideaunit._weight != 1
+    assert after_casa_ideaunit._weight == yao_debtor_weight
     assert after_yao_agendaunit == before_yao_agendaunit
     assert len(after_yao_agendaunit.get_intent_dict()) == 1
 
 
-def test_listen_to_speaker_intent_Returns2IntentFactsLevel2TaskAgenda():
+def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskAgenda():
     # GIVEN
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
@@ -126,17 +126,17 @@ def test_listen_to_speaker_intent_Returns2IntentFactsLevel2TaskAgenda():
     clean_text = "clean"
     cook_text = "cook"
     fly_text = "fly"
-    yao_clean_factunit = factunit_shop(clean_text, pledge=True)
-    yao_clean_factunit._assignedunit.set_suffidea(yao_text)
-    yao_cook_factunit = factunit_shop(cook_text, pledge=True)
-    yao_cook_factunit._assignedunit.set_suffidea(yao_text)
-    yao_fly_factunit = factunit_shop(fly_text, pledge=True)
-    yao_fly_factunit._assignedunit.set_suffidea(yao_text)
+    yao_clean_ideaunit = ideaunit_shop(clean_text, pledge=True)
+    yao_clean_ideaunit._assignedunit.set_suffbelief(yao_text)
+    yao_cook_ideaunit = ideaunit_shop(cook_text, pledge=True)
+    yao_cook_ideaunit._assignedunit.set_suffbelief(yao_text)
+    yao_fly_ideaunit = ideaunit_shop(fly_text, pledge=True)
+    yao_fly_ideaunit._assignedunit.set_suffbelief(yao_text)
     casa_road = zia_agendaunit.make_l1_road("casa")
     fly_road = zia_agendaunit.make_l1_road(fly_text)
-    zia_agendaunit.add_fact(yao_clean_factunit, casa_road)
-    zia_agendaunit.add_fact(yao_cook_factunit, casa_road)
-    zia_agendaunit.add_l1_fact(yao_fly_factunit)
+    zia_agendaunit.add_idea(yao_clean_ideaunit, casa_road)
+    zia_agendaunit.add_idea(yao_cook_ideaunit, casa_road)
+    zia_agendaunit.add_l1_idea(yao_fly_ideaunit)
     assert len(zia_agendaunit.get_intent_dict()) == 0
     zia_yao_agendaunit = copy_deepcopy(zia_agendaunit)
     zia_yao_agendaunit.set_owner_id(yao_text)
@@ -150,26 +150,26 @@ def test_listen_to_speaker_intent_Returns2IntentFactsLevel2TaskAgenda():
     # THEN
     clean_road = zia_agendaunit.make_road(casa_road, clean_text)
     cook_road = zia_agendaunit.make_road(casa_road, cook_text)
-    after_cook_factunit = after_yao_agendaunit.get_fact_obj(cook_road)
-    after_clean_factunit = after_yao_agendaunit.get_fact_obj(clean_road)
-    after_casa_factunit = after_yao_agendaunit.get_fact_obj(casa_road)
-    after_fly_factunit = after_yao_agendaunit.get_fact_obj(fly_road)
-    print(f"{after_clean_factunit._weight=}")
-    assert after_clean_factunit._weight != yao_clean_factunit._weight
-    assert after_clean_factunit._weight == 13
-    print(f"{after_cook_factunit._weight=}")
-    assert after_cook_factunit._weight != yao_cook_factunit._weight
-    assert after_cook_factunit._weight == 14
-    print(f"{after_casa_factunit._weight=}")
-    assert after_casa_factunit._weight != 1
-    assert after_casa_factunit._weight == 27
+    after_cook_ideaunit = after_yao_agendaunit.get_idea_obj(cook_road)
+    after_clean_ideaunit = after_yao_agendaunit.get_idea_obj(clean_road)
+    after_casa_ideaunit = after_yao_agendaunit.get_idea_obj(casa_road)
+    after_fly_ideaunit = after_yao_agendaunit.get_idea_obj(fly_road)
+    print(f"{after_clean_ideaunit._weight=}")
+    assert after_clean_ideaunit._weight != yao_clean_ideaunit._weight
+    assert after_clean_ideaunit._weight == 13
+    print(f"{after_cook_ideaunit._weight=}")
+    assert after_cook_ideaunit._weight != yao_cook_ideaunit._weight
+    assert after_cook_ideaunit._weight == 14
+    print(f"{after_casa_ideaunit._weight=}")
+    assert after_casa_ideaunit._weight != 1
+    assert after_casa_ideaunit._weight == 27
     assert after_yao_agendaunit == before_yao_agendaunit
     assert len(after_yao_agendaunit.get_intent_dict()) == 3
-    assert after_fly_factunit._weight != 1
-    assert after_fly_factunit._weight == 28
+    assert after_fly_ideaunit._weight != 1
+    assert after_fly_ideaunit._weight == 28
 
 
-def test_listen_to_speaker_intent_Returns2IntentFactsLevel2TaskAgendaWhereAnFactUnitAlreadyExists():
+def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdeaUnitAlreadyExists():
     # GIVEN
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
@@ -183,22 +183,22 @@ def test_listen_to_speaker_intent_Returns2IntentFactsLevel2TaskAgendaWhereAnFact
     dish_text = "dish"
     cook_text = "cook"
     fly_text = "fly"
-    yao_dish_factunit = factunit_shop(dish_text, pledge=True)
-    yao_dish_factunit._assignedunit.set_suffidea(yao_text)
-    yao_cook_factunit = factunit_shop(cook_text, pledge=True)
-    yao_cook_factunit._assignedunit.set_suffidea(yao_text)
-    yao_fly_factunit = factunit_shop(fly_text, pledge=True)
-    yao_fly_factunit._assignedunit.set_suffidea(yao_text)
+    yao_dish_ideaunit = ideaunit_shop(dish_text, pledge=True)
+    yao_dish_ideaunit._assignedunit.set_suffbelief(yao_text)
+    yao_cook_ideaunit = ideaunit_shop(cook_text, pledge=True)
+    yao_cook_ideaunit._assignedunit.set_suffbelief(yao_text)
+    yao_fly_ideaunit = ideaunit_shop(fly_text, pledge=True)
+    yao_fly_ideaunit._assignedunit.set_suffbelief(yao_text)
     casa_road = zia_agendaunit.make_l1_road("casa")
     dish_road = zia_agendaunit.make_road(casa_road, dish_text)
     fly_road = zia_agendaunit.make_l1_road(fly_text)
-    before_yao_dish_factunit = factunit_shop(dish_text, pledge=True)
-    before_yao_dish_factunit._assignedunit.set_suffidea(yao_text)
-    before_yao_agendaunit.add_fact(before_yao_dish_factunit, casa_road)
-    before_yao_agendaunit.edit_fact_attr(dish_road, weight=1000)
-    zia_agendaunit.add_fact(yao_dish_factunit, casa_road)
-    zia_agendaunit.add_fact(yao_cook_factunit, casa_road)
-    zia_agendaunit.add_l1_fact(yao_fly_factunit)
+    before_yao_dish_ideaunit = ideaunit_shop(dish_text, pledge=True)
+    before_yao_dish_ideaunit._assignedunit.set_suffbelief(yao_text)
+    before_yao_agendaunit.add_idea(before_yao_dish_ideaunit, casa_road)
+    before_yao_agendaunit.edit_idea_attr(dish_road, weight=1000)
+    zia_agendaunit.add_idea(yao_dish_ideaunit, casa_road)
+    zia_agendaunit.add_idea(yao_cook_ideaunit, casa_road)
+    zia_agendaunit.add_l1_idea(yao_fly_ideaunit)
     assert len(zia_agendaunit.get_intent_dict()) == 0
     zia_yao_agendaunit = copy_deepcopy(zia_agendaunit)
     zia_yao_agendaunit.set_owner_id(yao_text)
@@ -211,23 +211,23 @@ def test_listen_to_speaker_intent_Returns2IntentFactsLevel2TaskAgendaWhereAnFact
 
     # THEN
     cook_road = zia_agendaunit.make_road(casa_road, cook_text)
-    after_cook_factunit = after_yao_agendaunit.get_fact_obj(cook_road)
-    after_dish_factunit = after_yao_agendaunit.get_fact_obj(dish_road)
-    after_casa_factunit = after_yao_agendaunit.get_fact_obj(casa_road)
-    after_fly_factunit = after_yao_agendaunit.get_fact_obj(fly_road)
-    print(f"{after_dish_factunit._weight=}")
-    assert after_dish_factunit._weight != yao_dish_factunit._weight
-    assert after_dish_factunit._weight == 1014
-    print(f"{after_cook_factunit._weight=}")
-    assert after_cook_factunit._weight != yao_cook_factunit._weight
-    assert after_cook_factunit._weight == 13
-    print(f"{after_casa_factunit._weight=}")
-    assert after_casa_factunit._weight != 1
-    assert after_casa_factunit._weight == 28
+    after_cook_ideaunit = after_yao_agendaunit.get_idea_obj(cook_road)
+    after_dish_ideaunit = after_yao_agendaunit.get_idea_obj(dish_road)
+    after_casa_ideaunit = after_yao_agendaunit.get_idea_obj(casa_road)
+    after_fly_ideaunit = after_yao_agendaunit.get_idea_obj(fly_road)
+    print(f"{after_dish_ideaunit._weight=}")
+    assert after_dish_ideaunit._weight != yao_dish_ideaunit._weight
+    assert after_dish_ideaunit._weight == 1014
+    print(f"{after_cook_ideaunit._weight=}")
+    assert after_cook_ideaunit._weight != yao_cook_ideaunit._weight
+    assert after_cook_ideaunit._weight == 13
+    print(f"{after_casa_ideaunit._weight=}")
+    assert after_casa_ideaunit._weight != 1
+    assert after_casa_ideaunit._weight == 28
     assert after_yao_agendaunit == before_yao_agendaunit
     assert len(after_yao_agendaunit.get_intent_dict()) == 3
-    assert after_fly_factunit._weight != 1
-    assert after_fly_factunit._weight == 28
+    assert after_fly_ideaunit._weight != 1
+    assert after_fly_ideaunit._weight == 28
 
 
 def test_listen_to_speaker_intent_ProcessesIrrationalAgenda():
@@ -249,29 +249,29 @@ def test_listen_to_speaker_intent_ProcessesIrrationalAgenda():
     sue_agendaunit.set_max_tree_traverse(5)
     vacuum_text = "vacuum"
     vacuum_road = sue_agendaunit.make_l1_road(vacuum_text)
-    sue_agendaunit.add_l1_fact(factunit_shop(vacuum_text, pledge=True))
-    vacuum_factunit = sue_agendaunit.get_fact_obj(vacuum_road)
-    vacuum_factunit._assignedunit.set_suffidea(yao_text)
+    sue_agendaunit.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
+    vacuum_ideaunit = sue_agendaunit.get_idea_obj(vacuum_road)
+    vacuum_ideaunit._assignedunit.set_suffbelief(yao_text)
 
     egg_text = "egg first"
     egg_road = sue_agendaunit.make_l1_road(egg_text)
-    sue_agendaunit.add_l1_fact(factunit_shop(egg_text))
+    sue_agendaunit.add_l1_idea(ideaunit_shop(egg_text))
     chicken_text = "chicken first"
     chicken_road = sue_agendaunit.make_l1_road(chicken_text)
-    sue_agendaunit.add_l1_fact(factunit_shop(chicken_text))
+    sue_agendaunit.add_l1_idea(ideaunit_shop(chicken_text))
     # set egg pledge is True when chicken first is False
-    sue_agendaunit.edit_fact_attr(
+    sue_agendaunit.edit_idea_attr(
         road=egg_road,
         pledge=True,
         reason_base=chicken_road,
-        reason_suff_fact_active=True,
+        reason_suff_idea_active=True,
     )
     # set chick pledge is True when egg first is False
-    sue_agendaunit.edit_fact_attr(
+    sue_agendaunit.edit_idea_attr(
         road=chicken_road,
         pledge=True,
         reason_base=egg_road,
-        reason_suff_fact_active=False,
+        reason_suff_idea_active=False,
     )
 
     # WHEN

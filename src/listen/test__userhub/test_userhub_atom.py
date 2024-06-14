@@ -2,7 +2,7 @@ from src._instrument.file import open_file, dir_files, delete_dir, set_dir, save
 from src._road.jaar_config import init_atom_id, get_test_real_id as real_id
 from src.atom.atom import atomunit_shop, get_json_filename
 from src.listen.userhub import userhub_shop
-from src.listen.examples.example_listen_quarks import get_quark_example_factunit_knee
+from src.listen.examples.example_listen_quarks import get_quark_example_ideaunit_knee
 from src.listen.examples.example_listen_atoms import (
     get_sue_atomunit,
     sue_1quarkunits_atomunit,
@@ -363,7 +363,7 @@ def test_UserHub_del_atom_file_DeletesatomjsonAndNotQuarkUnitjsons(
         _quarks_dir=sue_userhub.quarks_dir(),
         _atoms_dir=sue_userhub.atoms_dir(),
     )
-    sue_atomunit._nucunit.set_quarkunit(get_quark_example_factunit_knee())
+    sue_atomunit._nucunit.set_quarkunit(get_quark_example_ideaunit_knee())
     zero_int = 0
     assert sue_userhub.atom_file_exists(six_int) is False
     assert sue_userhub.quark_file_exists(zero_int) is False
@@ -487,14 +487,14 @@ def test_UserHub_merge_any_atoms_ReturnsObj_WithSingleatomModifies_1quark(
     sports_road = duty_agenda.make_l1_road(sports_text)
     knee_text = "knee"
     knee_road = duty_agenda.make_road(sports_road, knee_text)
-    assert duty_agenda.fact_exists(sports_road) is False
+    assert duty_agenda.idea_exists(sports_road) is False
 
     # WHEN
     new_agenda = sue_userhub._merge_any_atoms(duty_agenda)
 
     # THEN
     assert new_agenda != duty_agenda
-    assert new_agenda.fact_exists(sports_road)
+    assert new_agenda.idea_exists(sports_road)
 
 
 def test_UserHub_merge_any_atoms_ReturnsObj_WithSingleatomModifies_2quarks(
@@ -511,13 +511,13 @@ def test_UserHub_merge_any_atoms_ReturnsObj_WithSingleatomModifies_2quarks(
     sports_road = duty_agenda.make_l1_road(sports_text)
     knee_text = "knee"
     knee_road = duty_agenda.make_road(sports_road, knee_text)
-    assert duty_agenda.fact_exists(sports_road) is False
-    assert duty_agenda.fact_exists(knee_road) is False
+    assert duty_agenda.idea_exists(sports_road) is False
+    assert duty_agenda.idea_exists(knee_road) is False
 
     # WHEN
     new_agenda = sue_userhub._merge_any_atoms(duty_agenda)
 
     # THEN
     assert new_agenda != duty_agenda
-    assert new_agenda.fact_exists(sports_road)
-    assert new_agenda.fact_exists(knee_road)
+    assert new_agenda.idea_exists(sports_road)
+    assert new_agenda.idea_exists(knee_road)

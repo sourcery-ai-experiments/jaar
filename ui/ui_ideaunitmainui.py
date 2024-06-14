@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'ui\FactunitMainUI.ui'
+# Form implementation generated from reading ui file 'ui\IdeaunitMainUI.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -21,10 +21,10 @@ class Ui_Form(object):
         self.refresh_button = QtWidgets.QPushButton(Form)
         self.refresh_button.setGeometry(QtCore.QRect(670, 20, 161, 31))
         self.refresh_button.setObjectName("refresh_button")
-        self.basefactunit = QtWidgets.QTreeWidget(Form)
-        self.basefactunit.setGeometry(QtCore.QRect(10, 60, 400, 630))
-        self.basefactunit.setObjectName("basefactunit")
-        self.basefactunit.headerItem().setText(0, "1")
+        self.baseideaunit = QtWidgets.QTreeWidget(Form)
+        self.baseideaunit.setGeometry(QtCore.QRect(10, 60, 400, 630))
+        self.baseideaunit.setObjectName("baseideaunit")
+        self.baseideaunit.headerItem().setText(0, "1")
         self.close_button = QtWidgets.QPushButton(Form)
         self.close_button.setGeometry(QtCore.QRect(890, 20, 93, 28))
         self.close_button.setObjectName("close_button")

@@ -3,7 +3,7 @@ from src._road.jaar_config import init_atom_id, get_atoms_folder
 from src._road.road import get_default_real_id_roadnode as root_label
 from src.atom.nuc import nucunit_shop
 from src.atom.atom import AtomUnit, atomunit_shop, get_init_atom_id_if_None
-from src.atom.examples.example_quarks import get_quark_example_factunit_sports
+from src.atom.examples.example_quarks import get_quark_example_ideaunit_sports
 from src.atom.examples.example_nucs import get_nucunit_carm_example
 
 
@@ -164,7 +164,7 @@ def test_AtomUnit_set_nucunit_SetsAttribute():
 
     # WHEN
     farm_nucunit = nucunit_shop()
-    farm_nucunit.set_quarkunit(get_quark_example_factunit_sports())
+    farm_nucunit.set_quarkunit(get_quark_example_ideaunit_sports())
     farm_atomunit.set_nucunit(farm_nucunit)
 
     # THEN
@@ -193,7 +193,7 @@ def test_AtomUnit_quarkunit_exists_ReturnsCorrectObj():
     farm_atomunit.set_nucunit(farm_nucunit)
 
     # WHEN
-    sports_quarkunit = get_quark_example_factunit_sports()
+    sports_quarkunit = get_quark_example_ideaunit_sports()
 
     # THEN
     assert farm_atomunit.quarkunit_exists(sports_quarkunit) is False
@@ -210,7 +210,7 @@ def test_AtomUnit_del_nucunit_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
     farm_nucunit = nucunit_shop()
-    farm_nucunit.set_quarkunit(get_quark_example_factunit_sports())
+    farm_nucunit.set_quarkunit(get_quark_example_ideaunit_sports())
     farm_atomunit = atomunit_shop(person_id=bob_text, _nucunit=farm_nucunit)
     assert farm_atomunit._nucunit != nucunit_shop()
     assert farm_atomunit._nucunit == farm_nucunit

@@ -1,4 +1,4 @@
-from src.agenda.reason_fact import (
+from src.agenda.reason_idea import (
     PremiseStatusFinder,
     premisestatusfinder_shop,
 )
@@ -12,24 +12,24 @@ def test_PremiseStatusFinder_Exists():
     x_premise_open = 1
     x_premise_nigh = 1
     x_premise_divisor = 1
-    x_belief_open_full = 1
-    x_belief_nigh_full = 1
+    x_fact_open_full = 1
+    x_fact_nigh_full = 1
 
     # WHEN
     x_pbsd = PremiseStatusFinder(
         x_premise_open,
         x_premise_nigh,
         x_premise_divisor,
-        x_belief_open_full,
-        x_belief_nigh_full,
+        x_fact_open_full,
+        x_fact_nigh_full,
     )
 
     # THEN
     assert x_pbsd.premise_open == x_premise_open
     assert x_pbsd.premise_nigh == x_premise_nigh
     assert x_pbsd.premise_divisor == x_premise_divisor
-    assert x_pbsd.belief_open_full == x_belief_open_full
-    assert x_pbsd.belief_nigh_full == x_belief_nigh_full
+    assert x_pbsd.fact_open_full == x_fact_open_full
+    assert x_pbsd.fact_nigh_full == x_fact_nigh_full
 
 
 def test_premisestatusfinder_shop_ReturnsCorrectObj():
@@ -37,24 +37,24 @@ def test_premisestatusfinder_shop_ReturnsCorrectObj():
     x_premise_open = 1
     x_premise_nigh = 1
     x_premise_divisor = 1
-    x_belief_open_full = 1
-    x_belief_nigh_full = 1
+    x_fact_open_full = 1
+    x_fact_nigh_full = 1
 
     # WHEN
     x_pbsd = premisestatusfinder_shop(
         x_premise_open,
         x_premise_nigh,
         x_premise_divisor,
-        x_belief_open_full,
-        x_belief_nigh_full,
+        x_fact_open_full,
+        x_fact_nigh_full,
     )
 
     # THEN
     assert x_pbsd.premise_open == x_premise_open
     assert x_pbsd.premise_nigh == x_premise_nigh
     assert x_pbsd.premise_divisor == x_premise_divisor
-    assert x_pbsd.belief_open_full == x_belief_open_full
-    assert x_pbsd.belief_nigh_full == x_belief_nigh_full
+    assert x_pbsd.fact_open_full == x_fact_open_full
+    assert x_pbsd.fact_nigh_full == x_fact_nigh_full
 
 
 def test_PremiseStatusFinder_check_attr_CorrectlyRaisesError():
@@ -63,24 +63,24 @@ def test_PremiseStatusFinder_check_attr_CorrectlyRaisesError():
             premise_open=1,
             premise_nigh=None,
             premise_divisor=1,
-            belief_open_full=1,
-            belief_nigh_full=1,
+            fact_open_full=1,
+            fact_nigh_full=1,
         )
     assert str(excinfo_1.value) == "No parameter can be None"
 
-    x_belief_open_full = 2
-    x_belief_nigh_full = 1
+    x_fact_open_full = 2
+    x_fact_nigh_full = 1
     with pytest_raises(Exception) as excinfo_2:
         premisestatusfinder_shop(
             premise_open=1,
             premise_nigh=1,
             premise_divisor=1,
-            belief_open_full=x_belief_open_full,
-            belief_nigh_full=x_belief_nigh_full,
+            fact_open_full=x_fact_open_full,
+            fact_nigh_full=x_fact_nigh_full,
         )
     assert (
         str(excinfo_2.value)
-        == f"self.belief_open_full={x_belief_open_full} cannot be greater that self.belief_nigh_full={x_belief_nigh_full}"
+        == f"self.fact_open_full={x_fact_open_full} cannot be greater that self.fact_nigh_full={x_fact_nigh_full}"
     )
 
     x_premise_divisor = -1
@@ -89,8 +89,8 @@ def test_PremiseStatusFinder_check_attr_CorrectlyRaisesError():
             premise_open=1,
             premise_nigh=1,
             premise_divisor=x_premise_divisor,
-            belief_open_full=1,
-            belief_nigh_full=1,
+            fact_open_full=1,
+            fact_nigh_full=1,
         )
     assert (
         str(excinfo_3.value)
@@ -104,8 +104,8 @@ def test_PremiseStatusFinder_check_attr_CorrectlyRaisesError():
             premise_open=x_premise_open,
             premise_nigh=1,
             premise_divisor=x_premise_divisor,
-            belief_open_full=1,
-            belief_nigh_full=1,
+            fact_open_full=1,
+            fact_nigh_full=1,
         )
     assert (
         str(excinfo_4.value)
@@ -118,8 +118,8 @@ def test_PremiseStatusFinder_check_attr_CorrectlyRaisesError():
             premise_open=1,
             premise_nigh=x_premise_nigh,
             premise_divisor=x_premise_divisor,
-            belief_open_full=1,
-            belief_nigh_full=1,
+            fact_open_full=1,
+            fact_nigh_full=1,
         )
     assert (
         str(excinfo_5.value)
@@ -132,21 +132,21 @@ def test_PremiseStatusFinder_AbbrevationMethodsReturnCorrectObjs():
     x_premise_open = 1
     x_premise_nigh = 2
     x_premise_divisor = 3
-    x_belief_open_full = 4
-    x_belief_nigh_full = 5
+    x_fact_open_full = 4
+    x_fact_nigh_full = 5
 
     # WHEN
     x_pbsd = premisestatusfinder_shop(
         x_premise_open,
         x_premise_nigh,
         x_premise_divisor,
-        x_belief_open_full,
-        x_belief_nigh_full,
+        x_fact_open_full,
+        x_fact_nigh_full,
     )
 
     # THEN
-    assert x_pbsd.bo() == x_belief_open_full % x_premise_divisor
-    assert x_pbsd.bn() == x_belief_nigh_full % x_premise_divisor
+    assert x_pbsd.bo() == x_fact_open_full % x_premise_divisor
+    assert x_pbsd.bn() == x_fact_nigh_full % x_premise_divisor
     assert x_pbsd.po() == x_premise_open
     assert x_pbsd.pn() == x_premise_nigh
     assert x_pbsd.pd() == x_premise_divisor
@@ -201,7 +201,7 @@ def add_traces(
     sought_status_text: str = "",
     premise_divisor: float = 1,
 ) -> plotly_figure:
-    belief_text = "BeliefUnit Remainder range"
+    fact_text = "FactUnit Remainder range"
     premise_text = "Premise Range"
     blue_text = "Blue"
     pink_text = "Pink"
@@ -218,7 +218,7 @@ def add_traces(
             x_pbsd.bo(),
             x_pbsd.bn(),
             y_int,
-            belief_text,
+            fact_text,
             pink_text,
             sl,
             case_text=case_text,
@@ -232,7 +232,7 @@ def add_traces(
             0,
             x_pbsd.bn(),
             y_int,
-            belief_text,
+            fact_text,
             pink_text,
             sl,
             case_text=case_text,
@@ -240,7 +240,7 @@ def add_traces(
             sought_status_text=sought_status_text,
             premise_divisor=premise_divisor,
         )
-        add_trace(fig, x_pbsd.bo(), x_pbsd.pd(), y_int, belief_text, pink_text, sl)
+        add_trace(fig, x_pbsd.bo(), x_pbsd.pd(), y_int, fact_text, pink_text, sl)
 
 
 # for PremiseStatusFinder tests
@@ -281,7 +281,7 @@ def get_fig(pd: float) -> plotly_figure:
         sought_status_text="Task Status",
         premise_divisor=pd,
     )
-    fig_title = "When Belief.range < Premise_divisor: Premise.active Checks."
+    fig_title = "When Fact.range < Premise_divisor: Premise.active Checks."
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -556,46 +556,46 @@ def test_PremiseStatusFinder_get_active_ReturnsCorrectObj():
     #     assert 1 == 2
 
 
-def test_premisebeliefstatusdata_CorrectlyCalculates_active_AndTaskStatusExample_01():
+def test_premisefactstatusdata_CorrectlyCalculates_active_AndTaskStatusExample_01():
     # GIVEN / WHEN
     segr_obj = premisestatusfinder_shop(
         premise_open=1305.0,
         premise_nigh=1305.0,
         premise_divisor=1440,
-        belief_open_full=20000,
-        belief_nigh_full=29000,
+        fact_open_full=20000,
+        fact_nigh_full=29000,
     )
-    print(f"----\n  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=}")
+    print(f"----\n  {segr_obj.fact_open_full=}  {segr_obj.fact_nigh_full=}")
     print(
         f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
     )
     print(
-        f"  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=} \tdifference:{segr_obj.belief_nigh_full-segr_obj.belief_open_full}"
+        f"  {segr_obj.fact_open_full=}  {segr_obj.fact_nigh_full=} \tdifference:{segr_obj.fact_nigh_full-segr_obj.fact_open_full}"
     )
     print(f"  {segr_obj.get_active()=}  {segr_obj.get_task_status()=}")
 
     # THEN
-    # assert segr_obj._belief_range_len == 9000
-    # assert segr_obj.get_belief_nigh_mod_div() == 200
+    # assert segr_obj._fact_range_len == 9000
+    # assert segr_obj.get_fact_nigh_mod_div() == 200
     assert segr_obj.get_active()
     assert segr_obj.get_task_status()
 
 
-def test_premisebeliefstatusdata_CorrectlyCalculates_active_AndTaskStatusExample_02():
+def test_premisefactstatusdata_CorrectlyCalculates_active_AndTaskStatusExample_02():
     # GIVEN / WHEN
     segr_obj = premisestatusfinder_shop(
         premise_open=1305.0,
         premise_nigh=1305.0,
         premise_divisor=1440,
-        belief_open_full=1300,
-        belief_nigh_full=1400,
+        fact_open_full=1300,
+        fact_nigh_full=1400,
     )
-    print(f"----\n  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=}")
+    print(f"----\n  {segr_obj.fact_open_full=}  {segr_obj.fact_nigh_full=}")
     print(
         f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
     )
     print(
-        f"  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=} \tdifference:{segr_obj.belief_nigh_full-segr_obj.belief_open_full}"
+        f"  {segr_obj.fact_open_full=}  {segr_obj.fact_nigh_full=} \tdifference:{segr_obj.fact_nigh_full-segr_obj.fact_open_full}"
     )
     print(f"  {segr_obj.get_active()=}  {segr_obj.get_task_status()=}")
 
@@ -604,21 +604,21 @@ def test_premisebeliefstatusdata_CorrectlyCalculates_active_AndTaskStatusExample
     assert segr_obj.get_task_status()
 
 
-def test_premisebeliefstatusdata_CorrectlyCalculates_active_AndTaskStatusExample_03():
+def test_premisefactstatusdata_CorrectlyCalculates_active_AndTaskStatusExample_03():
     # GIVEN / WHEN
     segr_obj = premisestatusfinder_shop(
         premise_open=1305.0,
         premise_nigh=1305.0,
         premise_divisor=1440,
-        belief_open_full=1300,
-        belief_nigh_full=1300,
+        fact_open_full=1300,
+        fact_nigh_full=1300,
     )
-    print(f"----\n  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=}")
+    print(f"----\n  {segr_obj.fact_open_full=}  {segr_obj.fact_nigh_full=}")
     print(
         f"  {segr_obj.premise_open=}  {segr_obj.premise_nigh=}  {segr_obj.premise_divisor=}"
     )
     print(
-        f"  {segr_obj.belief_open_full=}  {segr_obj.belief_nigh_full=} \tdifference:{segr_obj.belief_nigh_full-segr_obj.belief_open_full}"
+        f"  {segr_obj.fact_open_full=}  {segr_obj.fact_nigh_full=} \tdifference:{segr_obj.fact_nigh_full-segr_obj.fact_open_full}"
     )
     print(f"  {segr_obj.get_active()=}  {segr_obj.get_task_status()=}")
 

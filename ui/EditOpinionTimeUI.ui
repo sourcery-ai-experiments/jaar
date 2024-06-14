@@ -33,7 +33,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Reset Current Date for entire factunit (American standard)</string>
+    <string>Reset Current Date for entire ideaunit (American standard)</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_2">
@@ -213,7 +213,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Reset Previous Date for entire factunit (American standard)</string>
+    <string>Reset Previous Date for entire ideaunit (American standard)</string>
    </property>
   </widget>
   <widget class="QComboBox" name="prev_year">

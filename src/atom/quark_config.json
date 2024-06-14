@@ -1,5 +1,5 @@
 {
-    "agenda_idea_partylink": {
+    "agenda_belief_partylink": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 25
@@ -18,8 +18,8 @@
             }
         },
         "required_args": {
-            "idea_id": {
-                "python_type": "IdeaID",
+            "belief_id": {
+                "python_type": "BeliefID",
                 "sqlite_datatype": "TEXT"
             },
             "party_id": {
@@ -32,7 +32,7 @@
             "quark_order": 12
         }
     },
-    "agenda_ideaunit": {
+    "agenda_beliefunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 27
@@ -43,8 +43,8 @@
         "optional_args": {
         },
         "required_args": {
-            "idea_id": {
-                "python_type": "IdeaID",
+            "belief_id": {
+                "python_type": "BeliefID",
                 "sqlite_datatype": "TEXT"
             }
         },
@@ -53,7 +53,7 @@
             "quark_order": 11
         }
     },
-    "agenda_fact_balancelink": {
+    "agenda_idea_balancelink": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 23
@@ -72,8 +72,8 @@
             }
         },
         "required_args": {
-            "idea_id": {
-                "python_type": "IdeaID",
+            "belief_id": {
+                "python_type": "BeliefID",
                 "sqlite_datatype": "TEXT"
             },
             "road": {
@@ -86,7 +86,7 @@
             "quark_order": 14
         }
     },
-    "agenda_fact_beliefunit": {
+    "agenda_idea_factunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 20
@@ -123,7 +123,7 @@
             "quark_order": 15
         }
     },
-    "agenda_fact_healerhold": {
+    "agenda_idea_healerhold": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 22
@@ -133,8 +133,8 @@
         },
         "optional_args": {},
         "required_args": {
-            "idea_id": {
-                "python_type": "IdeaID",
+            "belief_id": {
+                "python_type": "BeliefID",
                 "sqlite_datatype": "TEXT"
             },
             "road": {
@@ -144,7 +144,7 @@
         },
         "treasury_only": false
     },
-    "agenda_fact_reason_premiseunit": {
+    "agenda_idea_reason_premiseunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 18
@@ -185,7 +185,7 @@
             "quark_order": 16
         }
     },
-    "agenda_fact_reasonunit": {
+    "agenda_idea_reasonunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 19
@@ -194,7 +194,7 @@
             "quark_order": 8
         },
         "optional_args": {
-            "suff_fact_active": {
+            "suff_idea_active": {
                 "python_type": "bool",
                 "sqlite_datatype": "INTEGER"
             }
@@ -214,7 +214,7 @@
             "quark_order": 17
         }
     },
-    "agenda_fact_suffidea": {
+    "agenda_idea_suffbelief": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 21
@@ -224,8 +224,8 @@
         },
         "optional_args": {},
         "required_args": {
-            "idea_id": {
-                "python_type": "IdeaID",
+            "belief_id": {
+                "python_type": "BeliefID",
                 "sqlite_datatype": "TEXT"
             },
             "road": {
@@ -235,7 +235,7 @@
         },
         "treasury_only": false
     },
-    "agenda_factunit": {
+    "agenda_ideaunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 24

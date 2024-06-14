@@ -15,21 +15,21 @@ def test_QuarkUnit_get_dict_ReturnsCorrectObj():
     ball_road = create_road(sports_road, ball_text)
     knee_text = "knee"
     knee_road = create_road("a", knee_text)
-    x_category = "agenda_fact_beliefunit"
+    x_category = "agenda_idea_factunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"
     nigh_text = "nigh"
     knee_open = 7
     knee_nigh = 13
-    insert_beliefunit_quarkunit = quarkunit_shop(x_category, quark_insert())
-    insert_beliefunit_quarkunit.set_required_arg(road_text, ball_road)
-    insert_beliefunit_quarkunit.set_required_arg(base_text, knee_road)
-    insert_beliefunit_quarkunit.set_optional_arg(open_text, knee_open)
-    insert_beliefunit_quarkunit.set_optional_arg(nigh_text, knee_nigh)
+    insert_factunit_quarkunit = quarkunit_shop(x_category, quark_insert())
+    insert_factunit_quarkunit.set_required_arg(road_text, ball_road)
+    insert_factunit_quarkunit.set_required_arg(base_text, knee_road)
+    insert_factunit_quarkunit.set_optional_arg(open_text, knee_open)
+    insert_factunit_quarkunit.set_optional_arg(nigh_text, knee_nigh)
 
     # WHEN
-    quark_dict = insert_beliefunit_quarkunit.get_dict()
+    quark_dict = insert_factunit_quarkunit.get_dict()
 
     # THEN
     assert quark_dict == {
@@ -48,21 +48,21 @@ def test_QuarkUnit_get_json_ReturnsCorrectObj():
     ball_road = create_road(sports_road, ball_text)
     knee_text = "knee"
     knee_road = create_road("a", knee_text)
-    x_category = "agenda_fact_beliefunit"
+    x_category = "agenda_idea_factunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"
     nigh_text = "nigh"
     knee_open = 7
     knee_nigh = 13
-    insert_beliefunit_quarkunit = quarkunit_shop(x_category, quark_insert())
-    insert_beliefunit_quarkunit.set_required_arg(road_text, ball_road)
-    insert_beliefunit_quarkunit.set_required_arg(base_text, knee_road)
-    insert_beliefunit_quarkunit.set_optional_arg(open_text, knee_open)
-    insert_beliefunit_quarkunit.set_optional_arg(nigh_text, knee_nigh)
+    insert_factunit_quarkunit = quarkunit_shop(x_category, quark_insert())
+    insert_factunit_quarkunit.set_required_arg(road_text, ball_road)
+    insert_factunit_quarkunit.set_required_arg(base_text, knee_road)
+    insert_factunit_quarkunit.set_optional_arg(open_text, knee_open)
+    insert_factunit_quarkunit.set_optional_arg(nigh_text, knee_nigh)
 
     # WHEN
-    quark_json = insert_beliefunit_quarkunit.get_json()
+    quark_json = insert_factunit_quarkunit.get_json()
 
     # THEN
     assert x_is_json(quark_json)
@@ -76,7 +76,7 @@ def test_quarkunit_get_from_json_ReturnsCorrectObj():
     ball_road = create_road(sports_road, ball_text)
     knee_text = "knee"
     knee_road = create_road("a", knee_text)
-    x_category = "agenda_fact_beliefunit"
+    x_category = "agenda_idea_factunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"

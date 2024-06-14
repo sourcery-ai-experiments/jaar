@@ -23,7 +23,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add Idea</string>
+    <string>Add Belief</string>
    </property>
   </widget>
   <widget class="QPushButton" name="bd_abolish_button">
@@ -36,7 +36,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Abolish Idea</string>
+    <string>Abolish Belief</string>
    </property>
   </widget>
   <widget class="QLabel" name="label">
@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Party is party of these Ideas</string>
+    <string>Party is party of these Beliefs</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -65,7 +65,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Party is not party of these Ideas</string>
+    <string>Party is not party of these Beliefs</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -102,7 +102,7 @@
    </property>
    <column>
     <property name="text">
-     <string>Idea</string>
+     <string>Belief</string>
     </property>
    </column>
    <column>
@@ -137,7 +137,7 @@
    </property>
    <column>
     <property name="text">
-     <string>Idea</string>
+     <string>Belief</string>
     </property>
    </column>
    <column>
@@ -177,7 +177,7 @@
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="party2idea_weight_edit">
+  <widget class="QLineEdit" name="party2belief_weight_edit">
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -197,7 +197,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Update Party's Weight in Idea to:</string>
+    <string>Update Party's Weight in Belief to:</string>
    </property>
   </widget>
   <widget class="QPushButton" name="bd_insert_button">
@@ -210,7 +210,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Create Idea</string>
+    <string>Create Belief</string>
    </property>
   </widget>
   <widget class="QLineEdit" name="bd_new_edit">
@@ -233,7 +233,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Delete Idea</string>
+    <string>Delete Belief</string>
    </property>
   </widget>
   <widget class="QLabel" name="label_3">
@@ -246,7 +246,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>New Idea PID:</string>
+    <string>New Belief PID:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -262,7 +262,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Modification Idea PID:</string>
+    <string>Modification Belief PID:</string>
    </property>
    <property name="alignment">
     <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -288,7 +288,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Update Idea</string>
+    <string>Update Belief</string>
    </property>
   </widget>
  </widget>

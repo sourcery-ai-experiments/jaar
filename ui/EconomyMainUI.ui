@@ -532,7 +532,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_ideas_table">
+   <widget class="QTableWidget" name="w_beliefs_table">
     <property name="geometry">
      <rect>
       <x>1000</x>
@@ -548,7 +548,7 @@
     </property>
     <column>
      <property name="text">
-      <string>owner_ids Ideas</string>
+      <string>owner_ids Beliefs</string>
      </property>
     </column>
     <column>
@@ -562,7 +562,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_facts_table">
+   <widget class="QTableWidget" name="w_ideas_table">
     <property name="geometry">
      <rect>
       <x>600</x>
@@ -578,12 +578,12 @@
     </property>
     <column>
      <property name="text">
-      <string>owner_id Facts</string>
+      <string>owner_id Ideas</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Fact parent_road</string>
+      <string>Idea parent_road</string>
      </property>
     </column>
     <column>
@@ -592,7 +592,7 @@
      </property>
     </column>
    </widget>
-   <widget class="QTableWidget" name="w_beliefs_table">
+   <widget class="QTableWidget" name="w_facts_table">
     <property name="geometry">
      <rect>
       <x>1180</x>
@@ -608,12 +608,12 @@
     </property>
     <column>
      <property name="text">
-      <string>Beliefs Base</string>
+      <string>Facts Base</string>
      </property>
     </column>
     <column>
      <property name="text">
-      <string>Beliefs Belief</string>
+      <string>Facts Fact</string>
      </property>
     </column>
     <column>

@@ -16,7 +16,7 @@ class InvalidReasonException(Exception):
 
 
 @dataclass
-class BeliefCore:
+class FactCore:
     base: RoadUnit
     pick: RoadUnit
     open: float = None
@@ -57,87 +57,87 @@ class BeliefCore:
     def get_obj_key(self):
         return self.base
 
-    def meld(self, other_beliefcore, same_reason: bool = False):
-        if same_reason and other_beliefcore.base != self.base:
+    def meld(self, other_factcore, same_reason: bool = False):
+        if same_reason and other_factcore.base != self.base:
             raise InvalidReasonException(
-                f"Meld fail: base={other_beliefcore.base} is different {self.base=}"
+                f"Meld fail: base={other_factcore.base} is different {self.base=}"
             )
-        elif same_reason and other_beliefcore.pick != self.pick:
+        elif same_reason and other_factcore.pick != self.pick:
             raise InvalidReasonException(
-                f"Meld fail: pick={other_beliefcore.pick} is different {self.pick=}"
+                f"Meld fail: pick={other_factcore.pick} is different {self.pick=}"
             )
-        elif same_reason and other_beliefcore.open != self.open:
+        elif same_reason and other_factcore.open != self.open:
             raise InvalidReasonException(
-                f"Meld fail: base={other_beliefcore.base} open={other_beliefcore.open} is different {self.open=}"
+                f"Meld fail: base={other_factcore.base} open={other_factcore.open} is different {self.open=}"
             )
-        elif same_reason and other_beliefcore.nigh != self.nigh:
+        elif same_reason and other_factcore.nigh != self.nigh:
             raise InvalidReasonException(
-                f"Meld fail: base={other_beliefcore.base} nigh={other_beliefcore.nigh} is different {self.nigh=}"
+                f"Meld fail: base={other_factcore.base} nigh={other_factcore.nigh} is different {self.nigh=}"
             )
         else:
-            self.base = other_beliefcore.base
-            self.pick = other_beliefcore.pick
-            self.open = other_beliefcore.open
-            self.nigh = other_beliefcore.nigh
+            self.base = other_factcore.base
+            self.pick = other_factcore.pick
+            self.open = other_factcore.open
+            self.nigh = other_factcore.nigh
         return self
 
 
 @dataclass
-class BeliefUnit(BeliefCore):
+class FactUnit(FactCore):
     pass
 
 
-# class BeliefUnitsshop:
-def beliefunits_get_from_dict(x_dict: dict):
-    beliefs = {}
-    for belief_dict in x_dict.values():
-        x_base = belief_dict["base"]
-        x_pick = belief_dict["pick"]
+# class FactUnitsshop:
+def factunits_get_from_dict(x_dict: dict):
+    facts = {}
+    for fact_dict in x_dict.values():
+        x_base = fact_dict["base"]
+        x_pick = fact_dict["pick"]
 
         try:
-            x_open = belief_dict["open"]
+            x_open = fact_dict["open"]
         except KeyError:
             x_open = None
         try:
-            x_nigh = belief_dict["nigh"]
+            x_nigh = fact_dict["nigh"]
         except KeyError:
             x_nigh = None
 
-        x_belief = beliefunit_shop(
+        x_fact = factunit_shop(
             base=x_base,
             pick=x_pick,
             open=x_open,
             nigh=x_nigh,
         )
 
-        beliefs[x_belief.base] = x_belief
-    return beliefs
+        facts[x_fact.base] = x_fact
+    return facts
 
 
-def beliefunit_shop(
+def factunit_shop(
     base: RoadUnit = None, pick: RoadUnit = None, open: float = None, nigh: float = None
-) -> BeliefUnit:
-    return BeliefUnit(base=base, pick=pick, open=open, nigh=nigh)
+) -> FactUnit:
+    return FactUnit(base=base, pick=pick, open=open, nigh=nigh)
 
 
 @dataclass
-class BeliefHeir(BeliefCore):
-    def transform(self, beliefunit: BeliefUnit):
+class FactHeir(FactCore):
+    def transform(self, factunit: FactUnit):
         if (
-            (self.open != None and beliefunit.open != None and self.nigh != None)
-            and self.open <= beliefunit.open
-            and self.nigh >= beliefunit.open
+            (self.open != None and factunit.open != None and self.nigh != None)
+            and self.open <= factunit.open
+            and self.nigh >= factunit.open
         ):
-            self.open = beliefunit.open
+            self.open = factunit.open
 
     def is_range(self):
         return self.open != None and self.nigh != None
 
 
-def beliefheir_shop(
+def factheir_shop(
     base: RoadUnit = None, pick: RoadUnit = None, open: float = None, nigh: float = None
-) -> BeliefHeir:
-    return BeliefHeir(base=base, pick=pick, open=open, nigh=nigh)
+) -> FactHeir:
+    return FactHeir(base=base, pick=pick, open=open, nigh=nigh)
 
 
 class PremiseStatusFinderException(Exception):
@@ -149,22 +149,22 @@ class PremiseStatusFinder:
     premise_open: float  # within 0 and divisor, can be more than premise_nigh
     premise_nigh: float  # within 0 and divisor, can be less than premise_open
     premise_divisor: float  # greater than zero
-    belief_open_full: float  # less than belief nigh
-    belief_nigh_full: float  # less than belief nigh
+    fact_open_full: float  # less than fact nigh
+    fact_nigh_full: float  # less than fact nigh
 
     def check_attr(self):
         if None in (
             self.premise_open,
             self.premise_nigh,
             self.premise_divisor,
-            self.belief_open_full,
-            self.belief_nigh_full,
+            self.fact_open_full,
+            self.fact_nigh_full,
         ):
             raise PremiseStatusFinderException("No parameter can be None")
 
-        if self.belief_open_full > self.belief_nigh_full:
+        if self.fact_open_full > self.fact_nigh_full:
             raise PremiseStatusFinderException(
-                f"{self.belief_open_full=} cannot be greater that {self.belief_nigh_full=}"
+                f"{self.fact_open_full=} cannot be greater that {self.fact_nigh_full=}"
             )
 
         if self.premise_divisor <= 0:
@@ -183,10 +183,10 @@ class PremiseStatusFinder:
             )
 
     def bo(self) -> float:
-        return self.belief_open_full % self.premise_divisor
+        return self.fact_open_full % self.premise_divisor
 
     def bn(self) -> float:
-        return self.belief_nigh_full % self.premise_divisor
+        return self.fact_nigh_full % self.premise_divisor
 
     def po(self) -> float:
         return self.premise_open
@@ -198,7 +198,7 @@ class PremiseStatusFinder:
         return self.premise_divisor
 
     def get_active(self) -> bool:
-        if self.belief_nigh_full - self.belief_open_full > self.premise_divisor:
+        if self.fact_nigh_full - self.fact_open_full > self.premise_divisor:
             return True
         # Case B1
         elif get_range_less_than_divisor_active(
@@ -212,11 +212,11 @@ class PremiseStatusFinder:
         return bool(
             (
                 self.get_active()
-                and get_collasped_beliefrange_active(
+                and get_collasped_factrange_active(
                     self.premise_open,
                     self.premise_nigh,
                     self.premise_divisor,
-                    self.belief_nigh_full,
+                    self.fact_nigh_full,
                 )
                 is False
             )
@@ -263,18 +263,18 @@ def get_range_less_than_divisor_active(bo, bn, po, pn):
     return x_bool
 
 
-def get_collasped_beliefrange_active(
+def get_collasped_factrange_active(
     premise_open: float,
     premise_nigh: float,
     premise_divisor: float,
-    belief_nigh_full: float,
+    fact_nigh_full: float,
 ) -> bool:
     x_pbsd = premisestatusfinder_shop(
         premise_open=premise_open,
         premise_nigh=premise_nigh,
         premise_divisor=premise_divisor,
-        belief_open_full=belief_nigh_full,
-        belief_nigh_full=belief_nigh_full,
+        fact_open_full=fact_nigh_full,
+        fact_nigh_full=fact_nigh_full,
     )
     return x_pbsd.get_active()
 
@@ -283,11 +283,15 @@ def premisestatusfinder_shop(
     premise_open: float,
     premise_nigh: float,
     premise_divisor: float,
-    belief_open_full: float,
-    belief_nigh_full: float,
+    fact_open_full: float,
+    fact_nigh_full: float,
 ):
     x_premisestatusfinder = PremiseStatusFinder(
-        premise_open, premise_nigh, premise_divisor, belief_open_full, belief_nigh_full
+        premise_open,
+        premise_nigh,
+        premise_divisor,
+        fact_open_full,
+        fact_nigh_full,
     )
     x_premisestatusfinder.check_attr()
     return x_premisestatusfinder
@@ -328,28 +332,28 @@ class PremiseUnit:
             road=self.need, old_delimiter=old_delimiter, new_delimiter=self.delimiter
         )
 
-    def is_in_lineage(self, belief_pick: RoadUnit):
+    def is_in_lineage(self, fact_pick: RoadUnit):
         return is_heir_road(
-            src=self.need, heir=belief_pick, delimiter=self.delimiter
-        ) or is_heir_road(src=belief_pick, heir=self.need, delimiter=self.delimiter)
+            src=self.need, heir=fact_pick, delimiter=self.delimiter
+        ) or is_heir_road(src=fact_pick, heir=self.need, delimiter=self.delimiter)
 
-    def set_status(self, x_beliefheir: BeliefHeir):
-        self._status = self._get_active(beliefheir=x_beliefheir)
-        self._task = self._get_task_status(beliefheir=x_beliefheir)
+    def set_status(self, x_factheir: FactHeir):
+        self._status = self._get_active(factheir=x_factheir)
+        self._task = self._get_task_status(factheir=x_factheir)
 
-    def _get_active(self, beliefheir: BeliefHeir):
+    def _get_active(self, factheir: FactHeir):
         x_status = None
-        # status might be true if premise is in lineage of belief
-        if beliefheir is None:
+        # status might be true if premise is in lineage of fact
+        if factheir is None:
             x_status = False
-        elif self.is_in_lineage(belief_pick=beliefheir.pick) == True:
+        elif self.is_in_lineage(fact_pick=factheir.pick) == True:
             if self._is_range_or_segregate() is False:
                 x_status = True
-            elif self._is_range_or_segregate() and beliefheir.is_range() is False:
+            elif self._is_range_or_segregate() and factheir.is_range() is False:
                 x_status = False
-            elif self._is_range_or_segregate() and beliefheir.is_range():
-                x_status = self._get_range_segregate_status(beliefheir=beliefheir)
-        elif self.is_in_lineage(belief_pick=beliefheir.pick) is False:
+            elif self._is_range_or_segregate() and factheir.is_range():
+                x_status = self._get_range_segregate_status(factheir=factheir)
+        elif self.is_in_lineage(fact_pick=factheir.pick) is False:
             x_status = False
 
         return x_status
@@ -363,17 +367,17 @@ class PremiseUnit:
     def _is_range(self):
         return self.divisor is None and self.open != None and self.nigh != None
 
-    def _get_task_status(self, beliefheir: BeliefHeir) -> bool:
+    def _get_task_status(self, factheir: FactHeir) -> bool:
         x_task = None
         if self._status and self._is_range():
-            x_task = beliefheir.nigh > self.nigh
+            x_task = factheir.nigh > self.nigh
         elif self._status and self._is_segregate():
             segr_obj = premisestatusfinder_shop(
                 premise_open=self.open,
                 premise_nigh=self.nigh,
                 premise_divisor=self.divisor,
-                belief_open_full=beliefheir.open,
-                belief_nigh_full=beliefheir.nigh,
+                fact_open_full=factheir.open,
+                fact_nigh_full=factheir.nigh,
             )
             x_task = segr_obj.get_task_status()
         elif self._status in [True, False]:
@@ -381,30 +385,30 @@ class PremiseUnit:
 
         return x_task
 
-    def _get_range_segregate_status(self, beliefheir: BeliefHeir) -> bool:
+    def _get_range_segregate_status(self, factheir: FactHeir) -> bool:
         x_status = None
         if self._is_range():
-            x_status = self._get_range_status(beliefheir=beliefheir)
+            x_status = self._get_range_status(factheir=factheir)
         elif self._is_segregate():
-            x_status = self._get_segregate_status(beliefheir=beliefheir)
+            x_status = self._get_segregate_status(factheir=factheir)
 
         return x_status
 
-    def _get_segregate_status(self, beliefheir: BeliefHeir) -> bool:
+    def _get_segregate_status(self, factheir: FactHeir) -> bool:
         segr_obj = premisestatusfinder_shop(
             premise_open=self.open,
             premise_nigh=self.nigh,
             premise_divisor=self.divisor,
-            belief_open_full=beliefheir.open,
-            belief_nigh_full=beliefheir.nigh,
+            fact_open_full=factheir.open,
+            fact_nigh_full=factheir.nigh,
         )
         return segr_obj.get_active()
 
-    def _get_range_status(self, beliefheir: BeliefHeir) -> bool:
+    def _get_range_status(self, factheir: FactHeir) -> bool:
         return (
-            (self.open <= beliefheir.open and self.nigh > beliefheir.open)
-            or (self.open <= beliefheir.nigh and self.nigh > beliefheir.nigh)
-            or (self.open >= beliefheir.open and self.nigh < beliefheir.nigh)
+            (self.open <= factheir.open and self.nigh > factheir.open)
+            or (self.open <= factheir.nigh and self.nigh > factheir.nigh)
+            or (self.open >= factheir.open and self.nigh < factheir.nigh)
         )
 
     def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
@@ -478,7 +482,7 @@ def premises_get_from_dict(x_dict: dict) -> dict[str:PremiseUnit]:
 class ReasonCore:
     base: RoadUnit
     premises: dict[RoadUnit:PremiseUnit]
-    suff_fact_active: bool = None
+    suff_idea_active: bool = None
     delimiter: str = None
 
     def set_delimiter(self, new_delimiter: str):
@@ -549,13 +553,13 @@ class ReasonCore:
 def reasoncore_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_fact_active: bool = None,
+    suff_idea_active: bool = None,
     delimiter: str = None,
 ):
     return ReasonCore(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_fact_active=suff_fact_active,
+        suff_idea_active=suff_idea_active,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -570,21 +574,21 @@ class ReasonUnit(ReasonCore):
         x_dict = {"base": self.base}
         if premises_dict != {}:
             x_dict["premises"] = premises_dict
-        if self.suff_fact_active != None:
-            x_dict["suff_fact_active"] = self.suff_fact_active
+        if self.suff_idea_active != None:
+            x_dict["suff_idea_active"] = self.suff_idea_active
         return x_dict
 
 
 def reasonunit_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_fact_active: bool = None,
+    suff_idea_active: bool = None,
     delimiter: str = None,
 ):
     return ReasonUnit(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_fact_active=suff_fact_active,
+        suff_idea_active=suff_idea_active,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -593,7 +597,7 @@ def reasonunit_shop(
 class ReasonHeir(ReasonCore):
     _status: bool = None
     _task: bool = None
-    _base_fact_active: bool = None
+    _base_idea_active: bool = None
 
     def inherit_from_reasonheir(self, x_reasonunit: ReasonUnit):
         x_premises = {}
@@ -612,28 +616,28 @@ class ReasonHeir(ReasonCore):
         for premise in self.premises.values():
             premise.clear_status()
 
-    def _set_premise_status(self, beliefheir: BeliefHeir):
+    def _set_premise_status(self, factheir: FactHeir):
         for premise in self.premises.values():
-            premise.set_status(x_beliefheir=beliefheir)
+            premise.set_status(x_factheir=factheir)
 
-    def _get_base_belief(self, beliefs: dict[RoadUnit:BeliefHeir]) -> BeliefHeir:
-        x_belief = None
-        if beliefs is None:
-            beliefs = {}
+    def _get_base_fact(self, facts: dict[RoadUnit:FactHeir]) -> FactHeir:
+        x_fact = None
+        if facts is None:
+            facts = {}
 
-        for belief in beliefs.values():
-            if self.base == belief.base:
-                x_belief = belief
+        for fact in facts.values():
+            if self.base == fact.base:
+                x_fact = fact
 
-        return x_belief
+        return x_fact
 
-    def set_base_fact_active(self, bool_x: bool):
-        self._base_fact_active = bool_x
+    def set_base_idea_active(self, bool_x: bool):
+        self._base_idea_active = bool_x
 
-    def set_status(self, beliefs: dict[RoadUnit:BeliefHeir]):
+    def set_status(self, facts: dict[RoadUnit:FactHeir]):
         self.clear_status()
-        belief = self._get_base_belief(beliefs=beliefs)
-        self._set_premise_status(beliefheir=belief)
+        fact = self._get_base_fact(facts=facts)
+        self._set_premise_status(factheir=fact)
 
         # if a single one is true return true (OR operator)
         is_a_single_premise_true = False
@@ -648,8 +652,8 @@ class ReasonHeir(ReasonCore):
         self._status = bool(
             is_a_single_premise_true
             or (
-                self._base_fact_active != None
-                and self._base_fact_active == self.suff_fact_active
+                self._base_idea_active != None
+                and self._base_idea_active == self.suff_idea_active
             )
         )
         self._task = True if is_single_task_true else None
@@ -660,19 +664,19 @@ class ReasonHeir(ReasonCore):
 def reasonheir_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_fact_active: bool = None,
+    suff_idea_active: bool = None,
     _status: bool = None,
     _task: bool = None,
-    _base_fact_active: bool = None,
+    _base_idea_active: bool = None,
     delimiter: str = None,
 ):
     return ReasonHeir(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_fact_active=suff_fact_active,
+        suff_idea_active=suff_idea_active,
         _status=_status,
         _task=_task,
-        _base_fact_active=_base_fact_active,
+        _base_idea_active=_base_idea_active,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -686,7 +690,7 @@ def reasons_get_from_dict(reasons_dict: dict) -> dict[RoadUnit:ReasonUnit]:
             x_reasonunit.premises = premises_get_from_dict(
                 x_dict=reason_dict["premises"]
             )
-        if reason_dict.get("suff_fact_active") != None:
-            x_reasonunit.suff_fact_active = reason_dict.get("suff_fact_active")
+        if reason_dict.get("suff_idea_active") != None:
+            x_reasonunit.suff_idea_active = reason_dict.get("suff_idea_active")
         x_dict[x_reasonunit.base] = x_reasonunit
     return x_dict

@@ -49,19 +49,19 @@ def get_agenda_intent_dataframe(
                 "_reest",
             ]
         )
-    x_fact_list = []
-    for x_fact in intent_dict.values():
-        fact_dict = {
+    x_idea_list = []
+    for x_idea in intent_dict.values():
+        idea_dict = {
             "owner_id": x_agenda._owner_id,
-            "agenda_importance": x_fact._agenda_importance,
-            "_label": x_fact._label,
-            "_parent_road": x_fact._parent_road,
-            "_begin": x_fact._begin,
-            "_close": x_fact._close,
-            "_addin": x_fact._addin,
-            "_denom": x_fact._denom,
-            "_numor": x_fact._numor,
-            "_reest": x_fact._reest,
+            "agenda_importance": x_idea._agenda_importance,
+            "_label": x_idea._label,
+            "_parent_road": x_idea._parent_road,
+            "_begin": x_idea._begin,
+            "_close": x_idea._close,
+            "_addin": x_idea._addin,
+            "_denom": x_idea._denom,
+            "_numor": x_idea._numor,
+            "_reest": x_idea._reest,
         }
-        x_fact_list.append(fact_dict)
-    return DataFrame(x_fact_list)
+        x_idea_list.append(idea_dict)
+    return DataFrame(x_idea_list)

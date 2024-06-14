@@ -21,14 +21,14 @@ from src.money.treasury_sqlstr import (
     RiverLedgerUnit,
     RiverBlockUnit,
     PartyTreasuryUnit,
-    FactCatalog,
-    get_agenda_factunit_table_insert_sqlstr,
-    get_agenda_factunit_dict,
-    BeliefCatalog,
-    get_agenda_fact_beliefunit_table_insert_sqlstr,
-    IdeaUnitCatalog,
+    IdeaCatalog,
     get_agenda_ideaunit_table_insert_sqlstr,
     get_agenda_ideaunit_dict,
+    FactCatalog,
+    get_agenda_idea_factunit_table_insert_sqlstr,
+    BeliefUnitCatalog,
+    get_agenda_beliefunit_table_insert_sqlstr,
+    get_agenda_beliefunit_dict,
     get_agendatreasuryunits_dict,
     get_agendaunit_update_sqlstr,
     CalendarReport,
@@ -174,9 +174,9 @@ class MoneyUnit:
 
             self._treasury_insert_agendaunit(agendaunit_x)
             self._treasury_insert_partyunit(agendaunit_x)
+            self._treasury_insert_beliefunit(agendaunit_x)
             self._treasury_insert_ideaunit(agendaunit_x)
-            self._treasury_insert_factunit(agendaunit_x)
-            self._treasury_insert_belief(agendaunit_x)
+            self._treasury_insert_fact(agendaunit_x)
 
     def _treasury_insert_agendaunit(self, agendaunit_x: AgendaUnit):
         with self.get_treasury_conn() as treasury_conn:
@@ -196,38 +196,38 @@ class MoneyUnit:
                 )
                 cur.execute(sqlstr)
 
+    def _treasury_insert_beliefunit(self, agendaunit_x: AgendaUnit):
+        with self.get_treasury_conn() as treasury_conn:
+            cur = treasury_conn.cursor()
+            for beliefunit_x in agendaunit_x._beliefs.values():
+                agenda_beliefunit_x = BeliefUnitCatalog(
+                    owner_id=agendaunit_x._owner_id,
+                    beliefunit_belief_id=beliefunit_x.belief_id,
+                )
+                sqlstr = get_agenda_beliefunit_table_insert_sqlstr(agenda_beliefunit_x)
+                cur.execute(sqlstr)
+
     def _treasury_insert_ideaunit(self, agendaunit_x: AgendaUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for ideaunit_x in agendaunit_x._ideas.values():
-                agenda_ideaunit_x = IdeaUnitCatalog(
-                    owner_id=agendaunit_x._owner_id,
-                    ideaunit_idea_id=ideaunit_x.idea_id,
+            for idea_x in agendaunit_x._idea_dict.values():
+                agenda_ideaunit_x = IdeaCatalog(
+                    agendaunit_x._owner_id, idea_x.get_road()
                 )
                 sqlstr = get_agenda_ideaunit_table_insert_sqlstr(agenda_ideaunit_x)
                 cur.execute(sqlstr)
 
-    def _treasury_insert_factunit(self, agendaunit_x: AgendaUnit):
+    def _treasury_insert_fact(self, agendaunit_x: AgendaUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for fact_x in agendaunit_x._fact_dict.values():
-                agenda_factunit_x = FactCatalog(
-                    agendaunit_x._owner_id, fact_x.get_road()
-                )
-                sqlstr = get_agenda_factunit_table_insert_sqlstr(agenda_factunit_x)
-                cur.execute(sqlstr)
-
-    def _treasury_insert_belief(self, agendaunit_x: AgendaUnit):
-        with self.get_treasury_conn() as treasury_conn:
-            cur = treasury_conn.cursor()
-            for belief_x in agendaunit_x._factroot._beliefunits.values():
-                agenda_fact_beliefunit_x = BeliefCatalog(
+            for fact_x in agendaunit_x._idearoot._factunits.values():
+                agenda_idea_factunit_x = FactCatalog(
                     owner_id=agendaunit_x._owner_id,
-                    base=belief_x.base,
-                    pick=belief_x.pick,
+                    base=fact_x.base,
+                    pick=fact_x.pick,
                 )
-                sqlstr = get_agenda_fact_beliefunit_table_insert_sqlstr(
-                    agenda_fact_beliefunit_x
+                sqlstr = get_agenda_idea_factunit_table_insert_sqlstr(
+                    agenda_idea_factunit_x
                 )
                 cur.execute(sqlstr)
 
@@ -258,7 +258,7 @@ class MoneyUnit:
     def insert_intent_into_treasury(
         self, x_agendaunit: AgendaUnit, x_calendarreport: CalendarReport
     ):
-        if x_agendaunit.fact_exists(x_calendarreport.time_road) is False:
+        if x_agendaunit.idea_exists(x_calendarreport.time_road) is False:
             raise IntentBaseDoesNotExistException(
                 f"Intent base cannot be '{x_calendarreport.time_road}' because it does not exist in agenda '{x_agendaunit._owner_id}'."
             )
@@ -269,7 +269,7 @@ class MoneyUnit:
             del_sqlstr = get_calendar_table_delete_sqlstr(x_calendarreport.owner_id)
             cur.execute(del_sqlstr)
             for _ in range(x_calendarreport.interval_count):
-                x_agendaunit.set_belief(
+                x_agendaunit.set_fact(
                     base=x_calendarreport.time_road,
                     pick=x_calendarreport.time_road,
                     open=x_calendarreport.get_interval_begin(_),
@@ -283,7 +283,7 @@ class MoneyUnit:
                         calendarreport=x_calendarreport,
                         time_begin=x_calendarreport.get_interval_begin(_),
                         time_close=x_calendarreport.get_interval_close(_),
-                        intent_fact_road=intent_item.get_road(),
+                        intent_idea_road=intent_item.get_road(),
                         intent_weight=intent_item._agenda_importance,
                         task=intent_item._task,
                     )
