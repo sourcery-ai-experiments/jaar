@@ -1,6 +1,7 @@
 from src.atom.quark_config import (
     get_normalized_agenda_table_build,
     normal_table_name_text,
+    normal_specs_text,
     columns_text,
     sqlite_datatype_text,
 )
@@ -20,8 +21,13 @@ from src.normal_db.normal_models import (
 from sqlalchemy import inspect
 
 
+def get_config_table_name(config_category) -> str:
+    config_specs_dict = config_category.get(normal_specs_text())
+    return config_specs_dict.get(normal_table_name_text())
+
+
 def all_columns_are_as_config_requires(mapper, config_category):
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     config_columns = config_category.get(columns_text())
 
     for config_column, column_dict in config_columns.items():
@@ -38,7 +44,7 @@ def all_columns_are_as_config_requires(mapper, config_category):
 
 
 def print_out_expected_class_attribute_declarations(config_category):
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     config_columns = config_category.get(columns_text())
 
     print(f"Table {config_table_name}")
@@ -61,7 +67,7 @@ def test_normalized_table_AgendaTable_Exists():
     mapper = inspect(AgendaTable)
 
     # WHEN / THEN
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     assert config_table_name == "agenda"
     assert config_table_name == AgendaTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
@@ -74,7 +80,7 @@ def test_normalized_table_PartyUnitTable_Exists():
     # print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     assert config_table_name == "partyunit"
     assert config_table_name == PartyUnitTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
@@ -87,7 +93,7 @@ def test_normalized_table_BeliefTable_Exists():
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     assert config_table_name == "beliefunit"
     assert config_table_name == BeliefTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
@@ -100,7 +106,7 @@ def test_normalized_table_PartyLinkTable_partylink_Exists():
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     assert config_table_name == "partylink"
     assert config_table_name == PartyLinkTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
@@ -113,7 +119,7 @@ def test_normalized_table_IdeaTable_idea_Exists():
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     assert config_table_name == "idea"
     assert config_table_name == IdeaTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
@@ -126,7 +132,7 @@ def test_normalized_table_BalanceLinkTable_balancelink_Exists():
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     assert config_table_name == "balancelink"
     assert config_table_name == BalanceLinkTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
@@ -139,7 +145,7 @@ def test_normalized_table_ReasonTable_reason_Exists():
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     assert config_table_name == "reason"
     assert config_table_name == ReasonTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
@@ -154,7 +160,7 @@ def test_normalized_table_PremiseTable_premise_Exists():
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     assert config_table_name == "premise"
     assert config_table_name == PremiseTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
@@ -167,7 +173,7 @@ def test_normalized_table_SuffBeliefTable_suffbelief_Exists():
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     assert config_table_name == "suffbelief"
     assert config_table_name == SuffBeliefTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
@@ -180,7 +186,7 @@ def test_normalized_table_HealerHoldTable_healerhold_Exists():
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     assert config_table_name == "healerhold"
     assert config_table_name == HealerHoldTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
@@ -193,7 +199,7 @@ def test_normalized_table_FactTable_fact_Exists():
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
-    config_table_name = config_category.get(normal_table_name_text())
+    config_table_name = get_config_table_name(config_category)
     assert config_table_name == "fact"
     assert config_table_name == FactTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)

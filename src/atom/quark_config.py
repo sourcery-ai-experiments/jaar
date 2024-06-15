@@ -27,6 +27,10 @@ def quark_mstr_table_name() -> str:
     return "quark_mstr"
 
 
+def normal_specs_text() -> str:
+    return "normal_specs"
+
+
 def normal_table_name_text() -> str:
     return "normal_table_name"
 
@@ -176,15 +180,15 @@ def get_flattened_quark_table_build() -> dict[str:]:
 
 
 def get_normalized_agenda_table_build() -> dict[str : dict[str:]]:
-    agenda_tables = {}
+    normal_tables_dict = {}
     quark_config = get_quark_config_dict()
     for x_category, category_dict in quark_config.items():
-        agenda_tables[x_category] = {}
-        l1_dict = agenda_tables.get(x_category)
-        l1_dict[normal_table_name_text()] = category_dict.get(normal_table_name_text())
-        l1_dict[columns_text()] = {}
-        l2_dict = l1_dict.get(columns_text())
-        l2_dict["uid"] = {
+        normal_tables_dict[x_category] = {}
+        normal_table_dict = normal_tables_dict.get(x_category)
+
+        normal_table_dict[columns_text()] = {}
+        normal_columns_dict = normal_table_dict.get(columns_text())
+        normal_columns_dict["uid"] = {
             sqlite_datatype_text(): "INTEGER",
             nullable_text(): False,
             "primary_key": True,
@@ -193,18 +197,25 @@ def get_normalized_agenda_table_build() -> dict[str : dict[str:]]:
         optional_args = category_dict.get(optional_args_text())
         if required_args != None:
             for required_arg, x_value in required_args.items():
-                l2_dict[required_arg] = {
+                normal_columns_dict[required_arg] = {
                     sqlite_datatype_text(): x_value.get(sqlite_datatype_text()),
                     nullable_text(): False,
                 }
 
         if optional_args != None:
             for optional_arg, x_value in optional_args.items():
-                l2_dict[optional_arg] = {
+                normal_columns_dict[optional_arg] = {
                     sqlite_datatype_text(): x_value.get(sqlite_datatype_text()),
                     nullable_text(): True,
                 }
-    return agenda_tables
+
+        normal_table_dict[normal_specs_text()] = {}
+        normal_specs_dict = normal_table_dict.get(normal_specs_text())
+        config_normal_dict = category_dict.get(normal_specs_text())
+        table_name = config_normal_dict.get(normal_table_name_text())
+        normal_specs_dict[normal_table_name_text()] = table_name
+
+    return normal_tables_dict
 
 
 def save_quark_config_file(quark_config_dict):

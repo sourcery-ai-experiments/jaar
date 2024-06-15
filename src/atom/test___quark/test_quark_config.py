@@ -12,6 +12,7 @@ from src.atom.quark_config import (
     required_args_text,
     optional_args_text,
     normal_table_name_text,
+    normal_specs_text,
     sqlite_datatype_text,
     python_type_text,
     agendaunit_text,
@@ -137,8 +138,8 @@ def check_every_crud_dict_has_element(quark_config_dict, quark_order_text):
             print(f"{category=} {calculated_attrs_text} is missing")
             return False
 
-        if category_dict.get(normal_table_name_text()) is None:
-            print(f"{category=} {normal_table_name_text()} is missing")
+        if category_dict.get(normal_specs_text()) is None:
+            print(f"{category=} {normal_specs_text()} is missing")
             return False
     return True
 
@@ -260,47 +261,85 @@ def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
 
     # THEN
     assert len(nx) == 11
-    assert nx.get(agendaunit_text()) != None
-    assert nx.get(agenda_partyunit_text()) != None
-    assert nx.get(agenda_beliefunit_text()) != None
-    assert nx.get(agenda_belief_partylink_text()) != None
-    assert nx.get(agenda_ideaunit_text()) != None
-    assert nx.get(agenda_idea_balancelink_text()) != None
-    assert nx.get(agenda_idea_reasonunit_text()) != None
-    assert nx.get(agenda_idea_reason_premiseunit_text()) != None
-    assert nx.get(agenda_idea_suffbelief_text()) != None
-    assert nx.get(agenda_idea_healerhold_text()) != None
-    assert nx.get(agenda_idea_factunit_text()) != None
-    agendaunit_cat = nx.get(agendaunit_text())
-    partyunit_cat = nx.get(agenda_partyunit_text())
-    belief_cat = nx.get(agenda_beliefunit_text())
-    partylink_cat = nx.get(agenda_belief_partylink_text())
-    idea_cat = nx.get(agenda_ideaunit_text())
-    balancelink_cat = nx.get(agenda_idea_balancelink_text())
-    reason_cat = nx.get(agenda_idea_reasonunit_text())
-    premise_cat = nx.get(agenda_idea_reason_premiseunit_text())
-    suffbelief_cat = nx.get(agenda_idea_suffbelief_text())
-    healerhold_cat = nx.get(agenda_idea_healerhold_text())
-    fact_cat = nx.get(agenda_idea_factunit_text())
+    cat_agendaunit = nx.get(agendaunit_text())
+    cat_partyunit = nx.get(agenda_partyunit_text())
+    cat_belief = nx.get(agenda_beliefunit_text())
+    cat_partylink = nx.get(agenda_belief_partylink_text())
+    cat_idea = nx.get(agenda_ideaunit_text())
+    cat_balancelink = nx.get(agenda_idea_balancelink_text())
+    cat_reason = nx.get(agenda_idea_reasonunit_text())
+    cat_premise = nx.get(agenda_idea_reason_premiseunit_text())
+    cat_suffbelief = nx.get(agenda_idea_suffbelief_text())
+    cat_healerhold = nx.get(agenda_idea_healerhold_text())
+    cat_fact = nx.get(agenda_idea_factunit_text())
+
+    assert cat_agendaunit != None
+    assert cat_partyunit != None
+    assert cat_belief != None
+    assert cat_partylink != None
+    assert cat_idea != None
+    assert cat_balancelink != None
+    assert cat_reason != None
+    assert cat_premise != None
+    assert cat_suffbelief != None
+    assert cat_healerhold != None
+    assert cat_fact != None
+
+    normal_specs_agendaunit = cat_agendaunit.get(normal_specs_text())
+    normal_specs_partyunit = cat_partyunit.get(normal_specs_text())
+    normal_specs_belief = cat_belief.get(normal_specs_text())
+    normal_specs_partylink = cat_partylink.get(normal_specs_text())
+    normal_specs_idea = cat_idea.get(normal_specs_text())
+    normal_specs_balancelink = cat_balancelink.get(normal_specs_text())
+    normal_specs_reason = cat_reason.get(normal_specs_text())
+    normal_specs_premise = cat_premise.get(normal_specs_text())
+    normal_specs_suffbelief = cat_suffbelief.get(normal_specs_text())
+    normal_specs_healerhold = cat_healerhold.get(normal_specs_text())
+    normal_specs_fact = cat_fact.get(normal_specs_text())
 
     columns_text = "columns"
-    print(f"{agendaunit_cat=}")
-    assert agendaunit_cat.get(normal_table_name_text()) == "agenda"
-    assert partyunit_cat.get(normal_table_name_text()) == "partyunit"
-    assert belief_cat.get(normal_table_name_text()) == "beliefunit"
-    assert partylink_cat.get(normal_table_name_text()) == "partylink"
-    assert idea_cat.get(normal_table_name_text()) == "idea"
-    assert balancelink_cat.get(normal_table_name_text()) == "balancelink"
-    assert reason_cat.get(normal_table_name_text()) == "reason"
-    assert premise_cat.get(normal_table_name_text()) == "premise"
-    assert suffbelief_cat.get(normal_table_name_text()) == "suffbelief"
-    assert healerhold_cat.get(normal_table_name_text()) == "healerhold"
-    assert fact_cat.get(normal_table_name_text()) == "fact"
+    print(f"{cat_agendaunit.keys()=}")
+    print(f"{normal_specs_text()=}")
+    assert normal_specs_agendaunit != None
+    assert normal_specs_partyunit != None
+    assert normal_specs_belief != None
+    assert normal_specs_partylink != None
+    assert normal_specs_idea != None
+    assert normal_specs_balancelink != None
+    assert normal_specs_reason != None
+    assert normal_specs_premise != None
+    assert normal_specs_suffbelief != None
+    assert normal_specs_healerhold != None
+    assert normal_specs_fact != None
 
-    assert len(agendaunit_cat) == 2
-    assert agendaunit_cat.get(columns_text) != None
+    table_name_agendaunit = normal_specs_agendaunit.get(normal_table_name_text())
+    table_name_partyunit = normal_specs_partyunit.get(normal_table_name_text())
+    table_name_belief = normal_specs_belief.get(normal_table_name_text())
+    table_name_partylink = normal_specs_partylink.get(normal_table_name_text())
+    table_name_idea = normal_specs_idea.get(normal_table_name_text())
+    table_name_balancelink = normal_specs_balancelink.get(normal_table_name_text())
+    table_name_reason = normal_specs_reason.get(normal_table_name_text())
+    table_name_premise = normal_specs_premise.get(normal_table_name_text())
+    table_name_suffbelief = normal_specs_suffbelief.get(normal_table_name_text())
+    table_name_healerhold = normal_specs_healerhold.get(normal_table_name_text())
+    table_name_fact = normal_specs_fact.get(normal_table_name_text())
 
-    agendaunit_columns = agendaunit_cat.get(columns_text)
+    assert table_name_agendaunit == "agenda"
+    assert table_name_partyunit == "partyunit"
+    assert table_name_belief == "beliefunit"
+    assert table_name_partylink == "partylink"
+    assert table_name_idea == "idea"
+    assert table_name_balancelink == "balancelink"
+    assert table_name_reason == "reason"
+    assert table_name_premise == "premise"
+    assert table_name_suffbelief == "suffbelief"
+    assert table_name_healerhold == "healerhold"
+    assert table_name_fact == "fact"
+
+    assert len(cat_agendaunit) == 2
+    assert cat_agendaunit.get(columns_text) != None
+
+    agendaunit_columns = cat_agendaunit.get(columns_text)
     assert len(agendaunit_columns) == 9
     assert agendaunit_columns.get("uid") != None
     assert agendaunit_columns.get("_max_tree_traverse") != None
@@ -312,8 +351,8 @@ def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
     assert agendaunit_columns.get("_planck") != None
     assert agendaunit_columns.get("_weight") != None
 
-    assert len(partyunit_cat) == 2
-    partyunit_columns = partyunit_cat.get(columns_text)
+    assert len(cat_partyunit) == 2
+    partyunit_columns = cat_partyunit.get(columns_text)
     assert len(partyunit_columns) == 4
     assert partyunit_columns.get("uid") != None
     assert partyunit_columns.get("party_id") != None

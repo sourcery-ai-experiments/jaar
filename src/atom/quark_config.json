@@ -7,7 +7,9 @@
         "INSERT": {
             "quark_order": 1
         },
-        "normal_table_name": "partylink",
+        "normal_specs": {
+            "normal_table_name": "partylink"
+        },
         "optional_args": {
             "credor_weight": {
                 "python_type": "int",
@@ -41,7 +43,9 @@
         "INSERT": {
             "quark_order": 2
         },
-        "normal_table_name": "beliefunit",
+        "normal_specs": {
+            "normal_table_name": "beliefunit"
+        },
         "optional_args": {},
         "required_args": {
             "belief_id": {
@@ -62,7 +66,9 @@
         "INSERT": {
             "quark_order": 4
         },
-        "normal_table_name": "balancelink",
+        "normal_specs": {
+            "normal_table_name": "balancelink"
+        },
         "optional_args": {
             "credor_weight": {
                 "python_type": "float",
@@ -96,7 +102,9 @@
         "INSERT": {
             "quark_order": 7
         },
-        "normal_table_name": "fact",
+        "normal_specs": {
+            "normal_table_name": "fact"
+        },
         "optional_args": {
             "nigh": {
                 "python_type": "float",
@@ -134,7 +142,9 @@
         "INSERT": {
             "quark_order": 6
         },
-        "normal_table_name": "healerhold",
+        "normal_specs": {
+            "normal_table_name": "healerhold"
+        },
         "optional_args": {},
         "required_args": {
             "belief_id": {
@@ -156,7 +166,9 @@
         "INSERT": {
             "quark_order": 9
         },
-        "normal_table_name": "premise",
+        "normal_specs": {
+            "normal_table_name": "premise"
+        },
         "optional_args": {
             "divisor": {
                 "python_type": "int",
@@ -198,7 +210,9 @@
         "INSERT": {
             "quark_order": 8
         },
-        "normal_table_name": "reason",
+        "normal_specs": {
+            "normal_table_name": "reason"
+        },
         "optional_args": {
             "suff_idea_active": {
                 "python_type": "bool",
@@ -228,7 +242,9 @@
         "INSERT": {
             "quark_order": 5
         },
-        "normal_table_name": "suffbelief",
+        "normal_specs": {
+            "normal_table_name": "suffbelief"
+        },
         "optional_args": {},
         "required_args": {
             "belief_id": {
@@ -250,7 +266,9 @@
         "INSERT": {
             "quark_order": 3
         },
-        "normal_table_name": "idea",
+        "normal_specs": {
+            "normal_table_name": "idea"
+        },
         "optional_args": {
             "_addin": {
                 "python_type": "float",
@@ -324,7 +342,9 @@
         "INSERT": {
             "quark_order": 0
         },
-        "normal_table_name": "partyunit",
+        "normal_specs": {
+            "normal_table_name": "partyunit"
+        },
         "optional_args": {
             "credor_weight": {
                 "python_type": "int",
@@ -348,7 +368,9 @@
     },
     "agendaunit": {
         "calculated_attrs": {},
-        "normal_table_name": "agenda",
+        "normal_specs": {
+            "normal_table_name": "agenda"
+        },
         "optional_args": {
             "_max_tree_traverse": {
                 "python_type": "int",
