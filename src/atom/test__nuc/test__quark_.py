@@ -79,19 +79,20 @@ def check_every_crud_dict_has_element(quark_config_dict, quark_order_text):
         if category_dict.get(calculated_attrs_text) is None:
             print(f"{category=} {calculated_attrs_text} is missing")
             return False
+
+        normal_table_name_text = "normal_table_name"
+        if category_dict.get(normal_table_name_text) is None:
+            print(f"{category=} {normal_table_name_text} is missing")
+            return False
     return True
 
 
 def test_get_quark_config_dict_EveryCrudOperationHasNucOrderBelief():
     # GIVEN
     quark_order_text = "quark_order"
-    description_elements_text = "description_elements"
 
     # WHEN / THEN
     assert check_every_crud_dict_has_element(get_quark_config_dict(), quark_order_text)
-    # assert check_every_crud_dict_has_element(
-    #     get_quark_config_dict(), description_elements_text
-    # )
     mog = quark_order_text
     # # Simple script for editing quark_config.json
     # set_mog("agenda_partyunit", quark_insert(), mog, 0)
@@ -218,29 +219,59 @@ def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
     assert nx.get("agenda_idea_suffbelief") != None
     assert nx.get("agenda_idea_healerhold") != None
     assert nx.get("agenda_idea_factunit") != None
+    agendaunit_cat = nx.get("agendaunit")
+    partyunit_cat = nx.get("agenda_partyunit")
+    belief_cat = nx.get("agenda_beliefunit")
+    partylink_cat = nx.get("agenda_belief_partylink")
+    idea_cat = nx.get("agenda_ideaunit")
+    balancelink_cat = nx.get("agenda_idea_balancelink")
+    reason_cat = nx.get("agenda_idea_reasonunit")
+    premise_cat = nx.get("agenda_idea_reason_premiseunit")
+    suffbelief_cat = nx.get("agenda_idea_suffbelief")
+    healerhold_cat = nx.get("agenda_idea_healerhold")
+    fact_cat = nx.get("agenda_idea_factunit")
 
-    agendaunit_dict = nx.get("agendaunit")
-    assert len(agendaunit_dict) == 8
-    assert agendaunit_dict.get("_max_tree_traverse") != None
-    assert agendaunit_dict.get("_meld_strategy") != None
-    assert agendaunit_dict.get("_monetary_desc") != None
-    assert agendaunit_dict.get("_party_credor_pool") != None
-    assert agendaunit_dict.get("_party_debtor_pool") != None
-    assert agendaunit_dict.get("_penny") != None
-    assert agendaunit_dict.get("_planck") != None
-    assert agendaunit_dict.get("_weight") != None
+    table_name_text = "normal_table_name"
+    columns_text = "columns"
+    print(f"{agendaunit_cat=}")
+    assert agendaunit_cat.get(table_name_text) == "agenda"
+    assert partyunit_cat.get(table_name_text) == "partyunit"
+    assert belief_cat.get(table_name_text) == "belief"
+    assert partylink_cat.get(table_name_text) == "partylink"
+    assert idea_cat.get(table_name_text) == "idea"
+    assert balancelink_cat.get(table_name_text) == "balancelink"
+    assert reason_cat.get(table_name_text) == "reason"
+    assert premise_cat.get(table_name_text) == "premise"
+    assert suffbelief_cat.get(table_name_text) == "suffbelief"
+    assert healerhold_cat.get(table_name_text) == "healerhold"
+    assert fact_cat.get(table_name_text) == "fact"
 
-    agenda_partyunit_dict = nx.get("agenda_partyunit")
-    assert len(agenda_partyunit_dict) == 3
-    assert agenda_partyunit_dict.get("party_id") != None
-    assert agenda_partyunit_dict.get("credor_weight") != None
-    assert agenda_partyunit_dict.get("debtor_weight") != None
+    assert len(agendaunit_cat) == 2
+    assert agendaunit_cat.get(columns_text) != None
 
-    party_id_dict = agenda_partyunit_dict.get("party_id")
+    agendaunit_columns = agendaunit_cat.get(columns_text)
+    assert len(agendaunit_columns) == 8
+    assert agendaunit_columns.get("_max_tree_traverse") != None
+    assert agendaunit_columns.get("_meld_strategy") != None
+    assert agendaunit_columns.get("_monetary_desc") != None
+    assert agendaunit_columns.get("_party_credor_pool") != None
+    assert agendaunit_columns.get("_party_debtor_pool") != None
+    assert agendaunit_columns.get("_penny") != None
+    assert agendaunit_columns.get("_planck") != None
+    assert agendaunit_columns.get("_weight") != None
+
+    assert len(partyunit_cat) == 2
+    partyunit_columns = partyunit_cat.get(columns_text)
+    assert len(partyunit_columns) == 3
+    assert partyunit_columns.get("party_id") != None
+    assert partyunit_columns.get("credor_weight") != None
+    assert partyunit_columns.get("debtor_weight") != None
+
+    party_id_dict = partyunit_columns.get("party_id")
     assert len(party_id_dict) == 2
     assert party_id_dict.get("sqlite_datatype") == "TEXT"
     assert party_id_dict.get("nullable") == False
-    debtor_weight_dict = agenda_partyunit_dict.get("debtor_weight")
+    debtor_weight_dict = partyunit_columns.get("debtor_weight")
     assert len(party_id_dict) == 2
     assert debtor_weight_dict.get("sqlite_datatype") == "INTEGER"
     assert debtor_weight_dict.get("nullable") == True

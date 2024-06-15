@@ -122,27 +122,31 @@ def get_normalized_agenda_table_build() -> dict[str : dict[str:]]:
     optional_args_text = "optional_args"
     sqlite_datatype_text = "sqlite_datatype"
     nullable_text = "nullable"
+    normal_table_name_text = "normal_table_name"
+    columns_text = "columns"
     agenda_tables = {}
     quark_config = get_quark_config_dict()
     for x_category, category_dict in quark_config.items():
         agenda_tables[x_category] = {}
         l1_dict = agenda_tables.get(x_category)
+        l1_dict[normal_table_name_text] = category_dict.get(normal_table_name_text)
+        l1_dict[columns_text] = {}
+        l2_dict = l1_dict.get(columns_text)
         required_args = category_dict.get(required_args_text)
         optional_args = category_dict.get(optional_args_text)
         if required_args != None:
             for required_arg, x_value in required_args.items():
-                l1_dict[required_arg] = {
+                l2_dict[required_arg] = {
                     sqlite_datatype_text: x_value.get(sqlite_datatype_text),
                     nullable_text: False,
                 }
 
         if optional_args != None:
             for optional_arg, x_value in optional_args.items():
-                l1_dict[optional_arg] = {
+                l2_dict[optional_arg] = {
                     sqlite_datatype_text: x_value.get(sqlite_datatype_text),
                     nullable_text: True,
                 }
-
     return agenda_tables
 
 
@@ -216,30 +220,6 @@ class QuarkUnit:
         x_values = list(self.required_args.values())
         x_values.extend(iter(self.optional_args.values()))
         return create_insert_sqlstr(quark_hx_table_name(), x_columns, x_values)
-
-    def get_description(self) -> str:
-        if self.is_valid() is False:
-            raise QuarkUnitDescriptionException("quarkunit is not valid")
-
-        description_elements = self._get_crud_dict().get("description_elements")
-
-        x_str = ""
-        arg_value = ""
-        preceding_text = ""
-        proceding_text = ""
-        for description_element in description_elements:
-            for x_key, x_value in description_element.items():
-                if x_key == "arg":
-                    arg_value = self.get_value(x_value)
-                elif x_key == "preceding text":
-                    preceding_text = x_value
-                elif x_key == "proceding text":
-                    proceding_text = x_value
-            if arg_value != None and x_str == "":
-                x_str = f"{preceding_text}{arg_value}{proceding_text}"
-            elif arg_value != None:
-                x_str = f"{x_str} {preceding_text}{arg_value}{proceding_text}"
-        return x_str
 
     def get_all_args_in_list(self):
         x_list = list(self.required_args.values())
