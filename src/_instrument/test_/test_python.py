@@ -65,11 +65,26 @@ def test_get_all_nondictionary_objs_ReturnsCorrectDict():
     day_obj = "is hot"
     night_list = [sports_text, run_text, frank_text, night_text]
     night_obj = "is cool"
+    rain_text = "raining"
+    coat_text = "coat"
+    fluf_text = "fluffy"
+    button_text = "buttons"
+    silver_obj = "silver"
+    rain_list = [
+        sports_text,
+        run_text,
+        frank_text,
+        rain_text,
+        coat_text,
+        fluf_text,
+        button_text,
+    ]
 
     place_obj_in_dict(x_dict=y_dict, x_keylist=fun_list, x_obj=fun_obj)
     place_obj_in_dict(x_dict=y_dict, x_keylist=mount_list, x_obj=mount_obj)
     place_obj_in_dict(x_dict=y_dict, x_keylist=day_list, x_obj=day_obj)
     place_obj_in_dict(x_dict=y_dict, x_keylist=night_list, x_obj=night_obj)
+    place_obj_in_dict(x_dict=y_dict, x_keylist=rain_list, x_obj=silver_obj)
     print(y_dict)
 
     assert y_dict == {
@@ -77,7 +92,11 @@ def test_get_all_nondictionary_objs_ReturnsCorrectDict():
             run_text: {
                 fun_text: fun_obj,
                 mount_text: mount_obj,
-                frank_text: {day_text: day_obj, night_text: night_obj},
+                frank_text: {
+                    day_text: day_obj,
+                    night_text: night_obj,
+                    rain_text: {coat_text: {fluf_text: {button_text: silver_obj}}},
+                },
             }
         }
     }
@@ -86,7 +105,9 @@ def test_get_all_nondictionary_objs_ReturnsCorrectDict():
     childless_objs = get_all_nondictionary_objs(y_dict)
 
     # THEN
-    assert childless_objs == {sports_text: [fun_obj, mount_obj, day_obj, night_obj]}
+    assert childless_objs == {
+        sports_text: [fun_obj, mount_obj, day_obj, night_obj, silver_obj]
+    }
     assert get_nested_value(y_dict, day_list) == day_obj
     assert get_nested_value(y_dict, mount_list) == mount_obj
 

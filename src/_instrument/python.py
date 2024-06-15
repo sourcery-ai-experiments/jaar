@@ -72,50 +72,28 @@ def _sub_get_nested_value(x_dict: dict, x_keylist: list) -> any:
     x_count = 0
     for x_key in x_keylist:
         if temp_dict.get(x_key) is None:
-            # pprint(f"{x_keylist=} {last_key=}")
             raise NestedValueException(f"'{x_key}' failed at level {x_count}.")
         x_count += 1
         temp_dict = temp_dict.get(x_key)
 
     if temp_dict.get(last_key) is None:
-        # prrint(f"{x_keylist=} {last_key=}")
         raise NestedValueException(f"'{last_key}' failed at level {x_count}.")
     return temp_dict[last_key]
 
 
 def get_all_nondictionary_objs(x_dict: dict) -> dict[str : list[any]]:
-    # TODO make this recursive by using while loop
+    level1_keys = x_dict.keys()
     output_dict = {}
-    for x1_key, level1_dict in x_dict.items():
-        output_dict[x1_key] = []
-        for x2_key in level1_dict.keys():
-            if str(type(level1_dict.get(x2_key))) == "<class 'dict'>":
-                level2_dict = level1_dict[x2_key]
-                for x3_key in level2_dict.keys():
-                    if str(type(level2_dict.get(x3_key))) == "<class 'dict'>":
-                        level3_dict = level2_dict[x3_key]
-                        for x4_key in level3_dict.keys():
-                            if str(type(level3_dict.get(x4_key))) == "<class 'dict'>":
-                                level4_dict = level3_dict[x4_key]
-                                for x5_key in level4_dict.keys():
-                                    if (
-                                        str(type(level4_dict.get(x5_key)))
-                                        == "<class 'dict'>"
-                                    ):
-                                        level5_dict = level4_dict[x5_key]
-                                    else:
-                                        x_list = output_dict[x1_key]
-                                        x_list.append(level4_dict[x5_key])
-                            else:
-                                x_list = output_dict[x1_key]
-                                x_list.append(level3_dict[x4_key])
-                    else:
-                        x_list = output_dict[x1_key]
-                        x_list.append(level2_dict[x3_key])
+    for level1_key in level1_keys:
+        output_dict[level1_key] = []
+        level1_list = output_dict.get(level1_key)
+        eval_items = list(x_dict.get(level1_key).values())
+        while eval_items != []:
+            eval_item = eval_items.pop(0)
+            if type(eval_item) == type({}):
+                eval_items.extend(eval_item.values())
             else:
-                x_list = output_dict[x1_key]
-                x_list.append(level1_dict[x2_key])
-
+                level1_list.append(eval_item)
     return output_dict
 
 
