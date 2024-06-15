@@ -41,7 +41,7 @@
         "INSERT": {
             "quark_order": 2
         },
-        "normal_table_name": "belief",
+        "normal_table_name": "beliefunit",
         "optional_args": {},
         "required_args": {
             "belief_id": {
