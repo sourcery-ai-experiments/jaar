@@ -57,7 +57,7 @@ def add_to_quark_table_columns(x_dict, quark_category, crud, arg_key, arg_value)
     x_dict[f"{quark_category}_{crud}_{arg_key}"] = arg_value.get("sqlite_datatype")
 
 
-def get_quark_columns_build() -> dict[str:]:
+def get_flattened_quark_table_build() -> dict[str:]:
     required_args_text = "required_args"
     optional_args_text = "optional_args"
     quark_table_columns = {}
@@ -106,7 +106,6 @@ def get_quark_columns_build() -> dict[str:]:
                 )
         if catergory_delete != None:
             required_args = category_dict.get(required_args_text)
-            optional_args = category_dict.get(optional_args_text)
             for required_arg, x_value in required_args.items():
                 add_to_quark_table_columns(
                     quark_table_columns,
@@ -116,6 +115,35 @@ def get_quark_columns_build() -> dict[str:]:
                     x_value,
                 )
     return quark_table_columns
+
+
+def get_normalized_agenda_table_build() -> dict[str : dict[str:]]:
+    required_args_text = "required_args"
+    optional_args_text = "optional_args"
+    sqlite_datatype_text = "sqlite_datatype"
+    nullable_text = "nullable"
+    agenda_tables = {}
+    quark_config = get_quark_config_dict()
+    for x_category, category_dict in quark_config.items():
+        agenda_tables[x_category] = {}
+        l1_dict = agenda_tables.get(x_category)
+        required_args = category_dict.get(required_args_text)
+        optional_args = category_dict.get(optional_args_text)
+        if required_args != None:
+            for required_arg, x_value in required_args.items():
+                l1_dict[required_arg] = {
+                    sqlite_datatype_text: x_value.get(sqlite_datatype_text),
+                    nullable_text: False,
+                }
+
+        if optional_args != None:
+            for optional_arg, x_value in optional_args.items():
+                l1_dict[optional_arg] = {
+                    sqlite_datatype_text: x_value.get(sqlite_datatype_text),
+                    nullable_text: True,
+                }
+
+    return agenda_tables
 
 
 def save_quark_config_file(quark_config_dict):

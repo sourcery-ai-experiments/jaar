@@ -10,7 +10,8 @@ from src.atom.quark import (
     get_quark_config_dict,
     get_quark_order as q_order,
     set_mog,
-    get_quark_columns_build,
+    get_flattened_quark_table_build,
+    get_normalized_agenda_table_build,
 )
 
 
@@ -189,14 +190,60 @@ def test_quark_config_AllArgsHave_python_type_sqlite_datatype():
     assert check_every_arg_dict_has_elements(get_quark_config_dict())
 
 
-def test_get_quark_columns_build_ReturnsCorrectObj():
+def test_get_flattened_quark_table_build_ReturnsCorrectObj():
     # GIVEN / WHEN
-    quark_columns = get_quark_columns_build()
+    quark_columns = get_flattened_quark_table_build()
 
     # THEN
     assert len(quark_columns) == 111
     assert quark_columns.get("agendaunit_UPDATE__party_credor_pool") == "INTEGER"
     # print(f"{quark_columns.keys()=}")
+
+
+def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
+    # GIVEN / WHEN
+    normalized_agenda_table_build = get_normalized_agenda_table_build()
+    nx = normalized_agenda_table_build
+
+    # THEN
+    assert len(nx) == 11
+    assert nx.get("agendaunit") != None
+    assert nx.get("agenda_partyunit") != None
+    assert nx.get("agenda_beliefunit") != None
+    assert nx.get("agenda_belief_partylink") != None
+    assert nx.get("agenda_ideaunit") != None
+    assert nx.get("agenda_idea_balancelink") != None
+    assert nx.get("agenda_idea_reasonunit") != None
+    assert nx.get("agenda_idea_reason_premiseunit") != None
+    assert nx.get("agenda_idea_suffbelief") != None
+    assert nx.get("agenda_idea_healerhold") != None
+    assert nx.get("agenda_idea_factunit") != None
+
+    agendaunit_dict = nx.get("agendaunit")
+    assert len(agendaunit_dict) == 8
+    assert agendaunit_dict.get("_max_tree_traverse") != None
+    assert agendaunit_dict.get("_meld_strategy") != None
+    assert agendaunit_dict.get("_monetary_desc") != None
+    assert agendaunit_dict.get("_party_credor_pool") != None
+    assert agendaunit_dict.get("_party_debtor_pool") != None
+    assert agendaunit_dict.get("_penny") != None
+    assert agendaunit_dict.get("_planck") != None
+    assert agendaunit_dict.get("_weight") != None
+
+    agenda_partyunit_dict = nx.get("agenda_partyunit")
+    assert len(agenda_partyunit_dict) == 3
+    assert agenda_partyunit_dict.get("party_id") != None
+    assert agenda_partyunit_dict.get("credor_weight") != None
+    assert agenda_partyunit_dict.get("debtor_weight") != None
+
+    party_id_dict = agenda_partyunit_dict.get("party_id")
+    assert len(party_id_dict) == 2
+    assert party_id_dict.get("sqlite_datatype") == "TEXT"
+    assert party_id_dict.get("nullable") == False
+    debtor_weight_dict = agenda_partyunit_dict.get("debtor_weight")
+    assert len(party_id_dict) == 2
+    assert debtor_weight_dict.get("sqlite_datatype") == "INTEGER"
+    assert debtor_weight_dict.get("nullable") == True
 
 
 def test_QuarkUnit_exists():
