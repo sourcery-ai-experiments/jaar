@@ -1,9 +1,9 @@
-from src.atom.quark import (
-    get_quark_columns_build,
+from src.atom.quark_config import (
+    get_flattened_quark_table_build,
     quark_hx_table_name,
     quark_mstr_table_name,
-    QuarkUnit,
 )
+from src.atom.quark import QuarkUnit
 from src._road.road import RoadUnit
 
 # from src._instrument.sqlite import (
@@ -22,7 +22,7 @@ def get_quark_hx_table_create_sqlstr() -> str:
 CREATE TABLE IF NOT EXISTS {quark_hx_table_name()} (
   person_id VARCHAR(255) NOT NULL"""
 
-    for x_key, x_value in get_quark_columns_build().items():
+    for x_key, x_value in get_flattened_quark_table_build().items():
         if x_value == "TEXT":
             x_value = "VARCHAR(255)"
         x_str = f"""{x_str}\n, {x_key} {x_value} NULL"""
@@ -44,7 +44,7 @@ CREATE TABLE IF NOT EXISTS {quark_mstr_table_name()} (
   person_id VARCHAR(255) NOT NULL
 , {quark_hx_table_name()}_row_id INT NOT NULL"""
 
-    for x_key, x_value in get_quark_columns_build().items():
+    for x_key, x_value in get_flattened_quark_table_build().items():
         if x_value == "TEXT":
             x_value = "VARCHAR(255)"
         x_str = f"""{x_str}\n, {x_key} {x_value} NULL"""

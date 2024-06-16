@@ -1,4 +1,3 @@
-from src._instrument.file import open_file, save_file
 from src._instrument.python import (
     get_empty_dict_if_none,
     get_json_from_dict,
@@ -11,152 +10,17 @@ from src.agenda.party import partyunit_shop, partylink_shop
 from src.agenda.belief import beliefunit_shop, balancelink_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import AgendaUnit
+from src.atom.quark_config import (
+    get_category_from_dict,
+    quark_delete,
+    quark_insert,
+    quark_update,
+    quark_hx_table_name,
+    get_quark_order,
+    get_quark_config_dict,
+    is_category_ref,
+)
 from dataclasses import dataclass
-from os import getcwd as os_getcwd
-
-
-class CRUD_command(str):
-    pass
-
-
-def quark_update() -> CRUD_command:
-    return "UPDATE"
-
-
-def quark_insert() -> CRUD_command:
-    return "INSERT"
-
-
-def quark_delete() -> CRUD_command:
-    return "DELETE"
-
-
-def quark_hx_table_name() -> str:
-    return "quark_hx"
-
-
-def quark_mstr_table_name() -> str:
-    return "quark_mstr"
-
-
-def get_quark_config_file_name() -> str:
-    return "quark_config.json"
-
-
-def config_file_dir() -> str:
-    return f"{os_getcwd()}/src/atom"
-
-
-def get_quark_config_dict() -> dict:
-    return get_dict_from_json(
-        open_file(config_file_dir(), get_quark_config_file_name())
-    )
-
-
-def add_to_quark_table_columns(x_dict, quark_category, crud, arg_key, arg_value):
-    x_dict[f"{quark_category}_{crud}_{arg_key}"] = arg_value.get("sqlite_datatype")
-
-
-def get_quark_columns_build() -> dict[str:]:
-    required_args_text = "required_args"
-    optional_args_text = "optional_args"
-    quark_table_columns = {}
-    quark_config = get_quark_config_dict()
-    for quark_category, category_dict in quark_config.items():
-        catergory_insert = category_dict.get(quark_insert())
-        catergory_update = category_dict.get(quark_update())
-        catergory_delete = category_dict.get(quark_delete())
-        if catergory_insert != None:
-            required_args = category_dict.get(required_args_text)
-            optional_args = category_dict.get(optional_args_text)
-            for required_arg, x_value in required_args.items():
-                add_to_quark_table_columns(
-                    quark_table_columns,
-                    quark_category,
-                    quark_insert(),
-                    required_arg,
-                    x_value,
-                )
-            for optional_arg, x_value in optional_args.items():
-                add_to_quark_table_columns(
-                    quark_table_columns,
-                    quark_category,
-                    quark_insert(),
-                    optional_arg,
-                    x_value,
-                )
-        if catergory_update != None:
-            required_args = category_dict.get(required_args_text)
-            optional_args = category_dict.get(optional_args_text)
-            for required_arg, x_value in required_args.items():
-                add_to_quark_table_columns(
-                    quark_table_columns,
-                    quark_category,
-                    quark_update(),
-                    required_arg,
-                    x_value,
-                )
-            for optional_arg, x_value in optional_args.items():
-                add_to_quark_table_columns(
-                    quark_table_columns,
-                    quark_category,
-                    quark_update(),
-                    optional_arg,
-                    x_value,
-                )
-        if catergory_delete != None:
-            required_args = category_dict.get(required_args_text)
-            optional_args = category_dict.get(optional_args_text)
-            for required_arg, x_value in required_args.items():
-                add_to_quark_table_columns(
-                    quark_table_columns,
-                    quark_category,
-                    quark_delete(),
-                    required_arg,
-                    x_value,
-                )
-    return quark_table_columns
-
-
-def save_quark_config_file(quark_config_dict):
-    save_file(
-        dest_dir=config_file_dir(),
-        file_name=get_quark_config_file_name(),
-        file_text=get_json_from_dict(quark_config_dict),
-    )
-
-
-def category_ref() -> set:
-    return get_quark_config_dict().keys()
-
-
-def is_category_ref(category_text: str) -> bool:
-    return category_text in category_ref()
-
-
-def get_quark_order(
-    category: str,
-    crud_text: str,
-    quark_order_text: str,
-    expected_quark_order: int = None,
-) -> int:
-    quark_config_dict = get_quark_config_dict()
-    category_dict = quark_config_dict.get(category)
-    crud_dict = category_dict.get(crud_text)
-    return crud_dict.get(quark_order_text)
-
-
-def set_mog(
-    category: str,
-    crud_text: str,
-    quark_order_text: str,
-    quark_order_int: int,
-) -> int:
-    quark_config_dict = get_quark_config_dict()
-    category_dict = quark_config_dict.get(category)
-    crud_dict = category_dict.get(crud_text)
-    crud_dict[quark_order_text] = quark_order_int
-    save_quark_config_file(quark_config_dict)
 
 
 class QuarkUnitDescriptionException(Exception):
@@ -188,30 +52,6 @@ class QuarkUnit:
         x_values = list(self.required_args.values())
         x_values.extend(iter(self.optional_args.values()))
         return create_insert_sqlstr(quark_hx_table_name(), x_columns, x_values)
-
-    def get_description(self) -> str:
-        if self.is_valid() is False:
-            raise QuarkUnitDescriptionException("quarkunit is not valid")
-
-        description_elements = self._get_crud_dict().get("description_elements")
-
-        x_str = ""
-        arg_value = ""
-        preceding_text = ""
-        proceding_text = ""
-        for description_element in description_elements:
-            for x_key, x_value in description_element.items():
-                if x_key == "arg":
-                    arg_value = self.get_value(x_value)
-                elif x_key == "preceding text":
-                    preceding_text = x_value
-                elif x_key == "proceding text":
-                    proceding_text = x_value
-            if arg_value != None and x_str == "":
-                x_str = f"{preceding_text}{arg_value}{proceding_text}"
-            elif arg_value != None:
-                x_str = f"{x_str} {preceding_text}{arg_value}{proceding_text}"
-        return x_str
 
     def get_all_args_in_list(self):
         x_list = list(self.required_args.values())
@@ -744,15 +584,6 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
 
 class InvalidQuarkUnitException(Exception):
     pass
-
-
-def get_category_from_dict(x_row_dict: dict) -> str:
-    x_category_ref = category_ref()
-    for x_columnname in x_row_dict:
-        for x_category in x_category_ref:
-            if x_columnname.find(x_category) == 0:
-                category_len = len(x_category)
-                return x_category, x_columnname[category_len + 1 : category_len + 7]
 
 
 def get_quarkunit_from_rowdata(x_rowdata: RowData) -> QuarkUnit:

@@ -12,8 +12,8 @@ from src.agenda.party import PartyLink, PartyID
 from src.agenda.belief import BeliefUnit, BeliefID
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
+from src.atom.quark_config import CRUD_command
 from src.atom.quark import (
-    CRUD_command,
     QuarkUnit,
     quarkunit_shop,
     modify_agenda_with_quarkunit,

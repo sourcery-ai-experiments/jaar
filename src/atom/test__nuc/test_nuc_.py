@@ -242,7 +242,6 @@ def test_NucUnit_get_category_sorted_quarkunits_list_ReturnsCorrectObj():
 #     # THEN
 #     print(f"{ex1_nucunit.quarkunits.keys()=}")
 #     print(f"{ex1_nucunit.quarkunits.get(quark_update()).keys()=}")
-#     # print(f"{get_all_nondictionary_objs(ex1_nucunit.quarkunits).get(quark_update())=}")
 #     assert len(ex1_nucunit.quarkunits.get(quark_update()).keys()) == 2
 #     assert x_quarkunit == ex1_nucunit.quarkunits.get(quark_update()).get(x_attribute)
 
