@@ -350,7 +350,7 @@ def test_get_roots_ranged_facts():
 
 def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario1():
     sue_agenda = agendaunit_shop("Sue")
-    # # the action
+    # # the pledge
     # clean = "clean"
     # sue_agenda.add_idea(ideaunit_shop(clean, pledge=True))
 
@@ -410,7 +410,7 @@ def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario1():
 
 def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario2():
     sue_agenda = agendaunit_shop("Sue")
-    # # the action
+    # # the pledge
     # clean = "clean"
     # sue_agenda.add_idea(ideaunit_shop(clean, pledge=True))
 
@@ -469,7 +469,7 @@ def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario2():
 
 def test_create_lemma_facts_CorrectlyCreates1stLevelLemmaFact_Scenario3():
     sue_agenda = agendaunit_shop("Sue")
-    # # the action
+    # # the pledge
     # clean = "clean"
     # sue_agenda.add_idea(ideaunit_shop(clean, pledge=True))
 

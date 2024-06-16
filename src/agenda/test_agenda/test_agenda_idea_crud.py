@@ -512,8 +512,8 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
 
     # pledge: dict = None,
     sue_agenda._idearoot._kids[casa_text].pledge = "funfun3"
-    action = sue_agenda._idearoot._kids[casa_text].pledge
-    assert action == "funfun3"
+    pledge = sue_agenda._idearoot._kids[casa_text].pledge
+    assert pledge == "funfun3"
     sue_agenda.edit_idea_attr(road=casa_road, pledge=True)
     assert sue_agenda._idearoot._kids[casa_text].pledge == True
 

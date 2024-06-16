@@ -44,7 +44,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.cb_rootadmiration.stateAtomd.connect(self.refresh_tree)
         self.cb_yo_id.stateAtomd.connect(self.refresh_tree)
         self.cb_yo_intent.stateAtomd.connect(self.refresh_tree)
-        self.cb_yo_action.stateAtomd.connect(self.refresh_tree)
+        self.cb_yo_pledge.stateAtomd.connect(self.refresh_tree)
         self.cb_yo_complete.stateAtomd.connect(self.refresh_tree)
         self.cb_yo_factunit_time.stateAtomd.connect(self.refresh_tree)
         self.cb_yo_factunit_count.stateAtomd.connect(self.refresh_tree)
@@ -125,7 +125,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.label_24.setHidden(setHiddenBool)
         self.prom_l_02.setHidden(setHiddenBool)
         self.prom_l_03.setHidden(setHiddenBool)
-        self.yo_action_cb.setHidden(setHiddenBool)
+        self.yo_pledge_cb.setHidden(setHiddenBool)
         self.yo_deescription.setHidden(setHiddenBool)
         self.yo_parent_road.setHidden(setHiddenBool)
         self.yo_weight.setHidden(setHiddenBool)
@@ -202,7 +202,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.hreg_weeks_remainder.setText("")
         self.label_parent_id.setText("Current Node ID : ")
         self.prom_l_02.setText("")
-        self.yo_action_cb.setChecked(False)
+        self.yo_pledge_cb.setChecked(False)
         self.yo_deescription.setText("")
         self.idea_label_on_populate = ""
         self.yo_weight.setText("")
@@ -233,9 +233,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
         self.yo_range_source_road.clear()
         self.yo_numeric_road.clear()
         if f"{type(self.x_idea)}" != "<class 'lw.agenda.AgendaUnit'>":
-            self.populate_idea_kid_actions()
+            self.populate_idea_kid_pledges()
         self.yo_close.setText(num2str(self.x_idea._close))
-        self.yo_action_cb.setChecked(self.x_idea.pledge)
+        self.yo_pledge_cb.setChecked(self.x_idea.pledge)
         self.yo_task_status.setText(str(self.x_idea._task))
         self.yo_active.setText(str(self.x_idea._active))
         self.submit_child_insert.setText(f"Add child {self.x_idea._label:8}")
@@ -247,7 +247,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         if self.combo_dim_root.currentText() == "":
             self.combo_dim_root.addItems(list(self.x_agenda.get_reason_bases()))
 
-    def populate_idea_kid_actions(self):
+    def populate_idea_kid_pledges(self):
         self.yo_addin.setText(num2str(self.x_idea._addin))
         self.yo_numor.setText(num2str(self.x_idea._numor))
         self.yo_denom.setText(num2str(self.x_idea._denom))
@@ -319,9 +319,9 @@ class EditIdeaUnit(qtw0, Ui_Form):
             self.x_agenda._owner_id,
             "",
         ]:
-            self.reason_premise_open_combo_sel_actions()
+            self.reason_premise_open_combo_sel_pledges()
 
-    def reason_premise_open_combo_sel_actions(self):
+    def reason_premise_open_combo_sel_pledges(self):
         open_idea_x = self.x_agenda.get_idea_obj(
             road=self.reason_premise_open_combo.currentText()
         )
@@ -826,7 +826,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
             reest=self.yo_reest.checkState() == 2,
             range_source_road=emptystr(self.yo_range_source_road.currentText()),
             numeric_road=emptystr(self.yo_numeric_road.currentText()),
-            pledge=(self.yo_action_cb.checkState() == 2),
+            pledge=(self.yo_pledge_cb.checkState() == 2),
             reason_base=None,
             reason_premise=None,
             reason_premise_open=None,
@@ -907,7 +907,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
                 self.yo_range_source_road.currentText()
             ),
             numeric_road=emptystring_returns_none(self.yo_numeric_road.currentText()),
-            pledge=(self.yo_action_cb.checkState() == 2),
+            pledge=(self.yo_pledge_cb.checkState() == 2),
             uid=None,
             reason=None,
             reason_base=None,
@@ -936,7 +936,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         root_percent_flag = self.cb_rootadmiration.checkState() == 2
         yo_id_flag = self.cb_yo_id.checkState() == 2
         yo_intent_flag = self.cb_yo_intent.checkState() == 2
-        yo_action_flag = self.cb_yo_action.checkState() == 2
+        yo_pledge_flag = self.cb_yo_pledge.checkState() == 2
         yo2bd_count_flag = self.cb_yo2bd_count.checkState() == 2
         # yo2bd_spec1_flag = self.yo2bd_spec1_flag.checkState() == 2
         yo_complete_flag = self.cb_yo_complete.checkState() == 2
@@ -958,7 +958,7 @@ class EditIdeaUnit(qtw0, Ui_Form):
         tree_root = get_pyqttree(
             idearoot=self.x_agenda._idearoot,
             yo_intent_flag=yo_intent_flag,
-            yo_action_flag=yo_action_flag,
+            yo_pledge_flag=yo_pledge_flag,
             yo_factunit_time_flag=yo_factunit_time_flag,
             yo_factunit_count_flag=yo_factunit_count_flag,
             yo_factheir_count_flag=yo_factheir_count_flag,

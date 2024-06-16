@@ -19,7 +19,7 @@
 
 `jaar` is a python library for listening to the climate of a community. Individual 
 positions are aggregated by a listener into a coherant intent that can include pledges 
-of actions and/or pledges of states of existence. Listening and acting on it.
+to do and pledges of states of existence. Listening and acting on it.
 
 A persons's intent in the community is built by the the weighted intreprtation of
 1. Other persons intents 

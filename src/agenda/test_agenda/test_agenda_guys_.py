@@ -294,7 +294,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsGuyLinkAgendaCredAndDebt():
         == 1.0
     )
 
-    # WHEN another action, check metrics are as expected
+    # WHEN another pledge, check metrics are as expected
     selena_text = "selena"
     yao_agenda.set_guyunit(guyunit=guyunit_shop(GuyID(selena_text)))
     yao_agenda._idearoot.set_balancelink(
@@ -436,7 +436,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsGuyUnitAgendaImportance():
     # assert guyunit_agenda_debt_sum > 0.9999999
     # assert guyunit_agenda_debt_sum < 1.00000001
 
-    # WHEN another action, check metrics are as expected
+    # WHEN another pledge, check metrics are as expected
     selena_text = "selena"
     yao_agenda.set_guyunit(guyunit=guyunit_shop(GuyID(selena_text)))
     yao_agenda._idearoot.set_balancelink(

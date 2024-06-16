@@ -256,15 +256,15 @@ def test_example_agendas_agenda_v001_AgendaHasCorrectAttributes():
     # x_agenda.set_fact(base=movie_road, pick=movie_text)
 
     # WHEN
-    idea_action_list = x_agenda.get_intent_dict()
+    idea_pledge_list = x_agenda.get_intent_dict()
 
     # THEN
-    assert len(idea_action_list) == 27
+    assert len(idea_pledge_list) == 27
 
     week1_road = x_agenda.make_road(month_week_road, "1st week")
     x_agenda.set_fact(month_week_road, week1_road)
-    idea_action_list = x_agenda.get_intent_dict()
-    assert len(idea_action_list) == 27
+    idea_pledge_list = x_agenda.get_intent_dict()
+    assert len(idea_pledge_list) == 27
 
     weekday_text = "weekdays"
     weekday_road = x_agenda.make_l1_road(weekday_text)
@@ -272,28 +272,28 @@ def test_example_agendas_agenda_v001_AgendaHasCorrectAttributes():
     monday_road = x_agenda.make_road(weekday_road, monday_text)
 
     x_agenda.set_fact(base=weekday_road, pick=monday_road)
-    idea_action_list = x_agenda.get_intent_dict()
-    assert len(idea_action_list) == 39
+    idea_pledge_list = x_agenda.get_intent_dict()
+    assert len(idea_pledge_list) == 39
 
     x_agenda.set_fact(base=weekday_road, pick=weekday_road)
-    idea_action_list = x_agenda.get_intent_dict()
-    assert len(idea_action_list) == 53
+    idea_pledge_list = x_agenda.get_intent_dict()
+    assert len(idea_pledge_list) == 53
 
     # x_agenda.set_fact(base=nations_road, pick=nations_road)
-    # idea_action_list = x_agenda.get_intent_dict()
-    # assert len(idea_action_list) == 53
+    # idea_pledge_list = x_agenda.get_intent_dict()
+    # assert len(idea_pledge_list) == 53
 
     # for base in x_agenda.get_missing_fact_bases():
     #     print(f"{base=}")
 
-    # for intent_item in idea_action_list:
+    # for intent_item in idea_pledge_list:
     #     print(f"{intent_item._uid=} {intent_item._parent_road=}")
 
-    # for intent_item in idea_action_list:
+    # for intent_item in idea_pledge_list:
     #     # print(f"{intent_item._parent_road=}")
     #     pass
 
-    print(len(idea_action_list))
+    print(len(idea_pledge_list))
 
 
 def test_example_agendas_agenda_v001_with_large_intent_AgendaCanFiltersOnBase():
@@ -317,12 +317,12 @@ def test_example_agendas_agenda_v001_with_large_intent_AgendaCanFiltersOnBase():
     assert len(x_agenda.get_intent_dict()) == 63
 
     # WHEN
-    action_list = x_agenda.get_intent_dict(base=week_road)
+    pledge_list = x_agenda.get_intent_dict(base=week_road)
 
     # THEN
-    assert len(action_list) != 63
+    assert len(pledge_list) != 63
     # this list went from 28 to 29 when the method of identifying activees was improved.
-    assert len(action_list) == 29
+    assert len(pledge_list) == 29
 
 
 def test_AgendaUnit_set_intent_task_as_complete_SetsAttrCorrectly_Range():
@@ -407,7 +407,7 @@ def test_AgendaUnit_set_intent_task_as_complete_SetsAttrCorrectly_Division():
     assert len(zia_agenda.get_intent_dict()) == 0
 
 
-def test_agendaunit_get_from_json_CorrectlyLoadsActionFromJSON():
+def test_agendaunit_get_from_json_CorrectlyLoadsPledgeFromJSON():
     # GIVEN
     x_agenda_json = example_agendas_agenda_v001().get_json()
 
@@ -428,7 +428,7 @@ def test_agendaunit_get_from_json_CorrectlyLoadsActionFromJSON():
     assert veg_idea.pledge
 
     # idea_list = x_agenda.get_idea_dict()
-    # action_true_count = 0
+    # pledge_true_count = 0
     # for idea in idea_list:
     #     if str(type(idea)).find(".idea.IdeaUnit'>") > 0:
     #         assert idea._active in (True, False)
@@ -436,12 +436,12 @@ def test_agendaunit_get_from_json_CorrectlyLoadsActionFromJSON():
     #     # if idea._active == True:
     #     #     print(idea._label)
     #     if idea.pledge == True:
-    #         action_true_count += 1
+    #         pledge_true_count += 1
     #         # if idea.pledge is False:
-    #         #     print(f"action is false {idea._label}")
+    #         #     print(f"pledge is false {idea._label}")
     #         # for reason in idea._reasonunits.values():
     #         #     assert reason._status in (True, False)
-    # assert action_true_count > 0
+    # assert pledge_true_count > 0
 
     # WHEN
     day_min_text = "day_minute"
@@ -684,17 +684,17 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
     bob_agenda.set_fact(
         base=jajatime_road, pick=jajatime_road, open=1063998720, nigh=1064130373
     )
-    action_idea_list = bob_agenda.get_intent_dict()
+    pledge_idea_list = bob_agenda.get_intent_dict()
 
     # THEN
-    assert len(action_idea_list) == 66
+    assert len(pledge_idea_list) == 66
     db_road = bob_agenda.make_l1_road("D&B")
     night_text = "late_night_go_to_sleep"
     night_road = bob_agenda.make_road(db_road, night_text)
     night_idea = bob_agenda._idea_dict.get(night_road)
     # for idea_x in bob_agenda.get_intent_dict():
     #     # if idea_x._task != True:
-    #     #     print(f"{len(action_idea_list)=} {idea_x._task=} {idea_x.get_road()}")
+    #     #     print(f"{len(pledge_idea_list)=} {idea_x._task=} {idea_x.get_road()}")
     #     if idea_x._label == night_label:
     #         night_idea = idea_x
     #         print(f"{idea_x.get_road()=}")
@@ -734,7 +734,7 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
 
     # # print(f"  {segr_obj.premise_open_trans=}  {segr_obj.premise_nigh_trans=}")
     # print(f"  {segr_obj.get_active()=}  {segr_obj.get_task_status()=}")
-    assert get_tasks_count(action_idea_list) == 64
+    assert get_tasks_count(pledge_idea_list) == 64
 
 
 def test_intent_IsSetByAssignedUnit_1GuyBelief():

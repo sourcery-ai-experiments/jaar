@@ -4228,7 +4228,7 @@
                         "_weight": 1,
                         "pledge": false
                     },
-                    "donate to action committees": {
+                    "donate to pro-climate committees": {
                         "_is_expanded": false,
                         "_kids": {
                             "donate to influential people that are pro-Climate Death": {
@@ -4293,7 +4293,7 @@
                                 "pledge": true
                             }
                         },
-                        "_label": "donate to action committees",
+                        "_label": "donate to pro-climate committees",
                         "_meld_strategy": "default",
                         "_reasonunits": {
                             "music,Aaron Donald things effected by him": {

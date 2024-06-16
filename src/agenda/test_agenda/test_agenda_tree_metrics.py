@@ -78,7 +78,7 @@ def test_AgendaUnit_set_all_idea_uids_unique_SetsUIDsCorrectly():
     assert zia_agenda.get_idea_obj(swim_road)._uid != None
 
 
-def test_AgendaUnit_get_tree_metrics_ReturnsANoneActionIdeaRoadUnit():
+def test_AgendaUnit_get_tree_metrics_ReturnsANone_pledge_IdeaRoadUnit():
     # GIVEN
     nia_text = "Nia"
     nia_agenda = agendaunit_shop(nia_text, _weight=10)
@@ -90,7 +90,7 @@ def test_AgendaUnit_get_tree_metrics_ReturnsANoneActionIdeaRoadUnit():
     assert tree_metrics_before.last_evaluated_pledge_idea_road is None
 
 
-def test_AgendaUnit_get_tree_metrics_ReturnsAnActionIdeaRoadUnit():
+def test_AgendaUnit_get_tree_metrics_Returns_pledge_IdeaRoadUnit():
     # GIVEN
     yao_agenda = agenda_v001()
     yao_tree_metrics = yao_agenda.get_tree_metrics()

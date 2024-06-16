@@ -329,7 +329,7 @@ def test_reasons_get_from_dict_ReturnsCorrectObj():
     assert reasonunits_dict.get(wkday_reasonunit.base) == wkday_reasonunit
 
 
-def test_ReasonHeir_correctSetsActionState():
+def test_ReasonHeir_correctSetsPledgeState():
     # GIVEN
     day_text = "ced_day"
     day_road = create_road(root_label(), day_text)

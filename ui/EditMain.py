@@ -53,12 +53,12 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.facts_table.setRowCount(0)
         self.facts_table.itemClicked.connect(self.fact_table_select)
         self.fact_base_update_combo.currentTextAtomd.connect(self.fact_pick_combo_load)
-        self.fact_update_button.clicked.connect(self.fact_set_action)
-        self.fact_delete_button.clicked.connect(self.fact_del_action)
+        self.fact_update_button.clicked.connect(self.fact_set_pledge)
+        self.fact_delete_button.clicked.connect(self.fact_del_pledge)
 
         self.x_agenda = None
 
-    def fact_set_action(self):
+    def fact_set_pledge(self):
         self.x_agenda.set_fact(
             base=self.fact_base_update_combo.currentText(),
             pick=self.fact_pick_update_combo.currentText(),
@@ -67,7 +67,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         )
         self.refresh_all()
 
-    def fact_del_action(self):
+    def fact_del_pledge(self):
         self.x_agenda.del_fact(base=self.fact_base_update_combo.currentText())
         self.refresh_all()
 

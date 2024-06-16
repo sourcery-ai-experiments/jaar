@@ -442,7 +442,7 @@
     <string>Agenda</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="cb_yo_action">
+  <widget class="QCheckBox" name="cb_yo_pledge">
    <property name="geometry">
     <rect>
      <x>320</x>
@@ -455,7 +455,7 @@
     <string>Act</string>
    </property>
   </widget>
-  <widget class="QCheckBox" name="yo_action_cb">
+  <widget class="QCheckBox" name="yo_pledge_cb">
    <property name="geometry">
     <rect>
      <x>930</x>
@@ -465,7 +465,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Action</string>
+    <string>Pledge</string>
    </property>
   </widget>
   <widget class="QCheckBox" name="cb_yo_complete">

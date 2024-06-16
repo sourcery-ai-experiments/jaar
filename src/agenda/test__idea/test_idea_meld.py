@@ -630,7 +630,7 @@ def test_IdeaUnit_meld_FailRaisesError_numeric_road():
     )
 
 
-def test_IdeaUnit_meld_FailRaisesError_action():
+def test_IdeaUnit_meld_FailRaisesError_pledge():
     x_attr = "pledge"
     x_val = True
     casa_text = "casa"
