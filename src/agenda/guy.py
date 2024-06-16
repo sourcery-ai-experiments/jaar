@@ -1,10 +1,10 @@
-from src._road.road import PartyID, default_road_delimiter_if_none, validate_roadnode
+from src._road.road import GuyID, default_road_delimiter_if_none, validate_roadnode
 from src._road.finance import default_planck_if_none
 from dataclasses import dataclass
 from src._instrument.python import get_1_if_None, get_dict_from_json, get_0_if_None
 
 
-class InvalidPartyException(Exception):
+class InvalidGuyException(Exception):
     pass
 
 
@@ -13,20 +13,20 @@ class _planck_RatioException(Exception):
 
 
 @dataclass
-class PartyCore:
-    party_id: PartyID = None
+class GuyCore:
+    guy_id: GuyID = None
     _road_delimiter: str = None
     _planck: float = None
 
-    def set_party_id(self, x_party_id: PartyID):
-        self.party_id = validate_roadnode(x_party_id, self._road_delimiter)
+    def set_guy_id(self, x_guy_id: GuyID):
+        self.guy_id = validate_roadnode(x_guy_id, self._road_delimiter)
 
 
 @dataclass
-class PartyUnit(PartyCore):
-    """This represents the relationship from the AgendaUnit._owner_id to the PartyUnit.party_id
-    PartyUnit.credor_weight represents how much credor_weight the _owner_id gives the party_id
-    PartyUnit.debtor_weight represents how much debtor_weight the _owner_id gives the party_id
+class GuyUnit(GuyCore):
+    """This represents the relationship from the AgendaUnit._owner_id to the GuyUnit.guy_id
+    GuyUnit.credor_weight represents how much credor_weight the _owner_id gives the guy_id
+    GuyUnit.debtor_weight represents how much debtor_weight the _owner_id gives the guy_id
     """
 
     credor_weight: int = None
@@ -108,7 +108,7 @@ class PartyUnit(PartyCore):
 
     def get_dict(self, all_attrs: bool = False) -> dict[str:str]:
         x_dict = {
-            "party_id": self.party_id,
+            "guy_id": self.guy_id,
             "credor_weight": self.credor_weight,
             "debtor_weight": self.debtor_weight,
             "_credor_operational": self._credor_operational,
@@ -191,12 +191,12 @@ class PartyUnit(PartyCore):
         self,
         agenda_intent_ratio_cred_sum: float,
         agenda_intent_ratio_debt_sum: float,
-        agenda_partyunit_total_credor_weight: float,
-        agenda_partyunit_total_debtor_weight: float,
+        agenda_guyunit_total_credor_weight: float,
+        agenda_guyunit_total_debtor_weight: float,
     ):
         if agenda_intent_ratio_cred_sum == 0:
             self._agenda_intent_ratio_cred = (
-                self.get_credor_weight() / agenda_partyunit_total_credor_weight
+                self.get_credor_weight() / agenda_guyunit_total_credor_weight
             )
         else:
             self._agenda_intent_ratio_cred = (
@@ -205,83 +205,83 @@ class PartyUnit(PartyCore):
 
         if agenda_intent_ratio_debt_sum == 0:
             self._agenda_intent_ratio_debt = (
-                self.get_debtor_weight() / agenda_partyunit_total_debtor_weight
+                self.get_debtor_weight() / agenda_guyunit_total_debtor_weight
             )
         else:
             self._agenda_intent_ratio_debt = (
                 self._agenda_intent_debt / agenda_intent_ratio_debt_sum
             )
 
-    def meld(self, other_partyunit):
-        if self.party_id != other_partyunit.party_id:
-            raise InvalidPartyException(
-                f"Meld fail PartyUnit='{self.party_id}' not the same as PartyUnit='{other_partyunit.party_id}"
+    def meld(self, other_guyunit):
+        if self.guy_id != other_guyunit.guy_id:
+            raise InvalidGuyException(
+                f"Meld fail GuyUnit='{self.guy_id}' not the same as GuyUnit='{other_guyunit.guy_id}"
             )
 
-        self.credor_weight += other_partyunit.credor_weight
-        self.debtor_weight += other_partyunit.debtor_weight
-        self._irrational_debtor_weight += other_partyunit._irrational_debtor_weight
-        self._inallocable_debtor_weight += other_partyunit._inallocable_debtor_weight
+        self.credor_weight += other_guyunit.credor_weight
+        self.debtor_weight += other_guyunit.debtor_weight
+        self._irrational_debtor_weight += other_guyunit._irrational_debtor_weight
+        self._inallocable_debtor_weight += other_guyunit._inallocable_debtor_weight
 
 
-# class PartyUnitsshop:
-def partyunits_get_from_json(partyunits_json: str) -> dict[str:PartyUnit]:
-    partyunits_dict = get_dict_from_json(json_x=partyunits_json)
-    return partyunits_get_from_dict(x_dict=partyunits_dict)
+# class GuyUnitsshop:
+def guyunits_get_from_json(guyunits_json: str) -> dict[str:GuyUnit]:
+    guyunits_dict = get_dict_from_json(json_x=guyunits_json)
+    return guyunits_get_from_dict(x_dict=guyunits_dict)
 
 
-def partyunits_get_from_dict(
+def guyunits_get_from_dict(
     x_dict: dict, _road_delimiter: str = None
-) -> dict[str:PartyUnit]:
-    partyunits = {}
-    for partyunit_dict in x_dict.values():
-        x_partyunit = partyunit_get_from_dict(partyunit_dict, _road_delimiter)
-        partyunits[x_partyunit.party_id] = x_partyunit
-    return partyunits
+) -> dict[str:GuyUnit]:
+    guyunits = {}
+    for guyunit_dict in x_dict.values():
+        x_guyunit = guyunit_get_from_dict(guyunit_dict, _road_delimiter)
+        guyunits[x_guyunit.guy_id] = x_guyunit
+    return guyunits
 
 
-def partyunit_get_from_dict(partyunit_dict: dict, _road_delimiter: str) -> PartyUnit:
-    _irrational_debtor_weight = partyunit_dict.get("_irrational_debtor_weight", 0)
-    _inallocable_debtor_weight = partyunit_dict.get("_inallocable_debtor_weight", 0)
-    _treasury_due_paid = partyunit_dict.get("_treasury_due_paid", 0)
-    _treasury_due_diff = partyunit_dict.get("_treasury_due_diff", 0)
-    _treasury_cred_score = partyunit_dict.get("_treasury_cred_score", 0)
-    _treasury_voice_rank = partyunit_dict.get("_treasury_voice_rank", 0)
-    _treasury_voice_hx_lowest_rank = partyunit_dict.get(
+def guyunit_get_from_dict(guyunit_dict: dict, _road_delimiter: str) -> GuyUnit:
+    _irrational_debtor_weight = guyunit_dict.get("_irrational_debtor_weight", 0)
+    _inallocable_debtor_weight = guyunit_dict.get("_inallocable_debtor_weight", 0)
+    _treasury_due_paid = guyunit_dict.get("_treasury_due_paid", 0)
+    _treasury_due_diff = guyunit_dict.get("_treasury_due_diff", 0)
+    _treasury_cred_score = guyunit_dict.get("_treasury_cred_score", 0)
+    _treasury_voice_rank = guyunit_dict.get("_treasury_voice_rank", 0)
+    _treasury_voice_hx_lowest_rank = guyunit_dict.get(
         "_treasury_voice_hx_lowest_rank", 0
     )
 
-    x_partyunit = partyunit_shop(
-        party_id=partyunit_dict["party_id"],
-        credor_weight=partyunit_dict["credor_weight"],
-        debtor_weight=partyunit_dict["debtor_weight"],
-        _credor_operational=partyunit_dict["_credor_operational"],
-        _debtor_operational=partyunit_dict["_debtor_operational"],
+    x_guyunit = guyunit_shop(
+        guy_id=guyunit_dict["guy_id"],
+        credor_weight=guyunit_dict["credor_weight"],
+        debtor_weight=guyunit_dict["debtor_weight"],
+        _credor_operational=guyunit_dict["_credor_operational"],
+        _debtor_operational=guyunit_dict["_debtor_operational"],
         _road_delimiter=_road_delimiter,
     )
-    x_partyunit.set_treasury_attr(
+    x_guyunit.set_treasury_attr(
         due_paid=_treasury_due_paid,
         due_diff=_treasury_due_diff,
         cred_score=_treasury_cred_score,
         voice_rank=_treasury_voice_rank,
     )
-    x_partyunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
-    x_partyunit.add_irrational_debtor_weight(get_0_if_None(_irrational_debtor_weight))
-    x_partyunit.add_inallocable_debtor_weight(get_0_if_None(_inallocable_debtor_weight))
+    x_guyunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
+    x_guyunit.add_irrational_debtor_weight(get_0_if_None(_irrational_debtor_weight))
+    x_guyunit.add_inallocable_debtor_weight(get_0_if_None(_inallocable_debtor_weight))
 
-    return x_partyunit
+    return x_guyunit
 
 
-def partyunit_shop(
-    party_id: PartyID,
+def guyunit_shop(
+    guy_id: GuyID,
     credor_weight: int = None,
     debtor_weight: int = None,
     _credor_operational: bool = None,
     _debtor_operational: bool = None,
     _road_delimiter: str = None,
     _planck: float = None,
-) -> PartyUnit:
-    x_partyunit = PartyUnit(
+) -> GuyUnit:
+    x_guyunit = GuyUnit(
         credor_weight=get_1_if_None(credor_weight),
         debtor_weight=get_1_if_None(debtor_weight),
         _irrational_debtor_weight=get_0_if_None(),
@@ -299,12 +299,12 @@ def partyunit_shop(
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
     )
-    x_partyunit.set_party_id(x_party_id=party_id)
-    return x_partyunit
+    x_guyunit.set_guy_id(x_guy_id=guy_id)
+    return x_guyunit
 
 
 @dataclass
-class PartyLink(PartyCore):
+class GuyLink(GuyCore):
     credor_weight: float = 1.0
     debtor_weight: float = 1.0
     _agenda_cred: float = None
@@ -314,15 +314,15 @@ class PartyLink(PartyCore):
 
     def get_dict(self) -> dict[str:str]:
         return {
-            "party_id": self.party_id,
+            "guy_id": self.guy_id,
             "credor_weight": self.credor_weight,
             "debtor_weight": self.debtor_weight,
         }
 
     def set_agenda_cred_debt(
         self,
-        partylinks_credor_weight_sum: float,
-        partylinks_debtor_weight_sum: float,
+        guylinks_credor_weight_sum: float,
+        guylinks_debtor_weight_sum: float,
         belief_agenda_cred: float,
         belief_agenda_debt: float,
         belief_agenda_intent_cred: float,
@@ -330,8 +330,8 @@ class PartyLink(PartyCore):
     ):
         belief_agenda_cred = get_1_if_None(belief_agenda_cred)
         belief_agenda_debt = get_1_if_None(belief_agenda_debt)
-        credor_ratio = self.credor_weight / partylinks_credor_weight_sum
-        debtor_ratio = self.debtor_weight / partylinks_debtor_weight_sum
+        credor_ratio = self.credor_weight / guylinks_credor_weight_sum
+        debtor_ratio = self.debtor_weight / guylinks_debtor_weight_sum
 
         self._agenda_cred = belief_agenda_cred * credor_ratio
         self._agenda_debt = belief_agenda_debt * debtor_ratio
@@ -344,48 +344,48 @@ class PartyLink(PartyCore):
         self._agenda_intent_cred = 0
         self._agenda_intent_debt = 0
 
-    def meld(self, other_partylink):
-        if self.party_id != other_partylink.party_id:
-            raise InvalidPartyException(
-                f"Meld fail PartyLink='{self.party_id}' not the same as PartyLink='{other_partylink.party_id}"
+    def meld(self, other_guylink):
+        if self.guy_id != other_guylink.guy_id:
+            raise InvalidGuyException(
+                f"Meld fail GuyLink='{self.guy_id}' not the same as GuyLink='{other_guylink.guy_id}"
             )
-        self.credor_weight += other_partylink.credor_weight
-        self.debtor_weight += other_partylink.debtor_weight
+        self.credor_weight += other_guylink.credor_weight
+        self.debtor_weight += other_guylink.debtor_weight
 
 
-# class PartyLinkshop:
-def partylinks_get_from_json(partylinks_json: str) -> dict[str:PartyLink]:
-    partylinks_dict = get_dict_from_json(json_x=partylinks_json)
-    return partylinks_get_from_dict(x_dict=partylinks_dict)
+# class GuyLinkshop:
+def guylinks_get_from_json(guylinks_json: str) -> dict[str:GuyLink]:
+    guylinks_dict = get_dict_from_json(json_x=guylinks_json)
+    return guylinks_get_from_dict(x_dict=guylinks_dict)
 
 
-def partylinks_get_from_dict(x_dict: dict) -> dict[str:PartyLink]:
+def guylinks_get_from_dict(x_dict: dict) -> dict[str:GuyLink]:
     if x_dict is None:
         x_dict = {}
-    partylinks = {}
-    for partylinks_dict in x_dict.values():
-        x_party = partylink_shop(
-            party_id=partylinks_dict["party_id"],
-            credor_weight=partylinks_dict["credor_weight"],
-            debtor_weight=partylinks_dict["debtor_weight"],
+    guylinks = {}
+    for guylinks_dict in x_dict.values():
+        x_guy = guylink_shop(
+            guy_id=guylinks_dict["guy_id"],
+            credor_weight=guylinks_dict["credor_weight"],
+            debtor_weight=guylinks_dict["debtor_weight"],
         )
-        partylinks[x_party.party_id] = x_party
-    return partylinks
+        guylinks[x_guy.guy_id] = x_guy
+    return guylinks
 
 
-def partylink_shop(
-    party_id: PartyID,
+def guylink_shop(
+    guy_id: GuyID,
     credor_weight: float = None,
     debtor_weight: float = None,
     _agenda_cred: float = None,
     _agenda_debt: float = None,
     _agenda_intent_cred: float = None,
     _agenda_intent_debt: float = None,
-) -> PartyLink:
+) -> GuyLink:
     credor_weight = get_1_if_None(credor_weight)
     debtor_weight = get_1_if_None(debtor_weight)
-    return PartyLink(
-        party_id=party_id,
+    return GuyLink(
+        guy_id=guy_id,
         credor_weight=credor_weight,
         debtor_weight=debtor_weight,
         _agenda_cred=_agenda_cred,
@@ -396,7 +396,7 @@ def partylink_shop(
 
 
 @dataclass
-class PartyUnitExternalMetrics:
-    internal_party_id: PartyID = None
+class GuyUnitExternalMetrics:
+    internal_guy_id: GuyID = None
     credor_operational: bool = None
     debtor_operational: bool = None

@@ -1,5 +1,5 @@
 from src.agenda.belief import beliefunit_shop
-from src.agenda.party import partylink_shop
+from src.agenda.guy import guylink_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.listen.basis_agendas import (
@@ -21,17 +21,17 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     zia_debtor_weight = 41
     zia_credor_pool = 87
     zia_debtor_pool = 81
-    yao_duty.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.add_guyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     zia_irrational_debtor_weight = 11
     zia_inallocable_debtor_weight = 22
-    role_zia_partyunit = yao_duty.get_party(zia_text)
-    role_zia_partyunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
-    role_zia_partyunit.add_inallocable_debtor_weight(zia_inallocable_debtor_weight)
+    role_zia_guyunit = yao_duty.get_guy(zia_text)
+    role_zia_guyunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
+    role_zia_guyunit.add_inallocable_debtor_weight(zia_inallocable_debtor_weight)
     swim_belief = beliefunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
-    swim_belief.set_partylink(partylink_shop(zia_text))
+    swim_belief.set_guylink(guylink_shop(zia_text))
     yao_duty.set_beliefunit(swim_belief)
-    yao_duty.set_party_credor_pool(zia_credor_pool, True)
-    yao_duty.set_party_debtor_pool(zia_debtor_pool, True)
+    yao_duty.set_guy_credor_pool(zia_credor_pool, True)
+    yao_duty.set_guy_debtor_pool(zia_debtor_pool, True)
 
     # WHEN
     yao_empty_job = create_empty_agenda(yao_duty, x_owner_id=zia_text)
@@ -46,12 +46,12 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     assert yao_empty_job._planck == yao_duty._planck
     assert yao_empty_job._penny == yao_duty._penny
     assert yao_empty_job._monetary_desc is None
-    assert yao_empty_job._party_credor_pool != yao_duty._party_credor_pool
-    assert yao_empty_job._party_credor_pool is None
-    assert yao_empty_job._party_debtor_pool != yao_duty._party_debtor_pool
-    assert yao_empty_job._party_debtor_pool is None
+    assert yao_empty_job._guy_credor_pool != yao_duty._guy_credor_pool
+    assert yao_empty_job._guy_credor_pool is None
+    assert yao_empty_job._guy_debtor_pool != yao_duty._guy_debtor_pool
+    assert yao_empty_job._guy_debtor_pool is None
     yao_empty_job.calc_agenda_metrics()
-    assert yao_empty_job._partys == {}
+    assert yao_empty_job._guys == {}
 
 
 def test_create_listen_basis_ReturnsCorrectObj():
@@ -65,17 +65,17 @@ def test_create_listen_basis_ReturnsCorrectObj():
     zia_debtor_weight = 41
     zia_credor_pool = 87
     zia_debtor_pool = 81
-    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_guyunit(zia_text, zia_credor_weight, zia_debtor_weight)
     zia_irrational_debtor_weight = 11
     zia_inallocable_debtor_weight = 22
-    role_zia_partyunit = yao_role.get_party(zia_text)
-    role_zia_partyunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
-    role_zia_partyunit.add_inallocable_debtor_weight(zia_inallocable_debtor_weight)
+    role_zia_guyunit = yao_role.get_guy(zia_text)
+    role_zia_guyunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
+    role_zia_guyunit.add_inallocable_debtor_weight(zia_inallocable_debtor_weight)
     swim_belief = beliefunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
-    swim_belief.set_partylink(partylink_shop(zia_text))
+    swim_belief.set_guylink(guylink_shop(zia_text))
     yao_role.set_beliefunit(swim_belief)
-    yao_role.set_party_credor_pool(zia_credor_pool, True)
-    yao_role.set_party_debtor_pool(zia_debtor_pool, True)
+    yao_role.set_guy_credor_pool(zia_credor_pool, True)
+    yao_role.set_guy_debtor_pool(zia_debtor_pool, True)
 
     # WHEN
     yao_basis_job = create_listen_basis(yao_role)
@@ -88,15 +88,15 @@ def test_create_listen_basis_ReturnsCorrectObj():
     assert yao_basis_job._road_delimiter == yao_role._road_delimiter
     assert yao_basis_job._planck == yao_role._planck
     assert yao_basis_job._monetary_desc == yao_role._monetary_desc
-    assert yao_basis_job._party_credor_pool == yao_role._party_credor_pool
-    assert yao_basis_job._party_debtor_pool == yao_role._party_debtor_pool
+    assert yao_basis_job._guy_credor_pool == yao_role._guy_credor_pool
+    assert yao_basis_job._guy_debtor_pool == yao_role._guy_debtor_pool
     yao_basis_job.calc_agenda_metrics()
     assert len(yao_basis_job._idea_dict) != len(yao_role._idea_dict)
     assert len(yao_basis_job._idea_dict) == 1
-    job_zia_partyunit = yao_basis_job.get_party(zia_text)
-    assert yao_basis_job.get_partys_dict().keys() == yao_role.get_partys_dict().keys()
-    assert job_zia_partyunit._irrational_debtor_weight == 0
-    assert job_zia_partyunit._inallocable_debtor_weight == 0
+    job_zia_guyunit = yao_basis_job.get_guy(zia_text)
+    assert yao_basis_job.get_guys_dict().keys() == yao_role.get_guys_dict().keys()
+    assert job_zia_guyunit._irrational_debtor_weight == 0
+    assert job_zia_guyunit._inallocable_debtor_weight == 0
 
 
 def test_get_default_work_agenda_ReturnsCorrectObj():
@@ -105,19 +105,19 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     blue_text = "blue"
     slash_text = "/"
     five_planck = 5
-    sue_party_pool = 800
+    sue_guy_pool = 800
     casa_text = "casa"
     bob_text = "Bob"
     last_atom_id = 7
     sue_max_tree_traverse = 9
     sue_agendaunit = agendaunit_shop(sue_text, blue_text, slash_text, five_planck)
     sue_agendaunit.set_last_atom_id(last_atom_id)
-    sue_agendaunit.add_partyunit(bob_text, 3, 4)
+    sue_agendaunit.add_guyunit(bob_text, 3, 4)
     swim_text = "/swimmers"
     swim_beliefunit = beliefunit_shop(swim_text, _road_delimiter=slash_text)
-    swim_beliefunit.edit_partylink(bob_text)
+    swim_beliefunit.edit_guylink(bob_text)
     sue_agendaunit.set_beliefunit(swim_beliefunit)
-    sue_agendaunit.set_party_pool(sue_party_pool)
+    sue_agendaunit.set_guy_pool(sue_guy_pool)
     sue_agendaunit.add_l1_idea(ideaunit_shop(casa_text))
     sue_agendaunit.set_max_tree_traverse(sue_max_tree_traverse)
 
@@ -132,9 +132,9 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     assert default_work_agenda._real_id == blue_text
     assert default_work_agenda._road_delimiter == slash_text
     assert default_work_agenda._planck == five_planck
-    assert default_work_agenda._party_credor_pool is None
-    assert default_work_agenda._party_debtor_pool is None
+    assert default_work_agenda._guy_credor_pool is None
+    assert default_work_agenda._guy_debtor_pool is None
     assert default_work_agenda._max_tree_traverse == sue_max_tree_traverse
-    assert len(default_work_agenda.get_partys_dict()) == 1
+    assert len(default_work_agenda.get_guys_dict()) == 1
     assert len(default_work_agenda.get_beliefunits_dict()) == 1
     assert len(default_work_agenda._idea_dict) == 1

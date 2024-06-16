@@ -8,7 +8,7 @@ from src._instrument.python import (
 )
 from src._road.road import RoadUnit, get_terminus_node, get_parent_road
 from src.agenda.reason_idea import FactUnit, ReasonUnit
-from src.agenda.party import PartyLink, PartyID
+from src.agenda.guy import GuyLink, GuyID
 from src.agenda.belief import BeliefUnit, BeliefID
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit, agendaunit_shop
@@ -132,7 +132,7 @@ class NucUnit:
         before_agenda.calc_agenda_metrics()
         after_agenda.calc_agenda_metrics()
         self.add_quarkunits_agendaunit_simple_attrs(before_agenda, after_agenda)
-        self.add_quarkunit_partyunits(before_agenda, after_agenda)
+        self.add_quarkunit_guyunits(before_agenda, after_agenda)
         self.add_quarkunit_beliefunits(before_agenda, after_agenda)
         self.add_quarkunits_ideas(before_agenda, after_agenda)
 
@@ -150,13 +150,13 @@ class NucUnit:
             x_quarkunit.set_optional_arg("_meld_strategy", after_agenda._meld_strategy)
         if before_agenda._monetary_desc != after_agenda._monetary_desc:
             x_quarkunit.set_optional_arg("_monetary_desc", after_agenda._monetary_desc)
-        if before_agenda._party_credor_pool != after_agenda._party_credor_pool:
+        if before_agenda._guy_credor_pool != after_agenda._guy_credor_pool:
             x_quarkunit.set_optional_arg(
-                "_party_credor_pool", after_agenda._party_credor_pool
+                "_guy_credor_pool", after_agenda._guy_credor_pool
             )
-        if before_agenda._party_debtor_pool != after_agenda._party_debtor_pool:
+        if before_agenda._guy_debtor_pool != after_agenda._guy_debtor_pool:
             x_quarkunit.set_optional_arg(
-                "_party_debtor_pool", after_agenda._party_debtor_pool
+                "_guy_debtor_pool", after_agenda._guy_debtor_pool
             )
         if before_agenda._weight != after_agenda._weight:
             x_quarkunit.set_optional_arg("_weight", after_agenda._weight)
@@ -164,63 +164,61 @@ class NucUnit:
             x_quarkunit.set_optional_arg("_planck", after_agenda._planck)
         self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_partyunits(
+    def add_quarkunit_guyunits(
         self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
     ):
-        before_party_ids = set(before_agenda._partys.keys())
-        after_party_ids = set(after_agenda._partys.keys())
+        before_guy_ids = set(before_agenda._guys.keys())
+        after_guy_ids = set(after_agenda._guys.keys())
 
-        self.add_quarkunit_partyunit_inserts(
+        self.add_quarkunit_guyunit_inserts(
             after_agenda=after_agenda,
-            insert_party_ids=after_party_ids.difference(before_party_ids),
+            insert_guy_ids=after_guy_ids.difference(before_guy_ids),
         )
-        self.add_quarkunit_partyunit_deletes(
-            delete_party_ids=before_party_ids.difference(after_party_ids)
+        self.add_quarkunit_guyunit_deletes(
+            delete_guy_ids=before_guy_ids.difference(after_guy_ids)
         )
-        self.add_quarkunit_partyunit_updates(
+        self.add_quarkunit_guyunit_updates(
             before_agenda=before_agenda,
             after_agenda=after_agenda,
-            update_party_ids=before_party_ids.intersection(after_party_ids),
+            update_guy_ids=before_guy_ids.intersection(after_guy_ids),
         )
 
-    def add_quarkunit_partyunit_inserts(
-        self, after_agenda: AgendaUnit, insert_party_ids: set
+    def add_quarkunit_guyunit_inserts(
+        self, after_agenda: AgendaUnit, insert_guy_ids: set
     ):
-        for insert_party_id in insert_party_ids:
-            x_partyunit = after_agenda.get_party(insert_party_id)
-            x_quarkunit = quarkunit_shop("agenda_partyunit", quark_insert())
-            x_quarkunit.set_required_arg("party_id", x_partyunit.party_id)
-            if x_partyunit.credor_weight != None:
-                x_quarkunit.set_optional_arg("credor_weight", x_partyunit.credor_weight)
-            if x_partyunit.debtor_weight != None:
-                x_quarkunit.set_optional_arg("debtor_weight", x_partyunit.debtor_weight)
+        for insert_guy_id in insert_guy_ids:
+            x_guyunit = after_agenda.get_guy(insert_guy_id)
+            x_quarkunit = quarkunit_shop("agenda_guyunit", quark_insert())
+            x_quarkunit.set_required_arg("guy_id", x_guyunit.guy_id)
+            if x_guyunit.credor_weight != None:
+                x_quarkunit.set_optional_arg("credor_weight", x_guyunit.credor_weight)
+            if x_guyunit.debtor_weight != None:
+                x_quarkunit.set_optional_arg("debtor_weight", x_guyunit.debtor_weight)
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_partyunit_updates(
-        self, before_agenda: AgendaUnit, after_agenda: AgendaUnit, update_party_ids: set
+    def add_quarkunit_guyunit_updates(
+        self, before_agenda: AgendaUnit, after_agenda: AgendaUnit, update_guy_ids: set
     ):
-        for party_id in update_party_ids:
-            after_partyunit = after_agenda.get_party(party_id)
-            before_partyunit = before_agenda.get_party(party_id)
-            if optional_args_different(
-                "agenda_partyunit", after_partyunit, before_partyunit
-            ):
-                x_quarkunit = quarkunit_shop("agenda_partyunit", quark_update())
-                x_quarkunit.set_required_arg("party_id", after_partyunit.party_id)
-                if before_partyunit.credor_weight != after_partyunit.credor_weight:
+        for guy_id in update_guy_ids:
+            after_guyunit = after_agenda.get_guy(guy_id)
+            before_guyunit = before_agenda.get_guy(guy_id)
+            if optional_args_different("agenda_guyunit", after_guyunit, before_guyunit):
+                x_quarkunit = quarkunit_shop("agenda_guyunit", quark_update())
+                x_quarkunit.set_required_arg("guy_id", after_guyunit.guy_id)
+                if before_guyunit.credor_weight != after_guyunit.credor_weight:
                     x_quarkunit.set_optional_arg(
-                        "credor_weight", after_partyunit.credor_weight
+                        "credor_weight", after_guyunit.credor_weight
                     )
-                if before_partyunit.debtor_weight != after_partyunit.debtor_weight:
+                if before_guyunit.debtor_weight != after_guyunit.debtor_weight:
                     x_quarkunit.set_optional_arg(
-                        "debtor_weight", after_partyunit.debtor_weight
+                        "debtor_weight", after_guyunit.debtor_weight
                     )
                 self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_partyunit_deletes(self, delete_party_ids: set):
-        for delete_party_id in delete_party_ids:
-            x_quarkunit = quarkunit_shop("agenda_partyunit", quark_delete())
-            x_quarkunit.set_required_arg("party_id", delete_party_id)
+    def add_quarkunit_guyunit_deletes(self, delete_guy_ids: set):
+        for delete_guy_id in delete_guy_ids:
+            x_quarkunit = quarkunit_shop("agenda_guyunit", quark_delete())
+            x_quarkunit.set_required_arg("guy_id", delete_guy_id)
             self.set_quarkunit(x_quarkunit)
 
     def add_quarkunit_beliefunits(
@@ -229,12 +227,12 @@ class NucUnit:
         before_belief_ids = {
             before_belief_id
             for before_belief_id in before_agenda._beliefs.keys()
-            if before_agenda.get_beliefunit(before_belief_id)._party_mirror is False
+            if before_agenda.get_beliefunit(before_belief_id)._guy_mirror is False
         }
         after_belief_ids = {
             after_belief_id
             for after_belief_id in after_agenda._beliefs.keys()
-            if after_agenda.get_beliefunit(after_belief_id)._party_mirror is False
+            if after_agenda.get_beliefunit(after_belief_id)._guy_mirror is False
         }
 
         self.add_quarkunit_beliefunit_inserts(
@@ -261,9 +259,9 @@ class NucUnit:
             x_quarkunit = quarkunit_shop("agenda_beliefunit", quark_insert())
             x_quarkunit.set_required_arg("belief_id", insert_beliefunit.belief_id)
             self.set_quarkunit(x_quarkunit)
-            self.add_quarkunit_partylinks_inserts(
+            self.add_quarkunit_guylinks_inserts(
                 after_beliefunit=insert_beliefunit,
-                insert_partylink_party_ids=set(insert_beliefunit._partys.keys()),
+                insert_guylink_guy_ids=set(insert_beliefunit._guys.keys()),
             )
 
     def add_quarkunit_beliefunit_updates(
@@ -282,37 +280,37 @@ class NucUnit:
                 x_quarkunit.set_required_arg("belief_id", after_beliefunit.belief_id)
                 self.set_quarkunit(x_quarkunit)
 
-            self.add_quarkunit_beliefunit_update_partylinks(
+            self.add_quarkunit_beliefunit_update_guylinks(
                 after_beliefunit=after_beliefunit, before_beliefunit=before_beliefunit
             )
 
-    def add_quarkunit_beliefunit_update_partylinks(
+    def add_quarkunit_beliefunit_update_guylinks(
         self, after_beliefunit: BeliefUnit, before_beliefunit: BeliefUnit
     ):
-        after_party_ids = set(after_beliefunit._partys.keys())
-        before_party_ids = set(before_beliefunit._partys.keys())
+        after_guy_ids = set(after_beliefunit._guys.keys())
+        before_guy_ids = set(before_beliefunit._guys.keys())
 
-        self.add_quarkunit_partylinks_inserts(
+        self.add_quarkunit_guylinks_inserts(
             after_beliefunit=after_beliefunit,
-            insert_partylink_party_ids=after_party_ids.difference(before_party_ids),
+            insert_guylink_guy_ids=after_guy_ids.difference(before_guy_ids),
         )
 
-        self.add_quarkunit_partylinks_delete(
+        self.add_quarkunit_guylinks_delete(
             before_belief_id=before_beliefunit.belief_id,
-            before_party_ids=before_party_ids.difference(after_party_ids),
+            before_guy_ids=before_guy_ids.difference(after_guy_ids),
         )
 
-        update_party_ids = before_party_ids.intersection(after_party_ids)
-        for update_party_id in update_party_ids:
-            before_partylink = before_beliefunit.get_partylink(update_party_id)
-            after_partylink = after_beliefunit.get_partylink(update_party_id)
+        update_guy_ids = before_guy_ids.intersection(after_guy_ids)
+        for update_guy_id in update_guy_ids:
+            before_guylink = before_beliefunit.get_guylink(update_guy_id)
+            after_guylink = after_beliefunit.get_guylink(update_guy_id)
             if optional_args_different(
-                "agenda_belief_partylink", before_partylink, after_partylink
+                "agenda_belief_guylink", before_guylink, after_guylink
             ):
-                self.add_quarkunit_partylink_update(
+                self.add_quarkunit_guylink_update(
                     belief_id=after_beliefunit.belief_id,
-                    before_partylink=before_partylink,
-                    after_partylink=after_partylink,
+                    before_guylink=before_guylink,
+                    after_guylink=after_guylink,
                 )
 
     def add_quarkunit_beliefunit_deletes(
@@ -324,53 +322,53 @@ class NucUnit:
             self.set_quarkunit(x_quarkunit)
 
             delete_beliefunit = before_agenda.get_beliefunit(delete_belief_id)
-            self.add_quarkunit_partylinks_delete(
-                delete_belief_id, set(delete_beliefunit._partys.keys())
+            self.add_quarkunit_guylinks_delete(
+                delete_belief_id, set(delete_beliefunit._guys.keys())
             )
 
-    def add_quarkunit_partylinks_inserts(
+    def add_quarkunit_guylinks_inserts(
         self,
         after_beliefunit: BeliefUnit,
-        insert_partylink_party_ids: list[PartyID],
+        insert_guylink_guy_ids: list[GuyID],
     ):
         after_belief_id = after_beliefunit.belief_id
-        for insert_party_id in insert_partylink_party_ids:
-            after_partylink = after_beliefunit.get_partylink(insert_party_id)
-            x_quarkunit = quarkunit_shop("agenda_belief_partylink", quark_insert())
+        for insert_guy_id in insert_guylink_guy_ids:
+            after_guylink = after_beliefunit.get_guylink(insert_guy_id)
+            x_quarkunit = quarkunit_shop("agenda_belief_guylink", quark_insert())
             x_quarkunit.set_required_arg("belief_id", after_belief_id)
-            x_quarkunit.set_required_arg("party_id", after_partylink.party_id)
-            if after_partylink.credor_weight != None:
+            x_quarkunit.set_required_arg("guy_id", after_guylink.guy_id)
+            if after_guylink.credor_weight != None:
                 x_quarkunit.set_optional_arg(
-                    "credor_weight", after_partylink.credor_weight
+                    "credor_weight", after_guylink.credor_weight
                 )
-            if after_partylink.debtor_weight != None:
+            if after_guylink.debtor_weight != None:
                 x_quarkunit.set_optional_arg(
-                    "debtor_weight", after_partylink.debtor_weight
+                    "debtor_weight", after_guylink.debtor_weight
                 )
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_partylink_update(
+    def add_quarkunit_guylink_update(
         self,
         belief_id: BeliefID,
-        before_partylink: PartyLink,
-        after_partylink: PartyLink,
+        before_guylink: GuyLink,
+        after_guylink: GuyLink,
     ):
-        x_quarkunit = quarkunit_shop("agenda_belief_partylink", quark_update())
+        x_quarkunit = quarkunit_shop("agenda_belief_guylink", quark_update())
         x_quarkunit.set_required_arg("belief_id", belief_id)
-        x_quarkunit.set_required_arg("party_id", after_partylink.party_id)
-        if after_partylink.credor_weight != before_partylink.credor_weight:
-            x_quarkunit.set_optional_arg("credor_weight", after_partylink.credor_weight)
-        if after_partylink.debtor_weight != before_partylink.debtor_weight:
-            x_quarkunit.set_optional_arg("debtor_weight", after_partylink.debtor_weight)
+        x_quarkunit.set_required_arg("guy_id", after_guylink.guy_id)
+        if after_guylink.credor_weight != before_guylink.credor_weight:
+            x_quarkunit.set_optional_arg("credor_weight", after_guylink.credor_weight)
+        if after_guylink.debtor_weight != before_guylink.debtor_weight:
+            x_quarkunit.set_optional_arg("debtor_weight", after_guylink.debtor_weight)
         self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_partylinks_delete(
-        self, before_belief_id: BeliefID, before_party_ids: PartyID
+    def add_quarkunit_guylinks_delete(
+        self, before_belief_id: BeliefID, before_guy_ids: GuyID
     ):
-        for delete_party_id in before_party_ids:
-            x_quarkunit = quarkunit_shop("agenda_belief_partylink", quark_delete())
+        for delete_guy_id in before_guy_ids:
+            x_quarkunit = quarkunit_shop("agenda_belief_guylink", quark_delete())
             x_quarkunit.set_required_arg("belief_id", before_belief_id)
-            x_quarkunit.set_required_arg("party_id", delete_party_id)
+            x_quarkunit.set_required_arg("guy_id", delete_guy_id)
             self.set_quarkunit(x_quarkunit)
 
     def add_quarkunits_ideas(self, before_agenda: AgendaUnit, after_agenda: AgendaUnit):
@@ -925,15 +923,9 @@ def create_legible_list(x_nuc: NucUnit, x_agenda: AgendaUnit) -> list[str]:
     quarks_dict = x_nuc.quarkunits
     agendaunit_quark = get_leg_obj(quarks_dict, [quark_update(), "agendaunit"])
 
-    partyunit_insert_dict = get_leg_obj(
-        quarks_dict, [quark_insert(), "agenda_partyunit"]
-    )
-    partyunit_update_dict = get_leg_obj(
-        quarks_dict, [quark_update(), "agenda_partyunit"]
-    )
-    partyunit_delete_dict = get_leg_obj(
-        quarks_dict, [quark_delete(), "agenda_partyunit"]
-    )
+    guyunit_insert_dict = get_leg_obj(quarks_dict, [quark_insert(), "agenda_guyunit"])
+    guyunit_update_dict = get_leg_obj(quarks_dict, [quark_update(), "agenda_guyunit"])
+    guyunit_delete_dict = get_leg_obj(quarks_dict, [quark_delete(), "agenda_guyunit"])
 
     beliefunit_insert_dict = get_leg_obj(
         quarks_dict, [quark_insert(), "agenda_beliefunit"]
@@ -945,12 +937,12 @@ def create_legible_list(x_nuc: NucUnit, x_agenda: AgendaUnit) -> list[str]:
         quarks_dict, [quark_delete(), "agenda_beliefunit"]
     )
 
-    x_list = [quark_insert(), "agenda_belief_partylink"]
-    belief_partylink_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "agenda_belief_partylink"]
-    belief_partylink_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "agenda_belief_partylink"]
-    belief_partylink_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "agenda_belief_guylink"]
+    belief_guylink_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "agenda_belief_guylink"]
+    belief_guylink_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "agenda_belief_guylink"]
+    belief_guylink_delete_dict = get_leg_obj(quarks_dict, x_list)
 
     x_list = [quark_insert(), "agenda_ideaunit"]
     agenda_ideaunit_insert_dict = get_leg_obj(quarks_dict, x_list)
@@ -1000,17 +992,17 @@ def create_legible_list(x_nuc: NucUnit, x_agenda: AgendaUnit) -> list[str]:
     leg_list = []
     if agendaunit_quark != None:
         add_agendaunit_legible_list(leg_list, agendaunit_quark, x_agenda)
-    if partyunit_insert_dict != None:
-        add_agenda_partyunit_insert_to_legible_list(
-            leg_list, partyunit_insert_dict, x_agenda
+    if guyunit_insert_dict != None:
+        add_agenda_guyunit_insert_to_legible_list(
+            leg_list, guyunit_insert_dict, x_agenda
         )
-    if partyunit_update_dict != None:
-        add_agenda_partyunit_update_to_legible_list(
-            leg_list, partyunit_update_dict, x_agenda
+    if guyunit_update_dict != None:
+        add_agenda_guyunit_update_to_legible_list(
+            leg_list, guyunit_update_dict, x_agenda
         )
-    if partyunit_delete_dict != None:
-        add_agenda_partyunit_delete_to_legible_list(
-            leg_list, partyunit_delete_dict, x_agenda
+    if guyunit_delete_dict != None:
+        add_agenda_guyunit_delete_to_legible_list(
+            leg_list, guyunit_delete_dict, x_agenda
         )
 
     if beliefunit_insert_dict != None:
@@ -1026,17 +1018,17 @@ def create_legible_list(x_nuc: NucUnit, x_agenda: AgendaUnit) -> list[str]:
             leg_list, beliefunit_delete_dict, x_agenda
         )
 
-    if belief_partylink_insert_dict != None:
-        add_agenda_belief_partylink_insert_to_legible_list(
-            leg_list, belief_partylink_insert_dict, x_agenda
+    if belief_guylink_insert_dict != None:
+        add_agenda_belief_guylink_insert_to_legible_list(
+            leg_list, belief_guylink_insert_dict, x_agenda
         )
-    if belief_partylink_update_dict != None:
-        add_agenda_belief_partylink_update_to_legible_list(
-            leg_list, belief_partylink_update_dict, x_agenda
+    if belief_guylink_update_dict != None:
+        add_agenda_belief_guylink_update_to_legible_list(
+            leg_list, belief_guylink_update_dict, x_agenda
         )
-    if belief_partylink_delete_dict != None:
-        add_agenda_belief_partylink_delete_to_legible_list(
-            leg_list, belief_partylink_delete_dict, x_agenda
+    if belief_guylink_delete_dict != None:
+        add_agenda_belief_guylink_delete_to_legible_list(
+            leg_list, belief_guylink_delete_dict, x_agenda
         )
 
     if agenda_ideaunit_insert_dict != None:
@@ -1133,14 +1125,14 @@ def add_agendaunit_legible_list(
     _max_tree_traverse_text = "_max_tree_traverse"
     _meld_strategy_text = "_meld_strategy"
     _monetary_desc_text = "_monetary_desc"
-    _party_credor_pool_text = "_party_credor_pool"
-    _party_debtor_pool_text = "_party_debtor_pool"
+    _guy_credor_pool_text = "_guy_credor_pool"
+    _guy_debtor_pool_text = "_guy_debtor_pool"
 
     _max_tree_traverse_value = optional_args.get(_max_tree_traverse_text)
     _meld_strategy_value = optional_args.get(_meld_strategy_text)
     _monetary_desc_value = optional_args.get(_monetary_desc_text)
-    _party_credor_pool_value = optional_args.get(_party_credor_pool_text)
-    _party_debtor_pool_value = optional_args.get(_party_debtor_pool_text)
+    _guy_credor_pool_value = optional_args.get(_guy_credor_pool_text)
+    _guy_debtor_pool_value = optional_args.get(_guy_debtor_pool_text)
     _weight_value = optional_args.get(_weight_text)
 
     x_monetary_desc = x_agenda._monetary_desc
@@ -1160,20 +1152,20 @@ def add_agendaunit_legible_list(
             f"{x_agenda._owner_id}'s monetary_desc is now called '{_monetary_desc_value}'"
         )
     if (
-        _party_credor_pool_value != None
-        and _party_debtor_pool_value != None
-        and _party_credor_pool_value == _party_debtor_pool_value
+        _guy_credor_pool_value != None
+        and _guy_debtor_pool_value != None
+        and _guy_credor_pool_value == _guy_debtor_pool_value
     ):
         legible_list.append(
-            f"{x_monetary_desc} total pool is now {_party_credor_pool_value}"
+            f"{x_monetary_desc} total pool is now {_guy_credor_pool_value}"
         )
-    elif _party_credor_pool_value != None:
+    elif _guy_credor_pool_value != None:
         legible_list.append(
-            f"{x_monetary_desc} credor pool is now {_party_credor_pool_value}"
+            f"{x_monetary_desc} credor pool is now {_guy_credor_pool_value}"
         )
-    elif _party_debtor_pool_value != None:
+    elif _guy_debtor_pool_value != None:
         legible_list.append(
-            f"{x_monetary_desc} debtor pool is now {_party_debtor_pool_value}"
+            f"{x_monetary_desc} debtor pool is now {_guy_debtor_pool_value}"
         )
     if _weight_value != None:
         legible_list.append(
@@ -1181,48 +1173,48 @@ def add_agendaunit_legible_list(
         )
 
 
-def add_agenda_partyunit_insert_to_legible_list(
-    legible_list: list[str], partyunit_dict: QuarkUnit, x_agenda: AgendaUnit
+def add_agenda_guyunit_insert_to_legible_list(
+    legible_list: list[str], guyunit_dict: QuarkUnit, x_agenda: AgendaUnit
 ):
     x_monetary_desc = x_agenda._monetary_desc
     if x_monetary_desc is None:
         x_monetary_desc = "monetary_desc"
-    for partyunit_quark in partyunit_dict.values():
-        party_id = partyunit_quark.get_value("party_id")
-        credor_weight_value = partyunit_quark.get_value("credor_weight")
-        debtor_weight_value = partyunit_quark.get_value("debtor_weight")
-        x_str = f"{party_id} was added with {credor_weight_value} {x_monetary_desc} cred and {debtor_weight_value} {x_monetary_desc} debt"
+    for guyunit_quark in guyunit_dict.values():
+        guy_id = guyunit_quark.get_value("guy_id")
+        credor_weight_value = guyunit_quark.get_value("credor_weight")
+        debtor_weight_value = guyunit_quark.get_value("debtor_weight")
+        x_str = f"{guy_id} was added with {credor_weight_value} {x_monetary_desc} cred and {debtor_weight_value} {x_monetary_desc} debt"
         legible_list.append(x_str)
 
 
-def add_agenda_partyunit_update_to_legible_list(
-    legible_list: list[str], partyunit_dict: QuarkUnit, x_agenda: AgendaUnit
+def add_agenda_guyunit_update_to_legible_list(
+    legible_list: list[str], guyunit_dict: QuarkUnit, x_agenda: AgendaUnit
 ):
     x_monetary_desc = x_agenda._monetary_desc
     if x_monetary_desc is None:
         x_monetary_desc = "monetary_desc"
-    for partyunit_quark in partyunit_dict.values():
-        party_id = partyunit_quark.get_value("party_id")
-        credor_weight_value = partyunit_quark.get_value("credor_weight")
-        debtor_weight_value = partyunit_quark.get_value("debtor_weight")
+    for guyunit_quark in guyunit_dict.values():
+        guy_id = guyunit_quark.get_value("guy_id")
+        credor_weight_value = guyunit_quark.get_value("credor_weight")
+        debtor_weight_value = guyunit_quark.get_value("debtor_weight")
         if credor_weight_value != None and debtor_weight_value != None:
-            x_str = f"{party_id} now has {credor_weight_value} {x_monetary_desc} cred and {debtor_weight_value} {x_monetary_desc} debt."
+            x_str = f"{guy_id} now has {credor_weight_value} {x_monetary_desc} cred and {debtor_weight_value} {x_monetary_desc} debt."
         elif credor_weight_value != None and debtor_weight_value is None:
-            x_str = f"{party_id} now has {credor_weight_value} {x_monetary_desc} cred."
+            x_str = f"{guy_id} now has {credor_weight_value} {x_monetary_desc} cred."
         elif credor_weight_value is None and debtor_weight_value != None:
-            x_str = f"{party_id} now has {debtor_weight_value} {x_monetary_desc} debt."
+            x_str = f"{guy_id} now has {debtor_weight_value} {x_monetary_desc} debt."
         legible_list.append(x_str)
 
 
-def add_agenda_partyunit_delete_to_legible_list(
-    legible_list: list[str], partyunit_dict: QuarkUnit, x_agenda: AgendaUnit
+def add_agenda_guyunit_delete_to_legible_list(
+    legible_list: list[str], guyunit_dict: QuarkUnit, x_agenda: AgendaUnit
 ):
     x_monetary_desc = x_agenda._monetary_desc
     if x_monetary_desc is None:
         x_monetary_desc = "monetary_desc"
-    for partyunit_quark in partyunit_dict.values():
-        party_id = partyunit_quark.get_value("party_id")
-        x_str = f"{party_id} was removed from {x_monetary_desc} partys."
+    for guyunit_quark in guyunit_dict.values():
+        guy_id = guyunit_quark.get_value("guy_id")
+        x_str = f"{guy_id} was removed from {x_monetary_desc} guys."
         legible_list.append(x_str)
 
 
@@ -1258,45 +1250,45 @@ def add_agenda_beliefunit_delete_to_legible_list(
         legible_list.append(x_str)
 
 
-def add_agenda_belief_partylink_insert_to_legible_list(
-    legible_list: list[str], belief_partylink_insert_dict: dict, x_agenda: AgendaUnit
+def add_agenda_belief_guylink_insert_to_legible_list(
+    legible_list: list[str], belief_guylink_insert_dict: dict, x_agenda: AgendaUnit
 ):
-    for belief_partylink_dict in belief_partylink_insert_dict.values():
-        for belief_partylink_quark in belief_partylink_dict.values():
-            belief_id = belief_partylink_quark.get_value("belief_id")
-            party_id = belief_partylink_quark.get_value("party_id")
-            credor_weight_value = belief_partylink_quark.get_value("credor_weight")
-            debtor_weight_value = belief_partylink_quark.get_value("debtor_weight")
-            x_str = f"Belief '{belief_id}' has new member {party_id} with belief_cred={credor_weight_value} and belief_debt={debtor_weight_value}."
+    for belief_guylink_dict in belief_guylink_insert_dict.values():
+        for belief_guylink_quark in belief_guylink_dict.values():
+            belief_id = belief_guylink_quark.get_value("belief_id")
+            guy_id = belief_guylink_quark.get_value("guy_id")
+            credor_weight_value = belief_guylink_quark.get_value("credor_weight")
+            debtor_weight_value = belief_guylink_quark.get_value("debtor_weight")
+            x_str = f"Belief '{belief_id}' has new member {guy_id} with belief_cred={credor_weight_value} and belief_debt={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_agenda_belief_partylink_update_to_legible_list(
-    legible_list: list[str], belief_partylink_update_dict: dict, x_agenda: AgendaUnit
+def add_agenda_belief_guylink_update_to_legible_list(
+    legible_list: list[str], belief_guylink_update_dict: dict, x_agenda: AgendaUnit
 ):
-    for belief_partylink_dict in belief_partylink_update_dict.values():
-        for belief_partylink_quark in belief_partylink_dict.values():
-            belief_id = belief_partylink_quark.get_value("belief_id")
-            party_id = belief_partylink_quark.get_value("party_id")
-            credor_weight_value = belief_partylink_quark.get_value("credor_weight")
-            debtor_weight_value = belief_partylink_quark.get_value("debtor_weight")
+    for belief_guylink_dict in belief_guylink_update_dict.values():
+        for belief_guylink_quark in belief_guylink_dict.values():
+            belief_id = belief_guylink_quark.get_value("belief_id")
+            guy_id = belief_guylink_quark.get_value("guy_id")
+            credor_weight_value = belief_guylink_quark.get_value("credor_weight")
+            debtor_weight_value = belief_guylink_quark.get_value("debtor_weight")
             if credor_weight_value != None and debtor_weight_value != None:
-                x_str = f"Belief '{belief_id}' member {party_id} has new belief_cred={credor_weight_value} and belief_debt={debtor_weight_value}."
+                x_str = f"Belief '{belief_id}' member {guy_id} has new belief_cred={credor_weight_value} and belief_debt={debtor_weight_value}."
             elif credor_weight_value != None and debtor_weight_value is None:
-                x_str = f"Belief '{belief_id}' member {party_id} has new belief_cred={credor_weight_value}."
+                x_str = f"Belief '{belief_id}' member {guy_id} has new belief_cred={credor_weight_value}."
             elif credor_weight_value is None and debtor_weight_value != None:
-                x_str = f"Belief '{belief_id}' member {party_id} has new belief_debt={debtor_weight_value}."
+                x_str = f"Belief '{belief_id}' member {guy_id} has new belief_debt={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_agenda_belief_partylink_delete_to_legible_list(
-    legible_list: list[str], belief_partylink_delete_dict: dict, x_agenda: AgendaUnit
+def add_agenda_belief_guylink_delete_to_legible_list(
+    legible_list: list[str], belief_guylink_delete_dict: dict, x_agenda: AgendaUnit
 ):
-    for belief_partylink_dict in belief_partylink_delete_dict.values():
-        for belief_partylink_quark in belief_partylink_dict.values():
-            belief_id = belief_partylink_quark.get_value("belief_id")
-            party_id = belief_partylink_quark.get_value("party_id")
-            x_str = f"Belief '{belief_id}' no longer has member {party_id}."
+    for belief_guylink_dict in belief_guylink_delete_dict.values():
+        for belief_guylink_quark in belief_guylink_dict.values():
+            belief_id = belief_guylink_quark.get_value("belief_id")
+            guy_id = belief_guylink_quark.get_value("guy_id")
+            x_str = f"Belief '{belief_id}' no longer has member {guy_id}."
             legible_list.append(x_str)
 
 

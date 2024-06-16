@@ -17,7 +17,7 @@ def test_listen_to_speaker_intent_RaisesErrorIfPoolIsNotSet():
         listen_to_speaker_intent(yao_agendaunit, zia_agendaunit)
     assert (
         str(excinfo.value)
-        == f"listener '{yao_text}' agenda is assumed to have {zia_agendaunit._owner_id} partyunit."
+        == f"listener '{yao_text}' agenda is assumed to have {zia_agendaunit._owner_id} guyunit."
     )
 
 
@@ -26,8 +26,8 @@ def test_listen_to_speaker_intent_ReturnsSameAgenda():
     yao_text = "Yao"
     yao_agendaunit = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    yao_agendaunit.add_partyunit(zia_text)
-    yao_agendaunit.set_party_pool(100)
+    yao_agendaunit.add_guyunit(zia_text)
+    yao_agendaunit.set_guy_pool(100)
     zia_agendaunit = agendaunit_shop(zia_text)
 
     # WHEN
@@ -42,14 +42,14 @@ def test_listen_to_speaker_intent_ReturnsSingleTaskAgenda():
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    before_yao_agendaunit.add_partyunit(zia_text)
-    yao_party_debtor_weight = 77
-    before_yao_agendaunit.set_party_pool(yao_party_debtor_weight)
+    before_yao_agendaunit.add_guyunit(zia_text)
+    yao_guy_debtor_weight = 77
+    before_yao_agendaunit.set_guy_pool(yao_guy_debtor_weight)
     clean_text = "clean"
     zia_clean_ideaunit = ideaunit_shop(clean_text, pledge=True)
     zia_clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_agendaunit = agendaunit_shop(zia_text)
-    zia_agendaunit.add_partyunit(yao_text)
+    zia_agendaunit.add_guyunit(yao_text)
     zia_agendaunit.add_l1_idea(zia_clean_ideaunit)
     assert len(zia_agendaunit.get_intent_dict()) == 0
     zia_yao_agendaunit = copy_deepcopy(zia_agendaunit)
@@ -67,7 +67,7 @@ def test_listen_to_speaker_intent_ReturnsSingleTaskAgenda():
     yao_clean_ideaunit = after_yao_agendaunit.get_idea_obj(clean_road)
     print(f"{yao_clean_ideaunit._weight=}")
     assert yao_clean_ideaunit._weight != zia_clean_ideaunit._weight
-    assert yao_clean_ideaunit._weight == yao_party_debtor_weight
+    assert yao_clean_ideaunit._weight == yao_guy_debtor_weight
     assert after_yao_agendaunit == before_yao_agendaunit
     assert len(after_yao_agendaunit.get_intent_dict()) == 1
 
@@ -77,11 +77,11 @@ def test_listen_to_speaker_intent_ReturnsLevel2TaskAgenda():
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    before_yao_agendaunit.add_partyunit(zia_text)
+    before_yao_agendaunit.add_guyunit(zia_text)
     yao_debtor_weight = 77
-    before_yao_agendaunit.set_party_pool(yao_debtor_weight)
+    before_yao_agendaunit.set_guy_pool(yao_debtor_weight)
     zia_agendaunit = agendaunit_shop(zia_text)
-    zia_agendaunit.add_partyunit(yao_text)
+    zia_agendaunit.add_guyunit(yao_text)
     clean_text = "clean"
     zia_clean_ideaunit = ideaunit_shop(clean_text, pledge=True)
     zia_clean_ideaunit._assignedunit.set_suffbelief(yao_text)
@@ -117,12 +117,12 @@ def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskAgenda():
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    before_yao_agendaunit.add_partyunit(zia_text)
+    before_yao_agendaunit.add_guyunit(zia_text)
     yao_debtor_weight = 55
-    before_yao_agendaunit.set_party_pool(yao_debtor_weight)
+    before_yao_agendaunit.set_guy_pool(yao_debtor_weight)
     zia_text = "Zia"
     zia_agendaunit = agendaunit_shop(zia_text)
-    zia_agendaunit.add_partyunit(yao_text)
+    zia_agendaunit.add_guyunit(yao_text)
     clean_text = "clean"
     cook_text = "cook"
     fly_text = "fly"
@@ -174,12 +174,12 @@ def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskAgendaWhereAnIdea
     yao_text = "Yao"
     before_yao_agendaunit = agendaunit_shop(yao_text)
     zia_text = "Zia"
-    before_yao_agendaunit.add_partyunit(zia_text)
+    before_yao_agendaunit.add_guyunit(zia_text)
     yao_debtor_weight = 55
-    before_yao_agendaunit.set_party_pool(yao_debtor_weight)
+    before_yao_agendaunit.set_guy_pool(yao_debtor_weight)
     zia_text = "Zia"
     zia_agendaunit = agendaunit_shop(zia_text)
-    zia_agendaunit.add_partyunit(yao_text)
+    zia_agendaunit.add_guyunit(yao_text)
     dish_text = "dish"
     cook_text = "cook"
     fly_text = "fly"
@@ -240,10 +240,10 @@ def test_listen_to_speaker_intent_ProcessesIrrationalAgenda():
     sue_text = "Sue"
     sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_role.add_guyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_guyunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_role.set_party_pool(yao_pool)
+    yao_role.set_guy_pool(yao_pool)
 
     sue_agendaunit = agendaunit_shop(sue_text)
     sue_agendaunit.set_max_tree_traverse(5)
@@ -276,20 +276,20 @@ def test_listen_to_speaker_intent_ProcessesIrrationalAgenda():
 
     # WHEN
     yao_job = create_empty_agenda(yao_role, yao_text)
-    yao_job.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_job.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
-    yao_job.set_party_pool(yao_pool)
+    yao_job.add_guyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_job.add_guyunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_job.set_guy_pool(yao_pool)
     yao_job = listen_to_speaker_intent(yao_job, sue_agendaunit)
 
     # THEN irrational agenda is ignored
     assert len(yao_job.get_intent_dict()) != 3
     assert len(yao_job.get_intent_dict()) == 0
-    zia_partyunit = yao_job.get_party(zia_text)
-    sue_partyunit = yao_job.get_party(sue_text)
-    print(f"{sue_partyunit.debtor_weight=}")
-    print(f"{sue_partyunit._irrational_debtor_weight=}")
-    assert zia_partyunit._irrational_debtor_weight == 0
-    assert sue_partyunit._irrational_debtor_weight == 51
+    zia_guyunit = yao_job.get_guy(zia_text)
+    sue_guyunit = yao_job.get_guy(sue_text)
+    print(f"{sue_guyunit.debtor_weight=}")
+    print(f"{sue_guyunit._irrational_debtor_weight=}")
+    assert zia_guyunit._irrational_debtor_weight == 0
+    assert sue_guyunit._irrational_debtor_weight == 51
 
 
 def test_listen_to_speaker_intent_ProcessesBarrenAgenda():
@@ -302,27 +302,27 @@ def test_listen_to_speaker_intent_ProcessesBarrenAgenda():
     sue_text = "Sue"
     sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_role.add_guyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_guyunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_role.set_party_pool(yao_pool)
+    yao_role.set_guy_pool(yao_pool)
 
     # WHEN
     sue_job = create_empty_agenda(yao_role, sue_text)
     yao_job = create_empty_agenda(yao_role, yao_text)
-    yao_job.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_job.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
-    yao_job.set_party_pool(yao_pool)
+    yao_job.add_guyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_job.add_guyunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_job.set_guy_pool(yao_pool)
     yao_job = listen_to_speaker_intent(yao_job, speaker=sue_job)
 
     # THEN irrational agenda is ignored
     assert len(yao_job.get_intent_dict()) != 3
     assert len(yao_job.get_intent_dict()) == 0
-    zia_partyunit = yao_job.get_party(zia_text)
-    sue_partyunit = yao_job.get_party(sue_text)
-    print(f"{sue_partyunit.debtor_weight=}")
-    print(f"{sue_partyunit._irrational_debtor_weight=}")
-    assert zia_partyunit._irrational_debtor_weight == 0
-    assert zia_partyunit._inallocable_debtor_weight == 0
-    assert sue_partyunit._irrational_debtor_weight == 0
-    assert sue_partyunit._inallocable_debtor_weight == 51
+    zia_guyunit = yao_job.get_guy(zia_text)
+    sue_guyunit = yao_job.get_guy(sue_text)
+    print(f"{sue_guyunit.debtor_weight=}")
+    print(f"{sue_guyunit._irrational_debtor_weight=}")
+    assert zia_guyunit._irrational_debtor_weight == 0
+    assert zia_guyunit._inallocable_debtor_weight == 0
+    assert sue_guyunit._irrational_debtor_weight == 0
+    assert sue_guyunit._inallocable_debtor_weight == 51

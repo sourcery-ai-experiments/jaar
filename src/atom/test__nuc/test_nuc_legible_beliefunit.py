@@ -47,12 +47,12 @@ def test_create_legible_list_ReturnsObj_beliefunit_DELETE():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_belief_partylink_INSERT():
+def test_create_legible_list_ReturnsObj_belief_guylink_INSERT():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_belief_partylink"
+    category = "agenda_belief_guylink"
     belief_id_text = "belief_id"
-    party_id_text = "party_id"
+    guy_id_text = "guy_id"
     credor_weight_text = "credor_weight"
     debtor_weight_text = "debtor_weight"
     swim_text = f"{sue_agenda._road_delimiter}Swimmers"
@@ -61,7 +61,7 @@ def test_create_legible_list_ReturnsObj_belief_partylink_INSERT():
     debtor_weight_value = 43
     rico_quarkunit = quarkunit_shop(category, quark_insert())
     rico_quarkunit.set_arg(belief_id_text, swim_text)
-    rico_quarkunit.set_arg(party_id_text, rico_text)
+    rico_quarkunit.set_arg(guy_id_text, rico_text)
     rico_quarkunit.set_arg(credor_weight_text, credor_weight_value)
     rico_quarkunit.set_arg(debtor_weight_text, debtor_weight_value)
     # print(f"{rico_quarkunit=}")
@@ -77,12 +77,12 @@ def test_create_legible_list_ReturnsObj_belief_partylink_INSERT():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_belief_partylink_UPDATE_credor_weight_debtor_weight():
+def test_create_legible_list_ReturnsObj_belief_guylink_UPDATE_credor_weight_debtor_weight():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_belief_partylink"
+    category = "agenda_belief_guylink"
     belief_id_text = "belief_id"
-    party_id_text = "party_id"
+    guy_id_text = "guy_id"
     credor_weight_text = "credor_weight"
     debtor_weight_text = "debtor_weight"
     swim_text = f"{sue_agenda._road_delimiter}Swimmers"
@@ -91,7 +91,7 @@ def test_create_legible_list_ReturnsObj_belief_partylink_UPDATE_credor_weight_de
     debtor_weight_value = 43
     rico_quarkunit = quarkunit_shop(category, quark_update())
     rico_quarkunit.set_arg(belief_id_text, swim_text)
-    rico_quarkunit.set_arg(party_id_text, rico_text)
+    rico_quarkunit.set_arg(guy_id_text, rico_text)
     rico_quarkunit.set_arg(credor_weight_text, credor_weight_value)
     rico_quarkunit.set_arg(debtor_weight_text, debtor_weight_value)
     # print(f"{rico_quarkunit=}")
@@ -107,19 +107,19 @@ def test_create_legible_list_ReturnsObj_belief_partylink_UPDATE_credor_weight_de
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_belief_partylink_UPDATE_credor_weight():
+def test_create_legible_list_ReturnsObj_belief_guylink_UPDATE_credor_weight():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_belief_partylink"
+    category = "agenda_belief_guylink"
     belief_id_text = "belief_id"
-    party_id_text = "party_id"
+    guy_id_text = "guy_id"
     credor_weight_text = "credor_weight"
     swim_text = f"{sue_agenda._road_delimiter}Swimmers"
     rico_text = "Rico"
     credor_weight_value = 81
     rico_quarkunit = quarkunit_shop(category, quark_update())
     rico_quarkunit.set_arg(belief_id_text, swim_text)
-    rico_quarkunit.set_arg(party_id_text, rico_text)
+    rico_quarkunit.set_arg(guy_id_text, rico_text)
     rico_quarkunit.set_arg(credor_weight_text, credor_weight_value)
     # print(f"{rico_quarkunit=}")
     x_nucunit = nucunit_shop()
@@ -134,19 +134,19 @@ def test_create_legible_list_ReturnsObj_belief_partylink_UPDATE_credor_weight():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_belief_partylink_UPDATE_debtor_weight():
+def test_create_legible_list_ReturnsObj_belief_guylink_UPDATE_debtor_weight():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_belief_partylink"
+    category = "agenda_belief_guylink"
     belief_id_text = "belief_id"
-    party_id_text = "party_id"
+    guy_id_text = "guy_id"
     debtor_weight_text = "debtor_weight"
     swim_text = f"{sue_agenda._road_delimiter}Swimmers"
     rico_text = "Rico"
     debtor_weight_value = 43
     rico_quarkunit = quarkunit_shop(category, quark_update())
     rico_quarkunit.set_arg(belief_id_text, swim_text)
-    rico_quarkunit.set_arg(party_id_text, rico_text)
+    rico_quarkunit.set_arg(guy_id_text, rico_text)
     rico_quarkunit.set_arg(debtor_weight_text, debtor_weight_value)
     # print(f"{rico_quarkunit=}")
     x_nucunit = nucunit_shop()
@@ -161,17 +161,17 @@ def test_create_legible_list_ReturnsObj_belief_partylink_UPDATE_debtor_weight():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_belief_partylink_DELETE():
+def test_create_legible_list_ReturnsObj_belief_guylink_DELETE():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_belief_partylink"
+    category = "agenda_belief_guylink"
     belief_id_text = "belief_id"
-    party_id_text = "party_id"
+    guy_id_text = "guy_id"
     swim_text = f"{sue_agenda._road_delimiter}Swimmers"
     rico_text = "Rico"
     rico_quarkunit = quarkunit_shop(category, quark_delete())
     rico_quarkunit.set_arg(belief_id_text, swim_text)
-    rico_quarkunit.set_arg(party_id_text, rico_text)
+    rico_quarkunit.set_arg(guy_id_text, rico_text)
     # print(f"{rico_quarkunit=}")
     x_nucunit = nucunit_shop()
     x_nucunit.set_quarkunit(rico_quarkunit)

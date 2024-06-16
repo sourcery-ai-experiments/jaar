@@ -3,7 +3,7 @@ from src.atom.nuc import nucunit_shop, create_legible_list
 from src.agenda.agenda import agendaunit_shop
 
 
-def test_create_legible_list_ReturnsObj_partyunit_INSERT():
+def test_create_legible_list_ReturnsObj_guyunit_INSERT():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     category = "agenda_ideaunit"
@@ -63,7 +63,7 @@ def test_create_legible_list_ReturnsObj_partyunit_INSERT():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_partyunit_UPDATE():
+def test_create_legible_list_ReturnsObj_guyunit_UPDATE():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     category = "agenda_ideaunit"
@@ -123,7 +123,7 @@ def test_create_legible_list_ReturnsObj_partyunit_UPDATE():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_partyunit_DELETE():
+def test_create_legible_list_ReturnsObj_guyunit_DELETE():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     category = "agenda_ideaunit"

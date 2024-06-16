@@ -6,7 +6,7 @@ from src.agenda.reason_assign import (
     create_assignedunit,
 )
 from src.agenda.belief import BeliefID, beliefunit_shop
-from src.agenda.party import partylink_shop
+from src.agenda.guy import guylink_shop
 from src.agenda.agenda import agendaunit_shop
 from pytest import raises as pytest_raises
 
@@ -146,48 +146,48 @@ def test_assigned_heir_shop_ReturnsCorrectWithCorrectAttributes_v1():
     assert assigned_heir_x._owner_id_assigned == _owner_id_assigned_x
 
 
-def test_AssignedHeir_get_all_suff_partys_ReturnsSingleDictWithAllPartys_v1():
+def test_AssignedHeir_get_all_suff_guys_ReturnsSingleDictWithAllGuys_v1():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
     x_agenda = agendaunit_shop(_owner_id=jim_text)
-    x_agenda.add_partyunit(party_id=jim_text)
-    x_agenda.add_partyunit(party_id=sue_text)
+    x_agenda.add_guyunit(guy_id=jim_text)
+    x_agenda.add_guyunit(guy_id=sue_text)
 
     _suffbeliefs_x = {jim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffbeliefs=_suffbeliefs_x)
 
     # WHEN
-    all_partys = assigned_heir_x._get_all_suff_partys(agenda_beliefs=x_agenda._beliefs)
+    all_guys = assigned_heir_x._get_all_suff_guys(agenda_beliefs=x_agenda._beliefs)
 
     # THEN
-    assert len(all_partys) == 1
+    assert len(all_guys) == 1
 
 
-def test_AssignedHeir_get_all_suff_partys_ReturnsSingleDictWithAllPartys_v2():
+def test_AssignedHeir_get_all_suff_guys_ReturnsSingleDictWithAllGuys_v2():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
     bob_text = "Bob"
     x_agenda = agendaunit_shop(_owner_id=jim_text)
-    x_agenda.add_partyunit(party_id=jim_text)
-    x_agenda.add_partyunit(party_id=sue_text)
-    x_agenda.add_partyunit(party_id=bob_text)
+    x_agenda.add_guyunit(guy_id=jim_text)
+    x_agenda.add_guyunit(guy_id=sue_text)
+    x_agenda.add_guyunit(guy_id=bob_text)
 
     swim_text = ",swim"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_partylink(partylink=partylink_shop(party_id=jim_text))
-    swim_belief.set_partylink(partylink=partylink_shop(party_id=sue_text))
+    swim_belief.set_guylink(guylink=guylink_shop(guy_id=jim_text))
+    swim_belief.set_guylink(guylink=guylink_shop(guy_id=sue_text))
     x_agenda.set_beliefunit(y_beliefunit=swim_belief)
 
     _suffbeliefs_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffbeliefs=_suffbeliefs_x)
 
     # WHEN
-    all_partys = assigned_heir_x._get_all_suff_partys(agenda_beliefs=x_agenda._beliefs)
+    all_guys = assigned_heir_x._get_all_suff_guys(agenda_beliefs=x_agenda._beliefs)
 
     # THEN
-    assert len(all_partys) == 2
+    assert len(all_guys) == 2
 
 
 def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_Empty_suffbeliefs_x():
@@ -212,8 +212,8 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     sue_text = "Sue"
 
     x_agenda = agendaunit_shop(_owner_id=jim_text)
-    x_agenda.add_partyunit(party_id=jim_text)
-    x_agenda.add_partyunit(party_id=sue_text)
+    x_agenda.add_guyunit(guy_id=jim_text)
+    x_agenda.add_guyunit(guy_id=sue_text)
     agenda_owner_id = x_agenda._owner_id
     agenda_beliefs = x_agenda._beliefs
     print(f"{len(agenda_beliefs)=}")
@@ -237,8 +237,8 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     sue_text = "Sue"
 
     x_agenda = agendaunit_shop(_owner_id=jim_text)
-    x_agenda.add_partyunit(party_id=jim_text)
-    x_agenda.add_partyunit(party_id=sue_text)
+    x_agenda.add_guyunit(guy_id=jim_text)
+    x_agenda.add_guyunit(guy_id=sue_text)
     agenda_owner_id = x_agenda._owner_id
     agenda_beliefs = x_agenda._beliefs
     print(f"{len(agenda_beliefs)=}")
@@ -262,14 +262,14 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     sue_text = "Sue"
     bob_text = "Bob"
     x_agenda = agendaunit_shop(_owner_id=jim_text)
-    x_agenda.add_partyunit(party_id=jim_text)
-    x_agenda.add_partyunit(party_id=sue_text)
-    x_agenda.add_partyunit(party_id=bob_text)
+    x_agenda.add_guyunit(guy_id=jim_text)
+    x_agenda.add_guyunit(guy_id=sue_text)
+    x_agenda.add_guyunit(guy_id=bob_text)
 
     swim_text = ",swim"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_partylink(partylink=partylink_shop(party_id=jim_text))
-    swim_belief.set_partylink(partylink=partylink_shop(party_id=sue_text))
+    swim_belief.set_guylink(guylink=guylink_shop(guy_id=jim_text))
+    swim_belief.set_guylink(guylink=guylink_shop(guy_id=sue_text))
     x_agenda.set_beliefunit(y_beliefunit=swim_belief)
 
     _suffbeliefs_x = {swim_text: -1}
@@ -279,7 +279,7 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     assert assigned_heir_x._owner_id_assigned
 
     # WHEN
-    swim_belief.del_partylink(party_id=jim_text)
+    swim_belief.del_guylink(guy_id=jim_text)
     x_agenda.set_beliefunit(y_beliefunit=swim_belief)
     assigned_heir_x.set_owner_id_assigned(x_agenda._beliefs, x_agenda._owner_id)
 
@@ -293,14 +293,14 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffbeliefs_x_v3():
     sue_text = "Sue"
     bob_text = "Bob"
     x_agenda = agendaunit_shop(_owner_id=jim_text)
-    x_agenda.add_partyunit(party_id=jim_text)
-    x_agenda.add_partyunit(party_id=sue_text)
-    x_agenda.add_partyunit(party_id=bob_text)
+    x_agenda.add_guyunit(guy_id=jim_text)
+    x_agenda.add_guyunit(guy_id=sue_text)
+    x_agenda.add_guyunit(guy_id=bob_text)
 
     swim_text = ",swim"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_partylink(partylink=partylink_shop(party_id=jim_text))
-    swim_belief.set_partylink(partylink=partylink_shop(party_id=sue_text))
+    swim_belief.set_guylink(guylink=guylink_shop(guy_id=jim_text))
+    swim_belief.set_guylink(guylink=guylink_shop(guy_id=sue_text))
     x_agenda.set_beliefunit(y_beliefunit=swim_belief)
 
     _suffbeliefs_x = {swim_text: -1}
@@ -310,7 +310,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffbeliefs_x_v3():
     assert assigned_heir_x._owner_id_assigned
 
     # WHEN
-    swim_belief.del_partylink(party_id=jim_text)
+    swim_belief.del_guylink(guy_id=jim_text)
     x_agenda.set_beliefunit(y_beliefunit=swim_belief)
     assigned_heir_x.set_owner_id_assigned(x_agenda._beliefs, x_agenda._owner_id)
 
@@ -436,22 +436,22 @@ def test_AssignedHeir_set_suffbelief_AssignedUnit_NotEqual_ParentAssignedHeir_No
     bob_text = "Bob"
     tom_text = "Tom"
     x_agenda = agendaunit_shop(_owner_id=jim_text)
-    x_agenda.add_partyunit(party_id=jim_text)
-    x_agenda.add_partyunit(party_id=sue_text)
-    x_agenda.add_partyunit(party_id=bob_text)
-    x_agenda.add_partyunit(party_id=tom_text)
+    x_agenda.add_guyunit(guy_id=jim_text)
+    x_agenda.add_guyunit(guy_id=sue_text)
+    x_agenda.add_guyunit(guy_id=bob_text)
+    x_agenda.add_guyunit(guy_id=tom_text)
 
     swim2_text = ",swim2"
     swim2_belief = beliefunit_shop(belief_id=swim2_text)
-    swim2_belief.set_partylink(partylink=partylink_shop(party_id=jim_text))
-    swim2_belief.set_partylink(partylink=partylink_shop(party_id=sue_text))
+    swim2_belief.set_guylink(guylink=guylink_shop(guy_id=jim_text))
+    swim2_belief.set_guylink(guylink=guylink_shop(guy_id=sue_text))
     x_agenda.set_beliefunit(y_beliefunit=swim2_belief)
 
     swim3_text = ",swim3"
     swim3_belief = beliefunit_shop(belief_id=swim3_text)
-    swim3_belief.set_partylink(partylink=partylink_shop(party_id=jim_text))
-    swim3_belief.set_partylink(partylink=partylink_shop(party_id=sue_text))
-    swim3_belief.set_partylink(partylink=partylink_shop(party_id=tom_text))
+    swim3_belief.set_guylink(guylink=guylink_shop(guy_id=jim_text))
+    swim3_belief.set_guylink(guylink=guylink_shop(guy_id=sue_text))
+    swim3_belief.set_guylink(guylink=guylink_shop(guy_id=tom_text))
     x_agenda.set_beliefunit(y_beliefunit=swim3_belief)
 
     parent_assignedunit = assignedunit_shop()
@@ -483,22 +483,22 @@ def test_AssignedHeir_set_suffbelief_AssignedUnit_NotEqualParentAssignedHeir_Rai
     bob_text = "Bob"
     tom_text = "Tom"
     x_agenda = agendaunit_shop(_owner_id=jim_text)
-    x_agenda.add_partyunit(party_id=jim_text)
-    x_agenda.add_partyunit(party_id=sue_text)
-    x_agenda.add_partyunit(party_id=bob_text)
-    x_agenda.add_partyunit(party_id=tom_text)
+    x_agenda.add_guyunit(guy_id=jim_text)
+    x_agenda.add_guyunit(guy_id=sue_text)
+    x_agenda.add_guyunit(guy_id=bob_text)
+    x_agenda.add_guyunit(guy_id=tom_text)
 
     swim2_text = ",swim2"
     swim2_belief = beliefunit_shop(belief_id=swim2_text)
-    swim2_belief.set_partylink(partylink=partylink_shop(party_id=jim_text))
-    swim2_belief.set_partylink(partylink=partylink_shop(party_id=sue_text))
+    swim2_belief.set_guylink(guylink=guylink_shop(guy_id=jim_text))
+    swim2_belief.set_guylink(guylink=guylink_shop(guy_id=sue_text))
     x_agenda.set_beliefunit(y_beliefunit=swim2_belief)
 
     swim3_text = ",swim3"
     swim3_belief = beliefunit_shop(belief_id=swim3_text)
-    swim3_belief.set_partylink(partylink=partylink_shop(party_id=jim_text))
-    swim3_belief.set_partylink(partylink=partylink_shop(party_id=sue_text))
-    swim3_belief.set_partylink(partylink=partylink_shop(party_id=tom_text))
+    swim3_belief.set_guylink(guylink=guylink_shop(guy_id=jim_text))
+    swim3_belief.set_guylink(guylink=guylink_shop(guy_id=sue_text))
+    swim3_belief.set_guylink(guylink=guylink_shop(guy_id=tom_text))
     x_agenda.set_beliefunit(y_beliefunit=swim3_belief)
 
     parent_assignedunit = assignedunit_shop()
@@ -513,15 +513,15 @@ def test_AssignedHeir_set_suffbelief_AssignedUnit_NotEqualParentAssignedHeir_Rai
 
     # WHEN / THEN
     assigned_heir_x = assigned_heir_shop()
-    all_parent_assignedheir_partys = {jim_text, sue_text}
-    all_assignedunit_partys = {jim_text, sue_text, tom_text}
+    all_parent_assignedheir_guys = {jim_text, sue_text}
+    all_assignedunit_guys = {jim_text, sue_text, tom_text}
     with pytest_raises(Exception) as excinfo:
         assigned_heir_x.set_suffbeliefs(
             parent_assigned_heir, assignedunit_swim3, agenda_beliefs=x_agenda._beliefs
         )
     assert (
         str(excinfo.value)
-        == f"parent_assigned_heir does not contain all partys of the idea's assignedunit\n{set(all_parent_assignedheir_partys)=}\n\n{set(all_assignedunit_partys)=}"
+        == f"parent_assigned_heir does not contain all guys of the idea's assignedunit\n{set(all_parent_assignedheir_guys)=}\n\n{set(all_assignedunit_guys)=}"
     )
 
 

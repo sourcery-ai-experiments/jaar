@@ -21,7 +21,7 @@ def test_UserHub_get_econ_roads_RaisesErrorWhen__econs_justified_IsFalse(
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
     sue_userhub.save_duty_agenda(sue_userhub.default_duty_agenda())
     sue_duty_agenda = sue_userhub.get_duty_agenda()
-    sue_duty_agenda.add_partyunit(sue_text)
+    sue_duty_agenda.add_guyunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
     dallas_text = "dallas"
@@ -51,7 +51,7 @@ def test_UserHub_get_econ_roads_RaisesErrorWhen__econs_buildable_IsFalse(
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
     sue_userhub.save_duty_agenda(sue_userhub.default_duty_agenda())
     sue_duty_agenda = sue_userhub.get_duty_agenda()
-    sue_duty_agenda.add_partyunit(sue_text)
+    sue_duty_agenda.add_guyunit(sue_text)
     texas_text = "Tex/as"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
     sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
@@ -76,7 +76,7 @@ def test_UserHub_get_econ_roads_CreatesMoneyUnits(env_dir_setup_cleanup):
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
     sue_userhub.save_duty_agenda(sue_userhub.default_duty_agenda())
     sue_duty_agenda = sue_userhub.get_duty_agenda()
-    sue_duty_agenda.add_partyunit(sue_text)
+    sue_duty_agenda.add_guyunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
     sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
@@ -109,9 +109,9 @@ def test_UserHub_save_all_duty_roles_CorrectlySetsroles(
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
     sue_userhub.save_duty_agenda(sue_userhub.default_duty_agenda())
     sue_duty_agenda = sue_userhub.get_duty_agenda()
-    sue_duty_agenda.add_partyunit(sue_text)
+    sue_duty_agenda.add_guyunit(sue_text)
     bob_text = "Bob"
-    sue_duty_agenda.add_partyunit(bob_text)
+    sue_duty_agenda.add_guyunit(bob_text)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
     sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
@@ -220,7 +220,7 @@ def test_UserHub_create_duty_treasury_db_files_CreatesDatabases(env_dir_setup_cl
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
     sue_userhub.save_duty_agenda(sue_userhub.default_duty_agenda())
     sue_duty_agenda = sue_userhub.get_duty_agenda()
-    sue_duty_agenda.add_partyunit(sue_text)
+    sue_duty_agenda.add_guyunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_duty_agenda.make_l1_road(texas_text)
     sue_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))

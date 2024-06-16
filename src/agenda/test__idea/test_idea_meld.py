@@ -34,8 +34,8 @@ def arbitrarily_set_idea_attr(
     numeric_road: RoadUnit = None,
     range_source_road: float = None,
     descendant_pledge_count: int = None,
-    all_party_cred: bool = None,
-    all_party_debt: bool = None,
+    all_guy_cred: bool = None,
+    all_guy_debt: bool = None,
     balancelink: BalanceLink = None,
     balancelink_del: BeliefID = None,
     is_expanded: bool = None,
@@ -63,8 +63,8 @@ def arbitrarily_set_idea_attr(
         numeric_road=numeric_road,
         range_source_road=range_source_road,
         descendant_pledge_count=descendant_pledge_count,
-        all_party_cred=all_party_cred,
-        all_party_debt=all_party_debt,
+        all_guy_cred=all_guy_cred,
+        all_guy_debt=all_guy_debt,
         balancelink=balancelink,
         balancelink_del=balancelink_del,
         is_expanded=is_expanded,
@@ -330,8 +330,8 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
     plate_road = create_road(tech_road, plate_text)
 
     x_uid = "uid1xx"
-    x_all_party_cred = "am_cx"
-    x_all_party_debt = "am_dx"
+    x_all_guy_cred = "am_cx"
+    x_all_guy_debt = "am_dx"
 
     label1_text = "clean"
     texas_text = "texas"
@@ -349,8 +349,8 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
         range_source_road=plate_road,
         numeric_road=bowl_road,
         pledge=True,
-        all_party_cred=x_all_party_cred,
-        all_party_debt=x_all_party_debt,
+        all_guy_cred=x_all_guy_cred,
+        all_guy_debt=x_all_guy_debt,
         is_expanded=True,
     )
 
@@ -369,8 +369,8 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
         range_source_road=plate_road,
         numeric_road=bowl_road,
         pledge=True,
-        all_party_cred=x_all_party_cred,
-        all_party_debt=x_all_party_debt,
+        all_guy_cred=x_all_guy_cred,
+        all_guy_debt=x_all_guy_debt,
         is_expanded=True,
     )
 
@@ -389,8 +389,8 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_def
     assert x1_idea._range_source_road == plate_road
     assert x1_idea._numeric_road == bowl_road
     assert x1_idea.pledge == True
-    assert x1_idea._all_party_cred == x_all_party_cred
-    assert x1_idea._all_party_debt == x_all_party_debt
+    assert x1_idea._all_guy_cred == x_all_guy_cred
+    assert x1_idea._all_guy_debt == x_all_guy_debt
     assert x1_idea._is_expanded == True
     assert x1_idea._agenda_real_id == texas_text
 
@@ -402,8 +402,8 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
     plate_road = create_road(tech_road, "plate")
 
     x_uid = "uid1xx"
-    x_all_party_cred = "am_cx"
-    x_all_party_debt = "am_dx"
+    x_all_guy_cred = "am_cx"
+    x_all_guy_debt = "am_dx"
 
     label1_text = "clean"
     texas_text = "texas"
@@ -421,8 +421,8 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
         range_source_road=plate_road,
         numeric_road=bowl_road,
         pledge=True,
-        all_party_cred=x_all_party_cred,
-        all_party_debt=x_all_party_debt,
+        all_guy_cred=x_all_guy_cred,
+        all_guy_debt=x_all_guy_debt,
         is_expanded=True,
     )
 
@@ -443,8 +443,8 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
         range_source_road=plate_road,
         numeric_road=bowl_road,
         pledge=True,
-        all_party_cred=x_all_party_cred,
-        all_party_debt=x_all_party_debt,
+        all_guy_cred=x_all_guy_cred,
+        all_guy_debt=x_all_guy_debt,
         is_expanded=True,
         meld_strategy=override_text,
     )
@@ -464,8 +464,8 @@ def test_IdeaUnit_meld_CorrectlyMeldsRangeAttributesWhen_meld_strategyEquals_ove
     assert x1_idea._range_source_road == plate_road
     assert x1_idea._numeric_road == bowl_road
     assert x1_idea.pledge == True
-    assert x1_idea._all_party_cred == x_all_party_cred
-    assert x1_idea._all_party_debt == x_all_party_debt
+    assert x1_idea._all_guy_cred == x_all_guy_cred
+    assert x1_idea._all_guy_debt == x_all_guy_debt
     assert x1_idea._is_expanded == True
     assert x1_idea._agenda_real_id == texas_text
 
@@ -647,15 +647,15 @@ def test_IdeaUnit_meld_FailRaisesError_action():
     )
 
 
-# def test_IdeaUnit_meld_FailRaisesError_all_party_cred():
-# def test_IdeaUnit_meld_FailRaisesError_all_party_debt():
-#     x_attr = "_all_party_cred"
-#     x_attr = "_all_party_debt"
-#     x_val = "test_all_party_cred1"
-#     x_val = "test_all_party_debt1"
+# def test_IdeaUnit_meld_FailRaisesError_all_guy_cred():
+# def test_IdeaUnit_meld_FailRaisesError_all_guy_debt():
+#     x_attr = "_all_guy_cred"
+#     x_attr = "_all_guy_debt"
+#     x_val = "test_all_guy_cred1"
+#     x_val = "test_all_guy_debt1"
 #     x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
-#     arbitrarily_set_idea_attr(idea=x1_idea, all_party_cred=x_val)
-#     arbitrarily_set_idea_attr(idea=x1_idea, all_party_debt=x_val)
+#     arbitrarily_set_idea_attr(idea=x1_idea, all_guy_cred=x_val)
+#     arbitrarily_set_idea_attr(idea=x1_idea, all_guy_debt=x_val)
 #     x2_idea = ideaunit_shop("cook", _parent_road=casa_text)
 
 #     # WHEN/THEN
@@ -698,12 +698,12 @@ def test_IdeaUnit_meld_CorrectlyCreatesOriginUnitWithOriginLink():
     # WHEN
     sue_text = "Sue"
     sue_weight = 5
-    x1_idea.meld(other_idea=x2_idea, party_id=sue_text, party_weight=sue_weight)
+    x1_idea.meld(other_idea=x2_idea, guy_id=sue_text, guy_weight=sue_weight)
 
     # THEN
     assert x1_idea._originunit != None
     sue_originunit = originunit_shop()
-    sue_originunit.set_originlink(party_id=sue_text, weight=sue_weight)
+    sue_originunit.set_originlink(guy_id=sue_text, weight=sue_weight)
     assert x1_idea._originunit == sue_originunit
 
 
@@ -715,19 +715,19 @@ def test_IdeaUnit_meld_IdeaMeldingItselfCreatesOriginUnitWithCorrectOriginLink()
     tim_weight = 7
     tim_idea = ideaunit_shop(tim_text)
     ex_x1_idea_originunit = originunit_shop()
-    ex_x1_idea_originunit.set_originlink(party_id=tim_text, weight=tim_weight)
-    x1_idea.meld(other_idea=tim_idea, party_id=tim_text, party_weight=tim_weight)
+    ex_x1_idea_originunit.set_originlink(guy_id=tim_text, weight=tim_weight)
+    x1_idea.meld(other_idea=tim_idea, guy_id=tim_text, guy_weight=tim_weight)
     assert x1_idea._originunit == ex_x1_idea_originunit
 
     sue_text = "Sue"
     sue_weight = 5
-    ex_x1_idea_originunit.set_originlink(party_id=sue_text, weight=sue_weight)
+    ex_x1_idea_originunit.set_originlink(guy_id=sue_text, weight=sue_weight)
     assert x1_idea._originunit != ex_x1_idea_originunit
 
     x1_idea_copy = deepcopy(x1_idea)
 
     # WHEN
-    x1_idea.meld(other_idea=x1_idea, party_id=sue_text, party_weight=sue_weight)
+    x1_idea.meld(other_idea=x1_idea, guy_id=sue_text, guy_weight=sue_weight)
     assert x1_idea._originunit == ex_x1_idea_originunit
 
     # THEN

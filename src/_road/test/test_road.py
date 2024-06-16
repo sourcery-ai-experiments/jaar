@@ -3,7 +3,7 @@ from src._road.road import (
     PersonID,
     HealerID,
     OwnerID,
-    PartyID,
+    GuyID,
     RoadUnit,
     rebuild_road,
     is_sub_road,
@@ -538,16 +538,16 @@ def test_OwnerID_exists():
     )
 
 
-def test_PartyID_exists():
+def test_GuyID_exists():
     # GIVEN
     bob_text = "Bob"
     # WHEN
-    bob_party_id = PartyID(bob_text)
+    bob_guy_id = GuyID(bob_text)
     # THEN
-    assert bob_party_id == bob_text
+    assert bob_guy_id == bob_text
     assert (
-        inspect_getdoc(bob_party_id)
-        == "Every PartyID object is OwnerID, must follow OwnerID format."
+        inspect_getdoc(bob_guy_id)
+        == "Every GuyID object is OwnerID, must follow OwnerID format."
     )
 
 

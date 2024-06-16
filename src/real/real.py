@@ -200,13 +200,13 @@ class RealUnit:
     def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
         return self._get_userhub(person_id).get_work_agenda()
 
-    # def _set_partyunit(
-    #     self, x_moneyunit: MoneyUnit, person_id: PersonID, party_id: PersonID
+    # def _set_guyunit(
+    #     self, x_moneyunit: MoneyUnit, person_id: PersonID, guy_id: PersonID
     # ):
-    #     person_role.add_partyunit(party_id)
+    #     person_role.add_guyunit(guy_id)
     #     .save_refreshed_job_to_jobs()
 
-    # def _display_duty_party_graph(self, x_person_id: PersonID):
+    # def _display_duty_guy_graph(self, x_person_id: PersonID):
     #     x_duty_agenda = x_userhub.get_duty_agenda()
 
     # def display_person_kpi_graph(self, x_person_id: PersonID):

@@ -3,10 +3,10 @@ from src.money.treasury_sqlstr import (
     get_agendaunit_table_create_sqlstr,
     get_agendaunit_update_sqlstr,
     get_agendaunits_select_sqlstr,
-    get_agenda_partyunit_table_create_sqlstr,
-    get_agenda_partyunit_table_update_treasury_due_paid_sqlstr,
-    get_agenda_partyunit_table_update_cred_score_sqlstr,
-    get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr,
+    get_agenda_guyunit_table_create_sqlstr,
+    get_agenda_guyunit_table_update_treasury_due_paid_sqlstr,
+    get_agenda_guyunit_table_update_cred_score_sqlstr,
+    get_agenda_guyunit_table_update_treasury_voice_rank_sqlstr,
     get_river_reach_table_touch_select_sqlstr,
     get_river_reach_table_final_select_sqlstr,
     get_river_reach_table_create_sqlstr,
@@ -68,28 +68,28 @@ FROM agendaunit
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_partyunit_select_sqlstr_ReturnsCorrectStr():
+def test_get_guyunit_select_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     bob_text = "Bob"
-    generated_sqlstr = get_agenda_partyunit_table_update_treasury_due_paid_sqlstr(
+    generated_sqlstr = get_agenda_guyunit_table_update_treasury_due_paid_sqlstr(
         bob_text
     )
 
     # THEN
     example_sqlstr = f"""
-UPDATE agenda_partyunit
+UPDATE agenda_guyunit
 SET _treasury_due_paid = (
     SELECT SUM(block.cash_close-block.cash_start) 
     FROM river_block block
     WHERE block.cash_master='{bob_text}' 
         AND block.dst_owner_id=block.cash_master
-        AND block.src_owner_id = agenda_partyunit.party_id
+        AND block.src_owner_id = agenda_guyunit.guy_id
     )
 WHERE EXISTS (
     SELECT block.cash_close
     FROM river_block block
-    WHERE agenda_partyunit.owner_id='{bob_text}' 
-        AND agenda_partyunit.party_id = block.dst_owner_id
+    WHERE agenda_guyunit.owner_id='{bob_text}' 
+        AND agenda_guyunit.guy_id = block.dst_owner_id
 )
 ;
 """
@@ -364,15 +364,15 @@ ORDER BY range_sum DESC
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_agenda_partyunit_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_agenda_guyunit_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
-    generated_sqlstr = get_agenda_partyunit_table_create_sqlstr()
+    generated_sqlstr = get_agenda_guyunit_table_create_sqlstr()
 
     # THEN
     example_sqlstr = """
-CREATE TABLE IF NOT EXISTS agenda_partyunit (
+CREATE TABLE IF NOT EXISTS agenda_guyunit (
   owner_id VARCHAR(255) NOT NULL 
-, party_id VARCHAR(255) NOT NULL
+, guy_id VARCHAR(255) NOT NULL
 , _agenda_cred FLOAT
 , _agenda_debt FLOAT
 , _agenda_intent_cred FLOAT
@@ -387,56 +387,56 @@ CREATE TABLE IF NOT EXISTS agenda_partyunit (
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
 , FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(party_id) REFERENCES agendaunit(owner_id)
-, UNIQUE(owner_id, party_id)
+, FOREIGN KEY(guy_id) REFERENCES agendaunit(owner_id)
+, UNIQUE(owner_id, guy_id)
 )
 ;
 """
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_agenda_partyunit_table_update_cred_score_sqlstr_ReturnsCorrectStr():
+def test_get_agenda_guyunit_table_update_cred_score_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     yao_text = "Yao"
-    generated_sqlstr = get_agenda_partyunit_table_update_cred_score_sqlstr(yao_text)
+    generated_sqlstr = get_agenda_guyunit_table_update_cred_score_sqlstr(yao_text)
 
     # THEN
     example_sqlstr = f"""
-UPDATE agenda_partyunit
+UPDATE agenda_guyunit
 SET _treasury_cred_score = (
     SELECT SUM(reach_coin_close - reach_coin_start) range_sum
     FROM river_reach reach
-    WHERE reach.cash_master = agenda_partyunit.owner_id
-        AND reach.src_owner_id = agenda_partyunit.party_id
+    WHERE reach.cash_master = agenda_guyunit.owner_id
+        AND reach.src_owner_id = agenda_guyunit.guy_id
     )
-WHERE agenda_partyunit.owner_id = '{yao_text}'
+WHERE agenda_guyunit.owner_id = '{yao_text}'
 ;
 """
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr_ReturnsCorrectStr():
+def test_get_agenda_guyunit_table_update_treasury_voice_rank_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     yao_text = "Yao"
-    generated_sqlstr = get_agenda_partyunit_table_update_treasury_voice_rank_sqlstr(
+    generated_sqlstr = get_agenda_guyunit_table_update_treasury_voice_rank_sqlstr(
         yao_text
     )
 
     # THEN
     example_sqlstr = f"""
-UPDATE agenda_partyunit
+UPDATE agenda_guyunit
 SET _treasury_voice_rank = 
     (
     SELECT rn
     FROM (
-        SELECT p2.party_id
+        SELECT p2.guy_id
         , row_number() over (order by p2._treasury_cred_score DESC) rn
-        FROM agenda_partyunit p2
+        FROM agenda_guyunit p2
         WHERE p2.owner_id = '{yao_text}'
     ) p3
-    WHERE p3.party_id = agenda_partyunit.party_id AND agenda_partyunit.owner_id = '{yao_text}'
+    WHERE p3.guy_id = agenda_guyunit.guy_id AND agenda_guyunit.owner_id = '{yao_text}'
     )
-WHERE agenda_partyunit.owner_id = '{yao_text}'
+WHERE agenda_guyunit.owner_id = '{yao_text}'
 ;
 """
     assert generated_sqlstr == example_sqlstr

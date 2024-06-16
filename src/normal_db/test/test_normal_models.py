@@ -7,9 +7,9 @@ from src.atom.quark_config import (
 )
 from src.normal_db.normal_models import (
     AgendaTable,
-    PartyUnitTable,
+    GuyUnitTable,
     BeliefTable,
-    PartyLinkTable,
+    GuyLinkTable,
     IdeaTable,
     BalanceLinkTable,
     ReasonTable,
@@ -73,16 +73,16 @@ def test_normalized_table_AgendaTable_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_PartyUnitTable_Exists():
+def test_normalized_table_GuyUnitTable_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_partyunit")
-    mapper = inspect(PartyUnitTable)
+    config_category = get_normalized_agenda_table_build().get("agenda_guyunit")
+    mapper = inspect(GuyUnitTable)
     # print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "partyunit"
-    assert config_table_name == PartyUnitTable.__tablename__
+    assert config_table_name == "guyunit"
+    assert config_table_name == GuyUnitTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 
@@ -99,16 +99,16 @@ def test_normalized_table_BeliefTable_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_PartyLinkTable_partylink_Exists():
+def test_normalized_table_GuyLinkTable_guylink_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_belief_partylink")
-    mapper = inspect(PartyLinkTable)
+    config_category = get_normalized_agenda_table_build().get("agenda_belief_guylink")
+    mapper = inspect(GuyLinkTable)
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "partylink"
-    assert config_table_name == PartyLinkTable.__tablename__
+    assert config_table_name == "guylink"
+    assert config_table_name == GuyLinkTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 

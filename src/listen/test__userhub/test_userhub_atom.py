@@ -450,7 +450,7 @@ def test_UserHub_create_save_atom_file_SaveCorrectObj(env_dir_setup_cleanup):
     before_agenda = sue_userhub.default_duty_agenda()
     bob_text = "Bob"
     after_agenda = copy_deepcopy(before_agenda)
-    after_agenda.add_partyunit(bob_text)
+    after_agenda.add_guyunit(bob_text)
     sue_userhub.create_save_atom_file(before_agenda, after_agenda)
 
     # THEN

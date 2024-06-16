@@ -1,6 +1,6 @@
 from src._instrument.file import save_file, delete_dir
 from src._road.jaar_config import get_descending_text
-from src.agenda.party import partyunit_shop
+from src.agenda.guy import guyunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.listen.meld_files import get_file_names_in_voice_rank_order
 from src.listen.listen import create_job_file_from_role_file
@@ -30,23 +30,23 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     save_file(temp_dir, cal_filename, empty_str)
     save_file(temp_dir, dom_filename, empty_str)
     save_file(temp_dir, elu_filename, empty_str)
-    ava_partyunit = partyunit_shop(party_id=ava_text)
-    bob_partyunit = partyunit_shop(party_id=bob_text)
-    cal_partyunit = partyunit_shop(party_id=cal_text)
-    dom_partyunit = partyunit_shop(party_id=dom_text)
-    elu_partyunit = partyunit_shop(party_id=elu_text)
+    ava_guyunit = guyunit_shop(guy_id=ava_text)
+    bob_guyunit = guyunit_shop(guy_id=bob_text)
+    cal_guyunit = guyunit_shop(guy_id=cal_text)
+    dom_guyunit = guyunit_shop(guy_id=dom_text)
+    elu_guyunit = guyunit_shop(guy_id=elu_text)
 
     yao_agenda = agendaunit_shop(_owner_id=yao_text)
-    ava_partyunit.set_treasury_attr(None, None, None, voice_rank=33)
-    bob_partyunit.set_treasury_attr(None, None, None, voice_rank=33)
-    cal_partyunit.set_treasury_attr(None, None, None, voice_rank=77)
-    dom_partyunit.set_treasury_attr(None, None, None, voice_rank=55)
-    elu_partyunit.set_treasury_attr(None, None, None, voice_rank=99)
-    yao_agenda.set_partyunit(ava_partyunit)
-    yao_agenda.set_partyunit(bob_partyunit)
-    yao_agenda.set_partyunit(cal_partyunit)
-    yao_agenda.set_partyunit(dom_partyunit)
-    yao_agenda.set_partyunit(elu_partyunit)
+    ava_guyunit.set_treasury_attr(None, None, None, voice_rank=33)
+    bob_guyunit.set_treasury_attr(None, None, None, voice_rank=33)
+    cal_guyunit.set_treasury_attr(None, None, None, voice_rank=77)
+    dom_guyunit.set_treasury_attr(None, None, None, voice_rank=55)
+    elu_guyunit.set_treasury_attr(None, None, None, voice_rank=99)
+    yao_agenda.set_guyunit(ava_guyunit)
+    yao_agenda.set_guyunit(bob_guyunit)
+    yao_agenda.set_guyunit(cal_guyunit)
+    yao_agenda.set_guyunit(dom_guyunit)
+    yao_agenda.set_guyunit(elu_guyunit)
 
     x1 = get_file_names_in_voice_rank_order(yao_agenda, meldees_dir=temp_dir)
     assert x1 != None
@@ -63,12 +63,12 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     assert bob_filename == x1[4]
 
     # WHEN
-    ava_partyunit._set_treasury_voice_hx_lowest_rank(11)
+    ava_guyunit._set_treasury_voice_hx_lowest_rank(11)
 
     # THEN
-    assert ava_partyunit._treasury_voice_rank == bob_partyunit._treasury_voice_rank
-    assert ava_partyunit._treasury_voice_hx_lowest_rank == 11
-    assert bob_partyunit._treasury_voice_hx_lowest_rank == 33
+    assert ava_guyunit._treasury_voice_rank == bob_guyunit._treasury_voice_rank
+    assert ava_guyunit._treasury_voice_hx_lowest_rank == 11
+    assert bob_guyunit._treasury_voice_hx_lowest_rank == 33
     x2 = get_file_names_in_voice_rank_order(yao_agenda, meldees_dir=temp_dir)
     assert ava_filename == x2[4]
     assert bob_filename == x2[3]
@@ -90,32 +90,32 @@ def test_MoneyUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type
 
     yao_text = "Yao"
     yao_role0_agenda = agendaunit_shop(_owner_id=yao_text)
-    yao_role0_agenda.set_partyunit(partyunit_shop(ava_text))
-    yao_role0_agenda.set_partyunit(partyunit_shop(bob_text))
-    yao_role0_agenda.set_partyunit(partyunit_shop(cal_text))
-    yao_role0_agenda.set_partyunit(partyunit_shop(dom_text))
-    yao_role0_agenda.set_partyunit(partyunit_shop(elu_text))
+    yao_role0_agenda.set_guyunit(guyunit_shop(ava_text))
+    yao_role0_agenda.set_guyunit(guyunit_shop(bob_text))
+    yao_role0_agenda.set_guyunit(guyunit_shop(cal_text))
+    yao_role0_agenda.set_guyunit(guyunit_shop(dom_text))
+    yao_role0_agenda.set_guyunit(guyunit_shop(elu_text))
     texas_userhub.save_role_agenda(yao_role0_agenda)
     create_job_file_from_role_file(texas_userhub, yao_text)
     yao_role1_agenda = texas_userhub.get_role_agenda(yao_text)
-    assert yao_role1_agenda.get_party(ava_text)._treasury_voice_rank is None
-    assert yao_role1_agenda.get_party(bob_text)._treasury_voice_rank is None
-    assert yao_role1_agenda.get_party(cal_text)._treasury_voice_rank is None
-    assert yao_role1_agenda.get_party(dom_text)._treasury_voice_rank is None
-    assert yao_role1_agenda.get_party(elu_text)._treasury_voice_rank is None
+    assert yao_role1_agenda.get_guy(ava_text)._treasury_voice_rank is None
+    assert yao_role1_agenda.get_guy(bob_text)._treasury_voice_rank is None
+    assert yao_role1_agenda.get_guy(cal_text)._treasury_voice_rank is None
+    assert yao_role1_agenda.get_guy(dom_text)._treasury_voice_rank is None
+    assert yao_role1_agenda.get_guy(elu_text)._treasury_voice_rank is None
 
     # WHEN
     x_money.set_role_voice_ranks(yao_text, sort_order=get_descending_text())
 
     # THEN
     yao_role2_agenda = texas_userhub.get_role_agenda(yao_text)
-    assert yao_role2_agenda.get_party(ava_text)._treasury_voice_rank != None
-    assert yao_role2_agenda.get_party(bob_text)._treasury_voice_rank != None
-    assert yao_role2_agenda.get_party(cal_text)._treasury_voice_rank != None
-    assert yao_role2_agenda.get_party(dom_text)._treasury_voice_rank != None
-    assert yao_role2_agenda.get_party(elu_text)._treasury_voice_rank != None
-    assert yao_role2_agenda.get_party(ava_text)._treasury_voice_rank == 0
-    assert yao_role2_agenda.get_party(bob_text)._treasury_voice_rank == 1
-    assert yao_role2_agenda.get_party(cal_text)._treasury_voice_rank == 2
-    assert yao_role2_agenda.get_party(dom_text)._treasury_voice_rank == 3
-    assert yao_role2_agenda.get_party(elu_text)._treasury_voice_rank == 4
+    assert yao_role2_agenda.get_guy(ava_text)._treasury_voice_rank != None
+    assert yao_role2_agenda.get_guy(bob_text)._treasury_voice_rank != None
+    assert yao_role2_agenda.get_guy(cal_text)._treasury_voice_rank != None
+    assert yao_role2_agenda.get_guy(dom_text)._treasury_voice_rank != None
+    assert yao_role2_agenda.get_guy(elu_text)._treasury_voice_rank != None
+    assert yao_role2_agenda.get_guy(ava_text)._treasury_voice_rank == 0
+    assert yao_role2_agenda.get_guy(bob_text)._treasury_voice_rank == 1
+    assert yao_role2_agenda.get_guy(cal_text)._treasury_voice_rank == 2
+    assert yao_role2_agenda.get_guy(dom_text)._treasury_voice_rank == 3
+    assert yao_role2_agenda.get_guy(elu_text)._treasury_voice_rank == 4

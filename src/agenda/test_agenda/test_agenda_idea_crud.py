@@ -471,21 +471,21 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     ]._descendant_pledge_count
     assert _descendant_pledge_count_new == 67
 
-    # _all_party_cred: bool = None,
-    sue_agenda._idearoot._kids[casa_text]._all_party_cred = 74
-    x_all_party_cred = sue_agenda._idearoot._kids[casa_text]._all_party_cred
-    assert x_all_party_cred == 74
-    sue_agenda.edit_idea_attr(road=casa_road, all_party_cred=59)
-    _all_party_cred_new = sue_agenda._idearoot._kids[casa_text]._all_party_cred
-    assert _all_party_cred_new == 59
+    # _all_guy_cred: bool = None,
+    sue_agenda._idearoot._kids[casa_text]._all_guy_cred = 74
+    x_all_guy_cred = sue_agenda._idearoot._kids[casa_text]._all_guy_cred
+    assert x_all_guy_cred == 74
+    sue_agenda.edit_idea_attr(road=casa_road, all_guy_cred=59)
+    _all_guy_cred_new = sue_agenda._idearoot._kids[casa_text]._all_guy_cred
+    assert _all_guy_cred_new == 59
 
-    # _all_party_debt: bool = None,
-    sue_agenda._idearoot._kids[casa_text]._all_party_debt = 74
-    x_all_party_debt = sue_agenda._idearoot._kids[casa_text]._all_party_debt
-    assert x_all_party_debt == 74
-    sue_agenda.edit_idea_attr(road=casa_road, all_party_debt=59)
-    _all_party_debt_new = sue_agenda._idearoot._kids[casa_text]._all_party_debt
-    assert _all_party_debt_new == 59
+    # _all_guy_debt: bool = None,
+    sue_agenda._idearoot._kids[casa_text]._all_guy_debt = 74
+    x_all_guy_debt = sue_agenda._idearoot._kids[casa_text]._all_guy_debt
+    assert x_all_guy_debt == 74
+    sue_agenda.edit_idea_attr(road=casa_road, all_guy_debt=59)
+    _all_guy_debt_new = sue_agenda._idearoot._kids[casa_text]._all_guy_debt
+    assert _all_guy_debt_new == 59
 
     # _balancelink: dict = None,
     sue_agenda._idearoot._kids[casa_text]._balancelinks = {
@@ -532,8 +532,8 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     sue_text = "Sue"
     yao_text = "Yao"
     x_healerhold = healerhold_shop({sue_text, yao_text})
-    sue_agenda.add_partyunit(sue_text)
-    sue_agenda.add_partyunit(yao_text)
+    sue_agenda.add_guyunit(sue_text)
+    sue_agenda.add_guyunit(yao_text)
     sue_agenda.edit_idea_attr(road=casa_road, healerhold=x_healerhold)
     assert sue_agenda._idearoot._kids[casa_text]._healerhold == x_healerhold
 

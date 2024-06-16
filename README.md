@@ -70,7 +70,7 @@ MoneyUnit Treasury objects
 <!-- TODO: Add elucidations -->
 AgendaUnit objects
 
-AgendaUnit PartyUnit objects
+AgendaUnit GuyUnit objects
 
 AgendaUnit BeliefUnit objects
 

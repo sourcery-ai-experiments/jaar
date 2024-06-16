@@ -19,7 +19,7 @@
                 "owner_id": {}
             }
         },
-        "agenda_partyunit": {
+        "agenda_guyunit": {
             "columns": {
                 "_agenda_cred": {},
                 "_agenda_debt": {},
@@ -35,7 +35,7 @@
                 "_treasury_voice_hx_lowest_rank": {},
                 "_treasury_voice_rank": {},
                 "owner_id": {},
-                "party_id": {}
+                "guy_id": {}
             }
         },
         "agendaunit": {

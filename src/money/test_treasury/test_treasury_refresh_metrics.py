@@ -3,7 +3,7 @@ from src.agenda.agenda import (
     agendaunit_shop,
     ideaunit_shop,
     beliefunit_shop,
-    partylink_shop,
+    guylink_shop,
 )
 from src.money.money import moneyunit_shop
 from src.money.examples.econ_env import (
@@ -44,17 +44,17 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasury
     tom_text = "Tom"
 
     bob_agentunit = agendaunit_shop(bob_text)
-    bob_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
+    bob_agentunit.add_guyunit(tom_text, credor_weight=3, debtor_weight=1)
     x_money.userhub.save_job_agenda(bob_agentunit)
     x_money.refresh_treasury_job_agendas_data()
-    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
-    assert get_single_result(x_money.get_treasury_conn(), partyunit_count_sqlstr) == 1
+    guyunit_count_sqlstr = get_row_count_sqlstr("agenda_guyunit")
+    assert get_single_result(x_money.get_treasury_conn(), guyunit_count_sqlstr) == 1
 
     # WHEN
     x_money.refresh_treasury_job_agendas_data()
 
     # THEN
-    assert get_single_result(x_money.get_treasury_conn(), partyunit_count_sqlstr) == 1
+    assert get_single_result(x_money.get_treasury_conn(), guyunit_count_sqlstr) == 1
 
 
 def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasuryFile(
@@ -68,23 +68,23 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyDeletesOldTreasury
     tom_text = "Tom"
 
     bob_agentunit = agendaunit_shop(bob_text)
-    bob_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
+    bob_agentunit.add_guyunit(tom_text, credor_weight=3, debtor_weight=1)
     x_money.userhub.save_job_agenda(bob_agentunit)
     x_money.refresh_treasury_job_agendas_data()
-    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
-    assert get_single_result(x_money.get_treasury_conn(), partyunit_count_sqlstr) == 1
+    guyunit_count_sqlstr = get_row_count_sqlstr("agenda_guyunit")
+    assert get_single_result(x_money.get_treasury_conn(), guyunit_count_sqlstr) == 1
 
     # WHEN
     x_money.refresh_treasury_job_agendas_data()
 
     # THEN
-    assert get_single_result(x_money.get_treasury_conn(), partyunit_count_sqlstr) == 1
+    assert get_single_result(x_money.get_treasury_conn(), guyunit_count_sqlstr) == 1
 
 
-def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunitTable01(
+def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesGuyunitTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 GuyUnits = 12 guyunit rows
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.create_treasury_db(in_memory=True)
 
@@ -94,43 +94,43 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesPartyunit
     elu_text = "Elu"
 
     bob_agentunit = agendaunit_shop(bob_text)
-    bob_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
-    bob_agentunit.add_partyunit(sal_text, credor_weight=1, debtor_weight=4)
-    bob_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
+    bob_agentunit.add_guyunit(tom_text, credor_weight=3, debtor_weight=1)
+    bob_agentunit.add_guyunit(sal_text, credor_weight=1, debtor_weight=4)
+    bob_agentunit.add_guyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(bob_agentunit)
 
     sal_agentunit = agendaunit_shop(sal_text)
-    sal_agentunit.add_partyunit(bob_text, credor_weight=1, debtor_weight=4)
-    sal_agentunit.add_partyunit(tom_text, credor_weight=3, debtor_weight=1)
-    sal_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
+    sal_agentunit.add_guyunit(bob_text, credor_weight=1, debtor_weight=4)
+    sal_agentunit.add_guyunit(tom_text, credor_weight=3, debtor_weight=1)
+    sal_agentunit.add_guyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(sal_agentunit)
 
     tom_agentunit = agendaunit_shop(tom_text)
-    tom_agentunit.add_partyunit(bob_text, credor_weight=3, debtor_weight=1)
-    tom_agentunit.add_partyunit(sal_text, credor_weight=1, debtor_weight=4)
-    tom_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
+    tom_agentunit.add_guyunit(bob_text, credor_weight=3, debtor_weight=1)
+    tom_agentunit.add_guyunit(sal_text, credor_weight=1, debtor_weight=4)
+    tom_agentunit.add_guyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(tom_agentunit)
 
     elu_agentunit = agendaunit_shop(elu_text)
-    elu_agentunit.add_partyunit(bob_text, credor_weight=3, debtor_weight=1)
-    elu_agentunit.add_partyunit(tom_text, credor_weight=1, debtor_weight=4)
-    elu_agentunit.add_partyunit(elu_text, credor_weight=1, debtor_weight=4)
+    elu_agentunit.add_guyunit(bob_text, credor_weight=3, debtor_weight=1)
+    elu_agentunit.add_guyunit(tom_text, credor_weight=1, debtor_weight=4)
+    elu_agentunit.add_guyunit(elu_text, credor_weight=1, debtor_weight=4)
     x_money.userhub.save_job_agenda(elu_agentunit)
 
-    partyunit_count_sqlstr = get_row_count_sqlstr("agenda_partyunit")
-    assert get_single_result(x_money.get_treasury_conn(), partyunit_count_sqlstr) == 0
+    guyunit_count_sqlstr = get_row_count_sqlstr("agenda_guyunit")
+    assert get_single_result(x_money.get_treasury_conn(), guyunit_count_sqlstr) == 0
 
     # WHEN
     x_money.refresh_treasury_job_agendas_data()
 
     # THEN
-    assert get_single_result(x_money.get_treasury_conn(), partyunit_count_sqlstr) == 12
+    assert get_single_result(x_money.get_treasury_conn(), guyunit_count_sqlstr) == 12
 
 
 def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 GuyUnits = 12 guyunit rows
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.create_treasury_db(in_memory=True)
 
@@ -157,7 +157,7 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTab
 def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulatesAgendaTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 GuyUnits = 12 guyunit rows
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.create_treasury_db(in_memory=True)
 
@@ -193,9 +193,9 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CorrectlyPopulates_agenda_b
     elu_text = "Elu"
     bob_agenda = agendaunit_shop(bob_text)
     tom_agenda = agendaunit_shop(tom_text)
-    bob_agenda.add_partyunit(party_id=tom_text)
-    tom_agenda.add_partyunit(party_id=bob_text)
-    tom_agenda.add_partyunit(party_id=elu_text)
+    bob_agenda.add_guyunit(guy_id=tom_text)
+    tom_agenda.add_guyunit(guy_id=bob_text)
+    tom_agenda.add_guyunit(guy_id=elu_text)
     x_money.userhub.save_job_agenda(bob_agenda)
     x_money.userhub.save_job_agenda(tom_agenda)
 
@@ -236,7 +236,7 @@ def test_MoneyUnit_get_agenda_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTab
 def test_MoneyUnit_refresh_treasury_job_agendas_data_Populates_agenda_ideaunit_table(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 GuyUnits = 12 guyunit rows
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.refresh_treasury_job_agendas_data()
 
@@ -307,7 +307,7 @@ def test_MoneyUnit_get_agenda_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cle
 def test_MoneyUnit_get_agenda_idea_factunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 GuyUnits = 12 guyunit rows
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.refresh_treasury_job_agendas_data()
 
@@ -334,7 +334,7 @@ def test_MoneyUnit_get_agenda_idea_factunit_table_insert_sqlstr_CorrectlyPopulat
 def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_factunit_table(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 GuyUnits = 12 guyunit rows
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.refresh_treasury_job_agendas_data()
 
@@ -392,7 +392,7 @@ def test_refresh_treasury_job_agendas_data_Populates_agenda_idea_factunit_table(
 def test_MoneyUnit_get_agenda_beliefunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 partyunit rows
+    # GIVEN Create example econ with 4 Healers, each with 3 GuyUnits = 12 guyunit rows
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.refresh_treasury_job_agendas_data()
 
@@ -425,9 +425,9 @@ def test_MoneyUnit_get_agenda_beliefunit_dict_ReturnsBeliefUnitData(
     elu_text = "Elu"
     bob_agenda = agendaunit_shop(bob_text)
     tom_agenda = agendaunit_shop(tom_text)
-    bob_agenda.add_partyunit(party_id=tom_text)
-    tom_agenda.add_partyunit(party_id=bob_text)
-    tom_agenda.add_partyunit(party_id=elu_text)
+    bob_agenda.add_guyunit(guy_id=tom_text)
+    tom_agenda.add_guyunit(guy_id=bob_text)
+    tom_agenda.add_guyunit(guy_id=elu_text)
     x_money.userhub.save_job_agenda(bob_agenda)
     x_money.userhub.save_job_agenda(tom_agenda)
     x_money.refresh_treasury_job_agendas_data()

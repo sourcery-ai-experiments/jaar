@@ -5,7 +5,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1
 from ui.EditIdeaUnit import EditIdeaUnit
-from ui.EditParty import EditParty
+from ui.EditGuy import EditGuy
 from ui.pyqt_func import (
     agenda_importance_diplay,
     get_pyqttree,
@@ -28,9 +28,9 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.setupUi(self)
         self.refresh_button.clicked.connect(self.refresh_all)
         self.baseideaunit.itemClicked.connect(self.open_editideaunit)
-        self.party_list.itemClicked.connect(self.open_edit_party)
+        self.guy_list.itemClicked.connect(self.open_edit_guy)
         self.close_button.clicked.connect(self.close)
-        self.open_beliefedit_button.clicked.connect(self.open_edit_party)
+        self.open_beliefedit_button.clicked.connect(self.open_edit_guy)
 
         # self.facts_table.itemClicked.connect(self.fact_base_combo_set)
         self.facts_table.setObjectName("Agenda Facts")
@@ -169,34 +169,34 @@ class EditMainView(qtw.QWidget, Ui_Form):
 
     def refresh_all(self):
         if self.x_agenda != None:
-            self.refresh_party_list()
+            self.refresh_guy_list()
             self.refresh_idea_tree()
             self.facts_table_load()
 
-    def refresh_party_list(self):
-        # party_list is qtw.QTableWidget()
-        self.party_list.setObjectName("Party Calculated Weight")
-        self.party_list.setColumnCount(2)
-        self.party_list.setColumnWidth(0, 170)
-        self.party_list.setColumnWidth(1, 70)
-        self.party_list.setHorizontalHeaderLabels(["PID", "LW Force"])
-        partys_list = list(self.x_agenda._partys.values())
-        partys_list.sort(key=lambda x: x._agenda_cred, reverse=True)
+    def refresh_guy_list(self):
+        # guy_list is qtw.QTableWidget()
+        self.guy_list.setObjectName("Guy Calculated Weight")
+        self.guy_list.setColumnCount(2)
+        self.guy_list.setColumnWidth(0, 170)
+        self.guy_list.setColumnWidth(1, 70)
+        self.guy_list.setHorizontalHeaderLabels(["PID", "LW Force"])
+        guys_list = list(self.x_agenda._guys.values())
+        guys_list.sort(key=lambda x: x._agenda_cred, reverse=True)
 
-        for row, party in enumerate(partys_list, start=1):
+        for row, guy in enumerate(guys_list, start=1):
             beliefs_count = 0
             for belief in self.x_agenda._beliefs.values():
-                for partylink in belief._partys.values():
-                    if partylink.party_id == party.party_id:
+                for guylink in belief._guys.values():
+                    if guylink.guy_id == guy.guy_id:
                         beliefs_count += 1
 
             qt_agenda_cred = qtw.QTableWidgetItem(
-                agenda_importance_diplay(party._agenda_cred)
+                agenda_importance_diplay(guy._agenda_cred)
             )
             qt_belief = qtw.QTableWidgetItem(f"{beliefs_count}")
-            self.party_list.setRowCount(row)
-            self.party_list.setItem(row - 1, 0, qtw.QTableWidgetItem(party.party_id))
-            self.party_list.setItem(row - 1, 1, qt_agenda_cred)
+            self.guy_list.setRowCount(row)
+            self.guy_list.setItem(row - 1, 0, qtw.QTableWidgetItem(guy.guy_id))
+            self.guy_list.setItem(row - 1, 1, qt_agenda_cred)
 
     def open_editideaunit(self):
         self.EditIdeaunit = EditIdeaUnit()
@@ -204,11 +204,11 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
-    def open_edit_party(self):
-        self.edit_party = EditParty()
-        self.edit_party.x_agenda = self.x_agenda
-        self.edit_party.refresh_all()
-        self.edit_party.show()
+    def open_edit_guy(self):
+        self.edit_guy = EditGuy()
+        self.edit_guy.x_agenda = self.x_agenda
+        self.edit_guy.refresh_all()
+        self.edit_guy.show()
 
     def refresh_idea_tree(self):
         tree_root = get_pyqttree(idearoot=self.x_agenda._idearoot)

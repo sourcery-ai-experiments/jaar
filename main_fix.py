@@ -195,7 +195,7 @@
 
 #     def econ_update_pid(self):
 #         modification_econ_id_example_econ(
-#             econ_obj=self.econ_x, new_party_id=self.econ_id.text()
+#             econ_obj=self.econ_x, new_guy_id=self.econ_id.text()
 #         )
 #         self.econ_id_combo_refresh()
 
@@ -271,7 +271,7 @@
 #         FunctionThatBuildsJob_id_x = self.x_FunctionThatBuildsJob.pid
 #         self.econ_x.update_deiepotlink(
 #             FunctionThatBuildsJob_id=FunctionThatBuildsJob_id_x,
-#             party_id=self.deiepotlink_pid.text(),
+#             guy_id=self.deiepotlink_pid.text(),
 #             deiepotlink_type=self.deiepotlink_type_combo.currentText(),
 #             credor_weight=self.deiepotlink_weight.text(),
 #             debtor_weight=self.deiepotlink_weight.text(),
@@ -356,16 +356,16 @@
 
 #         return x_list
 
-#     def get_p_partys_list(self):
+#     def get_p_guys_list(self):
 #         x_list = []
 #         if self.owner_id_output_agenda != None:
 #             x_list.extend(
 #                 [
-#                     f"{agenda_importance_diplay(partyunit._agenda_cred)}/{agenda_importance_diplay(partyunit._agenda_debt)}",
-#                     partyunit.party_id,
-#                     f"{partyunit.credor_weight}/{partyunit.debtor_weight}",
+#                     f"{agenda_importance_diplay(guyunit._agenda_cred)}/{agenda_importance_diplay(guyunit._agenda_debt)}",
+#                     guyunit.guy_id,
+#                     f"{guyunit.credor_weight}/{guyunit.debtor_weight}",
 #                 ]
-#                 for partyunit in self.owner_id_output_agenda._partys.values()
+#                 for guyunit in self.owner_id_output_agenda._guys.values()
 #             )
 #         return x_list
 
@@ -376,7 +376,7 @@
 #                 [
 #                     f"{agenda_importance_diplay(beliefunit._agenda_debt)}/{agenda_importance_diplay(beliefunit._agenda_cred)}",
 #                     beliefunit.belief_id,
-#                     len(beliefunit._partys),
+#                     len(beliefunit._guys),
 #                 ]
 #                 for beliefunit in self.owner_id_output_agenda._beliefs.values()
 #             )
@@ -480,18 +480,18 @@
 #             column_width=[50, 300, 50],
 #         )
 
-#     def _sub_refresh_p_partys_table(self):
-#         p_partys_list = self.get_p_partys_list()
+#     def _sub_refresh_p_guys_table(self):
+#         p_guys_list = self.get_p_guys_list()
 #         column_headers = [
 #             "agenda_debt/agenda_cred",
-#             f"Partys ({len(p_partys_list)})",
+#             f"Guys ({len(p_guys_list)})",
 #             "credor_weight/debtor_weight",
 #         ]
 
 #         self.refresh_x(
-#             table_x=self.w_partys_table,
+#             table_x=self.w_guys_table,
 #             column_header=column_headers,
-#             populate_list=p_partys_list,
+#             populate_list=p_guys_list,
 #             column_width=[50, 300, 50],
 #         )
 
@@ -500,7 +500,7 @@
 #         column_headers = [
 #             "agenda_debt/agenda_cred",
 #             f"beliefs ({len(p_beliefs_list)})",
-#             "Partys",
+#             "Guys",
 #         ]
 
 #         self.refresh_x(
@@ -553,7 +553,7 @@
 #         if self.x_FunctionThatBuildsJob != None:
 #             self.owner_id_output_agenda = self.x_FunctionThatBuildsJob.get_remelded_output_agenda()
 #         self._sub_refresh_p_ideas_table()
-#         self._sub_refresh_p_partys_table()
+#         self._sub_refresh_p_guys_table()
 #         self._sub_refresh_p_beliefs_table()
 #         self._sub_refresh_p_facts_table()
 #         self._sub_refresh_p_intent_table()

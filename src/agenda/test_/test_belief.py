@@ -1,4 +1,4 @@
-from src.agenda.party import PartyID, partylink_shop
+from src.agenda.guy import GuyID, guylink_shop
 from src.agenda.belief import (
     BalanceLine,
     balanceline_shop,
@@ -37,8 +37,8 @@ def test_BeliefUnit_exists():
     # THEN
     assert swim_beliefunit != None
     assert swim_beliefunit.belief_id == swim_text
-    assert swim_beliefunit._party_mirror is None
-    assert swim_beliefunit._partys is None
+    assert swim_beliefunit._guy_mirror is None
+    assert swim_beliefunit._guys is None
     assert swim_beliefunit._agenda_cred is None
     assert swim_beliefunit._agenda_debt is None
     assert swim_beliefunit._agenda_intent_cred is None
@@ -79,21 +79,21 @@ def test_beliefunit_shop_ReturnsCorrectObj_road_delimiter():
     assert swim_beliefunit._road_delimiter == slash_text
 
 
-def test_BeliefUnit_set_belief_id_RaisesErrorIfParameterContains_road_delimiter_And_party_mirror_True():
+def test_BeliefUnit_set_belief_id_RaisesErrorIfParameterContains_road_delimiter_And_guy_mirror_True():
     # GIVEN
     slash_text = "/"
     bob_text = f"Bob{slash_text}Texas"
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        beliefunit_shop(bob_text, _party_mirror=True, _road_delimiter=slash_text)
+        beliefunit_shop(bob_text, _guy_mirror=True, _road_delimiter=slash_text)
     assert (
         str(excinfo.value)
         == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
     )
 
 
-def test_BeliefUnit_set_belief_id_RaisesErrorIfParameterDoesNotContain_road_delimiter_party_mirror_False():
+def test_BeliefUnit_set_belief_id_RaisesErrorIfParameterDoesNotContain_road_delimiter_guy_mirror_False():
     # GIVEN
     comma_text = ","
     texas_text = f"Texas{comma_text}Arkansas"
@@ -122,120 +122,118 @@ def test_BeliefUnit_set_belief_id_SetsAttrCorrectly():
     assert swim_belief.belief_id == water_text
 
 
-def test_BeliefUnit_set_partylink_CorrectlySetsAttr():
+def test_BeliefUnit_set_guylink_CorrectlySetsAttr():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(party_id=todd_text, credor_weight=13, debtor_weight=7)
-    mery_party = partylink_shop(party_id=mery_text, credor_weight=23, debtor_weight=5)
+    todd_guy = guylink_shop(guy_id=todd_text, credor_weight=13, debtor_weight=7)
+    mery_guy = guylink_shop(guy_id=mery_text, credor_weight=23, debtor_weight=5)
 
-    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _partys={})
+    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _guys={})
 
     # WHEN
-    swimmers_belief.set_partylink(todd_party)
-    swimmers_belief.set_partylink(mery_party)
+    swimmers_belief.set_guylink(todd_guy)
+    swimmers_belief.set_guylink(mery_guy)
 
     # THEN
-    swimmers_partys = {todd_party.party_id: todd_party, mery_party.party_id: mery_party}
-    assert swimmers_belief._partys == swimmers_partys
+    swimmers_guys = {todd_guy.guy_id: todd_guy, mery_guy.guy_id: mery_guy}
+    assert swimmers_belief._guys == swimmers_guys
 
 
-def test_BeliefUnit_get_partylink_ReturnsCorrectObj():
+def test_BeliefUnit_get_guylink_ReturnsCorrectObj():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _partys={})
-    swimmers_belief.set_partylink(partylink_shop(todd_text, 13, 7))
-    swimmers_belief.set_partylink(partylink_shop(mery_text, 23, 5))
+    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _guys={})
+    swimmers_belief.set_guylink(guylink_shop(todd_text, 13, 7))
+    swimmers_belief.set_guylink(guylink_shop(mery_text, 23, 5))
 
     # WHEN / THEN
-    assert swimmers_belief.get_partylink(todd_text) != None
-    assert swimmers_belief.get_partylink(mery_text) != None
-    assert swimmers_belief.get_partylink("todd") is None
+    assert swimmers_belief.get_guylink(todd_text) != None
+    assert swimmers_belief.get_guylink(mery_text) != None
+    assert swimmers_belief.get_guylink("todd") is None
 
 
-def test_BeliefUnit_edit_partylink_CorrectlySetsAttr():
+def test_BeliefUnit_edit_guylink_CorrectlySetsAttr():
     # GIVEN
     todd_text = "Todd"
     old_todd_credor_weight = 13
     todd_debtor_weight = 7
     swimmers_belief = beliefunit_shop(belief_id=",swimmers")
-    swimmers_belief.set_partylink(
-        partylink_shop(todd_text, old_todd_credor_weight, todd_debtor_weight)
+    swimmers_belief.set_guylink(
+        guylink_shop(todd_text, old_todd_credor_weight, todd_debtor_weight)
     )
-    todd_partylink = swimmers_belief.get_partylink(todd_text)
-    assert todd_partylink.credor_weight == old_todd_credor_weight
+    todd_guylink = swimmers_belief.get_guylink(todd_text)
+    assert todd_guylink.credor_weight == old_todd_credor_weight
 
     # WHEN
     new_todd_credor_weight = 17
-    swimmers_belief.edit_partylink(
-        party_id=todd_text, credor_weight=new_todd_credor_weight
-    )
+    swimmers_belief.edit_guylink(guy_id=todd_text, credor_weight=new_todd_credor_weight)
 
     # THEN
-    assert todd_partylink.credor_weight == new_todd_credor_weight
+    assert todd_guylink.credor_weight == new_todd_credor_weight
 
 
-def test_partylink_exists_ReturnsCorrectObj():
+def test_guylink_exists_ReturnsCorrectObj():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _partys={})
-    swimmers_belief.set_partylink(partylink_shop(todd_text, 13, 7))
-    swimmers_belief.set_partylink(partylink_shop(mery_text, 23, 5))
+    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _guys={})
+    swimmers_belief.set_guylink(guylink_shop(todd_text, 13, 7))
+    swimmers_belief.set_guylink(guylink_shop(mery_text, 23, 5))
 
     # WHEN / THEN
-    assert swimmers_belief.partylink_exists(todd_text)
-    assert swimmers_belief.partylink_exists(mery_text)
-    assert swimmers_belief.partylink_exists("todd") is False
+    assert swimmers_belief.guylink_exists(todd_text)
+    assert swimmers_belief.guylink_exists(mery_text)
+    assert swimmers_belief.guylink_exists("todd") is False
 
 
-def test_BeliefUnit_del_partylink_SetsAttrCorrectly():
+def test_BeliefUnit_del_guylink_SetsAttrCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(party_id=todd_text)
-    mery_party = partylink_shop(party_id=mery_text)
-    swimmers_partys = {todd_party.party_id: todd_party, mery_party.party_id: mery_party}
-    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _partys={})
-    swimmers_belief.set_partylink(todd_party)
-    swimmers_belief.set_partylink(mery_party)
-    assert len(swimmers_belief._partys) == 2
-    assert swimmers_belief._partys == swimmers_partys
+    todd_guy = guylink_shop(guy_id=todd_text)
+    mery_guy = guylink_shop(guy_id=mery_text)
+    swimmers_guys = {todd_guy.guy_id: todd_guy, mery_guy.guy_id: mery_guy}
+    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _guys={})
+    swimmers_belief.set_guylink(todd_guy)
+    swimmers_belief.set_guylink(mery_guy)
+    assert len(swimmers_belief._guys) == 2
+    assert swimmers_belief._guys == swimmers_guys
 
     # WHEN
-    swimmers_belief.del_partylink(party_id=todd_text)
+    swimmers_belief.del_guylink(guy_id=todd_text)
 
     # THEN
-    assert len(swimmers_belief._partys) == 1
-    assert swimmers_belief._partys.get(todd_text) is None
+    assert len(swimmers_belief._guys) == 1
+    assert swimmers_belief._guys.get(todd_text) is None
 
 
-def test_BeliefUnit_clear_partylinks_SetsAttrCorrectly():
+def test_BeliefUnit_clear_guylinks_SetsAttrCorrectly():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(party_id=todd_text)
-    mery_party = partylink_shop(party_id=mery_text)
-    swimmers_partys = {todd_party.party_id: todd_party, mery_party.party_id: mery_party}
-    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _partys={})
-    swimmers_belief.set_partylink(todd_party)
-    swimmers_belief.set_partylink(mery_party)
-    assert len(swimmers_belief._partys) == 2
-    assert swimmers_belief._partys == swimmers_partys
+    todd_guy = guylink_shop(guy_id=todd_text)
+    mery_guy = guylink_shop(guy_id=mery_text)
+    swimmers_guys = {todd_guy.guy_id: todd_guy, mery_guy.guy_id: mery_guy}
+    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _guys={})
+    swimmers_belief.set_guylink(todd_guy)
+    swimmers_belief.set_guylink(mery_guy)
+    assert len(swimmers_belief._guys) == 2
+    assert swimmers_belief._guys == swimmers_guys
 
     # WHEN
-    swimmers_belief.clear_partylinks()
+    swimmers_belief.clear_guylinks()
 
     # THEN
-    assert len(swimmers_belief._partys) == 0
-    assert swimmers_belief._partys.get(todd_text) is None
+    assert len(swimmers_belief._guys) == 0
+    assert swimmers_belief._guys.get(todd_text) is None
 
 
 def test_BeliefUnit_reset_agenda_importance_SetsAttrCorrectly():
     # GIVEN
     maria_belief_id = "maria"
-    maria_beliefunit = beliefunit_shop(belief_id=maria_belief_id, _party_mirror=True)
+    maria_beliefunit = beliefunit_shop(belief_id=maria_belief_id, _guy_mirror=True)
     maria_beliefunit._agenda_cred = 0.33
     maria_beliefunit._agenda_debt = 0.44
     maria_beliefunit._agenda_intent_cred = 0.13
@@ -256,106 +254,106 @@ def test_BeliefUnit_reset_agenda_importance_SetsAttrCorrectly():
     assert maria_beliefunit._agenda_intent_debt == 0
 
 
-def test_BeliefUnit_reset_agenda_importance_reset_partylinks():
+def test_BeliefUnit_reset_agenda_importance_reset_guylinks():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(
-        party_id=todd_text,
+    todd_guy = guylink_shop(
+        guy_id=todd_text,
         _agenda_cred=0.13,
         _agenda_debt=0.7,
         _agenda_intent_cred=0.53,
         _agenda_intent_debt=0.77,
     )
-    mery_party = partylink_shop(
-        party_id=mery_text,
+    mery_guy = guylink_shop(
+        guy_id=mery_text,
         _agenda_cred=0.23,
         _agenda_debt=0.5,
         _agenda_intent_cred=0.54,
         _agenda_intent_debt=0.57,
     )
-    bikers_partys = {todd_party.party_id: todd_party, mery_party.party_id: mery_party}
+    bikers_guys = {todd_guy.guy_id: todd_guy, mery_guy.guy_id: mery_guy}
     bikers_belief_id = ",bikers"
     bikers_beliefunit = beliefunit_shop(belief_id=bikers_belief_id)
     bikers_beliefunit._agenda_cred = (0.33,)
     bikers_beliefunit._agenda_debt = (0.44,)
     bikers_beliefunit._agenda_intent_cred = (0.1,)
     bikers_beliefunit._agenda_intent_debt = (0.2,)
-    bikers_beliefunit.set_partylink(partylink=todd_party)
-    bikers_beliefunit.set_partylink(partylink=mery_party)
+    bikers_beliefunit.set_guylink(guylink=todd_guy)
+    bikers_beliefunit.set_guylink(guylink=mery_guy)
     print(f"{bikers_beliefunit}")
-    biker_partylink_todd = bikers_beliefunit._partys.get(todd_text)
-    assert biker_partylink_todd._agenda_cred == 0.13
-    assert biker_partylink_todd._agenda_debt == 0.7
-    assert biker_partylink_todd._agenda_intent_cred == 0.53
-    assert biker_partylink_todd._agenda_intent_debt == 0.77
+    biker_guylink_todd = bikers_beliefunit._guys.get(todd_text)
+    assert biker_guylink_todd._agenda_cred == 0.13
+    assert biker_guylink_todd._agenda_debt == 0.7
+    assert biker_guylink_todd._agenda_intent_cred == 0.53
+    assert biker_guylink_todd._agenda_intent_debt == 0.77
 
-    biker_partylink_mery = bikers_beliefunit._partys.get(mery_text)
-    assert biker_partylink_mery._agenda_cred == 0.23
-    assert biker_partylink_mery._agenda_debt == 0.5
-    assert biker_partylink_mery._agenda_intent_cred == 0.54
-    assert biker_partylink_mery._agenda_intent_debt == 0.57
+    biker_guylink_mery = bikers_beliefunit._guys.get(mery_text)
+    assert biker_guylink_mery._agenda_cred == 0.23
+    assert biker_guylink_mery._agenda_debt == 0.5
+    assert biker_guylink_mery._agenda_intent_cred == 0.54
+    assert biker_guylink_mery._agenda_intent_debt == 0.57
 
     # WHEN
     bikers_beliefunit.reset_agenda_cred_debt()
 
     # THEN
-    assert biker_partylink_todd._agenda_cred == 0
-    assert biker_partylink_todd._agenda_debt == 0
-    assert biker_partylink_todd._agenda_intent_cred == 0
-    assert biker_partylink_todd._agenda_intent_debt == 0
-    assert biker_partylink_mery._agenda_cred == 0
-    assert biker_partylink_mery._agenda_debt == 0
-    assert biker_partylink_mery._agenda_intent_cred == 0
-    assert biker_partylink_mery._agenda_intent_debt == 0
+    assert biker_guylink_todd._agenda_cred == 0
+    assert biker_guylink_todd._agenda_debt == 0
+    assert biker_guylink_todd._agenda_intent_cred == 0
+    assert biker_guylink_todd._agenda_intent_debt == 0
+    assert biker_guylink_mery._agenda_cred == 0
+    assert biker_guylink_mery._agenda_debt == 0
+    assert biker_guylink_mery._agenda_intent_cred == 0
+    assert biker_guylink_mery._agenda_intent_debt == 0
 
 
-def test_partylink_meld_ReturnsCorrectObj_BaseScenario():
+def test_guylink_meld_ReturnsCorrectObj_BaseScenario():
     # GIVEN
-    todd_party = partylink_shop(party_id="Todd")
-    merry_party = partylink_shop(party_id="Merry")
+    todd_guy = guylink_shop(guy_id="Todd")
+    merry_guy = guylink_shop(guy_id="Merry")
     bikers_belief_id = ",bikers"
-    bikers_belief = beliefunit_shop(belief_id=bikers_belief_id, _partys={})
-    bikers_belief.set_partylink(partylink=todd_party)
-    bikers_belief.set_partylink(partylink=merry_party)
+    bikers_belief = beliefunit_shop(belief_id=bikers_belief_id, _guys={})
+    bikers_belief.set_guylink(guylink=todd_guy)
+    bikers_belief.set_guylink(guylink=merry_guy)
 
-    x2_belief = beliefunit_shop(belief_id=bikers_belief_id, _partys={})
+    x2_belief = beliefunit_shop(belief_id=bikers_belief_id, _guys={})
 
     # WHEN
     bikers_belief.meld(other_belief=x2_belief)
     print(f"{bikers_belief.belief_id=} {x2_belief.belief_id=}")
 
     # THEN
-    assert len(bikers_belief._partys) == 2
+    assert len(bikers_belief._guys) == 2
 
 
-def test_partylink_meld_ReturnsCorrectObj_GainScenario():
+def test_guylink_meld_ReturnsCorrectObj_GainScenario():
     # GIVEN
     todd_text = "Todd"
     mery_text = "Merry"
-    todd_party = partylink_shop(party_id=todd_text, credor_weight=13, debtor_weight=7)
-    mery_party = partylink_shop(party_id=mery_text, credor_weight=23, debtor_weight=5)
+    todd_guy = guylink_shop(guy_id=todd_text, credor_weight=13, debtor_weight=7)
+    mery_guy = guylink_shop(guy_id=mery_text, credor_weight=23, debtor_weight=5)
     bikers_belief_id = ",bikers"
-    bikers_belief = beliefunit_shop(belief_id=bikers_belief_id, _partys={})
+    bikers_belief = beliefunit_shop(belief_id=bikers_belief_id, _guys={})
 
-    x2_belief = beliefunit_shop(belief_id=bikers_belief_id, _partys={})
-    x2_belief.set_partylink(partylink=todd_party)
-    x2_belief.set_partylink(partylink=mery_party)
+    x2_belief = beliefunit_shop(belief_id=bikers_belief_id, _guys={})
+    x2_belief.set_guylink(guylink=todd_guy)
+    x2_belief.set_guylink(guylink=mery_guy)
 
     # WHEN
     bikers_belief.meld(other_belief=x2_belief)
 
     # THEN
-    assert len(bikers_belief._partys) == 2
-    assert bikers_belief._partys.get(todd_text) != None
+    assert len(bikers_belief._guys) == 2
+    assert bikers_belief._guys.get(todd_text) != None
 
 
-def test_BeliefUnit_meld_RaiseSameparty_idException():
+def test_BeliefUnit_meld_RaiseSameguy_idException():
     # GIVEN
     todd_text = "Todd"
-    todd_belief = beliefunit_shop(belief_id=todd_text, _party_mirror=True)
+    todd_belief = beliefunit_shop(belief_id=todd_text, _guy_mirror=True)
     mery_text = "Merry"
-    mery_belief = beliefunit_shop(belief_id=mery_text, _party_mirror=True)
+    mery_belief = beliefunit_shop(belief_id=mery_text, _guy_mirror=True)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -369,36 +367,36 @@ def test_BeliefUnit_meld_RaiseSameparty_idException():
 def test_BeliefUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     # GIVEN
     todd_text = "Todd"
-    todd_belief = beliefunit_shop(belief_id=todd_text, _party_mirror=True)
+    todd_belief = beliefunit_shop(belief_id=todd_text, _guy_mirror=True)
     sue_text = "Sue"
-    todd_belief.set_partylink(partylink_shop(party_id=sue_text))
+    todd_belief.set_guylink(guylink_shop(guy_id=sue_text))
 
     assert todd_belief.belief_id == todd_text
-    assert todd_belief._party_mirror
-    assert len(todd_belief._partys) == 1
+    assert todd_belief._guy_mirror
+    assert len(todd_belief._guys) == 1
 
     # WHEN
     todd_dict = todd_belief.get_dict()
 
     # THEN
     assert todd_dict["belief_id"] == todd_text
-    assert todd_dict["_party_mirror"]
-    assert len(todd_dict["_partys"]) == 1
+    assert todd_dict["_guy_mirror"]
+    assert len(todd_dict["_guys"]) == 1
 
 
 def test_BeliefUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
     swim_text = ",Swimmers"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    assert swim_belief._party_mirror is False
-    assert swim_belief._partys == {}
+    assert swim_belief._guy_mirror is False
+    assert swim_belief._guys == {}
 
     # WHEN
     swim_dict = swim_belief.get_dict()
 
     # THEN
-    assert swim_dict.get("_party_mirror") is None
-    assert swim_dict.get("_partys") is None
+    assert swim_dict.get("_guy_mirror") is None
+    assert swim_dict.get("_guys") is None
 
 
 def test_BeliefUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
@@ -417,13 +415,11 @@ def test_BeliefUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
     # GIVEN
     sue_text = "Marie"
-    marie_partylink = partylink_shop(
-        party_id=sue_text, credor_weight=29, debtor_weight=3
-    )
-    partylinks_dict = {marie_partylink.party_id: marie_partylink}
+    marie_guylink = guylink_shop(guy_id=sue_text, credor_weight=29, debtor_weight=3)
+    guylinks_dict = {marie_guylink.guy_id: marie_guylink}
     marie_json_dict = {
         sue_text: {
-            "party_id": sue_text,
+            "guy_id": sue_text,
             "credor_weight": 29,
             "debtor_weight": 3,
         }
@@ -433,7 +429,7 @@ def test_BeliefUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     swim_road = "swim"
     teachers_belief = beliefunit_shop(
         belief_id=teacher_text,
-        _partys=partylinks_dict,
+        _guys=guylinks_dict,
     )
 
     # WHEN
@@ -443,7 +439,7 @@ def test_BeliefUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     print(f"{marie_json_dict=}")
     assert teachers_dict == {
         "belief_id": teacher_text,
-        "_partys": marie_json_dict,
+        "_guys": marie_json_dict,
     }
 
 
@@ -467,14 +463,12 @@ def test_beliefunit_get_from_dict_CorrectlyReturnsBeliefUnitWith_road_delimiter(
 def test_BeliefUnit_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     # GIVEN
     sue_text = "Sue"
-    marie_partylink = partylink_shop(
-        party_id=sue_text, credor_weight=29, debtor_weight=3
-    )
-    partylinks_dict = {marie_partylink.party_id: marie_partylink}
+    marie_guylink = guylink_shop(guy_id=sue_text, credor_weight=29, debtor_weight=3)
+    guylinks_dict = {marie_guylink.guy_id: marie_guylink}
 
     teacher_text = ",teachers"
     swim_road = "swim"
-    teacher_belief = beliefunit_shop(belief_id=teacher_text, _partys=partylinks_dict)
+    teacher_belief = beliefunit_shop(belief_id=teacher_text, _guys=guylinks_dict)
     teacher_dict = teacher_belief.get_dict()
     beliefs_dict = {teacher_text: teacher_dict}
 

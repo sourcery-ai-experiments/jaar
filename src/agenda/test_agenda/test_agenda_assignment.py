@@ -1,7 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.reason_idea import reasonunit_shop
-from src.agenda.party import partyunit_shop, partylink_shop
+from src.agenda.guy import guyunit_shop, guylink_shop
 from src.agenda.belief import beliefunit_shop
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
@@ -19,11 +19,11 @@ def test_agendaunit_get_assignment_ReturnsAgenda():
     # WHEN
     bob_text = "Bob"
     agenda_x = agendaunit_shop(_owner_id=jes_text)
-    assignor_known_partys_x = {}
+    assignor_known_guys_x = {}
     x_assignment_agenda = jes1_agenda.get_assignment(
         agenda_x=agenda_x,
-        assignor_partys=assignor_known_partys_x,
-        assignor_party_id=bob_text,
+        assignor_guys=assignor_known_guys_x,
+        assignor_guy_id=bob_text,
     )
 
     # THEN
@@ -31,102 +31,100 @@ def test_agendaunit_get_assignment_ReturnsAgenda():
     assert x_assignment_agenda == agenda_x
 
 
-def test_agendaunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPartys():
+def test_agendaunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInGuys():
     # GIVEN
     noa_text = "Noa"
     noa_agenda = example_agendas_get_agenda_with_4_levels()
-    noa_agenda.set_partyunit(partyunit_shop(party_id=noa_text))
+    noa_agenda.set_guyunit(guyunit_shop(guy_id=noa_text))
     zia_text = "Zia"
     yao_text = "Yao"
-    noa_agenda.set_partyunit(partyunit_shop(party_id=zia_text))
-    noa_agenda.set_partyunit(partyunit_shop(party_id=yao_text))
+    noa_agenda.set_guyunit(guyunit_shop(guy_id=zia_text))
+    noa_agenda.set_guyunit(guyunit_shop(guy_id=yao_text))
 
     # WHEN
     bob_text = "Bob"
     y_agenda = agendaunit_shop(_owner_id=noa_text)
     x_agenda = agendaunit_shop()
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=zia_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=noa_text))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=zia_text))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=noa_text))
 
-    x_assignment_agenda = noa_agenda.get_assignment(
-        y_agenda, x_agenda._partys, bob_text
-    )
+    x_assignment_agenda = noa_agenda.get_assignment(y_agenda, x_agenda._guys, bob_text)
 
     # THEN
-    assert len(noa_agenda._partys) == 3
-    assert len(x_assignment_agenda._partys) == 0
+    assert len(noa_agenda._guys) == 3
+    assert len(x_assignment_agenda._guys) == 0
 
 
-def test_agendaunit_get_assignment_ReturnsCorrectPartys():
+def test_agendaunit_get_assignment_ReturnsCorrectGuys():
     # GIVEN
     jes_text = "Jessi"
     jes_agenda = agendaunit_shop(_owner_id=jes_text)
-    jes_agenda.set_partyunit(partyunit_shop(party_id=jes_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=jes_text))
     bob_text = "Bob"
     zia_text = "Zia"
     noa_text = "Noa"
     yao_text = "Yao"
-    jes_agenda.set_partyunit(partyunit_shop(party_id=bob_text))
-    jes_agenda.set_partyunit(partyunit_shop(party_id=zia_text))
-    jes_agenda.set_partyunit(partyunit_shop(party_id=noa_text))
-    jes_agenda.set_partyunit(partyunit_shop(party_id=yao_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=bob_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=zia_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=noa_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=yao_text))
 
     # WHEN
     tx = agendaunit_shop()
-    tx.set_partyunit(partyunit=partyunit_shop(party_id=bob_text))
-    tx.set_partyunit(partyunit=partyunit_shop(party_id=zia_text))
-    tx.set_partyunit(partyunit=partyunit_shop(party_id=noa_text))
+    tx.set_guyunit(guyunit=guyunit_shop(guy_id=bob_text))
+    tx.set_guyunit(guyunit=guyunit_shop(guy_id=zia_text))
+    tx.set_guyunit(guyunit=guyunit_shop(guy_id=noa_text))
 
     x_agenda = agendaunit_shop(jes_text)
-    x_assignment_agenda = jes_agenda.get_assignment(x_agenda, tx._partys, bob_text)
+    x_assignment_agenda = jes_agenda.get_assignment(x_agenda, tx._guys, bob_text)
 
     # THEN
-    assert len(x_assignment_agenda._partys) == 3
-    assert x_assignment_agenda._partys.get(bob_text) != None
-    assert x_assignment_agenda._partys.get(zia_text) != None
-    assert x_assignment_agenda._partys.get(noa_text) != None
-    assert x_assignment_agenda._partys.get(yao_text) is None
+    assert len(x_assignment_agenda._guys) == 3
+    assert x_assignment_agenda._guys.get(bob_text) != None
+    assert x_assignment_agenda._guys.get(zia_text) != None
+    assert x_assignment_agenda._guys.get(noa_text) != None
+    assert x_assignment_agenda._guys.get(yao_text) is None
 
 
 def test_agendaunit_get_assignment_ReturnsCorrectBeliefs_Scenario1():
     # GIVEN
     jes_text = "Jessi"
     jes_agenda = agendaunit_shop(_owner_id=jes_text)
-    jes_agenda.set_partyunit(partyunit_shop(party_id=jes_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=jes_text))
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
-    jes_agenda.set_partyunit(partyunit_shop(party_id=bob_text))
-    jes_agenda.set_partyunit(partyunit_shop(party_id=noa_text))
-    jes_agenda.set_partyunit(partyunit_shop(party_id=eli_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=bob_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=noa_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=eli_text))
     swim_text = ",swimmers"
     jes_agenda.set_beliefunit(beliefunit_shop(belief_id=swim_text))
     swim_belief = jes_agenda._beliefs.get(swim_text)
-    swim_belief.set_partylink(partylink_shop(bob_text))
+    swim_belief.set_guylink(guylink_shop(bob_text))
 
     hike_text = ",hikers"
     jes_agenda.set_beliefunit(beliefunit_shop(belief_id=hike_text))
     hike_belief = jes_agenda._beliefs.get(hike_text)
-    hike_belief.set_partylink(partylink_shop(bob_text))
-    hike_belief.set_partylink(partylink_shop(noa_text))
+    hike_belief.set_guylink(guylink_shop(bob_text))
+    hike_belief.set_guylink(guylink_shop(noa_text))
 
     hunt_text = ",hunters"
     jes_agenda.set_beliefunit(beliefunit_shop(belief_id=hunt_text))
     hike_belief = jes_agenda._beliefs.get(hunt_text)
-    hike_belief.set_partylink(partylink_shop(noa_text))
-    hike_belief.set_partylink(partylink_shop(eli_text))
+    hike_belief.set_guylink(guylink_shop(noa_text))
+    hike_belief.set_guylink(guylink_shop(eli_text))
 
     # WHEN
     tx = agendaunit_shop()
     zia_text = "Zia"
     yao_text = "Yao"
-    tx.set_partyunit(partyunit=partyunit_shop(party_id=bob_text))
-    tx.set_partyunit(partyunit=partyunit_shop(party_id=zia_text))
-    tx.set_partyunit(partyunit=partyunit_shop(party_id=noa_text))
+    tx.set_guyunit(guyunit=guyunit_shop(guy_id=bob_text))
+    tx.set_guyunit(guyunit=guyunit_shop(guy_id=zia_text))
+    tx.set_guyunit(guyunit=guyunit_shop(guy_id=noa_text))
 
     valueless_agenda = agendaunit_shop(_owner_id=jes_text)
     x_assignment_agenda = jes_agenda.get_assignment(
-        valueless_agenda, tx._partys, bob_text
+        valueless_agenda, tx._guys, bob_text
     )
 
     # THEN
@@ -139,8 +137,8 @@ def test_agendaunit_get_assignment_ReturnsCorrectBeliefs_Scenario1():
     assert x_assignment_agenda._beliefs.get(hike_text) != None
     assert x_assignment_agenda._beliefs.get(hunt_text) != None
     hunt_belief = x_assignment_agenda._beliefs.get(hunt_text)
-    assert hunt_belief._partys.get(noa_text) != None
-    assert len(hunt_belief._partys) == 1
+    assert hunt_belief._guys.get(noa_text) != None
+    assert len(hunt_belief._guys) == 1
 
 
 def test_AgendaUnit_get_assignor_pledge_ideas_ReturnsCorrectIdeaRoadUnits():
@@ -473,13 +471,13 @@ def test_AgendaUnit_get_assignment_getsCorrectIdeas_scenario1():
     dirty_text = "dirty"
     dirty_road = x_agenda.make_road(status_road, dirty_text)
     bob_text = "Bob"
-    x_agenda.add_partyunit(party_id=bob_text)
+    x_agenda.add_guyunit(guy_id=bob_text)
 
     # WHEN
     assignment_x = x_agenda.get_assignment(
         agenda_x=agendaunit_shop(_owner_id=bob_text),
-        assignor_partys={bob_text: -1},
-        assignor_party_id=bob_text,
+        assignor_guys={bob_text: -1},
+        assignor_guy_id=bob_text,
     )
 
     # THEN
@@ -514,8 +512,8 @@ def test_AgendaUnit_get_assignment_CorrectlyCreatesAssignmentAgendaUnit_v1():
     print(f"{cali_agenda._real_id=} {cali_agenda._idea_dict.keys()=}")
     cali_assignment = amer_agenda.get_assignment(
         agenda_x=cali_agenda,
-        assignor_partys={cali_text: -1, amer_agenda._owner_id: -1},
-        assignor_party_id=cali_text,
+        assignor_guys={cali_text: -1, amer_agenda._owner_id: -1},
+        assignor_guy_id=cali_text,
     )
 
     # THEN

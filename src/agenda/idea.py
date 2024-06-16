@@ -13,7 +13,7 @@ from src._road.road import (
     default_road_delimiter_if_none,
     replace_road_delimiter,
     RealID,
-    PartyID,
+    GuyID,
 )
 from src.agenda.meld import get_meld_default
 from src.agenda.healer import HealerHold, healerhold_shop, healerhold_get_from_dict
@@ -93,8 +93,8 @@ class IdeaAttrFilter:
     pledge: bool = None
     factunit: FactUnit = None
     descendant_pledge_count: int = None
-    all_party_cred: bool = None
-    all_party_debt: bool = None
+    all_guy_cred: bool = None
+    all_guy_debt: bool = None
     balancelink: BalanceLink = None
     balancelink_del: BeliefID = None
     is_expanded: bool = None
@@ -177,8 +177,8 @@ def ideaattrfilter_shop(
     pledge: bool = None,
     factunit: FactUnit = None,
     descendant_pledge_count: int = None,
-    all_party_cred: bool = None,
-    all_party_debt: bool = None,
+    all_guy_cred: bool = None,
+    all_guy_debt: bool = None,
     balancelink: BalanceLink = None,
     balancelink_del: BeliefID = None,
     is_expanded: bool = None,
@@ -210,8 +210,8 @@ def ideaattrfilter_shop(
         pledge=pledge,
         factunit=factunit,
         descendant_pledge_count=descendant_pledge_count,
-        all_party_cred=all_party_cred,
-        all_party_debt=all_party_debt,
+        all_guy_cred=all_guy_cred,
+        all_guy_debt=all_guy_debt,
         balancelink=balancelink,
         balancelink_del=balancelink_del,
         is_expanded=is_expanded,
@@ -264,8 +264,8 @@ class IdeaUnit:
     _active: bool = None
     _ancestor_pledge_count: int = None
     _descendant_pledge_count: int = None
-    _all_party_cred: bool = None
-    _all_party_debt: bool = None
+    _all_guy_cred: bool = None
+    _all_guy_debt: bool = None
     _is_expanded: bool = None
     _sibling_total_weight: int = None
     _active_hx: dict[int:bool] = None
@@ -428,9 +428,9 @@ class IdeaUnit:
 
         return descendant_roads
 
-    def clear_all_party_cred_debt(self):
-        self._all_party_cred = None
-        self._all_party_debt = None
+    def clear_all_guy_cred_debt(self):
+        self._all_guy_cred = None
+        self._all_guy_debt = None
 
     def set_ancestor_pledge_count(
         self, parent_ancestor_pledge_count: int, parent_pledge: bool
@@ -626,8 +626,8 @@ class IdeaUnit:
         self,
         other_idea,
         _idearoot: bool = None,
-        party_id: PartyID = None,
-        party_weight: float = None,
+        guy_id: GuyID = None,
+        guy_weight: float = None,
     ):
         if _idearoot and self._label != other_idea._label:
             raise InvalidIdeaException(
@@ -649,11 +649,11 @@ class IdeaUnit:
             self._meld_attributes_that_must_be_equal(other_idea=other_idea)
         else:
             self._meld_attributes_overide(other_idea=other_idea)
-        self._meld_originlinks(party_id, party_weight)
+        self._meld_originlinks(guy_id, guy_weight)
 
-    def _meld_originlinks(self, party_id: PartyID, party_weight: float):
-        if party_id != None:
-            self._originunit.set_originlink(party_id=party_id, weight=party_weight)
+    def _meld_originlinks(self, guy_id: GuyID, guy_weight: float):
+        if guy_id != None:
+            self._originunit.set_originlink(guy_id=guy_id, weight=guy_weight)
 
     def set_originunit_empty_if_null(self):
         if self._originunit is None:
@@ -742,10 +742,10 @@ class IdeaUnit:
             self._range_source_road = idea_attr.range_source_road
         if idea_attr.descendant_pledge_count != None:
             self._descendant_pledge_count = idea_attr.descendant_pledge_count
-        if idea_attr.all_party_cred != None:
-            self._all_party_cred = idea_attr.all_party_cred
-        if idea_attr.all_party_debt != None:
-            self._all_party_debt = idea_attr.all_party_debt
+        if idea_attr.all_guy_cred != None:
+            self._all_guy_cred = idea_attr.all_guy_cred
+        if idea_attr.all_guy_debt != None:
+            self._all_guy_debt = idea_attr.all_guy_debt
         if idea_attr.balancelink != None:
             self.set_balancelink(balancelink=idea_attr.balancelink)
         if idea_attr.balancelink_del != None:
@@ -878,7 +878,7 @@ class IdeaUnit:
         self,
         tree_traverse_count: int,
         agenda_beliefunits: dict[BeliefID:BeliefUnit] = None,
-        agenda_owner_id: PartyID = None,
+        agenda_owner_id: GuyID = None,
     ):
         prev_to_now_active = deepcopy(self._active)
         self._active = self._create_active(
@@ -904,7 +904,7 @@ class IdeaUnit:
         return any(x_reasonheir._task for x_reasonheir in self._reasonheirs.values())
 
     def _create_active(
-        self, agenda_beliefunits: dict[BeliefID:BeliefUnit], agenda_owner_id: PartyID
+        self, agenda_beliefunits: dict[BeliefID:BeliefUnit], agenda_owner_id: GuyID
     ) -> bool:
         self.set_reasonheirs_status()
         x_bool = self._are_all_reasonheir_active_true()
@@ -1124,8 +1124,8 @@ def ideaunit_shop(
     _active: bool = None,
     _ancestor_pledge_count: int = None,
     _descendant_pledge_count: int = None,
-    _all_party_cred: bool = None,
-    _all_party_debt: bool = None,
+    _all_guy_cred: bool = None,
+    _all_guy_debt: bool = None,
     _is_expanded: bool = True,
     _sibling_total_weight: int = None,
     _active_hx: dict[int:bool] = None,
@@ -1179,8 +1179,8 @@ def ideaunit_shop(
         _active=_active,
         _ancestor_pledge_count=_ancestor_pledge_count,
         _descendant_pledge_count=_descendant_pledge_count,
-        _all_party_cred=_all_party_cred,
-        _all_party_debt=_all_party_debt,
+        _all_guy_cred=_all_guy_cred,
+        _all_guy_debt=_all_guy_debt,
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
         _active_hx=get_empty_dict_if_none(_active_hx),

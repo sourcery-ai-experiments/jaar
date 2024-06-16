@@ -16,9 +16,9 @@ from src.atom.quark_config import (
     sqlite_datatype_text,
     python_type_text,
     agendaunit_text,
-    agenda_partyunit_text,
+    agenda_guyunit_text,
     agenda_beliefunit_text,
-    agenda_belief_partylink_text,
+    agenda_belief_guylink_text,
     agenda_ideaunit_text,
     agenda_idea_balancelink_text,
     agenda_idea_reasonunit_text,
@@ -33,16 +33,16 @@ def test_agendaunit_text_ReturnsObj():
     assert agendaunit_text() == "agendaunit"
 
 
-def test_agenda_partyunit_text_ReturnsObj():
-    assert agenda_partyunit_text() == "agenda_partyunit"
+def test_agenda_guyunit_text_ReturnsObj():
+    assert agenda_guyunit_text() == "agenda_guyunit"
 
 
 def test_agenda_beliefunit_text_ReturnsObj():
     assert agenda_beliefunit_text() == "agenda_beliefunit"
 
 
-def test_agenda_belief_partylink_text_ReturnsObj():
-    assert agenda_belief_partylink_text() == "agenda_belief_partylink"
+def test_agenda_belief_guylink_text_ReturnsObj():
+    assert agenda_belief_guylink_text() == "agenda_belief_guylink"
 
 
 def test_agenda_ideaunit_text_ReturnsObj():
@@ -76,9 +76,9 @@ def test_agenda_idea_factunit_text_ReturnsObj():
 def test_quark_config_HasCorrect_category():
     assert category_ref() == {
         agendaunit_text(),
-        agenda_partyunit_text(),
+        agenda_guyunit_text(),
         agenda_beliefunit_text(),
-        agenda_belief_partylink_text(),
+        agenda_belief_guylink_text(),
         agenda_ideaunit_text(),
         agenda_idea_balancelink_text(),
         agenda_idea_reasonunit_text(),
@@ -87,7 +87,7 @@ def test_quark_config_HasCorrect_category():
         agenda_idea_healerhold_text(),
         agenda_idea_factunit_text(),
     }
-    assert agenda_partyunit_text() in category_ref()
+    assert agenda_guyunit_text() in category_ref()
     assert is_category_ref("idearoot") is False
 
 
@@ -152,8 +152,8 @@ def test_get_quark_config_dict_EveryCrudOperationHasNucOrderBelief():
     assert check_every_crud_dict_has_element(get_quark_config_dict(), quark_order_text)
     mog = quark_order_text
     # # Simple script for editing quark_config.json
-    # set_mog("agenda_partyunit", quark_insert(), mog, 0)
-    # set_mog("agenda_belief_partylink", quark_insert(), mog, 1)
+    # set_mog("agenda_guyunit", quark_insert(), mog, 0)
+    # set_mog("agenda_belief_guylink", quark_insert(), mog, 1)
     # set_mog("beliefunit", quark_insert(), mog, 2)
     # set_mog("agenda_ideaunit", quark_insert(), mog, 3)
     # set_mog("agenda_idea_balancelink", quark_insert(), mog, 4)
@@ -162,9 +162,9 @@ def test_get_quark_config_dict_EveryCrudOperationHasNucOrderBelief():
     # set_mog("agenda_idea_factunit", quark_insert(), mog, 7)
     # set_mog("agenda_idea_reasonunit", quark_insert(), mog, 8)
     # set_mog("agenda_idea_reason_premiseunit", quark_insert(), mog, 9)
-    # set_mog("agenda_partyunit", quark_update(), mog, 10)
+    # set_mog("agenda_guyunit", quark_update(), mog, 10)
     # set_mog("beliefunit", quark_update(), mog, 11)
-    # set_mog("agenda_belief_partylink", quark_update(), mog, 12)
+    # set_mog("agenda_belief_guylink", quark_update(), mog, 12)
     # set_mog("agenda_ideaunit", quark_update(), mog, 13)
     # set_mog("agenda_idea_balancelink", quark_update(), mog, 14)
     # set_mog("agenda_idea_factunit", quark_update(), mog, 15)
@@ -177,13 +177,13 @@ def test_get_quark_config_dict_EveryCrudOperationHasNucOrderBelief():
     # set_mog("agenda_idea_healerhold", quark_delete(), mog, 22)
     # set_mog("agenda_idea_balancelink", quark_delete(), mog, 23)
     # set_mog("agenda_ideaunit", quark_delete(), mog, 24)
-    # set_mog("agenda_belief_partylink", quark_delete(), mog, 25)
-    # set_mog("agenda_partyunit", quark_delete(), mog, 26)
+    # set_mog("agenda_belief_guylink", quark_delete(), mog, 25)
+    # set_mog("agenda_guyunit", quark_delete(), mog, 26)
     # set_mog("beliefunit", quark_delete(), mog, 27)
     # set_mog("agendaunit", quark_update(), mog, 28)
 
-    assert 0 == q_order("agenda_partyunit", quark_insert(), mog, 0)
-    assert 1 == q_order("agenda_belief_partylink", quark_insert(), mog, 1)
+    assert 0 == q_order("agenda_guyunit", quark_insert(), mog, 0)
+    assert 1 == q_order("agenda_belief_guylink", quark_insert(), mog, 1)
     assert 2 == q_order("agenda_beliefunit", quark_insert(), mog, 2)
     assert 3 == q_order("agenda_ideaunit", quark_insert(), mog, 3)
     assert 4 == q_order("agenda_idea_balancelink", quark_insert(), mog, 4)
@@ -192,9 +192,9 @@ def test_get_quark_config_dict_EveryCrudOperationHasNucOrderBelief():
     assert 7 == q_order("agenda_idea_factunit", quark_insert(), mog, 7)
     assert 8 == q_order("agenda_idea_reasonunit", quark_insert(), mog, 8)
     assert 9 == q_order("agenda_idea_reason_premiseunit", quark_insert(), mog, 9)
-    assert 10 == q_order("agenda_partyunit", quark_update(), mog, 10)
+    assert 10 == q_order("agenda_guyunit", quark_update(), mog, 10)
     assert 11 == q_order("agenda_beliefunit", quark_update(), mog, 11)
-    assert 12 == q_order("agenda_belief_partylink", quark_update(), mog, 12)
+    assert 12 == q_order("agenda_belief_guylink", quark_update(), mog, 12)
     assert 13 == q_order("agenda_ideaunit", quark_update(), mog, 13)
     assert 14 == q_order("agenda_idea_balancelink", quark_update(), mog, 14)
     assert 15 == q_order("agenda_idea_factunit", quark_update(), mog, 15)
@@ -207,8 +207,8 @@ def test_get_quark_config_dict_EveryCrudOperationHasNucOrderBelief():
     assert 22 == q_order("agenda_idea_healerhold", quark_delete(), mog, 22)
     assert 23 == q_order("agenda_idea_balancelink", quark_delete(), mog, 23)
     assert 24 == q_order("agenda_ideaunit", quark_delete(), mog, 24)
-    assert 25 == q_order("agenda_belief_partylink", quark_delete(), mog, 25)
-    assert 26 == q_order("agenda_partyunit", quark_delete(), mog, 26)
+    assert 25 == q_order("agenda_belief_guylink", quark_delete(), mog, 25)
+    assert 26 == q_order("agenda_guyunit", quark_delete(), mog, 26)
     assert 27 == q_order("agenda_beliefunit", quark_delete(), mog, 27)
     assert 28 == q_order("agendaunit", quark_update(), mog, 28)
 
@@ -250,7 +250,7 @@ def test_get_flattened_quark_table_build_ReturnsCorrectObj():
 
     # THEN
     assert len(quark_columns) == 111
-    assert quark_columns.get("agendaunit_UPDATE__party_credor_pool") == "INTEGER"
+    assert quark_columns.get("agendaunit_UPDATE__guy_credor_pool") == "INTEGER"
     # print(f"{quark_columns.keys()=}")
 
 
@@ -262,9 +262,9 @@ def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
     # THEN
     assert len(nx) == 11
     cat_agendaunit = nx.get(agendaunit_text())
-    cat_partyunit = nx.get(agenda_partyunit_text())
+    cat_guyunit = nx.get(agenda_guyunit_text())
     cat_belief = nx.get(agenda_beliefunit_text())
-    cat_partylink = nx.get(agenda_belief_partylink_text())
+    cat_guylink = nx.get(agenda_belief_guylink_text())
     cat_idea = nx.get(agenda_ideaunit_text())
     cat_balancelink = nx.get(agenda_idea_balancelink_text())
     cat_reason = nx.get(agenda_idea_reasonunit_text())
@@ -274,9 +274,9 @@ def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
     cat_fact = nx.get(agenda_idea_factunit_text())
 
     assert cat_agendaunit != None
-    assert cat_partyunit != None
+    assert cat_guyunit != None
     assert cat_belief != None
-    assert cat_partylink != None
+    assert cat_guylink != None
     assert cat_idea != None
     assert cat_balancelink != None
     assert cat_reason != None
@@ -286,9 +286,9 @@ def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
     assert cat_fact != None
 
     normal_specs_agendaunit = cat_agendaunit.get(normal_specs_text())
-    normal_specs_partyunit = cat_partyunit.get(normal_specs_text())
+    normal_specs_guyunit = cat_guyunit.get(normal_specs_text())
     normal_specs_belief = cat_belief.get(normal_specs_text())
-    normal_specs_partylink = cat_partylink.get(normal_specs_text())
+    normal_specs_guylink = cat_guylink.get(normal_specs_text())
     normal_specs_idea = cat_idea.get(normal_specs_text())
     normal_specs_balancelink = cat_balancelink.get(normal_specs_text())
     normal_specs_reason = cat_reason.get(normal_specs_text())
@@ -301,9 +301,9 @@ def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
     print(f"{cat_agendaunit.keys()=}")
     print(f"{normal_specs_text()=}")
     assert normal_specs_agendaunit != None
-    assert normal_specs_partyunit != None
+    assert normal_specs_guyunit != None
     assert normal_specs_belief != None
-    assert normal_specs_partylink != None
+    assert normal_specs_guylink != None
     assert normal_specs_idea != None
     assert normal_specs_balancelink != None
     assert normal_specs_reason != None
@@ -313,9 +313,9 @@ def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
     assert normal_specs_fact != None
 
     table_name_agendaunit = normal_specs_agendaunit.get(normal_table_name_text())
-    table_name_partyunit = normal_specs_partyunit.get(normal_table_name_text())
+    table_name_guyunit = normal_specs_guyunit.get(normal_table_name_text())
     table_name_belief = normal_specs_belief.get(normal_table_name_text())
-    table_name_partylink = normal_specs_partylink.get(normal_table_name_text())
+    table_name_guylink = normal_specs_guylink.get(normal_table_name_text())
     table_name_idea = normal_specs_idea.get(normal_table_name_text())
     table_name_balancelink = normal_specs_balancelink.get(normal_table_name_text())
     table_name_reason = normal_specs_reason.get(normal_table_name_text())
@@ -325,9 +325,9 @@ def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
     table_name_fact = normal_specs_fact.get(normal_table_name_text())
 
     assert table_name_agendaunit == "agenda"
-    assert table_name_partyunit == "partyunit"
+    assert table_name_guyunit == "guyunit"
     assert table_name_belief == "beliefunit"
-    assert table_name_partylink == "partylink"
+    assert table_name_guylink == "guylink"
     assert table_name_idea == "idea"
     assert table_name_balancelink == "balancelink"
     assert table_name_reason == "reason"
@@ -345,25 +345,25 @@ def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
     assert agendaunit_columns.get("_max_tree_traverse") != None
     assert agendaunit_columns.get("_meld_strategy") != None
     assert agendaunit_columns.get("_monetary_desc") != None
-    assert agendaunit_columns.get("_party_credor_pool") != None
-    assert agendaunit_columns.get("_party_debtor_pool") != None
+    assert agendaunit_columns.get("_guy_credor_pool") != None
+    assert agendaunit_columns.get("_guy_debtor_pool") != None
     assert agendaunit_columns.get("_penny") != None
     assert agendaunit_columns.get("_planck") != None
     assert agendaunit_columns.get("_weight") != None
 
-    assert len(cat_partyunit) == 2
-    partyunit_columns = cat_partyunit.get(columns_text)
-    assert len(partyunit_columns) == 4
-    assert partyunit_columns.get("uid") != None
-    assert partyunit_columns.get("party_id") != None
-    assert partyunit_columns.get("credor_weight") != None
-    assert partyunit_columns.get("debtor_weight") != None
+    assert len(cat_guyunit) == 2
+    guyunit_columns = cat_guyunit.get(columns_text)
+    assert len(guyunit_columns) == 4
+    assert guyunit_columns.get("uid") != None
+    assert guyunit_columns.get("guy_id") != None
+    assert guyunit_columns.get("credor_weight") != None
+    assert guyunit_columns.get("debtor_weight") != None
 
-    party_id_dict = partyunit_columns.get("party_id")
-    assert len(party_id_dict) == 2
-    assert party_id_dict.get(sqlite_datatype_text()) == "TEXT"
-    assert party_id_dict.get("nullable") == False
-    debtor_weight_dict = partyunit_columns.get("debtor_weight")
-    assert len(party_id_dict) == 2
+    guy_id_dict = guyunit_columns.get("guy_id")
+    assert len(guy_id_dict) == 2
+    assert guy_id_dict.get(sqlite_datatype_text()) == "TEXT"
+    assert guy_id_dict.get("nullable") == False
+    debtor_weight_dict = guyunit_columns.get("debtor_weight")
+    assert len(guy_id_dict) == 2
     assert debtor_weight_dict.get(sqlite_datatype_text()) == "INTEGER"
     assert debtor_weight_dict.get("nullable") == True

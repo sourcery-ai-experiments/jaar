@@ -3,10 +3,10 @@ from src.agenda.belief import (
     BeliefID,
     balancelink_shop,
     beliefunit_shop,
-    get_partys_relevant_beliefs,
-    get_party_relevant_beliefs,
+    get_guys_relevant_beliefs,
+    get_guy_relevant_beliefs,
 )
-from src.agenda.party import PartyID, partyunit_shop, partylink_shop
+from src.agenda.guy import GuyID, guyunit_shop, guylink_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.examples.example_agendas import agenda_v001 as examples_agenda_v001
@@ -42,7 +42,7 @@ def test_AgendaUnit_beliefs_set_beliefunit_CorrectlySetAttr():
     assert len(x_agenda._beliefs) == len(swim_beliefs)
     assert x_agenda.get_beliefunit(swim_text) != None
     swim_beliefunit = x_agenda.get_beliefunit(swim_text)
-    assert swim_beliefunit._partys == swim_beliefs.get(swim_text)._partys
+    assert swim_beliefunit._guys == swim_beliefs.get(swim_text)._guys
     assert x_agenda.get_beliefunit(swim_text) == swim_beliefs.get(swim_text)
     assert x_agenda._beliefs == swim_beliefs
 
@@ -53,30 +53,30 @@ def test_AgendaUnit_beliefs_set_beliefunit_CorrectlyReplacesBelief():
     x_agenda = agendaunit_shop()
     swim1_belief = beliefunit_shop(swim_text)
     bob_text = "Bob"
-    swim1_belief.set_partylink(partylink_shop(bob_text))
+    swim1_belief.set_guylink(guylink_shop(bob_text))
     x_agenda.set_beliefunit(swim1_belief)
-    assert len(x_agenda.get_beliefunit(swim_text)._partys) == 1
+    assert len(x_agenda.get_beliefunit(swim_text)._guys) == 1
 
     # WHEN
     yao_text = "Yao"
     swim2_belief = beliefunit_shop(swim_text)
-    swim2_belief.set_partylink(partylink_shop(bob_text))
-    swim2_belief.set_partylink(partylink_shop(yao_text))
+    swim2_belief.set_guylink(guylink_shop(bob_text))
+    swim2_belief.set_guylink(guylink_shop(yao_text))
     x_agenda.set_beliefunit(swim2_belief, replace=False)
 
     # THEN
-    assert len(x_agenda.get_beliefunit(swim_text)._partys) == 1
+    assert len(x_agenda.get_beliefunit(swim_text)._guys) == 1
 
     # WHEN / THEN
     x_agenda.set_beliefunit(swim2_belief, replace=True)
-    assert len(x_agenda.get_beliefunit(swim_text)._partys) == 2
+    assert len(x_agenda.get_beliefunit(swim_text)._guys) == 2
 
 
-# def test_AgendaUnit_beliefs_set_beliefunit_RaisesErrorWhen_party_mirrorSubmitted():
+# def test_AgendaUnit_beliefs_set_beliefunit_RaisesErrorWhen_guy_mirrorSubmitted():
 #     # GIVEN
 #     yao_agenda = agendaunit_shop("Yao")
 #     bob_text = "Bob"
-#     yao_agenda.set_partyunit(partyunit_shop(bob_text))
+#     yao_agenda.set_guyunit(guyunit_shop(bob_text))
 #     bob_beliefunit = yao_agenda.get_beliefunit(bob_text)
 
 #     # WHEN
@@ -84,29 +84,29 @@ def test_AgendaUnit_beliefs_set_beliefunit_CorrectlyReplacesBelief():
 #         yao_agenda.set_beliefunit(bob_beliefunit)
 #     assert (
 #         str(excinfo.value)
-#         == f"AgendaUnit.set_beliefunit('{bob_text}') fails because belief is _party_mirror."
+#         == f"AgendaUnit.set_beliefunit('{bob_text}') fails because belief is _guy_mirror."
 #     )
 
 
-def test_AgendaUnit_beliefs_set_beliefunit_CorrectlySets_partylinks():
+def test_AgendaUnit_beliefs_set_beliefunit_CorrectlySets_guylinks():
     # GIVEN
     swim_text = ",swimmers"
     x_agenda = agendaunit_shop()
     swim1_belief = beliefunit_shop(swim_text)
     bob_text = "Bob"
-    swim1_belief.set_partylink(partylink_shop(bob_text))
+    swim1_belief.set_guylink(guylink_shop(bob_text))
     x_agenda.set_beliefunit(swim1_belief)
-    assert len(x_agenda.get_beliefunit(swim_text)._partys) == 1
+    assert len(x_agenda.get_beliefunit(swim_text)._guys) == 1
 
     # WHEN
     yao_text = "Yao"
     swim2_belief = beliefunit_shop(swim_text)
-    swim2_belief.set_partylink(partylink_shop(bob_text))
-    swim2_belief.set_partylink(partylink_shop(yao_text))
-    x_agenda.set_beliefunit(swim2_belief, add_partylinks=True)
+    swim2_belief.set_guylink(guylink_shop(bob_text))
+    swim2_belief.set_guylink(guylink_shop(yao_text))
+    x_agenda.set_beliefunit(swim2_belief, add_guylinks=True)
 
     # THEN
-    assert len(x_agenda.get_beliefunit(swim_text)._partys) == 2
+    assert len(x_agenda.get_beliefunit(swim_text)._guys) == 2
 
 
 def test_AgendaUnit_beliefs_del_beliefunit_casasCorrectly():
@@ -130,10 +130,10 @@ def test_examples_agenda_v001_HasBeliefs():
     # THEN
     assert x_agenda._beliefs != None
     assert len(x_agenda._beliefs) == 34
-    everyone_partys_len = None
+    everyone_guys_len = None
     everyone_belief = x_agenda.get_beliefunit(",Everyone")
-    everyone_partys_len = len(everyone_belief._partys)
-    assert everyone_partys_len == 22
+    everyone_guys_len = len(everyone_belief._guys)
+    assert everyone_guys_len == 22
 
     # WHEN
     x_agenda.calc_agenda_metrics()
@@ -159,11 +159,11 @@ def test_AgendaUnit_set_balancelink_correctly_sets_balancelinks():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
-    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
-    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    sue_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(rico_text)))
+    sue_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(carm_text)))
+    sue_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(patr_text)))
 
-    assert len(sue_agenda._partys) == 3
+    assert len(sue_agenda._guys) == 3
     assert len(sue_agenda._beliefs) == 3
     swim_text = "swim"
     sue_agenda.add_l1_idea(ideaunit_shop(swim_text))
@@ -208,9 +208,9 @@ def test_AgendaUnit_set_balancelink_correctly_deletes_balancelinks():
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(rico_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(carm_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(patr_text)))
 
     swim_text = "swim"
     swim_road = x_agenda.make_road(prom_text, swim_text)
@@ -255,9 +255,9 @@ def test_AgendaUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkAgend
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
-    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
-    sue_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    sue_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(rico_text)))
+    sue_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(carm_text)))
+    sue_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(patr_text)))
     blink_rico = balancelink_shop(
         belief_id=rico_text, credor_weight=20, debtor_weight=6
     )
@@ -317,9 +317,9 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaBeliefAgendaImp
     carm_text = "carmen"
     patr_text = "patrick"
     sele_text = "selena"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(rico_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(carm_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(patr_text)))
     blink_rico = balancelink_shop(
         belief_id=rico_text, credor_weight=20, debtor_weight=6
     )
@@ -356,7 +356,7 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates1LevelAgendaBeliefAgendaImp
     )
 
     # WHEN
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(sele_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(sele_text)))
     bl_sele = balancelink_shop(belief_id=sele_text, credor_weight=37)
     x_agenda._idearoot.set_balancelink(balancelink=bl_sele)
     assert len(x_agenda._beliefs) == 4
@@ -398,9 +398,9 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculates3levelAgendaBeliefAgendaImp
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(rico_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(carm_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(patr_text)))
     rico_balancelink = balancelink_shop(
         belief_id=rico_text, credor_weight=20, debtor_weight=6
     )
@@ -446,9 +446,9 @@ def test_AgendaUnit_get_idea_list_CorrectlyCalculatesBeliefAgendaImportanceLWwit
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(rico_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(carm_text)))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=PartyID(patr_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(rico_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(carm_text)))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=GuyID(patr_text)))
     rico_balancelink = balancelink_shop(
         belief_id=rico_text, credor_weight=20, debtor_weight=6
     )
@@ -511,16 +511,16 @@ def test_AgendaUnit_edit_beliefunit_belief_id_CorrectlyCreatesNewPersonID():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
-    agenda.add_partyunit(party_id=rico_text)
+    agenda.add_guyunit(guy_id=rico_text)
     swim_text = ",swimmers"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_partylink(partylink=partylink_shop(party_id=rico_text))
+    swim_belief.set_guylink(guylink=guylink_shop(guy_id=rico_text))
     agenda.set_beliefunit(swim_belief)
-    assert len(agenda._partys) == 1
+    assert len(agenda._guys) == 1
     assert len(agenda._beliefs) == 2
     assert agenda.get_beliefunit(swim_text) != None
-    assert agenda.get_beliefunit(swim_text)._party_mirror is False
-    assert len(agenda.get_beliefunit(swim_text)._partys) == 1
+    assert agenda.get_beliefunit(swim_text)._guy_mirror is False
+    assert len(agenda.get_beliefunit(swim_text)._guys) == 1
 
     # WHEN
     jog_text = ",jog"
@@ -531,17 +531,17 @@ def test_AgendaUnit_edit_beliefunit_belief_id_CorrectlyCreatesNewPersonID():
     # THEN
     assert agenda.get_beliefunit(jog_text) != None
     assert agenda.get_beliefunit(swim_text) is None
-    assert len(agenda._partys) == 1
+    assert len(agenda._guys) == 1
     assert len(agenda._beliefs) == 2
-    assert agenda.get_beliefunit(jog_text)._party_mirror is False
-    assert len(agenda.get_beliefunit(jog_text)._partys) == 1
+    assert agenda.get_beliefunit(jog_text)._guy_mirror is False
+    assert len(agenda.get_beliefunit(jog_text)._guys) == 1
 
 
 def test_AgendaUnit_edit_Beliefunit_belief_id_raiseErrorNewPersonIDPreviouslyExists():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
-    agenda.add_partyunit(party_id=rico_text)
+    agenda.add_guyunit(guy_id=rico_text)
     swim_text = ",swimmers"
     agenda.set_beliefunit(beliefunit_shop(belief_id=swim_text))
     jog_text = ",jog"
@@ -564,20 +564,20 @@ def test_AgendaUnit_edit_beliefunit_belief_id_CorrectlyMeldPersonIDs():
     # GIVEN
     agenda = agendaunit_shop("prom")
     rico_text = "rico"
-    agenda.add_partyunit(party_id=rico_text)
+    agenda.add_guyunit(guy_id=rico_text)
     swim_text = ",swimmers"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_partylink(
-        partylink=partylink_shop(party_id=rico_text, credor_weight=5, debtor_weight=3)
+    swim_belief.set_guylink(
+        guylink=guylink_shop(guy_id=rico_text, credor_weight=5, debtor_weight=3)
     )
     agenda.set_beliefunit(swim_belief)
     jog_text = ",jog"
     jog_belief = beliefunit_shop(belief_id=jog_text)
-    jog_belief.set_partylink(
-        partylink=partylink_shop(party_id=rico_text, credor_weight=7, debtor_weight=10)
+    jog_belief.set_guylink(
+        guylink=guylink_shop(guy_id=rico_text, credor_weight=7, debtor_weight=10)
     )
     agenda.set_beliefunit(jog_belief)
-    print(f"{agenda.get_beliefunit(jog_text)._partys.get(rico_text)=}")
+    print(f"{agenda.get_beliefunit(jog_text)._guys.get(rico_text)=}")
     assert agenda.get_beliefunit(jog_text) != None
 
     # WHEN
@@ -590,19 +590,19 @@ def test_AgendaUnit_edit_beliefunit_belief_id_CorrectlyMeldPersonIDs():
     # THEN
     assert agenda.get_beliefunit(jog_text) != None
     assert agenda.get_beliefunit(swim_text) is None
-    assert len(agenda._partys) == 1
+    assert len(agenda._guys) == 1
     assert len(agenda._beliefs) == 2
-    assert agenda.get_beliefunit(jog_text)._party_mirror is False
-    assert len(agenda.get_beliefunit(jog_text)._partys) == 1
-    assert agenda.get_beliefunit(jog_text)._partys.get(rico_text).credor_weight == 12
-    assert agenda.get_beliefunit(jog_text)._partys.get(rico_text).debtor_weight == 13
+    assert agenda.get_beliefunit(jog_text)._guy_mirror is False
+    assert len(agenda.get_beliefunit(jog_text)._guys) == 1
+    assert agenda.get_beliefunit(jog_text)._guys.get(rico_text).credor_weight == 12
+    assert agenda.get_beliefunit(jog_text)._guys.get(rico_text).debtor_weight == 13
 
 
 def test_AgendaUnit_edit_beliefunit_belief_id_CorrectlyModifiesBalanceLinks():
     # GIVEN
     x_agenda = agendaunit_shop("prom")
     rico_text = "rico"
-    x_agenda.add_partyunit(party_id=rico_text)
+    x_agenda.add_guyunit(guy_id=rico_text)
     swim_text = ",swimmers"
     swim_beliefunit = beliefunit_shop(belief_id=swim_text)
     x_agenda.set_beliefunit(swim_beliefunit)
@@ -638,7 +638,7 @@ def test_AgendaUnit_edit_beliefunit_belief_id_CorrectlyMeldsBalanceLinesBalanceL
     # GIVEN
     x_agenda = agendaunit_shop("prom")
     rico_text = "rico"
-    x_agenda.add_partyunit(party_id=rico_text)
+    x_agenda.add_guyunit(guy_id=rico_text)
     swim_text = ",swimmers"
     swim_beliefunit = beliefunit_shop(belief_id=swim_text)
     x_agenda.set_beliefunit(swim_beliefunit)
@@ -704,7 +704,7 @@ def test_AgendaUnit_add_idea_CreatesMissingBeliefs():
     # THEN
     assert len(x_agenda._beliefs) == 1
     assert x_agenda.get_beliefunit(family_text) != None
-    assert x_agenda.get_beliefunit(family_text)._partys in (None, {})
+    assert x_agenda.get_beliefunit(family_text)._guys in (None, {})
 
 
 def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balancelinks():
@@ -713,8 +713,8 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balance
     x1_agenda = agendaunit_shop(noa_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    x1_agenda.add_partyunit(party_id=xia_text)
-    x1_agenda.add_partyunit(party_id=zoa_text)
+    x1_agenda.add_guyunit(guy_id=xia_text)
+    x1_agenda.add_guyunit(guy_id=zoa_text)
 
     casa_text = "casa"
     casa_road = x1_agenda.make_l1_road(casa_text)
@@ -727,7 +727,7 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balance
     x1_agenda_swim_idea = x1_agenda.get_idea_obj(swim_road)
     assert len(x1_agenda_swim_idea._balancelinks) == 2
     x_agenda = agendaunit_shop(noa_text)
-    x_agenda.add_partyunit(party_id=xia_text)
+    x_agenda.add_guyunit(guy_id=xia_text)
 
     # WHEN
     filtered_idea = x_agenda._get_filtered_balancelinks_idea(x1_agenda_swim_idea)
@@ -743,8 +743,8 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     x1_agenda = agendaunit_shop(noa_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    x1_agenda.add_partyunit(party_id=xia_text)
-    x1_agenda.add_partyunit(party_id=zoa_text)
+    x1_agenda.add_guyunit(guy_id=xia_text)
+    x1_agenda.add_guyunit(guy_id=zoa_text)
 
     casa_text = "casa"
     casa_road = x1_agenda.make_l1_road(casa_text)
@@ -763,7 +763,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 
     # WHEN
     x_agenda = agendaunit_shop(noa_text)
-    x_agenda.add_partyunit(party_id=xia_text)
+    x_agenda.add_guyunit(guy_id=xia_text)
     x_agenda.add_l1_idea(x1_agenda_swim_idea, create_missing_ideas=False)
 
     # THEN
@@ -788,14 +788,14 @@ def test_AgendaUnit_add_idea_DoesNotOverwriteBeliefs():
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
 
     beliefunit_z = beliefunit_shop(belief_id=family_text)
-    beliefunit_z.set_partylink(partylink=partylink_shop(party_id="ann1"))
-    beliefunit_z.set_partylink(partylink=partylink_shop(party_id="bet1"))
+    beliefunit_z.set_guylink(guylink=guylink_shop(guy_id="ann1"))
+    beliefunit_z.set_guylink(guylink=guylink_shop(guy_id="bet1"))
     bob_agenda.set_beliefunit(y_beliefunit=beliefunit_z)
 
     # assert len(bob_agenda._beliefs) == 0
     # assert bob_agenda.get_beliefunit(family_text) is None
     assert len(bob_agenda._beliefs) == 1
-    assert len(bob_agenda.get_beliefunit(family_text)._partys) == 2
+    assert len(bob_agenda.get_beliefunit(family_text)._guys) == 2
 
     # WHEN
     bob_agenda.add_idea(
@@ -807,91 +807,91 @@ def test_AgendaUnit_add_idea_DoesNotOverwriteBeliefs():
     # THEN
 
     # assert len(bob_agenda._beliefs) == 1
-    # assert len(bob_agenda.get_beliefunit(family_text)._partys) == 0
+    # assert len(bob_agenda.get_beliefunit(family_text)._guys) == 0
     # beliefunit_z = beliefunit_shop(belief_id=family_text)
-    # beliefunit_z.set_partylink(partylink=partylink_shop(party_id="ann2"))
-    # beliefunit_z.set_partylink(partylink=partylink_shop(party_id="bet2"))
+    # beliefunit_z.set_guylink(guylink=guylink_shop(guy_id="ann2"))
+    # beliefunit_z.set_guylink(guylink=guylink_shop(guy_id="bet2"))
     # bob_agenda.set_beliefunit(y_beliefunit=beliefunit_z)
 
     assert len(bob_agenda._beliefs) == 1
-    assert len(bob_agenda.get_beliefunit(family_text)._partys) == 2
+    assert len(bob_agenda.get_beliefunit(family_text)._guys) == 2
 
 
-def test_AgendaUnit_set_beliefunit_create_missing_partys_DoesCreateMissingPartys():
+def test_AgendaUnit_set_beliefunit_create_missing_guys_DoesCreateMissingGuys():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     family_text = ",family"
     anna_text = "anna"
     beto_text = "beto"
     beliefunit_z = beliefunit_shop(belief_id=family_text)
-    beliefunit_z.set_partylink(
-        partylink=partylink_shop(party_id=anna_text, credor_weight=3, debtor_weight=7)
+    beliefunit_z.set_guylink(
+        guylink=guylink_shop(guy_id=anna_text, credor_weight=3, debtor_weight=7)
     )
-    beliefunit_z.set_partylink(
-        partylink=partylink_shop(party_id=beto_text, credor_weight=5, debtor_weight=11)
+    beliefunit_z.set_guylink(
+        guylink=guylink_shop(guy_id=beto_text, credor_weight=5, debtor_weight=11)
     )
 
-    assert beliefunit_z._partys.get(anna_text).credor_weight == 3
-    assert beliefunit_z._partys.get(anna_text).debtor_weight == 7
+    assert beliefunit_z._guys.get(anna_text).credor_weight == 3
+    assert beliefunit_z._guys.get(anna_text).debtor_weight == 7
 
-    assert beliefunit_z._partys.get(beto_text).credor_weight == 5
-    assert beliefunit_z._partys.get(beto_text).debtor_weight == 11
+    assert beliefunit_z._guys.get(beto_text).credor_weight == 5
+    assert beliefunit_z._guys.get(beto_text).debtor_weight == 11
 
-    assert len(bob_agenda._partys) == 0
+    assert len(bob_agenda._guys) == 0
     assert len(bob_agenda._beliefs) == 0
 
     # WHEN
-    bob_agenda.set_beliefunit(y_beliefunit=beliefunit_z, create_missing_partys=True)
+    bob_agenda.set_beliefunit(y_beliefunit=beliefunit_z, create_missing_guys=True)
 
     # THEN
-    assert len(bob_agenda._partys) == 2
+    assert len(bob_agenda._guys) == 2
     assert len(bob_agenda._beliefs) == 3
-    assert bob_agenda._partys.get(anna_text).credor_weight == 3
-    assert bob_agenda._partys.get(anna_text).debtor_weight == 7
+    assert bob_agenda._guys.get(anna_text).credor_weight == 3
+    assert bob_agenda._guys.get(anna_text).debtor_weight == 7
 
-    assert bob_agenda._partys.get(beto_text).credor_weight == 5
-    assert bob_agenda._partys.get(beto_text).debtor_weight == 11
+    assert bob_agenda._guys.get(beto_text).credor_weight == 5
+    assert bob_agenda._guys.get(beto_text).debtor_weight == 11
 
 
-def test_AgendaUnit_set_beliefunit_create_missing_partys_DoesNotReplacePartys():
+def test_AgendaUnit_set_beliefunit_create_missing_guys_DoesNotReplaceGuys():
     # GIVEN
     bob_agenda = agendaunit_shop("Bob")
     family_text = ",family"
     anna_text = "anna"
     beto_text = "beto"
-    bob_agenda.set_partyunit(
-        partyunit_shop(party_id=anna_text, credor_weight=17, debtor_weight=88)
+    bob_agenda.set_guyunit(
+        guyunit_shop(guy_id=anna_text, credor_weight=17, debtor_weight=88)
     )
-    bob_agenda.set_partyunit(
-        partyunit_shop(party_id=beto_text, credor_weight=46, debtor_weight=71)
+    bob_agenda.set_guyunit(
+        guyunit_shop(guy_id=beto_text, credor_weight=46, debtor_weight=71)
     )
     beliefunit_z = beliefunit_shop(belief_id=family_text)
-    beliefunit_z.set_partylink(
-        partylink=partylink_shop(party_id=anna_text, credor_weight=3, debtor_weight=7)
+    beliefunit_z.set_guylink(
+        guylink=guylink_shop(guy_id=anna_text, credor_weight=3, debtor_weight=7)
     )
-    beliefunit_z.set_partylink(
-        partylink=partylink_shop(party_id=beto_text, credor_weight=5, debtor_weight=11)
+    beliefunit_z.set_guylink(
+        guylink=guylink_shop(guy_id=beto_text, credor_weight=5, debtor_weight=11)
     )
 
-    assert beliefunit_z._partys.get(anna_text).credor_weight == 3
-    assert beliefunit_z._partys.get(anna_text).debtor_weight == 7
-    assert beliefunit_z._partys.get(beto_text).credor_weight == 5
-    assert beliefunit_z._partys.get(beto_text).debtor_weight == 11
-    assert len(bob_agenda._partys) == 2
-    assert bob_agenda._partys.get(anna_text).credor_weight == 17
-    assert bob_agenda._partys.get(anna_text).debtor_weight == 88
-    assert bob_agenda._partys.get(beto_text).credor_weight == 46
-    assert bob_agenda._partys.get(beto_text).debtor_weight == 71
+    assert beliefunit_z._guys.get(anna_text).credor_weight == 3
+    assert beliefunit_z._guys.get(anna_text).debtor_weight == 7
+    assert beliefunit_z._guys.get(beto_text).credor_weight == 5
+    assert beliefunit_z._guys.get(beto_text).debtor_weight == 11
+    assert len(bob_agenda._guys) == 2
+    assert bob_agenda._guys.get(anna_text).credor_weight == 17
+    assert bob_agenda._guys.get(anna_text).debtor_weight == 88
+    assert bob_agenda._guys.get(beto_text).credor_weight == 46
+    assert bob_agenda._guys.get(beto_text).debtor_weight == 71
 
     # WHEN
-    bob_agenda.set_beliefunit(y_beliefunit=beliefunit_z, create_missing_partys=True)
+    bob_agenda.set_beliefunit(y_beliefunit=beliefunit_z, create_missing_guys=True)
 
     # THEN
-    assert len(bob_agenda._partys) == 2
-    assert bob_agenda._partys.get(anna_text).credor_weight == 17
-    assert bob_agenda._partys.get(anna_text).debtor_weight == 88
-    assert bob_agenda._partys.get(beto_text).credor_weight == 46
-    assert bob_agenda._partys.get(beto_text).debtor_weight == 71
+    assert len(bob_agenda._guys) == 2
+    assert bob_agenda._guys.get(anna_text).credor_weight == 17
+    assert bob_agenda._guys.get(anna_text).debtor_weight == 88
+    assert bob_agenda._guys.get(beto_text).credor_weight == 46
+    assert bob_agenda._guys.get(beto_text).debtor_weight == 71
 
 
 def test_AgendaUnit_get_beliefunits_dict_ReturnsCorrectObj():
@@ -901,7 +901,7 @@ def test_AgendaUnit_get_beliefunits_dict_ReturnsCorrectObj():
     run_text = ",runners"
     fly_text = ",flyers"
     yao_text = "Yao"
-    bob_agenda.set_partyunit(partyunit_shop(yao_text))
+    bob_agenda.set_guyunit(guyunit_shop(yao_text))
     bob_agenda.set_beliefunit(y_beliefunit=beliefunit_shop(belief_id=swim_text))
     bob_agenda.set_beliefunit(y_beliefunit=beliefunit_shop(belief_id=run_text))
     bob_agenda.set_beliefunit(y_beliefunit=beliefunit_shop(belief_id=fly_text))
@@ -918,105 +918,103 @@ def test_AgendaUnit_get_beliefunits_dict_ReturnsCorrectObj():
     assert len(x_beliefunits_dict) == 3
 
 
-def test_get_partys_relevant_beliefs_ReturnsEmptyDict():
+def test_get_guys_relevant_beliefs_ReturnsEmptyDict():
     # GIVEN
     bob_text = "Bob"
-    agenda_with_partys = agendaunit_shop(bob_text)
+    agenda_with_guys = agendaunit_shop(bob_text)
 
     sam_text = "sam"
     wil_text = "wil"
-    agenda_with_partys.set_partyunit(partyunit=partyunit_shop(party_id=bob_text))
-    agenda_with_partys.set_partyunit(partyunit=partyunit_shop(party_id=sam_text))
+    agenda_with_guys.set_guyunit(guyunit=guyunit_shop(guy_id=bob_text))
+    agenda_with_guys.set_guyunit(guyunit=guyunit_shop(guy_id=sam_text))
 
     agenda_with_beliefs = agendaunit_shop()
 
     # WHEN
-    print(f"{len(agenda_with_partys._partys)=} {len(agenda_with_beliefs._beliefs)=}")
-    relevant_x = get_partys_relevant_beliefs(
-        agenda_with_beliefs._beliefs, agenda_with_partys._partys
+    print(f"{len(agenda_with_guys._guys)=} {len(agenda_with_beliefs._beliefs)=}")
+    relevant_x = get_guys_relevant_beliefs(
+        agenda_with_beliefs._beliefs, agenda_with_guys._guys
     )
 
     # THEN
     assert relevant_x == {}
 
 
-def test_get_partys_relevant_beliefs_Returns2SinglePartyBeliefs():
+def test_get_guys_relevant_beliefs_Returns2SingleGuyBeliefs():
     # GIVEN
     bob_text = "Bob"
     sam_text = "Sam"
     wil_text = "Wil"
     agenda_3beliefs = agendaunit_shop(bob_text)
-    agenda_3beliefs.set_partyunit(partyunit=partyunit_shop(party_id=bob_text))
-    agenda_3beliefs.set_partyunit(partyunit=partyunit_shop(party_id=sam_text))
-    agenda_3beliefs.set_partyunit(partyunit=partyunit_shop(party_id=wil_text))
+    agenda_3beliefs.set_guyunit(guyunit=guyunit_shop(guy_id=bob_text))
+    agenda_3beliefs.set_guyunit(guyunit=guyunit_shop(guy_id=sam_text))
+    agenda_3beliefs.set_guyunit(guyunit=guyunit_shop(guy_id=wil_text))
 
-    agenda_2partys = agendaunit_shop(bob_text)
-    agenda_2partys.set_partyunit(partyunit=partyunit_shop(party_id=bob_text))
-    agenda_2partys.set_partyunit(partyunit=partyunit_shop(party_id=sam_text))
+    agenda_2guys = agendaunit_shop(bob_text)
+    agenda_2guys.set_guyunit(guyunit=guyunit_shop(guy_id=bob_text))
+    agenda_2guys.set_guyunit(guyunit=guyunit_shop(guy_id=sam_text))
 
     # WHEN
-    print(f"{len(agenda_2partys._partys)=} {len(agenda_3beliefs._beliefs)=}")
-    mrg_x = get_partys_relevant_beliefs(
-        agenda_3beliefs._beliefs, agenda_2partys._partys
-    )
+    print(f"{len(agenda_2guys._guys)=} {len(agenda_3beliefs._beliefs)=}")
+    mrg_x = get_guys_relevant_beliefs(agenda_3beliefs._beliefs, agenda_2guys._guys)
 
     # THEN
     assert mrg_x == {bob_text: {bob_text: -1}, sam_text: {sam_text: -1}}
 
 
-def test_get_party_relevant_beliefs_ReturnsCorrectDict():
+def test_get_guy_relevant_beliefs_ReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
     jes_agenda = agendaunit_shop(jes_text)
     bob_text = "Bob"
-    jes_agenda.set_partyunit(partyunit_shop(party_id=jes_text))
-    jes_agenda.set_partyunit(partyunit_shop(party_id=bob_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=jes_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=bob_text))
 
     hike_text = "hikers"
     jes_agenda.set_beliefunit(beliefunit_shop(belief_id=hike_text))
     hike_belief = jes_agenda.get_beliefunit(hike_text)
-    hike_belief.set_partylink(partylink_shop(bob_text))
+    hike_belief.set_guylink(guylink_shop(bob_text))
 
     # WHEN
     noa_text = "Noa"
-    noa_mrg = get_party_relevant_beliefs(jes_agenda._beliefs, noa_text)
+    noa_mrg = get_guy_relevant_beliefs(jes_agenda._beliefs, noa_text)
 
     # THEN
     assert noa_mrg == {}
 
 
-def test_get_party_relevant_beliefs_ReturnsCorrectDict():
+def test_get_guy_relevant_beliefs_ReturnsCorrectDict():
     # GIVEN
     jes_text = "Jessi"
     jes_agenda = agendaunit_shop(jes_text)
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
-    jes_agenda.set_partyunit(partyunit_shop(party_id=jes_text))
-    jes_agenda.set_partyunit(partyunit_shop(party_id=bob_text))
-    jes_agenda.set_partyunit(partyunit_shop(party_id=noa_text))
-    jes_agenda.set_partyunit(partyunit_shop(party_id=eli_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=jes_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=bob_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=noa_text))
+    jes_agenda.set_guyunit(guyunit_shop(guy_id=eli_text))
 
     swim_text = ",swimmers"
     jes_agenda.set_beliefunit(beliefunit_shop(belief_id=swim_text))
     swim_belief = jes_agenda.get_beliefunit(swim_text)
-    swim_belief.set_partylink(partylink_shop(bob_text))
+    swim_belief.set_guylink(guylink_shop(bob_text))
 
     hike_text = ",hikers"
     jes_agenda.set_beliefunit(beliefunit_shop(belief_id=hike_text))
     hike_belief = jes_agenda.get_beliefunit(hike_text)
-    hike_belief.set_partylink(partylink_shop(bob_text))
-    hike_belief.set_partylink(partylink_shop(noa_text))
+    hike_belief.set_guylink(guylink_shop(bob_text))
+    hike_belief.set_guylink(guylink_shop(noa_text))
 
     hunt_text = ",hunters"
     jes_agenda.set_beliefunit(beliefunit_shop(belief_id=hunt_text))
     hike_belief = jes_agenda.get_beliefunit(hunt_text)
-    hike_belief.set_partylink(partylink_shop(noa_text))
-    hike_belief.set_partylink(partylink_shop(eli_text))
+    hike_belief.set_guylink(guylink_shop(noa_text))
+    hike_belief.set_guylink(guylink_shop(eli_text))
 
     # WHEN
-    print(f"{len(jes_agenda._partys)=} {len(jes_agenda._beliefs)=}")
-    bob_mrg = get_party_relevant_beliefs(jes_agenda._beliefs, bob_text)
+    print(f"{len(jes_agenda._guys)=} {len(jes_agenda._beliefs)=}")
+    bob_mrg = get_guy_relevant_beliefs(jes_agenda._beliefs, bob_text)
 
     # THEN
     assert bob_mrg == {bob_text: -1, swim_text: -1, hike_text: -1}

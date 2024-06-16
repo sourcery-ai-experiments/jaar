@@ -13,18 +13,18 @@ class AgendaTable(Base):
     _max_tree_traverse = Column(Integer)
     _meld_strategy = Column(String)
     _monetary_desc = Column(String)
-    _party_credor_pool = Column(Integer)
-    _party_debtor_pool = Column(Integer)
+    _guy_credor_pool = Column(Integer)
+    _guy_debtor_pool = Column(Integer)
     _penny = Column(Float)
     _planck = Column(Float)
     _weight = Column(Integer)
 
 
-class PartyUnitTable(Base):
-    __tablename__ = "partyunit"
+class GuyUnitTable(Base):
+    __tablename__ = "guyunit"
 
     uid = Column(Integer, primary_key=True)
-    party_id = Column(String)
+    guy_id = Column(String)
     credor_weight = Column(Integer)
     debtor_weight = Column(Integer)
 
@@ -36,11 +36,11 @@ class BeliefTable(Base):
     belief_id = Column(String)
 
 
-class PartyLinkTable(Base):
-    __tablename__ = "partylink"
+class GuyLinkTable(Base):
+    __tablename__ = "guylink"
     uid = Column(Integer, primary_key=True)
     belief_id = Column(String)
-    party_id = Column(String)
+    guy_id = Column(String)
     credor_weight = Column(Integer)
     debtor_weight = Column(Integer)
 

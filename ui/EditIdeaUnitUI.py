@@ -660,7 +660,7 @@ class Ui_Form(object):
         item = self.oath2belief_table.horizontalHeaderItem(1)
         item.setText(_translate("Form", "Belief"))
         item = self.oath2belief_table.horizontalHeaderItem(2)
-        item.setText(_translate("Form", "Party Count"))
+        item.setText(_translate("Form", "Guy Count"))
         self.oath2belief_delete_button.setText(_translate("Form", "De-link Belief"))
         self.oath2belief_insert_button.setText(_translate("Form", "Add Belief to Oath"))
         self.cb_rootadmiration.setText(_translate("Form", "root admiration"))

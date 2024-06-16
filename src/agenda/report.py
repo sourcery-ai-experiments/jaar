@@ -3,11 +3,11 @@ from src.agenda.agenda import AgendaUnit
 from pandas import DataFrame
 
 
-def get_agenda_partyunits_dataframe(x_agenda: AgendaUnit) -> DataFrame:
-    if x_agenda._partys == {}:
+def get_agenda_guyunits_dataframe(x_agenda: AgendaUnit) -> DataFrame:
+    if x_agenda._guys == {}:
         return DataFrame(
             columns=[
-                "party_id",
+                "guy_id",
                 "credor_weight",
                 "debtor_weight",
                 "_agenda_cred",
@@ -26,8 +26,8 @@ def get_agenda_partyunits_dataframe(x_agenda: AgendaUnit) -> DataFrame:
                 "_treasury_voice_hx_lowest_rank",
             ]
         )
-    x_partyunits_list = list(x_agenda.get_partys_dict(all_attrs=True).values())
-    return DataFrame(x_partyunits_list)
+    x_guyunits_list = list(x_agenda.get_guys_dict(all_attrs=True).values())
+    return DataFrame(x_guyunits_list)
 
 
 def get_agenda_intent_dataframe(

@@ -1,62 +1,62 @@
-from src.agenda.agenda import agendaunit_shop, partyunit_shop
+from src.agenda.agenda import agendaunit_shop, guyunit_shop
 from src.money.money import (
     moneyunit_shop,
-    set_treasury_partytreasuryunits_to_agenda_partyunits,
+    set_treasury_guytreasuryunits_to_agenda_guyunits,
 )
 from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
 from src.money.treasury_sqlstr import (
     get_river_block_table_insert_sqlstr as river_block_insert,
     get_river_block_dict,
-    get_agenda_partyunit_table_update_treasury_due_paid_sqlstr,
-    PartyTreasuryUnit,
-    get_partytreasuryunit_dict,
-    get_agenda_partyunit_table_insert_sqlstr,
-    get_partyview_dict,
-    PartyDBUnit,
+    get_agenda_guyunit_table_update_treasury_due_paid_sqlstr,
+    GuyTreasuryUnit,
+    get_guytreasuryunit_dict,
+    get_agenda_guyunit_table_insert_sqlstr,
+    get_guyview_dict,
+    GuyDBUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
     get_river_ledger_unit,
 )
 
 
-def test_MoneyUnit_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_MoneyUnit_get_agenda_guyunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
+    # GIVEN Create example econ with 4 Healers, each with 3 GuyUnits = 12 ledger rows
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
     tim_text = "Tim"
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
-    tim_partyunit = partyunit_shop(
-        party_id=tim_text,
+    tim_guyunit = guyunit_shop(
+        guy_id=tim_text,
         _credor_operational=True,
         _debtor_operational=False,
     )
-    tim_partyunit._agenda_cred = 0.9
-    tim_partyunit._agenda_debt = 0.8
-    tim_partyunit._agenda_intent_cred = 0.7
-    tim_partyunit._agenda_intent_debt = 0.6
-    tim_partyunit._agenda_intent_ratio_cred = 0.5
-    tim_partyunit._agenda_intent_ratio_debt = 0.4
+    tim_guyunit._agenda_cred = 0.9
+    tim_guyunit._agenda_debt = 0.8
+    tim_guyunit._agenda_intent_cred = 0.7
+    tim_guyunit._agenda_intent_debt = 0.6
+    tim_guyunit._agenda_intent_ratio_cred = 0.5
+    tim_guyunit._agenda_intent_ratio_debt = 0.4
 
     tim_due_paid = 0.5151
     tim_cred_score = 0.5252
     tim_voice_rank = 33
-    tim_partyunit.set_treasury_attr(tim_due_paid, None, tim_cred_score, tim_voice_rank)
-    assert tim_partyunit._treasury_due_paid == tim_due_paid
-    assert tim_partyunit._treasury_cred_score == tim_cred_score
-    assert tim_partyunit._treasury_voice_rank == tim_voice_rank
+    tim_guyunit.set_treasury_attr(tim_due_paid, None, tim_cred_score, tim_voice_rank)
+    assert tim_guyunit._treasury_due_paid == tim_due_paid
+    assert tim_guyunit._treasury_cred_score == tim_cred_score
+    assert tim_guyunit._treasury_voice_rank == tim_voice_rank
 
-    insert_sqlstr = get_agenda_partyunit_table_insert_sqlstr(bob_agenda, tim_partyunit)
+    insert_sqlstr = get_agenda_guyunit_table_insert_sqlstr(bob_agenda, tim_guyunit)
     print(insert_sqlstr)
 
     # WHEN
     with x_money.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(insert_sqlstr)
 
-    ledger_dict = get_partyview_dict(
+    ledger_dict = get_guyview_dict(
         db_conn=x_money.get_treasury_conn(), payer_owner_id=bob_text
     )
     # tim_ledger = None
@@ -67,7 +67,7 @@ def test_MoneyUnit_get_agenda_partyunit_table_insert_sqlstr_CorrectlyPopulatesTa
     # THEN
     tim_ledger = ledger_dict.get(tim_text)
     assert tim_ledger.owner_id == bob_text
-    assert tim_ledger.party_id == tim_text
+    assert tim_ledger.guy_id == tim_text
     assert tim_ledger._agenda_cred == 0.9
     assert tim_ledger._agenda_debt == 0.8
     assert tim_ledger._agenda_intent_cred == 0.7
@@ -149,46 +149,42 @@ def test_RiverBlockUnit_block_returned_ReturnsCorrectBool():
 
 
 def test_MoneyUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
-    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
+    # GIVEN Create example econ with 4 Healers, each with 3 GuyUnits = 12 ledger rows
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.refresh_treasury_job_agendas_data()
 
     bob_text = "Bob"
     sal_text = "Sal"
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
-    sal_partyunit = partyunit_shop(
+    sal_guyunit = guyunit_shop(
         sal_text, _credor_operational=True, _debtor_operational=False
     )
-    sal_partyunit._agenda_cred = 0.9
-    sal_partyunit._agenda_debt = 0.8
-    sal_partyunit._agenda_intent_cred = 0.7
-    sal_partyunit._agenda_intent_debt = 0.6
-    sal_partyunit._agenda_intent_ratio_cred = 0.5
-    sal_partyunit._agenda_intent_ratio_debt = 0.4
+    sal_guyunit._agenda_cred = 0.9
+    sal_guyunit._agenda_debt = 0.8
+    sal_guyunit._agenda_intent_cred = 0.7
+    sal_guyunit._agenda_intent_debt = 0.6
+    sal_guyunit._agenda_intent_ratio_cred = 0.5
+    sal_guyunit._agenda_intent_ratio_debt = 0.4
 
-    insert_sqlstr_sal = get_agenda_partyunit_table_insert_sqlstr(
-        bob_agenda, sal_partyunit
-    )
+    insert_sqlstr_sal = get_agenda_guyunit_table_insert_sqlstr(bob_agenda, sal_guyunit)
 
     tim_text = "Tim"
-    tim_partyunit = partyunit_shop(
+    tim_guyunit = guyunit_shop(
         tim_text, _credor_operational=True, _debtor_operational=False
     )
-    tim_partyunit._agenda_cred = 0.012
-    tim_partyunit._agenda_debt = 0.017
-    tim_partyunit._agenda_intent_cred = 0.077
-    tim_partyunit._agenda_intent_debt = 0.066
-    tim_partyunit._agenda_intent_ratio_cred = 0.051
-    tim_partyunit._agenda_intent_ratio_debt = 0.049
+    tim_guyunit._agenda_cred = 0.012
+    tim_guyunit._agenda_debt = 0.017
+    tim_guyunit._agenda_intent_cred = 0.077
+    tim_guyunit._agenda_intent_debt = 0.066
+    tim_guyunit._agenda_intent_ratio_cred = 0.051
+    tim_guyunit._agenda_intent_ratio_debt = 0.049
 
-    insert_sqlstr_tim = get_agenda_partyunit_table_insert_sqlstr(
-        bob_agenda, tim_partyunit
-    )
+    insert_sqlstr_tim = get_agenda_guyunit_table_insert_sqlstr(bob_agenda, tim_guyunit)
 
     with x_money.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(insert_sqlstr_sal)
         treasury_conn.execute(insert_sqlstr_tim)
-        partyview_dict_x = get_partyview_dict(
+        guyview_dict_x = get_guyview_dict(
             db_conn=treasury_conn, payer_owner_id=bob_text
         )
 
@@ -211,14 +207,14 @@ def test_MoneyUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cl
     assert river_ledger_x.cash_onset == 0.225
     assert river_ledger_x.cash_cease == 0.387
     assert river_ledger_x.river_tree_level == 4
-    assert river_ledger_x._partyviews == partyview_dict_x
+    assert river_ledger_x._guyviews == guyview_dict_x
     assert river_ledger_x.block_num == 51
 
 
 def test_river_block_insert_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
+    # GIVEN Create example econ with 4 Healers, each with 3 GuyUnits = 12 ledger rows
     x_money = moneyunit_shop(get_texas_userhub())
 
     bob_text = "Bob"
@@ -263,9 +259,9 @@ def test_RiverLedgerUnit_Exists():
     bob_text = "Bob"
     sal_text = "Sal"
     tom_text = "Tom"
-    x1_partydbunit = PartyDBUnit(
+    x1_guydbunit = GuyDBUnit(
         owner_id=bob_text,
-        party_id=sal_text,
+        guy_id=sal_text,
         _agenda_cred=0.66,
         _agenda_debt=0.2,
         _agenda_intent_cred=0.4,
@@ -275,9 +271,9 @@ def test_RiverLedgerUnit_Exists():
         _credor_operational=True,
         _debtor_operational=True,
     )
-    x2_partydbunit = PartyDBUnit(
+    x2_guydbunit = GuyDBUnit(
         owner_id=bob_text,
-        party_id=tom_text,
+        guy_id=tom_text,
         _agenda_cred=0.05,
         _agenda_debt=0.09,
         _agenda_intent_cred=0.055,
@@ -287,16 +283,16 @@ def test_RiverLedgerUnit_Exists():
         _credor_operational=True,
         _debtor_operational=True,
     )
-    x_partyview_dict = {
-        x1_partydbunit.party_id: x1_partydbunit,
-        x2_partydbunit.party_id: x2_partydbunit,
+    x_guyview_dict = {
+        x1_guydbunit.guy_id: x1_guydbunit,
+        x2_guydbunit.guy_id: x2_guydbunit,
     }
     # WHEN
     river_ledger_unit = RiverLedgerUnit(
         owner_id=bob_text,
         cash_onset=0.6,
         cash_cease=0.8,
-        _partyviews=x_partyview_dict,
+        _guyviews=x_guyview_dict,
         river_tree_level=7,
         block_num=89,
     )
@@ -307,11 +303,11 @@ def test_RiverLedgerUnit_Exists():
     assert river_ledger_unit.cash_cease == 0.8
     assert river_ledger_unit.river_tree_level == 7
     assert river_ledger_unit.block_num == 89
-    assert river_ledger_unit._partyviews == x_partyview_dict
+    assert river_ledger_unit._guyviews == x_guyview_dict
     assert abs(river_ledger_unit.get_range() - 0.2) < 0.00000001
 
 
-def test_PartyTreasuryUnit_exists():
+def test_GuyTreasuryUnit_exists():
     # GIVEN
     x_cash_master = "x_cash_master"
     x_due_owner_id = "x_due_owner_id"
@@ -322,7 +318,7 @@ def test_PartyTreasuryUnit_exists():
     x_voice_rank = "voice_rank"
 
     # WHEN
-    x_partytreasury = PartyTreasuryUnit(
+    x_guytreasury = GuyTreasuryUnit(
         cash_master=x_cash_master,
         due_owner_id=x_due_owner_id,
         due_total=x_due_total,
@@ -333,16 +329,16 @@ def test_PartyTreasuryUnit_exists():
     )
 
     # THEN
-    assert x_partytreasury.cash_master == x_cash_master
-    assert x_partytreasury.due_owner_id == x_due_owner_id
-    assert x_partytreasury.due_total == x_due_total
-    assert x_partytreasury.debt == x_debt
-    assert x_partytreasury.due_diff == x_due_diff
-    assert x_partytreasury.cred_score == x_cred_score
-    assert x_partytreasury.voice_rank == x_voice_rank
+    assert x_guytreasury.cash_master == x_cash_master
+    assert x_guytreasury.due_owner_id == x_due_owner_id
+    assert x_guytreasury.due_total == x_due_total
+    assert x_guytreasury.debt == x_debt
+    assert x_guytreasury.due_diff == x_due_diff
+    assert x_guytreasury.cred_score == x_cred_score
+    assert x_guytreasury.voice_rank == x_voice_rank
 
 
-def test_agenda_set_treasury_attr_partyunits_CorrectlySetsPartyUnitTreasuryingAttr():
+def test_agenda_set_treasury_attr_guyunits_CorrectlySetsGuyUnitTreasuryingAttr():
     # GIVEN
     bob_text = "Bob"
     x_agenda = agendaunit_shop(_owner_id=bob_text)
@@ -350,56 +346,56 @@ def test_agenda_set_treasury_attr_partyunits_CorrectlySetsPartyUnitTreasuryingAt
     wil_text = "wil"
     fry_text = "fry"
     elu_text = "Elu"
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=sam_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=wil_text))
-    x_agenda.set_partyunit(partyunit=partyunit_shop(party_id=fry_text))
-    assert x_agenda._partys.get(sam_text)._treasury_due_paid is None
-    assert x_agenda._partys.get(sam_text)._treasury_due_diff is None
-    assert x_agenda._partys.get(wil_text)._treasury_due_paid is None
-    assert x_agenda._partys.get(wil_text)._treasury_due_diff is None
-    assert x_agenda._partys.get(fry_text)._treasury_due_paid is None
-    assert x_agenda._partys.get(fry_text)._treasury_due_diff is None
-    elu_partyunit = partyunit_shop(party_id=elu_text)
-    elu_partyunit._treasury_due_paid = 0.003
-    elu_partyunit._treasury_due_diff = 0.007
-    x_agenda.set_partyunit(partyunit=elu_partyunit)
-    assert x_agenda._partys.get(elu_text)._treasury_due_paid == 0.003
-    assert x_agenda._partys.get(elu_text)._treasury_due_diff == 0.007
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=sam_text))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=wil_text))
+    x_agenda.set_guyunit(guyunit=guyunit_shop(guy_id=fry_text))
+    assert x_agenda._guys.get(sam_text)._treasury_due_paid is None
+    assert x_agenda._guys.get(sam_text)._treasury_due_diff is None
+    assert x_agenda._guys.get(wil_text)._treasury_due_paid is None
+    assert x_agenda._guys.get(wil_text)._treasury_due_diff is None
+    assert x_agenda._guys.get(fry_text)._treasury_due_paid is None
+    assert x_agenda._guys.get(fry_text)._treasury_due_diff is None
+    elu_guyunit = guyunit_shop(guy_id=elu_text)
+    elu_guyunit._treasury_due_paid = 0.003
+    elu_guyunit._treasury_due_diff = 0.007
+    x_agenda.set_guyunit(guyunit=elu_guyunit)
+    assert x_agenda._guys.get(elu_text)._treasury_due_paid == 0.003
+    assert x_agenda._guys.get(elu_text)._treasury_due_diff == 0.007
 
-    partytreasuryunit_sam = PartyTreasuryUnit(
+    guytreasuryunit_sam = GuyTreasuryUnit(
         bob_text, sam_text, 0.209, 0, 0.034, None, None
     )
-    partytreasuryunit_wil = PartyTreasuryUnit(
+    guytreasuryunit_wil = GuyTreasuryUnit(
         bob_text, wil_text, 0.501, 0, 0.024, None, None
     )
-    partytreasuryunit_fry = PartyTreasuryUnit(
+    guytreasuryunit_fry = GuyTreasuryUnit(
         bob_text, fry_text, 0.111, 0, 0.006, None, None
     )
-    partytreasuryunits = {
-        partytreasuryunit_sam.due_owner_id: partytreasuryunit_sam,
-        partytreasuryunit_wil.due_owner_id: partytreasuryunit_wil,
-        partytreasuryunit_fry.due_owner_id: partytreasuryunit_fry,
+    guytreasuryunits = {
+        guytreasuryunit_sam.due_owner_id: guytreasuryunit_sam,
+        guytreasuryunit_wil.due_owner_id: guytreasuryunit_wil,
+        guytreasuryunit_fry.due_owner_id: guytreasuryunit_fry,
     }
     # WHEN
-    set_treasury_partytreasuryunits_to_agenda_partyunits(
-        x_agenda, partytreasuryunits=partytreasuryunits
+    set_treasury_guytreasuryunits_to_agenda_guyunits(
+        x_agenda, guytreasuryunits=guytreasuryunits
     )
 
     # THEN
-    assert x_agenda._partys.get(sam_text)._treasury_due_paid == 0.209
-    assert x_agenda._partys.get(sam_text)._treasury_due_diff == 0.034
-    assert x_agenda._partys.get(wil_text)._treasury_due_paid == 0.501
-    assert x_agenda._partys.get(wil_text)._treasury_due_diff == 0.024
-    assert x_agenda._partys.get(fry_text)._treasury_due_paid == 0.111
-    assert x_agenda._partys.get(fry_text)._treasury_due_diff == 0.006
-    assert x_agenda._partys.get(elu_text)._treasury_due_paid is None
-    assert x_agenda._partys.get(elu_text)._treasury_due_diff is None
+    assert x_agenda._guys.get(sam_text)._treasury_due_paid == 0.209
+    assert x_agenda._guys.get(sam_text)._treasury_due_diff == 0.034
+    assert x_agenda._guys.get(wil_text)._treasury_due_paid == 0.501
+    assert x_agenda._guys.get(wil_text)._treasury_due_diff == 0.024
+    assert x_agenda._guys.get(fry_text)._treasury_due_paid == 0.111
+    assert x_agenda._guys.get(fry_text)._treasury_due_diff == 0.006
+    assert x_agenda._guys.get(elu_text)._treasury_due_paid is None
+    assert x_agenda._guys.get(elu_text)._treasury_due_diff is None
 
 
-def test_MoneyUnit_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_CorrectlyPopulatesTable01(
+def test_MoneyUnit_get_agenda_guyunit_table_update_treasury_due_paid_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 PartyUnits = 12 ledger rows
+    # GIVEN Create example econ with 4 Healers, each with 3 GuyUnits = 12 ledger rows
     x_money = moneyunit_shop(get_texas_userhub())
 
     bob_text = "Bob"
@@ -407,32 +403,28 @@ def test_MoneyUnit_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_Co
     sal_text = "Sal"
 
     bob_agenda = agendaunit_shop(_owner_id=bob_text)
-    tom_partyunit = partyunit_shop(
+    tom_guyunit = guyunit_shop(
         tom_text, _credor_operational=True, _debtor_operational=False
     )
-    tom_partyunit._agenda_cred = 0.9
-    tom_partyunit._agenda_debt = 0.8
-    tom_partyunit._agenda_intent_cred = 0.7
-    tom_partyunit._agenda_intent_debt = 0.6
-    tom_partyunit._agenda_intent_ratio_cred = 0.5
-    tom_partyunit._agenda_intent_ratio_debt = 0.411
+    tom_guyunit._agenda_cred = 0.9
+    tom_guyunit._agenda_debt = 0.8
+    tom_guyunit._agenda_intent_cred = 0.7
+    tom_guyunit._agenda_intent_debt = 0.6
+    tom_guyunit._agenda_intent_ratio_cred = 0.5
+    tom_guyunit._agenda_intent_ratio_debt = 0.411
 
-    insert_sqlstr_tom = get_agenda_partyunit_table_insert_sqlstr(
-        bob_agenda, tom_partyunit
-    )
-    sal_partyunit = partyunit_shop(
+    insert_sqlstr_tom = get_agenda_guyunit_table_insert_sqlstr(bob_agenda, tom_guyunit)
+    sal_guyunit = guyunit_shop(
         sal_text, _credor_operational=True, _debtor_operational=False
     )
-    sal_partyunit._agenda_cred = 0.9
-    sal_partyunit._agenda_debt = 0.8
-    sal_partyunit._agenda_intent_cred = 0.7
-    sal_partyunit._agenda_intent_debt = 0.6
-    sal_partyunit._agenda_intent_ratio_cred = 0.5
-    sal_partyunit._agenda_intent_ratio_debt = 0.455
+    sal_guyunit._agenda_cred = 0.9
+    sal_guyunit._agenda_debt = 0.8
+    sal_guyunit._agenda_intent_cred = 0.7
+    sal_guyunit._agenda_intent_debt = 0.6
+    sal_guyunit._agenda_intent_ratio_cred = 0.5
+    sal_guyunit._agenda_intent_ratio_debt = 0.455
 
-    insert_sqlstr_sal = get_agenda_partyunit_table_insert_sqlstr(
-        bob_agenda, sal_partyunit
-    )
+    insert_sqlstr_sal = get_agenda_guyunit_table_insert_sqlstr(bob_agenda, sal_guyunit)
 
     river_block_1 = RiverBlockUnit(bob_text, bob_text, tom_text, 0.0, 0.2, 0, None, 1)
     river_block_2 = RiverBlockUnit(bob_text, bob_text, sal_text, 0.2, 1.0, 0, None, 1)
@@ -452,7 +444,7 @@ def test_MoneyUnit_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_Co
         treasury_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_agenda_partyunit_table_update_treasury_due_paid_sqlstr(
+    mstr_sqlstr = get_agenda_guyunit_table_update_treasury_due_paid_sqlstr(
         cash_owner_id=bob_text
     )
     with x_money.get_treasury_conn() as treasury_conn:
@@ -461,28 +453,28 @@ def test_MoneyUnit_get_agenda_partyunit_table_update_treasury_due_paid_sqlstr_Co
 
     # THEN
     with x_money.get_treasury_conn() as treasury_conn:
-        partytreasuryunits = get_partytreasuryunit_dict(
+        guytreasuryunits = get_guytreasuryunit_dict(
             treasury_conn, cash_owner_id=bob_text
         )
-        print(f"{partytreasuryunits=}")
+        print(f"{guytreasuryunits=}")
 
-    assert len(partytreasuryunits) == 2
+    assert len(guytreasuryunits) == 2
 
-    bob_tom_x = partytreasuryunits.get(tom_text)
+    bob_tom_x = guytreasuryunits.get(tom_text)
     assert bob_tom_x.cash_master == bob_text
     assert bob_tom_x.due_owner_id == tom_text
     assert bob_tom_x.due_total == 0.2
     assert bob_tom_x.debt == 0.411
     assert round(bob_tom_x.due_diff, 15) == 0.211
 
-    bob_sal_x = partytreasuryunits.get(sal_text)
+    bob_sal_x = guytreasuryunits.get(sal_text)
     assert bob_sal_x.cash_master == bob_text
     assert bob_sal_x.due_owner_id == sal_text
     assert bob_sal_x.due_total == 0.8
     assert bob_sal_x.debt == 0.455
     assert round(bob_sal_x.due_diff, 15) == -0.345
 
-    # for value in partytreasuryunits.values():
+    # for value in guytreasuryunits.values():
     #     assert value.cash_master == bob_text
     #     assert value.due_owner_id in [tom_text, sal_text]
     #     assert value.due_total in [0.2, 0.8]

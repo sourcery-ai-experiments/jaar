@@ -63,16 +63,16 @@ def agendaunit_text() -> str:
     return "agendaunit"
 
 
-def agenda_partyunit_text() -> str:
-    return "agenda_partyunit"
+def agenda_guyunit_text() -> str:
+    return "agenda_guyunit"
 
 
 def agenda_beliefunit_text() -> str:
     return "agenda_beliefunit"
 
 
-def agenda_belief_partylink_text() -> str:
-    return "agenda_belief_partylink"
+def agenda_belief_guylink_text() -> str:
+    return "agenda_belief_guylink"
 
 
 def agenda_ideaunit_text() -> str:

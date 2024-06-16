@@ -38,7 +38,7 @@ def test_UserHub_save_work_file_CorrectlySavesFile(env_dir_setup_cleanup):
     # WHEN
     sue_agenda = agendaunit_shop(sue_text)
     bob_text = "Bob"
-    sue_agenda.add_partyunit(bob_text)
+    sue_agenda.add_guyunit(bob_text)
     sue_userhub.save_work_agenda(sue_agenda)
 
     # THEN
@@ -47,19 +47,19 @@ def test_UserHub_save_work_file_CorrectlySavesFile(env_dir_setup_cleanup):
     work_file_text = open_file(sue_userhub.work_dir(), sue_userhub.work_file_name())
     print(f"{work_file_text=}")
     work_agenda = agendaunit_get_from_json(work_file_text)
-    assert work_agenda.party_exists(bob_text)
+    assert work_agenda.guy_exists(bob_text)
 
     # # WHEN
     sue2_agenda = agendaunit_shop(sue_text)
     zia_text = "Zia"
-    sue2_agenda.add_partyunit(zia_text)
+    sue2_agenda.add_guyunit(zia_text)
     sue_userhub.save_work_agenda(sue2_agenda)
 
     # THEN
     work_file_text = open_file(sue_userhub.work_dir(), sue_userhub.work_file_name())
     print(f"{work_file_text=}")
     work_agenda = agendaunit_get_from_json(work_file_text)
-    assert work_agenda.party_exists(zia_text)
+    assert work_agenda.guy_exists(zia_text)
 
 
 def test_UserHub_save_work_file_RaisesErrorWhenAgenda_work_id_IsWrong(
@@ -94,21 +94,21 @@ def test_UserHub_initialize_work_file_CorrectlySavesFile(env_dir_setup_cleanup):
     assert work_agenda._real_id == root_label()
     assert work_agenda._owner_id == sue_text
     bob_text = "Bob"
-    assert work_agenda.party_exists(bob_text) is False
+    assert work_agenda.guy_exists(bob_text) is False
 
     # GIVEN
     sue_agenda = agendaunit_shop(sue_text)
-    sue_agenda.add_partyunit(bob_text)
+    sue_agenda.add_guyunit(bob_text)
     sue_userhub.save_work_agenda(sue_agenda)
     work_agenda = sue_userhub.get_work_agenda()
-    assert work_agenda.get_party(bob_text)
+    assert work_agenda.get_guy(bob_text)
 
     # WHEN
     sue_userhub.initialize_work_file(sue_agenda)
 
     # THEN
     work_agenda = sue_userhub.get_work_agenda()
-    assert work_agenda.get_party(bob_text)
+    assert work_agenda.get_guy(bob_text)
 
 
 def test_UserHub_initialize_work_file_CorrectlyDoesNotOverwrite(
@@ -129,7 +129,7 @@ def test_UserHub_initialize_work_file_CorrectlyDoesNotOverwrite(
 
     # WHEN
     bob_text = "Bob"
-    sue_agenda.add_partyunit(bob_text)
+    sue_agenda.add_guyunit(bob_text)
     sue_userhub.initialize_work_file(sue_agenda)
 
     # THEN

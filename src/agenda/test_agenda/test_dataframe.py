@@ -7,31 +7,31 @@ from src.agenda.examples.example_agendas import (
 )
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.report import (
-    get_agenda_partyunits_dataframe,
+    get_agenda_guyunits_dataframe,
     get_agenda_intent_dataframe,
 )
 
 
-def test_get_agenda_partyunits_dataframe_ReturnsCorrectDataFrame():
+def test_get_agenda_guyunits_dataframe_ReturnsCorrectDataFrame():
     # GIVEN
     luca_agenda = agendaunit_shop()
-    luca_agenda.set_party_credor_pool(500)
-    luca_agenda.set_party_debtor_pool(400)
+    luca_agenda.set_guy_credor_pool(500)
+    luca_agenda.set_guy_debtor_pool(400)
     todd_text = "Todd"
     todd_credor_weight = 66
     todd_debtor_weight = 77
-    luca_agenda.add_partyunit(todd_text, todd_credor_weight, todd_debtor_weight)
+    luca_agenda.add_guyunit(todd_text, todd_credor_weight, todd_debtor_weight)
     sue_text = "Sue"
     sue_credor_weight = 434
     sue_debtor_weight = 323
-    luca_agenda.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    luca_agenda.add_guyunit(sue_text, sue_credor_weight, sue_debtor_weight)
 
     # WHEN
-    x_df = get_agenda_partyunits_dataframe(luca_agenda)
+    x_df = get_agenda_guyunits_dataframe(luca_agenda)
 
     # THEN
-    partyunit_colums = {
-        "party_id",
+    guyunit_colums = {
+        "guy_id",
         "credor_weight",
         "debtor_weight",
         "_agenda_cred",
@@ -51,20 +51,20 @@ def test_get_agenda_partyunits_dataframe_ReturnsCorrectDataFrame():
     }
     print(f"{set(x_df.columns)=}")
 
-    assert set(x_df.columns) == partyunit_colums
+    assert set(x_df.columns) == guyunit_colums
     assert x_df.shape[0] == 2
 
 
-def test_get_agenda_partyunits_dataframe_ReturnsCorrectEmptyDataFrame():
+def test_get_agenda_guyunits_dataframe_ReturnsCorrectEmptyDataFrame():
     # GIVEN
     luca_agenda = agendaunit_shop()
 
     # WHEN
-    x_df = get_agenda_partyunits_dataframe(luca_agenda)
+    x_df = get_agenda_guyunits_dataframe(luca_agenda)
 
     # THEN
-    partyunit_colums = {
-        "party_id",
+    guyunit_colums = {
+        "guy_id",
         "credor_weight",
         "debtor_weight",
         "_agenda_cred",
@@ -84,7 +84,7 @@ def test_get_agenda_partyunits_dataframe_ReturnsCorrectEmptyDataFrame():
     }
     print(f"{set(x_df.columns)=}")
 
-    assert set(x_df.columns) == partyunit_colums
+    assert set(x_df.columns) == guyunit_colums
     assert x_df.shape[0] == 0
 
 
@@ -100,7 +100,7 @@ def test_get_agenda_intent_dataframe_ReturnsCorrectDataFrame():
     print(x_df)
 
     # THEN
-    partyunit_colums = {
+    guyunit_colums = {
         "owner_id",
         "agenda_importance",
         "_label",
@@ -114,7 +114,7 @@ def test_get_agenda_intent_dataframe_ReturnsCorrectDataFrame():
     }
     print(f"{set(x_df.columns)=}")
 
-    assert set(x_df.columns) == partyunit_colums
+    assert set(x_df.columns) == guyunit_colums
     assert x_df.shape[0] == 63
 
 
@@ -128,7 +128,7 @@ def test_get_agenda_intent_dataframe_ReturnsCorrectEmptyDataFrame():
     print(x_df)
 
     # THEN
-    partyunit_colums = {
+    guyunit_colums = {
         "owner_id",
         "agenda_importance",
         "_label",
@@ -142,4 +142,4 @@ def test_get_agenda_intent_dataframe_ReturnsCorrectEmptyDataFrame():
     }
     print(f"{set(x_df.columns)=}")
 
-    assert set(x_df.columns) == partyunit_colums
+    assert set(x_df.columns) == guyunit_colums
