@@ -62,12 +62,6 @@ screenshots and elucidatory text.
 <!-- TODO: Add elucidations -->
 base attributes vs reason attributess
 
-<!-- TODO: Add elucidations -->
-MoneyUnit objects
-
-MoneyUnit Treasury objects
-
-<!-- TODO: Add elucidations -->
 AgendaUnit objects
 
 AgendaUnit GuyUnit objects

@@ -39,7 +39,7 @@ def test_UserHub_get_econ_roads_RaisesErrorWhen__econs_justified_IsFalse(
         sue_userhub.get_econ_roads()
     assert (
         str(excinfo.value)
-        == f"Cannot set '{sue_text}' duty agenda moneyunits because 'AgendaUnit._econs_justified' is False."
+        == f"Cannot get_econ_roads from '{sue_text}' duty agenda because 'AgendaUnit._econs_justified' is False."
     )
 
 
@@ -66,11 +66,11 @@ def test_UserHub_get_econ_roads_RaisesErrorWhen__econs_buildable_IsFalse(
         sue_userhub.get_econ_roads()
     assert (
         str(excinfo.value)
-        == f"Cannot set '{sue_text}' duty agenda moneyunits because 'AgendaUnit._econs_buildable' is False."
+        == f"Cannot get_econ_roads from '{sue_text}' duty agenda because 'AgendaUnit._econs_buildable' is False."
     )
 
 
-def test_UserHub_get_econ_roads_CreatesMoneyUnits(env_dir_setup_cleanup):
+def test_UserHub_get_econ_roads_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
