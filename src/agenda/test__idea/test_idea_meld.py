@@ -99,7 +99,7 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_reasonunits():
     )
 
     # WHEN
-    x1_idea.meld(other_idea=x2_idea)
+    x1_idea.meld(exterior_idea=x2_idea)
 
     # THEN
     lu_x = reasonunit_shop(base=reason_base_x1)
@@ -137,7 +137,7 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_TwoReasonsScenario_reasonunits():
     )
 
     # WHEN
-    x1_idea.meld(other_idea=x2_idea)
+    x1_idea.meld(exterior_idea=x2_idea)
 
     # THEN
     assert len(x1_idea._reasonunits) == 2
@@ -177,7 +177,7 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_TwoReasonsMeldScenario_reasonunits():
     )
 
     # WHEN
-    x1_idea.meld(other_idea=x2_idea)
+    x1_idea.meld(exterior_idea=x2_idea)
 
     # THEN
     # lu_x = reasonunit_shop(base=reason_base_x1)
@@ -206,7 +206,7 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strat
     )
 
     # WHEN
-    x1_idea.meld(other_idea=x2_idea)
+    x1_idea.meld(exterior_idea=x2_idea)
 
     # THEN
     bl_x = balancelink_shop(belief_id=br1, credor_weight=2)
@@ -233,7 +233,7 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strat
     )
 
     # WHEN
-    x1_idea.meld(other_idea=x2_idea)
+    x1_idea.meld(exterior_idea=x2_idea)
 
     # THEN
     lu_x = balancelink_shop(belief_id=br1, credor_weight=4, debtor_weight=6)
@@ -260,7 +260,7 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_TwoBeliefsScenario_balancelink():
     )
 
     # WHEN
-    x1_idea.meld(other_idea=x2_idea)
+    x1_idea.meld(exterior_idea=x2_idea)
 
     # THEN
     lu_x1 = balancelink_shop(belief_id=br1, credor_weight=2)
@@ -312,7 +312,7 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_2FactUnits_factunits():
     x2_idea.set_factunit(factunit=hc_2)
 
     # WHEN
-    x1_idea.meld(other_idea=x2_idea)
+    x1_idea.meld(exterior_idea=x2_idea)
 
     # THEN
     assert len(x1_idea._factunits) == 2
@@ -698,7 +698,7 @@ def test_IdeaUnit_meld_CorrectlyCreatesOriginUnitWithOriginLink():
     # WHEN
     sue_text = "Sue"
     sue_weight = 5
-    x1_idea.meld(other_idea=x2_idea, guy_id=sue_text, guy_weight=sue_weight)
+    x1_idea.meld(exterior_idea=x2_idea, guy_id=sue_text, guy_weight=sue_weight)
 
     # THEN
     assert x1_idea._originunit != None
@@ -716,7 +716,7 @@ def test_IdeaUnit_meld_IdeaMeldingItselfCreatesOriginUnitWithCorrectOriginLink()
     tim_idea = ideaunit_shop(tim_text)
     ex_x1_idea_originunit = originunit_shop()
     ex_x1_idea_originunit.set_originlink(guy_id=tim_text, weight=tim_weight)
-    x1_idea.meld(other_idea=tim_idea, guy_id=tim_text, guy_weight=tim_weight)
+    x1_idea.meld(exterior_idea=tim_idea, guy_id=tim_text, guy_weight=tim_weight)
     assert x1_idea._originunit == ex_x1_idea_originunit
 
     sue_text = "Sue"
@@ -727,7 +727,7 @@ def test_IdeaUnit_meld_IdeaMeldingItselfCreatesOriginUnitWithCorrectOriginLink()
     x1_idea_copy = deepcopy(x1_idea)
 
     # WHEN
-    x1_idea.meld(other_idea=x1_idea, guy_id=sue_text, guy_weight=sue_weight)
+    x1_idea.meld(exterior_idea=x1_idea, guy_id=sue_text, guy_weight=sue_weight)
     assert x1_idea._originunit == ex_x1_idea_originunit
 
     # THEN

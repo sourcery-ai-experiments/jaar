@@ -132,15 +132,15 @@ def assigned_heir_shop(
         _suffbeliefs=_suffbeliefs, _owner_id_assigned=_owner_id_assigned
     )
 
-    # def meld(self, other_reason):
-    #     for premise_x in other_reason.premises.values():
+    # def meld(self, exterior_reason):
+    #     for premise_x in exterior_reason.premises.values():
     #         if self.premises.get(premise_x.need) is None:
     #             self.premises[premise_x.need] = premise_x
     #         else:
     #             self.premises.get(premise_x.need).meld(premise_x)
-    #     if other_reason.base != self.base:
+    #     if exterior_reason.base != self.base:
     #         raise InvalidReasonException(
-    #             f"Meld fail: reason={other_reason.base} is different {self.base=}"
+    #             f"Meld fail: reason={exterior_reason.base} is different {self.base=}"
     #         )
 
 

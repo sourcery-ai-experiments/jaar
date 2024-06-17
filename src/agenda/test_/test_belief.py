@@ -320,7 +320,7 @@ def test_guylink_meld_ReturnsCorrectObj_BaseScenario():
     x2_belief = beliefunit_shop(belief_id=bikers_belief_id, _guys={})
 
     # WHEN
-    bikers_belief.meld(other_belief=x2_belief)
+    bikers_belief.meld(exterior_belief=x2_belief)
     print(f"{bikers_belief.belief_id=} {x2_belief.belief_id=}")
 
     # THEN
@@ -341,7 +341,7 @@ def test_guylink_meld_ReturnsCorrectObj_GainScenario():
     x2_belief.set_guylink(guylink=mery_guy)
 
     # WHEN
-    bikers_belief.meld(other_belief=x2_belief)
+    bikers_belief.meld(exterior_belief=x2_belief)
 
     # THEN
     assert len(bikers_belief._guys) == 2

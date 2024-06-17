@@ -475,16 +475,16 @@ def test_agenda4guy_hasCorrectLevel1StructureNoBelieflessAncestors():
     assert sue_agenda4guy._idearoot._kids.get(feed_text) is None
     assert sue_agenda4guy._idearoot._agenda_importance == 1
     assert casa_idea._agenda_importance == yrx._kids[casa_text]._agenda_importance
-    __other__road = sue_agenda4guy.make_l1_road("__other__")
-    assert sue_agenda4guy.get_idea_obj(__other__road) != None
+    agenda4guy_road = sue_agenda4guy.make_l1_road("__agenda4guy__")
+    assert sue_agenda4guy.get_idea_obj(agenda4guy_road) != None
 
-    y4a_others = sue_agenda4guy.get_idea_obj(__other__road)
-    others_agenda_importance = yrx._kids[week_text]._agenda_importance
-    others_agenda_importance += yrx._kids[feed_text]._agenda_importance
-    others_agenda_importance += yrx._kids[nation_text]._agenda_importance
-    print(f"{others_agenda_importance=}")
-    assert round(y4a_others._agenda_importance, 15) == round(
-        others_agenda_importance, 15
+    y4a_exteriors = sue_agenda4guy.get_idea_obj(agenda4guy_road)
+    exteriors_agenda_importance = yrx._kids[week_text]._agenda_importance
+    exteriors_agenda_importance += yrx._kids[feed_text]._agenda_importance
+    exteriors_agenda_importance += yrx._kids[nation_text]._agenda_importance
+    print(f"{exteriors_agenda_importance=}")
+    assert round(y4a_exteriors._agenda_importance, 15) == round(
+        exteriors_agenda_importance, 15
     )
 
 

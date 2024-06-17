@@ -212,16 +212,16 @@ class GuyUnit(GuyCore):
                 self._agenda_intent_debt / agenda_intent_ratio_debt_sum
             )
 
-    def meld(self, other_guyunit):
-        if self.guy_id != other_guyunit.guy_id:
+    def meld(self, exterior_guyunit):
+        if self.guy_id != exterior_guyunit.guy_id:
             raise InvalidGuyException(
-                f"Meld fail GuyUnit='{self.guy_id}' not the same as GuyUnit='{other_guyunit.guy_id}"
+                f"Meld fail GuyUnit='{self.guy_id}' not the same as GuyUnit='{exterior_guyunit.guy_id}"
             )
 
-        self.credor_weight += other_guyunit.credor_weight
-        self.debtor_weight += other_guyunit.debtor_weight
-        self._irrational_debtor_weight += other_guyunit._irrational_debtor_weight
-        self._inallocable_debtor_weight += other_guyunit._inallocable_debtor_weight
+        self.credor_weight += exterior_guyunit.credor_weight
+        self.debtor_weight += exterior_guyunit.debtor_weight
+        self._irrational_debtor_weight += exterior_guyunit._irrational_debtor_weight
+        self._inallocable_debtor_weight += exterior_guyunit._inallocable_debtor_weight
 
 
 # class GuyUnitsshop:
@@ -344,13 +344,13 @@ class GuyLink(GuyCore):
         self._agenda_intent_cred = 0
         self._agenda_intent_debt = 0
 
-    def meld(self, other_guylink):
-        if self.guy_id != other_guylink.guy_id:
+    def meld(self, exterior_guylink):
+        if self.guy_id != exterior_guylink.guy_id:
             raise InvalidGuyException(
-                f"Meld fail GuyLink='{self.guy_id}' not the same as GuyLink='{other_guylink.guy_id}"
+                f"Meld fail GuyLink='{self.guy_id}' not the same as GuyLink='{exterior_guylink.guy_id}"
             )
-        self.credor_weight += other_guylink.credor_weight
-        self.debtor_weight += other_guylink.debtor_weight
+        self.credor_weight += exterior_guylink.credor_weight
+        self.debtor_weight += exterior_guylink.debtor_weight
 
 
 # class GuyLinkshop:

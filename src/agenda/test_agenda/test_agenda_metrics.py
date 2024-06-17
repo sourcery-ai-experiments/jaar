@@ -778,7 +778,7 @@ def test_AgendaUnit_calc_agenda_metrics_EveryIdeaHasActiveStatus_agenda_v001():
     )
 
 
-def test_AgendaUnit_calc_agenda_metrics_EveryOtherMonthReturnsCorrectObj_agenda_v001():
+def test_AgendaUnit_calc_agenda_metrics_EveryTwoMonthReturnsCorrectObj_agenda_v001():
     # GIVEN
     yao_agenda = agenda_v001()
     minute_text = "day_minute"

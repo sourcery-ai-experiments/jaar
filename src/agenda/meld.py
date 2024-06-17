@@ -9,13 +9,13 @@ class IneligibleMeldStrategyException(Exception):
 def get_meld_weight(
     src_weight: float,
     src_meld_strategy: MeldStrategy,
-    other_weight: float,
-    other_meld_strategy: MeldStrategy,
+    exterior_weight: float,
+    exterior_meld_strategy: MeldStrategy,
 ) -> float:
-    if src_meld_strategy == "default" and other_meld_strategy == "override":
-        return other_weight
-    elif src_meld_strategy != "default" or other_meld_strategy == "ignore":
-        return src_weight + other_weight
+    if src_meld_strategy == "default" and exterior_meld_strategy == "override":
+        return exterior_weight
+    elif src_meld_strategy != "default" or exterior_meld_strategy == "ignore":
+        return src_weight + exterior_weight
     else:
         return src_weight
 

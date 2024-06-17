@@ -534,7 +534,7 @@ class IdeaUnit:
             and self._agenda_real_id != None
         ):
             raise Idea_root_LabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{self._agenda_real_id}'"
+                f"Cannot set idearoot to string different than '{self._agenda_real_id}'"
             )
         elif self._root and self._agenda_real_id is None:
             self._label = root_label()
@@ -597,26 +597,26 @@ class IdeaUnit:
             new_factunits[new_base_road] = factunit_obj
         self._factunits = new_factunits
 
-    def _meld_reasonunits(self, other_idea):
-        for lx in other_idea._reasonunits.values():
+    def _meld_reasonunits(self, exterior_idea):
+        for lx in exterior_idea._reasonunits.values():
             if self._reasonunits.get(lx.base) is None:
                 self._reasonunits[lx.base] = lx
             else:
                 self._reasonunits.get(lx.base).meld(lx)
 
-    def _meld_balancelinks(self, other_idea):
-        for bl in other_idea._balancelinks.values():
+    def _meld_balancelinks(self, exterior_idea):
+        for bl in exterior_idea._balancelinks.values():
             if self._balancelinks.get(bl.belief_id) != None:
                 self._balancelinks.get(bl.belief_id).meld(
-                    other_balancelink=bl,
-                    other_meld_strategy=other_idea._meld_strategy,
+                    exterior_balancelink=bl,
+                    exterior_meld_strategy=exterior_idea._meld_strategy,
                     src_meld_strategy=self._meld_strategy,
                 )
             else:
                 self._balancelinks[bl.belief_id] = bl
 
-    def _meld_factunits(self, other_idea):
-        for hc in other_idea._factunits.values():
+    def _meld_factunits(self, exterior_idea):
+        for hc in exterior_idea._factunits.values():
             if self._factunits.get(hc.base) is None:
                 self._factunits[hc.base] = hc
             else:
@@ -624,14 +624,14 @@ class IdeaUnit:
 
     def meld(
         self,
-        other_idea,
+        exterior_idea,
         _idearoot: bool = None,
         guy_id: GuyID = None,
         guy_weight: float = None,
     ):
-        if _idearoot and self._label != other_idea._label:
+        if _idearoot and self._label != exterior_idea._label:
             raise InvalidIdeaException(
-                f"Meld fail idearoot _label '{self._label}' not the same as '{other_idea._label}'"
+                f"Meld fail idearoot _label '{self._label}' not the same as '{exterior_idea._label}'"
             )
         if _idearoot:
             self._weight = 1
@@ -639,16 +639,16 @@ class IdeaUnit:
             self._weight = get_meld_weight(
                 src_weight=self._weight,
                 src_meld_strategy=self._meld_strategy,
-                other_weight=other_idea._weight,
-                other_meld_strategy=other_idea._meld_strategy,
+                exterior_weight=exterior_idea._weight,
+                exterior_meld_strategy=exterior_idea._meld_strategy,
             )
-        self._meld_reasonunits(other_idea=other_idea)
-        self._meld_balancelinks(other_idea=other_idea)
-        self._meld_factunits(other_idea=other_idea)
-        if other_idea._meld_strategy != "override":
-            self._meld_attributes_that_must_be_equal(other_idea=other_idea)
+        self._meld_reasonunits(exterior_idea=exterior_idea)
+        self._meld_balancelinks(exterior_idea=exterior_idea)
+        self._meld_factunits(exterior_idea=exterior_idea)
+        if exterior_idea._meld_strategy != "override":
+            self._meld_attributes_that_must_be_equal(exterior_idea=exterior_idea)
         else:
-            self._meld_attributes_overide(other_idea=other_idea)
+            self._meld_attributes_overide(exterior_idea=exterior_idea)
         self._meld_originlinks(guy_id, guy_weight)
 
     def _meld_originlinks(self, guy_id: GuyID, guy_weight: float):
@@ -662,42 +662,42 @@ class IdeaUnit:
     def get_originunit_dict(self) -> dict[str:str]:
         return self._originunit.get_dict()
 
-    def _meld_attributes_overide(self, other_idea):
-        self._uid = other_idea._uid
-        self._begin = other_idea._begin
-        self._close = other_idea._close
-        self._addin = other_idea._addin
-        self._denom = other_idea._denom
-        self._numor = other_idea._numor
-        self._reest = other_idea._reest
-        self._range_source_road = other_idea._range_source_road
-        self._numeric_road = other_idea._numeric_road
-        self.pledge = other_idea.pledge
-        self._is_expanded = other_idea._is_expanded
+    def _meld_attributes_overide(self, exterior_idea):
+        self._uid = exterior_idea._uid
+        self._begin = exterior_idea._begin
+        self._close = exterior_idea._close
+        self._addin = exterior_idea._addin
+        self._denom = exterior_idea._denom
+        self._numor = exterior_idea._numor
+        self._reest = exterior_idea._reest
+        self._range_source_road = exterior_idea._range_source_road
+        self._numeric_road = exterior_idea._numeric_road
+        self.pledge = exterior_idea.pledge
+        self._is_expanded = exterior_idea._is_expanded
 
-    def _meld_attributes_that_must_be_equal(self, other_idea):
+    def _meld_attributes_that_must_be_equal(self, exterior_idea):
         to_be_equal_attributes = [
-            ("_uid", self._uid, other_idea._uid),
-            ("_begin", self._begin, other_idea._begin),
-            ("_close", self._close, other_idea._close),
-            ("_addin", self._addin, other_idea._addin),
-            ("_denom", self._denom, other_idea._denom),
-            ("_numor", self._numor, other_idea._numor),
-            ("_reest", self._reest, other_idea._reest),
+            ("_uid", self._uid, exterior_idea._uid),
+            ("_begin", self._begin, exterior_idea._begin),
+            ("_close", self._close, exterior_idea._close),
+            ("_addin", self._addin, exterior_idea._addin),
+            ("_denom", self._denom, exterior_idea._denom),
+            ("_numor", self._numor, exterior_idea._numor),
+            ("_reest", self._reest, exterior_idea._reest),
             (
                 "_range_source_road",
                 self._range_source_road,
-                other_idea._range_source_road,
+                exterior_idea._range_source_road,
             ),
-            ("_numeric_road", self._numeric_road, other_idea._numeric_road),
-            ("pledge", self.pledge, other_idea.pledge),
-            ("_is_expanded", self._is_expanded, other_idea._is_expanded),
+            ("_numeric_road", self._numeric_road, exterior_idea._numeric_road),
+            ("pledge", self.pledge, exterior_idea.pledge),
+            ("_is_expanded", self._is_expanded, exterior_idea._is_expanded),
         ]
         while to_be_equal_attributes != []:
             attrs = to_be_equal_attributes.pop()
             if attrs[1] != attrs[2]:
                 raise InvalidIdeaException(
-                    f"Meld fail idea={self.get_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_road()} {attrs[0]}:{attrs[2]}"
+                    f"Meld fail idea={self.get_road()} {attrs[0]}:{attrs[1]} with {exterior_idea.get_road()} {attrs[0]}:{attrs[2]}"
                 )
 
     def _set_idea_attr(self, idea_attr: IdeaAttrFilter):

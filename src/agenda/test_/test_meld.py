@@ -12,15 +12,15 @@ def test_get_meld_weight_ReturnsCorrectObj_default():
     # GIVEN
     x_src_weight = 5
     x_src_meld_strategy = MeldStrategy("default")
-    x_other_weight = 7
-    x_other_meld_strategy = MeldStrategy("sum")
+    x_exterior_weight = 7
+    x_exterior_meld_strategy = MeldStrategy("sum")
 
     # WHEN
     x_float = get_meld_weight(
         x_src_weight,
         x_src_meld_strategy,
-        x_other_weight,
-        x_other_meld_strategy,
+        x_exterior_weight,
+        x_exterior_meld_strategy,
     )
 
     # THEN
@@ -31,38 +31,38 @@ def test_get_meld_weight_ReturnsCorrectObj_ignore():
     # GIVEN
     x_src_weight = 5
     x_src_meld_strategy = MeldStrategy("default")
-    x_other_weight = 7
-    x_other_meld_strategy = MeldStrategy("ignore")
+    x_exterior_weight = 7
+    x_exterior_meld_strategy = MeldStrategy("ignore")
 
     # WHEN
     x_float = get_meld_weight(
         x_src_weight,
         x_src_meld_strategy,
-        x_other_weight,
-        x_other_meld_strategy,
+        x_exterior_weight,
+        x_exterior_meld_strategy,
     )
 
     # THEN
-    assert x_float == x_src_weight + x_other_weight
+    assert x_float == x_src_weight + x_exterior_weight
 
 
 def test_get_meld_weight_ReturnsCorrectObj_override():
     # GIVEN
     x_src_weight = 5
     x_src_meld_strategy = MeldStrategy("default")
-    x_other_weight = 7
-    x_other_meld_strategy = MeldStrategy("override")
+    x_exterior_weight = 7
+    x_exterior_meld_strategy = MeldStrategy("override")
 
     # WHEN
     x_float = get_meld_weight(
         x_src_weight,
         x_src_meld_strategy,
-        x_other_weight,
-        x_other_meld_strategy,
+        x_exterior_weight,
+        x_exterior_meld_strategy,
     )
 
     # THEN
-    assert x_float == x_other_weight
+    assert x_float == x_exterior_weight
 
 
 def test_get_meld_strategys_HasCorrectItems():

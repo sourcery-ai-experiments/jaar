@@ -54,7 +54,7 @@ def test_listen_to_facts_role_job_SetsSingleFactUnit_v1(env_dir_setup_cleanup):
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
 
 
-def test_listen_to_facts_role_job_SetsSingleFactUnitWithOtherTask(
+def test_listen_to_facts_role_job_SetsSingleFactUnitWithDifferentTask(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -157,7 +157,7 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirAgenda_
     assert new_yao_job.get_fact(eat_road()).pick == eat_road()
 
 
-def test_listen_to_facts_role_job_SetsPrioritizesSelfFactsOverOthers(
+def test_listen_to_facts_role_job_SetsPrioritizesSelfFactsOverSpeakers(
     env_dir_setup_cleanup,
 ):
     # GIVEN

@@ -138,19 +138,19 @@ class BeliefUnit(BeliefCore):
         )
         self.del_guylink(guy_id=to_delete_guy_id)
 
-    def meld(self, other_belief):
-        self._meld_attributes_that_must_be_equal(other_belief=other_belief)
-        self.meld_guylinks(other_belief=other_belief)
+    def meld(self, exterior_belief):
+        self._meld_attributes_that_must_be_equal(exterior_belief=exterior_belief)
+        self.meld_guylinks(exterior_belief=exterior_belief)
 
-    def meld_guylinks(self, other_belief):
-        for oba in other_belief._guys.values():
+    def meld_guylinks(self, exterior_belief):
+        for oba in exterior_belief._guys.values():
             if self._guys.get(oba.guy_id) is None:
                 self._guys[oba.guy_id] = oba
             else:
                 self._guys[oba.guy_id].meld(oba)
 
-    def _meld_attributes_that_must_be_equal(self, other_belief):
-        xl = [("belief_id", self.belief_id, other_belief.belief_id)]
+    def _meld_attributes_that_must_be_equal(self, exterior_belief):
+        xl = [("belief_id", self.belief_id, exterior_belief.belief_id)]
         while xl != []:
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
@@ -158,9 +158,9 @@ class BeliefUnit(BeliefCore):
                     f"Meld fail BeliefUnit {self.belief_id} .{attrs[0]}='{attrs[1]}' not the same as .{attrs[0]}='{attrs[2]}"
                 )
 
-        # if self.belief_id != other_belief.belief_id:
+        # if self.belief_id != exterior_belief.belief_id:
         #     raise InvalidBeliefException(
-        #             f"Meld fail idea={self.get_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_road()} {attrs[0]}:{attrs[2]}"
+        #             f"Meld fail idea={self.get_road()} {attrs[0]}:{attrs[1]} with {exterior_idea.get_road()} {attrs[0]}:{attrs[2]}"
         #     )
 
 
@@ -235,21 +235,21 @@ class BalanceLink(BeliefCore):
 
     def meld(
         self,
-        other_balancelink,
-        other_meld_strategy: str,
+        exterior_balancelink,
+        exterior_meld_strategy: str,
         src_meld_strategy: str,
     ):
         self.credor_weight = get_meld_weight(
             src_weight=self.credor_weight,
             src_meld_strategy=src_meld_strategy,
-            other_weight=other_balancelink.credor_weight,
-            other_meld_strategy=other_meld_strategy,
+            exterior_weight=exterior_balancelink.credor_weight,
+            exterior_meld_strategy=exterior_meld_strategy,
         )
         self.debtor_weight = get_meld_weight(
             src_weight=self.debtor_weight,
             src_meld_strategy=src_meld_strategy,
-            other_weight=other_balancelink.debtor_weight,
-            other_meld_strategy=other_meld_strategy,
+            exterior_weight=exterior_balancelink.debtor_weight,
+            exterior_meld_strategy=exterior_meld_strategy,
         )
 
 

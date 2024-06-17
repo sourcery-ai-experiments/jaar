@@ -790,7 +790,7 @@ class AgendaUnit:
         elif self.get_beliefunit(new_belief_id) != None:
             old_beliefunit = self.get_beliefunit(old_belief_id)
             old_beliefunit.set_belief_id(belief_id=new_belief_id)
-            self.get_beliefunit(new_belief_id).meld(other_belief=old_beliefunit)
+            self.get_beliefunit(new_belief_id).meld(exterior_belief=old_beliefunit)
             self.del_beliefunit(belief_id=old_belief_id)
         elif self.get_beliefunit(new_belief_id) is None:
             old_beliefunit = self.get_beliefunit(old_belief_id)
@@ -820,8 +820,8 @@ class AgendaUnit:
                 old_balancelink = x_idea._balancelinks.get(old_belief_id)
                 old_balancelink.belief_id = new_belief_id
                 x_idea._balancelinks.get(new_belief_id).meld(
-                    other_balancelink=old_balancelink,
-                    other_meld_strategy="sum",
+                    exterior_balancelink=old_balancelink,
+                    exterior_meld_strategy="sum",
                     src_meld_strategy="sum",
                 )
 
@@ -964,7 +964,7 @@ class AgendaUnit:
             # example: timeline range (0-, 1.5e9) is range-root
             # example: "timeline,weeks" (spllt 10080) is range-descendant
             # there exists a reason base "timeline,weeks" with premise.need = "timeline,weeks"
-            # and (1,2) divisor=2 (every other week)
+            # and (1,2) divisor=2 (every othher week)
             #
             # should not set "timeline,weeks" fact, only "timeline" fact and
             # "timeline,weeks" should be set automatica_lly since there exists a reason
@@ -2136,11 +2136,11 @@ class AgendaUnit:
                 not_included_agenda_importance += ykx._agenda_importance
 
         if not_included_agenda_importance > 0:
-            y4a_other = ideaunit_shop(
-                _label="__other__",
+            y4a_exterior = ideaunit_shop(
+                _label="__agenda4guy__",
                 _agenda_importance=not_included_agenda_importance,
             )
-            agenda4guy._idearoot._kids[y4a_other._label] = y4a_other
+            agenda4guy._idearoot._kids[y4a_exterior._label] = y4a_exterior
 
         return agenda4guy
 
@@ -2163,28 +2163,28 @@ class AgendaUnit:
         self._meld_strategy = validate_meld_strategy(x_meld_strategy)
 
     def meld(
-        self, other_agenda, guy_weight: float = None, ignore_guyunits: bool = False
+        self, exterior_agenda, guy_weight: float = None, ignore_guyunits: bool = False
     ):
-        self._meld_beliefs(other_agenda)
+        self._meld_beliefs(exterior_agenda)
         if not ignore_guyunits:
-            self._meld_guys(other_agenda)
-        self._meld_ideas(other_agenda, guy_weight)
-        self._meld_facts(other_agenda)
+            self._meld_guys(exterior_agenda)
+        self._meld_ideas(exterior_agenda, guy_weight)
+        self._meld_facts(exterior_agenda)
         self._weight = get_meld_weight(
             src_weight=self._weight,
             src_meld_strategy="default",
-            other_weight=other_agenda._weight,
-            other_meld_strategy="default",
+            exterior_weight=exterior_agenda._weight,
+            exterior_meld_strategy="default",
         )
-        self._meld_originlinks(other_agenda._owner_id, guy_weight)
+        self._meld_originlinks(exterior_agenda._owner_id, guy_weight)
 
-    def _meld_ideas(self, other_agenda, guy_weight: float):
+    def _meld_ideas(self, exterior_agenda, guy_weight: float):
         # meld idearoot
-        self._idearoot.meld(other_idea=other_agenda._idearoot, _idearoot=True)
+        self._idearoot.meld(exterior_idea=exterior_agenda._idearoot, _idearoot=True)
 
-        # meld all other ideas
-        guy_id = other_agenda._owner_id
-        o_idea_list = other_agenda.get_idea_list_without_idearoot()
+        # meld all exterior ideas
+        guy_id = exterior_agenda._owner_id
+        o_idea_list = exterior_agenda.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
             o_road = road_validate(
                 self.make_road(o_idea._parent_road, o_idea._label),
@@ -2199,22 +2199,22 @@ class AgendaUnit:
                 main_idea = self.get_idea_obj(o_road)
                 main_idea._originunit.set_originlink(guy_id, guy_weight)
 
-    def _meld_guys(self, other_agenda):
-        for guyunit in other_agenda._guys.values():
+    def _meld_guys(self, exterior_agenda):
+        for guyunit in exterior_agenda._guys.values():
             if self.get_guy(guyunit.guy_id) is None:
                 self.set_guyunit(guyunit=guyunit)
             else:
                 self.get_guy(guyunit.guy_id).meld(guyunit)
 
-    def _meld_beliefs(self, other_agenda):
-        for brx in other_agenda._beliefs.values():
+    def _meld_beliefs(self, exterior_agenda):
+        for brx in exterior_agenda._beliefs.values():
             if self.get_beliefunit(brx.belief_id) is None:
                 self.set_beliefunit(y_beliefunit=brx)
             else:
                 self.get_beliefunit(brx.belief_id).meld(brx)
 
-    def _meld_facts(self, other_agenda):
-        for hx in other_agenda._idearoot._factunits.values():
+    def _meld_facts(self, exterior_agenda):
+        for hx in exterior_agenda._idearoot._factunits.values():
             if self._idearoot._factunits.get(hx.base) is None:
                 self.set_fact(base=hx.base, pick=hx.fact, open=hx.open, nigh=hx.nigh)
             else:

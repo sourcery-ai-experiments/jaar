@@ -56,7 +56,7 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0IdeaWhen_real_id_isNone(
     #     tim_agenda.edit_idea_label(old_road=tim_agenda._real_id, new_label=moon_text)
     # assert (
     #     str(excinfo.value)
-    #     == f"Cannot set idearoot to string other than '{tim_agenda._real_id}'"
+    #     == f"Cannot set idearoot to string othher than '{tim_agenda._real_id}'"
     # )
 
     assert tim_agenda._idearoot._label != moon_text
@@ -91,7 +91,8 @@ def test_AgendaUnit_edit_idea_label_RaisesErrorForLevel0When_real_id_IsDifferent
         moon_text = "moon"
         tim_agenda.edit_idea_label(old_road=root_label(), new_label=moon_text)
     assert (
-        str(excinfo.value) == f"Cannot set idearoot to string other than '{sun_text}'"
+        str(excinfo.value)
+        == f"Cannot set idearoot to string different than '{sun_text}'"
     )
 
 

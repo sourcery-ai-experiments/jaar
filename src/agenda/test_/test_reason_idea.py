@@ -514,7 +514,7 @@ def test_ReasonCore_meld_ReturnsCorrectObj_BaseScenario():
     x2_reason.set_premise(premise=week_road)
 
     # WHEN/THEN
-    assert x1_reason == x1_reason.meld(other_reason=x2_reason)
+    assert x1_reason == x1_reason.meld(exterior_reason=x2_reason)
 
 
 def test_ReasonCore_meld_ReturnsCorrectObj_AddPremisescenario():
@@ -533,7 +533,7 @@ def test_ReasonCore_meld_ReturnsCorrectObj_AddPremisescenario():
     x2_reason.set_premise(premise=year_road, open=45, nigh=55)
 
     # WHEN/THEN
-    x1_reason.meld(other_reason=x2_reason)
+    x1_reason.meld(exterior_reason=x2_reason)
 
     # THEN
     assert len(x1_reason.premises) == 2

@@ -16,7 +16,7 @@ def test_AgendaUnit_meld_BaseScenario():
     assert bob1_agenda._owner_id == bob_text
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda)
 
     # THEN
     assert bob1_agenda
@@ -33,7 +33,7 @@ def test_AgendaUnit_meld_WeightDoesNotCombine():
     assert bob1_agenda._weight == 3
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda)
 
     # THEN
     assert bob1_agenda._weight == 3
@@ -58,7 +58,7 @@ def test_AgendaUnit_meld_GuyUnits():
     assert bob1_agenda.guy_exists(zia_text) is False
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda)
 
     # THEN
     assert len(bob1_agenda._guys) == 2
@@ -85,7 +85,7 @@ def test_AgendaUnit_meld_GuyUnits_ignore_guyunits_ReturnsCorrectObj():
     assert bob1_agenda.guy_exists(zia_text) is False
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda, ignore_guyunits=True)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda, ignore_guyunits=True)
 
     # THEN
     assert len(bob1_agenda._guys) == 1
@@ -112,7 +112,7 @@ def test_AgendaUnit_meld_BeliefUnits_WhereBeliefUnitIsMissing():
     assert bob1_agenda.get_beliefunit(swim_text) is None
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda)
 
     # THEN
     # for x_belief_id in bob1_agenda._beliefs.values():
@@ -146,7 +146,7 @@ def test_AgendaUnit_meld_BeliefUnits_WhereBeliefUnitMembershipIsDifferent():
     assert len(bob1_agenda.get_beliefunit(run_text)._guys) == 1
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda)
 
     # THEN
     assert len(bob1_agenda._beliefs) == 3
