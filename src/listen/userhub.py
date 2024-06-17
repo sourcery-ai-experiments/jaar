@@ -66,7 +66,7 @@ class AtomFileMissingException(Exception):
     pass
 
 
-class PersonCreateMoneyUnitsException(Exception):
+class get_econ_roadsException(Exception):
     pass
 
 
@@ -520,11 +520,11 @@ class UserHub:
         x_duty_agenda = self.get_duty_agenda()
         x_duty_agenda.calc_agenda_metrics()
         if x_duty_agenda._econs_justified is False:
-            x_str = f"Cannot set '{self.person_id}' duty agenda moneyunits because 'AgendaUnit._econs_justified' is False."
-            raise PersonCreateMoneyUnitsException(x_str)
+            x_str = f"Cannot get_econ_roads from '{self.person_id}' duty agenda because 'AgendaUnit._econs_justified' is False."
+            raise get_econ_roadsException(x_str)
         if x_duty_agenda._econs_buildable is False:
-            x_str = f"Cannot set '{self.person_id}' duty agenda moneyunits because 'AgendaUnit._econs_buildable' is False."
-            raise PersonCreateMoneyUnitsException(x_str)
+            x_str = f"Cannot get_econ_roads from '{self.person_id}' duty agenda because 'AgendaUnit._econs_buildable' is False."
+            raise get_econ_roadsException(x_str)
         person_healer_dict = x_duty_agenda._healers_dict.get(self.person_id)
         if person_healer_dict is None:
             return get_empty_set_if_none(None)

@@ -471,21 +471,21 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     ]._descendant_pledge_count
     assert _descendant_pledge_count_new == 67
 
-    # _all_party_cred: bool = None,
-    sue_agenda._idearoot._kids[casa_text]._all_party_cred = 74
-    x_all_party_cred = sue_agenda._idearoot._kids[casa_text]._all_party_cred
-    assert x_all_party_cred == 74
-    sue_agenda.edit_idea_attr(road=casa_road, all_party_cred=59)
-    _all_party_cred_new = sue_agenda._idearoot._kids[casa_text]._all_party_cred
-    assert _all_party_cred_new == 59
+    # _all_other_cred: bool = None,
+    sue_agenda._idearoot._kids[casa_text]._all_other_cred = 74
+    x_all_other_cred = sue_agenda._idearoot._kids[casa_text]._all_other_cred
+    assert x_all_other_cred == 74
+    sue_agenda.edit_idea_attr(road=casa_road, all_other_cred=59)
+    _all_other_cred_new = sue_agenda._idearoot._kids[casa_text]._all_other_cred
+    assert _all_other_cred_new == 59
 
-    # _all_party_debt: bool = None,
-    sue_agenda._idearoot._kids[casa_text]._all_party_debt = 74
-    x_all_party_debt = sue_agenda._idearoot._kids[casa_text]._all_party_debt
-    assert x_all_party_debt == 74
-    sue_agenda.edit_idea_attr(road=casa_road, all_party_debt=59)
-    _all_party_debt_new = sue_agenda._idearoot._kids[casa_text]._all_party_debt
-    assert _all_party_debt_new == 59
+    # _all_other_debt: bool = None,
+    sue_agenda._idearoot._kids[casa_text]._all_other_debt = 74
+    x_all_other_debt = sue_agenda._idearoot._kids[casa_text]._all_other_debt
+    assert x_all_other_debt == 74
+    sue_agenda.edit_idea_attr(road=casa_road, all_other_debt=59)
+    _all_other_debt_new = sue_agenda._idearoot._kids[casa_text]._all_other_debt
+    assert _all_other_debt_new == 59
 
     # _balancelink: dict = None,
     sue_agenda._idearoot._kids[casa_text]._balancelinks = {
@@ -512,8 +512,8 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
 
     # pledge: dict = None,
     sue_agenda._idearoot._kids[casa_text].pledge = "funfun3"
-    action = sue_agenda._idearoot._kids[casa_text].pledge
-    assert action == "funfun3"
+    pledge = sue_agenda._idearoot._kids[casa_text].pledge
+    assert pledge == "funfun3"
     sue_agenda.edit_idea_attr(road=casa_road, pledge=True)
     assert sue_agenda._idearoot._kids[casa_text].pledge == True
 
@@ -532,8 +532,8 @@ def test_AgendaUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     sue_text = "Sue"
     yao_text = "Yao"
     x_healerhold = healerhold_shop({sue_text, yao_text})
-    sue_agenda.add_partyunit(sue_text)
-    sue_agenda.add_partyunit(yao_text)
+    sue_agenda.add_otherunit(sue_text)
+    sue_agenda.add_otherunit(yao_text)
     sue_agenda.edit_idea_attr(road=casa_road, healerhold=x_healerhold)
     assert sue_agenda._idearoot._kids[casa_text]._healerhold == x_healerhold
 

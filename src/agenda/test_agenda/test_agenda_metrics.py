@@ -1,5 +1,5 @@
 from src.agenda.graphic import display_ideatree
-from src.agenda.party import partyunit_shop
+from src.agenda.other import otherunit_shop
 from src.agenda.belief import BeliefID, balancelink_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.healer import healerhold_shop
@@ -56,13 +56,13 @@ def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     patr_text = "patrick"
 
     zia_agenda = agendaunit_shop("Zia")
-    au_rico = partyunit_shop(party_id=rico_text)
-    au_carm = partyunit_shop(party_id=carm_text)
-    au_patr = partyunit_shop(party_id=patr_text)
+    au_rico = otherunit_shop(other_id=rico_text)
+    au_carm = otherunit_shop(other_id=carm_text)
+    au_patr = otherunit_shop(other_id=patr_text)
     # print(f"{rico=}")
-    zia_agenda.set_partyunit(partyunit=au_rico)
-    zia_agenda.set_partyunit(partyunit=au_carm)
-    zia_agenda.set_partyunit(partyunit=au_patr)
+    zia_agenda.set_otherunit(otherunit=au_rico)
+    zia_agenda.set_otherunit(otherunit=au_carm)
+    zia_agenda.set_otherunit(otherunit=au_patr)
     zia_agenda._idearoot.set_balancelink(
         balancelink=balancelink_shop(belief_id=BeliefID(rico_text), credor_weight=10)
     )
@@ -74,13 +74,13 @@ def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     )
 
     # WHEN
-    assert zia_agenda.get_partys_metrics() != None
-    partys_metrics = zia_agenda.get_partys_metrics()
+    assert zia_agenda.get_others_metrics() != None
+    others_metrics = zia_agenda.get_others_metrics()
 
     # THEN
-    balancelink_rico = partys_metrics[rico_text]
-    balancelink_carm = partys_metrics[carm_text]
-    balancelink_patr = partys_metrics[patr_text]
+    balancelink_rico = others_metrics[rico_text]
+    balancelink_carm = others_metrics[carm_text]
+    balancelink_patr = others_metrics[patr_text]
     assert balancelink_rico.belief_id != None
     assert balancelink_carm.belief_id != None
     assert balancelink_patr.belief_id != None
@@ -91,9 +91,9 @@ def test_AgendaUnit_3AdvocatesNoideaunit_shop():
     beliefunit_rico = all_beliefs[rico_text]
     beliefunit_carm = all_beliefs[carm_text]
     beliefunit_patr = all_beliefs[patr_text]
-    assert beliefunit_rico._party_mirror == True
-    assert beliefunit_carm._party_mirror == True
-    assert beliefunit_patr._party_mirror == True
+    assert beliefunit_rico._other_mirror == True
+    assert beliefunit_carm._other_mirror == True
+    assert beliefunit_patr._other_mirror == True
 
 
 def _check_all_objects_in_dict_are_correct_type(x_dict: dict, type_str: str) -> bool:
@@ -778,7 +778,7 @@ def test_AgendaUnit_calc_agenda_metrics_EveryIdeaHasActiveStatus_agenda_v001():
     )
 
 
-def test_AgendaUnit_calc_agenda_metrics_EveryOtherMonthReturnsCorrectObj_agenda_v001():
+def test_AgendaUnit_calc_agenda_metrics_EveryTwoMonthReturnsCorrectObj_agenda_v001():
     # GIVEN
     yao_agenda = agenda_v001()
     minute_text = "day_minute"
@@ -846,7 +846,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySetsEmpty_sum_healerhold_import
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_sum_healerhold_importance():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
-    sue_agenda.add_partyunit("Sue")
+    sue_agenda.add_otherunit("Sue")
     sue_agenda.calc_agenda_metrics()
     nation_road = sue_agenda.make_l1_road("nation-state")
     usa_road = sue_agenda.make_road(nation_road, "USA")
@@ -913,7 +913,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_sum_healerhold_importance(
 def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econ_dict_v1():
     # GIVEN
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
-    sue_agenda.add_partyunit("Sue")
+    sue_agenda.add_otherunit("Sue")
     sue_agenda.calc_agenda_metrics()
     nation_road = sue_agenda.make_l1_road("nation-state")
     usa_road = sue_agenda.make_road(nation_road, "USA")
@@ -976,8 +976,8 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econ_dict_v1():
 #     sue_text = "Sue"
 #     bob_text = "Bob"
 #     sue_agenda = get_agenda_with_4_levels_and_2reasons()
-#     sue_agenda.add_partyunit(sue_text)
-#     sue_agenda.add_partyunit(bob_text)
+#     sue_agenda.add_otherunit(sue_text)
+#     sue_agenda.add_otherunit(bob_text)
 #     assert sue_agenda._healers_dict == {}
 
 #     # WHEN
@@ -1013,8 +1013,8 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_healers_dict():
     sue_text = "Sue"
     bob_text = "Bob"
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
-    sue_agenda.add_partyunit(sue_text)
-    sue_agenda.add_partyunit(bob_text)
+    sue_agenda.add_otherunit(sue_text)
+    sue_agenda.add_otherunit(bob_text)
     assert sue_agenda._healers_dict == {}
 
     # WHEN
@@ -1050,8 +1050,8 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_buildable_True():
     sue_text = "Sue"
     bob_text = "Bob"
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
-    sue_agenda.add_partyunit(sue_text)
-    sue_agenda.add_partyunit(bob_text)
+    sue_agenda.add_otherunit(sue_text)
+    sue_agenda.add_otherunit(bob_text)
     assert sue_agenda._econs_buildable is False
 
     # WHEN
@@ -1081,8 +1081,8 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_buildable_False():
     sue_text = "Sue"
     bob_text = "Bob"
     sue_agenda = get_agenda_with_4_levels_and_2reasons()
-    sue_agenda.add_partyunit(sue_text)
-    sue_agenda.add_partyunit(bob_text)
+    sue_agenda.add_otherunit(sue_text)
+    sue_agenda.add_otherunit(bob_text)
     assert sue_agenda._econs_buildable is False
 
     # WHEN

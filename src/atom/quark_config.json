@@ -1,5 +1,5 @@
 {
-    "agenda_belief_partylink": {
+    "agenda_belief_otherlink": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 25
@@ -8,7 +8,7 @@
             "quark_order": 1
         },
         "normal_specs": {
-            "normal_table_name": "partylink"
+            "normal_table_name": "otherlink"
         },
         "optional_args": {
             "credor_weight": {
@@ -25,8 +25,8 @@
                 "python_type": "BeliefID",
                 "sqlite_datatype": "TEXT"
             },
-            "party_id": {
-                "python_type": "PartyID",
+            "other_id": {
+                "python_type": "OtherID",
                 "sqlite_datatype": "TEXT"
             }
         },
@@ -334,7 +334,7 @@
             "quark_order": 13
         }
     },
-    "agenda_partyunit": {
+    "agenda_otherunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 26
@@ -343,7 +343,7 @@
             "quark_order": 0
         },
         "normal_specs": {
-            "normal_table_name": "partyunit"
+            "normal_table_name": "otherunit"
         },
         "optional_args": {
             "credor_weight": {
@@ -356,8 +356,8 @@
             }
         },
         "required_args": {
-            "party_id": {
-                "python_type": "PartyID",
+            "other_id": {
+                "python_type": "OtherID",
                 "sqlite_datatype": "TEXT"
             }
         },
@@ -384,11 +384,11 @@
                 "python_type": "str",
                 "sqlite_datatype": "TEXT"
             },
-            "_party_credor_pool": {
+            "_other_credor_pool": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
-            "_party_debtor_pool": {
+            "_other_debtor_pool": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },

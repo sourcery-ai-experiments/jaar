@@ -88,13 +88,13 @@ def get_nucunit_carm_example() -> NucUnit:
 
     agendaunit_text = "agendaunit"
     pool_quarkunit = quarkunit_shop(agendaunit_text, quark_update())
-    pool_attribute = "_party_credor_pool"
+    pool_attribute = "_other_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 77)
     sue_nucunit.set_quarkunit(pool_quarkunit)
 
-    category = "agenda_partyunit"
+    category = "agenda_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_delete())
-    carm_quarkunit.set_required_arg("party_id", carm_text)
+    carm_quarkunit.set_required_arg("other_id", carm_text)
     sue_nucunit.set_quarkunit(carm_quarkunit)
     return sue_nucunit

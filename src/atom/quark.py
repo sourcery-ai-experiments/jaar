@@ -6,7 +6,7 @@ from src._instrument.python import (
 from src._instrument.sqlite import create_insert_sqlstr, RowData
 from src._road.road import create_road
 from src.agenda.reason_idea import factunit_shop
-from src.agenda.party import partyunit_shop, partylink_shop
+from src.agenda.other import otherunit_shop, otherlink_shop
 from src.agenda.belief import beliefunit_shop, balancelink_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import AgendaUnit
@@ -169,12 +169,12 @@ def _modify_agenda_update_agendaunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_arg = "_max_tree_traverse"
     if x_quark.get_value(x_arg) != None:
         x_agenda.set_max_tree_traverse(x_quark.get_value(x_arg))
-    x_arg = "_party_credor_pool"
+    x_arg = "_other_credor_pool"
     if x_quark.get_value(x_arg) != None:
-        x_agenda.set_party_credor_pool(x_quark.get_value(x_arg))
-    x_arg = "_party_debtor_pool"
+        x_agenda.set_other_credor_pool(x_quark.get_value(x_arg))
+    x_arg = "_other_debtor_pool"
     if x_quark.get_value(x_arg) != None:
-        x_agenda.set_party_debtor_pool(x_quark.get_value(x_arg))
+        x_agenda.set_other_debtor_pool(x_quark.get_value(x_arg))
     x_arg = "_meld_strategy"
     if x_quark.get_value(x_arg) != None:
         x_agenda.set_meld_strategy(x_quark.get_value(x_arg))
@@ -201,30 +201,30 @@ def _modify_agenda_beliefunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
 def _modify_agenda_beliefunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_beliefunit = beliefunit_shop(belief_id=x_quark.get_value("belief_id"))
     x_agenda.set_beliefunit(
-        x_beliefunit, create_missing_partys=False, replace=False, add_partylinks=False
+        x_beliefunit, create_missing_others=False, replace=False, add_otherlinks=False
     )
 
 
-def _modify_agenda_belief_partylink_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_party_id = x_quark.get_value("party_id")
+def _modify_agenda_belief_otherlink_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_other_id = x_quark.get_value("other_id")
     x_belief_id = x_quark.get_value("belief_id")
-    x_agenda.get_beliefunit(x_belief_id).del_partylink(x_party_id)
+    x_agenda.get_beliefunit(x_belief_id).del_otherlink(x_other_id)
 
 
-def _modify_agenda_belief_partylink_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+def _modify_agenda_belief_otherlink_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_beliefunit = x_agenda.get_beliefunit(x_quark.get_value("belief_id"))
-    x_beliefunit.edit_partylink(
-        party_id=x_quark.get_value("party_id"),
+    x_beliefunit.edit_otherlink(
+        other_id=x_quark.get_value("other_id"),
         credor_weight=x_quark.get_value("credor_weight"),
         debtor_weight=x_quark.get_value("debtor_weight"),
     )
 
 
-def _modify_agenda_belief_partylink_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+def _modify_agenda_belief_otherlink_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_beliefunit = x_agenda.get_beliefunit(x_quark.get_value("belief_id"))
-    x_beliefunit.set_partylink(
-        partylink_shop(
-            party_id=x_quark.get_value("party_id"),
+    x_beliefunit.set_otherlink(
+        otherlink_shop(
+            other_id=x_quark.get_value("other_id"),
             credor_weight=x_quark.get_value("credor_weight"),
             debtor_weight=x_quark.get_value("debtor_weight"),
         )
@@ -405,22 +405,22 @@ def _modify_agenda_idea_suffbelief_insert(x_agenda: AgendaUnit, x_quark: QuarkUn
     x_ideaunit._assignedunit.set_suffbelief(belief_id=x_quark.get_value("belief_id"))
 
 
-def _modify_agenda_partyunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_agenda.del_partyunit(x_quark.get_value("party_id"))
+def _modify_agenda_otherunit_delete(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_agenda.del_otherunit(x_quark.get_value("other_id"))
 
 
-def _modify_agenda_partyunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_agenda.edit_partyunit(
-        party_id=x_quark.get_value("party_id"),
+def _modify_agenda_otherunit_update(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_agenda.edit_otherunit(
+        other_id=x_quark.get_value("other_id"),
         credor_weight=x_quark.get_value("credor_weight"),
         debtor_weight=x_quark.get_value("debtor_weight"),
     )
 
 
-def _modify_agenda_partyunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
-    x_agenda.set_partyunit(
-        partyunit_shop(
-            party_id=x_quark.get_value("party_id"),
+def _modify_agenda_otherunit_insert(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+    x_agenda.set_otherunit(
+        otherunit_shop(
+            other_id=x_quark.get_value("other_id"),
             credor_weight=x_quark.get_value("credor_weight"),
             debtor_weight=x_quark.get_value("debtor_weight"),
         )
@@ -441,13 +441,13 @@ def _modify_agenda_beliefunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
         _modify_agenda_beliefunit_insert(x_agenda, x_quark)
 
 
-def _modify_agenda_belief_partylink(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+def _modify_agenda_belief_otherlink(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_agenda_belief_partylink_delete(x_agenda, x_quark)
+        _modify_agenda_belief_otherlink_delete(x_agenda, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_agenda_belief_partylink_update(x_agenda, x_quark)
+        _modify_agenda_belief_otherlink_update(x_agenda, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_agenda_belief_partylink_insert(x_agenda, x_quark)
+        _modify_agenda_belief_otherlink_insert(x_agenda, x_quark)
 
 
 def _modify_agenda_ideaunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
@@ -502,13 +502,13 @@ def _modify_agenda_idea_suffbelief(x_agenda: AgendaUnit, x_quark: QuarkUnit):
         _modify_agenda_idea_suffbelief_insert(x_agenda, x_quark)
 
 
-def _modify_agenda_partyunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
+def _modify_agenda_otherunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_agenda_partyunit_delete(x_agenda, x_quark)
+        _modify_agenda_otherunit_delete(x_agenda, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_agenda_partyunit_update(x_agenda, x_quark)
+        _modify_agenda_otherunit_update(x_agenda, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_agenda_partyunit_insert(x_agenda, x_quark)
+        _modify_agenda_otherunit_insert(x_agenda, x_quark)
 
 
 def modify_agenda_with_quarkunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
@@ -516,8 +516,8 @@ def modify_agenda_with_quarkunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
         _modify_agenda_agendaunit(x_agenda, x_quark)
     elif x_quark.category == "agenda_beliefunit":
         _modify_agenda_beliefunit(x_agenda, x_quark)
-    elif x_quark.category == "agenda_belief_partylink":
-        _modify_agenda_belief_partylink(x_agenda, x_quark)
+    elif x_quark.category == "agenda_belief_otherlink":
+        _modify_agenda_belief_otherlink(x_agenda, x_quark)
     elif x_quark.category == "agenda_ideaunit":
         _modify_agenda_ideaunit(x_agenda, x_quark)
     elif x_quark.category == "agenda_idea_balancelink":
@@ -530,8 +530,8 @@ def modify_agenda_with_quarkunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
         _modify_agenda_idea_reason_premiseunit(x_agenda, x_quark)
     elif x_quark.category == "agenda_idea_suffbelief":
         _modify_agenda_idea_suffbelief(x_agenda, x_quark)
-    elif x_quark.category == "agenda_partyunit":
-        _modify_agenda_partyunit(x_agenda, x_quark)
+    elif x_quark.category == "agenda_otherunit":
+        _modify_agenda_otherunit(x_agenda, x_quark)
 
 
 def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
@@ -540,11 +540,11 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             x_obj._weight != y_obj._weight
             or x_obj._max_tree_traverse != y_obj._max_tree_traverse
             or x_obj._meld_strategy != y_obj._meld_strategy
-            or x_obj._party_credor_pool != y_obj._party_credor_pool
-            or x_obj._party_debtor_pool != y_obj._party_debtor_pool
+            or x_obj._other_credor_pool != y_obj._other_credor_pool
+            or x_obj._other_debtor_pool != y_obj._other_debtor_pool
             or x_obj._planck != y_obj._planck
         )
-    elif category in {"agenda_belief_partylink", "agenda_idea_balancelink"}:
+    elif category in {"agenda_belief_otherlink", "agenda_idea_balancelink"}:
         return (x_obj.credor_weight != y_obj.credor_weight) or (
             x_obj.debtor_weight != y_obj.debtor_weight
         )
@@ -576,7 +576,7 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj.nigh != y_obj.nigh
             or x_obj.divisor != y_obj.divisor
         )
-    elif category == "agenda_partyunit":
+    elif category == "agenda_otherunit":
         return (x_obj.credor_weight != y_obj.credor_weight) or (
             x_obj.debtor_weight != y_obj.debtor_weight
         )

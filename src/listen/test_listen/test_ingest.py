@@ -32,23 +32,23 @@ def test_allocate_irrational_debtor_weight_CorrectlySetsAgendaAttr():
     zia_credor_weight = 47
     zia_debtor_weight = 41
     yao_agenda = agendaunit_shop(yao_text)
-    yao_agenda.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    zia_partyunit = yao_agenda.get_party(zia_text)
-    assert zia_partyunit._irrational_debtor_weight == 0
+    yao_agenda.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    zia_otherunit = yao_agenda.get_other(zia_text)
+    assert zia_otherunit._irrational_debtor_weight == 0
 
     # WHEN
     _allocate_irrational_debtor_weight(yao_agenda, zia_text)
 
     # THEN
-    assert zia_partyunit._irrational_debtor_weight == zia_debtor_weight
+    assert zia_otherunit._irrational_debtor_weight == zia_debtor_weight
 
 
 def test_generate_perspective_intent_CorrectlyGrabsIntentTasks():
     # GIVEN
     yao_text = "Yao"
     yao_speaker = agendaunit_shop(yao_text)
-    yao_speaker.add_partyunit(yao_text)
-    yao_speaker.set_party_pool(20)
+    yao_speaker.add_otherunit(yao_text)
+    yao_speaker.set_other_pool(20)
     casa_text = "casa"
     casa_road = yao_speaker.make_l1_road(casa_text)
     status_text = "status"

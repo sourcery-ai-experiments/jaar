@@ -1,7 +1,7 @@
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.belief import beliefunit_shop
-from src.agenda.party import partyunit_shop, partylink_shop
+from src.agenda.other import otherunit_shop, otherlink_shop
 from src.agenda.origin import originunit_shop
 from pytest import raises as pytest_raises
 from src.agenda.examples.example_agendas import agenda_v001
@@ -16,7 +16,7 @@ def test_AgendaUnit_meld_BaseScenario():
     assert bob1_agenda._owner_id == bob_text
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda)
 
     # THEN
     assert bob1_agenda
@@ -33,64 +33,64 @@ def test_AgendaUnit_meld_WeightDoesNotCombine():
     assert bob1_agenda._weight == 3
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda)
 
     # THEN
     assert bob1_agenda._weight == 3
 
 
-def test_AgendaUnit_meld_PartyUnits():
+def test_AgendaUnit_meld_OtherUnits():
     # GIVEN
     yao_text = "Yao"
-    yao_partyunit = partyunit_shop(party_id=yao_text)
+    yao_otherunit = otherunit_shop(other_id=yao_text)
 
     bob_text = "Bob"
     bob1_agenda = agendaunit_shop(bob_text)
-    bob1_agenda.set_partyunit(yao_partyunit)
+    bob1_agenda.set_otherunit(yao_otherunit)
 
     bob2_agenda = agendaunit_shop(bob_text)
-    bob2_agenda.set_partyunit(yao_partyunit)
+    bob2_agenda.set_otherunit(yao_otherunit)
     zia_text = "Zia"
-    zia_partyunit = partyunit_shop(party_id=zia_text)
-    bob2_agenda.set_partyunit(zia_partyunit)
-    assert len(bob1_agenda._partys) == 1
-    assert bob1_agenda.party_exists(yao_text)
-    assert bob1_agenda.party_exists(zia_text) is False
+    zia_otherunit = otherunit_shop(other_id=zia_text)
+    bob2_agenda.set_otherunit(zia_otherunit)
+    assert len(bob1_agenda._others) == 1
+    assert bob1_agenda.other_exists(yao_text)
+    assert bob1_agenda.other_exists(zia_text) is False
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda)
 
     # THEN
-    assert len(bob1_agenda._partys) == 2
-    assert bob1_agenda.party_exists(yao_text)
-    assert bob1_agenda.party_exists(zia_text)
+    assert len(bob1_agenda._others) == 2
+    assert bob1_agenda.other_exists(yao_text)
+    assert bob1_agenda.other_exists(zia_text)
 
 
-def test_AgendaUnit_meld_PartyUnits_ignore_partyunits_ReturnsCorrectObj():
+def test_AgendaUnit_meld_OtherUnits_ignore_otherunits_ReturnsCorrectObj():
     # GIVEN
     yao_text = "Yao"
-    yao_partyunit = partyunit_shop(party_id=yao_text)
+    yao_otherunit = otherunit_shop(other_id=yao_text)
 
     bob_text = "Bob"
     bob1_agenda = agendaunit_shop(bob_text)
-    bob1_agenda.set_partyunit(yao_partyunit)
+    bob1_agenda.set_otherunit(yao_otherunit)
 
     bob2_agenda = agendaunit_shop(bob_text)
-    bob2_agenda.set_partyunit(yao_partyunit)
+    bob2_agenda.set_otherunit(yao_otherunit)
     zia_text = "Zia"
-    zia_partyunit = partyunit_shop(party_id=zia_text)
-    bob2_agenda.set_partyunit(zia_partyunit)
-    assert len(bob1_agenda._partys) == 1
-    assert bob1_agenda.party_exists(yao_text)
-    assert bob1_agenda.party_exists(zia_text) is False
+    zia_otherunit = otherunit_shop(other_id=zia_text)
+    bob2_agenda.set_otherunit(zia_otherunit)
+    assert len(bob1_agenda._others) == 1
+    assert bob1_agenda.other_exists(yao_text)
+    assert bob1_agenda.other_exists(zia_text) is False
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda, ignore_partyunits=True)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda, ignore_otherunits=True)
 
     # THEN
-    assert len(bob1_agenda._partys) == 1
-    assert bob1_agenda.party_exists(yao_text)
-    assert bob1_agenda.party_exists(zia_text) is False
+    assert len(bob1_agenda._others) == 1
+    assert bob1_agenda.other_exists(yao_text)
+    assert bob1_agenda.other_exists(zia_text) is False
 
 
 def test_AgendaUnit_meld_BeliefUnits_WhereBeliefUnitIsMissing():
@@ -112,11 +112,11 @@ def test_AgendaUnit_meld_BeliefUnits_WhereBeliefUnitIsMissing():
     assert bob1_agenda.get_beliefunit(swim_text) is None
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda)
 
     # THEN
     # for x_belief_id in bob1_agenda._beliefs.values():
-    #     print(f"bob1_agenda {x_belief_id.party_id=}")
+    #     print(f"bob1_agenda {x_belief_id.other_id=}")
 
     assert len(bob1_agenda._beliefs) == 2
     assert bob1_agenda.get_beliefunit(run_text) != None
@@ -129,28 +129,28 @@ def test_AgendaUnit_meld_BeliefUnits_WhereBeliefUnitMembershipIsDifferent():
     bob_text = "Bob"
     bob1_agenda = agendaunit_shop(bob_text)
     sue_text = "Sue"
-    bob1_agenda.set_partyunit(partyunit_shop(sue_text))
+    bob1_agenda.set_otherunit(otherunit_shop(sue_text))
 
     run_text = ",runners"
     bob1_agenda.set_beliefunit(beliefunit_shop(run_text))
-    bob1_agenda.get_beliefunit(run_text).set_partylink(partylink_shop(sue_text))
+    bob1_agenda.get_beliefunit(run_text).set_otherlink(otherlink_shop(sue_text))
 
     bob2_agenda = agendaunit_shop(bob_text)
     yao_text = "Yao"
-    bob2_agenda.set_partyunit(partyunit_shop(yao_text))
-    bob2_agenda.set_partyunit(partyunit_shop(sue_text))
+    bob2_agenda.set_otherunit(otherunit_shop(yao_text))
+    bob2_agenda.set_otherunit(otherunit_shop(sue_text))
     bob2_agenda.set_beliefunit(beliefunit_shop(run_text))
-    bob2_agenda.get_beliefunit(run_text).set_partylink(partylink_shop(yao_text))
-    bob2_agenda.get_beliefunit(run_text).set_partylink(partylink_shop(sue_text))
+    bob2_agenda.get_beliefunit(run_text).set_otherlink(otherlink_shop(yao_text))
+    bob2_agenda.get_beliefunit(run_text).set_otherlink(otherlink_shop(sue_text))
     assert len(bob1_agenda._beliefs) == 2
-    assert len(bob1_agenda.get_beliefunit(run_text)._partys) == 1
+    assert len(bob1_agenda.get_beliefunit(run_text)._others) == 1
 
     # WHEN
-    bob1_agenda.meld(other_agenda=bob2_agenda)
+    bob1_agenda.meld(exterior_agenda=bob2_agenda)
 
     # THEN
     assert len(bob1_agenda._beliefs) == 3
-    assert len(bob1_agenda.get_beliefunit(run_text)._partys) == 2
+    assert len(bob1_agenda.get_beliefunit(run_text)._others) == 2
 
 
 def test_AgendaUnit_idearoot_meld_idearoot_AttrCorrectlyMelded():
@@ -335,15 +335,15 @@ def test_AgendaUnit_factunits_meld_IdeasMeldedBeforeFacts():
     assert bob1_idearoot._factunits == bob2_agenda._idearoot._factunits
 
 
-def test_AgendaUnit_meld_BeliefsMeldedBefore_Partys():
+def test_AgendaUnit_meld_BeliefsMeldedBefore_Others():
     # GIVEN
     yao_text = "Yao"
     yao1_agenda = agendaunit_shop(yao_text)
     yao2_agenda = agendaunit_shop(yao_text)
     bob_text = "Bob"
-    yao2_agenda.set_partyunit(partyunit_shop(bob_text))
+    yao2_agenda.set_otherunit(otherunit_shop(bob_text))
     assert yao2_agenda.get_beliefunit(bob_text) != None
-    yao2_agenda.set_beliefunit(beliefunit_shop(bob_text, _party_mirror=True))
+    yao2_agenda.set_beliefunit(beliefunit_shop(bob_text, _other_mirror=True))
 
     # WHEN/THEN
     assert yao1_agenda.meld(yao2_agenda) is None  # No error raised
@@ -405,7 +405,7 @@ def test_AgendaUnit_meld_ReturnsCorrectObj_LargeExample():
     assert bob_idearoot._uid == yao_idearoot._uid
     assert bob_idearoot._factunits == yao_idearoot._factunits
     assert bob_agenda._beliefs == yao_agenda._beliefs
-    assert bob_agenda._partys == yao_agenda._partys
+    assert bob_agenda._others == yao_agenda._others
 
     assert len(bob_idearoot._factunits) == 2
     assert len(bob_idearoot._factunits) == len(yao_idearoot._factunits)
@@ -433,8 +433,8 @@ def test_AgendaUnit_meld_ReturnsCorrectObj_LargeExample():
     assert abs(bob_family_bl._agenda_debt - yao_family_bl._agenda_debt) < 0.0001
 
     # for balanceline in bob_agendar_bl.values():
-    #     if balanceline.party_id != fam_text:
-    #         assert balanceline == yao_agendar_bl.get(balanceline.party_id)
+    #     if balanceline.other_id != fam_text:
+    #         assert balanceline == yao_agendar_bl.get(balanceline.other_id)
     assert bob_agendar_bl == yao_agendar_bl
     # assert x_agenda1._idearoot._balancelines == bob2_agenda._idearoot._balancelines
     # assert x_agenda1._idearoot == bob2_agenda._idearoot
@@ -449,12 +449,12 @@ def test_AgendaUnit__meld_originlinks_CorrectlySetsOriginLinks():
     assert len(bob_agenda._originunit._links) == 0
 
     # WHEN
-    bob_agenda._meld_originlinks(party_id=sue_text, party_weight=sue_weight)
+    bob_agenda._meld_originlinks(other_id=sue_text, other_weight=sue_weight)
 
     # THEN
     assert len(bob_agenda._originunit._links) == 1
     bob_sue_originunit = originunit_shop()
-    bob_sue_originunit.set_originlink(party_id=sue_text, weight=sue_weight)
+    bob_sue_originunit.set_originlink(other_id=sue_text, weight=sue_weight)
     assert bob_agenda._originunit == bob_sue_originunit
 
 
@@ -480,11 +480,11 @@ def test_AgendaUnit_meld_OriginUnitsCorrectlySet():
     assert len(bob_agenda._originunit._links) == 0
 
     # WHEN
-    bob_agenda.meld(sue_x_agenda, party_weight=sue_weight)
+    bob_agenda.meld(sue_x_agenda, other_weight=sue_weight)
 
     # THEN
     sue_originunit = originunit_shop()
-    sue_originunit.set_originlink(party_id=sue_text, weight=sue_weight)
+    sue_originunit.set_originlink(other_id=sue_text, weight=sue_weight)
     assert len(bob_agenda._originunit._links) == 1
     assert bob_agenda._originunit == sue_originunit
     bob_free_idea = bob_agenda.get_idea_obj(free_road)

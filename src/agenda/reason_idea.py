@@ -57,28 +57,28 @@ class FactCore:
     def get_obj_key(self):
         return self.base
 
-    def meld(self, other_factcore, same_reason: bool = False):
-        if same_reason and other_factcore.base != self.base:
+    def meld(self, exterior_factcore, same_reason: bool = False):
+        if same_reason and exterior_factcore.base != self.base:
             raise InvalidReasonException(
-                f"Meld fail: base={other_factcore.base} is different {self.base=}"
+                f"Meld fail: base={exterior_factcore.base} is different {self.base=}"
             )
-        elif same_reason and other_factcore.pick != self.pick:
+        elif same_reason and exterior_factcore.pick != self.pick:
             raise InvalidReasonException(
-                f"Meld fail: pick={other_factcore.pick} is different {self.pick=}"
+                f"Meld fail: pick={exterior_factcore.pick} is different {self.pick=}"
             )
-        elif same_reason and other_factcore.open != self.open:
+        elif same_reason and exterior_factcore.open != self.open:
             raise InvalidReasonException(
-                f"Meld fail: base={other_factcore.base} open={other_factcore.open} is different {self.open=}"
+                f"Meld fail: base={exterior_factcore.base} open={exterior_factcore.open} is different {self.open=}"
             )
-        elif same_reason and other_factcore.nigh != self.nigh:
+        elif same_reason and exterior_factcore.nigh != self.nigh:
             raise InvalidReasonException(
-                f"Meld fail: base={other_factcore.base} nigh={other_factcore.nigh} is different {self.nigh=}"
+                f"Meld fail: base={exterior_factcore.base} nigh={exterior_factcore.nigh} is different {self.nigh=}"
             )
         else:
-            self.base = other_factcore.base
-            self.pick = other_factcore.pick
-            self.open = other_factcore.open
-            self.nigh = other_factcore.nigh
+            self.base = exterior_factcore.base
+            self.pick = exterior_factcore.pick
+            self.open = exterior_factcore.open
+            self.nigh = exterior_factcore.nigh
         return self
 
 
@@ -414,22 +414,22 @@ class PremiseUnit:
     def find_replace_road(self, old_road: RoadUnit, new_road: RoadUnit):
         self.need = rebuild_road(self.need, old_road, new_road)
 
-    def meld(self, other_premise):
-        if other_premise.need != self.need:
+    def meld(self, exterior_premise):
+        if exterior_premise.need != self.need:
             raise InvalidReasonException(
-                f"Meld fail: need={other_premise.need} is different {self.need=}"
+                f"Meld fail: need={exterior_premise.need} is different {self.need=}"
             )
-        elif other_premise.open != self.open:
+        elif exterior_premise.open != self.open:
             raise InvalidReasonException(
-                f"Meld fail: need={other_premise.need} open={other_premise.open} is different {self.open=}"
+                f"Meld fail: need={exterior_premise.need} open={exterior_premise.open} is different {self.open=}"
             )
-        elif other_premise.nigh != self.nigh:
+        elif exterior_premise.nigh != self.nigh:
             raise InvalidReasonException(
-                f"Meld fail: need={other_premise.need} nigh={other_premise.nigh} is different {self.nigh=}"
+                f"Meld fail: need={exterior_premise.need} nigh={exterior_premise.nigh} is different {self.nigh=}"
             )
-        elif other_premise.divisor != self.divisor:
+        elif exterior_premise.divisor != self.divisor:
             raise InvalidReasonException(
-                f"Meld fail: need={other_premise.need} divisor={other_premise.divisor} is different {self.divisor=}"
+                f"Meld fail: need={exterior_premise.need} divisor={exterior_premise.divisor} is different {self.divisor=}"
             )
 
         return self
@@ -537,15 +537,15 @@ class ReasonCore:
             dict_x=self.premises, old_road=old_road, new_road=new_road
         )
 
-    def meld(self, other_reason):
-        for premise_x in other_reason.premises.values():
+    def meld(self, exterior_reason):
+        for premise_x in exterior_reason.premises.values():
             if self.premises.get(premise_x.need) is None:
                 self.premises[premise_x.need] = premise_x
             else:
                 self.premises.get(premise_x.need).meld(premise_x)
-        if other_reason.base != self.base:
+        if exterior_reason.base != self.base:
             raise InvalidReasonException(
-                f"Meld fail: reason={other_reason.base} is different {self.base=}"
+                f"Meld fail: reason={exterior_reason.base} is different {self.base=}"
             )
         return self
 

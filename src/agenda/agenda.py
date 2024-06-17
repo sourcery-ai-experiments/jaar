@@ -30,7 +30,7 @@ from src._road.road import (
     RoadUnit,
     is_string_in_road,
     OwnerID,
-    PartyID,
+    OtherID,
     HealerID,
     RealID,
     is_roadunit_convertible_to_path,
@@ -41,13 +41,13 @@ from src.agenda.meld import (
     get_meld_default,
     validate_meld_strategy,
 )
-from src.agenda.party import (
-    PartyUnit,
-    PartyLink,
-    partyunits_get_from_dict,
-    partyunit_shop,
-    partylink_shop,
-    PartyUnitExternalMetrics,
+from src.agenda.other import (
+    OtherUnit,
+    OtherLink,
+    otherunits_get_from_dict,
+    otherunit_shop,
+    otherlink_shop,
+    OtherUnitExternalMetrics,
 )
 from src.agenda.belief import (
     BalanceLink,
@@ -56,9 +56,9 @@ from src.agenda.belief import (
     get_beliefunits_from_dict,
     beliefunit_shop,
     balancelink_shop,
-    get_party_relevant_beliefs,
-    get_partys_relevant_beliefs,
-    get_intersection_of_partys,
+    get_other_relevant_beliefs,
+    get_others_relevant_beliefs,
+    get_intersection_of_others,
 )
 from src.agenda.healer import HealerHold
 from src.agenda.reason_idea import (
@@ -98,11 +98,11 @@ class NewDelimiterException(Exception):
     pass
 
 
-class PartyUnitsCredorDebtorSumException(Exception):
+class OtherUnitsCredorDebtorSumException(Exception):
     pass
 
 
-class PartyMissingException(Exception):
+class OtherMissingException(Exception):
     pass
 
 
@@ -128,7 +128,7 @@ class AgendaUnit:
     _owner_id: OwnerID = None
     _last_atom_id: int = None
     _weight: float = None
-    _partys: dict[PartyID:PartyUnit] = None
+    _others: dict[OtherID:OtherUnit] = None
     _beliefs: dict[BeliefID:BeliefUnit] = None
     _idearoot: IdeaUnit = None
     _max_tree_traverse: int = None
@@ -136,8 +136,8 @@ class AgendaUnit:
     _planck: float = None
     _penny: float = None
     _monetary_desc: str = None
-    _party_credor_pool: int = None
-    _party_debtor_pool: int = None
+    _other_credor_pool: int = None
+    _other_debtor_pool: int = None
     _meld_strategy: MeldStrategy = None
     _originunit: OriginUnit = None  # In job agendas this shows source
     # calc_agenda_metrics Calculated field begin
@@ -164,97 +164,97 @@ class AgendaUnit:
     def set_monetary_desc(self, x_monetary_desc: str):
         self._monetary_desc = x_monetary_desc
 
-    def set_party_pool(self, x_party_pool: int):
-        self.set_party_credor_pool(
-            new_party_credor_pool=x_party_pool,
-            update_partys_credor_weight=True,
+    def set_other_pool(self, x_other_pool: int):
+        self.set_other_credor_pool(
+            new_other_credor_pool=x_other_pool,
+            update_others_credor_weight=True,
             correct_planck_issues=True,
         )
-        self.set_party_debtor_pool(
-            new_party_debtor_pool=x_party_pool,
-            update_partys_debtor_weight=True,
+        self.set_other_debtor_pool(
+            new_other_debtor_pool=x_other_pool,
+            update_others_debtor_weight=True,
             correct_planck_issues=True,
         )
 
-    def set_party_credor_pool(
+    def set_other_credor_pool(
         self,
-        new_party_credor_pool: int,
-        update_partys_credor_weight: bool = False,
+        new_other_credor_pool: int,
+        update_others_credor_weight: bool = False,
         correct_planck_issues: bool = False,
     ):
-        if (new_party_credor_pool / self._planck).is_integer() is False:
+        if (new_other_credor_pool / self._planck).is_integer() is False:
             raise _planck_RatioException(
-                f"Agenda '{self._owner_id}' cannot set _party_credor_pool='{new_party_credor_pool}'. It is not divisible by planck '{self._planck}'"
+                f"Agenda '{self._owner_id}' cannot set _other_credor_pool='{new_other_credor_pool}'. It is not divisible by planck '{self._planck}'"
             )
 
-        if update_partys_credor_weight:
-            old_party_credor_pool = self.get_partyunits_credor_weight_sum()
-            if old_party_credor_pool != 0:
-                x_ratio = new_party_credor_pool / old_party_credor_pool
-                for x_party in self._partys.values():
-                    new_party_credor_weight = trim_planck_excess(
-                        num=x_party.credor_weight * x_ratio, planck=x_party._planck
+        if update_others_credor_weight:
+            old_other_credor_pool = self.get_otherunits_credor_weight_sum()
+            if old_other_credor_pool != 0:
+                x_ratio = new_other_credor_pool / old_other_credor_pool
+                for x_other in self._others.values():
+                    new_other_credor_weight = trim_planck_excess(
+                        num=x_other.credor_weight * x_ratio, planck=x_other._planck
                     )
-                    x_party.set_credor_weight(new_party_credor_weight)
+                    x_other.set_credor_weight(new_other_credor_weight)
 
-        self._party_credor_pool = new_party_credor_pool
+        self._other_credor_pool = new_other_credor_pool
         if correct_planck_issues:
             self._correct_any_credor_planck_issues()
 
     def _correct_any_credor_planck_issues(self):
-        if self.get_partyunits_credor_weight_sum() != self._party_credor_pool:
+        if self.get_otherunits_credor_weight_sum() != self._other_credor_pool:
             missing_credor_weight = (
-                self._party_credor_pool - self.get_partyunits_credor_weight_sum()
+                self._other_credor_pool - self.get_otherunits_credor_weight_sum()
             )
-            if len(self._partys) > 0:
-                partyunits = list(self._partys.values())
-                # partys_count = len(self._partys)
+            if len(self._others) > 0:
+                otherunits = list(self._others.values())
+                # others_count = len(self._others)
                 # planck_count = missing_credor_weight / self._planck
-                # if planck_count <= partys_count:
+                # if planck_count <= others_count:
                 for _ in range(0, missing_credor_weight, self._planck):
-                    x_partyunit = partyunits.pop()
-                    x_partyunit.set_credor_weight(
-                        x_partyunit.credor_weight + self._planck
+                    x_otherunit = otherunits.pop()
+                    x_otherunit.set_credor_weight(
+                        x_otherunit.credor_weight + self._planck
                     )
 
-    def set_party_debtor_pool(
+    def set_other_debtor_pool(
         self,
-        new_party_debtor_pool: int,
-        update_partys_debtor_weight: bool = False,
+        new_other_debtor_pool: int,
+        update_others_debtor_weight: bool = False,
         correct_planck_issues: bool = False,
     ):
-        if (new_party_debtor_pool / self._planck).is_integer() is False:
+        if (new_other_debtor_pool / self._planck).is_integer() is False:
             raise _planck_RatioException(
-                f"Agenda '{self._owner_id}' cannot set _party_debtor_pool='{new_party_debtor_pool}'. It is not divisible by planck '{self._planck}'"
+                f"Agenda '{self._owner_id}' cannot set _other_debtor_pool='{new_other_debtor_pool}'. It is not divisible by planck '{self._planck}'"
             )
 
-        if update_partys_debtor_weight:
-            old_party_debtor_pool = self.get_partyunits_debtor_weight_sum()
-            if old_party_debtor_pool != 0:
-                x_ratio = new_party_debtor_pool / old_party_debtor_pool
-                for x_party in self._partys.values():
-                    new_party_debtor_weight = trim_planck_excess(
-                        num=x_party.debtor_weight * x_ratio, planck=x_party._planck
+        if update_others_debtor_weight:
+            old_other_debtor_pool = self.get_otherunits_debtor_weight_sum()
+            if old_other_debtor_pool != 0:
+                x_ratio = new_other_debtor_pool / old_other_debtor_pool
+                for x_other in self._others.values():
+                    new_other_debtor_weight = trim_planck_excess(
+                        num=x_other.debtor_weight * x_ratio, planck=x_other._planck
                     )
-                    x_party.set_debtor_weight(new_party_debtor_weight)
-        self._party_debtor_pool = new_party_debtor_pool
+                    x_other.set_debtor_weight(new_other_debtor_weight)
+        self._other_debtor_pool = new_other_debtor_pool
         if correct_planck_issues:
             self._correct_any_debtor_planck_issues()
 
     def _correct_any_debtor_planck_issues(self):
-        if self.get_partyunits_debtor_weight_sum() != self._party_debtor_pool:
+        if self.get_otherunits_debtor_weight_sum() != self._other_debtor_pool:
             missing_debtor_weight = (
-                self._party_debtor_pool - self.get_partyunits_debtor_weight_sum()
+                self._other_debtor_pool - self.get_otherunits_debtor_weight_sum()
             )
-            if len(self._partys) > 0:
-                partyunits = list(self._partys.values())
-                # partys_count = len(self._partys)
+            if len(self._others) > 0:
+                otherunits = list(self._others.values())
+                # others_count = len(self._others)
                 # planck_count = missing_debtor_weight / self._planck
-                # if planck_count <= partys_count:
+                # if planck_count <= others_count:
                 for _ in range(0, missing_debtor_weight, self._planck):
-                    x_partyunit = partyunits.pop()
-                    x_partyunit.set_debtor_weight(
-                        x_partyunit.debtor_weight + self._planck
+                    x_otherunit = otherunits.pop()
+                    x_otherunit.set_debtor_weight(
+                        x_otherunit.debtor_weight + self._planck
                     )
 
     def make_road(
@@ -272,15 +272,15 @@ class AgendaUnit:
     def make_l1_road(self, l1_node: RoadNode):
         return self.make_road(self._real_id, l1_node)
 
-    def set_partys_output_agenda_meld_order(self):
-        sort_partys_list = list(self._partys.values())
-        sort_partys_list.sort(key=lambda x: x.party_id.lower(), reverse=False)
-        for count_x, x_partyunit in enumerate(sort_partys_list):
-            x_partyunit.set_output_agenda_meld_order(count_x)
+    def set_others_output_agenda_meld_order(self):
+        sort_others_list = list(self._others.values())
+        sort_others_list.sort(key=lambda x: x.other_id.lower(), reverse=False)
+        for count_x, x_otherunit in enumerate(sort_others_list):
+            x_otherunit.set_output_agenda_meld_order(count_x)
 
-    def clear_partys_output_agenda_meld_order(self):
-        for x_partyunit in self._partys.values():
-            x_partyunit.clear_output_agenda_meld_order()
+    def clear_others_output_agenda_meld_order(self):
+        for x_otherunit in self._others.values():
+            x_otherunit.clear_output_agenda_meld_order()
 
     def set_road_delimiter(self, new_road_delimiter: str):
         self.calc_agenda_metrics()
@@ -314,13 +314,13 @@ class AgendaUnit:
         self.edit_idea_label(old_road=old_real_id, new_label=self._real_id)
         self.calc_agenda_metrics()
 
-    def set_partyunit_external_metrics(
-        self, external_metrics: PartyUnitExternalMetrics
+    def set_otherunit_external_metrics(
+        self, external_metrics: OtherUnitExternalMetrics
     ):
-        party_x = self.get_party(external_metrics.internal_party_id)
-        party_x._credor_operational = external_metrics.credor_operational
-        party_x._debtor_operational = external_metrics.debtor_operational
-        # self.set_partyunit(partyunit=party_x)
+        other_x = self.get_other(external_metrics.internal_other_id)
+        other_x._credor_operational = external_metrics.credor_operational
+        other_x._debtor_operational = external_metrics.debtor_operational
+        # self.set_otherunit(otherunit=other_x)
 
     def set_max_tree_traverse(self, int_x: int):
         if int_x < 2:
@@ -344,7 +344,7 @@ class AgendaUnit:
             x_agenda.calc_agenda_metrics()
 
         # TODO grab beliefs
-        # TODO grab all belief partys
+        # TODO grab all belief others
         # TODO grab facts
         return x_agenda
 
@@ -426,7 +426,7 @@ class AgendaUnit:
         all_ideas_set = set(self.get_idea_tree_ordered_road_list())
         return all_ideas_set == all_ideas_set.intersection(pledge_idea_assoc_set)
 
-    def _are_all_partys_beliefs_are_in_idea_kid(self, road: RoadUnit) -> bool:
+    def _are_all_others_beliefs_are_in_idea_kid(self, road: RoadUnit) -> bool:
         idea_kid = self.get_idea_obj(road)
         # get dict of all idea balanceheirs
         balanceheir_list = idea_kid._balanceheirs.keys()
@@ -436,24 +436,24 @@ class AgendaUnit:
         non_single_beliefunits = {
             beliefunit.belief_id: beliefunit
             for beliefunit in self._beliefs.values()
-            if beliefunit._party_mirror != True
+            if beliefunit._other_mirror != True
         }
-        # check all non_party_mirror_beliefunits are in balanceheirs
+        # check all non_other_mirror_beliefunits are in balanceheirs
         for non_single_belief in non_single_beliefunits.values():
             if balanceheir_dict.get(non_single_belief.belief_id) is None:
                 return False
 
-        # get dict of all partylinks that are in all balanceheirs
-        balanceheir_partyunits = {}
-        for balanceheir_party_id in balanceheir_dict:
-            beliefunit = self.get_beliefunit(balanceheir_party_id)
-            for partylink in beliefunit._partys.values():
-                balanceheir_partyunits[partylink.party_id] = self.get_party(
-                    partylink.party_id
+        # get dict of all otherlinks that are in all balanceheirs
+        balanceheir_otherunits = {}
+        for balanceheir_other_id in balanceheir_dict:
+            beliefunit = self.get_beliefunit(balanceheir_other_id)
+            for otherlink in beliefunit._others.values():
+                balanceheir_otherunits[otherlink.other_id] = self.get_other(
+                    otherlink.other_id
                 )
 
-        # check all agenda._partys are in balanceheir_partyunits
-        return len(self._partys) == len(balanceheir_partyunits)
+        # check all agenda._others are in balanceheir_otherunits
+        return len(self._others) == len(balanceheir_otherunits)
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
         x_hregidea = HregIdea(self._road_delimiter)
@@ -591,7 +591,7 @@ class AgendaUnit:
         )
         return f"every {num_with_letter_ending} {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
 
-    def get_partys_metrics(self) -> dict[BeliefID:BalanceLink]:
+    def get_others_metrics(self) -> dict[BeliefID:BalanceLink]:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.balancelinks_metrics
 
@@ -621,168 +621,168 @@ class AgendaUnit:
                 belief._agenda_intent_cred += balanceline_agenda_cred
                 belief._agenda_intent_debt += balanceline_agenda_debt
 
-    def add_to_partyunit_agenda_cred_debt(
+    def add_to_otherunit_agenda_cred_debt(
         self,
-        partyunit_party_id: PartyID,
+        otherunit_other_id: OtherID,
         agenda_cred,
         agenda_debt: float,
         agenda_intent_cred: float,
         agenda_intent_debt: float,
     ):
-        for partyunit in self._partys.values():
-            if partyunit.party_id == partyunit_party_id:
-                partyunit.add_agenda_cred_debt(
+        for otherunit in self._others.values():
+            if otherunit.other_id == otherunit_other_id:
+                otherunit.add_agenda_cred_debt(
                     agenda_cred=agenda_cred,
                     agenda_debt=agenda_debt,
                     agenda_intent_cred=agenda_intent_cred,
                     agenda_intent_debt=agenda_intent_debt,
                 )
 
-    def del_partyunit(self, party_id: str):
-        self._beliefs.pop(party_id)
-        self._partys.pop(party_id)
+    def del_otherunit(self, other_id: str):
+        self._beliefs.pop(other_id)
+        self._others.pop(other_id)
 
-    def add_partyunit(
-        self, party_id: PartyID, credor_weight: int = None, debtor_weight: int = None
+    def add_otherunit(
+        self, other_id: OtherID, credor_weight: int = None, debtor_weight: int = None
     ):
-        partyunit = partyunit_shop(
-            party_id=party_id,
+        otherunit = otherunit_shop(
+            other_id=other_id,
             credor_weight=credor_weight,
             debtor_weight=debtor_weight,
             _road_delimiter=self._road_delimiter,
         )
-        self.set_partyunit(partyunit=partyunit)
+        self.set_otherunit(otherunit=otherunit)
 
-    def set_partyunit(self, partyunit: PartyUnit):
-        if partyunit._road_delimiter != self._road_delimiter:
-            partyunit._road_delimiter = self._road_delimiter
-        if partyunit._planck != self._planck:
-            partyunit._planck = self._planck
-        self._partys[partyunit.party_id] = partyunit
+    def set_otherunit(self, otherunit: OtherUnit):
+        if otherunit._road_delimiter != self._road_delimiter:
+            otherunit._road_delimiter = self._road_delimiter
+        if otherunit._planck != self._planck:
+            otherunit._planck = self._planck
+        self._others[otherunit.other_id] = otherunit
 
         try:
-            self._beliefs[partyunit.party_id]
+            self._beliefs[otherunit.other_id]
         except KeyError:
-            partylink = partylink_shop(
-                party_id=PartyID(partyunit.party_id), credor_weight=1, debtor_weight=1
+            otherlink = otherlink_shop(
+                other_id=OtherID(otherunit.other_id), credor_weight=1, debtor_weight=1
             )
-            partylinks = {partylink.party_id: partylink}
+            otherlinks = {otherlink.other_id: otherlink}
             belief_unit = beliefunit_shop(
-                partyunit.party_id,
-                _party_mirror=True,
-                _partys=partylinks,
+                otherunit.other_id,
+                _other_mirror=True,
+                _others=otherlinks,
                 _road_delimiter=self._road_delimiter,
             )
             self.set_beliefunit(y_beliefunit=belief_unit)
 
-    def party_exists(self, party_id: PartyID) -> bool:
-        return self.get_party(party_id) != None
+    def other_exists(self, other_id: OtherID) -> bool:
+        return self.get_other(other_id) != None
 
-    def edit_partyunit_party_id(
+    def edit_otherunit_other_id(
         self,
-        old_party_id: PartyID,
-        new_party_id: PartyID,
-        allow_party_overwite: bool,
+        old_other_id: OtherID,
+        new_other_id: OtherID,
+        allow_other_overwite: bool,
         allow_nonsingle_belief_overwrite: bool,
     ):
         # Handle scenarios: some are unacceptable
-        old_party_id_credor_weight = self.get_party(old_party_id).credor_weight
-        new_party_id_beliefunit = self.get_beliefunit(new_party_id)
-        new_party_id_partyunit = self.get_party(new_party_id)
-        if not allow_party_overwite and new_party_id_partyunit != None:
+        old_other_id_credor_weight = self.get_other(old_other_id).credor_weight
+        new_other_id_beliefunit = self.get_beliefunit(new_other_id)
+        new_other_id_otherunit = self.get_other(new_other_id)
+        if not allow_other_overwite and new_other_id_otherunit != None:
             raise InvalidAgendaException(
-                f"Party '{old_party_id}' modify to '{new_party_id}' failed since '{new_party_id}' exists."
+                f"Other '{old_other_id}' modify to '{new_other_id}' failed since '{new_other_id}' exists."
             )
         elif (
             not allow_nonsingle_belief_overwrite
-            and new_party_id_beliefunit != None
-            and new_party_id_beliefunit._party_mirror is False
+            and new_other_id_beliefunit != None
+            and new_other_id_beliefunit._other_mirror is False
         ):
             raise InvalidAgendaException(
-                f"Party '{old_party_id}' modify to '{new_party_id}' failed since non-single belief '{new_party_id}' exists."
+                f"Other '{old_other_id}' modify to '{new_other_id}' failed since non-single belief '{new_other_id}' exists."
             )
         elif (
             allow_nonsingle_belief_overwrite
-            and new_party_id_beliefunit != None
-            and new_party_id_beliefunit._party_mirror is False
+            and new_other_id_beliefunit != None
+            and new_other_id_beliefunit._other_mirror is False
         ):
-            self.del_beliefunit(belief_id=new_party_id)
-        elif self.party_exists(new_party_id):
-            old_party_id_credor_weight += new_party_id_partyunit.credor_weight
+            self.del_beliefunit(belief_id=new_other_id)
+        elif self.other_exists(new_other_id):
+            old_other_id_credor_weight += new_other_id_otherunit.credor_weight
 
-        # upsert new partyunit
-        self.add_partyunit(
-            party_id=new_party_id, credor_weight=old_party_id_credor_weight
+        # upsert new otherunit
+        self.add_otherunit(
+            other_id=new_other_id, credor_weight=old_other_id_credor_weight
         )
-        # modify all influenced beliefunits partylinks
-        for old_party_belief_id in self.get_party_belief_ids(old_party_id):
-            old_party_beliefunit = self.get_beliefunit(old_party_belief_id)
-            old_party_beliefunit._shift_partylink(old_party_id, new_party_id)
-        self.del_partyunit(party_id=old_party_id)
+        # modify all influenced beliefunits otherlinks
+        for old_other_belief_id in self.get_other_belief_ids(old_other_id):
+            old_other_beliefunit = self.get_beliefunit(old_other_belief_id)
+            old_other_beliefunit._shift_otherlink(old_other_id, new_other_id)
+        self.del_otherunit(other_id=old_other_id)
 
-    def edit_partyunit(
-        self, party_id: PartyID, credor_weight: int = None, debtor_weight: int = None
+    def edit_otherunit(
+        self, other_id: OtherID, credor_weight: int = None, debtor_weight: int = None
     ):
-        if self._partys.get(party_id) is None:
-            raise PartyMissingException(f"PartyUnit '{party_id}' does not exist.")
-        x_partyunit = self.get_party(party_id)
+        if self._others.get(other_id) is None:
+            raise OtherMissingException(f"OtherUnit '{other_id}' does not exist.")
+        x_otherunit = self.get_other(other_id)
         if credor_weight != None:
-            x_partyunit.set_credor_weight(credor_weight)
+            x_otherunit.set_credor_weight(credor_weight)
         if debtor_weight != None:
-            x_partyunit.set_debtor_weight(debtor_weight)
-        self.set_partyunit(x_partyunit)
+            x_otherunit.set_debtor_weight(debtor_weight)
+        self.set_otherunit(x_otherunit)
 
-    def get_party(self, party_id: PartyID) -> PartyUnit:
-        return self._partys.get(party_id)
+    def get_other(self, other_id: OtherID) -> OtherUnit:
+        return self._others.get(other_id)
 
-    def get_partyunits_party_id_list(self) -> dict[PartyID]:
-        party_id_list = list(self._partys.keys())
-        party_id_list.append("")
-        party_id_dict = {party_id.lower(): party_id for party_id in party_id_list}
-        party_id_lowercase_ordered_list = sorted(list(party_id_dict))
+    def get_otherunits_other_id_list(self) -> dict[OtherID]:
+        other_id_list = list(self._others.keys())
+        other_id_list.append("")
+        other_id_dict = {other_id.lower(): other_id for other_id in other_id_list}
+        other_id_lowercase_ordered_list = sorted(list(other_id_dict))
         return [
-            party_id_dict[party_id_l] for party_id_l in party_id_lowercase_ordered_list
+            other_id_dict[other_id_l] for other_id_l in other_id_lowercase_ordered_list
         ]
 
     def set_beliefunit(
         self,
         y_beliefunit: BeliefUnit,
-        create_missing_partys: bool = None,
+        create_missing_others: bool = None,
         replace: bool = True,
-        add_partylinks: bool = None,
+        add_otherlinks: bool = None,
     ):
         if y_beliefunit._road_delimiter != self._road_delimiter:
             y_beliefunit._road_delimiter = self._road_delimiter
         if replace is None:
             replace = False
-        if add_partylinks is None:
-            add_partylinks = False
+        if add_otherlinks is None:
+            add_otherlinks = False
         if (
             self.get_beliefunit(y_beliefunit.belief_id) is None
             or replace
-            and not add_partylinks
+            and not add_otherlinks
         ):
             self._beliefs[y_beliefunit.belief_id] = y_beliefunit
 
-        if add_partylinks:
+        if add_otherlinks:
             x_beliefunit = self.get_beliefunit(y_beliefunit.belief_id)
-            for x_partylink in y_beliefunit._partys.values():
-                x_beliefunit.set_partylink(x_partylink)
+            for x_otherlink in y_beliefunit._others.values():
+                x_beliefunit.set_otherlink(x_otherlink)
 
-        if create_missing_partys:
-            self._create_missing_partys(partylinks=y_beliefunit._partys)
+        if create_missing_others:
+            self._create_missing_others(otherlinks=y_beliefunit._others)
 
     def get_beliefunit(self, x_belief_id: BeliefID) -> BeliefUnit:
         return self._beliefs.get(x_belief_id)
 
-    def _create_missing_partys(self, partylinks: dict[PartyID:PartyLink]):
-        for partylink_x in partylinks.values():
-            if self.get_party(partylink_x.party_id) is None:
-                self.set_partyunit(
-                    partyunit=partyunit_shop(
-                        party_id=partylink_x.party_id,
-                        credor_weight=partylink_x.credor_weight,
-                        debtor_weight=partylink_x.debtor_weight,
+    def _create_missing_others(self, otherlinks: dict[OtherID:OtherLink]):
+        for otherlink_x in otherlinks.values():
+            if self.get_other(otherlink_x.other_id) is None:
+                self.set_otherunit(
+                    otherunit=otherunit_shop(
+                        other_id=otherlink_x.other_id,
+                        credor_weight=otherlink_x.credor_weight,
+                        debtor_weight=otherlink_x.debtor_weight,
                     )
                 )
 
@@ -802,12 +802,12 @@ class AgendaUnit:
         elif self.get_beliefunit(new_belief_id) != None:
             old_beliefunit = self.get_beliefunit(old_belief_id)
             old_beliefunit.set_belief_id(belief_id=new_belief_id)
-            self.get_beliefunit(new_belief_id).meld(other_belief=old_beliefunit)
+            self.get_beliefunit(new_belief_id).meld(exterior_belief=old_beliefunit)
             self.del_beliefunit(belief_id=old_belief_id)
         elif self.get_beliefunit(new_belief_id) is None:
             old_beliefunit = self.get_beliefunit(old_belief_id)
             beliefunit_x = beliefunit_shop(
-                new_belief_id, old_beliefunit._party_mirror, old_beliefunit._partys
+                new_belief_id, old_beliefunit._other_mirror, old_beliefunit._others
             )
             self.set_beliefunit(y_beliefunit=beliefunit_x)
             self.del_beliefunit(belief_id=old_belief_id)
@@ -832,8 +832,8 @@ class AgendaUnit:
                 old_balancelink = x_idea._balancelinks.get(old_belief_id)
                 old_balancelink.belief_id = new_belief_id
                 x_idea._balancelinks.get(new_belief_id).meld(
-                    other_balancelink=old_balancelink,
-                    other_meld_strategy="sum",
+                    exterior_balancelink=old_balancelink,
+                    exterior_meld_strategy="sum",
                     src_meld_strategy="sum",
                 )
 
@@ -976,7 +976,7 @@ class AgendaUnit:
             # example: timeline range (0-, 1.5e9) is range-root
             # example: "timeline,weeks" (spllt 10080) is range-descendant
             # there exists a reason base "timeline,weeks" with premise.need = "timeline,weeks"
-            # and (1,2) divisor=2 (every other week)
+            # and (1,2) divisor=2 (every othher week)
             #
             # should not set "timeline,weeks" fact, only "timeline" fact and
             # "timeline,weeks" should be set automatica_lly since there exists a reason
@@ -1166,7 +1166,7 @@ class AgendaUnit:
         if create_missing_ideas:
             self._create_missing_ideas(road=kid_road)
         if create_missing_beliefs:
-            self._create_missing_beliefs_partys(balancelinks=idea_kid._balancelinks)
+            self._create_missing_beliefs_others(balancelinks=idea_kid._balancelinks)
 
     def _get_filtered_balancelinks_idea(self, x_idea: IdeaUnit) -> IdeaUnit:
         _balancelinks_to_delete = [
@@ -1188,11 +1188,11 @@ class AgendaUnit:
 
         return x_idea
 
-    def _create_missing_beliefs_partys(self, balancelinks: dict[BeliefID:BalanceLink]):
+    def _create_missing_beliefs_others(self, balancelinks: dict[BeliefID:BalanceLink]):
         for balancelink_x in balancelinks.values():
             if self.get_beliefunit(balancelink_x.belief_id) is None:
                 beliefunit_x = beliefunit_shop(
-                    belief_id=balancelink_x.belief_id, _partys={}
+                    belief_id=balancelink_x.belief_id, _others={}
                 )
                 self.set_beliefunit(y_beliefunit=beliefunit_x)
 
@@ -1454,8 +1454,8 @@ class AgendaUnit:
         pledge: bool = None,
         factunit: FactUnit = None,
         descendant_pledge_count: int = None,
-        all_party_cred: bool = None,
-        all_party_debt: bool = None,
+        all_other_cred: bool = None,
+        all_other_debt: bool = None,
         balancelink: BalanceLink = None,
         balancelink_del: BeliefID = None,
         is_expanded: bool = None,
@@ -1492,8 +1492,8 @@ class AgendaUnit:
             numeric_road=numeric_road,
             range_source_road=range_source_road,
             descendant_pledge_count=descendant_pledge_count,
-            all_party_cred=all_party_cred,
-            all_party_debt=all_party_debt,
+            all_other_cred=all_other_cred,
+            all_other_debt=all_other_debt,
             balancelink=balancelink,
             balancelink_del=balancelink_del,
             is_expanded=is_expanded,
@@ -1535,74 +1535,74 @@ class AgendaUnit:
         pledge_item = self.get_idea_obj(task_road)
         pledge_item.set_factunit_to_complete(self._idearoot._factunits[base])
 
-    def is_partyunits_credor_weight_sum_correct(self) -> bool:
-        x_sum = self.get_partyunits_credor_weight_sum()
-        return x_sum in (0, self._party_credor_pool) or self._party_credor_pool is None
+    def is_otherunits_credor_weight_sum_correct(self) -> bool:
+        x_sum = self.get_otherunits_credor_weight_sum()
+        return x_sum in (0, self._other_credor_pool) or self._other_credor_pool is None
 
-    def is_partyunits_debtor_weight_sum_correct(self) -> bool:
-        x_sum = self.get_partyunits_debtor_weight_sum()
-        return self._party_debtor_pool is None or x_sum in (self._party_debtor_pool, 0)
+    def is_otherunits_debtor_weight_sum_correct(self) -> bool:
+        x_sum = self.get_otherunits_debtor_weight_sum()
+        return self._other_debtor_pool is None or x_sum in (self._other_debtor_pool, 0)
 
-    def get_partyunits_credor_weight_sum(self) -> float:
-        return sum(partyunit.get_credor_weight() for partyunit in self._partys.values())
+    def get_otherunits_credor_weight_sum(self) -> float:
+        return sum(otherunit.get_credor_weight() for otherunit in self._others.values())
 
-    def get_partyunits_debtor_weight_sum(self) -> float:
-        return sum(partyunit.get_debtor_weight() for partyunit in self._partys.values())
+    def get_otherunits_debtor_weight_sum(self) -> float:
+        return sum(otherunit.get_debtor_weight() for otherunit in self._others.values())
 
-    def _add_to_partyunits_agenda_cred_debt(self, idea_agenda_importance: float):
-        sum_partyunit_credor_weight = self.get_partyunits_credor_weight_sum()
-        sum_partyunit_debtor_weight = self.get_partyunits_debtor_weight_sum()
+    def _add_to_otherunits_agenda_cred_debt(self, idea_agenda_importance: float):
+        sum_otherunit_credor_weight = self.get_otherunits_credor_weight_sum()
+        sum_otherunit_debtor_weight = self.get_otherunits_debtor_weight_sum()
 
-        for x_partyunit in self._partys.values():
+        for x_otherunit in self._others.values():
             au_agenda_cred = (
-                idea_agenda_importance * x_partyunit.get_credor_weight()
-            ) / sum_partyunit_credor_weight
+                idea_agenda_importance * x_otherunit.get_credor_weight()
+            ) / sum_otherunit_credor_weight
 
             au_agenda_debt = (
-                idea_agenda_importance * x_partyunit.get_debtor_weight()
-            ) / sum_partyunit_debtor_weight
+                idea_agenda_importance * x_otherunit.get_debtor_weight()
+            ) / sum_otherunit_debtor_weight
 
-            x_partyunit.add_agenda_cred_debt(
+            x_otherunit.add_agenda_cred_debt(
                 agenda_cred=au_agenda_cred,
                 agenda_debt=au_agenda_debt,
                 agenda_intent_cred=0,
                 agenda_intent_debt=0,
             )
 
-    def _add_to_partyunits_agenda_intent_cred_debt(self, idea_agenda_importance: float):
-        sum_partyunit_credor_weight = self.get_partyunits_credor_weight_sum()
-        sum_partyunit_debtor_weight = self.get_partyunits_debtor_weight_sum()
+    def _add_to_otherunits_agenda_intent_cred_debt(self, idea_agenda_importance: float):
+        sum_otherunit_credor_weight = self.get_otherunits_credor_weight_sum()
+        sum_otherunit_debtor_weight = self.get_otherunits_debtor_weight_sum()
 
-        for x_partyunit in self._partys.values():
+        for x_otherunit in self._others.values():
             au_agenda_intent_cred = (
-                idea_agenda_importance * x_partyunit.get_credor_weight()
-            ) / sum_partyunit_credor_weight
+                idea_agenda_importance * x_otherunit.get_credor_weight()
+            ) / sum_otherunit_credor_weight
 
             au_agenda_intent_debt = (
-                idea_agenda_importance * x_partyunit.get_debtor_weight()
-            ) / sum_partyunit_debtor_weight
+                idea_agenda_importance * x_otherunit.get_debtor_weight()
+            ) / sum_otherunit_debtor_weight
 
-            x_partyunit.add_agenda_cred_debt(
+            x_otherunit.add_agenda_cred_debt(
                 agenda_cred=0,
                 agenda_debt=0,
                 agenda_intent_cred=au_agenda_intent_cred,
                 agenda_intent_debt=au_agenda_intent_debt,
             )
 
-    def _set_partyunits_agenda_intent_importance(self, agenda_intent_importance: float):
-        sum_partyunit_credor_weight = self.get_partyunits_credor_weight_sum()
-        sum_partyunit_debtor_weight = self.get_partyunits_debtor_weight_sum()
+    def _set_otherunits_agenda_intent_importance(self, agenda_intent_importance: float):
+        sum_otherunit_credor_weight = self.get_otherunits_credor_weight_sum()
+        sum_otherunit_debtor_weight = self.get_otherunits_debtor_weight_sum()
 
-        for x_partyunit in self._partys.values():
+        for x_otherunit in self._others.values():
             au_agenda_intent_cred = (
-                agenda_intent_importance * x_partyunit.get_credor_weight()
-            ) / sum_partyunit_credor_weight
+                agenda_intent_importance * x_otherunit.get_credor_weight()
+            ) / sum_otherunit_credor_weight
 
             au_agenda_intent_debt = (
-                agenda_intent_importance * x_partyunit.get_debtor_weight()
-            ) / sum_partyunit_debtor_weight
+                agenda_intent_importance * x_otherunit.get_debtor_weight()
+            ) / sum_otherunit_debtor_weight
 
-            x_partyunit.add_agenda_intent_cred_debt(
+            x_otherunit.add_agenda_intent_cred_debt(
                 agenda_intent_cred=au_agenda_intent_cred,
                 agenda_intent_debt=au_agenda_intent_debt,
             )
@@ -1624,12 +1624,12 @@ class AgendaUnit:
     def _allot_agenda_intent_importance(self):
         for idea in self._idea_dict.values():
             # If there are no balancelines associated with idea
-            # allot agenda_importance via general partyunit
+            # allot agenda_importance via general otherunit
             # cred ratio and debt ratio
             # if idea.is_intent_item() and idea._balancelines == {}:
             if idea.is_intent_item():
                 if idea._balancelines == {}:
-                    self._add_to_partyunits_agenda_intent_cred_debt(
+                    self._add_to_otherunits_agenda_intent_cred_debt(
                         idea._agenda_importance
                     )
                 else:
@@ -1642,42 +1642,42 @@ class AgendaUnit:
 
     def _allot_beliefs_agenda_importance(self):
         for belief_obj in self._beliefs.values():
-            belief_obj._set_partylink_agenda_cred_debt()
-            for partylink in belief_obj._partys.values():
-                self.add_to_partyunit_agenda_cred_debt(
-                    partyunit_party_id=partylink.party_id,
-                    agenda_cred=partylink._agenda_cred,
-                    agenda_debt=partylink._agenda_debt,
-                    agenda_intent_cred=partylink._agenda_intent_cred,
-                    agenda_intent_debt=partylink._agenda_intent_debt,
+            belief_obj._set_otherlink_agenda_cred_debt()
+            for otherlink in belief_obj._others.values():
+                self.add_to_otherunit_agenda_cred_debt(
+                    otherunit_other_id=otherlink.other_id,
+                    agenda_cred=otherlink._agenda_cred,
+                    agenda_debt=otherlink._agenda_debt,
+                    agenda_intent_cred=otherlink._agenda_intent_cred,
+                    agenda_intent_debt=otherlink._agenda_intent_debt,
                 )
 
     def _set_agenda_intent_ratio_cred_debt(self):
         agenda_intent_ratio_cred_sum = 0
         agenda_intent_ratio_debt_sum = 0
 
-        for x_partyunit in self._partys.values():
-            agenda_intent_ratio_cred_sum += x_partyunit._agenda_intent_cred
-            agenda_intent_ratio_debt_sum += x_partyunit._agenda_intent_debt
+        for x_otherunit in self._others.values():
+            agenda_intent_ratio_cred_sum += x_otherunit._agenda_intent_cred
+            agenda_intent_ratio_debt_sum += x_otherunit._agenda_intent_debt
 
-        for x_partyunit in self._partys.values():
-            x_partyunit.set_agenda_intent_ratio_cred_debt(
+        for x_otherunit in self._others.values():
+            x_otherunit.set_agenda_intent_ratio_cred_debt(
                 agenda_intent_ratio_cred_sum=agenda_intent_ratio_cred_sum,
                 agenda_intent_ratio_debt_sum=agenda_intent_ratio_debt_sum,
-                agenda_partyunit_total_credor_weight=self.get_partyunits_credor_weight_sum(),
-                agenda_partyunit_total_debtor_weight=self.get_partyunits_debtor_weight_sum(),
+                agenda_otherunit_total_credor_weight=self.get_otherunits_credor_weight_sum(),
+                agenda_otherunit_total_debtor_weight=self.get_otherunits_debtor_weight_sum(),
             )
 
-    def get_party_belief_ids(self, party_id: PartyID) -> list[BeliefID]:
+    def get_other_belief_ids(self, other_id: OtherID) -> list[BeliefID]:
         return [
             x_beliefunit.belief_id
             for x_beliefunit in self._beliefs.values()
-            if x_beliefunit.partylink_exists(party_id)
+            if x_beliefunit.otherlink_exists(other_id)
         ]
 
-    def _reset_partyunit_agenda_cred_debt(self):
-        for partyunit in self._partys.values():
-            partyunit.reset_agenda_cred_debt()
+    def _reset_otherunit_agenda_cred_debt(self):
+        for otherunit in self._others.values():
+            otherunit.reset_agenda_cred_debt()
 
     def idea_exists(self, road: RoadUnit) -> bool:
         if road is None:
@@ -1756,19 +1756,19 @@ class AgendaUnit:
 
             if (
                 belief_everyone != False
-                and x_idea_obj._all_party_cred != False
-                and x_idea_obj._all_party_debt != False
+                and x_idea_obj._all_other_cred != False
+                and x_idea_obj._all_other_debt != False
                 and x_idea_obj._balanceheirs != {}
             ) or (
                 belief_everyone != False
-                and x_idea_obj._all_party_cred is False
-                and x_idea_obj._all_party_debt is False
+                and x_idea_obj._all_other_cred is False
+                and x_idea_obj._all_other_debt is False
             ):
                 belief_everyone = False
             elif belief_everyone != False:
                 belief_everyone = True
-            x_idea_obj._all_party_cred = belief_everyone
-            x_idea_obj._all_party_debt = belief_everyone
+            x_idea_obj._all_other_cred = belief_everyone
+            x_idea_obj._all_other_debt = belief_everyone
 
             if x_idea_obj._healerhold.any_belief_id_exists():
                 econ_justified_by_problem = False
@@ -1807,7 +1807,7 @@ class AgendaUnit:
         x_idearoot.set_balanceheirs_agenda_cred_debt()
         x_idearoot.set_ancestor_pledge_count(0, False)
         x_idearoot.clear_descendant_pledge_count()
-        x_idearoot.clear_all_party_cred_debt()
+        x_idearoot.clear_all_other_cred_debt()
         x_idearoot.pledge = False
 
         if x_idearoot.is_kidless():
@@ -1844,7 +1844,7 @@ class AgendaUnit:
             parent_idea._ancestor_pledge_count, parent_idea.pledge
         )
         idea_kid.clear_descendant_pledge_count()
-        idea_kid.clear_all_party_cred_debt()
+        idea_kid.clear_all_other_cred_debt()
 
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using agenda root as common reference
@@ -1857,7 +1857,7 @@ class AgendaUnit:
         if idea.is_balanceheirless() is False:
             self._set_beliefunits_agenda_importance(idea._balanceheirs)
         elif idea.is_balanceheirless():
-            self._add_to_partyunits_agenda_cred_debt(idea._agenda_importance)
+            self._add_to_otherunits_agenda_cred_debt(idea._agenda_importance)
 
     def get_agenda_importance(
         self, parent_agenda_importance: float, weight: int, sibling_total_weight: int
@@ -1964,11 +1964,11 @@ class AgendaUnit:
         for x_econ_road, x_econ_idea in self._econ_dict.items():
             for x_belief_id in x_econ_idea._healerhold._belief_ids:
                 x_beliefunit = self.get_beliefunit(x_belief_id)
-                for x_party_id in x_beliefunit._partys.keys():
-                    if _healers_dict.get(x_party_id) is None:
-                        _healers_dict[x_party_id] = {x_econ_road: x_econ_idea}
+                for x_other_id in x_beliefunit._others.keys():
+                    if _healers_dict.get(x_other_id) is None:
+                        _healers_dict[x_other_id] = {x_econ_road: x_econ_idea}
                     else:
-                        healer_dict = _healers_dict.get(x_party_id)
+                        healer_dict = _healers_dict.get(x_other_id)
                         healer_dict[x_econ_road] = x_econ_idea
         return _healers_dict
 
@@ -1979,17 +1979,17 @@ class AgendaUnit:
         )
 
     def _pre_tree_traverse_cred_debt_reset(self):
-        if self.is_partyunits_credor_weight_sum_correct() is False:
-            raise PartyUnitsCredorDebtorSumException(
-                f"'{self._owner_id}' is_partyunits_credor_weight_sum_correct is False. _party_credor_pool={self._party_credor_pool}. partyunits_credor_weight_sum={self.get_partyunits_credor_weight_sum()}"
+        if self.is_otherunits_credor_weight_sum_correct() is False:
+            raise OtherUnitsCredorDebtorSumException(
+                f"'{self._owner_id}' is_otherunits_credor_weight_sum_correct is False. _other_credor_pool={self._other_credor_pool}. otherunits_credor_weight_sum={self.get_otherunits_credor_weight_sum()}"
             )
-        if self.is_partyunits_debtor_weight_sum_correct() is False:
-            raise PartyUnitsCredorDebtorSumException(
-                f"'{self._owner_id}' is_partyunits_debtor_weight_sum_correct is False. _party_debtor_pool={self._party_debtor_pool}. partyunits_debtor_weight_sum={self.get_partyunits_debtor_weight_sum()}"
+        if self.is_otherunits_debtor_weight_sum_correct() is False:
+            raise OtherUnitsCredorDebtorSumException(
+                f"'{self._owner_id}' is_otherunits_debtor_weight_sum_correct is False. _other_debtor_pool={self._other_debtor_pool}. otherunits_debtor_weight_sum={self.get_otherunits_debtor_weight_sum()}"
             )
         self._reset_beliefunits_agenda_cred_debt()
         self._reset_beliefunits_agenda_cred_debt()
-        self._reset_partyunit_agenda_cred_debt()
+        self._reset_otherunit_agenda_cred_debt()
 
     def get_heir_road_list(self, x_road: RoadUnit) -> list[RoadUnit]:
         road_list = self.get_idea_tree_ordered_road_list()
@@ -2030,23 +2030,23 @@ class AgendaUnit:
                 x_dict[fact_road] = fact_obj.get_dict()
         return x_dict
 
-    def get_partys_dict(self, all_attrs: bool = False) -> dict[str:str]:
+    def get_others_dict(self, all_attrs: bool = False) -> dict[str:str]:
         x_dict = {}
-        if self._partys != None:
-            for party_id, party_obj in self._partys.items():
-                x_dict[party_id] = party_obj.get_dict(all_attrs)
+        if self._others != None:
+            for other_id, other_obj in self._others.items():
+                x_dict[other_id] = other_obj.get_dict(all_attrs)
         return x_dict
 
     def get_beliefunits_dict(self) -> dict[str:str]:
         return {
             belief_belief_id: belief_obj.get_dict()
             for belief_belief_id, belief_obj in self._beliefs.items()
-            if belief_obj._party_mirror is False
+            if belief_obj._other_mirror is False
         }
 
     def get_dict(self) -> dict[str:str]:
         x_dict = {
-            "_partys": self.get_partys_dict(),
+            "_others": self.get_others_dict(),
             "_beliefs": self.get_beliefunits_dict(),
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
@@ -2058,10 +2058,10 @@ class AgendaUnit:
             "_road_delimiter": self._road_delimiter,
             "_idearoot": self._idearoot.get_dict(),
         }
-        if self._party_credor_pool != None:
-            x_dict["_party_credor_pool"] = self._party_credor_pool
-        if self._party_debtor_pool != None:
-            x_dict["_party_debtor_pool"] = self._party_debtor_pool
+        if self._other_credor_pool != None:
+            x_dict["_other_credor_pool"] = self._other_credor_pool
+        if self._other_debtor_pool != None:
+            x_dict["_other_debtor_pool"] = self._other_debtor_pool
         if self._meld_strategy != get_meld_default():
             x_dict["_meld_strategy"] = self._meld_strategy
         if self._last_atom_id != None:
@@ -2113,22 +2113,22 @@ class AgendaUnit:
 
         self.calc_agenda_metrics()
 
-    def get_agenda4party(self, party_id: PartyID, facts: dict[RoadUnit:FactCore]):
+    def get_agenda4other(self, other_id: OtherID, facts: dict[RoadUnit:FactCore]):
         self.calc_agenda_metrics()
-        agenda4party = agendaunit_shop(_owner_id=party_id)
-        agenda4party._idearoot._agenda_importance = self._idearoot._agenda_importance
-        # get party's partys: partyzone
+        agenda4other = agendaunit_shop(_owner_id=other_id)
+        agenda4other._idearoot._agenda_importance = self._idearoot._agenda_importance
+        # get other's others: otherzone
 
-        # get partyzone beliefs
-        party_beliefs = self.get_party_belief_ids(party_id=party_id)
+        # get otherzone beliefs
+        other_beliefs = self.get_other_belief_ids(other_id=other_id)
 
-        # set agenda4party by traversing the idea tree and selecting associated beliefs
+        # set agenda4other by traversing the idea tree and selecting associated beliefs
         # set root
         not_included_agenda_importance = 0
-        agenda4party._idearoot.clear_kids()
+        agenda4other._idearoot.clear_kids()
         for ykx in self._idearoot._kids.values():
             y4a_included = any(
-                belief_ancestor.belief_id in party_beliefs
+                belief_ancestor.belief_id in other_beliefs
                 for belief_ancestor in ykx._balancelines.values()
             )
 
@@ -2143,18 +2143,18 @@ class AgendaUnit:
                     pledge=ykx.pledge,
                     _task=ykx._task,
                 )
-                agenda4party._idearoot._kids[ykx._label] = y4a_new
+                agenda4other._idearoot._kids[ykx._label] = y4a_new
             else:
                 not_included_agenda_importance += ykx._agenda_importance
 
         if not_included_agenda_importance > 0:
-            y4a_other = ideaunit_shop(
-                _label="__other__",
+            y4a_exterior = ideaunit_shop(
+                _label="__agenda4other__",
                 _agenda_importance=not_included_agenda_importance,
             )
-            agenda4party._idearoot._kids[y4a_other._label] = y4a_other
+            agenda4other._idearoot._kids[y4a_exterior._label] = y4a_exterior
 
-        return agenda4party
+        return agenda4other
 
     def set_dominate_pledge_idea(self, idea_kid: IdeaUnit):
         idea_kid.pledge = True
@@ -2175,28 +2175,31 @@ class AgendaUnit:
         self._meld_strategy = validate_meld_strategy(x_meld_strategy)
 
     def meld(
-        self, other_agenda, party_weight: float = None, ignore_partyunits: bool = False
+        self,
+        exterior_agenda,
+        other_weight: float = None,
+        ignore_otherunits: bool = False,
     ):
-        self._meld_beliefs(other_agenda)
-        if not ignore_partyunits:
-            self._meld_partys(other_agenda)
-        self._meld_ideas(other_agenda, party_weight)
-        self._meld_facts(other_agenda)
+        self._meld_beliefs(exterior_agenda)
+        if not ignore_otherunits:
+            self._meld_others(exterior_agenda)
+        self._meld_ideas(exterior_agenda, other_weight)
+        self._meld_facts(exterior_agenda)
         self._weight = get_meld_weight(
             src_weight=self._weight,
             src_meld_strategy="default",
-            other_weight=other_agenda._weight,
-            other_meld_strategy="default",
+            exterior_weight=exterior_agenda._weight,
+            exterior_meld_strategy="default",
         )
-        self._meld_originlinks(other_agenda._owner_id, party_weight)
+        self._meld_originlinks(exterior_agenda._owner_id, other_weight)
 
-    def _meld_ideas(self, other_agenda, party_weight: float):
+    def _meld_ideas(self, exterior_agenda, other_weight: float):
         # meld idearoot
-        self._idearoot.meld(other_idea=other_agenda._idearoot, _idearoot=True)
+        self._idearoot.meld(exterior_idea=exterior_agenda._idearoot, _idearoot=True)
 
-        # meld all other ideas
-        party_id = other_agenda._owner_id
-        o_idea_list = other_agenda.get_idea_list_without_idearoot()
+        # meld all exterior ideas
+        other_id = exterior_agenda._owner_id
+        o_idea_list = exterior_agenda.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
             o_road = road_validate(
                 self.make_road(o_idea._parent_road, o_idea._label),
@@ -2205,47 +2208,47 @@ class AgendaUnit:
             )
             try:
                 main_idea = self.get_idea_obj(o_road)
-                main_idea.meld(o_idea, False, party_id, party_weight)
+                main_idea.meld(o_idea, False, other_id, other_weight)
             except Exception:
                 self.add_idea(idea_kid=o_idea, parent_road=o_idea._parent_road)
                 main_idea = self.get_idea_obj(o_road)
-                main_idea._originunit.set_originlink(party_id, party_weight)
+                main_idea._originunit.set_originlink(other_id, other_weight)
 
-    def _meld_partys(self, other_agenda):
-        for partyunit in other_agenda._partys.values():
-            if self.get_party(partyunit.party_id) is None:
-                self.set_partyunit(partyunit=partyunit)
+    def _meld_others(self, exterior_agenda):
+        for otherunit in exterior_agenda._others.values():
+            if self.get_other(otherunit.other_id) is None:
+                self.set_otherunit(otherunit=otherunit)
             else:
-                self.get_party(partyunit.party_id).meld(partyunit)
+                self.get_other(otherunit.other_id).meld(otherunit)
 
-    def _meld_beliefs(self, other_agenda):
-        for brx in other_agenda._beliefs.values():
+    def _meld_beliefs(self, exterior_agenda):
+        for brx in exterior_agenda._beliefs.values():
             if self.get_beliefunit(brx.belief_id) is None:
                 self.set_beliefunit(y_beliefunit=brx)
             else:
                 self.get_beliefunit(brx.belief_id).meld(brx)
 
-    def _meld_facts(self, other_agenda):
-        for hx in other_agenda._idearoot._factunits.values():
+    def _meld_facts(self, exterior_agenda):
+        for hx in exterior_agenda._idearoot._factunits.values():
             if self._idearoot._factunits.get(hx.base) is None:
                 self.set_fact(base=hx.base, pick=hx.fact, open=hx.open, nigh=hx.nigh)
             else:
                 self._idearoot._factunits.get(hx.base).meld(hx)
 
-    def _meld_originlinks(self, party_id: PartyID, party_weight: float):
-        if party_id != None:
-            self._originunit.set_originlink(party_id, party_weight)
+    def _meld_originlinks(self, other_id: OtherID, other_weight: float):
+        if other_id != None:
+            self._originunit.set_originlink(other_id, other_weight)
 
     def get_assignment(
         self,
         agenda_x,
-        assignor_partys: dict[PartyID:PartyUnit],
-        assignor_party_id: PartyID,
+        assignor_others: dict[OtherID:OtherUnit],
+        assignor_other_id: OtherID,
     ) -> any:
         self.calc_agenda_metrics()
-        self._set_assignment_partys(agenda_x, assignor_partys, assignor_party_id)
+        self._set_assignment_others(agenda_x, assignor_others, assignor_other_id)
         self._set_assignment_beliefs(agenda_x)
-        assignor_pledges = self._get_assignor_pledge_ideas(agenda_x, assignor_party_id)
+        assignor_pledges = self._get_assignor_pledge_ideas(agenda_x, assignor_other_id)
         relevant_roads = self._get_relevant_roads(assignor_pledges)
         self._set_assignment_ideas(agenda_x, relevant_roads)
         return agenda_x
@@ -2274,33 +2277,33 @@ class AgendaUnit:
                     nigh=afu.nigh,
                 )
 
-    def _set_assignment_partys(
+    def _set_assignment_others(
         self,
         agenda_x,
-        assignor_partys: dict[PartyID:PartyUnit],
-        assignor_party_id: PartyID,
+        assignor_others: dict[OtherID:OtherUnit],
+        assignor_other_id: OtherID,
     ):
-        if self.party_exists(assignor_party_id):
-            # get all partys that are both in self._partys and assignor_known_partys
-            partys_set = get_intersection_of_partys(self._partys, assignor_partys)
-            for party_id_x in partys_set:
-                agenda_x.set_partyunit(partyunit=self.get_party(party_id_x))
+        if self.other_exists(assignor_other_id):
+            # get all others that are both in self._others and assignor_known_others
+            others_set = get_intersection_of_others(self._others, assignor_others)
+            for other_id_x in others_set:
+                agenda_x.set_otherunit(otherunit=self.get_other(other_id_x))
         return agenda_x
 
     def _set_assignment_beliefs(self, agenda_x):
-        revelant_beliefs = get_partys_relevant_beliefs(self._beliefs, agenda_x._partys)
-        for belief_belief_id, belief_partys in revelant_beliefs.items():
+        revelant_beliefs = get_others_relevant_beliefs(self._beliefs, agenda_x._others)
+        for belief_belief_id, belief_others in revelant_beliefs.items():
             if agenda_x._beliefs.get(belief_belief_id) is None:
                 belief_x = beliefunit_shop(belief_id=belief_belief_id)
-                for party_id in belief_partys:
-                    belief_x.set_partylink(partylink_shop(party_id=party_id))
+                for other_id in belief_others:
+                    belief_x.set_otherlink(otherlink_shop(other_id=other_id))
                 agenda_x.set_beliefunit(belief_x)
 
     def _get_assignor_pledge_ideas(
-        self, agenda_x, assignor_party_id: BeliefID
+        self, agenda_x, assignor_other_id: BeliefID
     ) -> dict[RoadUnit:int]:
-        assignor_beliefs = get_party_relevant_beliefs(
-            agenda_x._beliefs, assignor_party_id
+        assignor_beliefs = get_other_relevant_beliefs(
+            agenda_x._beliefs, assignor_other_id
         )
         return {
             idea_road: -1
@@ -2329,7 +2332,7 @@ def agendaunit_shop(
         _owner_id=_owner_id,
         _weight=get_1_if_None(_weight),
         _real_id=_real_id,
-        _partys=get_empty_dict_if_none(None),
+        _others=get_empty_dict_if_none(None),
         _beliefs=get_empty_dict_if_none(None),
         _idea_dict=get_empty_dict_if_none(None),
         _econ_dict=get_empty_dict_if_none(None),
@@ -2373,11 +2376,11 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda._penny = default_penny_if_none(
         get_obj_from_agenda_dict(agenda_dict, "_penny")
     )
-    x_agenda._party_credor_pool = get_obj_from_agenda_dict(
-        agenda_dict, "_party_credor_pool"
+    x_agenda._other_credor_pool = get_obj_from_agenda_dict(
+        agenda_dict, "_other_credor_pool"
     )
-    x_agenda._party_debtor_pool = get_obj_from_agenda_dict(
-        agenda_dict, "_party_debtor_pool"
+    x_agenda._other_debtor_pool = get_obj_from_agenda_dict(
+        agenda_dict, "_other_debtor_pool"
     )
     if get_obj_from_agenda_dict(agenda_dict, "_meld_strategy") is None:
         x_agenda._meld_strategy = get_meld_default()
@@ -2386,10 +2389,10 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
             agenda_dict, "_meld_strategy"
         )
     x_agenda._last_atom_id = get_obj_from_agenda_dict(agenda_dict, "_last_atom_id")
-    for x_partyunit in get_obj_from_agenda_dict(
-        agenda_dict, dict_key="_partys", _road_delimiter=x_agenda._road_delimiter
+    for x_otherunit in get_obj_from_agenda_dict(
+        agenda_dict, dict_key="_others", _road_delimiter=x_agenda._road_delimiter
     ).values():
-        x_agenda.set_partyunit(x_partyunit)
+        x_agenda.set_otherunit(x_otherunit)
     for x_beliefunit in get_obj_from_agenda_dict(
         agenda_dict, dict_key="_beliefs", _road_delimiter=x_agenda._road_delimiter
     ).values():
@@ -2479,11 +2482,11 @@ def get_obj_from_agenda_dict(
             if x_dict.get(dict_key) != None
             else originunit_shop()
         )
-    elif dict_key == "_partys":
+    elif dict_key == "_others":
         return (
-            partyunits_get_from_dict(x_dict[dict_key], _road_delimiter)
+            otherunits_get_from_dict(x_dict[dict_key], _road_delimiter)
             if x_dict.get(dict_key) != None
-            else partyunits_get_from_dict(x_dict[dict_key], _road_delimiter)
+            else otherunits_get_from_dict(x_dict[dict_key], _road_delimiter)
         )
     elif dict_key == "_beliefs":
         return (

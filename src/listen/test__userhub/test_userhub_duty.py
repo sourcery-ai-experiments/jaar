@@ -123,7 +123,7 @@ def test_UserHub_create_initial_atom_files_from_duty_SavesOnlyAtomFiles(
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text, planck=seven_int)
     sue_duty_agenda = sue_userhub.default_duty_agenda()
     bob_text = "Bob"
-    sue_duty_agenda.add_partyunit(bob_text)
+    sue_duty_agenda.add_otherunit(bob_text)
     assert sue_userhub.duty_file_exists() is False
     sue_userhub.save_duty_agenda(sue_duty_agenda)
     assert sue_userhub.duty_file_exists()
@@ -195,7 +195,7 @@ def test_UserHub_initialize_atom_duty_files_CorrectlySavesOnlyatomFile(
     sue_userhub.initialize_atom_duty_files()
     sue_duty_agenda = sue_userhub.get_duty_agenda()
     bob_text = "Bob"
-    sue_duty_agenda.add_partyunit(bob_text)
+    sue_duty_agenda.add_otherunit(bob_text)
     sue_userhub.save_duty_agenda(sue_duty_agenda)
     assert sue_userhub.duty_file_exists()
     init_atom_file_path = f"{sue_userhub.atoms_dir()}/{init_atom_id()}.json"
@@ -209,7 +209,7 @@ def test_UserHub_initialize_atom_duty_files_CorrectlySavesOnlyatomFile(
     assert sue_duty_agenda._real_id == real_id()
     assert sue_duty_agenda._owner_id == sue_text
     assert sue_duty_agenda._planck == seven_int
-    assert sue_duty_agenda.party_exists(bob_text)
+    assert sue_duty_agenda.other_exists(bob_text)
     assert os_path_exists(init_atom_file_path)
 
 

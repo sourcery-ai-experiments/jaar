@@ -356,11 +356,11 @@ class Ui_MainWindow(object):
         self.save_as.setObjectName("save_as")
         self.fm_new = QtWidgets.QAction(MainWindow)
         self.fm_new.setObjectName("fm_new")
-        self.file_menu.addAction(self.fm_new)
-        self.file_menu.addAction(self.fm_open)
-        self.file_menu.addAction(self.fm_save)
-        self.file_menu.addAction(self.save_as)
-        self.menubar.addAction(self.file_menu.menuAction())
+        self.file_menu.addPledge(self.fm_new)
+        self.file_menu.addPledge(self.fm_open)
+        self.file_menu.addPledge(self.fm_save)
+        self.file_menu.addPledge(self.save_as)
+        self.menubar.addPledge(self.file_menu.menuPledge())
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -371,7 +371,7 @@ class Ui_MainWindow(object):
         self.label.setText(_translate("MainWindow", "TextLabel"))
         self.settings_button.setText(_translate("MainWindow", "Settings"))
         self.editmain_button.setText(
-            _translate("MainWindow", "Agendas /  Party /  dimension")
+            _translate("MainWindow", "Agendas /  Other /  dimension")
         )
         self.root_datetime_prev_update.setText(
             _translate("MainWindow", "Update Lowerbound DateTime to next midnight")
@@ -391,9 +391,9 @@ class Ui_MainWindow(object):
         )
         self.label_5.setText(_translate("MainWindow", "Modification where I am:"))
         self.root_datetime_view.setText(
-            _translate("MainWindow", "Manuparty modification")
+            _translate("MainWindow", "Manuother modification")
         )
-        self.pushButton_2.setText(_translate("MainWindow", "Manuparty modification"))
+        self.pushButton_2.setText(_translate("MainWindow", "Manuother modification"))
         self.loubby_button.setText(_translate("MainWindow", "Request Someone"))
         item = self.completeness_status.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "ID"))

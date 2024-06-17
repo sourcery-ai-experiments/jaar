@@ -50,7 +50,7 @@ def test_agenda_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     bob_agenda = agendaunit_shop(bob_text)
     run_text = "run"
     run_road = bob_agenda.make_road(bob_text, run_text)
-    bob_agenda.add_partyunit(party_id=bob_text)
+    bob_agenda.add_otherunit(other_id=bob_text)
     bob_agenda.add_l1_idea(ideaunit_shop(run_text))
     bob_agenda.edit_idea_attr(road=run_road, assignedunit=assignedunit_x)
     run_idea = bob_agenda.get_idea_obj(run_road)
@@ -120,8 +120,8 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
     noa1_agenda = agendaunit_shop(noa_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    noa1_agenda.add_partyunit(party_id=xia_text)
-    noa1_agenda.add_partyunit(party_id=zoa_text)
+    noa1_agenda.add_otherunit(other_id=xia_text)
+    noa1_agenda.add_otherunit(other_id=zoa_text)
 
     casa_text = "casa"
     casa_road = noa1_agenda.make_l1_road(casa_text)
@@ -139,7 +139,7 @@ def test_AgendaUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignU
 
     # WHEN
     noa2_agenda = agendaunit_shop(noa_text)
-    noa2_agenda.add_partyunit(party_id=xia_text)
+    noa2_agenda.add_otherunit(other_id=xia_text)
     filtered_idea = noa2_agenda._get_filtered_balancelinks_idea(noa1_agenda_swim_idea)
 
     # THEN
@@ -153,8 +153,8 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     noa1_agenda = agendaunit_shop("Noa")
     xia_text = "Xia"
     zoa_text = "Zoa"
-    noa1_agenda.add_partyunit(party_id=xia_text)
-    noa1_agenda.add_partyunit(party_id=zoa_text)
+    noa1_agenda.add_otherunit(other_id=xia_text)
+    noa1_agenda.add_otherunit(other_id=zoa_text)
 
     casa_text = "casa"
     casa_road = noa1_agenda.make_l1_road(casa_text)
@@ -172,7 +172,7 @@ def test_AgendaUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 
     # WHEN
     noa2_agenda = agendaunit_shop("Noa")
-    noa2_agenda.add_partyunit(party_id=xia_text)
+    noa2_agenda.add_otherunit(other_id=xia_text)
     noa2_agenda.add_l1_idea(noa1_agenda_swim_idea, create_missing_beliefs=False)
 
     # THEN

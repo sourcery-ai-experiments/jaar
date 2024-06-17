@@ -10,7 +10,7 @@ class InvalidPyQtException(Exception):
 @dataclass
 class PYQTTreeHolder:
     ideaunit: IdeaUnit
-    yo_action_flag: str
+    yo_pledge_flag: str
     yo_intent_flag: str
     yo_complete_flag: str
     yo_factunit_time_flag: str
@@ -34,7 +34,7 @@ def get_pyqttree(
     yo2bd_count_flag: bool = None,
     yo2bd_view_bd_flag: bool = None,
     yo2bd_view_bd_id: bool = None,
-    yo_action_flag: bool = None,
+    yo_pledge_flag: bool = None,
     yo_intent_flag: bool = None,
     yo_complete_flag: bool = None,
     yo_factunit_time_flag: bool = None,
@@ -49,7 +49,7 @@ def get_pyqttree(
 ) -> QTreeWidgetItem:
     pyqttree_holder = PYQTTreeHolder(
         ideaunit=idearoot,
-        yo_action_flag=yo_action_flag,
+        yo_pledge_flag=yo_pledge_flag,
         yo_intent_flag=yo_intent_flag,
         yo_complete_flag=yo_complete_flag,
         yo_factunit_time_flag=yo_factunit_time_flag,
@@ -97,7 +97,7 @@ def _create_node(pth: PYQTTreeHolder) -> QTreeWidgetItem:
         # for kid_idea in sort_ideas_list.sort(key=lambda x: x._agenda_importance, reverse=True):
         child_pth = PYQTTreeHolder(
             ideaunit=kid_idea,
-            yo_action_flag=pth.yo_action_flag,
+            yo_pledge_flag=pth.yo_pledge_flag,
             yo_intent_flag=pth.yo_intent_flag,
             yo_complete_flag=pth.yo_complete_flag,
             yo_factunit_time_flag=pth.yo_factunit_time_flag,
@@ -230,7 +230,7 @@ def _create_treenode_l(pth: PYQTTreeHolder):
         treenode_l = _get_treenode_l_reason_view(treenode_l, pth)
     elif pth.factheir_view_flag and pth.ideaunit._parent_road != "":
         treenode_l = _get_treenode_l_factheir_view(treenode_l, pth)
-    elif pth.yo_action_flag and pth.ideaunit.pledge:
+    elif pth.yo_pledge_flag and pth.ideaunit.pledge:
         treenode_l += " (task)" if pth.ideaunit._task else " (state)"
     elif pth.yo_factunit_count_flag:
         treenode_l += f" ({len(pth.ideaunit._factunits)})"

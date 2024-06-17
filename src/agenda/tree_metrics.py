@@ -25,13 +25,13 @@ class TreeMetrics:
         idea_road: RoadUnit,
     ):
         self.node_count += 1
-        self.evaluate_action(pledge=pledge, idea_road=idea_road)
+        self.evaluate_pledge(pledge=pledge, idea_road=idea_road)
         self.evaluate_level(level=level)
         self.evaluate_reasonunits(reasons=reasons)
         self.evaluate_balancelinks(balancelinks=balancelinks)
         self.evaluate_uid_max(uid=uid)
 
-    def evaluate_action(self, pledge: bool, idea_road: RoadUnit):
+    def evaluate_pledge(self, pledge: bool, idea_road: RoadUnit):
         if pledge:
             self.last_evaluated_pledge_idea_road = idea_road
 

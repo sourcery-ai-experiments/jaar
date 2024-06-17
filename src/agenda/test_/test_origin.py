@@ -1,5 +1,5 @@
 from src.agenda.origin import OriginLink, originlink_shop, OriginUnit, originunit_shop
-from src.agenda.party import PartyID
+from src.agenda.other import OtherID
 from pytest import raises as pytest_raises
 
 
@@ -9,10 +9,10 @@ def test_OriginLink_exists():
     roy_weight = 4
 
     # WHEN
-    originlink_x = OriginLink(party_id=roy_text, weight=roy_weight)
+    originlink_x = OriginLink(other_id=roy_text, weight=roy_weight)
 
     # THEN
-    assert originlink_x.party_id == roy_text
+    assert originlink_x.other_id == roy_text
     assert originlink_x.weight == roy_weight
 
 
@@ -22,30 +22,30 @@ def test_originlink_shop_ReturnsCorrectObj():
     roy_weight = 4
 
     # WHEN
-    originlink_x = originlink_shop(party_id=roy_text, weight=roy_weight)
+    originlink_x = originlink_shop(other_id=roy_text, weight=roy_weight)
 
     # THEN
-    assert originlink_x.party_id == roy_text
+    assert originlink_x.other_id == roy_text
     assert originlink_x.weight == roy_weight
 
 
 def test_originlink_shop_WeightIsNot_Reason():
     # GIVEN
     roy_text = "Roy"
-    # roy_party_id = PartyID(roy_text)
+    # roy_other_id = OtherID(roy_text)
 
     # WHEN
-    originlink_x = originlink_shop(party_id=roy_text)
+    originlink_x = originlink_shop(other_id=roy_text)
 
     # THEN
-    assert originlink_x.party_id == roy_text
+    assert originlink_x.other_id == roy_text
     assert originlink_x.weight == 1
 
 
 def test_OriginLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     roy_text = "Roy"
-    roy_originlink = originlink_shop(party_id=roy_text)
+    roy_originlink = originlink_shop(other_id=roy_text)
 
     # WHEN
     x_dict = roy_originlink.get_dict()
@@ -53,7 +53,7 @@ def test_OriginLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # THEN
     print(f"{x_dict=}")
     assert x_dict != None
-    assert x_dict == {"party_id": roy_text, "weight": 1}
+    assert x_dict == {"other_id": roy_text, "weight": 1}
 
 
 def test_OriginUnit_exists():
@@ -80,11 +80,11 @@ def test_originunit_set_originlink_CorrectlySetsOriginLink():
     # WHEN
     tim_text = "Tim"
     tim_weight = 3
-    originunit_x.set_originlink(party_id=tim_text, weight=tim_weight)
+    originunit_x.set_originlink(other_id=tim_text, weight=tim_weight)
 
     # THEN
     assert originunit_x._links.get(tim_text) != None
-    assert originunit_x._links.get(tim_text).party_id == tim_text
+    assert originunit_x._links.get(tim_text).other_id == tim_text
     assert originunit_x._links.get(tim_text).weight == tim_weight
 
 
@@ -93,12 +93,12 @@ def test_originunit_del_originlink_CorrectlyDeletesOriginLink():
     originunit_x = originunit_shop()
     tim_text = "Tim"
     tim_weight = 3
-    originunit_x.set_originlink(party_id=tim_text, weight=tim_weight)
+    originunit_x.set_originlink(other_id=tim_text, weight=tim_weight)
     assert originunit_x._links.get(tim_text) != None
-    assert originunit_x._links.get(tim_text).party_id == tim_text
+    assert originunit_x._links.get(tim_text).other_id == tim_text
 
     # WHEN
-    originunit_x.del_originlink(party_id=tim_text)
+    originunit_x.del_originlink(other_id=tim_text)
 
     # THEN
     assert originunit_x._links.get(tim_text) is None
@@ -107,16 +107,16 @@ def test_originunit_del_originlink_CorrectlyDeletesOriginLink():
 def test_OriginUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     roy_text = "Roy"
-    roy_originlink = originlink_shop(party_id=roy_text)
+    roy_originlink = originlink_shop(other_id=roy_text)
     roy_ol_dict = roy_originlink.get_dict()
     sue_text = "Sue"
     sue_weight = 4
-    sue_originlink = originlink_shop(party_id=sue_text, weight=sue_weight)
+    sue_originlink = originlink_shop(other_id=sue_text, weight=sue_weight)
     sue_ol_dict = sue_originlink.get_dict()
 
     originunit_x = originunit_shop()
-    originunit_x.set_originlink(party_id=roy_text, weight=None)
-    originunit_x.set_originlink(party_id=sue_text, weight=sue_weight)
+    originunit_x.set_originlink(other_id=roy_text, weight=None)
+    originunit_x.set_originlink(other_id=sue_text, weight=sue_weight)
 
     # WHEN
     x_dict = originunit_x.get_dict()

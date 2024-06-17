@@ -94,12 +94,12 @@ def test_create_pledge_CorrectlySets_suffbelief():
     # THEN
     assert floor_idea._assignedunit.suffbelief_exists(bob_text)
     yao_text = "Yao"
-    assert sue_agenda.party_exists(yao_text) is False
+    assert sue_agenda.other_exists(yao_text) is False
     assert floor_idea._assignedunit.suffbelief_exists(yao_text) is False
 
     # WHEN
     create_pledge(sue_agenda, floor_road, yao_text)
 
     # THEN
-    assert sue_agenda.party_exists(yao_text)
+    assert sue_agenda.other_exists(yao_text)
     assert floor_idea._assignedunit.suffbelief_exists(yao_text)

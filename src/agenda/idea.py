@@ -13,7 +13,7 @@ from src._road.road import (
     default_road_delimiter_if_none,
     replace_road_delimiter,
     RealID,
-    PartyID,
+    OtherID,
 )
 from src.agenda.meld import get_meld_default
 from src.agenda.healer import HealerHold, healerhold_shop, healerhold_get_from_dict
@@ -93,8 +93,8 @@ class IdeaAttrFilter:
     pledge: bool = None
     factunit: FactUnit = None
     descendant_pledge_count: int = None
-    all_party_cred: bool = None
-    all_party_debt: bool = None
+    all_other_cred: bool = None
+    all_other_debt: bool = None
     balancelink: BalanceLink = None
     balancelink_del: BeliefID = None
     is_expanded: bool = None
@@ -177,8 +177,8 @@ def ideaattrfilter_shop(
     pledge: bool = None,
     factunit: FactUnit = None,
     descendant_pledge_count: int = None,
-    all_party_cred: bool = None,
-    all_party_debt: bool = None,
+    all_other_cred: bool = None,
+    all_other_debt: bool = None,
     balancelink: BalanceLink = None,
     balancelink_del: BeliefID = None,
     is_expanded: bool = None,
@@ -210,8 +210,8 @@ def ideaattrfilter_shop(
         pledge=pledge,
         factunit=factunit,
         descendant_pledge_count=descendant_pledge_count,
-        all_party_cred=all_party_cred,
-        all_party_debt=all_party_debt,
+        all_other_cred=all_other_cred,
+        all_other_debt=all_other_debt,
         balancelink=balancelink,
         balancelink_del=balancelink_del,
         is_expanded=is_expanded,
@@ -264,8 +264,8 @@ class IdeaUnit:
     _active: bool = None
     _ancestor_pledge_count: int = None
     _descendant_pledge_count: int = None
-    _all_party_cred: bool = None
-    _all_party_debt: bool = None
+    _all_other_cred: bool = None
+    _all_other_debt: bool = None
     _is_expanded: bool = None
     _sibling_total_weight: int = None
     _active_hx: dict[int:bool] = None
@@ -428,9 +428,9 @@ class IdeaUnit:
 
         return descendant_roads
 
-    def clear_all_party_cred_debt(self):
-        self._all_party_cred = None
-        self._all_party_debt = None
+    def clear_all_other_cred_debt(self):
+        self._all_other_cred = None
+        self._all_other_debt = None
 
     def set_ancestor_pledge_count(
         self, parent_ancestor_pledge_count: int, parent_pledge: bool
@@ -534,7 +534,7 @@ class IdeaUnit:
             and self._agenda_real_id != None
         ):
             raise Idea_root_LabelNotEmptyException(
-                f"Cannot set idearoot to string other than '{self._agenda_real_id}'"
+                f"Cannot set idearoot to string different than '{self._agenda_real_id}'"
             )
         elif self._root and self._agenda_real_id is None:
             self._label = root_label()
@@ -597,26 +597,26 @@ class IdeaUnit:
             new_factunits[new_base_road] = factunit_obj
         self._factunits = new_factunits
 
-    def _meld_reasonunits(self, other_idea):
-        for lx in other_idea._reasonunits.values():
+    def _meld_reasonunits(self, exterior_idea):
+        for lx in exterior_idea._reasonunits.values():
             if self._reasonunits.get(lx.base) is None:
                 self._reasonunits[lx.base] = lx
             else:
                 self._reasonunits.get(lx.base).meld(lx)
 
-    def _meld_balancelinks(self, other_idea):
-        for bl in other_idea._balancelinks.values():
+    def _meld_balancelinks(self, exterior_idea):
+        for bl in exterior_idea._balancelinks.values():
             if self._balancelinks.get(bl.belief_id) != None:
                 self._balancelinks.get(bl.belief_id).meld(
-                    other_balancelink=bl,
-                    other_meld_strategy=other_idea._meld_strategy,
+                    exterior_balancelink=bl,
+                    exterior_meld_strategy=exterior_idea._meld_strategy,
                     src_meld_strategy=self._meld_strategy,
                 )
             else:
                 self._balancelinks[bl.belief_id] = bl
 
-    def _meld_factunits(self, other_idea):
-        for hc in other_idea._factunits.values():
+    def _meld_factunits(self, exterior_idea):
+        for hc in exterior_idea._factunits.values():
             if self._factunits.get(hc.base) is None:
                 self._factunits[hc.base] = hc
             else:
@@ -624,14 +624,14 @@ class IdeaUnit:
 
     def meld(
         self,
-        other_idea,
+        exterior_idea,
         _idearoot: bool = None,
-        party_id: PartyID = None,
-        party_weight: float = None,
+        other_id: OtherID = None,
+        other_weight: float = None,
     ):
-        if _idearoot and self._label != other_idea._label:
+        if _idearoot and self._label != exterior_idea._label:
             raise InvalidIdeaException(
-                f"Meld fail idearoot _label '{self._label}' not the same as '{other_idea._label}'"
+                f"Meld fail idearoot _label '{self._label}' not the same as '{exterior_idea._label}'"
             )
         if _idearoot:
             self._weight = 1
@@ -639,21 +639,21 @@ class IdeaUnit:
             self._weight = get_meld_weight(
                 src_weight=self._weight,
                 src_meld_strategy=self._meld_strategy,
-                other_weight=other_idea._weight,
-                other_meld_strategy=other_idea._meld_strategy,
+                exterior_weight=exterior_idea._weight,
+                exterior_meld_strategy=exterior_idea._meld_strategy,
             )
-        self._meld_reasonunits(other_idea=other_idea)
-        self._meld_balancelinks(other_idea=other_idea)
-        self._meld_factunits(other_idea=other_idea)
-        if other_idea._meld_strategy != "override":
-            self._meld_attributes_that_must_be_equal(other_idea=other_idea)
+        self._meld_reasonunits(exterior_idea=exterior_idea)
+        self._meld_balancelinks(exterior_idea=exterior_idea)
+        self._meld_factunits(exterior_idea=exterior_idea)
+        if exterior_idea._meld_strategy != "override":
+            self._meld_attributes_that_must_be_equal(exterior_idea=exterior_idea)
         else:
-            self._meld_attributes_overide(other_idea=other_idea)
-        self._meld_originlinks(party_id, party_weight)
+            self._meld_attributes_overide(exterior_idea=exterior_idea)
+        self._meld_originlinks(other_id, other_weight)
 
-    def _meld_originlinks(self, party_id: PartyID, party_weight: float):
-        if party_id != None:
-            self._originunit.set_originlink(party_id=party_id, weight=party_weight)
+    def _meld_originlinks(self, other_id: OtherID, other_weight: float):
+        if other_id != None:
+            self._originunit.set_originlink(other_id=other_id, weight=other_weight)
 
     def set_originunit_empty_if_null(self):
         if self._originunit is None:
@@ -662,42 +662,42 @@ class IdeaUnit:
     def get_originunit_dict(self) -> dict[str:str]:
         return self._originunit.get_dict()
 
-    def _meld_attributes_overide(self, other_idea):
-        self._uid = other_idea._uid
-        self._begin = other_idea._begin
-        self._close = other_idea._close
-        self._addin = other_idea._addin
-        self._denom = other_idea._denom
-        self._numor = other_idea._numor
-        self._reest = other_idea._reest
-        self._range_source_road = other_idea._range_source_road
-        self._numeric_road = other_idea._numeric_road
-        self.pledge = other_idea.pledge
-        self._is_expanded = other_idea._is_expanded
+    def _meld_attributes_overide(self, exterior_idea):
+        self._uid = exterior_idea._uid
+        self._begin = exterior_idea._begin
+        self._close = exterior_idea._close
+        self._addin = exterior_idea._addin
+        self._denom = exterior_idea._denom
+        self._numor = exterior_idea._numor
+        self._reest = exterior_idea._reest
+        self._range_source_road = exterior_idea._range_source_road
+        self._numeric_road = exterior_idea._numeric_road
+        self.pledge = exterior_idea.pledge
+        self._is_expanded = exterior_idea._is_expanded
 
-    def _meld_attributes_that_must_be_equal(self, other_idea):
+    def _meld_attributes_that_must_be_equal(self, exterior_idea):
         to_be_equal_attributes = [
-            ("_uid", self._uid, other_idea._uid),
-            ("_begin", self._begin, other_idea._begin),
-            ("_close", self._close, other_idea._close),
-            ("_addin", self._addin, other_idea._addin),
-            ("_denom", self._denom, other_idea._denom),
-            ("_numor", self._numor, other_idea._numor),
-            ("_reest", self._reest, other_idea._reest),
+            ("_uid", self._uid, exterior_idea._uid),
+            ("_begin", self._begin, exterior_idea._begin),
+            ("_close", self._close, exterior_idea._close),
+            ("_addin", self._addin, exterior_idea._addin),
+            ("_denom", self._denom, exterior_idea._denom),
+            ("_numor", self._numor, exterior_idea._numor),
+            ("_reest", self._reest, exterior_idea._reest),
             (
                 "_range_source_road",
                 self._range_source_road,
-                other_idea._range_source_road,
+                exterior_idea._range_source_road,
             ),
-            ("_numeric_road", self._numeric_road, other_idea._numeric_road),
-            ("pledge", self.pledge, other_idea.pledge),
-            ("_is_expanded", self._is_expanded, other_idea._is_expanded),
+            ("_numeric_road", self._numeric_road, exterior_idea._numeric_road),
+            ("pledge", self.pledge, exterior_idea.pledge),
+            ("_is_expanded", self._is_expanded, exterior_idea._is_expanded),
         ]
         while to_be_equal_attributes != []:
             attrs = to_be_equal_attributes.pop()
             if attrs[1] != attrs[2]:
                 raise InvalidIdeaException(
-                    f"Meld fail idea={self.get_road()} {attrs[0]}:{attrs[1]} with {other_idea.get_road()} {attrs[0]}:{attrs[2]}"
+                    f"Meld fail idea={self.get_road()} {attrs[0]}:{attrs[1]} with {exterior_idea.get_road()} {attrs[0]}:{attrs[2]}"
                 )
 
     def _set_idea_attr(self, idea_attr: IdeaAttrFilter):
@@ -742,10 +742,10 @@ class IdeaUnit:
             self._range_source_road = idea_attr.range_source_road
         if idea_attr.descendant_pledge_count != None:
             self._descendant_pledge_count = idea_attr.descendant_pledge_count
-        if idea_attr.all_party_cred != None:
-            self._all_party_cred = idea_attr.all_party_cred
-        if idea_attr.all_party_debt != None:
-            self._all_party_debt = idea_attr.all_party_debt
+        if idea_attr.all_other_cred != None:
+            self._all_other_cred = idea_attr.all_other_cred
+        if idea_attr.all_other_debt != None:
+            self._all_other_debt = idea_attr.all_other_debt
         if idea_attr.balancelink != None:
             self.set_balancelink(balancelink=idea_attr.balancelink)
         if idea_attr.balancelink_del != None:
@@ -878,7 +878,7 @@ class IdeaUnit:
         self,
         tree_traverse_count: int,
         agenda_beliefunits: dict[BeliefID:BeliefUnit] = None,
-        agenda_owner_id: PartyID = None,
+        agenda_owner_id: OtherID = None,
     ):
         prev_to_now_active = deepcopy(self._active)
         self._active = self._create_active(
@@ -904,7 +904,7 @@ class IdeaUnit:
         return any(x_reasonheir._task for x_reasonheir in self._reasonheirs.values())
 
     def _create_active(
-        self, agenda_beliefunits: dict[BeliefID:BeliefUnit], agenda_owner_id: PartyID
+        self, agenda_beliefunits: dict[BeliefID:BeliefUnit], agenda_owner_id: OtherID
     ) -> bool:
         self.set_reasonheirs_status()
         x_bool = self._are_all_reasonheir_active_true()
@@ -1124,8 +1124,8 @@ def ideaunit_shop(
     _active: bool = None,
     _ancestor_pledge_count: int = None,
     _descendant_pledge_count: int = None,
-    _all_party_cred: bool = None,
-    _all_party_debt: bool = None,
+    _all_other_cred: bool = None,
+    _all_other_debt: bool = None,
     _is_expanded: bool = True,
     _sibling_total_weight: int = None,
     _active_hx: dict[int:bool] = None,
@@ -1179,8 +1179,8 @@ def ideaunit_shop(
         _active=_active,
         _ancestor_pledge_count=_ancestor_pledge_count,
         _descendant_pledge_count=_descendant_pledge_count,
-        _all_party_cred=_all_party_cred,
-        _all_party_debt=_all_party_debt,
+        _all_other_cred=_all_other_cred,
+        _all_other_debt=_all_other_debt,
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
         _active_hx=get_empty_dict_if_none(_active_hx),

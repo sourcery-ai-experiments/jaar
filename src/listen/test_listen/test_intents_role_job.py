@@ -38,13 +38,13 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJobAgendaWhenNo_suffbeliefI
     zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.set_party_pool(zia_pool)
+    yao_role.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.set_other_pool(zia_pool)
 
     zia_job = agendaunit_shop(zia_text)
     zia_job.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_job.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_job.add_partyunit(yao_text, debtor_weight=12)
+    zia_job.add_otherunit(yao_text, debtor_weight=12)
     yao_dakota_userhub = userhub_shop(env_dir(), None, yao_text, get_dakota_road())
     yao_dakota_userhub.save_job_agenda(zia_job)
     new_yao_job = create_listen_basis(yao_role)
@@ -66,13 +66,13 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJobAgenda(env_dir_setup_cle
     zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.set_party_pool(zia_pool)
+    yao_role.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.set_other_pool(zia_pool)
 
     zia_job = agendaunit_shop(zia_text)
     zia_job.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_job.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_job.add_partyunit(yao_text, debtor_weight=12)
+    zia_job.add_otherunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_job.get_idea_obj(clean_road())
     cook_ideaunit = zia_job.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
@@ -126,16 +126,16 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJobAgendaWithDetailsDecided
     # THEN
     assert new_yao_work1.idea_exists(cook_road())
     new_cook_idea = new_yao_work1.get_idea_obj(cook_road())
-    zia_partyunit = new_yao_work1.get_party(zia_text)
-    bob_partyunit = new_yao_work1.get_party(bob_text)
-    assert zia_partyunit.debtor_weight < bob_partyunit.debtor_weight
+    zia_otherunit = new_yao_work1.get_other(zia_text)
+    bob_otherunit = new_yao_work1.get_other(bob_text)
+    assert zia_otherunit.debtor_weight < bob_otherunit.debtor_weight
     assert new_cook_idea.get_reasonunit(eat_road()) is None
 
     yao_zia_debtor_weight = 15
     yao_bob_debtor_weight = 5
-    yao_role.add_partyunit(zia_text, None, yao_zia_debtor_weight)
-    yao_role.add_partyunit(bob_text, None, yao_bob_debtor_weight)
-    yao_role.set_party_pool(100)
+    yao_role.add_otherunit(zia_text, None, yao_zia_debtor_weight)
+    yao_role.add_otherunit(bob_text, None, yao_bob_debtor_weight)
+    yao_role.set_other_pool(100)
     new_yao_work2 = create_listen_basis(yao_role)
     assert new_yao_work2.idea_exists(cook_road()) is False
 
@@ -145,9 +145,9 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJobAgendaWithDetailsDecided
     # THEN
     assert new_yao_work2.idea_exists(cook_road())
     new_cook_idea = new_yao_work2.get_idea_obj(cook_road())
-    zia_partyunit = new_yao_work2.get_party(zia_text)
-    bob_partyunit = new_yao_work2.get_party(bob_text)
-    assert zia_partyunit.debtor_weight > bob_partyunit.debtor_weight
+    zia_otherunit = new_yao_work2.get_other(zia_text)
+    bob_otherunit = new_yao_work2.get_other(bob_text)
+    assert zia_otherunit.debtor_weight > bob_otherunit.debtor_weight
     zia_eat_reasonunit = zia_cook_ideaunit.get_reasonunit(eat_road())
     assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit
 
@@ -164,10 +164,10 @@ def test_listen_to_intent_role_job_intent_ProcessesIrrationalAgenda(
     sue_text = "Sue"
     sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_role.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_role.set_party_pool(yao_pool)
+    yao_role.set_other_pool(yao_pool)
     yao_dakota_userhub = userhub_shop(env_dir(), None, yao_text, get_dakota_road())
     yao_dakota_userhub.save_role_agenda(yao_role)
 
@@ -175,7 +175,7 @@ def test_listen_to_intent_role_job_intent_ProcessesIrrationalAgenda(
     zia_job = agendaunit_shop(zia_text)
     zia_job.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_job.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_job.add_partyunit(yao_text, debtor_weight=12)
+    zia_job.add_otherunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_job.get_idea_obj(clean_road())
     cook_ideaunit = zia_job.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
@@ -184,7 +184,7 @@ def test_listen_to_intent_role_job_intent_ProcessesIrrationalAgenda(
 
     sue_job = agendaunit_shop(sue_text)
     sue_job.set_max_tree_traverse(5)
-    zia_job.add_partyunit(yao_text, debtor_weight=12)
+    zia_job.add_otherunit(yao_text, debtor_weight=12)
     vacuum_text = "vacuum"
     vacuum_road = sue_job.make_l1_road(vacuum_text)
     sue_job.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
@@ -220,12 +220,12 @@ def test_listen_to_intent_role_job_intent_ProcessesIrrationalAgenda(
     # THEN irrational agenda is ignored
     assert len(new_yao_job.get_intent_dict()) != 3
     assert len(new_yao_job.get_intent_dict()) == 2
-    zia_partyunit = new_yao_job.get_party(zia_text)
-    sue_partyunit = new_yao_job.get_party(sue_text)
-    print(f"{sue_partyunit.debtor_weight=}")
-    print(f"{sue_partyunit._irrational_debtor_weight=}")
-    assert zia_partyunit._irrational_debtor_weight == 0
-    assert sue_partyunit._irrational_debtor_weight == 51
+    zia_otherunit = new_yao_job.get_other(zia_text)
+    sue_otherunit = new_yao_job.get_other(sue_text)
+    print(f"{sue_otherunit.debtor_weight=}")
+    print(f"{sue_otherunit._irrational_debtor_weight=}")
+    assert zia_otherunit._irrational_debtor_weight == 0
+    assert sue_otherunit._irrational_debtor_weight == 51
 
 
 def test_listen_to_intent_role_job_intent_ProcessesMissingDebtorJobAgenda(
@@ -240,17 +240,17 @@ def test_listen_to_intent_role_job_intent_ProcessesMissingDebtorJobAgenda(
     sue_credor_weight = 57
     zia_debtor_weight = 41
     sue_debtor_weight = 51
-    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_partyunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_role.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_role.set_party_pool(yao_pool)
+    yao_role.set_other_pool(yao_pool)
     yao_dakota_userhub = userhub_shop(env_dir(), None, yao_text, get_dakota_road())
     yao_dakota_userhub.save_role_agenda(yao_role)
 
     zia_job = agendaunit_shop(zia_text)
     zia_job.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_job.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_job.add_partyunit(yao_text, debtor_weight=12)
+    zia_job.add_otherunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_job.get_idea_obj(clean_road())
     cook_ideaunit = zia_job.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
@@ -265,12 +265,12 @@ def test_listen_to_intent_role_job_intent_ProcessesMissingDebtorJobAgenda(
     # THEN irrational agenda is ignored
     assert len(new_yao_job.get_intent_dict()) != 3
     assert len(new_yao_job.get_intent_dict()) == 2
-    zia_partyunit = new_yao_job.get_party(zia_text)
-    sue_partyunit = new_yao_job.get_party(sue_text)
-    print(f"{sue_partyunit.debtor_weight=}")
-    print(f"{sue_partyunit._inallocable_debtor_weight=}")
-    assert zia_partyunit._inallocable_debtor_weight == 0
-    assert sue_partyunit._inallocable_debtor_weight == 51
+    zia_otherunit = new_yao_job.get_other(zia_text)
+    sue_otherunit = new_yao_job.get_other(sue_text)
+    print(f"{sue_otherunit.debtor_weight=}")
+    print(f"{sue_otherunit._inallocable_debtor_weight=}")
+    assert zia_otherunit._inallocable_debtor_weight == 0
+    assert sue_otherunit._inallocable_debtor_weight == 51
 
 
 def test_listen_to_intent_role_job_intent_ListensToOwner_role_AndNotOwner_job(
@@ -282,13 +282,13 @@ def test_listen_to_intent_role_job_intent_ListensToOwner_role_AndNotOwner_job(
     yao_text = "Yao"
     yao_credor_weight = 57
     yao_debtor_weight = 51
-    yao_role.add_partyunit(yao_text, yao_credor_weight, yao_debtor_weight)
+    yao_role.add_otherunit(yao_text, yao_credor_weight, yao_debtor_weight)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
-    yao_role.add_partyunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_pool = 87
-    yao_role.set_party_pool(yao_pool)
+    yao_role.set_other_pool(yao_pool)
     # save yao without task to roles
     yao_dakota_userhub = userhub_shop(env_dir(), None, yao_text, get_dakota_road())
     yao_dakota_userhub.save_role_agenda(yao_role)
@@ -298,7 +298,7 @@ def test_listen_to_intent_role_job_intent_ListensToOwner_role_AndNotOwner_job(
     zia_job = agendaunit_shop(zia_text)
     zia_job.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_job.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_job.add_partyunit(yao_text, debtor_weight=12)
+    zia_job.add_otherunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_job.get_idea_obj(clean_road())
     cook_ideaunit = zia_job.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)

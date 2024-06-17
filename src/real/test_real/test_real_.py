@@ -143,7 +143,7 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(env_dir_setup_clea
     luca_userhub = userhub_shop(None, music_text, luca_text, None)
     bob_text = "Bob"
     luca_duty = luca_userhub.get_duty_agenda()
-    luca_duty.add_partyunit(bob_text)
+    luca_duty.add_otherunit(bob_text)
     luca_userhub.save_duty_agenda(luca_duty)
 
     # WHEN
@@ -151,7 +151,7 @@ def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(env_dir_setup_clea
 
     # THEN
     assert gen_luca_duty != None
-    assert gen_luca_duty.party_exists(bob_text)
+    assert gen_luca_duty.other_exists(bob_text)
 
 
 def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
@@ -169,10 +169,10 @@ def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     luca_duty_agenda = luca_userhub.get_duty_agenda()
     todd_duty_agenda = todd_userhub.get_duty_agenda()
 
-    luca_duty_agenda.add_partyunit(luca_text)
-    luca_duty_agenda.add_partyunit(todd_text)
-    todd_duty_agenda.add_partyunit(luca_text)
-    todd_duty_agenda.add_partyunit(todd_text)
+    luca_duty_agenda.add_otherunit(luca_text)
+    luca_duty_agenda.add_otherunit(todd_text)
+    todd_duty_agenda.add_otherunit(luca_text)
+    todd_duty_agenda.add_otherunit(todd_text)
     texas_text = "Texas"
     texas_road = luca_duty_agenda.make_l1_road(texas_text)
     luca_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))

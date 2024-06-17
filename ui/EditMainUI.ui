@@ -64,7 +64,7 @@
     <string>Close</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="party_list">
+  <widget class="QTableWidget" name="other_list">
    <property name="geometry">
     <rect>
      <x>420</x>

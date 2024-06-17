@@ -1,8 +1,8 @@
 from src.real.real_report import (
-    get_real_dutys_partys_dataframe,
-    get_real_dutys_partys_plotly_fig,
-    get_real_works_partys_dataframe,
-    get_real_works_partys_plotly_fig,
+    get_real_dutys_others_dataframe,
+    get_real_dutys_others_plotly_fig,
+    get_real_works_others_dataframe,
+    get_real_works_others_plotly_fig,
     get_real_dutys_intent_dataframe,
     get_real_dutys_intent_plotly_fig,
     get_real_works_intent_dataframe,
@@ -16,17 +16,17 @@ from src.real.examples.example_reals import (
 from src.real.examples.real_env import env_dir_setup_cleanup
 
 
-def test_get_real_dutys_partys_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_get_real_dutys_others_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real2()
 
     # WHEN
-    x_df = get_real_dutys_partys_dataframe(music_real)
+    x_df = get_real_dutys_others_dataframe(music_real)
 
     # THEN
-    partyunit_colums = {
+    otherunit_colums = {
         "owner_id",
-        "party_id",
+        "other_id",
         "credor_weight",
         "debtor_weight",
         "_agenda_cred",
@@ -47,16 +47,16 @@ def test_get_real_dutys_partys_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup
     print(f"{set(x_df.columns)=}")
     print(x_df)
 
-    assert set(x_df.columns) == partyunit_colums
+    assert set(x_df.columns) == otherunit_colums
     assert x_df.shape[0] == 8
 
 
-def test_get_real_dutys_partys_plotly_fig_DisplaysCorrectInfo(env_dir_setup_cleanup):
+def test_get_real_dutys_others_plotly_fig_DisplaysCorrectInfo(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real2()
 
     # WHEN
-    x_fig = get_real_dutys_partys_plotly_fig(music_real)
+    x_fig = get_real_dutys_others_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True
@@ -65,7 +65,7 @@ def test_get_real_dutys_partys_plotly_fig_DisplaysCorrectInfo(env_dir_setup_clea
     # assert 1 == 2
 
 
-def test_get_real_works_partys_dataframe_ReturnsCorrectObj(
+def test_get_real_works_others_dataframe_ReturnsCorrectObj(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -73,12 +73,12 @@ def test_get_real_works_partys_dataframe_ReturnsCorrectObj(
     music_real.generate_all_work_agendas()
 
     # WHEN
-    x_df = get_real_works_partys_dataframe(music_real)
+    x_df = get_real_works_others_dataframe(music_real)
 
     # THEN
-    partyunit_colums = {
+    otherunit_colums = {
         "owner_id",
-        "party_id",
+        "other_id",
         "credor_weight",
         "debtor_weight",
         "_agenda_cred",
@@ -101,10 +101,10 @@ def test_get_real_works_partys_dataframe_ReturnsCorrectObj(
     print(x_df)
 
     assert x_df.shape[0] == 8
-    assert set(x_df.columns) == partyunit_colums
+    assert set(x_df.columns) == otherunit_colums
 
 
-def test_get_real_works_partys_plotly_fig_DisplaysCorrectInfo(
+def test_get_real_works_others_plotly_fig_DisplaysCorrectInfo(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -112,7 +112,7 @@ def test_get_real_works_partys_plotly_fig_DisplaysCorrectInfo(
     music_real.generate_all_work_agendas()
 
     # WHEN
-    x_fig = get_real_works_partys_plotly_fig(music_real)
+    x_fig = get_real_works_others_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True

@@ -50,7 +50,7 @@ def test_IdeaUnit_set_idea_label_DoesRaisesError():
         x_idearoot.set_idea_label(_label=casa_text)
     assert (
         str(excinfo.value)
-        == f"Cannot set idearoot to string other than '{el_paso_text}'"
+        == f"Cannot set idearoot to string different than '{el_paso_text}'"
     )
 
 
@@ -64,7 +64,7 @@ def test_IdeaUnit_set_idea_label_RaisesErrorWhen_agenda_real_id_IsNone():
         x_idearoot.set_idea_label(_label=casa_text)
     assert (
         str(excinfo.value)
-        == f"Cannot set idearoot to string other than '{root_label()}'"
+        == f"Cannot set idearoot to string different than '{root_label()}'"
     )
 
 

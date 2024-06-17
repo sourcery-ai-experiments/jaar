@@ -32,7 +32,7 @@ def test_treemetrics_shop_ReturnsCorrectObj():
 
     # # could create tests for these methods?
     # def evaluate_node(
-    # def evaluate_action(self, pledge: bool, idea_road: RoadUnit):
+    # def evaluate_pledge(self, pledge: bool, idea_road: RoadUnit):
     # def evaluate_level(self, level):
     # def evaluate_reasonunits(self, reasons: dict[RoadUnit:ReasonUnit]):
     # def evaluate_balancelinks(self, balancelinks: dict[BeliefID:BalanceLink]):

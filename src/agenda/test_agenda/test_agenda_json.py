@@ -1,7 +1,7 @@
 from src._instrument.python import x_is_json, get_dict_from_json
 from src._road.road import default_road_delimiter_if_none
 from src.agenda.belief import beliefunit_shop, balancelink_shop
-from src.agenda.party import partylink_shop
+from src.agenda.other import otherlink_shop
 from src.agenda.healer import healerhold_shop
 from src.agenda.reason_assign import assignedunit_shop
 from src.agenda.reason_idea import factunit_shop
@@ -25,7 +25,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     day_hour_text = "day_hour"
     day_hour_road = x_agenda.make_l1_road(day_hour_text)
     day_hour_idea = x_agenda.get_idea_obj(day_hour_road)
-    day_hour_idea._originunit.set_originlink(party_id="Bob", weight=2)
+    day_hour_idea._originunit.set_originlink(other_id="Bob", weight=2)
     x_agenda.set_fact(
         base=day_hour_road,
         pick=day_hour_road,
@@ -38,10 +38,10 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     x_agenda._originunit.set_originlink(yao_text, 1)
     agenda_weight = 23
     x_agenda._weight = agenda_weight
-    x_party_credor_pool = 22
-    x_party_debtor_pool = 22
-    x_agenda.set_party_credor_pool(x_party_credor_pool)
-    x_agenda.set_party_debtor_pool(x_party_debtor_pool)
+    x_other_credor_pool = 22
+    x_other_debtor_pool = 22
+    x_agenda.set_other_credor_pool(x_other_credor_pool)
+    x_agenda.set_other_debtor_pool(x_other_debtor_pool)
     override_text = "override"
     x_agenda.set_meld_strategy(override_text)
     x_last_atom_id = 77
@@ -59,13 +59,13 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     assert agenda_dict["_weight"] == agenda_weight
     assert agenda_dict["_max_tree_traverse"] == x_agenda._max_tree_traverse
     assert agenda_dict["_road_delimiter"] == x_agenda._road_delimiter
-    assert agenda_dict["_party_credor_pool"] == x_agenda._party_credor_pool
-    assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
-    assert agenda_dict["_party_debtor_pool"] == x_agenda._party_debtor_pool
+    assert agenda_dict["_other_credor_pool"] == x_agenda._other_credor_pool
+    assert agenda_dict["_other_debtor_pool"] == x_agenda._other_debtor_pool
+    assert agenda_dict["_other_debtor_pool"] == x_agenda._other_debtor_pool
     assert agenda_dict["_meld_strategy"] == x_agenda._meld_strategy
     assert agenda_dict["_last_atom_id"] == x_agenda._last_atom_id
-    assert len(agenda_dict["_partys"]) == len(x_agenda._partys)
-    assert len(agenda_dict["_partys"]) != 12
+    assert len(agenda_dict["_others"]) == len(x_agenda._others)
+    assert len(agenda_dict["_others"]) != 12
     assert len(agenda_dict["_beliefs"]) == 12
     assert len(agenda_dict["_beliefs"]) != len(x_agenda._beliefs)
 
@@ -107,7 +107,7 @@ def test_AgendaUnit_get_dict_ReturnsDictObject():
     x_agenda_originlink = agenda_dict[originunit_text][_links][yao_text]
     print(f"{x_agenda_originlink=}")
     assert x_agenda_originlink
-    assert x_agenda_originlink["party_id"] == yao_text
+    assert x_agenda_originlink["other_id"] == yao_text
     assert x_agenda_originlink["weight"] == 1
 
 
@@ -132,10 +132,10 @@ def test_AgendaUnit_get_dict_ReturnsDictWith_idearoot_healerhold():
     # GIVEN
     tom_agenda = agendaunit_shop("Tom")
     yao_text = "Yao"
-    tom_agenda.add_partyunit(yao_text)
+    tom_agenda.add_otherunit(yao_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_partylink(partylink_shop(yao_text))
+    run_beliefunit.set_otherlink(otherlink_shop(yao_text))
     tom_agenda.set_beliefunit(run_beliefunit)
     run_healerhold = healerhold_shop()
     run_healerhold.set_belief_id(x_belief_id=run_text)
@@ -187,10 +187,10 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     override_text = "override"
     zia_agenda.set_meld_strategy(override_text)
     yao_text = "Yao"
-    zia_agenda.add_partyunit(yao_text)
+    zia_agenda.add_otherunit(yao_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_partylink(partylink_shop(yao_text))
+    run_beliefunit.set_otherlink(otherlink_shop(yao_text))
     zia_agenda.set_beliefunit(run_beliefunit)
     run_healerhold = healerhold_shop({run_text})
     zia_agenda.edit_idea_attr(road=zia_agenda._real_id, healerhold=run_healerhold)
@@ -213,11 +213,11 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     assert agenda_dict["_planck"] == zia_agenda._planck
     assert agenda_dict["_penny"] == zia_agenda._penny
     with pytest_raises(Exception) as excinfo:
-        agenda_dict["_party_credor_pool"]
-    assert str(excinfo.value) == "'_party_credor_pool'"
+        agenda_dict["_other_credor_pool"]
+    assert str(excinfo.value) == "'_other_credor_pool'"
     with pytest_raises(Exception) as excinfo:
-        agenda_dict["_party_debtor_pool"]
-    assert str(excinfo.value) == "'_party_debtor_pool'"
+        agenda_dict["_other_debtor_pool"]
+    assert str(excinfo.value) == "'_other_debtor_pool'"
     with pytest_raises(Exception) as excinfo:
         agenda_dict["_last_atom_id"]
 
@@ -304,29 +304,29 @@ def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():
     zia_agenda._planck = zia_planck
     zia_penny = 0.07
     zia_agenda._penny = zia_penny
-    zia_party_credor_pool = 2
-    zia_party_debtor_pool = 2
-    zia_agenda.set_party_credor_pool(zia_party_credor_pool)
-    zia_agenda.set_party_debtor_pool(zia_party_debtor_pool)
+    zia_other_credor_pool = 2
+    zia_other_debtor_pool = 2
+    zia_agenda.set_other_credor_pool(zia_other_credor_pool)
+    zia_agenda.set_other_debtor_pool(zia_other_debtor_pool)
     zia_last_atom_id = 73
     zia_agenda.set_last_atom_id(zia_last_atom_id)
 
     shave_text = "shave"
     shave_road = zia_agenda.make_l1_road(shave_text)
     shave_idea_y1 = zia_agenda.get_idea_obj(shave_road)
-    shave_idea_y1._originunit.set_originlink(party_id="Sue", weight=4.3)
+    shave_idea_y1._originunit.set_originlink(other_id="Sue", weight=4.3)
     shave_idea_y1._problem_bool = True
     # print(f"{shave_road=}")
     # print(f"{json_shave_idea._label=} {json_shave_idea._parent_road=}")
 
     sue_text = "Sue"
-    zia_agenda.add_partyunit(party_id=sue_text)
+    zia_agenda.add_otherunit(other_id=sue_text)
     tim_text = "Tim"
-    zia_agenda.add_partyunit(party_id=tim_text)
+    zia_agenda.add_otherunit(other_id=tim_text)
     run_text = ",runners"
     run_belief = beliefunit_shop(belief_id=run_text)
-    run_belief.set_partylink(partylink=partylink_shop(party_id=sue_text))
-    run_belief.set_partylink(partylink=partylink_shop(party_id=tim_text))
+    run_belief.set_otherlink(otherlink=otherlink_shop(other_id=sue_text))
+    run_belief.set_otherlink(otherlink=otherlink_shop(other_id=tim_text))
     zia_agenda.set_beliefunit(y_beliefunit=run_belief)
 
     run_assignedunit = assignedunit_shop()
@@ -366,10 +366,10 @@ def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_agenda._max_tree_traverse == 23
     assert json_agenda._max_tree_traverse == zia_agenda._max_tree_traverse
     assert json_agenda._road_delimiter == zia_agenda._road_delimiter
-    assert json_agenda._party_credor_pool == zia_agenda._party_credor_pool
-    assert json_agenda._party_debtor_pool == zia_agenda._party_debtor_pool
-    assert json_agenda._party_credor_pool == zia_party_credor_pool
-    assert json_agenda._party_debtor_pool == zia_party_debtor_pool
+    assert json_agenda._other_credor_pool == zia_agenda._other_credor_pool
+    assert json_agenda._other_debtor_pool == zia_agenda._other_debtor_pool
+    assert json_agenda._other_credor_pool == zia_other_credor_pool
+    assert json_agenda._other_debtor_pool == zia_other_debtor_pool
     assert json_agenda._meld_strategy == zia_agenda._meld_strategy
     assert json_agenda._meld_strategy == override_text
     assert json_agenda._last_atom_id == zia_agenda._last_atom_id
@@ -432,21 +432,21 @@ def test_agendaunit_get_from_json_ReturnsCorrectObj_road_delimiter_Example():
     assert after_bob_agenda._road_delimiter == before_bob_agenda._road_delimiter
 
 
-def test_agendaunit_get_from_json_ReturnsCorrectObj_road_delimiter_PartyExample():
+def test_agendaunit_get_from_json_ReturnsCorrectObj_road_delimiter_OtherExample():
     # GIVEN
     slash_delimiter = "/"
     before_bob_agenda = agendaunit_shop("Bob", _road_delimiter=slash_delimiter)
     bob_text = ",Bob"
-    before_bob_agenda.add_partyunit(bob_text)
-    assert before_bob_agenda.party_exists(bob_text)
+    before_bob_agenda.add_otherunit(bob_text)
+    assert before_bob_agenda.other_exists(bob_text)
 
     # WHEN
     bob_json = before_bob_agenda.get_json()
     after_bob_agenda = agendaunit_get_from_json(bob_json)
 
     # THEN
-    after_bob_partyunit = after_bob_agenda.get_party(bob_text)
-    assert after_bob_partyunit._road_delimiter == slash_delimiter
+    after_bob_otherunit = after_bob_agenda.get_other(bob_text)
+    assert after_bob_otherunit._road_delimiter == slash_delimiter
 
 
 def test_agendaunit_get_from_json_ReturnsCorrectObj_road_delimiter_BeliefExample():

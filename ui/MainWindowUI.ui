@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Agendas /  Party /  dimension</string>
+     <string>Agendas /  Other /  dimension</string>
     </property>
    </widget>
    <widget class="QPushButton" name="fact_open_lower_spec1">
@@ -167,7 +167,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Manuparty modification</string>
+     <string>Manuother modification</string>
     </property>
    </widget>
    <widget class="QPushButton" name="loubby_button">
@@ -800,37 +800,37 @@
     <property name="kind" stdset="0">
      <string>File</string>
     </property>
-    <addaction name="fm_new"/>
-    <addaction name="fm_open"/>
-    <addaction name="fm_save"/>
-    <addaction name="save_as"/>
+    <addpledge name="fm_new"/>
+    <addpledge name="fm_open"/>
+    <addpledge name="fm_save"/>
+    <addpledge name="save_as"/>
    </widget>
-   <addaction name="file_menu"/>
+   <addpledge name="file_menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="fm_open">
+  <pledge name="fm_open">
    <property name="checkable">
     <bool>false</bool>
    </property>
    <property name="text">
     <string>Open</string>
    </property>
-  </action>
-  <action name="fm_save">
+  </pledge>
+  <pledge name="fm_save">
    <property name="text">
     <string>Save</string>
    </property>
-  </action>
-  <action name="save_as">
+  </pledge>
+  <pledge name="save_as">
    <property name="text">
     <string>Save as...</string>
    </property>
-  </action>
-  <action name="fm_new">
+  </pledge>
+  <pledge name="fm_new">
    <property name="text">
     <string>New</string>
    </property>
-  </action>
+  </pledge>
  </widget>
  <resources/>
  <connections/>

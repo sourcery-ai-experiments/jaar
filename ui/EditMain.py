@@ -5,7 +5,7 @@ from PyQt5 import QtGui as qtg
 from PyQt5 import QtCore as qtc
 from PyQt5.QtWidgets import QTableWidgetItem as qtw1
 from ui.EditIdeaUnit import EditIdeaUnit
-from ui.EditParty import EditParty
+from ui.EditOther import EditOther
 from ui.pyqt_func import (
     agenda_importance_diplay,
     get_pyqttree,
@@ -28,9 +28,9 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.setupUi(self)
         self.refresh_button.clicked.connect(self.refresh_all)
         self.baseideaunit.itemClicked.connect(self.open_editideaunit)
-        self.party_list.itemClicked.connect(self.open_edit_party)
+        self.other_list.itemClicked.connect(self.open_edit_other)
         self.close_button.clicked.connect(self.close)
-        self.open_beliefedit_button.clicked.connect(self.open_edit_party)
+        self.open_beliefedit_button.clicked.connect(self.open_edit_other)
 
         # self.facts_table.itemClicked.connect(self.fact_base_combo_set)
         self.facts_table.setObjectName("Agenda Facts")
@@ -53,12 +53,12 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.facts_table.setRowCount(0)
         self.facts_table.itemClicked.connect(self.fact_table_select)
         self.fact_base_update_combo.currentTextAtomd.connect(self.fact_pick_combo_load)
-        self.fact_update_button.clicked.connect(self.fact_set_action)
-        self.fact_delete_button.clicked.connect(self.fact_del_action)
+        self.fact_update_button.clicked.connect(self.fact_set_pledge)
+        self.fact_delete_button.clicked.connect(self.fact_del_pledge)
 
         self.x_agenda = None
 
-    def fact_set_action(self):
+    def fact_set_pledge(self):
         self.x_agenda.set_fact(
             base=self.fact_base_update_combo.currentText(),
             pick=self.fact_pick_update_combo.currentText(),
@@ -67,7 +67,7 @@ class EditMainView(qtw.QWidget, Ui_Form):
         )
         self.refresh_all()
 
-    def fact_del_action(self):
+    def fact_del_pledge(self):
         self.x_agenda.del_fact(base=self.fact_base_update_combo.currentText())
         self.refresh_all()
 
@@ -169,34 +169,34 @@ class EditMainView(qtw.QWidget, Ui_Form):
 
     def refresh_all(self):
         if self.x_agenda != None:
-            self.refresh_party_list()
+            self.refresh_other_list()
             self.refresh_idea_tree()
             self.facts_table_load()
 
-    def refresh_party_list(self):
-        # party_list is qtw.QTableWidget()
-        self.party_list.setObjectName("Party Calculated Weight")
-        self.party_list.setColumnCount(2)
-        self.party_list.setColumnWidth(0, 170)
-        self.party_list.setColumnWidth(1, 70)
-        self.party_list.setHorizontalHeaderLabels(["PID", "LW Force"])
-        partys_list = list(self.x_agenda._partys.values())
-        partys_list.sort(key=lambda x: x._agenda_cred, reverse=True)
+    def refresh_other_list(self):
+        # other_list is qtw.QTableWidget()
+        self.other_list.setObjectName("Other Calculated Weight")
+        self.other_list.setColumnCount(2)
+        self.other_list.setColumnWidth(0, 170)
+        self.other_list.setColumnWidth(1, 70)
+        self.other_list.setHorizontalHeaderLabels(["PID", "LW Force"])
+        others_list = list(self.x_agenda._others.values())
+        others_list.sort(key=lambda x: x._agenda_cred, reverse=True)
 
-        for row, party in enumerate(partys_list, start=1):
+        for row, other in enumerate(others_list, start=1):
             beliefs_count = 0
             for belief in self.x_agenda._beliefs.values():
-                for partylink in belief._partys.values():
-                    if partylink.party_id == party.party_id:
+                for otherlink in belief._others.values():
+                    if otherlink.other_id == other.other_id:
                         beliefs_count += 1
 
             qt_agenda_cred = qtw.QTableWidgetItem(
-                agenda_importance_diplay(party._agenda_cred)
+                agenda_importance_diplay(other._agenda_cred)
             )
             qt_belief = qtw.QTableWidgetItem(f"{beliefs_count}")
-            self.party_list.setRowCount(row)
-            self.party_list.setItem(row - 1, 0, qtw.QTableWidgetItem(party.party_id))
-            self.party_list.setItem(row - 1, 1, qt_agenda_cred)
+            self.other_list.setRowCount(row)
+            self.other_list.setItem(row - 1, 0, qtw.QTableWidgetItem(other.other_id))
+            self.other_list.setItem(row - 1, 1, qt_agenda_cred)
 
     def open_editideaunit(self):
         self.EditIdeaunit = EditIdeaUnit()
@@ -204,11 +204,11 @@ class EditMainView(qtw.QWidget, Ui_Form):
         self.EditIdeaunit.refresh_tree()
         self.EditIdeaunit.show()
 
-    def open_edit_party(self):
-        self.edit_party = EditParty()
-        self.edit_party.x_agenda = self.x_agenda
-        self.edit_party.refresh_all()
-        self.edit_party.show()
+    def open_edit_other(self):
+        self.edit_other = EditOther()
+        self.edit_other.x_agenda = self.x_agenda
+        self.edit_other.refresh_all()
+        self.edit_other.show()
 
     def refresh_idea_tree(self):
         tree_root = get_pyqttree(idearoot=self.x_agenda._idearoot)

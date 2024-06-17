@@ -1,5 +1,5 @@
 from src.agenda.belief import balancelink_shop
-from src.agenda.party import partylink_shop
+from src.agenda.other import otherlink_shop
 from src.agenda.reason_idea import factunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.belief import beliefunit_shop
@@ -66,7 +66,7 @@ def test_NucUnit_create_quarkunits_CorrectHandlesEmptyAgendas():
     assert sue_nucunit.quarkunits == {}
 
 
-def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_partyunit_insert():
+def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_otherunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
@@ -74,18 +74,18 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_partyunit_insert
     rico_text = "Rico"
     rico_credor_weight = 33
     rico_debtor_weight = 44
-    after_sue_agenda.add_partyunit(rico_text, rico_credor_weight, rico_debtor_weight)
+    after_sue_agenda.add_otherunit(rico_text, rico_credor_weight, rico_debtor_weight)
 
     # WHEN
     sue_nucunit = nucunit_shop()
     sue_nucunit.add_all_different_quarkunits(before_sue_agenda, after_sue_agenda)
 
     # THEN
-    assert len(sue_nucunit.quarkunits.get(quark_insert()).get("agenda_partyunit")) == 1
+    assert len(sue_nucunit.quarkunits.get(quark_insert()).get("agenda_otherunit")) == 1
     sue_insert_dict = sue_nucunit.quarkunits.get(quark_insert())
-    sue_partyunit_dict = sue_insert_dict.get("agenda_partyunit")
-    rico_quarkunit = sue_partyunit_dict.get(rico_text)
-    assert rico_quarkunit.get_value("party_id") == rico_text
+    sue_otherunit_dict = sue_insert_dict.get("agenda_otherunit")
+    rico_quarkunit = sue_otherunit_dict.get(rico_text)
+    assert rico_quarkunit.get_value("other_id") == rico_text
     assert rico_quarkunit.get_value("credor_weight") == rico_credor_weight
     assert rico_quarkunit.get_value("debtor_weight") == rico_debtor_weight
 
@@ -93,17 +93,17 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_partyunit_insert
     assert get_quarkunit_total_count(sue_nucunit) == 1
 
 
-def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_partyunit_delete():
+def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_otherunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
-    before_sue_agenda.add_partyunit("Yao")
-    before_sue_agenda.add_partyunit("Zia")
+    before_sue_agenda.add_otherunit("Yao")
+    before_sue_agenda.add_otherunit("Zia")
 
     after_sue_agenda = copy_deepcopy(before_sue_agenda)
 
     rico_text = "Rico"
-    before_sue_agenda.add_partyunit(rico_text)
+    before_sue_agenda.add_otherunit(rico_text)
 
     # WHEN
     sue_nucunit = nucunit_shop()
@@ -111,34 +111,34 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_partyunit_delete
 
     # THEN
     rico_quarkunit = get_nested_value(
-        sue_nucunit.quarkunits, [quark_delete(), "agenda_partyunit", rico_text]
+        sue_nucunit.quarkunits, [quark_delete(), "agenda_otherunit", rico_text]
     )
-    assert rico_quarkunit.get_value("party_id") == rico_text
+    assert rico_quarkunit.get_value("other_id") == rico_text
 
     print(f"{get_quarkunit_total_count(sue_nucunit)=}")
     print_quarkunit_keys(sue_nucunit)
     assert get_quarkunit_total_count(sue_nucunit) == 1
 
 
-def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_partyunit_update():
+def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_otherunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agenda = agendaunit_shop(sue_text)
     after_sue_agenda = copy_deepcopy(before_sue_agenda)
     rico_text = "Rico"
-    before_sue_agenda.add_partyunit(rico_text)
+    before_sue_agenda.add_otherunit(rico_text)
     rico_credor_weight = 33
     rico_debtor_weight = 44
-    after_sue_agenda.add_partyunit(rico_text, rico_credor_weight, rico_debtor_weight)
+    after_sue_agenda.add_otherunit(rico_text, rico_credor_weight, rico_debtor_weight)
 
     # WHEN
     sue_nucunit = nucunit_shop()
     sue_nucunit.add_all_different_quarkunits(before_sue_agenda, after_sue_agenda)
 
     # THEN
-    x_keylist = [quark_update(), "agenda_partyunit", rico_text]
+    x_keylist = [quark_update(), "agenda_otherunit", rico_text]
     rico_quarkunit = get_nested_value(sue_nucunit.quarkunits, x_keylist)
-    assert rico_quarkunit.get_value("party_id") == rico_text
+    assert rico_quarkunit.get_value("other_id") == rico_text
     assert rico_quarkunit.get_value("credor_weight") == rico_credor_weight
     assert rico_quarkunit.get_value("debtor_weight") == rico_debtor_weight
 
@@ -156,15 +156,15 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_AgendaUnit_simpl
     x_max_tree_traverse = 66
     x_meld_strategy = "override"
     x_monetary_desc = "dragon funds"
-    x_party_credor_pool = 77
-    x_party_debtor_pool = 88
+    x_other_credor_pool = 77
+    x_other_debtor_pool = 88
     after_sue_agenda._weight = x_agendaUnit_weight
     after_sue_agenda._planck = x_planck
     after_sue_agenda.set_max_tree_traverse(x_max_tree_traverse)
     after_sue_agenda.set_meld_strategy(x_meld_strategy)
     after_sue_agenda.set_monetary_desc(x_monetary_desc)
-    after_sue_agenda.set_party_credor_pool(x_party_credor_pool)
-    after_sue_agenda.set_party_debtor_pool(x_party_debtor_pool)
+    after_sue_agenda.set_other_credor_pool(x_other_credor_pool)
+    after_sue_agenda.set_other_debtor_pool(x_other_debtor_pool)
 
     # WHEN
     sue_nucunit = nucunit_shop()
@@ -176,8 +176,8 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_AgendaUnit_simpl
     assert rico_quarkunit.get_value("_max_tree_traverse") == x_max_tree_traverse
     assert rico_quarkunit.get_value("_meld_strategy") == x_meld_strategy
     assert rico_quarkunit.get_value("_monetary_desc") == x_monetary_desc
-    assert rico_quarkunit.get_value("_party_credor_pool") == x_party_credor_pool
-    assert rico_quarkunit.get_value("_party_debtor_pool") == x_party_debtor_pool
+    assert rico_quarkunit.get_value("_other_credor_pool") == x_other_credor_pool
+    assert rico_quarkunit.get_value("_other_debtor_pool") == x_other_debtor_pool
     assert rico_quarkunit.get_value("_weight") == x_agendaUnit_weight
     assert rico_quarkunit.get_value("_planck") == x_planck
 
@@ -185,22 +185,22 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_AgendaUnit_simpl
     assert get_quarkunit_total_count(sue_nucunit) == 1
 
 
-def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_belief_partylink_insert():
+def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_belief_otherlink_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
     rico_text = "Rico"
     carm_text = "Carmen"
-    after_sue_agendaunit.add_partyunit(rico_text)
-    after_sue_agendaunit.add_partyunit(carm_text)
+    after_sue_agendaunit.add_otherunit(rico_text)
+    after_sue_agendaunit.add_otherunit(carm_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
     rico_credor_weight = 77
     rico_debtor_weight = 88
-    rico_partylink = partylink_shop(rico_text, rico_credor_weight, rico_debtor_weight)
-    run_beliefunit.set_partylink(rico_partylink)
-    run_beliefunit.set_partylink(partylink_shop(carm_text))
+    rico_otherlink = otherlink_shop(rico_text, rico_credor_weight, rico_debtor_weight)
+    run_beliefunit.set_otherlink(rico_otherlink)
+    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
     after_sue_agendaunit.set_beliefunit(run_beliefunit)
     # print(f"{after_sue_agendaunit.get_beliefunit(run_text)=}")
 
@@ -217,10 +217,10 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_belief_partylink
     # print(f"\n{sue_nucunit.quarkunits=}")
     print(f"\n{rico_quarkunit=}")
 
-    x_keylist = [quark_insert(), "agenda_belief_partylink", run_text, rico_text]
+    x_keylist = [quark_insert(), "agenda_belief_otherlink", run_text, rico_text]
     rico_quarkunit = get_nested_value(sue_nucunit.quarkunits, x_keylist)
     assert rico_quarkunit.get_value("belief_id") == run_text
-    assert rico_quarkunit.get_value("party_id") == rico_text
+    assert rico_quarkunit.get_value("other_id") == rico_text
     assert rico_quarkunit.get_value("credor_weight") == rico_credor_weight
     assert rico_quarkunit.get_value("debtor_weight") == rico_debtor_weight
 
@@ -232,28 +232,28 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_belief_partylink
     assert get_quarkunit_total_count(sue_nucunit) == 5
 
 
-def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_belief_partylink_update():
+def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_belief_otherlink_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
-    before_sue_agendaunit.add_partyunit(rico_text)
-    before_sue_agendaunit.add_partyunit(carm_text)
+    before_sue_agendaunit.add_otherunit(rico_text)
+    before_sue_agendaunit.add_otherunit(carm_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
     before_rico_credor_weight = 77
     before_rico_debtor_weight = 88
-    run_beliefunit.set_partylink(
-        partylink_shop(rico_text, before_rico_credor_weight, before_rico_debtor_weight)
+    run_beliefunit.set_otherlink(
+        otherlink_shop(rico_text, before_rico_credor_weight, before_rico_debtor_weight)
     )
-    run_beliefunit.set_partylink(partylink_shop(carm_text))
+    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
     before_sue_agendaunit.set_beliefunit(run_beliefunit)
     after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
     after_run_beliefunit = after_sue_agendaunit.get_beliefunit(run_text)
     after_rico_credor_weight = 55
     after_rico_debtor_weight = 66
-    after_run_beliefunit.edit_partylink(
+    after_run_beliefunit.edit_otherlink(
         rico_text, after_rico_credor_weight, after_rico_debtor_weight
     )
 
@@ -270,10 +270,10 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_belief_partylink
     # print(f"\n{sue_nucunit.quarkunits=}")
     # print(f"\n{rico_quarkunit=}")
 
-    x_keylist = [quark_update(), "agenda_belief_partylink", run_text, rico_text]
+    x_keylist = [quark_update(), "agenda_belief_otherlink", run_text, rico_text]
     rico_quarkunit = get_nested_value(sue_nucunit.quarkunits, x_keylist)
     assert rico_quarkunit.get_value("belief_id") == run_text
-    assert rico_quarkunit.get_value("party_id") == rico_text
+    assert rico_quarkunit.get_value("other_id") == rico_text
     assert rico_quarkunit.get_value("credor_weight") == after_rico_credor_weight
     assert rico_quarkunit.get_value("debtor_weight") == after_rico_debtor_weight
 
@@ -281,34 +281,34 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_belief_partylink
     assert get_quarkunit_total_count(sue_nucunit) == 1
 
 
-def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_belief_partylink_delete():
+def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_belief_otherlink_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
     dizz_text = "Dizzy"
-    before_sue_agendaunit.add_partyunit(rico_text)
-    before_sue_agendaunit.add_partyunit(carm_text)
-    before_sue_agendaunit.add_partyunit(dizz_text)
+    before_sue_agendaunit.add_otherunit(rico_text)
+    before_sue_agendaunit.add_otherunit(carm_text)
+    before_sue_agendaunit.add_otherunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_partylink(partylink_shop(rico_text))
-    run_beliefunit.set_partylink(partylink_shop(carm_text))
+    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_partylink(partylink_shop(rico_text))
-    fly_beliefunit.set_partylink(partylink_shop(carm_text))
-    fly_beliefunit.set_partylink(partylink_shop(dizz_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(carm_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(dizz_text))
     before_sue_agendaunit.set_beliefunit(run_beliefunit)
     before_sue_agendaunit.set_beliefunit(fly_beliefunit)
     after_sue_agendaunit = copy_deepcopy(before_sue_agendaunit)
     after_sue_agendaunit.del_beliefunit(run_text)
     after_fly_beliefunit = after_sue_agendaunit.get_beliefunit(fly_text)
-    after_fly_beliefunit.del_partylink(dizz_text)
-    assert len(before_sue_agendaunit.get_beliefunit(fly_text)._partys) == 3
-    assert len(before_sue_agendaunit.get_beliefunit(run_text)._partys) == 2
-    assert len(after_sue_agendaunit.get_beliefunit(fly_text)._partys) == 2
+    after_fly_beliefunit.del_otherlink(dizz_text)
+    assert len(before_sue_agendaunit.get_beliefunit(fly_text)._others) == 3
+    assert len(before_sue_agendaunit.get_beliefunit(run_text)._others) == 2
+    assert len(after_sue_agendaunit.get_beliefunit(fly_text)._others) == 2
     assert after_sue_agendaunit.get_beliefunit(run_text) is None
 
     # WHEN
@@ -322,10 +322,10 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_belief_partylink
     rico_quarkunit = get_nested_value(sue_nucunit.quarkunits, x_keylist)
     assert rico_quarkunit.get_value("belief_id") == run_text
 
-    x_keylist = [quark_delete(), "agenda_belief_partylink", fly_text, dizz_text]
+    x_keylist = [quark_delete(), "agenda_belief_otherlink", fly_text, dizz_text]
     rico_quarkunit = get_nested_value(sue_nucunit.quarkunits, x_keylist)
     assert rico_quarkunit.get_value("belief_id") == fly_text
-    assert rico_quarkunit.get_value("party_id") == dizz_text
+    assert rico_quarkunit.get_value("other_id") == dizz_text
 
     print(f"{get_quarkunit_total_count(sue_nucunit)=}")
     print_quarkunit_keys(sue_nucunit)
@@ -520,18 +520,18 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_idea_balancelink
     rico_text = "Rico"
     carm_text = "Carmen"
     dizz_text = "Dizzy"
-    before_sue_au.add_partyunit(rico_text)
-    before_sue_au.add_partyunit(carm_text)
-    before_sue_au.add_partyunit(dizz_text)
+    before_sue_au.add_otherunit(rico_text)
+    before_sue_au.add_otherunit(carm_text)
+    before_sue_au.add_otherunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_partylink(partylink_shop(rico_text))
-    run_beliefunit.set_partylink(partylink_shop(carm_text))
+    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_partylink(partylink_shop(rico_text))
-    fly_beliefunit.set_partylink(partylink_shop(carm_text))
-    fly_beliefunit.set_partylink(partylink_shop(dizz_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(carm_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(dizz_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     before_sue_au.set_beliefunit(fly_beliefunit)
     sports_text = "sports"
@@ -572,18 +572,18 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_idea_balancelink
     rico_text = "Rico"
     carm_text = "Carmen"
     dizz_text = "Dizzy"
-    before_sue_au.add_partyunit(rico_text)
-    before_sue_au.add_partyunit(carm_text)
-    before_sue_au.add_partyunit(dizz_text)
+    before_sue_au.add_otherunit(rico_text)
+    before_sue_au.add_otherunit(carm_text)
+    before_sue_au.add_otherunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_partylink(partylink_shop(rico_text))
-    run_beliefunit.set_partylink(partylink_shop(carm_text))
+    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_partylink(partylink_shop(rico_text))
-    fly_beliefunit.set_partylink(partylink_shop(carm_text))
-    fly_beliefunit.set_partylink(partylink_shop(dizz_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(carm_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(dizz_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     before_sue_au.set_beliefunit(fly_beliefunit)
     sports_text = "sports"
@@ -634,11 +634,11 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_idea_balancelink
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
-    before_sue_au.add_partyunit(rico_text)
-    before_sue_au.add_partyunit(carm_text)
+    before_sue_au.add_otherunit(rico_text)
+    before_sue_au.add_otherunit(carm_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_partylink(partylink_shop(rico_text))
+    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -1166,7 +1166,7 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_idea_suffbelief_
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
-    before_sue_agendaunit.add_partyunit(rico_text)
+    before_sue_agendaunit.add_otherunit(rico_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
     ball_text = "basketball"
@@ -1202,7 +1202,7 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_idea_suffbelief_
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
-    before_sue_agendaunit.add_partyunit(rico_text)
+    before_sue_agendaunit.add_otherunit(rico_text)
     sports_text = "sports"
     sports_road = before_sue_agendaunit.make_l1_road(sports_text)
     ball_text = "basketball"
