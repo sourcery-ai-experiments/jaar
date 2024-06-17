@@ -1,5 +1,5 @@
 from src._road.road import create_road, get_default_real_id_roadnode as root_label
-from src.agenda.guy import guyunit_shop
+from src.agenda.other import otherunit_shop
 from src.atom.nuc import (
     NucUnit,
     nucunit_shop,
@@ -125,28 +125,28 @@ def test_NucUnit_add_quarkunit_CorrectlySets_AgendaUnitSimpleAttrs():
     assert x_quarkunit.category == agendaunit_text
 
 
-def test_NucUnit_add_quarkunit_CorrectlySets_AgendaUnit_guyunits():
+def test_NucUnit_add_quarkunit_CorrectlySets_AgendaUnit_otherunits():
     # GIVEN
     ex1_nucunit = nucunit_shop()
     assert ex1_nucunit.quarkunits == {}
 
     # WHEN
-    guy_id_text = "guy_id"
+    other_id_text = "other_id"
     bob_text = "Bob"
     bob_credor_weight = 55
     bob_debtor_weight = 66
-    bob_guyunit = guyunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
-    guy_id_text = "guy_id"
+    bob_otherunit = otherunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
+    other_id_text = "other_id"
     cw_text = "credor_weight"
     dw_text = "debtor_weight"
-    print(f"{bob_guyunit.get_dict()=}")
-    bob_required_dict = {guy_id_text: bob_guyunit.get_dict().get(guy_id_text)}
-    bob_optional_dict = {cw_text: bob_guyunit.get_dict().get(cw_text)}
-    bob_optional_dict[dw_text] = bob_guyunit.get_dict().get(dw_text)
+    print(f"{bob_otherunit.get_dict()=}")
+    bob_required_dict = {other_id_text: bob_otherunit.get_dict().get(other_id_text)}
+    bob_optional_dict = {cw_text: bob_otherunit.get_dict().get(cw_text)}
+    bob_optional_dict[dw_text] = bob_otherunit.get_dict().get(dw_text)
     print(f"{bob_required_dict=}")
-    guyunit_text = "agenda_guyunit"
+    otherunit_text = "agenda_otherunit"
     ex1_nucunit.add_quarkunit(
-        category=guyunit_text,
+        category=otherunit_text,
         crud_text=quark_insert(),
         required_args=bob_required_dict,
         optional_args=bob_optional_dict,
@@ -154,7 +154,7 @@ def test_NucUnit_add_quarkunit_CorrectlySets_AgendaUnit_guyunits():
     # THEN
     assert len(ex1_nucunit.quarkunits) == 1
     assert (
-        ex1_nucunit.quarkunits.get(quark_insert()).get(guyunit_text).get(bob_text)
+        ex1_nucunit.quarkunits.get(quark_insert()).get(otherunit_text).get(bob_text)
         != None
     )
 
@@ -200,9 +200,9 @@ def test_NucUnit_get_category_sorted_quarkunits_list_ReturnsCorrectObj():
     assert sue_quarks_list[0] == update_dict.get("agendaunit")
     z_quark = sue_quarks_list[1]
     print(f"{z_quark=}")
-    print(delete_dict.get("agenda_guyunit").keys())
-    carmen_guyunit_delete = delete_dict.get("agenda_guyunit").get("Carmen")
-    assert sue_quarks_list[1] == carmen_guyunit_delete
+    print(delete_dict.get("agenda_otherunit").keys())
+    carmen_otherunit_delete = delete_dict.get("agenda_otherunit").get("Carmen")
+    assert sue_quarks_list[1] == carmen_otherunit_delete
     # print(f"{sue_quark_order_dict.keys()=}")
     # # print(f"{sue_quark_order_dict.get(quark_update())=}")
     # assert len(sue_quark_order_dict.get(quark_update())) == 1
@@ -247,7 +247,7 @@ def test_NucUnit_get_category_sorted_quarkunits_list_ReturnsCorrectObj():
 
 #     # WHEN
 #     new3_value = 77
-#     x_attribute = "_guy_credor_pool"
+#     x_attribute = "_other_credor_pool"
 #     required_args = {x_attribute: new3_value}
 #     x_quarkunit = quarkunit_shop(x_attribute, quark_update(), None, required_args)
 #     ex1_nucunit.set_quarkunit(x_quarkunit)
@@ -257,7 +257,7 @@ def test_NucUnit_get_category_sorted_quarkunits_list_ReturnsCorrectObj():
 
 #     # WHEN
 #     new4_value = 88
-#     x_attribute = "_guy_debtor_pool"
+#     x_attribute = "_other_debtor_pool"
 #     required_args = {x_attribute: new4_value}
 #     x_quarkunit = quarkunit_shop(x_attribute, quark_update(), None, required_args)
 #     ex1_nucunit.set_quarkunit(x_quarkunit)
@@ -280,14 +280,14 @@ def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj():
     # GIVEN
     ex1_nucunit = get_nucunit_example1()
     agendaunit_text = "agendaunit"
-    agenda_guyunit_text = "agenda_guyunit"
+    agenda_otherunit_text = "agenda_otherunit"
     update_dict = ex1_nucunit.quarkunits.get(quark_update())
     assert len(update_dict.keys()) == 1
     assert update_dict.get(agendaunit_text) != None
     print(f"quark_order 28 {ex1_nucunit.quarkunits.get(quark_update()).keys()=}")
     delete_dict = ex1_nucunit.quarkunits.get(quark_delete())
     assert len(delete_dict.keys()) == 1
-    assert delete_dict.get(agenda_guyunit_text) != None
+    assert delete_dict.get(agenda_otherunit_text) != None
     print(f"quark_order 26 {ex1_nucunit.quarkunits.get(quark_delete()).keys()=}")
 
     # WHEN
@@ -295,11 +295,11 @@ def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj():
 
     # THEN
     assert len(sue_quark_order_list) == 2
-    print(delete_dict.get("agenda_guyunit").keys())
-    carmen_guyunit_delete = delete_dict.get("agenda_guyunit").get("Carmen")
+    print(delete_dict.get("agenda_otherunit").keys())
+    carmen_otherunit_delete = delete_dict.get("agenda_otherunit").get("Carmen")
     # for quarkunit in sue_quark_order_list:
     #     print(f"{quarkunit.quark_order=}")
-    assert sue_quark_order_list[0] == carmen_guyunit_delete
+    assert sue_quark_order_list[0] == carmen_otherunit_delete
     assert sue_quark_order_list[1] == update_dict.get(agendaunit_text)
     # for crud_text, quark_list in sue_quark_order_dict.items():
     #     print(f"{crud_text=}")
@@ -386,14 +386,14 @@ def test_validate_agenda_build_from_nuc_ReturnsCorrectObjGivenNoAgenda():
 
     agendaunit_text = "agendaunit"
     x_quarkunit = quarkunit_shop(agendaunit_text, quark_update())
-    x_attribute = "_guy_credor_pool"
+    x_attribute = "_other_credor_pool"
     x_quarkunit.set_optional_arg(x_attribute, 100)
     sue_nucunit.set_quarkunit(x_quarkunit)
 
-    category = "agenda_guyunit"
+    category = "agenda_otherunit"
     carm_text = "Carmen"
     x_quarkunit = quarkunit_shop(category, quark_insert())
-    x_quarkunit.set_arg("guy_id", carm_text)
+    x_quarkunit.set_arg("other_id", carm_text)
     x_quarkunit.set_arg("credor_weight", 70)
     sue_nucunit.set_quarkunit(x_quarkunit)
 
@@ -403,7 +403,7 @@ def test_validate_agenda_build_from_nuc_ReturnsCorrectObjGivenNoAgenda():
     # WHEN
     rico_text = "Rico"
     x_quarkunit = quarkunit_shop(category, quark_insert())
-    x_quarkunit.set_arg("guy_id", rico_text)
+    x_quarkunit.set_arg("other_id", rico_text)
     x_quarkunit.set_arg("credor_weight", 30)
     sue_nucunit.set_quarkunit(x_quarkunit)
 
@@ -413,7 +413,7 @@ def test_validate_agenda_build_from_nuc_ReturnsCorrectObjGivenNoAgenda():
     # WHEN
     bob_text = "Bob"
     x_quarkunit = quarkunit_shop(category, quark_insert())
-    x_quarkunit.set_arg("guy_id", bob_text)
+    x_quarkunit.set_arg("other_id", bob_text)
     x_quarkunit.set_arg("credor_weight", 35)
     sue_nucunit.set_quarkunit(x_quarkunit)
 
@@ -424,44 +424,44 @@ def test_validate_agenda_build_from_nuc_ReturnsCorrectObjGivenNoAgenda():
 def test_validate_agenda_build_from_nuc_ReturnsCorrectObjGivenAgenda():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_guy_credor_pool(100)
+    sue_agenda.set_other_credor_pool(100)
 
     sue_nucunit = nucunit_shop()
 
-    category = "agenda_guyunit"
+    category = "agenda_otherunit"
     carm_text = "Carmen"
     x_quarkunit = quarkunit_shop(category, quark_insert())
-    x_quarkunit.set_arg("guy_id", carm_text)
+    x_quarkunit.set_arg("other_id", carm_text)
     x_quarkunit.set_arg("credor_weight", 70)
     sue_nucunit.set_quarkunit(x_quarkunit)
 
     # WHEN/THEN
     sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_guy_credor_pool(100)
+    sue_agenda.set_other_credor_pool(100)
     assert validate_agenda_build_from_nuc(sue_nucunit, sue_agenda) is False
 
     # WHEN
     rico_text = "Rico"
     x_quarkunit = quarkunit_shop(category, quark_insert())
-    x_quarkunit.set_arg("guy_id", rico_text)
+    x_quarkunit.set_arg("other_id", rico_text)
     x_quarkunit.set_arg("credor_weight", 30)
     sue_nucunit.set_quarkunit(x_quarkunit)
 
     # THEN
     sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_guy_credor_pool(100)
+    sue_agenda.set_other_credor_pool(100)
     assert validate_agenda_build_from_nuc(sue_nucunit, sue_agenda)
 
     # WHEN
     bob_text = "Bob"
     x_quarkunit = quarkunit_shop(category, quark_insert())
-    x_quarkunit.set_arg("guy_id", bob_text)
+    x_quarkunit.set_arg("other_id", bob_text)
     x_quarkunit.set_arg("credor_weight", 35)
     sue_nucunit.set_quarkunit(x_quarkunit)
 
     # THEN
     sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_guy_credor_pool(100)
+    sue_agenda.set_other_credor_pool(100)
     assert validate_agenda_build_from_nuc(sue_nucunit, sue_agenda) is False
 
 
@@ -470,20 +470,20 @@ def test_NucUnit_get_ordered_quarkunits_ReturnsCorrectObj_GivenNoStartingNumber(
     sue_nucunit = nucunit_shop()
     agendaunit_text = "agendaunit"
     pool_quarkunit = quarkunit_shop(agendaunit_text, quark_update())
-    pool_attribute = "_guy_credor_pool"
+    pool_attribute = "_other_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 100)
     sue_nucunit.set_quarkunit(pool_quarkunit)
-    category = "agenda_guyunit"
+    category = "agenda_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_insert())
-    carm_quarkunit.set_arg("guy_id", carm_text)
+    carm_quarkunit.set_arg("other_id", carm_text)
     carm_quarkunit.set_arg("credor_weight", 70)
     sue_nucunit.set_quarkunit(carm_quarkunit)
     sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_guy_credor_pool(100)
+    sue_agenda.set_other_credor_pool(100)
     rico_text = "Rico"
     rico_quarkunit = quarkunit_shop(category, quark_insert())
-    rico_quarkunit.set_arg("guy_id", rico_text)
+    rico_quarkunit.set_arg("other_id", rico_text)
     rico_quarkunit.set_arg("credor_weight", 30)
     sue_nucunit.set_quarkunit(rico_quarkunit)
 
@@ -510,20 +510,20 @@ def test_NucUnit_get_ordered_quarkunits_ReturnsCorrectObj_GivenStartingNumber():
     sue_nucunit = nucunit_shop()
     agendaunit_text = "agendaunit"
     pool_quarkunit = quarkunit_shop(agendaunit_text, quark_update())
-    pool_attribute = "_guy_credor_pool"
+    pool_attribute = "_other_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 100)
     sue_nucunit.set_quarkunit(pool_quarkunit)
-    category = "agenda_guyunit"
+    category = "agenda_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_insert())
-    carm_quarkunit.set_arg("guy_id", carm_text)
+    carm_quarkunit.set_arg("other_id", carm_text)
     carm_quarkunit.set_arg("credor_weight", 70)
     sue_nucunit.set_quarkunit(carm_quarkunit)
     sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_guy_credor_pool(100)
+    sue_agenda.set_other_credor_pool(100)
     rico_text = "Rico"
     rico_quarkunit = quarkunit_shop(category, quark_insert())
-    rico_quarkunit.set_arg("guy_id", rico_text)
+    rico_quarkunit.set_arg("other_id", rico_text)
     rico_quarkunit.set_arg("credor_weight", 30)
     sue_nucunit.set_quarkunit(rico_quarkunit)
 
@@ -550,20 +550,20 @@ def test_NucUnit_get_ordered_dict_ReturnsCorrectObj_GivenStartingNumber():
     sue_nucunit = nucunit_shop()
     agendaunit_text = "agendaunit"
     pool_quarkunit = quarkunit_shop(agendaunit_text, quark_update())
-    pool_attribute = "_guy_credor_pool"
+    pool_attribute = "_other_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 100)
     sue_nucunit.set_quarkunit(pool_quarkunit)
-    category = "agenda_guyunit"
+    category = "agenda_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_insert())
-    carm_quarkunit.set_arg("guy_id", carm_text)
+    carm_quarkunit.set_arg("other_id", carm_text)
     carm_quarkunit.set_arg("credor_weight", 70)
     sue_nucunit.set_quarkunit(carm_quarkunit)
     sue_agenda = agendaunit_shop("Sue")
-    sue_agenda.set_guy_credor_pool(100)
+    sue_agenda.set_other_credor_pool(100)
     rico_text = "Rico"
     rico_quarkunit = quarkunit_shop(category, quark_insert())
-    rico_quarkunit.set_arg("guy_id", rico_text)
+    rico_quarkunit.set_arg("other_id", rico_text)
     rico_quarkunit.set_arg("credor_weight", 30)
     sue_nucunit.set_quarkunit(rico_quarkunit)
 
@@ -590,18 +590,18 @@ def test_NucUnit_get_json_ReturnsCorrectObj():
     sue_nucunit = nucunit_shop()
     agendaunit_text = "agendaunit"
     pool_quarkunit = quarkunit_shop(agendaunit_text, quark_update())
-    pool_attribute = "_guy_credor_pool"
+    pool_attribute = "_other_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 100)
     sue_nucunit.set_quarkunit(pool_quarkunit)
-    category = "agenda_guyunit"
+    category = "agenda_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_insert())
-    carm_quarkunit.set_arg("guy_id", carm_text)
+    carm_quarkunit.set_arg("other_id", carm_text)
     carm_quarkunit.set_arg("credor_weight", 70)
     sue_nucunit.set_quarkunit(carm_quarkunit)
     rico_text = "Rico"
     rico_quarkunit = quarkunit_shop(category, quark_insert())
-    rico_quarkunit.set_arg("guy_id", rico_text)
+    rico_quarkunit.set_arg("other_id", rico_text)
     rico_quarkunit.set_arg("credor_weight", 30)
     sue_nucunit.set_quarkunit(rico_quarkunit)
 
@@ -618,10 +618,10 @@ def test_NucUnit_quarkunit_exists_ReturnsCorrectObj():
     farm_nucunit = nucunit_shop()
 
     # WHEN / THEN
-    category = "agenda_guyunit"
+    category = "agenda_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_insert())
-    carm_quarkunit.set_arg("guy_id", carm_text)
+    carm_quarkunit.set_arg("other_id", carm_text)
     carm_quarkunit.set_arg("credor_weight", 70)
     assert farm_nucunit.quarkunit_exists(carm_quarkunit) is False
 

@@ -17,7 +17,7 @@ def create_pledge(
         x_idea._assignedunit.set_suffbelief(x_suffbelief)
 
         if x_agenda.get_beliefunit(x_suffbelief) is None:
-            x_agenda.add_guyunit(x_suffbelief)
+            x_agenda.add_otherunit(x_suffbelief)
 
         if reason_premise != None:
             if x_agenda.idea_exists(reason_premise) is False:

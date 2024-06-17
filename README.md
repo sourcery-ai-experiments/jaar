@@ -64,7 +64,7 @@ base attributes vs reason attributess
 
 AgendaUnit objects
 
-AgendaUnit GuyUnit objects
+AgendaUnit OtherUnit objects
 
 AgendaUnit BeliefUnit objects
 

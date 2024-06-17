@@ -49,7 +49,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Guy is guy of these Beliefs</string>
+    <string>Other is other of these Beliefs</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -65,13 +65,13 @@
     </rect>
    </property>
    <property name="text">
-    <string>Guy is not guy of these Beliefs</string>
+    <string>Other is not other of these Beliefs</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QLabel" name="source_guy">
+  <widget class="QLabel" name="source_other">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -88,10 +88,10 @@
     </font>
    </property>
    <property name="text">
-    <string>Guy (ID): </string>
+    <string>Other (ID): </string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="bd_guy_yes">
+  <widget class="QTableWidget" name="bd_other_yes">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -117,7 +117,7 @@
    </column>
    <column>
     <property name="text">
-     <string>GuyCount</string>
+     <string>OtherCount</string>
     </property>
    </column>
    <column>
@@ -126,7 +126,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QTableWidget" name="bd_guy_no">
+  <widget class="QTableWidget" name="bd_other_no">
    <property name="geometry">
     <rect>
      <x>630</x>
@@ -142,7 +142,7 @@
    </column>
    <column>
     <property name="text">
-     <string>GuyCount</string>
+     <string>OtherCount</string>
     </property>
    </column>
    <column>
@@ -177,7 +177,7 @@
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="guy2belief_weight_edit">
+  <widget class="QLineEdit" name="other2belief_weight_edit">
    <property name="geometry">
     <rect>
      <x>240</x>
@@ -197,7 +197,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>Update Guy's Weight in Belief to:</string>
+    <string>Update Other's Weight in Belief to:</string>
    </property>
   </widget>
   <widget class="QPushButton" name="bd_insert_button">

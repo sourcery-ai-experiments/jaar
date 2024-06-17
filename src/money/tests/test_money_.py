@@ -1,27 +1,30 @@
 # from src.agenda.examples.example_agendas import agenda_v001_with_large_intent
 # from src.agenda.agenda import agendaunit_shop
-from src.agenda.report import get_agenda_guyunits_dataframe, get_agenda_intent_dataframe
-from src.money.money import GuyMoneyReport
+from src.agenda.report import (
+    get_agenda_otherunits_dataframe,
+    get_agenda_intent_dataframe,
+)
+from src.money.money import OtherMoneyReport
 
 
-def test_GuyMoneyReport_exists():
+def test_OtherMoneyReport_exists():
     # GIVEN / WHEN
-    x_guymoneyreport = GuyMoneyReport()
+    x_othermoneyreport = OtherMoneyReport()
 
     # THEN
-    assert x_guymoneyreport.tax_total is None
-    assert x_guymoneyreport.debtor_rank_num is None
-    assert x_guymoneyreport.credor_rank_num is None
-    assert x_guymoneyreport.debtor_rank_percent is None
-    assert x_guymoneyreport.credor_rank_percent is None
-    assert x_guymoneyreport.grant_total is None
-    assert x_guymoneyreport.tax_paid_amount is None
-    assert x_guymoneyreport.tax_paid_bool is None
-    assert x_guymoneyreport.transactions_count is None
-    assert x_guymoneyreport.transactions_magnitude is None
+    assert x_othermoneyreport.tax_total is None
+    assert x_othermoneyreport.debtor_rank_num is None
+    assert x_othermoneyreport.credor_rank_num is None
+    assert x_othermoneyreport.debtor_rank_percent is None
+    assert x_othermoneyreport.credor_rank_percent is None
+    assert x_othermoneyreport.grant_total is None
+    assert x_othermoneyreport.tax_paid_amount is None
+    assert x_othermoneyreport.tax_paid_bool is None
+    assert x_othermoneyreport.transactions_count is None
+    assert x_othermoneyreport.transactions_magnitude is None
 
 
-def test_GuyMoneyReport_DoesNotChangeInputs():
+def test_OtherMoneyReport_DoesNotChangeInputs():
     # GIVEN
     tax_total = 500
     debtor_rank_num = 45
@@ -35,7 +38,7 @@ def test_GuyMoneyReport_DoesNotChangeInputs():
     transactions_magnitude = 788000
 
     # WHEN
-    x_guymoneyreport = GuyMoneyReport(
+    x_othermoneyreport = OtherMoneyReport(
         tax_total,
         debtor_rank_num,
         credor_rank_num,
@@ -49,16 +52,16 @@ def test_GuyMoneyReport_DoesNotChangeInputs():
     )
 
     # THEN
-    assert x_guymoneyreport.tax_total == tax_total
-    assert x_guymoneyreport.debtor_rank_num == debtor_rank_num
-    assert x_guymoneyreport.credor_rank_num == credor_rank_num
-    assert x_guymoneyreport.debtor_rank_percent == debtor_rank_percent
-    assert x_guymoneyreport.credor_rank_percent == credor_rank_percent
-    assert x_guymoneyreport.grant_total == grant_total
-    assert x_guymoneyreport.tax_paid_amount == tax_paid_amount
-    assert x_guymoneyreport.tax_paid_bool == tax_paid_bool
-    assert x_guymoneyreport.transactions_count == transactions_count
-    assert x_guymoneyreport.transactions_magnitude == transactions_magnitude
+    assert x_othermoneyreport.tax_total == tax_total
+    assert x_othermoneyreport.debtor_rank_num == debtor_rank_num
+    assert x_othermoneyreport.credor_rank_num == credor_rank_num
+    assert x_othermoneyreport.debtor_rank_percent == debtor_rank_percent
+    assert x_othermoneyreport.credor_rank_percent == credor_rank_percent
+    assert x_othermoneyreport.grant_total == grant_total
+    assert x_othermoneyreport.tax_paid_amount == tax_paid_amount
+    assert x_othermoneyreport.tax_paid_bool == tax_paid_bool
+    assert x_othermoneyreport.transactions_count == transactions_count
+    assert x_othermoneyreport.transactions_magnitude == transactions_magnitude
 
 
 # during the currency river process
@@ -67,30 +70,30 @@ def test_GuyMoneyReport_DoesNotChangeInputs():
 # to the next RiverCycle.
 # Money leaves the system by paying taxes
 # Stop RiverCycling #1 If all money leaves the system by paying taxes
-# Stop RiverCycling #2 if two rivercycles in a row don't pay more taxes AND have the same guys (no new guys added between Cycles)
+# Stop RiverCycling #2 if two rivercycles in a row don't pay more taxes AND have the same others (no new others added between Cycles)
 # Stop RiverCycling #3 if cycles_run = rivercyclinglimit
 
 
-# def test_get_agenda_guyunits_dataframe_ReturnsCorrectDataFrame():
+# def test_get_agenda_otherunits_dataframe_ReturnsCorrectDataFrame():
 #     # GIVEN
 #     luca_agenda = agendaunit_shop()
-#     luca_agenda.set_guy_credor_pool(500)
-#     luca_agenda.set_guy_debtor_pool(400)
+#     luca_agenda.set_other_credor_pool(500)
+#     luca_agenda.set_other_debtor_pool(400)
 #     todd_text = "Todd"
 #     todd_credor_weight = 66
 #     todd_debtor_weight = 77
-#     luca_agenda.add_guyunit(todd_text, todd_credor_weight, todd_debtor_weight)
+#     luca_agenda.add_otherunit(todd_text, todd_credor_weight, todd_debtor_weight)
 #     sue_text = "Sue"
 #     sue_credor_weight = 434
 #     sue_debtor_weight = 323
-#     luca_agenda.add_guyunit(sue_text, sue_credor_weight, sue_debtor_weight)
+#     luca_agenda.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
 
 #     # WHEN
-#     x_df = get_agenda_guyunits_dataframe(luca_agenda)
+#     x_df = get_agenda_otherunits_dataframe(luca_agenda)
 
 #     # THEN
-#     guyunit_colums = {
-#         "guy_id",
+#     otherunit_colums = {
+#         "other_id",
 #         "credor_weight",
 #         "debtor_weight",
 #         "_agenda_cred",
@@ -110,20 +113,20 @@ def test_GuyMoneyReport_DoesNotChangeInputs():
 #     }
 #     print(f"{set(x_df.columns)=}")
 
-#     assert set(x_df.columns) == guyunit_colums
+#     assert set(x_df.columns) == otherunit_colums
 #     assert x_df.shape[0] == 2
 
 
-# def test_get_agenda_guyunits_dataframe_ReturnsCorrectEmptyDataFrame():
+# def test_get_agenda_otherunits_dataframe_ReturnsCorrectEmptyDataFrame():
 #     # GIVEN
 #     luca_agenda = agendaunit_shop()
 
 #     # WHEN
-#     x_df = get_agenda_guyunits_dataframe(luca_agenda)
+#     x_df = get_agenda_otherunits_dataframe(luca_agenda)
 
 #     # THEN
-#     guyunit_colums = {
-#         "guy_id",
+#     otherunit_colums = {
+#         "other_id",
 #         "credor_weight",
 #         "debtor_weight",
 #         "_agenda_cred",
@@ -143,7 +146,7 @@ def test_GuyMoneyReport_DoesNotChangeInputs():
 #     }
 #     print(f"{set(x_df.columns)=}")
 
-#     assert set(x_df.columns) == guyunit_colums
+#     assert set(x_df.columns) == otherunit_colums
 #     assert x_df.shape[0] == 0
 
 
@@ -159,7 +162,7 @@ def test_GuyMoneyReport_DoesNotChangeInputs():
 #     print(x_df)
 
 #     # THEN
-#     guyunit_colums = {
+#     otherunit_colums = {
 #         "owner_id",
 #         "agenda_importance",
 #         "_label",
@@ -173,7 +176,7 @@ def test_GuyMoneyReport_DoesNotChangeInputs():
 #     }
 #     print(f"{set(x_df.columns)=}")
 
-#     assert set(x_df.columns) == guyunit_colums
+#     assert set(x_df.columns) == otherunit_colums
 #     assert x_df.shape[0] == 63
 
 
@@ -187,7 +190,7 @@ def test_GuyMoneyReport_DoesNotChangeInputs():
 #     print(x_df)
 
 #     # THEN
-#     guyunit_colums = {
+#     otherunit_colums = {
 #         "owner_id",
 #         "agenda_importance",
 #         "_label",
@@ -201,4 +204,4 @@ def test_GuyMoneyReport_DoesNotChangeInputs():
 #     }
 #     print(f"{set(x_df.columns)=}")
 
-#     assert set(x_df.columns) == guyunit_colums
+#     assert set(x_df.columns) == otherunit_colums

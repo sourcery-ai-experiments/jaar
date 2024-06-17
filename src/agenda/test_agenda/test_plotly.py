@@ -8,7 +8,7 @@ from src.agenda.examples.example_agendas import (
 from src.agenda.agenda import agendaunit_shop
 from src.agenda.graphic import (
     display_ideatree,
-    get_agenda_guys_plotly_fig,
+    get_agenda_others_plotly_fig,
     get_agenda_intent_plotly_fig,
 )
 
@@ -53,22 +53,22 @@ def test_display_ideatree_GivenAgenda_shows_Tasks():
     #     x_fig.show()
 
 
-def test_get_agenda_guys_plotly_fig_DisplaysCorrectInfo():
+def test_get_agenda_others_plotly_fig_DisplaysCorrectInfo():
     # GIVEN
     luca_agenda = agendaunit_shop()
-    luca_agenda.set_guy_credor_pool(500)
-    luca_agenda.set_guy_debtor_pool(400)
+    luca_agenda.set_other_credor_pool(500)
+    luca_agenda.set_other_debtor_pool(400)
     todd_text = "Todd"
     todd_credor_weight = 66
     todd_debtor_weight = 77
-    luca_agenda.add_guyunit(todd_text, todd_credor_weight, todd_debtor_weight)
+    luca_agenda.add_otherunit(todd_text, todd_credor_weight, todd_debtor_weight)
     sue_text = "Sue"
     sue_credor_weight = 434
     sue_debtor_weight = 323
-    luca_agenda.add_guyunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    luca_agenda.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
 
     # WHEN
-    x_fig = get_agenda_guys_plotly_fig(luca_agenda)
+    x_fig = get_agenda_others_plotly_fig(luca_agenda)
 
     # THEN
     # show_figure = True

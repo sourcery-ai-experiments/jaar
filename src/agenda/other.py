@@ -1,10 +1,10 @@
-from src._road.road import GuyID, default_road_delimiter_if_none, validate_roadnode
+from src._road.road import OtherID, default_road_delimiter_if_none, validate_roadnode
 from src._road.finance import default_planck_if_none
 from dataclasses import dataclass
 from src._instrument.python import get_1_if_None, get_dict_from_json, get_0_if_None
 
 
-class InvalidGuyException(Exception):
+class InvalidOtherException(Exception):
     pass
 
 
@@ -13,20 +13,20 @@ class _planck_RatioException(Exception):
 
 
 @dataclass
-class GuyCore:
-    guy_id: GuyID = None
+class OtherCore:
+    other_id: OtherID = None
     _road_delimiter: str = None
     _planck: float = None
 
-    def set_guy_id(self, x_guy_id: GuyID):
-        self.guy_id = validate_roadnode(x_guy_id, self._road_delimiter)
+    def set_other_id(self, x_other_id: OtherID):
+        self.other_id = validate_roadnode(x_other_id, self._road_delimiter)
 
 
 @dataclass
-class GuyUnit(GuyCore):
-    """This represents the relationship from the AgendaUnit._owner_id to the GuyUnit.guy_id
-    GuyUnit.credor_weight represents how much credor_weight the _owner_id gives the guy_id
-    GuyUnit.debtor_weight represents how much debtor_weight the _owner_id gives the guy_id
+class OtherUnit(OtherCore):
+    """This represents the relationship from the AgendaUnit._owner_id to the OtherUnit.other_id
+    OtherUnit.credor_weight represents how much credor_weight the _owner_id gives the other_id
+    OtherUnit.debtor_weight represents how much debtor_weight the _owner_id gives the other_id
     """
 
     credor_weight: int = None
@@ -108,7 +108,7 @@ class GuyUnit(GuyCore):
 
     def get_dict(self, all_attrs: bool = False) -> dict[str:str]:
         x_dict = {
-            "guy_id": self.guy_id,
+            "other_id": self.other_id,
             "credor_weight": self.credor_weight,
             "debtor_weight": self.debtor_weight,
             "_credor_operational": self._credor_operational,
@@ -191,12 +191,12 @@ class GuyUnit(GuyCore):
         self,
         agenda_intent_ratio_cred_sum: float,
         agenda_intent_ratio_debt_sum: float,
-        agenda_guyunit_total_credor_weight: float,
-        agenda_guyunit_total_debtor_weight: float,
+        agenda_otherunit_total_credor_weight: float,
+        agenda_otherunit_total_debtor_weight: float,
     ):
         if agenda_intent_ratio_cred_sum == 0:
             self._agenda_intent_ratio_cred = (
-                self.get_credor_weight() / agenda_guyunit_total_credor_weight
+                self.get_credor_weight() / agenda_otherunit_total_credor_weight
             )
         else:
             self._agenda_intent_ratio_cred = (
@@ -205,83 +205,83 @@ class GuyUnit(GuyCore):
 
         if agenda_intent_ratio_debt_sum == 0:
             self._agenda_intent_ratio_debt = (
-                self.get_debtor_weight() / agenda_guyunit_total_debtor_weight
+                self.get_debtor_weight() / agenda_otherunit_total_debtor_weight
             )
         else:
             self._agenda_intent_ratio_debt = (
                 self._agenda_intent_debt / agenda_intent_ratio_debt_sum
             )
 
-    def meld(self, exterior_guyunit):
-        if self.guy_id != exterior_guyunit.guy_id:
-            raise InvalidGuyException(
-                f"Meld fail GuyUnit='{self.guy_id}' not the same as GuyUnit='{exterior_guyunit.guy_id}"
+    def meld(self, exterior_otherunit):
+        if self.other_id != exterior_otherunit.other_id:
+            raise InvalidOtherException(
+                f"Meld fail OtherUnit='{self.other_id}' not the same as OtherUnit='{exterior_otherunit.other_id}"
             )
 
-        self.credor_weight += exterior_guyunit.credor_weight
-        self.debtor_weight += exterior_guyunit.debtor_weight
-        self._irrational_debtor_weight += exterior_guyunit._irrational_debtor_weight
-        self._inallocable_debtor_weight += exterior_guyunit._inallocable_debtor_weight
+        self.credor_weight += exterior_otherunit.credor_weight
+        self.debtor_weight += exterior_otherunit.debtor_weight
+        self._irrational_debtor_weight += exterior_otherunit._irrational_debtor_weight
+        self._inallocable_debtor_weight += exterior_otherunit._inallocable_debtor_weight
 
 
-# class GuyUnitsshop:
-def guyunits_get_from_json(guyunits_json: str) -> dict[str:GuyUnit]:
-    guyunits_dict = get_dict_from_json(json_x=guyunits_json)
-    return guyunits_get_from_dict(x_dict=guyunits_dict)
+# class OtherUnitsshop:
+def otherunits_get_from_json(otherunits_json: str) -> dict[str:OtherUnit]:
+    otherunits_dict = get_dict_from_json(json_x=otherunits_json)
+    return otherunits_get_from_dict(x_dict=otherunits_dict)
 
 
-def guyunits_get_from_dict(
+def otherunits_get_from_dict(
     x_dict: dict, _road_delimiter: str = None
-) -> dict[str:GuyUnit]:
-    guyunits = {}
-    for guyunit_dict in x_dict.values():
-        x_guyunit = guyunit_get_from_dict(guyunit_dict, _road_delimiter)
-        guyunits[x_guyunit.guy_id] = x_guyunit
-    return guyunits
+) -> dict[str:OtherUnit]:
+    otherunits = {}
+    for otherunit_dict in x_dict.values():
+        x_otherunit = otherunit_get_from_dict(otherunit_dict, _road_delimiter)
+        otherunits[x_otherunit.other_id] = x_otherunit
+    return otherunits
 
 
-def guyunit_get_from_dict(guyunit_dict: dict, _road_delimiter: str) -> GuyUnit:
-    _irrational_debtor_weight = guyunit_dict.get("_irrational_debtor_weight", 0)
-    _inallocable_debtor_weight = guyunit_dict.get("_inallocable_debtor_weight", 0)
-    _treasury_due_paid = guyunit_dict.get("_treasury_due_paid", 0)
-    _treasury_due_diff = guyunit_dict.get("_treasury_due_diff", 0)
-    _treasury_cred_score = guyunit_dict.get("_treasury_cred_score", 0)
-    _treasury_voice_rank = guyunit_dict.get("_treasury_voice_rank", 0)
-    _treasury_voice_hx_lowest_rank = guyunit_dict.get(
+def otherunit_get_from_dict(otherunit_dict: dict, _road_delimiter: str) -> OtherUnit:
+    _irrational_debtor_weight = otherunit_dict.get("_irrational_debtor_weight", 0)
+    _inallocable_debtor_weight = otherunit_dict.get("_inallocable_debtor_weight", 0)
+    _treasury_due_paid = otherunit_dict.get("_treasury_due_paid", 0)
+    _treasury_due_diff = otherunit_dict.get("_treasury_due_diff", 0)
+    _treasury_cred_score = otherunit_dict.get("_treasury_cred_score", 0)
+    _treasury_voice_rank = otherunit_dict.get("_treasury_voice_rank", 0)
+    _treasury_voice_hx_lowest_rank = otherunit_dict.get(
         "_treasury_voice_hx_lowest_rank", 0
     )
 
-    x_guyunit = guyunit_shop(
-        guy_id=guyunit_dict["guy_id"],
-        credor_weight=guyunit_dict["credor_weight"],
-        debtor_weight=guyunit_dict["debtor_weight"],
-        _credor_operational=guyunit_dict["_credor_operational"],
-        _debtor_operational=guyunit_dict["_debtor_operational"],
+    x_otherunit = otherunit_shop(
+        other_id=otherunit_dict["other_id"],
+        credor_weight=otherunit_dict["credor_weight"],
+        debtor_weight=otherunit_dict["debtor_weight"],
+        _credor_operational=otherunit_dict["_credor_operational"],
+        _debtor_operational=otherunit_dict["_debtor_operational"],
         _road_delimiter=_road_delimiter,
     )
-    x_guyunit.set_treasury_attr(
+    x_otherunit.set_treasury_attr(
         due_paid=_treasury_due_paid,
         due_diff=_treasury_due_diff,
         cred_score=_treasury_cred_score,
         voice_rank=_treasury_voice_rank,
     )
-    x_guyunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
-    x_guyunit.add_irrational_debtor_weight(get_0_if_None(_irrational_debtor_weight))
-    x_guyunit.add_inallocable_debtor_weight(get_0_if_None(_inallocable_debtor_weight))
+    x_otherunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
+    x_otherunit.add_irrational_debtor_weight(get_0_if_None(_irrational_debtor_weight))
+    x_otherunit.add_inallocable_debtor_weight(get_0_if_None(_inallocable_debtor_weight))
 
-    return x_guyunit
+    return x_otherunit
 
 
-def guyunit_shop(
-    guy_id: GuyID,
+def otherunit_shop(
+    other_id: OtherID,
     credor_weight: int = None,
     debtor_weight: int = None,
     _credor_operational: bool = None,
     _debtor_operational: bool = None,
     _road_delimiter: str = None,
     _planck: float = None,
-) -> GuyUnit:
-    x_guyunit = GuyUnit(
+) -> OtherUnit:
+    x_otherunit = OtherUnit(
         credor_weight=get_1_if_None(credor_weight),
         debtor_weight=get_1_if_None(debtor_weight),
         _irrational_debtor_weight=get_0_if_None(),
@@ -299,12 +299,12 @@ def guyunit_shop(
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _planck=default_planck_if_none(_planck),
     )
-    x_guyunit.set_guy_id(x_guy_id=guy_id)
-    return x_guyunit
+    x_otherunit.set_other_id(x_other_id=other_id)
+    return x_otherunit
 
 
 @dataclass
-class GuyLink(GuyCore):
+class OtherLink(OtherCore):
     credor_weight: float = 1.0
     debtor_weight: float = 1.0
     _agenda_cred: float = None
@@ -314,15 +314,15 @@ class GuyLink(GuyCore):
 
     def get_dict(self) -> dict[str:str]:
         return {
-            "guy_id": self.guy_id,
+            "other_id": self.other_id,
             "credor_weight": self.credor_weight,
             "debtor_weight": self.debtor_weight,
         }
 
     def set_agenda_cred_debt(
         self,
-        guylinks_credor_weight_sum: float,
-        guylinks_debtor_weight_sum: float,
+        otherlinks_credor_weight_sum: float,
+        otherlinks_debtor_weight_sum: float,
         belief_agenda_cred: float,
         belief_agenda_debt: float,
         belief_agenda_intent_cred: float,
@@ -330,8 +330,8 @@ class GuyLink(GuyCore):
     ):
         belief_agenda_cred = get_1_if_None(belief_agenda_cred)
         belief_agenda_debt = get_1_if_None(belief_agenda_debt)
-        credor_ratio = self.credor_weight / guylinks_credor_weight_sum
-        debtor_ratio = self.debtor_weight / guylinks_debtor_weight_sum
+        credor_ratio = self.credor_weight / otherlinks_credor_weight_sum
+        debtor_ratio = self.debtor_weight / otherlinks_debtor_weight_sum
 
         self._agenda_cred = belief_agenda_cred * credor_ratio
         self._agenda_debt = belief_agenda_debt * debtor_ratio
@@ -344,48 +344,48 @@ class GuyLink(GuyCore):
         self._agenda_intent_cred = 0
         self._agenda_intent_debt = 0
 
-    def meld(self, exterior_guylink):
-        if self.guy_id != exterior_guylink.guy_id:
-            raise InvalidGuyException(
-                f"Meld fail GuyLink='{self.guy_id}' not the same as GuyLink='{exterior_guylink.guy_id}"
+    def meld(self, exterior_otherlink):
+        if self.other_id != exterior_otherlink.other_id:
+            raise InvalidOtherException(
+                f"Meld fail OtherLink='{self.other_id}' not the same as OtherLink='{exterior_otherlink.other_id}"
             )
-        self.credor_weight += exterior_guylink.credor_weight
-        self.debtor_weight += exterior_guylink.debtor_weight
+        self.credor_weight += exterior_otherlink.credor_weight
+        self.debtor_weight += exterior_otherlink.debtor_weight
 
 
-# class GuyLinkshop:
-def guylinks_get_from_json(guylinks_json: str) -> dict[str:GuyLink]:
-    guylinks_dict = get_dict_from_json(json_x=guylinks_json)
-    return guylinks_get_from_dict(x_dict=guylinks_dict)
+# class OtherLinkshop:
+def otherlinks_get_from_json(otherlinks_json: str) -> dict[str:OtherLink]:
+    otherlinks_dict = get_dict_from_json(json_x=otherlinks_json)
+    return otherlinks_get_from_dict(x_dict=otherlinks_dict)
 
 
-def guylinks_get_from_dict(x_dict: dict) -> dict[str:GuyLink]:
+def otherlinks_get_from_dict(x_dict: dict) -> dict[str:OtherLink]:
     if x_dict is None:
         x_dict = {}
-    guylinks = {}
-    for guylinks_dict in x_dict.values():
-        x_guy = guylink_shop(
-            guy_id=guylinks_dict["guy_id"],
-            credor_weight=guylinks_dict["credor_weight"],
-            debtor_weight=guylinks_dict["debtor_weight"],
+    otherlinks = {}
+    for otherlinks_dict in x_dict.values():
+        x_other = otherlink_shop(
+            other_id=otherlinks_dict["other_id"],
+            credor_weight=otherlinks_dict["credor_weight"],
+            debtor_weight=otherlinks_dict["debtor_weight"],
         )
-        guylinks[x_guy.guy_id] = x_guy
-    return guylinks
+        otherlinks[x_other.other_id] = x_other
+    return otherlinks
 
 
-def guylink_shop(
-    guy_id: GuyID,
+def otherlink_shop(
+    other_id: OtherID,
     credor_weight: float = None,
     debtor_weight: float = None,
     _agenda_cred: float = None,
     _agenda_debt: float = None,
     _agenda_intent_cred: float = None,
     _agenda_intent_debt: float = None,
-) -> GuyLink:
+) -> OtherLink:
     credor_weight = get_1_if_None(credor_weight)
     debtor_weight = get_1_if_None(debtor_weight)
-    return GuyLink(
-        guy_id=guy_id,
+    return OtherLink(
+        other_id=other_id,
         credor_weight=credor_weight,
         debtor_weight=debtor_weight,
         _agenda_cred=_agenda_cred,
@@ -396,7 +396,7 @@ def guylink_shop(
 
 
 @dataclass
-class GuyUnitExternalMetrics:
-    internal_guy_id: GuyID = None
+class OtherUnitExternalMetrics:
+    internal_other_id: OtherID = None
     credor_operational: bool = None
     debtor_operational: bool = None

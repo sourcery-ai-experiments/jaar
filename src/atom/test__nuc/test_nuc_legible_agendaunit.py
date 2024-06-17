@@ -52,17 +52,17 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_monetary_desc():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObjGivenAgendaUpdate_guy_credor_pool():
+def test_create_legible_list_ReturnsObjGivenAgendaUpdate_other_credor_pool():
     # GIVEN
     category = "agendaunit"
-    guy_credor_pool_text = "_guy_credor_pool"
-    guy_credor_pool_int = 71
-    guy_credor_pool_quarkunit = quarkunit_shop(category, quark_update())
-    guy_credor_pool_quarkunit.set_arg(guy_credor_pool_text, guy_credor_pool_int)
+    other_credor_pool_text = "_other_credor_pool"
+    other_credor_pool_int = 71
+    other_credor_pool_quarkunit = quarkunit_shop(category, quark_update())
+    other_credor_pool_quarkunit.set_arg(other_credor_pool_text, other_credor_pool_int)
 
-    print(f"{guy_credor_pool_quarkunit=}")
+    print(f"{other_credor_pool_quarkunit=}")
     x_nucunit = nucunit_shop()
-    x_nucunit.set_quarkunit(guy_credor_pool_quarkunit)
+    x_nucunit.set_quarkunit(other_credor_pool_quarkunit)
     sue_agenda = agendaunit_shop("Sue")
     sue_monetary_desc = "dragon funds"
     sue_agenda.set_monetary_desc(sue_monetary_desc)
@@ -71,42 +71,42 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_guy_credor_pool():
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_monetary_desc} credor pool is now {guy_credor_pool_int}"
+    x_str = f"{sue_monetary_desc} credor pool is now {other_credor_pool_int}"
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObjGivenAgendaUpdate_guy_credor_pool_With_monetary_desc_None():
+def test_create_legible_list_ReturnsObjGivenAgendaUpdate_other_credor_pool_With_monetary_desc_None():
     # GIVEN
     category = "agendaunit"
-    guy_credor_pool_text = "_guy_credor_pool"
-    guy_credor_pool_int = 71
-    guy_credor_pool_quarkunit = quarkunit_shop(category, quark_update())
-    guy_credor_pool_quarkunit.set_arg(guy_credor_pool_text, guy_credor_pool_int)
+    other_credor_pool_text = "_other_credor_pool"
+    other_credor_pool_int = 71
+    other_credor_pool_quarkunit = quarkunit_shop(category, quark_update())
+    other_credor_pool_quarkunit.set_arg(other_credor_pool_text, other_credor_pool_int)
 
-    print(f"{guy_credor_pool_quarkunit=}")
+    print(f"{other_credor_pool_quarkunit=}")
     x_nucunit = nucunit_shop()
-    x_nucunit.set_quarkunit(guy_credor_pool_quarkunit)
+    x_nucunit.set_quarkunit(other_credor_pool_quarkunit)
     sue_agenda = agendaunit_shop("Sue")
 
     # WHEN
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_agenda._owner_id}'s monetary_desc credor pool is now {guy_credor_pool_int}"
+    x_str = f"{sue_agenda._owner_id}'s monetary_desc credor pool is now {other_credor_pool_int}"
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObjGivenAgendaUpdate_guy_debtor_pool():
+def test_create_legible_list_ReturnsObjGivenAgendaUpdate_other_debtor_pool():
     # GIVEN
     category = "agendaunit"
-    guy_debtor_pool_text = "_guy_debtor_pool"
-    guy_debtor_pool_int = 78
-    guy_debtor_pool_quarkunit = quarkunit_shop(category, quark_update())
-    guy_debtor_pool_quarkunit.set_arg(guy_debtor_pool_text, guy_debtor_pool_int)
+    other_debtor_pool_text = "_other_debtor_pool"
+    other_debtor_pool_int = 78
+    other_debtor_pool_quarkunit = quarkunit_shop(category, quark_update())
+    other_debtor_pool_quarkunit.set_arg(other_debtor_pool_text, other_debtor_pool_int)
 
-    print(f"{guy_debtor_pool_quarkunit=}")
+    print(f"{other_debtor_pool_quarkunit=}")
     x_nucunit = nucunit_shop()
-    x_nucunit.set_quarkunit(guy_debtor_pool_quarkunit)
+    x_nucunit.set_quarkunit(other_debtor_pool_quarkunit)
     sue_agenda = agendaunit_shop("Sue")
     sue_monetary_desc = "dragon funds"
     sue_agenda.set_monetary_desc(sue_monetary_desc)
@@ -115,20 +115,20 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_guy_debtor_pool():
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_monetary_desc} debtor pool is now {guy_debtor_pool_int}"
+    x_str = f"{sue_monetary_desc} debtor pool is now {other_debtor_pool_int}"
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObjGivenAgendaUpdate_guy_credor_pool_Equal_guy_debtor_pool():
+def test_create_legible_list_ReturnsObjGivenAgendaUpdate_other_credor_pool_Equal_other_debtor_pool():
     # GIVEN
     x_nucunit = nucunit_shop()
     category = "agendaunit"
-    guy_credor_pool_text = "_guy_credor_pool"
-    guy_debtor_pool_text = "_guy_debtor_pool"
-    guy_pool_int = 83
+    other_credor_pool_text = "_other_credor_pool"
+    other_debtor_pool_text = "_other_debtor_pool"
+    other_pool_int = 83
     agendaunit_quarkunit = quarkunit_shop(category, quark_update())
-    agendaunit_quarkunit.set_arg(guy_credor_pool_text, guy_pool_int)
-    agendaunit_quarkunit.set_arg(guy_debtor_pool_text, guy_pool_int)
+    agendaunit_quarkunit.set_arg(other_credor_pool_text, other_pool_int)
+    agendaunit_quarkunit.set_arg(other_debtor_pool_text, other_pool_int)
     x_nucunit.set_quarkunit(agendaunit_quarkunit)
     sue_agenda = agendaunit_shop("Sue")
     sue_monetary_desc = "dragon funds"
@@ -138,7 +138,7 @@ def test_create_legible_list_ReturnsObjGivenAgendaUpdate_guy_credor_pool_Equal_g
     legible_list = create_legible_list(x_nucunit, sue_agenda)
 
     # THEN
-    x_str = f"{sue_monetary_desc} total pool is now {guy_pool_int}"
+    x_str = f"{sue_monetary_desc} total pool is now {other_pool_int}"
     assert len(legible_list) == 1
     assert legible_list[0] == x_str
 

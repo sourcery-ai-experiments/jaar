@@ -33,8 +33,8 @@ def test_listen_to_facts_role_job_SetsSingleFactUnit_v1(env_dir_setup_cleanup):
     zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_role.add_guyunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.set_guy_pool(zia_pool)
+    yao_role.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.set_other_pool(zia_pool)
     sue_texas_userhub = get_texas_userhub()
     sue_texas_userhub.save_role_agenda(yao_role)
 
@@ -64,8 +64,8 @@ def test_listen_to_facts_role_job_SetsSingleFactUnitWithDifferentTask(
     yao_debtor_weight = 41
     yao_pool = 87
     zia_text = "Zia"
-    yao_role.add_guyunit(zia_text, yao_credor_weight, yao_debtor_weight)
-    yao_role.set_guy_pool(yao_pool)
+    yao_role.add_otherunit(zia_text, yao_credor_weight, yao_debtor_weight)
+    yao_role.set_other_pool(yao_pool)
     sue_texas_userhub = get_texas_userhub()
     sue_texas_userhub.save_role_agenda(yao_role)
 
@@ -220,9 +220,9 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirAgenda_
 
     # THEN
     assert yao_role.get_fact(eat_road()) is None
-    zia_guyunit = new_yao_job1.get_guy(zia_text)
-    bob_guyunit = new_yao_job1.get_guy(bob_text)
-    assert zia_guyunit.debtor_weight < bob_guyunit.debtor_weight
+    zia_otherunit = new_yao_job1.get_other(zia_text)
+    bob_otherunit = new_yao_job1.get_other(bob_text)
+    assert zia_otherunit.debtor_weight < bob_otherunit.debtor_weight
     assert bob_job.get_fact(eat_road()).pick == hungry_road()
     assert zia_job.get_fact(eat_road()).pick == eat_road()
     assert new_yao_job1.get_fact(eat_road()).pick == hungry_road()
@@ -230,17 +230,17 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirAgenda_
     # WHEN
     yao_zia_debtor_weight = 15
     yao_bob_debtor_weight = 5
-    yao_role.add_guyunit(zia_text, None, yao_zia_debtor_weight)
-    yao_role.add_guyunit(bob_text, None, yao_bob_debtor_weight)
-    yao_role.set_guy_pool(100)
+    yao_role.add_otherunit(zia_text, None, yao_zia_debtor_weight)
+    yao_role.add_otherunit(bob_text, None, yao_bob_debtor_weight)
+    yao_role.set_other_pool(100)
     new_yao_job2 = create_listen_basis(yao_role)
     listen_to_intents_role_job(new_yao_job2, sue_texas_userhub)
     listen_to_facts_role_job(new_yao_job2, sue_texas_userhub)
 
     # THEN
-    zia_guyunit = new_yao_job2.get_guy(zia_text)
-    bob_guyunit = new_yao_job2.get_guy(bob_text)
-    assert zia_guyunit.debtor_weight > bob_guyunit.debtor_weight
+    zia_otherunit = new_yao_job2.get_other(zia_text)
+    bob_otherunit = new_yao_job2.get_other(bob_text)
+    assert zia_otherunit.debtor_weight > bob_otherunit.debtor_weight
     assert bob_job.get_fact(eat_road()).pick == hungry_road()
     assert zia_job.get_fact(eat_road()).pick == eat_road()
     assert new_yao_job2.get_fact(eat_road()).pick == eat_road()
@@ -262,8 +262,8 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirAgenda_
 #     sweep_text = "sweep"
 #     sweep_road = sue_speaker.make_road(casa_road, sweep_text)
 
-#     sue_speaker.add_guyunit(yao_text)
-#     sue_speaker.set_guy_pool(20)
+#     sue_speaker.add_otherunit(yao_text)
+#     sue_speaker.set_other_pool(20)
 #     sue_speaker.add_idea(ideaunit_shop(clean_text), status_road)
 #     sue_speaker.add_idea(ideaunit_shop(dirty_text), status_road)
 #     sue_speaker.add_idea(ideaunit_shop(sweep_text, pledge=True), casa_road)
@@ -276,8 +276,8 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirAgenda_
 #     sue_texas_userhub = get_texas_userhub()
 #     sue_texas_userhub.save_job_agenda(sue_text, sue_speaker.get_json(), True)
 #     yao_role = agendaunit_shop(yao_text)
-#     yao_role.add_guyunit(yao_text)
-#     yao_role.add_guyunit(sue_text)
+#     yao_role.add_otherunit(yao_text)
+#     yao_role.add_otherunit(sue_text)
 #     new_yao_job = create_listen_basis(yao_role)
 #     print(f"{new_yao_job.get_idea_dict().keys()=}")
 #     # assert new_yao_job.get_missing_fact_bases().get(status_road) is None
@@ -300,8 +300,8 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirAgenda_
 #     # GIVEN
 #     yao_text = "Yao"
 #     yao_role = agendaunit_shop(yao_text)
-#     yao_role.add_guyunit(yao_text)
-#     yao_role.set_guy_pool(20)
+#     yao_role.add_otherunit(yao_text)
+#     yao_role.set_other_pool(20)
 #     casa_text = "casa"
 #     casa_road = yao_role.make_l1_road(casa_text)
 #     status_text = "status"

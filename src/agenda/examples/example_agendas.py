@@ -369,8 +369,8 @@ def get_agenda_assignment_laundry_example1() -> AgendaUnit:
     amos_text = "Amos"
     amos_agenda = agendaunit_shop(_owner_id=amos_text)
     cali_text = "Cali"
-    amos_agenda.add_guyunit(amos_text)
-    amos_agenda.add_guyunit(cali_text)
+    amos_agenda.add_otherunit(amos_text)
+    amos_agenda.add_otherunit(cali_text)
 
     casa_text = "casa"
     basket_text = "laundry basket status"

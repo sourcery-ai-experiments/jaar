@@ -353,7 +353,7 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.editmain_button.setText(
-            _translate("MainWindow", "Agendas /  Guy /  dimension")
+            _translate("MainWindow", "Agendas /  Other /  dimension")
         )
         self.fact_open_lower_spec1.setText(
             _translate("MainWindow", "set minutes next midnight")
@@ -369,7 +369,7 @@ class Ui_MainWindow(object):
         self.label_intent_label_header.setText(_translate("MainWindow", "Description"))
         self.label_5.setText(_translate("MainWindow", "Modification where I am:"))
         self.root_datetime_view.setText(
-            _translate("MainWindow", "Manuguy modification")
+            _translate("MainWindow", "Manuother modification")
         )
         self.loubby_button.setText(_translate("MainWindow", "Request Someone"))
         self.label_7.setText(

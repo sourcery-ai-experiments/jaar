@@ -1,6 +1,6 @@
 from src._road.road import get_terminus_node, get_parent_road
 from src.agenda.belief import balancelink_shop
-from src.agenda.guy import guylink_shop
+from src.agenda.other import otherlink_shop
 from src.agenda.reason_idea import factunit_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.belief import beliefunit_shop
@@ -47,10 +47,10 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     new2_arg = "_max_tree_traverse"
     x_quarkunit.set_optional_arg(new2_arg, new2_value)
     new3_value = 77
-    new3_arg = "_guy_credor_pool"
+    new3_arg = "_other_credor_pool"
     x_quarkunit.set_optional_arg(new3_arg, new3_value)
     new4_value = 88
-    new4_arg = "_guy_debtor_pool"
+    new4_arg = "_other_debtor_pool"
     x_quarkunit.set_optional_arg(new4_arg, new4_value)
     new5_value = "override"
     new5_arg = "_meld_strategy"
@@ -70,8 +70,8 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     # THEN
     print(f"{sue_nucunit.quarkunits.keys()=}")
     assert after_sue_agendaunit._max_tree_traverse == new2_value
-    assert after_sue_agendaunit._guy_credor_pool == new3_value
-    assert after_sue_agendaunit._guy_debtor_pool == new4_value
+    assert after_sue_agendaunit._other_credor_pool == new3_value
+    assert after_sue_agendaunit._other_debtor_pool == new4_value
     assert after_sue_agendaunit._meld_strategy == new5_value
     assert after_sue_agendaunit._weight == new1_value
     assert after_sue_agendaunit._weight != before_sue_agendaunit._weight
@@ -81,7 +81,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     assert after_sue_agendaunit._penny != before_sue_agendaunit._penny
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_guy():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_other():
     # GIVEN
     sue_nucunit = nucunit_shop()
     sue_text = "Sue"
@@ -89,12 +89,12 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_guy():
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
-    before_sue_agendaunit.add_guyunit(rico_text)
-    before_sue_agendaunit.add_guyunit(carm_text)
+    before_sue_agendaunit.add_otherunit(rico_text)
+    before_sue_agendaunit.add_otherunit(carm_text)
 
-    category = "agenda_guyunit"
+    category = "agenda_otherunit"
     x_quarkunit = quarkunit_shop(category, quark_delete())
-    x_quarkunit.set_required_arg("guy_id", carm_text)
+    x_quarkunit.set_required_arg("other_id", carm_text)
     sue_nucunit.set_quarkunit(x_quarkunit)
 
     # WHEN
@@ -103,11 +103,11 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_guy():
     # THEN
     print(f"{sue_nucunit.quarkunits=}")
     assert after_sue_agendaunit != before_sue_agendaunit
-    assert after_sue_agendaunit.guy_exists(rico_text)
-    assert after_sue_agendaunit.guy_exists(carm_text) is False
+    assert after_sue_agendaunit.other_exists(rico_text)
+    assert after_sue_agendaunit.other_exists(carm_text) is False
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_guy():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_other():
     # GIVEN
     sue_nucunit = nucunit_shop()
     sue_text = "Sue"
@@ -115,14 +115,14 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_guy():
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
-    before_sue_agendaunit.add_guyunit(rico_text)
-    assert before_sue_agendaunit.guy_exists(rico_text)
-    assert before_sue_agendaunit.guy_exists(carm_text) is False
+    before_sue_agendaunit.add_otherunit(rico_text)
+    assert before_sue_agendaunit.other_exists(rico_text)
+    assert before_sue_agendaunit.other_exists(carm_text) is False
 
     # WHEN
-    category = "agenda_guyunit"
+    category = "agenda_otherunit"
     x_quarkunit = quarkunit_shop(category, quark_insert())
-    x_quarkunit.set_required_arg("guy_id", carm_text)
+    x_quarkunit.set_required_arg("other_id", carm_text)
     x_credor_weight = 55
     x_debtor_weight = 66
     x_quarkunit.set_optional_arg("credor_weight", x_credor_weight)
@@ -132,28 +132,28 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_guy():
     after_sue_agendaunit = sue_nucunit.get_edited_agenda(before_sue_agendaunit)
 
     # THEN
-    rico_guyunit = after_sue_agendaunit.get_guy(rico_text)
-    carm_guyunit = after_sue_agendaunit.get_guy(carm_text)
-    assert rico_guyunit != None
-    assert carm_guyunit != None
-    assert carm_guyunit.credor_weight == x_credor_weight
-    assert carm_guyunit.debtor_weight == x_debtor_weight
+    rico_otherunit = after_sue_agendaunit.get_other(rico_text)
+    carm_otherunit = after_sue_agendaunit.get_other(carm_text)
+    assert rico_otherunit != None
+    assert carm_otherunit != None
+    assert carm_otherunit.credor_weight == x_credor_weight
+    assert carm_otherunit.debtor_weight == x_debtor_weight
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_guy():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_other():
     # GIVEN
     sue_nucunit = nucunit_shop()
     sue_text = "Sue"
 
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
-    before_sue_agendaunit.add_guyunit(rico_text)
-    assert before_sue_agendaunit.get_guy(rico_text).credor_weight == 1
+    before_sue_agendaunit.add_otherunit(rico_text)
+    assert before_sue_agendaunit.get_other(rico_text).credor_weight == 1
 
     # WHEN
-    category = "agenda_guyunit"
+    category = "agenda_otherunit"
     x_quarkunit = quarkunit_shop(category, quark_update())
-    x_quarkunit.set_required_arg("guy_id", rico_text)
+    x_quarkunit.set_required_arg("other_id", rico_text)
     rico_credor_weight = 55
     x_quarkunit.set_optional_arg("credor_weight", rico_credor_weight)
     sue_nucunit.set_quarkunit(x_quarkunit)
@@ -161,42 +161,42 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_guy():
     after_sue_agendaunit = sue_nucunit.get_edited_agenda(before_sue_agendaunit)
 
     # THEN
-    rico_guy = after_sue_agendaunit.get_guy(rico_text)
-    assert rico_guy.credor_weight == rico_credor_weight
+    rico_other = after_sue_agendaunit.get_other(rico_text)
+    assert rico_other.credor_weight == rico_credor_weight
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_guylink():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_otherlink():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
     dizz_text = "Dizzy"
-    before_sue_agendaunit.add_guyunit(rico_text)
-    before_sue_agendaunit.add_guyunit(carm_text)
-    before_sue_agendaunit.add_guyunit(dizz_text)
+    before_sue_agendaunit.add_otherunit(rico_text)
+    before_sue_agendaunit.add_otherunit(carm_text)
+    before_sue_agendaunit.add_otherunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_guylink(guylink_shop(rico_text))
-    run_beliefunit.set_guylink(guylink_shop(carm_text))
+    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_guylink(guylink_shop(rico_text))
-    fly_beliefunit.set_guylink(guylink_shop(carm_text))
-    fly_beliefunit.set_guylink(guylink_shop(dizz_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(carm_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(dizz_text))
     before_sue_agendaunit.set_beliefunit(run_beliefunit)
     before_sue_agendaunit.set_beliefunit(fly_beliefunit)
-    assert len(before_sue_agendaunit.get_beliefunit(run_text)._guys) == 2
-    assert len(before_sue_agendaunit.get_beliefunit(fly_text)._guys) == 3
+    assert len(before_sue_agendaunit.get_beliefunit(run_text)._others) == 2
+    assert len(before_sue_agendaunit.get_beliefunit(fly_text)._others) == 3
 
     # WHEN
-    rico_quarkunit = quarkunit_shop("agenda_belief_guylink", quark_delete())
+    rico_quarkunit = quarkunit_shop("agenda_belief_otherlink", quark_delete())
     rico_quarkunit.set_required_arg("belief_id", run_text)
-    rico_quarkunit.set_required_arg("guy_id", rico_text)
+    rico_quarkunit.set_required_arg("other_id", rico_text)
     # print(f"{rico_quarkunit=}")
-    carm_quarkunit = quarkunit_shop("agenda_belief_guylink", quark_delete())
+    carm_quarkunit = quarkunit_shop("agenda_belief_otherlink", quark_delete())
     carm_quarkunit.set_required_arg("belief_id", fly_text)
-    carm_quarkunit.set_required_arg("guy_id", carm_text)
+    carm_quarkunit.set_required_arg("other_id", carm_text)
     # print(f"{carm_quarkunit=}")
     sue_nucunit = nucunit_shop()
     sue_nucunit.set_quarkunit(rico_quarkunit)
@@ -204,30 +204,30 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_guylink()
     after_sue_agendaunit = sue_nucunit.get_edited_agenda(before_sue_agendaunit)
 
     # THEN
-    assert len(after_sue_agendaunit.get_beliefunit(fly_text)._guys) == 2
-    assert len(after_sue_agendaunit.get_beliefunit(run_text)._guys) == 1
+    assert len(after_sue_agendaunit.get_beliefunit(fly_text)._others) == 2
+    assert len(after_sue_agendaunit.get_beliefunit(run_text)._others) == 1
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_guylink():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_otherlink():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
     dizz_text = "Dizzy"
-    before_sue_agendaunit.add_guyunit(rico_text)
-    before_sue_agendaunit.add_guyunit(carm_text)
-    before_sue_agendaunit.add_guyunit(dizz_text)
+    before_sue_agendaunit.add_otherunit(rico_text)
+    before_sue_agendaunit.add_otherunit(carm_text)
+    before_sue_agendaunit.add_otherunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_guylink(guylink_shop(carm_text))
+    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
     before_sue_agendaunit.set_beliefunit(run_beliefunit)
-    assert len(before_sue_agendaunit.get_beliefunit(run_text)._guys) == 1
+    assert len(before_sue_agendaunit.get_beliefunit(run_text)._others) == 1
 
     # WHEN
-    rico_quarkunit = quarkunit_shop("agenda_belief_guylink", quark_insert())
+    rico_quarkunit = quarkunit_shop("agenda_belief_otherlink", quark_insert())
     rico_quarkunit.set_required_arg("belief_id", run_text)
-    rico_quarkunit.set_required_arg("guy_id", rico_text)
+    rico_quarkunit.set_required_arg("other_id", rico_text)
     rico_run_credor_weight = 17
     rico_quarkunit.set_optional_arg("credor_weight", rico_run_credor_weight)
     print(f"{rico_quarkunit=}")
@@ -236,33 +236,33 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_guylink()
     after_sue_agendaunit = sue_nucunit.get_edited_agenda(before_sue_agendaunit)
 
     # THEN
-    assert len(after_sue_agendaunit.get_beliefunit(run_text)._guys) == 2
+    assert len(after_sue_agendaunit.get_beliefunit(run_text)._others) == 2
     after_run_beliefunit = after_sue_agendaunit.get_beliefunit(run_text)
-    after_run_rico_guylink = after_run_beliefunit.get_guylink(rico_text)
-    assert after_run_rico_guylink != None
-    assert after_run_rico_guylink.credor_weight == rico_run_credor_weight
+    after_run_rico_otherlink = after_run_beliefunit.get_otherlink(rico_text)
+    assert after_run_rico_otherlink != None
+    assert after_run_rico_otherlink.credor_weight == rico_run_credor_weight
 
 
-def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_guylink():
+def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_otherlink():
     # GIVEN
     sue_text = "Sue"
     before_sue_agendaunit = agendaunit_shop(sue_text)
     rico_text = "Rico"
-    before_sue_agendaunit.add_guyunit(rico_text)
+    before_sue_agendaunit.add_otherunit(rico_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
     old_rico_run_credor_weight = 3
-    run_beliefunit.set_guylink(guylink_shop(rico_text, old_rico_run_credor_weight))
+    run_beliefunit.set_otherlink(otherlink_shop(rico_text, old_rico_run_credor_weight))
     before_sue_agendaunit.set_beliefunit(run_beliefunit)
     before_run_beliefunit = before_sue_agendaunit.get_beliefunit(run_text)
-    before_run_rico_guylink = before_run_beliefunit.get_guylink(rico_text)
-    assert before_run_rico_guylink.credor_weight == old_rico_run_credor_weight
-    assert before_run_rico_guylink.debtor_weight == 1
+    before_run_rico_otherlink = before_run_beliefunit.get_otherlink(rico_text)
+    assert before_run_rico_otherlink.credor_weight == old_rico_run_credor_weight
+    assert before_run_rico_otherlink.debtor_weight == 1
 
     # WHEN
-    rico_quarkunit = quarkunit_shop("agenda_belief_guylink", quark_update())
+    rico_quarkunit = quarkunit_shop("agenda_belief_otherlink", quark_update())
     rico_quarkunit.set_required_arg("belief_id", run_text)
-    rico_quarkunit.set_required_arg("guy_id", rico_text)
+    rico_quarkunit.set_required_arg("other_id", rico_text)
     new_rico_run_credor_weight = 7
     new_rico_run_debtor_weight = 11
     rico_quarkunit.set_optional_arg("credor_weight", new_rico_run_credor_weight)
@@ -274,9 +274,9 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_guylink()
 
     # THEN
     after_run_beliefunit = after_sue_agendaunit.get_beliefunit(run_text)
-    after_run_rico_guylink = after_run_beliefunit.get_guylink(rico_text)
-    assert after_run_rico_guylink.credor_weight == new_rico_run_credor_weight
-    assert after_run_rico_guylink.debtor_weight == new_rico_run_debtor_weight
+    after_run_rico_otherlink = after_run_beliefunit.get_otherlink(rico_text)
+    assert after_run_rico_otherlink.credor_weight == new_rico_run_credor_weight
+    assert after_run_rico_otherlink.debtor_weight == new_rico_run_debtor_weight
 
 
 def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_beliefunit():
@@ -504,18 +504,18 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_bala
     rico_text = "Rico"
     carm_text = "Carmen"
     dizz_text = "Dizzy"
-    before_sue_au.add_guyunit(rico_text)
-    before_sue_au.add_guyunit(carm_text)
-    before_sue_au.add_guyunit(dizz_text)
+    before_sue_au.add_otherunit(rico_text)
+    before_sue_au.add_otherunit(carm_text)
+    before_sue_au.add_otherunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_guylink(guylink_shop(rico_text))
-    run_beliefunit.set_guylink(guylink_shop(carm_text))
+    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_guylink(guylink_shop(rico_text))
-    fly_beliefunit.set_guylink(guylink_shop(carm_text))
-    fly_beliefunit.set_guylink(guylink_shop(dizz_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(carm_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(dizz_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     before_sue_au.set_beliefunit(fly_beliefunit)
     sports_text = "sports"
@@ -553,11 +553,11 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_update_idea_bala
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
-    before_sue_au.add_guyunit(rico_text)
-    before_sue_au.add_guyunit(carm_text)
+    before_sue_au.add_otherunit(rico_text)
+    before_sue_au.add_otherunit(carm_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_guylink(guylink_shop(rico_text))
+    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -595,11 +595,11 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_bala
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
-    before_sue_au.add_guyunit(rico_text)
-    before_sue_au.add_guyunit(carm_text)
+    before_sue_au.add_otherunit(rico_text)
+    before_sue_au.add_otherunit(carm_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_guylink(guylink_shop(rico_text))
+    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -1037,7 +1037,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_insert_idea_suff
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
-    before_sue_au.add_guyunit(rico_text)
+    before_sue_au.add_otherunit(rico_text)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
@@ -1065,7 +1065,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnit_delete_idea_suff
     sue_text = "Sue"
     before_sue_au = agendaunit_shop(sue_text)
     rico_text = "Rico"
-    before_sue_au.add_guyunit(rico_text)
+    before_sue_au.add_otherunit(rico_text)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
     ball_text = "basketball"
@@ -1097,26 +1097,26 @@ def test_NucUnit_get_nucunit_example1_ContainsQuarkUnits():
     rico_text = "Rico"
     carm_text = "Carmen"
     dizz_text = "Dizzy"
-    before_sue_agendaunit.add_guyunit(rico_text)
-    before_sue_agendaunit.add_guyunit(carm_text)
-    before_sue_agendaunit.add_guyunit(dizz_text)
+    before_sue_agendaunit.add_otherunit(rico_text)
+    before_sue_agendaunit.add_otherunit(carm_text)
+    before_sue_agendaunit.add_otherunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_guylink(guylink_shop(rico_text))
-    run_beliefunit.set_guylink(guylink_shop(carm_text))
+    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_guylink(guylink_shop(rico_text))
-    fly_beliefunit.set_guylink(guylink_shop(dizz_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    fly_beliefunit.set_otherlink(otherlink_shop(dizz_text))
     before_sue_agendaunit.set_beliefunit(run_beliefunit)
     before_sue_agendaunit.set_beliefunit(fly_beliefunit)
     assert before_sue_agendaunit._weight != 55
     assert before_sue_agendaunit._max_tree_traverse != 66
-    assert before_sue_agendaunit._guy_credor_pool != 77
-    assert before_sue_agendaunit._guy_debtor_pool != 88
+    assert before_sue_agendaunit._other_credor_pool != 77
+    assert before_sue_agendaunit._other_debtor_pool != 88
     assert before_sue_agendaunit._meld_strategy != "override"
-    assert before_sue_agendaunit.guy_exists(rico_text)
-    assert before_sue_agendaunit.guy_exists(carm_text)
+    assert before_sue_agendaunit.other_exists(rico_text)
+    assert before_sue_agendaunit.other_exists(carm_text)
     assert before_sue_agendaunit.get_beliefunit(run_text) != None
     assert before_sue_agendaunit.get_beliefunit(fly_text) != None
 
@@ -1127,8 +1127,8 @@ def test_NucUnit_get_nucunit_example1_ContainsQuarkUnits():
     # THEN
     assert after_sue_agendaunit._weight == 55
     assert after_sue_agendaunit._max_tree_traverse == 66
-    assert after_sue_agendaunit._guy_credor_pool == 77
-    assert after_sue_agendaunit._guy_debtor_pool == 88
+    assert after_sue_agendaunit._other_credor_pool == 77
+    assert after_sue_agendaunit._other_debtor_pool == 88
     assert after_sue_agendaunit._meld_strategy == "override"
-    assert after_sue_agendaunit.guy_exists(rico_text)
-    assert after_sue_agendaunit.guy_exists(carm_text) is False
+    assert after_sue_agendaunit.other_exists(rico_text)
+    assert after_sue_agendaunit.other_exists(carm_text) is False

@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src.agenda.belief import BeliefUnit, BeliefID
-from src.agenda.guy import GuyID
+from src.agenda.other import OtherID
 
 
 class InvalidAssignHeirPopulateException(Exception):
@@ -49,30 +49,30 @@ class AssignedHeir:
     _suffbeliefs: dict[BeliefID:BeliefID]
     _owner_id_assigned: bool
 
-    def _get_all_guys(
+    def _get_all_others(
         self,
         agenda_beliefs: dict[BeliefID:BeliefUnit],
         belief_id_dict: dict[BeliefID:],
     ) -> dict[BeliefID:BeliefUnit]:
         dict_x = {}
         for belief_id_x in belief_id_dict:
-            dict_x |= agenda_beliefs.get(belief_id_x)._guys
+            dict_x |= agenda_beliefs.get(belief_id_x)._others
         return dict_x
 
-    def _get_all_suff_guys(
+    def _get_all_suff_others(
         self, agenda_beliefs: dict[BeliefID:BeliefUnit]
     ) -> dict[BeliefID:BeliefUnit]:
-        return self._get_all_guys(agenda_beliefs, self._suffbeliefs)
+        return self._get_all_others(agenda_beliefs, self._suffbeliefs)
 
     def set_owner_id_assigned(
-        self, agenda_beliefs: dict[BeliefID:BeliefUnit], agenda_owner_id: GuyID
+        self, agenda_beliefs: dict[BeliefID:BeliefUnit], agenda_owner_id: OtherID
     ):
         self._owner_id_assigned = False
         if self._suffbeliefs == {}:
             self._owner_id_assigned = True
         else:
-            all_suff_guys_x = self._get_all_suff_guys(agenda_beliefs)
-            if all_suff_guys_x.get(agenda_owner_id) != None:
+            all_suff_others_x = self._get_all_suff_others(agenda_beliefs)
+            if all_suff_others_x.get(agenda_owner_id) != None:
                 self._owner_id_assigned = True
 
     def set_suffbeliefs(
@@ -91,22 +91,22 @@ class AssignedHeir:
             for suffbelief in parent_assignheir._suffbeliefs.keys():
                 dict_x[suffbelief] = -1
         else:
-            # get all_guys of parent assignedheir beliefs
-            all_parent_assignedheir_guys = self._get_all_guys(
+            # get all_others of parent assignedheir beliefs
+            all_parent_assignedheir_others = self._get_all_others(
                 agenda_beliefs=agenda_beliefs,
                 belief_id_dict=parent_assignheir._suffbeliefs,
             )
-            # get all_guys of assignedunit beliefs
-            all_assignedunit_guys = self._get_all_guys(
+            # get all_others of assignedunit beliefs
+            all_assignedunit_others = self._get_all_others(
                 agenda_beliefs=agenda_beliefs,
                 belief_id_dict=assignunit._suffbeliefs,
             )
-            if not set(all_assignedunit_guys).issubset(
-                set(all_parent_assignedheir_guys)
+            if not set(all_assignedunit_others).issubset(
+                set(all_parent_assignedheir_others)
             ):
                 # else raise error
                 raise InvalidAssignHeirPopulateException(
-                    f"parent_assigned_heir does not contain all guys of the idea's assignedunit\n{set(all_parent_assignedheir_guys)=}\n\n{set(all_assignedunit_guys)=}"
+                    f"parent_assigned_heir does not contain all others of the idea's assignedunit\n{set(all_parent_assignedheir_others)=}\n\n{set(all_assignedunit_others)=}"
                 )
 
             # set dict_x = to assignedunit beliefs

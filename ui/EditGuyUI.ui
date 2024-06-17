@@ -13,7 +13,7 @@
   <property name="windowkind">
    <string>Form</string>
   </property>
-  <widget class="QPushButton" name="guy_gui_insert_button">
+  <widget class="QPushButton" name="other_gui_insert_button">
    <property name="geometry">
     <rect>
      <x>170</x>
@@ -23,10 +23,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>Add Guy</string>
+    <string>Add Other</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="guy_update_button">
+  <widget class="QPushButton" name="other_update_button">
    <property name="geometry">
     <rect>
      <x>170</x>
@@ -55,7 +55,7 @@
     <bool>true</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="guy_delete_button">
+  <widget class="QPushButton" name="other_delete_button">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -65,10 +65,10 @@
     </rect>
    </property>
    <property name="text">
-    <string>delete Guy</string>
+    <string>delete Other</string>
    </property>
   </widget>
-  <widget class="QTableWidget" name="guy_table">
+  <widget class="QTableWidget" name="other_table">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -129,7 +129,7 @@
     <string>Quit App</string>
    </property>
   </widget>
-  <widget class="QLineEdit" name="guy_name">
+  <widget class="QLineEdit" name="other_name">
    <property name="geometry">
     <rect>
      <x>10</x>
@@ -224,7 +224,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Guys</string>
+    <string>Others</string>
    </property>
    <property name="wordWrap">
     <bool>true</bool>
@@ -316,7 +316,7 @@
     </rect>
    </property>
   </widget>
-  <widget class="QPushButton" name="guy_belief_set_button">
+  <widget class="QPushButton" name="other_belief_set_button">
    <property name="geometry">
     <rect>
      <x>1060</x>
@@ -333,10 +333,10 @@
     </font>
    </property>
    <property name="text">
-    <string>add belief to guy</string>
+    <string>add belief to other</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="guy_belief_del_button">
+  <widget class="QPushButton" name="other_belief_del_button">
    <property name="geometry">
     <rect>
      <x>530</x>
@@ -353,7 +353,7 @@
     </font>
    </property>
    <property name="text">
-    <string>Abolish Belief from guy</string>
+    <string>Abolish Belief from other</string>
    </property>
   </widget>
   <widget class="QTableWidget" name="beliefs_stan_table">
@@ -391,7 +391,7 @@
     </property>
    </column>
   </widget>
-  <widget class="QLineEdit" name="guy_weight">
+  <widget class="QLineEdit" name="other_weight">
    <property name="geometry">
     <rect>
      <x>70</x>

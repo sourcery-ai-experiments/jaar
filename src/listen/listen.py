@@ -5,14 +5,14 @@ from src._road.road import (
     PersonID,
 )
 from src.agenda.idea import IdeaUnit
-from src.agenda.agenda import AgendaUnit, GuyUnit
+from src.agenda.agenda import AgendaUnit, OtherUnit
 from src.listen.basis_agendas import create_empty_agenda, create_listen_basis
 from src.listen.userhub import UserHub, userhub_shop
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
 
 
-class Missing_guy_debtor_poolException(Exception):
+class Missing_other_debtor_poolException(Exception):
     pass
 
 
@@ -25,7 +25,7 @@ def generate_perspective_intent(perspective_agenda: AgendaUnit) -> list[IdeaUnit
 def _ingest_perspective_intent(
     listener: AgendaUnit, intent: list[IdeaUnit]
 ) -> AgendaUnit:
-    debtor_amount = listener._guy_debtor_pool
+    debtor_amount = listener._other_debtor_pool
     ingest_list = generate_ingest_list(intent, debtor_amount, listener._planck)
     for ingest_ideaunit in ingest_list:
         _ingest_single_ideaunit(listener, ingest_ideaunit)
@@ -35,17 +35,17 @@ def _ingest_perspective_intent(
 def _allocate_irrational_debtor_weight(
     listener: AgendaUnit, speaker_owner_id: PersonID
 ):
-    speaker_guyunit = listener.get_guy(speaker_owner_id)
-    speaker_debtor_weight = speaker_guyunit.debtor_weight
-    speaker_guyunit.add_irrational_debtor_weight(speaker_debtor_weight)
+    speaker_otherunit = listener.get_other(speaker_owner_id)
+    speaker_debtor_weight = speaker_otherunit.debtor_weight
+    speaker_otherunit.add_irrational_debtor_weight(speaker_debtor_weight)
     return listener
 
 
 def _allocate_inallocable_debtor_weight(
     listener: AgendaUnit, speaker_owner_id: PersonID
 ):
-    speaker_guyunit = listener.get_guy(speaker_owner_id)
-    speaker_guyunit.add_inallocable_debtor_weight(speaker_guyunit.debtor_weight)
+    speaker_otherunit = listener.get_other(speaker_owner_id)
+    speaker_otherunit.add_inallocable_debtor_weight(speaker_otherunit.debtor_weight)
     return listener
 
 
@@ -147,16 +147,18 @@ def _add_and_replace_ideaunit_weights(
         x_ideaunit._weight += x_weight
 
 
-def get_debtors_roll(x_role: AgendaUnit) -> list[GuyUnit]:
+def get_debtors_roll(x_role: AgendaUnit) -> list[OtherUnit]:
     return [
-        x_guyunit for x_guyunit in x_role._guys.values() if x_guyunit.debtor_weight != 0
+        x_otherunit
+        for x_otherunit in x_role._others.values()
+        if x_otherunit.debtor_weight != 0
     ]
 
 
-def get_ordered_debtors_roll(x_agenda: AgendaUnit) -> list[GuyUnit]:
-    guys_ordered_list = get_debtors_roll(x_agenda)
-    guys_ordered_list.sort(key=lambda x: (x.debtor_weight, x.guy_id), reverse=True)
-    return guys_ordered_list
+def get_ordered_debtors_roll(x_agenda: AgendaUnit) -> list[OtherUnit]:
+    others_ordered_list = get_debtors_roll(x_agenda)
+    others_ordered_list.sort(key=lambda x: (x.debtor_weight, x.other_id), reverse=True)
+    return others_ordered_list
 
 
 def migrate_all_facts(src_listener: AgendaUnit, dst_listener: AgendaUnit):
@@ -192,14 +194,14 @@ def listen_to_speaker_fact(
 
 
 def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> AgendaUnit:
-    if listener.guy_exists(speaker._owner_id) is False:
-        raise Missing_guy_debtor_poolException(
-            f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} guyunit."
+    if listener.other_exists(speaker._owner_id) is False:
+        raise Missing_other_debtor_poolException(
+            f"listener '{listener._owner_id}' agenda is assumed to have {speaker._owner_id} otherunit."
         )
     perspective_agenda = get_speaker_perspective(speaker, listener._owner_id)
     if perspective_agenda._rational is False:
         return _allocate_irrational_debtor_weight(listener, speaker._owner_id)
-    if listener._guy_debtor_pool is None:
+    if listener._other_debtor_pool is None:
         return _allocate_inallocable_debtor_weight(listener, speaker._owner_id)
     if listener._owner_id != speaker._owner_id:
         intent = generate_perspective_intent(perspective_agenda)
@@ -211,11 +213,11 @@ def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> Agend
 
 
 def listen_to_intents_duty_work(listener_work: AgendaUnit, listener_userhub: UserHub):
-    for x_guyunit in get_ordered_debtors_roll(listener_work):
-        if x_guyunit.guy_id == listener_work._owner_id:
+    for x_otherunit in get_ordered_debtors_roll(listener_work):
+        if x_otherunit.other_id == listener_work._owner_id:
             listen_to_speaker_intent(listener_work, listener_userhub.get_duty_agenda())
         else:
-            speaker_id = x_guyunit.guy_id
+            speaker_id = x_otherunit.other_id
             speaker_work = listener_userhub.dw_speaker_agenda(speaker_id)
             if speaker_work is None:
                 speaker_work = create_empty_agenda(listener_work, speaker_id)
@@ -224,12 +226,12 @@ def listen_to_intents_duty_work(listener_work: AgendaUnit, listener_userhub: Use
 
 def listen_to_intents_role_job(listener_job: AgendaUnit, healer_userhub: UserHub):
     listener_id = listener_job._owner_id
-    for x_guyunit in get_ordered_debtors_roll(listener_job):
-        if x_guyunit.guy_id == listener_id:
+    for x_otherunit in get_ordered_debtors_roll(listener_job):
+        if x_otherunit.other_id == listener_id:
             listener_role = healer_userhub.get_role_agenda(listener_id)
             listen_to_speaker_intent(listener_job, listener_role)
         else:
-            speaker_id = x_guyunit.guy_id
+            speaker_id = x_otherunit.other_id
             healer_id = healer_userhub.person_id
             speaker_job = healer_userhub.rj_speaker_agenda(healer_id, speaker_id)
             if speaker_job is None:
@@ -240,17 +242,17 @@ def listen_to_intents_role_job(listener_job: AgendaUnit, healer_userhub: UserHub
 def listen_to_facts_role_job(new_job: AgendaUnit, healer_userhub: UserHub):
     role = healer_userhub.get_role_agenda(new_job._owner_id)
     migrate_all_facts(role, new_job)
-    for x_guyunit in get_ordered_debtors_roll(new_job):
-        if x_guyunit.guy_id != new_job._owner_id:
-            speaker_job = healer_userhub.get_job_agenda(x_guyunit.guy_id)
+    for x_otherunit in get_ordered_debtors_roll(new_job):
+        if x_otherunit.other_id != new_job._owner_id:
+            speaker_job = healer_userhub.get_job_agenda(x_otherunit.other_id)
             if speaker_job != None:
                 listen_to_speaker_fact(new_job, speaker_job)
 
 
 def listen_to_facts_duty_work(new_work: AgendaUnit, listener_userhub: UserHub):
     migrate_all_facts(listener_userhub.get_duty_agenda(), new_work)
-    for x_guyunit in get_ordered_debtors_roll(new_work):
-        speaker_id = x_guyunit.guy_id
+    for x_otherunit in get_ordered_debtors_roll(new_work):
+        speaker_id = x_otherunit.other_id
         if speaker_id != new_work._owner_id:
             speaker_work = listener_userhub.dw_speaker_agenda(speaker_id)
             if speaker_work != None:
@@ -260,7 +262,7 @@ def listen_to_facts_duty_work(new_work: AgendaUnit, listener_userhub: UserHub):
 def listen_to_debtors_roll_duty_work(listener_userhub: UserHub) -> AgendaUnit:
     duty = listener_userhub.get_duty_agenda()
     new_agenda = create_listen_basis(duty)
-    if duty._guy_debtor_pool is None:
+    if duty._other_debtor_pool is None:
         return new_agenda
     listen_to_intents_duty_work(new_agenda, listener_userhub)
     listen_to_facts_duty_work(new_agenda, listener_userhub)
@@ -272,7 +274,7 @@ def listen_to_debtors_roll_role_job(
 ) -> AgendaUnit:
     role = healer_userhub.get_role_agenda(listener_id)
     new_role = create_listen_basis(role)
-    if role._guy_debtor_pool is None:
+    if role._other_debtor_pool is None:
         return new_role
     listen_to_intents_role_job(new_role, healer_userhub)
     listen_to_facts_role_job(new_role, healer_userhub)

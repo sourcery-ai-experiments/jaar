@@ -2,7 +2,7 @@ from src._road.road import get_parent_road, RoadUnit, is_sub_road
 from src.agenda.idea import IdeaUnit
 from src.agenda.agenda import AgendaUnit
 from src.agenda.report import (
-    get_agenda_guyunits_dataframe,
+    get_agenda_otherunits_dataframe,
     get_agenda_intent_dataframe,
 )
 from plotly.graph_objects import (
@@ -139,21 +139,21 @@ def display_ideatree(x_agenda: AgendaUnit, mode: str = None) -> plotly_Figure:
     return x_fig
 
 
-def get_agenda_guys_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
+def get_agenda_others_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
     column_header_list = [
-        "guy_id",
-        "_guy_credor_pool",
+        "other_id",
+        "_other_credor_pool",
         "credor_weight",
-        "_guy_debtor_pool",
+        "_other_debtor_pool",
         "debtor_weight",
         "_agenda_cred",
         "_agenda_debt",
         "_agenda_intent_cred",
         "_agenda_intent_debt",
     ]
-    df = get_agenda_guyunits_dataframe(x_agenda)
-    df.insert(1, "_guy_credor_pool", x_agenda._guy_credor_pool)
-    df.insert(4, "_guy_debtor_pool", x_agenda._guy_debtor_pool)
+    df = get_agenda_otherunits_dataframe(x_agenda)
+    df.insert(1, "_other_credor_pool", x_agenda._other_credor_pool)
+    df.insert(4, "_other_debtor_pool", x_agenda._other_debtor_pool)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -161,10 +161,10 @@ def get_agenda_guys_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
         header=header_dict,
         cells=dict(
             values=[
-                df.guy_id,
-                df._guy_credor_pool,
+                df.other_id,
+                df._other_credor_pool,
                 df.credor_weight,
-                df._guy_debtor_pool,
+                df._other_debtor_pool,
                 df.debtor_weight,
                 df._agenda_cred,
                 df._agenda_debt,
@@ -177,7 +177,7 @@ def get_agenda_guys_plotly_fig(x_agenda: AgendaUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"OwnerID '{x_agenda._owner_id}' agenda guys metrics"
+    fig_title = f"OwnerID '{x_agenda._owner_id}' agenda others metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

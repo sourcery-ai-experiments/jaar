@@ -6,16 +6,16 @@ from src._instrument.python import (
     get_0_if_None,
 )
 from src._road.road import (
-    GuyID,
+    OtherID,
     RoadUnit,
     default_road_delimiter_if_none,
     validate_roadnode,
 )
-from src.agenda.guy import (
-    GuyLink,
-    guylinks_get_from_dict,
-    guylink_shop,
-    GuyUnit,
+from src.agenda.other import (
+    OtherLink,
+    otherlinks_get_from_dict,
+    otherlink_shop,
+    OtherUnit,
 )
 from src.agenda.meld import get_meld_weight
 
@@ -35,8 +35,8 @@ class BeliefCore:
 
 @dataclass
 class BeliefUnit(BeliefCore):
-    _guy_mirror: bool = None  # set by AgendaUnit.set_guyunit()
-    _guys: dict[GuyID:GuyLink] = None  # set by AgendaUnit.set_guyunit()
+    _other_mirror: bool = None  # set by AgendaUnit.set_otherunit()
+    _others: dict[OtherID:OtherLink] = None  # set by AgendaUnit.set_otherunit()
     _road_delimiter: str = None  # calculated by AgendaUnit.set_beliefunit
     # calculated by AgendaUnit.calc_agenda_metrics()
     _agenda_cred: float = None
@@ -46,7 +46,7 @@ class BeliefUnit(BeliefCore):
 
     def set_belief_id(self, belief_id: BeliefID = None):
         if belief_id != None:
-            if self._guy_mirror:
+            if self._other_mirror:
                 self.belief_id = validate_roadnode(belief_id, self._road_delimiter)
             else:
                 self.belief_id = validate_roadnode(
@@ -55,10 +55,10 @@ class BeliefUnit(BeliefCore):
 
     def get_dict(self) -> dict[str:str]:
         x_dict = {"belief_id": self.belief_id}
-        if self._guy_mirror:
-            x_dict["_guy_mirror"] = self._guy_mirror
-        if self._guys not in [{}, None]:
-            x_dict["_guys"] = self.get_guys_dict()
+        if self._other_mirror:
+            x_dict["_other_mirror"] = self._other_mirror
+        if self._others not in [{}, None]:
+            x_dict["_others"] = self.get_others_dict()
 
         return x_dict
 
@@ -67,87 +67,89 @@ class BeliefUnit(BeliefCore):
         self._agenda_debt = 0
         self._agenda_intent_cred = 0
         self._agenda_intent_debt = 0
-        for guylink in self._guys.values():
-            guylink.reset_agenda_cred_debt()
+        for otherlink in self._others.values():
+            otherlink.reset_agenda_cred_debt()
 
-    def _set_guylink_agenda_cred_debt(self):
-        guylinks_credor_weight_sum = sum(
-            guylink.credor_weight for guylink in self._guys.values()
+    def _set_otherlink_agenda_cred_debt(self):
+        otherlinks_credor_weight_sum = sum(
+            otherlink.credor_weight for otherlink in self._others.values()
         )
-        guylinks_debtor_weight_sum = sum(
-            guylink.debtor_weight for guylink in self._guys.values()
+        otherlinks_debtor_weight_sum = sum(
+            otherlink.debtor_weight for otherlink in self._others.values()
         )
 
-        for guylink in self._guys.values():
-            guylink.set_agenda_cred_debt(
-                guylinks_credor_weight_sum=guylinks_credor_weight_sum,
-                guylinks_debtor_weight_sum=guylinks_debtor_weight_sum,
+        for otherlink in self._others.values():
+            otherlink.set_agenda_cred_debt(
+                otherlinks_credor_weight_sum=otherlinks_credor_weight_sum,
+                otherlinks_debtor_weight_sum=otherlinks_debtor_weight_sum,
                 belief_agenda_cred=self._agenda_cred,
                 belief_agenda_debt=self._agenda_debt,
                 belief_agenda_intent_cred=self._agenda_intent_cred,
                 belief_agenda_intent_debt=self._agenda_intent_debt,
             )
 
-    def clear_guylinks(self):
-        self._guys = {}
+    def clear_otherlinks(self):
+        self._others = {}
 
-    def get_guys_dict(self) -> dict[str:str]:
-        guys_x_dict = {}
-        for guy in self._guys.values():
-            guy_dict = guy.get_dict()
-            guys_x_dict[guy_dict["guy_id"]] = guy_dict
-        return guys_x_dict
+    def get_others_dict(self) -> dict[str:str]:
+        others_x_dict = {}
+        for other in self._others.values():
+            other_dict = other.get_dict()
+            others_x_dict[other_dict["other_id"]] = other_dict
+        return others_x_dict
 
-    def set_guylink(self, guylink: GuyLink):
-        self._guys[guylink.guy_id] = guylink
+    def set_otherlink(self, otherlink: OtherLink):
+        self._others[otherlink.other_id] = otherlink
 
-    def edit_guylink(
-        self, guy_id: GuyID, credor_weight: int = None, debtor_weight: int = None
+    def edit_otherlink(
+        self, other_id: OtherID, credor_weight: int = None, debtor_weight: int = None
     ):
-        x_guylink = self.get_guylink(guy_id)
+        x_otherlink = self.get_otherlink(other_id)
         if credor_weight != None:
-            x_guylink.credor_weight = credor_weight
+            x_otherlink.credor_weight = credor_weight
         if debtor_weight != None:
-            x_guylink.debtor_weight = debtor_weight
+            x_otherlink.debtor_weight = debtor_weight
 
-    def get_guylink(self, guy_id: GuyID) -> GuyLink:
-        return self._guys.get(guy_id)
+    def get_otherlink(self, other_id: OtherID) -> OtherLink:
+        return self._others.get(other_id)
 
-    def guylink_exists(self, guylink_guy_id: GuyID) -> bool:
-        return self.get_guylink(guylink_guy_id) != None
+    def otherlink_exists(self, otherlink_other_id: OtherID) -> bool:
+        return self.get_otherlink(otherlink_other_id) != None
 
-    def del_guylink(self, guy_id):
-        self._guys.pop(guy_id)
+    def del_otherlink(self, other_id):
+        self._others.pop(other_id)
 
-    def _shift_guylink(self, to_delete_guy_id: GuyID, to_absorb_guy_id: GuyID):
-        old_belief_guylink = self.get_guylink(to_delete_guy_id)
-        new_guylink_credor_weight = old_belief_guylink.credor_weight
-        new_guylink_debtor_weight = old_belief_guylink.debtor_weight
+    def _shift_otherlink(
+        self, to_delete_other_id: OtherID, to_absorb_other_id: OtherID
+    ):
+        old_belief_otherlink = self.get_otherlink(to_delete_other_id)
+        new_otherlink_credor_weight = old_belief_otherlink.credor_weight
+        new_otherlink_debtor_weight = old_belief_otherlink.debtor_weight
 
-        new_guylink = self.get_guylink(to_absorb_guy_id)
-        if new_guylink != None:
-            new_guylink_credor_weight += new_guylink.credor_weight
-            new_guylink_debtor_weight += new_guylink.debtor_weight
+        new_otherlink = self.get_otherlink(to_absorb_other_id)
+        if new_otherlink != None:
+            new_otherlink_credor_weight += new_otherlink.credor_weight
+            new_otherlink_debtor_weight += new_otherlink.debtor_weight
 
-        self.set_guylink(
-            guylink=guylink_shop(
-                guy_id=to_absorb_guy_id,
-                credor_weight=new_guylink_credor_weight,
-                debtor_weight=new_guylink_debtor_weight,
+        self.set_otherlink(
+            otherlink=otherlink_shop(
+                other_id=to_absorb_other_id,
+                credor_weight=new_otherlink_credor_weight,
+                debtor_weight=new_otherlink_debtor_weight,
             )
         )
-        self.del_guylink(guy_id=to_delete_guy_id)
+        self.del_otherlink(other_id=to_delete_other_id)
 
     def meld(self, exterior_belief):
         self._meld_attributes_that_must_be_equal(exterior_belief=exterior_belief)
-        self.meld_guylinks(exterior_belief=exterior_belief)
+        self.meld_otherlinks(exterior_belief=exterior_belief)
 
-    def meld_guylinks(self, exterior_belief):
-        for oba in exterior_belief._guys.values():
-            if self._guys.get(oba.guy_id) is None:
-                self._guys[oba.guy_id] = oba
+    def meld_otherlinks(self, exterior_belief):
+        for oba in exterior_belief._others.values():
+            if self._others.get(oba.other_id) is None:
+                self._others[oba.other_id] = oba
             else:
-                self._guys[oba.guy_id].meld(oba)
+                self._others[oba.other_id].meld(oba)
 
     def _meld_attributes_that_must_be_equal(self, exterior_belief):
         xl = [("belief_id", self.belief_id, exterior_belief.belief_id)]
@@ -185,16 +187,16 @@ def get_beliefunit_from_dict(
 ) -> BeliefUnit:
     return beliefunit_shop(
         belief_id=beliefunit_dict["belief_id"],
-        _guy_mirror=get_obj_from_beliefunit_dict(beliefunit_dict, "_guy_mirror"),
-        _guys=get_obj_from_beliefunit_dict(beliefunit_dict, "_guys"),
+        _other_mirror=get_obj_from_beliefunit_dict(beliefunit_dict, "_other_mirror"),
+        _others=get_obj_from_beliefunit_dict(beliefunit_dict, "_others"),
         _road_delimiter=_road_delimiter,
     )
 
 
 def get_obj_from_beliefunit_dict(x_dict: dict[str:], dict_key: str) -> any:
-    if dict_key == "_guys":
-        return guylinks_get_from_dict(x_dict.get(dict_key))
-    elif dict_key in {"_guy_mirror"}:
+    if dict_key == "_others":
+        return otherlinks_get_from_dict(x_dict.get(dict_key))
+    elif dict_key in {"_other_mirror"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     else:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else None
@@ -202,15 +204,15 @@ def get_obj_from_beliefunit_dict(x_dict: dict[str:], dict_key: str) -> any:
 
 def beliefunit_shop(
     belief_id: BeliefID,
-    _guy_mirror: bool = None,
-    _guys: dict[GuyID:GuyLink] = None,
+    _other_mirror: bool = None,
+    _others: dict[OtherID:OtherLink] = None,
     _road_delimiter: str = None,
 ) -> BeliefUnit:
-    if _guy_mirror is None:
-        _guy_mirror = False
+    if _other_mirror is None:
+        _other_mirror = False
     x_beliefunit = BeliefUnit(
-        _guy_mirror=_guy_mirror,
-        _guys=get_empty_dict_if_none(_guys),
+        _other_mirror=_other_mirror,
+        _others=get_empty_dict_if_none(_others),
         _agenda_cred=get_0_if_None(),
         _agenda_debt=get_0_if_None(),
         _agenda_intent_cred=get_0_if_None(),
@@ -343,34 +345,34 @@ def balanceline_shop(belief_id: BeliefID, _agenda_cred: float, _agenda_debt: flo
     )
 
 
-def get_intersection_of_guys(
-    guys_x: dict[GuyID:GuyUnit], guys_y: dict[GuyID:GuyUnit]
-) -> dict[GuyID:-1]:
-    x_set = set(guys_x)
-    y_set = set(guys_y)
+def get_intersection_of_others(
+    others_x: dict[OtherID:OtherUnit], others_y: dict[OtherID:OtherUnit]
+) -> dict[OtherID:-1]:
+    x_set = set(others_x)
+    y_set = set(others_y)
     intersection_x = x_set.intersection(y_set)
-    return {guy_id_x: -1 for guy_id_x in intersection_x}
+    return {other_id_x: -1 for other_id_x in intersection_x}
 
 
-def get_guys_relevant_beliefs(
-    beliefs_x: dict[BeliefID:BeliefUnit], guys_x: dict[GuyID:GuyUnit]
-) -> dict[BeliefID:{GuyID: -1}]:
+def get_others_relevant_beliefs(
+    beliefs_x: dict[BeliefID:BeliefUnit], others_x: dict[OtherID:OtherUnit]
+) -> dict[BeliefID:{OtherID: -1}]:
     relevant_beliefs = {}
-    for guy_id_x in guys_x:
+    for other_id_x in others_x:
         for belief_x in beliefs_x.values():
-            if belief_x._guys.get(guy_id_x) != None:
+            if belief_x._others.get(other_id_x) != None:
                 if relevant_beliefs.get(belief_x.belief_id) is None:
                     relevant_beliefs[belief_x.belief_id] = {}
-                relevant_beliefs.get(belief_x.belief_id)[guy_id_x] = -1
+                relevant_beliefs.get(belief_x.belief_id)[other_id_x] = -1
 
     return relevant_beliefs
 
 
-def get_guy_relevant_beliefs(
-    beliefs_x: dict[BeliefID:BeliefUnit], guy_id_x: GuyID
+def get_other_relevant_beliefs(
+    beliefs_x: dict[BeliefID:BeliefUnit], other_id_x: OtherID
 ) -> dict[BeliefID:-1]:
     return {
         belief_x.belief_id: -1
         for belief_x in beliefs_x.values()
-        if belief_x._guys.get(guy_id_x) != None
+        if belief_x._others.get(other_id_x) != None
     }

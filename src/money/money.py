@@ -2,7 +2,7 @@ from dataclasses import dataclass
 
 
 @dataclass
-class GuyMoneyReport:
+class OtherMoneyReport:
     tax_total: float = None
     debtor_rank_num: int = None
     credor_rank_num: int = None

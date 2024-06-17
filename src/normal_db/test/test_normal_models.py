@@ -7,9 +7,9 @@ from src.atom.quark_config import (
 )
 from src.normal_db.normal_models import (
     AgendaTable,
-    GuyUnitTable,
+    OtherUnitTable,
     BeliefTable,
-    GuyLinkTable,
+    OtherLinkTable,
     IdeaTable,
     BalanceLinkTable,
     ReasonTable,
@@ -73,16 +73,16 @@ def test_normalized_table_AgendaTable_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_GuyUnitTable_Exists():
+def test_normalized_table_OtherUnitTable_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_guyunit")
-    mapper = inspect(GuyUnitTable)
+    config_category = get_normalized_agenda_table_build().get("agenda_otherunit")
+    mapper = inspect(OtherUnitTable)
     # print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "guyunit"
-    assert config_table_name == GuyUnitTable.__tablename__
+    assert config_table_name == "otherunit"
+    assert config_table_name == OtherUnitTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 
@@ -99,16 +99,16 @@ def test_normalized_table_BeliefTable_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_GuyLinkTable_guylink_Exists():
+def test_normalized_table_OtherLinkTable_otherlink_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_belief_guylink")
-    mapper = inspect(GuyLinkTable)
+    config_category = get_normalized_agenda_table_build().get("agenda_belief_otherlink")
+    mapper = inspect(OtherLinkTable)
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "guylink"
-    assert config_table_name == GuyLinkTable.__tablename__
+    assert config_table_name == "otherlink"
+    assert config_table_name == OtherLinkTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 

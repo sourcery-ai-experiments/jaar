@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Agendas /  Guy /  dimension</string>
+     <string>Agendas /  Other /  dimension</string>
     </property>
    </widget>
    <widget class="QPushButton" name="fact_open_lower_spec1">
@@ -167,7 +167,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>Manuguy modification</string>
+     <string>Manuother modification</string>
     </property>
    </widget>
    <widget class="QPushButton" name="loubby_button">

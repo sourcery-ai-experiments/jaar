@@ -4,7 +4,7 @@ from src.agenda.agenda import agendaunit_shop, get_from_json as agendaunit_get_f
 from src.agenda.idea import IdeaUnit, ideaunit_shop
 from src.agenda.reason_idea import reasonunit_shop
 from src.agenda.belief import beliefunit_shop, balancelink_shop
-from src.agenda.guy import guylink_shop
+from src.agenda.other import otherlink_shop
 from src.agenda.reason_assign import assignedunit_shop
 from src.agenda.examples.example_agendas import (
     get_agenda_with_4_levels as example_agendas_get_agenda_with_4_levels,
@@ -176,7 +176,7 @@ def test_AgendaUnit_get_all_pledges_ReturnsCorrectObj():
     zia_agenda.add_idea(ideaunit_shop(sweep_text, pledge=True), clean_road)
     sweep_idea = zia_agenda.get_idea_obj(sweep_road)
     bob_text = "Bob"
-    zia_agenda.add_guyunit(bob_text)
+    zia_agenda.add_otherunit(bob_text)
     sweep_idea._assignedunit.set_suffbelief(bob_text)
     print(f"{sweep_idea}")
     intent_dict = zia_agenda.get_intent_dict()
@@ -588,7 +588,7 @@ def test_AgendaUnit_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     zia_agenda = agendaunit_shop("Zia")
 
     zia_agenda.calc_agenda_metrics()
-    assert len(zia_agenda._guys) == 0
+    assert len(zia_agenda._others) == 0
     assert len(zia_agenda._beliefs) == 0
     assert len(zia_agenda._idearoot._kids) == 0
 
@@ -624,20 +624,20 @@ def test_AgendaUnit_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     clean_cookery_idea.set_reasonunit(reason=daytime_reason)
 
     # anna_text = "anna"
-    # anna_guyunit = guyunit_shop(guy_id=anna_text)
-    # anna_guylink = guylink_shop(guy_id=anna_text)
+    # anna_otherunit = otherunit_shop(other_id=anna_text)
+    # anna_otherlink = otherlink_shop(other_id=anna_text)
     # beto_text = "beto"
-    # beto_guyunit = guyunit_shop(guy_id=beto_text)
-    # beto_guylink = guylink_shop(guy_id=beto_text)
+    # beto_otherunit = otherunit_shop(other_id=beto_text)
+    # beto_otherlink = otherlink_shop(other_id=beto_text)
 
     family_text = ",family"
     # beliefunit_z = beliefunit_shop(belief_id=family_text)
-    # beliefunit_z.set_guylink(guylink=anna_guylink)
-    # beliefunit_z.set_guylink(guylink=beto_guylink)
+    # beliefunit_z.set_otherlink(otherlink=anna_otherlink)
+    # beliefunit_z.set_otherlink(otherlink=beto_otherlink)
     balancelink_z = balancelink_shop(belief_id=family_text)
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
 
-    assert len(zia_agenda._guys) == 0
+    assert len(zia_agenda._others) == 0
     assert len(zia_agenda._beliefs) == 0
     assert len(zia_agenda._idearoot._kids) == 1
     assert zia_agenda.get_idea_obj(daytime_road)._begin == 0
@@ -663,7 +663,7 @@ def test_AgendaUnit_create_intent_item_CorrectlyCreatesAllAgendaAttributes():
     assert zia_agenda.get_idea_obj(daytime_road)._close == 1440
     assert len(zia_agenda._beliefs) == 1
     assert zia_agenda._beliefs.get(family_text) != None
-    assert zia_agenda._beliefs.get(family_text)._guys in (None, {})
+    assert zia_agenda._beliefs.get(family_text)._others in (None, {})
 
     assert len(zia_agenda._idearoot._kids) == 3
 
@@ -737,7 +737,7 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
     assert get_tasks_count(pledge_idea_list) == 64
 
 
-def test_intent_IsSetByAssignedUnit_1GuyBelief():
+def test_intent_IsSetByAssignedUnit_1OtherBelief():
     # GIVEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)
@@ -747,7 +747,7 @@ def test_intent_IsSetByAssignedUnit_1GuyBelief():
     assert len(bob_agenda.get_intent_dict()) == 1
 
     sue_text = "Sue"
-    bob_agenda.add_guyunit(guy_id=sue_text)
+    bob_agenda.add_otherunit(other_id=sue_text)
     assignedunit_sue = assignedunit_shop()
     assignedunit_sue.set_suffbelief(belief_id=sue_text)
     assert len(bob_agenda.get_intent_dict()) == 1
@@ -759,7 +759,7 @@ def test_intent_IsSetByAssignedUnit_1GuyBelief():
     assert len(bob_agenda.get_intent_dict()) == 0
 
     # WHEN
-    bob_agenda.add_guyunit(guy_id=bob_text)
+    bob_agenda.add_otherunit(other_id=bob_text)
     assignedunit_bob = assignedunit_shop()
     assignedunit_bob.set_suffbelief(belief_id=bob_text)
 
@@ -773,21 +773,21 @@ def test_intent_IsSetByAssignedUnit_1GuyBelief():
     # print(f"{intent_dict[0]._label=}")
 
 
-def test_intent_IsSetByAssignedUnit_2GuyBelief():
+def test_intent_IsSetByAssignedUnit_2OtherBelief():
     # GIVEN
     bob_text = "Bob"
     bob_agenda = agendaunit_shop(bob_text)
-    bob_agenda.add_guyunit(guy_id=bob_text)
+    bob_agenda.add_otherunit(other_id=bob_text)
     casa_text = "casa"
     casa_road = bob_agenda.make_road(bob_text, casa_text)
     bob_agenda.add_l1_idea(ideaunit_shop(casa_text, pledge=True))
 
     sue_text = "Sue"
-    bob_agenda.add_guyunit(guy_id=sue_text)
+    bob_agenda.add_otherunit(other_id=sue_text)
 
     run_text = ",runners"
     run_belief = beliefunit_shop(belief_id=run_text)
-    run_belief.set_guylink(guylink=guylink_shop(guy_id=sue_text))
+    run_belief.set_otherlink(otherlink=otherlink_shop(other_id=sue_text))
     bob_agenda.set_beliefunit(y_beliefunit=run_belief)
 
     run_assignedunit = assignedunit_shop()
@@ -801,7 +801,7 @@ def test_intent_IsSetByAssignedUnit_2GuyBelief():
     assert len(bob_agenda.get_intent_dict()) == 0
 
     # WHEN
-    run_belief.set_guylink(guylink=guylink_shop(guy_id=bob_text))
+    run_belief.set_otherlink(otherlink=otherlink_shop(other_id=bob_text))
     bob_agenda.set_beliefunit(y_beliefunit=run_belief)
 
     # THEN
