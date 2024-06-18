@@ -412,21 +412,21 @@ def test_OtherUnit_set_treasury_attr_SetsAttrCorrectly():
     assert bob_otherunit._treasury_voice_hx_lowest_rank is None
 
     # WHEN
-    x_due_paid = 0.2
-    x_due_diff = 0.123
+    x_treasury_due_paid = 0.2
+    x_treasury_due_diff = 0.123
     x_treasury_cred_score = 900
     x_treasury_voice_rank = 45
     bob_otherunit.set_treasury_attr(
-        due_paid=x_due_paid,
-        due_diff=x_due_diff,
+        _treasury_due_paid=x_treasury_due_paid,
+        _treasury_due_diff=x_treasury_due_diff,
         cred_score=x_treasury_cred_score,
         voice_rank=x_treasury_voice_rank,
     )
     # THEN
     assert bob_otherunit._agenda_intent_ratio_cred == x_agenda_intent_ratio_cred
     assert bob_otherunit._agenda_intent_ratio_debt == x_agenda_intent_ratio_debt
-    assert bob_otherunit._treasury_due_paid == x_due_paid
-    assert bob_otherunit._treasury_due_diff == x_due_diff
+    assert bob_otherunit._treasury_due_paid == x_treasury_due_paid
+    assert bob_otherunit._treasury_due_diff == x_treasury_due_diff
     assert bob_otherunit._treasury_cred_score == x_treasury_cred_score
     assert bob_otherunit._treasury_voice_rank == x_treasury_voice_rank
     assert bob_otherunit._treasury_voice_hx_lowest_rank == x_treasury_voice_rank
@@ -439,13 +439,13 @@ def test_OtherUnit_set_treasury_attr_CorrectlyDecreasesOrIgnores_treasury_voice_
     bob_otherunit = otherunit_shop("Bob")
     bob_otherunit._agenda_intent_ratio_cred = x_agenda_intent_ratio_cred
     bob_otherunit._agenda_intent_ratio_debt = x_agenda_intent_ratio_debt
-    x_due_paid = 0.2
-    x_due_diff = 0.123
+    x_treasury_due_paid = 0.2
+    x_treasury_due_diff = 0.123
     x_treasury_cred_score = 900
     old_x_treasury_voice_rank = 45
     bob_otherunit.set_treasury_attr(
-        due_paid=x_due_paid,
-        due_diff=x_due_diff,
+        _treasury_due_paid=x_treasury_due_paid,
+        _treasury_due_diff=x_treasury_due_diff,
         cred_score=x_treasury_cred_score,
         voice_rank=old_x_treasury_voice_rank,
     )
@@ -454,8 +454,8 @@ def test_OtherUnit_set_treasury_attr_CorrectlyDecreasesOrIgnores_treasury_voice_
     # WHEN
     new_x_treasury_voice_rank = 33
     bob_otherunit.set_treasury_attr(
-        due_paid=x_due_paid,
-        due_diff=x_due_diff,
+        _treasury_due_paid=x_treasury_due_paid,
+        _treasury_due_diff=x_treasury_due_diff,
         cred_score=x_treasury_cred_score,
         voice_rank=new_x_treasury_voice_rank,
     )
@@ -465,8 +465,8 @@ def test_OtherUnit_set_treasury_attr_CorrectlyDecreasesOrIgnores_treasury_voice_
     # WHEN
     not_lower_x_treasury_voice_rank = 60
     bob_otherunit.set_treasury_attr(
-        due_paid=x_due_paid,
-        due_diff=x_due_diff,
+        _treasury_due_paid=x_treasury_due_paid,
+        _treasury_due_diff=x_treasury_due_diff,
         cred_score=x_treasury_cred_score,
         voice_rank=not_lower_x_treasury_voice_rank,
     )
@@ -482,8 +482,8 @@ def test_OtherUnit_clear_treasurying_data_SetsAttrCorrectly_Method():
     x_treasury_cred_score = 900
     x_treasury_voice_rank = 45
     bob_otherunit.set_treasury_attr(
-        due_paid=0.399,
-        due_diff=0.044,
+        _treasury_due_paid=0.399,
+        _treasury_due_diff=0.044,
         cred_score=x_treasury_cred_score,
         voice_rank=x_treasury_voice_rank,
     )
