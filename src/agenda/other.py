@@ -78,13 +78,13 @@ class OtherUnit(OtherCore):
 
     def set_treasury_attr(
         self,
-        due_paid: float,
-        due_diff: float,
+        _treasury_due_paid: float,
+        _treasury_due_diff: float,
         cred_score: float,
         voice_rank: int,
     ):
-        self._treasury_due_paid = due_paid
-        self._treasury_due_diff = due_diff
+        self._treasury_due_paid = _treasury_due_paid
+        self._treasury_due_diff = _treasury_due_diff
         self._treasury_cred_score = cred_score
         self.set_treasury_voice_rank(voice_rank)
 
@@ -260,8 +260,8 @@ def otherunit_get_from_dict(otherunit_dict: dict, _road_delimiter: str) -> Other
         _road_delimiter=_road_delimiter,
     )
     x_otherunit.set_treasury_attr(
-        due_paid=_treasury_due_paid,
-        due_diff=_treasury_due_diff,
+        _treasury_due_paid=_treasury_due_paid,
+        _treasury_due_diff=_treasury_due_diff,
         cred_score=_treasury_cred_score,
         voice_rank=_treasury_voice_rank,
     )

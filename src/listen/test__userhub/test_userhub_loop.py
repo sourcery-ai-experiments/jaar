@@ -1,7 +1,7 @@
 from src._road.jaar_config import get_test_real_id as real_id
 from src._road.road import create_road
 from src.listen.userhub import userhub_shop
-from src.listen.examples.examples import get_agenda_with_4_levels
+from src.listen.examples.example_listen_agendas import get_agenda_with_4_levels
 from src.listen.examples.listen_env import (
     env_dir_setup_cleanup,
     get_listen_temp_env_dir as env_dir,
