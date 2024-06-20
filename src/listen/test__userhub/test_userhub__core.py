@@ -73,6 +73,7 @@ def test_UserHub_Exists():
     assert x_userhub.road_delimiter is None
     assert x_userhub.planck is None
     assert x_userhub.penny is None
+    assert x_userhub.econ_money_magnitude is None
 
 
 def test_userhub_shop_ReturnsCorrectObj():
@@ -83,6 +84,7 @@ def test_userhub_shop_ReturnsCorrectObj():
     x_road_delimiter = "/"
     x_planck = 9
     x_penny = 3
+    x_money_magnitude = 900
 
     # WHEN
     x_userhub = userhub_shop(
@@ -93,6 +95,7 @@ def test_userhub_shop_ReturnsCorrectObj():
         road_delimiter=x_road_delimiter,
         planck=x_planck,
         penny=x_penny,
+        econ_money_magnitude=x_money_magnitude,
     )
 
     # THEN
@@ -102,7 +105,7 @@ def test_userhub_shop_ReturnsCorrectObj():
     assert x_userhub.road_delimiter == x_road_delimiter
     assert x_userhub.planck == x_planck
     assert x_userhub.penny == x_penny
-
+    assert x_userhub.econ_money_magnitude == x_money_magnitude
     assert x_userhub.real_dir() == f"{x_reals_dir}/{x_real_id}"
     assert x_userhub.persons_dir() == f"{x_userhub.real_dir()}/persons"
     assert x_userhub.person_dir() == f"{x_userhub.persons_dir()}/{sue_text}"

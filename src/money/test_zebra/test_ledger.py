@@ -1,4 +1,5 @@
 from src.agenda.agenda import agendaunit_shop
+from src.listen.userhub import userhub_shop
 from src.money.river_cycle import (
     get_credorledger,
     get_debtorledger,
@@ -55,13 +56,11 @@ def test_get_debtorledger_ReturnsCorrectObj():
 
 def test_TaxDueLedger_Exists():
     # GIVEN / WHEN
-    x_riverrun = TaxDueLedger()
+    x_taxdueledger = TaxDueLedger()
 
     # THEN
-    assert x_riverrun.healer_id is None
-    assert x_riverrun.tax_due_ledger is None
-    assert x_riverrun.money_amount is None
-    assert x_riverrun.penny is None
+    assert x_taxdueledger.userhub is None
+    assert x_taxdueledger.tax_due_ledger is None
 
 
 def test_taxdueledger_shop_ReturnsCorrectWhenEmpty():
@@ -69,21 +68,23 @@ def test_taxdueledger_shop_ReturnsCorrectWhenEmpty():
     bob_text = "Bob"
     bob_money_amount = 88
     bob_penny = 11
+    bob_userhub = userhub_shop(
+        None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
+    )
 
     # WHEN
-    bob_taxdueledger = taxdueledger_shop(bob_text, bob_money_amount, bob_penny)
+    bob_taxdueledger = taxdueledger_shop(bob_userhub)
 
     # THEN
-    assert bob_taxdueledger.healer_id == bob_text
+    assert bob_taxdueledger.userhub == bob_userhub
     assert bob_taxdueledger.tax_due_ledger == {}
-    assert bob_taxdueledger.money_amount == bob_money_amount
-    assert bob_taxdueledger.penny == bob_penny
 
 
 def test_TaxDueLedger_set_other_tax_due_SetsAttr():
     # GIVEN
     bob_text = "Bob"
-    bob_taxdueledger = taxdueledger_shop(bob_text)
+    bob_userhub = userhub_shop(None, None, bob_text)
+    bob_taxdueledger = taxdueledger_shop(bob_userhub)
     yao_text = "Yao"
     assert bob_taxdueledger.tax_due_ledger.get(yao_text) is None
 
@@ -100,7 +101,10 @@ def test_TaxDueLedger_tax_due_ledger_is_empty_ReturnsObj():
     bob_text = "Bob"
     bob_money_amount = 88
     bob_penny = 11
-    bob_taxdueledger = taxdueledger_shop(bob_text, bob_money_amount, bob_penny)
+    bob_userhub = userhub_shop(
+        None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
+    )
+    bob_taxdueledger = taxdueledger_shop(bob_userhub)
     assert bob_taxdueledger.tax_due_ledger_is_empty()
 
     # WHEN
@@ -115,7 +119,10 @@ def test_TaxDueLedger_reset_tax_due_ledger_CorrectlySetsAttr():
     bob_text = "Bob"
     bob_money_amount = 1000
     bob_penny = 1
-    bob_taxdueledger = taxdueledger_shop(bob_text, bob_money_amount, bob_penny)
+    bob_userhub = userhub_shop(
+        None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
+    )
+    bob_taxdueledger = taxdueledger_shop(bob_userhub)
     sue_text = "Sue"
     yao_text = "Yao"
     bob_debtor_weight = 38
@@ -144,7 +151,10 @@ def test_TaxDueLedger_other_has_tax_due_ReturnsCorrectBool():
     bob_text = "Bob"
     bob_money_amount = 1000
     bob_penny = 1
-    bob_taxdueledger = taxdueledger_shop(bob_text, bob_money_amount, bob_penny)
+    bob_userhub = userhub_shop(
+        None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
+    )
+    bob_taxdueledger = taxdueledger_shop(bob_userhub)
     yao_text = "Yao"
     sue_text = "Sue"
     zia_text = "Zia"
@@ -176,7 +186,10 @@ def test_TaxDueLedger_delete_tax_due_SetsAttr():
     bob_text = "Bob"
     bob_money_amount = 88
     bob_penny = 11
-    bob_taxdueledger = taxdueledger_shop(bob_text, bob_money_amount, bob_penny)
+    bob_userhub = userhub_shop(
+        None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
+    )
+    bob_taxdueledger = taxdueledger_shop(bob_userhub)
     yao_text = "Yao"
     bob_taxdueledger.set_other_tax_due(yao_text, 5)
     assert bob_taxdueledger.other_has_tax_due(yao_text)
@@ -193,7 +206,10 @@ def test_TaxDueLedger_get_other_tax_due_ReturnsCorrectObj():
     bob_text = "Bob"
     bob_money_amount = 1000
     bob_penny = 1
-    bob_taxdueledger = taxdueledger_shop(bob_text, bob_money_amount, bob_penny)
+    bob_userhub = userhub_shop(
+        None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
+    )
+    bob_taxdueledger = taxdueledger_shop(bob_userhub)
     sue_text = "Sue"
     yao_text = "Yao"
     zia_text = "Zia"
@@ -225,7 +241,10 @@ def test_TaxDueLedgerpay_any_tax_due_SetsAttr():
     bob_text = "Bob"
     bob_money_amount = 1000
     bob_penny = 1
-    bob_taxdueledger = taxdueledger_shop(bob_text, bob_money_amount, bob_penny)
+    bob_userhub = userhub_shop(
+        None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
+    )
+    bob_taxdueledger = taxdueledger_shop(bob_userhub)
     sue_text = "Sue"
     yao_text = "Yao"
     bob_debtor_weight = 38
