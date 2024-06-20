@@ -21,7 +21,11 @@ from src._road.jaar_config import (
     get_json_filename,
     init_atom_id,
 )
-from src._road.finance import default_planck_if_none, default_penny_if_none
+from src._road.finance import (
+    default_planck_if_none,
+    default_penny_if_none,
+    default_money_magnitude_if_none,
+)
 from src._road.road import (
     PersonID,
     RealID,
@@ -103,6 +107,7 @@ class UserHub:
     road_delimiter: str = None
     planck: float = None
     penny: float = None
+    econ_money_magnitude: float = None
 
     def real_dir(self):
         return f"{self.reals_dir}/{self.real_id}"
@@ -570,6 +575,7 @@ def userhub_shop(
     road_delimiter: str = None,
     planck: float = None,
     penny: float = None,
+    econ_money_magnitude: float = None,
 ) -> UserHub:
     if reals_dir is None:
         reals_dir = get_test_reals_dir()
@@ -584,6 +590,7 @@ def userhub_shop(
         road_delimiter=default_road_delimiter_if_none(road_delimiter),
         planck=default_planck_if_none(planck),
         penny=default_penny_if_none(penny),
+        econ_money_magnitude=default_money_magnitude_if_none(econ_money_magnitude),
     )
 
 
