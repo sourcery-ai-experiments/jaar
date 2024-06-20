@@ -31,7 +31,7 @@ def default_money_magnitude_if_none(money_magnitude: int = None) -> int:
     return money_magnitude
 
 
-def allot_scale(credorledger: dict, scale_number: float, grain_unit: float):
+def allot_scale(ledger: dict[str:float], scale_number: float, grain_unit: float):
     """
     allots the scale_number across credorledgers with credor_weighted attributes with a resolution of the grain unit.
 
@@ -48,11 +48,11 @@ def allot_scale(credorledger: dict, scale_number: float, grain_unit: float):
         )
 
     # Calculate the total credor_weight
-    total_credor_weight = sum(credorledger.values())
+    total_credor_weight = sum(ledger.values())
 
     # Calculate the distribution
     x_dict = {}
-    for key, obj in credorledger.items():
+    for key, obj in ledger.items():
         # Determine the share based on credor_weight
         share = (obj / total_credor_weight) * scale_number
 
