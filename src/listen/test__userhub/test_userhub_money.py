@@ -1,8 +1,9 @@
+from src._instrument.file import delete_dir, save_file, open_file
 from src._instrument.sqlite import check_connection
 from src.agenda.healer import healerhold_shop
 from src.agenda.idea import ideaunit_shop
 from src.agenda.graphic import display_ideatree
-from src.listen.userhub import userhub_shop
+from src.listen.userhub import userhub_shop, treasury_file_name
 from src.listen.examples.listen_env import (
     env_dir_setup_cleanup,
     get_listen_temp_env_dir as env_dir,
@@ -159,6 +160,34 @@ def test_UserHub_create_treasury_db_file_CorrectlyCreatesDatabase(
 
     # THEN
     assert os_path_exists(sue_userhub.treasury_db_path())
+
+
+def test_UserHub_create_treasury_db_DoesNotOverWriteDBIfItExists(
+    env_dir_setup_cleanup,
+):
+    # GIVEN create econ
+    sue_text = "Sue"
+    sue_userhub = userhub_shop(env_dir(), None, sue_text, get_texas_road())
+    delete_dir(sue_userhub.treasury_db_path())  # clear out any treasury.db file
+    sue_userhub.create_treasury_db_file()
+    assert os_path_exists(sue_userhub.treasury_db_path())
+
+    # GIVEN
+    x_file_text = "Texas Dallas ElPaso"
+    db_file = treasury_file_name()
+    save_file(
+        sue_userhub.econ_dir(),
+        file_name=db_file,
+        file_text=x_file_text,
+        replace=True,
+    )
+    assert os_path_exists(sue_userhub.treasury_db_path())
+    assert open_file(sue_userhub.econ_dir(), file_name=db_file) == x_file_text
+
+    # WHEN
+    sue_userhub.create_treasury_db_file()
+    # THEN
+    assert open_file(sue_userhub.econ_dir(), file_name=db_file) == x_file_text
 
 
 def test_UserHub_treasury_db_file_exists_ReturnsObj(env_dir_setup_cleanup):
