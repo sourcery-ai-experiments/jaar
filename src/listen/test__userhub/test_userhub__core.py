@@ -81,8 +81,8 @@ def test_userhub_shop_ReturnsCorrectObj():
     x_real_id = "music"
     sue_text = "Sue"
     x_road_delimiter = "/"
-    x_planck = 3
-    x_penny = 0.3
+    x_planck = 9
+    x_penny = 3
 
     # WHEN
     x_userhub = userhub_shop(

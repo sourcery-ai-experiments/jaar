@@ -302,7 +302,7 @@ def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():
     zia_agenda.set_real_id(tiger_real_id)
     zia_planck = 0.5
     zia_agenda._planck = zia_planck
-    zia_penny = 0.07
+    zia_penny = 2
     zia_agenda._penny = zia_penny
     zia_other_credor_pool = 2
     zia_other_debtor_pool = 2

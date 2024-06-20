@@ -53,7 +53,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     slash_road_delimiter = "/"
     override_meld_strategy = "override"
     five_planck = 5
-    penny_float = 0.8
+    penny_float = 1
 
     # WHEN
     x_agenda = agendaunit_shop(

@@ -43,9 +43,9 @@ def test_trim_planck_excess_ReturnsCorrectedFloat():
 
 def test_default_penny_if_none_ReturnsCorrectObj():
     # GIVEN / WHEN / THEN
-    assert default_penny_if_none() == 0.01
+    assert default_penny_if_none() == 1
     assert default_penny_if_none(5) == 5
-    assert default_penny_if_none(0.03) == 0.03
+    assert default_penny_if_none(0.03) == 1
 
 
 def test_trim_penny_excess_ReturnsCorrectedFloat():
