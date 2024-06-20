@@ -7,8 +7,9 @@ from src.money.river_cycle import (
     RiverCycle,
     rivercycle_shop,
     create_init_rivercycle,
+    RiverRun,
+    get_credorledger,
 )
-from src.money.scale_distribution import get_credorledger
 
 
 def test_RiverBook_Exists():
@@ -97,7 +98,38 @@ def test_RiverCylce_set_riverbook_CorrectlySetsAttr():
     assert one_rivercycle.riverbooks == {yao_text: yao_riverbook}
 
 
-def test_create_zebra_WorksForSingleUser():
+def test_create_init_rivercycle_ReturnsCorrectObj():
+    # GIVEN
+    yao_text = "Yao"
+    yao_agenda = agendaunit_shop(yao_text)
+    yao_agenda.add_otherunit(yao_text)
+    yao_credorledger = get_credorledger(yao_agenda)
+    all_credorledgers = {yao_text: yao_credorledger}
+
+    # WHEN
+    yao_init_rivercycle = create_init_rivercycle(yao_text, all_credorledgers)
+
+    # THEN
+    assert yao_init_rivercycle.number == 0
+    assert len(yao_init_rivercycle.riverbooks) == 1
+    assert yao_init_rivercycle.riverbooks.get(yao_text) != None
+
+
+def test_RiverRun_Exists():
+    # GIVEN / WHEN
+    x_riverrun = RiverRun()
+
+    # THEN
+    assert x_riverrun.number is None
+    assert x_riverrun.cycle_curr is None
+    assert x_riverrun.cyclc_next is None
+    assert x_riverrun.cycle_count is None
+    assert x_riverrun.cycle_max is None
+    assert x_riverrun.money_amount is None
+    assert x_riverrun.penny is None
+
+
+def test_create_riverrun_ReturnsCorrectObj():
     # GIVEN
     yao_text = "Yao"
     yao_agenda = agendaunit_shop(yao_text)

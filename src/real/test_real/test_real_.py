@@ -45,8 +45,8 @@ def test_realunit_shop_ReturnsRealUnitWith_road_delimiter(env_dir_setup_cleanup)
     # GIVEN
     music_text = "music"
     slash_text = "/"
-    planck_float = 3
-    penny_float = 0.3
+    planck_float = 9
+    penny_float = 3
 
     # WHEN
     music_real = realunit_shop(

@@ -1,8 +1,26 @@
 from src._instrument.python import get_empty_dict_if_none
-from src._road.finance import default_penny_if_none, default_money_magnitude_if_none
+from src._road.finance import (
+    default_penny_if_none,
+    default_money_magnitude_if_none,
+    allot_scale,
+)
 from src._road.road import PersonID
-from src.money.scale_distribution import allot_scale
+from src.agenda.agenda import AgendaUnit
 from dataclasses import dataclass
+
+
+def get_credorledger(x_agenda: AgendaUnit):
+    return {
+        otherunit.other_id: otherunit.credor_weight
+        for otherunit in x_agenda._others.values()
+    }
+
+
+def get_debtorledger(x_agenda: AgendaUnit):
+    return {
+        otherunit.other_id: otherunit.debtor_weight
+        for otherunit in x_agenda._others.values()
+    }
 
 
 @dataclass
@@ -69,3 +87,15 @@ def create_init_rivercycle(
     init_riverbook = create_riverbook(leader_id, x_credorledger, money_amount, penny)
     x_rivercycle.set_riverbook(init_riverbook)
     return x_rivercycle
+
+
+@dataclass
+class RiverRun:
+    number: int = None
+    due_taxes: dict[PersonID:float] = None
+    cycle_curr: RiverCycle = None
+    cyclc_next: RiverCycle = None
+    cycle_count: int = None
+    cycle_max: int = None
+    money_amount: int = None
+    penny: int = None
