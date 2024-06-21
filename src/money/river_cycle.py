@@ -87,7 +87,6 @@ def create_riverbook(
     book_money_amount: int,
 ) -> RiverBook:
     x_riverbook = riverbook_shop(userhub, owner_id)
-    print(f"{econ_credorledger=} {x_riverbook.userhub.penny=}")
     x_riverbook._rivergrants = allot_scale(
         ledger=econ_credorledger,
         scale_number=book_money_amount,
@@ -106,21 +105,25 @@ class RiverCycle:
     def _set_complete_riverbook(self, x_riverbook: RiverBook):
         self.riverbooks[x_riverbook.owner_id] = x_riverbook
 
-    def add_riverbook(self, book_owner_id: PersonID, book_money_amount: float):
+    def set_riverbook(self, book_owner_id: PersonID, book_money_amount: float):
         owner_credorledger = self.econ_credorledgers.get(book_owner_id)
-        x_riverbook = create_riverbook(
-            userhub=self.userhub,
-            owner_id=book_owner_id,
-            econ_credorledger=owner_credorledger,
-            book_money_amount=book_money_amount,
-        )
-        self._set_complete_riverbook(x_riverbook)
+        if owner_credorledger != None:
+            x_riverbook = create_riverbook(
+                userhub=self.userhub,
+                owner_id=book_owner_id,
+                econ_credorledger=owner_credorledger,
+                book_money_amount=book_money_amount,
+            )
+            self._set_complete_riverbook(x_riverbook)
 
     def create_cylceledger(self) -> dict[PersonID:float]:
         x_dict = {}
         for x_riverbook in self.riverbooks.values():
             for payee, pay_amount in x_riverbook._rivergrants.items():
-                x_dict[payee] = pay_amount
+                if x_dict.get(payee) is None:
+                    x_dict[payee] = pay_amount
+                else:
+                    x_dict[payee] = x_dict[payee] + pay_amount
         return x_dict
 
 
@@ -142,14 +145,8 @@ def create_init_rivercycle(
     econ_credorledgers: dict[PersonID : dict[PersonID:float]],
 ) -> RiverCycle:
     x_rivercycle = rivercycle_shop(leader_userhub, 0, econ_credorledgers)
-    leader_id = leader_userhub.person_id
     init_amount = leader_userhub.econ_money_magnitude
-    econ_credorledger = x_rivercycle.econ_credorledgers.get(leader_id)
-    init_riverbook = create_riverbook(
-        leader_userhub, leader_id, econ_credorledger, init_amount
-    )
-    x_rivercycle._set_complete_riverbook(init_riverbook)
-    x_rivercycle.add_riverbook(leader_id, init_amount)
+    x_rivercycle.set_riverbook(leader_userhub.person_id, init_amount)
     return x_rivercycle
 
 
@@ -159,6 +156,19 @@ def get_init_rivercycle_cycleledger(
 ) -> dict[PersonID:float]:
     init_rivercycle = create_init_rivercycle(leader_userhub, econ_credorledgers)
     return init_rivercycle.create_cylceledger()
+
+
+def create_next_rivercycle(
+    prev_rivercycle: RiverCycle, prev_cycle_cycleledger_post_tax: dict[PersonID:float]
+) -> RiverCycle:
+    next_rivercycle = rivercycle_shop(
+        userhub=prev_rivercycle.userhub,
+        number=prev_rivercycle.number + 1,
+        econ_credorledgers=prev_rivercycle.econ_credorledgers,
+    )
+    for payer_id, paying_amount in prev_cycle_cycleledger_post_tax.items():
+        next_rivercycle.set_riverbook(payer_id, paying_amount)
+    return next_rivercycle
 
 
 @dataclass
