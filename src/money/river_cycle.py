@@ -173,11 +173,27 @@ def create_next_rivercycle(
 
 @dataclass
 class RiverRun:
+    userhub: UserHub = None
     number: int = None
+    econ_credorledgers: dict[PersonID : dict[PersonID:float]] = None
     due_taxes: dict[PersonID:float] = None
-    cycle_curr: RiverCycle = None
-    cyclc_next: RiverCycle = None
     cycle_count: int = None
     cycle_max: int = None
-    money_amount: int = None
-    penny: int = None
+
+
+def riverrun_shop(
+    userhub: UserHub,
+    number: int = None,
+    econ_credorledgers: dict[PersonID : dict[PersonID:float]] = None,
+    due_taxes: dict[PersonID:float] = None,
+    cycle_max: int = None,
+):
+    x_riverun = RiverRun(
+        userhub=userhub,
+        number=number,
+        econ_credorledgers=econ_credorledgers,
+        due_taxes=due_taxes,
+        cycle_max=cycle_max,
+    )
+    x_riverun.cycle_count = 0
+    return x_riverun

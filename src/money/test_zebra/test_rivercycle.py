@@ -1,5 +1,10 @@
 from src.agenda.agenda import agendaunit_shop
 from src.listen.userhub import userhub_shop
+from src.money.examples.example_credorledgers import (
+    example_yao_credorledger,
+    example_bob_credorledger,
+    example_zia_credorledger,
+)
 from src.money.river_cycle import (
     create_riverbook,
     RiverCycle,
@@ -195,48 +200,6 @@ def test_get_init_rivercycle_cycleledger_ReturnsObj():
     assert init_rivercycle_cycleledger.get(zia_text) == 500000000
 
 
-def example_yao_credorledger() -> dict[str:float]:
-    yao_text = "Yao"
-    bob_text = "Bob"
-    zia_text = "Zia"
-    yao_credor_weight = 7
-    bob_credor_weight = 3
-    zia_credor_weight = 10
-    yao_agenda = agendaunit_shop(yao_text)
-    yao_agenda.add_otherunit(yao_text, yao_credor_weight)
-    yao_agenda.add_otherunit(bob_text, bob_credor_weight)
-    yao_agenda.add_otherunit(zia_text, zia_credor_weight)
-    return get_credorledger(yao_agenda)
-
-
-def example_bob_credorledger() -> dict[str:float]:
-    yao_text = "Yao"
-    bob_text = "Bob"
-    zia_text = "Zia"
-    yao_credor_weight = 1
-    bob_credor_weight = 7
-    zia_credor_weight = 42
-    bob_agenda = agendaunit_shop(bob_text)
-    bob_agenda.add_otherunit(yao_text, yao_credor_weight)
-    bob_agenda.add_otherunit(bob_text, bob_credor_weight)
-    bob_agenda.add_otherunit(zia_text, zia_credor_weight)
-    return get_credorledger(bob_agenda)
-
-
-def example_zia_credorledger() -> dict[str:float]:
-    yao_text = "Yao"
-    bob_text = "Bob"
-    zia_text = "Zia"
-    yao_credor_weight = 89
-    bob_credor_weight = 150
-    zia_credor_weight = 61
-    zia_agenda = agendaunit_shop(zia_text)
-    zia_agenda.add_otherunit(yao_text, yao_credor_weight)
-    zia_agenda.add_otherunit(bob_text, bob_credor_weight)
-    zia_agenda.add_otherunit(zia_text, zia_credor_weight)
-    return get_credorledger(zia_agenda)
-
-
 def test_create_next_rivercycle_ReturnsObjScenarioThree_otherunit():
     # GIVEN
     yao_text = "Yao"
@@ -275,6 +238,59 @@ def test_create_next_rivercycle_ReturnsObjScenarioThree_otherunit():
     assert bob_riverbook._rivergrants.get(yao_text) == 3000000
     assert bob_riverbook._rivergrants.get(bob_text) == 21000000
     assert bob_riverbook._rivergrants.get(zia_text) == 126000000
+    assert zia_riverbook._rivergrants.get(yao_text) == 148333333
+    assert zia_riverbook._rivergrants.get(bob_text) == 250000000
+    assert zia_riverbook._rivergrants.get(zia_text) == 101666667
+
+    assert sum(zia_riverbook._rivergrants.values()) == init_cycleledger.get(zia_text)
+    assert sum(bob_riverbook._rivergrants.values()) == init_cycleledger.get(bob_text)
+    assert sum(yao_riverbook._rivergrants.values()) == init_cycleledger.get(yao_text)
+
+
+def test_create_next_rivercycle_ReturnsObjDoesNotReference_cycleledger_From_prev_rivercycle():
+    # GIVEN
+    yao_text = "Yao"
+    bob_text = "Bob"
+    zia_text = "Zia"
+    yao_userhub = userhub_shop(None, None, yao_text)
+    yao_credorledger = example_yao_credorledger()
+    bob_credorledger = example_bob_credorledger()
+    zia_credorledger = example_zia_credorledger()
+    econ_credorledgers = {
+        yao_text: yao_credorledger,
+        bob_text: bob_credorledger,
+        zia_text: zia_credorledger,
+    }
+    print(f"{econ_credorledgers=}")
+    init_rivercycle = create_init_rivercycle(yao_userhub, econ_credorledgers)
+    init_cycleledger = init_rivercycle.create_cylceledger()
+    print(f"{init_cycleledger=}")
+    init_cycleledger[bob_text] = init_cycleledger.get(bob_text) - 500000
+
+    # WHEN
+    next_rivercycle = create_next_rivercycle(init_rivercycle, init_cycleledger)
+
+    # THEN
+    assert next_rivercycle.number == init_rivercycle.number + 1
+    assert len(next_rivercycle.riverbooks) == 3
+    yao_riverbook = next_rivercycle.riverbooks.get(yao_text)
+    bob_riverbook = next_rivercycle.riverbooks.get(bob_text)
+    zia_riverbook = next_rivercycle.riverbooks.get(zia_text)
+    assert yao_riverbook != None
+    assert bob_riverbook != None
+    assert zia_riverbook != None
+    assert len(yao_riverbook._rivergrants) == 3
+    assert yao_riverbook._rivergrants.get(yao_text) == 122500000
+    assert yao_riverbook._rivergrants.get(bob_text) == 52500000
+    assert yao_riverbook._rivergrants.get(zia_text) == 175000000
+
+    assert bob_riverbook._rivergrants.get(yao_text) != 3000000
+    assert bob_riverbook._rivergrants.get(yao_text) == 2990000
+    assert bob_riverbook._rivergrants.get(bob_text) != 21000000
+    assert bob_riverbook._rivergrants.get(bob_text) == 20930000
+    assert bob_riverbook._rivergrants.get(zia_text) != 126000000
+    assert bob_riverbook._rivergrants.get(zia_text) == 125580000
+
     assert zia_riverbook._rivergrants.get(yao_text) == 148333333
     assert zia_riverbook._rivergrants.get(bob_text) == 250000000
     assert zia_riverbook._rivergrants.get(zia_text) == 101666667
