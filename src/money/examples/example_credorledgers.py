@@ -1,7 +1,7 @@
 from src._road.road import PersonID, OtherID
 from src.agenda.agenda import agendaunit_shop
 from src.listen.userhub import UserHub, userhub_shop
-from src.money.river_cycle import get_credorledger
+from src.money.river_cycle import get_credorledger, TaxUnit, taxunit_shop
 
 
 def example_yao_userhub() -> UserHub:
@@ -61,7 +61,7 @@ def example_yao_bob_zia_credorledgers() -> dict[PersonID : dict[OtherID:float]]:
     }
 
 
-def example_yao_bob_zia_due_taxs() -> dict[PersonID : dict[OtherID:float]]:
+def example_yao_bob_zia_tax_dues() -> TaxUnit:
     yao_text = "Yao"
     bob_text = "Bob"
     zia_text = "Zia"
@@ -69,8 +69,11 @@ def example_yao_bob_zia_due_taxs() -> dict[PersonID : dict[OtherID:float]]:
     bob_sum = sum(example_bob_credorledger().values())
     zia_sum = sum(example_zia_credorledger().values())
 
-    return {
+    x_debtorledger = {
         yao_text: yao_sum - 60000,
         bob_text: bob_sum - 500000,
         zia_text: zia_sum - 4000,
     }
+    econ_taxunit = taxunit_shop(example_yao_userhub())
+    econ_taxunit.reset_taxledger(x_debtorledger)
+    return econ_taxunit

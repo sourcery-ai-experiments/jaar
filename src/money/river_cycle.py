@@ -1,10 +1,6 @@
 from src._instrument.python import get_empty_dict_if_none
-from src._road.finance import (
-    default_penny_if_none,
-    default_money_magnitude_if_none,
-    allot_scale,
-)
-from src._road.road import PersonID
+from src._road.finance import allot_scale
+from src._road.road import PersonID, OtherID
 from src.agenda.agenda import AgendaUnit
 from src.listen.userhub import UserHub
 from dataclasses import dataclass
@@ -25,46 +21,50 @@ def get_debtorledger(x_agenda: AgendaUnit) -> dict[PersonID:float]:
 
 
 @dataclass
-class TaxDueLedger:
+class TaxUnit:
     userhub: UserHub = None
-    tax_due_ledger: dict[PersonID:float] = None
+    taxledger: dict[PersonID:float] = None
 
     def set_other_tax_due(self, x_other_id: PersonID, tax_due: float):
-        self.tax_due_ledger[x_other_id] = tax_due
+        self.taxledger[x_other_id] = tax_due
 
-    def tax_due_ledger_is_empty(self) -> bool:
-        return len(self.tax_due_ledger) == 0
+    def taxledger_is_empty(self) -> bool:
+        return len(self.taxledger) == 0
 
-    def reset_tax_due_ledger(self, debtorledger: dict[PersonID:float]):
+    def reset_taxledger(self, debtorledger: dict[PersonID:float]):
         x_amount = self.userhub.econ_money_magnitude
-        self.tax_due_ledger = allot_scale(debtorledger, x_amount, self.userhub.penny)
+        self.taxledger = allot_scale(debtorledger, x_amount, self.userhub.penny)
 
     def other_has_tax_due(self, x_other_id: PersonID) -> bool:
-        return self.tax_due_ledger.get(x_other_id) != None
+        return self.taxledger.get(x_other_id) != None
 
     def get_other_tax_due(self, x_other_id: PersonID) -> float:
-        x_tax_due = self.tax_due_ledger.get(x_other_id)
+        x_tax_due = self.taxledger.get(x_other_id)
         return 0 if x_tax_due is None else x_tax_due
 
     def delete_tax_due(self, x_other_id: PersonID):
-        self.tax_due_ledger.pop(x_other_id)
+        self.taxledger.pop(x_other_id)
 
-    def pay_any_tax_due(self, x_other_id: PersonID, payer_money: float) -> float:
+    def levy_tax_due(self, x_other_id: PersonID, payer_money: float) -> float:
         if self.other_has_tax_due(x_other_id) == False:
             return payer_money
         x_tax_due = self.get_other_tax_due(x_other_id)
         if x_tax_due > payer_money:
             left_over_pay = x_tax_due - payer_money
             self.set_other_tax_due(x_other_id, left_over_pay)
+            return 0
         else:
             self.delete_tax_due(x_other_id)
             return payer_money - x_tax_due
 
+    def get_ledger_dict(self) -> dict[PersonID:float]:
+        return self.taxledger
 
-def taxdueledger_shop(userhub: UserHub) -> TaxDueLedger:
-    x_taxdueledger = TaxDueLedger(userhub)
-    x_taxdueledger.tax_due_ledger = get_empty_dict_if_none(None)
-    return x_taxdueledger
+
+def taxunit_shop(userhub: UserHub) -> TaxUnit:
+    x_taxunit = TaxUnit(userhub)
+    x_taxunit.taxledger = get_empty_dict_if_none(None)
+    return x_taxunit
 
 
 @dataclass
@@ -176,23 +176,36 @@ class RiverRun:
     userhub: UserHub = None
     number: int = None
     econ_credorledgers: dict[PersonID : dict[PersonID:float]] = None
-    due_taxes: dict[PersonID:float] = None
+    taxunit: TaxUnit = None
     cycle_count: int = None
     cycle_max: int = None
+
+    def levy_tax_dues(self, cycleledger: dict[OtherID:float]):
+        delete_from_cycleledger = []
+        for payee, payee_amount in cycleledger.items():
+            if self.taxunit.other_has_tax_due(payee):
+                excess_payer_money = self.taxunit.levy_tax_due(payee, payee_amount)
+                if excess_payer_money == 0:
+                    delete_from_cycleledger.append(payee)
+                else:
+                    cycleledger[payee] = excess_payer_money
+
+        for payee_to_delete in delete_from_cycleledger:
+            cycleledger.pop(payee_to_delete)
 
 
 def riverrun_shop(
     userhub: UserHub,
     number: int = None,
     econ_credorledgers: dict[PersonID : dict[PersonID:float]] = None,
-    due_taxes: dict[PersonID:float] = None,
+    taxunit: TaxUnit = None,
     cycle_max: int = None,
 ):
     x_riverun = RiverRun(
         userhub=userhub,
         number=number,
         econ_credorledgers=econ_credorledgers,
-        due_taxes=due_taxes,
+        taxunit=taxunit,
         cycle_max=cycle_max,
     )
     x_riverun.cycle_count = 0
