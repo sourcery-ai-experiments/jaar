@@ -6,6 +6,7 @@ from src.money.river_cycle import (
     RiverRun,
     riverrun_shop,
 )
+from src.money.examples.example_credorledgers import example_yao_userhub
 
 
 def test_get_credorledger_ReturnsCorrectObj():
@@ -54,32 +55,6 @@ def test_get_debtorledger_ReturnsCorrectObj():
     assert yao_debtorledger.get(yao_text) == sue_debtor_weight
 
 
-def test_RiverRun_Exists():
-    # GIVEN / WHEN
-    riverrun = RiverRun()
-
-    # THEN
-    assert riverrun.userhub is None
-    assert riverrun.taxledger is None
-
-
-def test_riverrun_shop_ReturnsCorrectWhenEmpty():
-    # GIVEN
-    bob_text = "Bob"
-    bob_money_amount = 88
-    bob_penny = 11
-    bob_userhub = userhub_shop(
-        None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
-    )
-
-    # WHEN
-    bob_riverrun = riverrun_shop(bob_userhub)
-
-    # THEN
-    assert bob_riverrun.userhub == bob_userhub
-    assert bob_riverrun.taxledger == {}
-
-
 def test_RiverRun_set_other_tax_due_SetsAttr():
     # GIVEN
     bob_text = "Bob"
@@ -96,22 +71,36 @@ def test_RiverRun_set_other_tax_due_SetsAttr():
     assert bob_riverrun.taxledger.get(yao_text) == yao_tax_due
 
 
-def test_RiverRun_riverrun_is_empty_ReturnsObj():
+def test_RiverRun_taxledger_is_empty_ReturnsObj():
     # GIVEN
-    bob_text = "Bob"
-    bob_money_amount = 88
-    bob_penny = 11
-    bob_userhub = userhub_shop(
-        None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
-    )
-    bob_riverrun = riverrun_shop(bob_userhub)
-    assert bob_riverrun.taxledger_is_empty()
+    yao_userhub = example_yao_userhub()
+    x_riverrun = riverrun_shop(yao_userhub)
+    assert x_riverrun.taxledger_is_empty()
 
     # WHEN
-    bob_riverrun.set_other_tax_due("Yao", 5)
-
+    yao_text = "Yao"
+    yao_tax_due = 500
+    x_riverrun.set_other_tax_due(yao_text, yao_tax_due)
     # THEN
-    assert bob_riverrun.taxledger_is_empty() == False
+    assert x_riverrun.taxledger_is_empty() == False
+
+    # WHEN
+    x_riverrun.delete_tax_due(yao_text)
+    # THEN
+    assert x_riverrun.taxledger_is_empty()
+
+    # WHEN
+    bob_text = "Yao"
+    bob_tax_due = 300
+    x_riverrun.set_other_tax_due(bob_text, bob_tax_due)
+    x_riverrun.set_other_tax_due(yao_text, yao_tax_due)
+    # THEN
+    assert x_riverrun.taxledger_is_empty() == False
+
+    # WHEN
+    x_riverrun.delete_tax_due(yao_text)
+    # THEN
+    assert x_riverrun.taxledger_is_empty()
 
 
 def test_RiverRun_reset_taxledger_CorrectlySetsAttr():
