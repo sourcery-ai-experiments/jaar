@@ -46,9 +46,13 @@ def test_rivergrade_shop_ReturnsCorrectObjWithArg():
     bob_text = "Bob"
     yao_userhub = example_yao_userhub()
     ten_int = 10
+    x_debtor_count = 7
+    x_credor_count = 9
 
     # WHEN
-    x_rivergrade = rivergrade_shop(yao_userhub, bob_text, ten_int)
+    x_rivergrade = rivergrade_shop(
+        yao_userhub, bob_text, ten_int, x_debtor_count, x_credor_count
+    )
 
     # THEN
     # create RiverGrade and
@@ -63,8 +67,8 @@ def test_rivergrade_shop_ReturnsCorrectObjWithArg():
     assert x_rivergrade.tax_paid_bool is None
     assert x_rivergrade.tax_paid_rank_num is None
     assert x_rivergrade.tax_paid_rank_percent is None
-    assert x_rivergrade.debtor_count is None
-    assert x_rivergrade.credor_count is None
+    assert x_rivergrade.debtor_count == x_debtor_count
+    assert x_rivergrade.credor_count == x_credor_count
     assert x_rivergrade.debtor_rank_percent is None
     assert x_rivergrade.credor_rank_percent is None
     assert x_rivergrade.transactions_count is None

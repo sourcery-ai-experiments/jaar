@@ -7,6 +7,10 @@ def test_RiverRun_set_initial_rivergrade_SetsAttr():
     yao_userhub = example_yao_userhub()
     yao_number = 8
     yao_riverrun = riverrun_shop(yao_userhub, yao_number)
+    x_debtor_count = 5
+    x_credor_count = 8
+    yao_riverrun._debtor_count = x_debtor_count
+    yao_riverrun._credor_count = x_credor_count
     bob_text = "Bob"
     assert yao_riverrun._rivergrades.get(bob_text) is None
 
@@ -14,8 +18,15 @@ def test_RiverRun_set_initial_rivergrade_SetsAttr():
     yao_riverrun.set_initial_rivergrade(bob_text)
 
     # THEN
-    bob_rivergrade = rivergrade_shop(yao_userhub, bob_text, yao_number)
-    assert yao_riverrun._rivergrades.get(bob_text) == bob_rivergrade
+    bob_rivergrade = rivergrade_shop(
+        yao_userhub, bob_text, yao_number, x_debtor_count, x_credor_count
+    )
+    bob_rivergrade.grant_amount = 0
+    assert yao_riverrun._rivergrades.get(bob_text) != None
+    gen_rivergrade = yao_riverrun._rivergrades.get(bob_text)
+    assert gen_rivergrade.debtor_count == x_debtor_count
+    assert gen_rivergrade.credor_count == x_credor_count
+    assert gen_rivergrade == bob_rivergrade
 
 
 def test_RiverRun_rivergrades_is_empty_ReturnsObj():

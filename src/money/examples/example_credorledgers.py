@@ -61,7 +61,7 @@ def example_yao_bob_zia_credorledgers() -> dict[PersonID : dict[OtherID:float]]:
     }
 
 
-def example_yao_bob_zia_taxledger() -> dict[OtherID:float]:
+def example_yao_bob_zia_tax_dues() -> dict[OtherID:float]:
     yao_text = "Yao"
     bob_text = "Bob"
     zia_text = "Zia"

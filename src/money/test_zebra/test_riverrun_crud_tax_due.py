@@ -1,11 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.listen.userhub import userhub_shop
-from src.money.river_cycle import (
-    get_credorledger,
-    get_debtorledger,
-    RiverRun,
-    riverrun_shop,
-)
+from src.money.river_cycle import get_credorledger, get_debtorledger, riverrun_shop
 from src.money.examples.example_credorledgers import example_yao_userhub
 
 
@@ -61,33 +56,33 @@ def test_RiverRun_set_other_tax_due_SetsAttr():
     bob_userhub = userhub_shop(None, None, bob_text)
     bob_riverrun = riverrun_shop(bob_userhub)
     yao_text = "Yao"
-    assert bob_riverrun.taxledger.get(yao_text) is None
+    assert bob_riverrun.tax_dues.get(yao_text) is None
 
     # WHEN
     yao_tax_due = 7
     bob_riverrun.set_other_tax_due(yao_text, yao_tax_due)
 
     # THEN
-    assert bob_riverrun.taxledger.get(yao_text) == yao_tax_due
+    assert bob_riverrun.tax_dues.get(yao_text) == yao_tax_due
 
 
-def test_RiverRun_taxledger_is_empty_ReturnsObj():
+def test_RiverRun_tax_dues_is_empty_ReturnsObj():
     # GIVEN
     yao_userhub = example_yao_userhub()
     x_riverrun = riverrun_shop(yao_userhub)
-    assert x_riverrun.taxledger_is_empty()
+    assert x_riverrun.tax_dues_is_empty()
 
     # WHEN
     yao_text = "Yao"
     yao_tax_due = 500
     x_riverrun.set_other_tax_due(yao_text, yao_tax_due)
     # THEN
-    assert x_riverrun.taxledger_is_empty() == False
+    assert x_riverrun.tax_dues_is_empty() == False
 
     # WHEN
     x_riverrun.delete_tax_due(yao_text)
     # THEN
-    assert x_riverrun.taxledger_is_empty()
+    assert x_riverrun.tax_dues_is_empty()
 
     # WHEN
     bob_text = "Yao"
@@ -95,15 +90,15 @@ def test_RiverRun_taxledger_is_empty_ReturnsObj():
     x_riverrun.set_other_tax_due(bob_text, bob_tax_due)
     x_riverrun.set_other_tax_due(yao_text, yao_tax_due)
     # THEN
-    assert x_riverrun.taxledger_is_empty() == False
+    assert x_riverrun.tax_dues_is_empty() == False
 
     # WHEN
     x_riverrun.delete_tax_due(yao_text)
     # THEN
-    assert x_riverrun.taxledger_is_empty()
+    assert x_riverrun.tax_dues_is_empty()
 
 
-def test_RiverRun_reset_taxledger_CorrectlySetsAttr():
+def test_RiverRun_reset_tax_dues_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
     bob_money_amount = 1000
@@ -122,14 +117,14 @@ def test_RiverRun_reset_taxledger_CorrectlySetsAttr():
     bob_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
     bob_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
     bob_debtorledger = get_debtorledger(bob_agenda)
-    assert bob_riverrun.taxledger_is_empty()
+    assert bob_riverrun.tax_dues_is_empty()
 
     # WHEN
-    bob_riverrun.reset_taxledger(bob_debtorledger)
+    bob_riverrun.reset_tax_dues(bob_debtorledger)
 
     # THEN
-    assert bob_riverrun.taxledger_is_empty() == False
-    bob_riverrun = bob_riverrun.taxledger
+    assert bob_riverrun.tax_dues_is_empty() == False
+    bob_riverrun = bob_riverrun.tax_dues
     assert bob_riverrun.get(bob_text) == 380
     assert bob_riverrun.get(sue_text) == 560
     assert bob_riverrun.get(yao_text) == 60
@@ -161,7 +156,7 @@ def test_RiverRun_other_has_tax_due_ReturnsCorrectBool():
     assert bob_riverrun.other_has_tax_due(zia_text) == False
 
     # WHEN
-    bob_riverrun.reset_taxledger(bob_debtorledger)
+    bob_riverrun.reset_tax_dues(bob_debtorledger)
 
     # THEN
     assert bob_riverrun.other_has_tax_due(bob_text)
@@ -216,7 +211,7 @@ def test_RiverRun_get_other_tax_due_ReturnsCorrectObj():
     assert bob_riverrun.get_other_tax_due(zia_text) == 0
 
     # WHEN
-    bob_riverrun.reset_taxledger(bob_debtorledger)
+    bob_riverrun.reset_tax_dues(bob_debtorledger)
 
     # THEN
     assert bob_riverrun.other_has_tax_due(bob_text)
@@ -244,7 +239,7 @@ def test_RiverRun_levy_tax_due_SetsAttr():
     bob_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
     bob_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
     bob_debtorledger = get_debtorledger(bob_agenda)
-    bob_riverrun.reset_taxledger(bob_debtorledger)
+    bob_riverrun.reset_tax_dues(bob_debtorledger)
     assert bob_riverrun.get_other_tax_due(bob_text) == 380
 
     # WHEN / THEN
@@ -263,7 +258,7 @@ def test_RiverRun_levy_tax_due_SetsAttr():
     excess_payer_money = bob_riverrun.levy_tax_due(sue_text, 1000)
     assert excess_payer_money == 440
     assert bob_riverrun.get_other_tax_due(sue_text) == 0
-    assert bob_riverrun.taxledger.get(sue_text) is None
+    assert bob_riverrun.tax_dues.get(sue_text) is None
 
     # WHEN / THEN
     zia_text = "Zia"

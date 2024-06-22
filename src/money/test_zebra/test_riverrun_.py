@@ -1,6 +1,6 @@
 from src.money.examples.example_credorledgers import (
     example_yao_bob_zia_credorledgers,
-    example_yao_bob_zia_taxledger,
+    example_yao_bob_zia_tax_dues,
     example_yao_userhub,
 )
 from src.money.river_cycle import RiverRun, riverrun_shop
@@ -14,11 +14,15 @@ def test_RiverRun_Exists():
     assert x_riverrun.userhub is None
     assert x_riverrun.number is None
     assert x_riverrun.econ_credorledgers is None
-    assert x_riverrun.taxledger is None
+    assert x_riverrun.tax_dues is None
     assert x_riverrun.cycle_max is None
     # calculated fields
     assert x_riverrun._rivergrades is None
-    assert x_riverrun.cycle_count is None
+    assert x_riverrun._grants is None
+    assert x_riverrun._tax_yields is None
+    assert x_riverrun._cycle_count is None
+    assert x_riverrun._debtor_count is None
+    assert x_riverrun._credor_count is None
 
 
 def test_RiverRun_set_cycle_max_CorrectlySetsAttr():
@@ -49,14 +53,14 @@ def test_riverrun_shop_ReturnsCorrectObjWithArg():
     yao_userhub = example_yao_userhub()
     econ_credorledgers = example_yao_bob_zia_credorledgers()
     x_cycle_max = 10
-    x_taxledger = example_yao_bob_zia_taxledger()
+    x_tax_dues = example_yao_bob_zia_tax_dues()
 
     # WHEN
     x_riverrun = riverrun_shop(
         userhub=yao_userhub,
         number=ten_int,
         econ_credorledgers=econ_credorledgers,
-        taxledger=x_taxledger,
+        tax_dues=x_tax_dues,
         cycle_max=x_cycle_max,
     )
 
@@ -64,9 +68,11 @@ def test_riverrun_shop_ReturnsCorrectObjWithArg():
     assert x_riverrun.userhub == yao_userhub
     assert x_riverrun.number == ten_int
     assert x_riverrun.econ_credorledgers == econ_credorledgers
-    assert x_riverrun.taxledger == x_taxledger
+    assert x_riverrun.tax_dues == x_tax_dues
     assert x_riverrun._rivergrades == {}
-    assert x_riverrun.cycle_count == 0
+    assert x_riverrun._grants == {}
+    assert x_riverrun._tax_yields == {}
+    assert x_riverrun._cycle_count == 0
     assert x_riverrun.cycle_max == x_cycle_max
 
 
@@ -81,9 +87,11 @@ def test_riverrun_shop_ReturnsCorrectObjWithoutArgs():
     assert x_riverrun.userhub == yao_userhub
     assert x_riverrun.number == 0
     assert x_riverrun.econ_credorledgers == {}
-    assert x_riverrun.taxledger == {}
+    assert x_riverrun.tax_dues == {}
     assert x_riverrun._rivergrades == {}
-    assert x_riverrun.cycle_count == 0
+    assert x_riverrun._grants == {}
+    assert x_riverrun._tax_yields == {}
+    assert x_riverrun._cycle_count == 0
     assert x_riverrun.cycle_max == 10
 
 

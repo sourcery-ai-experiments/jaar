@@ -150,8 +150,20 @@ class RiverGrade:
     transactions_magnitude: float = None
 
 
-def rivergrade_shop(userhub: UserHub, other_id: OtherID, number: float = None):
-    return RiverGrade(userhub=userhub, other_id=other_id, number=get_0_if_None(number))
+def rivergrade_shop(
+    userhub: UserHub,
+    other_id: OtherID,
+    number: float = None,
+    debtor_count: int = None,
+    credor_count: int = None,
+):
+    return RiverGrade(
+        userhub=userhub,
+        other_id=other_id,
+        number=get_0_if_None(number),
+        debtor_count=debtor_count,
+        credor_count=credor_count,
+    )
 
 
 @dataclass
@@ -159,10 +171,14 @@ class RiverRun:
     userhub: UserHub = None
     number: int = None
     econ_credorledgers: dict[OwnerID : dict[OtherID:float]] = None
-    taxledger: dict[OtherID:float] = None
+    tax_dues: dict[OtherID:float] = None
     cycle_max: int = None
     # calculated fields
-    cycle_count: int = None
+    _grants: dict[OtherID:float] = None
+    _tax_yields: dict[OtherID:float] = None
+    _cycle_count: int = None
+    _debtor_count: int = None
+    _credor_count: int = None
     _rivergrades: dict[OtherID:RiverGrade] = None
 
     def set_cycle_max(self, x_cycle_max: int):
@@ -204,24 +220,24 @@ class RiverRun:
             cycleledger.pop(payee_to_delete)
 
     def set_other_tax_due(self, x_other_id: OtherID, tax_due: float):
-        self.taxledger[x_other_id] = tax_due
+        self.tax_dues[x_other_id] = tax_due
 
-    def taxledger_is_empty(self) -> bool:
-        return len(self.taxledger) == 0
+    def tax_dues_is_empty(self) -> bool:
+        return len(self.tax_dues) == 0
 
-    def reset_taxledger(self, debtorledger: dict[OtherID:float]):
+    def reset_tax_dues(self, debtorledger: dict[OtherID:float]):
         x_amount = self.userhub.econ_money_magnitude
-        self.taxledger = allot_scale(debtorledger, x_amount, self.userhub.penny)
+        self.tax_dues = allot_scale(debtorledger, x_amount, self.userhub.penny)
 
     def other_has_tax_due(self, x_other_id: OtherID) -> bool:
-        return self.taxledger.get(x_other_id) != None
+        return self.tax_dues.get(x_other_id) != None
 
     def get_other_tax_due(self, x_other_id: OtherID) -> float:
-        x_tax_due = self.taxledger.get(x_other_id)
+        x_tax_due = self.tax_dues.get(x_other_id)
         return 0 if x_tax_due is None else x_tax_due
 
     def delete_tax_due(self, x_other_id: OtherID):
-        self.taxledger.pop(x_other_id)
+        self.tax_dues.pop(x_other_id)
 
     def levy_tax_due(self, x_other_id: OtherID, payer_money: float) -> float:
         if self.other_has_tax_due(x_other_id) == False:
@@ -230,18 +246,49 @@ class RiverRun:
         if x_tax_due > payer_money:
             left_over_pay = x_tax_due - payer_money
             self.set_other_tax_due(x_other_id, left_over_pay)
+            self.add_other_tax_yield(x_other_id, payer_money)
             return 0
         else:
             self.delete_tax_due(x_other_id)
+            self.add_other_tax_yield(x_other_id, x_tax_due)
             return payer_money - x_tax_due
 
     def get_ledger_dict(self) -> dict[OtherID:float]:
-        return self.taxledger
+        return self.tax_dues
+
+    def set_other_tax_yield(self, x_other_id: OtherID, tax_yield: float):
+        self._tax_yields[x_other_id] = tax_yield
+
+    def tax_yields_is_empty(self) -> bool:
+        return len(self._tax_yields) == 0
+
+    def reset_tax_yields(self):
+        self._tax_yields = {}
+
+    def other_has_tax_yield(self, x_other_id: OtherID) -> bool:
+        return self._tax_yields.get(x_other_id) != None
+
+    def get_other_tax_yield(self, x_other_id: OtherID) -> float:
+        x_tax_yield = self._tax_yields.get(x_other_id)
+        return 0 if x_tax_yield is None else x_tax_yield
+
+    def delete_tax_yield(self, x_other_id: OtherID):
+        self._tax_yields.pop(x_other_id)
+
+    def add_other_tax_yield(self, x_other_id: OtherID, x_tax_yield: float):
+        if self.other_has_tax_yield(x_other_id):
+            x_tax_yield = self.get_other_tax_yield(x_other_id) + x_tax_yield
+        self.set_other_tax_yield(x_other_id, x_tax_yield)
 
     def set_initial_rivergrade(self, other_id: OtherID):
-        self._rivergrades[other_id] = rivergrade_shop(
-            self.userhub, other_id, self.number
+        x_rivergrade = rivergrade_shop(
+            self.userhub, other_id, self.number, self._debtor_count, self._credor_count
         )
+        other_grant = self._grants.get(other_id)
+        if other_grant is None:
+            other_grant = 0
+        x_rivergrade.grant_amount = other_grant
+        self._rivergrades[other_id] = x_rivergrade
 
     def get_rivergrade(self, other_id: OtherID) -> RiverGrade:
         return self._rivergrades.get(other_id)
@@ -259,29 +306,43 @@ class RiverRun:
             self.set_initial_rivergrade(other_id)
 
     def calc_metrics(self):
-        self.cycle_count = 0
+        self._cycle_count = 0
+        tax_dues_others = set(self.tax_dues.keys())
+        tax_yields_others = set(self._tax_yields.keys())
+        self._debtor_count = len(tax_dues_others.union(tax_yields_others))
+        self._credor_count = len(self.econ_credorledgers.get(self.userhub.person_id))
+        grant_credorledger = self.econ_credorledgers.get(self.userhub.person_id)
+        self.grants = allot_scale(
+            ledger=grant_credorledger,
+            scale_number=self.userhub.econ_money_magnitude,
+            grain_unit=self.userhub.penny,
+        )
         self.reset_initial_rivergrades()
 
         init_rivercylce = create_init_rivercycle(self.userhub, self.econ_credorledgers)
 
-        self.cycle_count = 1
+        self._cycle_count = 1
+        for x_other_id, other_rivergrade in self._rivergrades.items():
+            other_rivergrade.tax_due_amount = self.get_other_tax_due(x_other_id)
 
 
 def riverrun_shop(
     userhub: UserHub,
     number: int = None,
     econ_credorledgers: dict[OwnerID : dict[OtherID:float]] = None,
-    taxledger: dict[OtherID:float] = None,
+    tax_dues: dict[OtherID:float] = None,
     cycle_max: int = None,
 ):
     x_riverun = RiverRun(
         userhub=userhub,
         number=get_0_if_None(number),
         econ_credorledgers=get_empty_dict_if_none(econ_credorledgers),
-        taxledger=get_empty_dict_if_none(taxledger),
+        tax_dues=get_empty_dict_if_none(tax_dues),
         _rivergrades={},
+        _grants={},
+        _tax_yields={},
     )
-    x_riverun.cycle_count = 0
+    x_riverun._cycle_count = 0
     if cycle_max is None:
         cycle_max = 10
     x_riverun.set_cycle_max(cycle_max)
