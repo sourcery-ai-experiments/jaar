@@ -4,6 +4,7 @@ from src._instrument.python import (
     place_obj_in_dict,
     get_all_nondictionary_objs,
     get_nested_value,
+    get_positive_int,
 )
 from pytest import raises as pytest_raises
 
@@ -202,3 +203,14 @@ def test_get_nested_value_ReturnsNoneWhen_if_missing_return_None_True():
         y_dict, [sports_text, swim_text, day_text], if_missing_return_None=True
     )
     assert x_value is None
+
+
+def test_get_positive_int_ReturnsCorrectObj():
+    # GIVEN / WHEN / THEN
+    assert get_positive_int(None) == 0
+    assert get_positive_int("sports") == 0
+    assert get_positive_int() == 0
+    assert get_positive_int(10) == 10
+    assert get_positive_int(10.0) == 10
+    assert get_positive_int(10.8) == 10
+    assert get_positive_int(-10.8) == 0

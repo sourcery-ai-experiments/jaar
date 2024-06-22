@@ -26,6 +26,14 @@ def get_False_if_None(x_obj=None):
     return False if x_obj is None else x_obj
 
 
+def get_positive_int(x_obj: any = None):
+    try:
+        x_int = int(x_obj)
+    except Exception:
+        x_int = 0
+    return max(x_int, 0)
+
+
 def add_dict_if_missing(x_dict: dict, x_keylist: list[any]):
     for x_key in x_keylist:
         if x_dict.get(x_key) is None:
