@@ -35,10 +35,10 @@ def test_RiverGrade_Exists():
     assert x_rivergrade.debtor_rank_percent is None
     #: credor_rank_num / SELECT COUNT(*) FROM other WHERE grant_amount > 0
     assert x_rivergrade.credor_rank_percent is None
-    # SELECT COUNT(*) FROM transactions WHERE dst_other_id = bob_text
-    assert x_rivergrade.transactions_count is None
-    # SELECT SUM(money_amount) FROM transactions WHERE dst_other_id = bob_text
-    assert x_rivergrade.transactions_magnitude is None
+    # SELECT COUNT(*) FROM rewards WHERE dst_other_id = bob_text
+    assert x_rivergrade.rewards_count is None
+    # SELECT SUM(money_amount) FROM rewards WHERE dst_other_id = bob_text
+    assert x_rivergrade.rewards_magnitude is None
 
 
 def test_rivergrade_shop_ReturnsCorrectObjWithArg():
@@ -70,8 +70,8 @@ def test_rivergrade_shop_ReturnsCorrectObjWithArg():
     assert x_rivergrade.credor_count == x_credor_count
     assert x_rivergrade.debtor_rank_percent is None
     assert x_rivergrade.credor_rank_percent is None
-    assert x_rivergrade.transactions_count is None
-    assert x_rivergrade.transactions_magnitude is None
+    assert x_rivergrade.rewards_count is None
+    assert x_rivergrade.rewards_magnitude is None
 
 
 def test_rivergrade_shop_ReturnsCorrectObjWithoutArgs():
@@ -97,8 +97,8 @@ def test_rivergrade_shop_ReturnsCorrectObjWithoutArgs():
     assert x_rivergrade.credor_count is None
     assert x_rivergrade.debtor_rank_percent is None
     assert x_rivergrade.credor_rank_percent is None
-    assert x_rivergrade.transactions_count is None
-    assert x_rivergrade.transactions_magnitude is None
+    assert x_rivergrade.rewards_count is None
+    assert x_rivergrade.rewards_magnitude is None
 
 
 def test_RiverGrade_set_tax_due_amount_SetsCorrectAttrs():
@@ -148,8 +148,8 @@ def test_RiverGrade_get_dict_ReturnsCorrectObj():
     x_credor_count = 103
     x_debtor_rank_percent = 105
     x_credor_rank_percent = 107
-    x_transactions_count = 108
-    x_transactions_magnitude = 109
+    x_rewards_count = 108
+    x_rewards_magnitude = 109
     x_rivergrade = rivergrade_shop(
         yao_userhub, bob_text, ten_int, x_debtor_count, x_credor_count
     )
@@ -165,8 +165,8 @@ def test_RiverGrade_get_dict_ReturnsCorrectObj():
     x_rivergrade.credor_count = x_credor_count
     x_rivergrade.debtor_rank_percent = x_debtor_rank_percent
     x_rivergrade.credor_rank_percent = x_credor_rank_percent
-    x_rivergrade.transactions_count = x_transactions_count
-    x_rivergrade.transactions_magnitude = x_transactions_magnitude
+    x_rivergrade.rewards_count = x_rewards_count
+    x_rivergrade.rewards_magnitude = x_rewards_magnitude
 
     # WHEN
     rivergrade_dict = x_rivergrade.get_dict()
@@ -187,8 +187,8 @@ def test_RiverGrade_get_dict_ReturnsCorrectObj():
     assert rivergrade_dict.get("credor_count") == x_credor_count
     assert rivergrade_dict.get("debtor_rank_percent") == x_debtor_rank_percent
     assert rivergrade_dict.get("credor_rank_percent") == x_credor_rank_percent
-    assert rivergrade_dict.get("transactions_count") == x_transactions_count
-    assert rivergrade_dict.get("transactions_magnitude") == x_transactions_magnitude
+    assert rivergrade_dict.get("rewards_count") == x_rewards_count
+    assert rivergrade_dict.get("rewards_magnitude") == x_rewards_magnitude
 
 
 def test_RiverGrade_get_json_ReturnsCorrectObj():
@@ -208,5 +208,5 @@ def test_RiverGrade_get_json_ReturnsCorrectObj():
     # THEN
     assert (
         rivergrade_json
-        == """{"real_id": "ex_econ04", "healer_id": "Yao", "econ_road": null, "tax_bill_amount": null, "grant_amount": null, "debtor_rank_num": null, "credor_rank_num": null, "tax_paid_amount": null, "tax_paid_bool": null, "tax_paid_rank_num": null, "tax_paid_rank_percent": null, "debtor_count": 101, "credor_count": 103, "debtor_rank_percent": null, "credor_rank_percent": null, "transactions_count": null, "transactions_magnitude": null}"""
+        == """{"real_id": "ex_econ04", "healer_id": "Yao", "econ_road": null, "tax_bill_amount": null, "grant_amount": null, "debtor_rank_num": null, "credor_rank_num": null, "tax_paid_amount": null, "tax_paid_bool": null, "tax_paid_rank_num": null, "tax_paid_rank_percent": null, "debtor_count": 101, "credor_count": 103, "debtor_rank_percent": null, "credor_rank_percent": null, "rewards_count": null, "rewards_magnitude": null}"""
     )

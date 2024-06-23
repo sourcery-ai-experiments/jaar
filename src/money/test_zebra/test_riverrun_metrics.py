@@ -39,8 +39,8 @@ def test_RiverRun_create_metrics_CorrectChanges_cycleledger_Scenario01():
     # assert yao_rivergrade.debtor_count == 0
     # assert yao_rivergrade.credor_count == 1
     # assert yao_rivergrade.credor_rank_percent == 1.0
-    # assert yao_rivergrade.transactions_count == 1
-    # assert yao_rivergrade.transactions_magnitude == 500
+    # assert yao_rivergrade.rewards_count == 1
+    # assert yao_rivergrade.rewards_magnitude == 500
 
 
 def test_RiverRun_create_metrics_CorrectChanges_cycleledger_Scenario02():
@@ -82,8 +82,8 @@ def test_RiverRun_create_metrics_CorrectChanges_cycleledger_Scenario02():
     # assert yao_rivergrade.debtor_count == 0
     # assert yao_rivergrade.credor_count == 1
     # assert yao_rivergrade.credor_rank_percent == 1.0
-    # assert yao_rivergrade.transactions_count == 1
-    # assert yao_rivergrade.transactions_magnitude == 500
+    # assert yao_rivergrade.rewards_count == 1
+    # assert yao_rivergrade.rewards_magnitude == 500
     # assert 1 == 2
 
 
@@ -131,8 +131,8 @@ def test_RiverRun_create_metrics_CorrectChanges_cycleledger_Scenario03():
     # assert yao_rivergrade.debtor_count == 0
     # assert yao_rivergrade.credor_count == 1
     # assert yao_rivergrade.credor_rank_percent == 1.0
-    # assert yao_rivergrade.transactions_count == 1
-    # assert yao_rivergrade.transactions_magnitude == 500
+    # assert yao_rivergrade.rewards_count == 1
+    # assert yao_rivergrade.rewards_magnitude == 500
     # assert 1 == 2
 
 
@@ -182,8 +182,8 @@ def test_RiverRun_create_metrics_CorrectChanges_cycleledger_Scenario04():
     # assert yao_rivergrade.debtor_count == 0
     # assert yao_rivergrade.credor_count == 1
     # assert yao_rivergrade.credor_rank_percent == 1.0
-    # assert yao_rivergrade.transactions_count == 1
-    # assert yao_rivergrade.transactions_magnitude == 500
+    # assert yao_rivergrade.rewards_count == 1
+    # assert yao_rivergrade.rewards_magnitude == 500
     # assert 1 == 2
 
 

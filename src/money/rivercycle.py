@@ -139,8 +139,8 @@ class RiverGrade:
     credor_count: float = None
     debtor_rank_percent: float = None
     credor_rank_percent: float = None
-    transactions_count: float = None
-    transactions_magnitude: float = None
+    rewards_count: float = None
+    rewards_magnitude: float = None
 
     def set_tax_bill_amount(self, x_tax_bill_amount: float):
         self.tax_bill_amount = x_tax_bill_amount
@@ -173,8 +173,8 @@ class RiverGrade:
             "credor_count": self.credor_count,
             "debtor_rank_percent": self.debtor_rank_percent,
             "credor_rank_percent": self.credor_rank_percent,
-            "transactions_count": self.transactions_count,
-            "transactions_magnitude": self.transactions_magnitude,
+            "rewards_count": self.rewards_count,
+            "rewards_magnitude": self.rewards_magnitude,
         }
 
     def get_json(self) -> str:

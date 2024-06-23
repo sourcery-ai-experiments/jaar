@@ -265,7 +265,7 @@ def get_river_block_table_create_sqlstr() -> str:
     dst_owner_id: owner_id that is destination of cred.
     cash_start: range of cash influenced start
     cash_close: range of cash influenced close
-    block_num: the sequence number of transactions before this one
+    block_num: the sequence number of rewards before this one
     parent_block_num: river blocks can have multiple children but only one parent
     river_tree_level: how many ancestors between cash_master first cred outblock
         and this river block
