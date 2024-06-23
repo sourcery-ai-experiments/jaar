@@ -76,6 +76,20 @@ def test_UserHub_Exists():
     assert x_userhub.econ_money_magnitude is None
 
 
+def test_UserHub_RaisesError_econ_road_DoesNotExist():
+    # GIVEN
+    bob_text = "Bob"
+    bob_userhub = UserHub(bob_text)
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        bob_userhub.econ_dir()
+    assert (
+        str(excinfo.value)
+        == f"UserHub '{bob_text}' cannot save to econ_dir because it does not have econ_road."
+    )
+
+
 def test_userhub_shop_ReturnsCorrectObj():
     # GIVEN
     x_reals_dir = "src/real/examples"
@@ -150,10 +164,13 @@ def test_userhub_shop_ReturnsCorrectObjWhenEmpty():
     bob_text = "Bob"
     assert sue_userhub.roles_dir() == f"{sue_userhub.econ_dir()}/roles"
     assert sue_userhub.jobs_dir() == f"{sue_userhub.econ_dir()}/jobs"
+    assert sue_userhub.grades_dir() == f"{sue_userhub.econ_dir()}/grades"
     sue_roles_dir = sue_userhub.roles_dir()
-    assert sue_userhub.role_path(bob_text) == f"{sue_roles_dir}/{bob_text}.json"
     sue_jobs_dir = sue_userhub.jobs_dir()
+    sue_grades_dir = sue_userhub.grades_dir()
+    assert sue_userhub.role_path(bob_text) == f"{sue_roles_dir}/{bob_text}.json"
     assert sue_userhub.job_path(bob_text) == f"{sue_jobs_dir}/{bob_text}.json"
+    assert sue_userhub.grade_path(bob_text) == f"{sue_grades_dir}/{bob_text}.json"
     treasury_file_name = "treasury.db"
     treasury_file_path = f"{sue_userhub.econ_dir()}/{treasury_file_name}"
     assert sue_userhub.treasury_file_name() == treasury_file_name

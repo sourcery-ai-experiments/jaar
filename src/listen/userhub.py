@@ -12,6 +12,7 @@ from src._instrument.sqlite import sqlite_connection
 from src._road.jaar_config import (
     roles_str,
     jobs_str,
+    grades_folder,
     get_rootpart_of_econ_dir,
     treasury_file_name,
     get_atoms_folder,
@@ -86,16 +87,8 @@ def get_econ_jobs_dir(x_econ_dir: str) -> str:
     return f"{x_econ_dir}/{jobs_str()}"
 
 
-# def pipeline_duty_work_text() -> str:
-#     return "duty_work"
-
-
-# def pipeline_role_job_text() -> str:
-#     return "role_job"
-
-
-# def pipeline_job_work_text() -> str:
-#     return "job_work"
+def get_gift_grades_dir(x_econ_dir: str) -> str:
+    return f"{x_econ_dir}/{grades_folder()}"
 
 
 @dataclass
@@ -399,6 +392,10 @@ class UserHub:
         return self.get_duty_agenda()
 
     def econ_dir(self) -> str:
+        if self.econ_road is None:
+            raise _econ_roadMissingException(
+                f"UserHub '{self.person_id}' cannot save to econ_dir because it does not have econ_road."
+            )
         return get_econ_path(self, self.econ_road)
 
     def create_econ_dir_if_missing(self):
@@ -419,11 +416,17 @@ class UserHub:
     def job_path(self, owner_id: PersonID) -> str:
         return f"{self.jobs_dir()}/{self.owner_file_name(owner_id)}"
 
+    def grade_path(self, owner_id: PersonID) -> str:
+        return f"{self.grades_dir()}/{self.owner_file_name(owner_id)}"
+
     def roles_dir(self) -> str:
         return get_econ_roles_dir(self.econ_dir())
 
     def jobs_dir(self) -> str:
         return get_econ_jobs_dir(self.econ_dir())
+
+    def grades_dir(self) -> str:
+        return get_gift_grades_dir(self.econ_dir())
 
     def get_jobs_dir_file_names_list(self):
         try:

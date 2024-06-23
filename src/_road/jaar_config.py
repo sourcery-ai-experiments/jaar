@@ -38,6 +38,10 @@ def roles_str() -> str:
     return "roles"
 
 
+def grades_folder() -> str:
+    return "grades"
+
+
 def get_rootpart_of_econ_dir() -> str:
     return "idearoot"
 

@@ -208,5 +208,5 @@ def test_RiverGrade_get_json_ReturnsCorrectObj():
     # THEN
     assert (
         rivergrade_json
-        == """{"real_id": "music_45", "healer_id": "Yao", "econ_road": null, "tax_bill_amount": null, "grant_amount": null, "debtor_rank_num": null, "credor_rank_num": null, "tax_paid_amount": null, "tax_paid_bool": null, "tax_paid_rank_num": null, "tax_paid_rank_percent": null, "debtor_count": 101, "credor_count": 103, "debtor_rank_percent": null, "credor_rank_percent": null, "transactions_count": null, "transactions_magnitude": null}"""
+        == """{"real_id": "ex_econ04", "healer_id": "Yao", "econ_road": null, "tax_bill_amount": null, "grant_amount": null, "debtor_rank_num": null, "credor_rank_num": null, "tax_paid_amount": null, "tax_paid_bool": null, "tax_paid_rank_num": null, "tax_paid_rank_percent": null, "debtor_count": 101, "credor_count": 103, "debtor_rank_percent": null, "credor_rank_percent": null, "transactions_count": null, "transactions_magnitude": null}"""
     )

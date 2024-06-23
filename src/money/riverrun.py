@@ -1,9 +1,11 @@
+from src._instrument.file import save_file
 from src._instrument.python import (
     get_empty_dict_if_none,
     get_positive_int,
     get_0_if_None,
     place_obj_in_dict,
 )
+from src._road.jaar_config import get_json_filename
 from src._road.finance import allot_scale
 from src._road.road import OtherID, OwnerID
 from src.money.rivercycle import (
@@ -189,6 +191,16 @@ class RiverRun:
             scale_number=self.userhub.econ_money_magnitude,
             grain_unit=self.userhub.penny,
         )
+
+    def _save_rivergrade_file(self, other_id: OtherID):
+        rivergrade = self.get_rivergrade(other_id)
+        grade_path = self.userhub.grade_path(other_id)
+        grade_filename = get_json_filename(other_id)
+        save_file(grade_path, grade_filename, rivergrade.get_json())
+
+    def save_rivergrade_files(self):
+        for rivergrade_other in self._rivergrades.keys():
+            self._save_rivergrade_file(rivergrade_other)
 
 
 def riverrun_shop(
