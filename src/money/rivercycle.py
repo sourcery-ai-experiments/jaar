@@ -1,4 +1,8 @@
-from src._instrument.python import get_empty_dict_if_none, get_0_if_None
+from src._instrument.python import (
+    get_empty_dict_if_none,
+    get_0_if_None,
+    get_json_from_dict,
+)
 from src._road.finance import allot_scale
 from src._road.road import OtherID, OwnerID
 from src.agenda.agenda import AgendaUnit
@@ -151,6 +155,30 @@ class RiverGrade:
             self.tax_bill_amount != None
             and self.tax_bill_amount == self.tax_paid_amount
         )
+
+    def get_dict(self) -> dict:
+        return {
+            "real_id": self.userhub.real_id,
+            "healer_id": self.userhub.person_id,
+            "econ_road": self.userhub.econ_road,
+            "tax_bill_amount": self.tax_bill_amount,
+            "grant_amount": self.grant_amount,
+            "debtor_rank_num": self.debtor_rank_num,
+            "credor_rank_num": self.credor_rank_num,
+            "tax_paid_amount": self.tax_paid_amount,
+            "tax_paid_bool": self.tax_paid_bool,
+            "tax_paid_rank_num": self.tax_paid_rank_num,
+            "tax_paid_rank_percent": self.tax_paid_rank_percent,
+            "debtor_count": self.debtor_count,
+            "credor_count": self.credor_count,
+            "debtor_rank_percent": self.debtor_rank_percent,
+            "credor_rank_percent": self.credor_rank_percent,
+            "transactions_count": self.transactions_count,
+            "transactions_magnitude": self.transactions_magnitude,
+        }
+
+    def get_json(self) -> str:
+        return get_json_from_dict(self.get_dict())
 
 
 def rivergrade_shop(
