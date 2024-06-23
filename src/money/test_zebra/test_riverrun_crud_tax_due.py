@@ -28,6 +28,29 @@ def test_get_credorledger_ReturnsCorrectObj():
     assert yao_credorledger.get(yao_text) == sue_credor_weight
 
 
+def test_get_credorledger_ReturnsCorrectObjWithNoEmpty_credor_weight():
+    # GIVEN
+    yao_text = "Yao"
+    bob_text = "Bob"
+    sue_text = "Sue"
+    yao_credor_weight = 8
+    bob_credor_weight = 0
+    sue_credor_weight = 66
+    yao_agenda = agendaunit_shop(yao_text)
+    yao_agenda.add_otherunit(bob_text, bob_credor_weight)
+    yao_agenda.add_otherunit(sue_text, sue_credor_weight)
+    yao_agenda.add_otherunit(yao_text, yao_credor_weight)
+
+    # WHEN
+    yao_credorledger = get_credorledger(yao_agenda)
+
+    # THEN
+    assert yao_credorledger.get(bob_text) is None
+    assert yao_credorledger.get(sue_text) == sue_credor_weight
+    assert yao_credorledger.get(yao_text) == yao_credor_weight
+    assert len(yao_credorledger) == 2
+
+
 def test_get_debtorledger_ReturnsCorrectObj():
     # GIVEN
     yao_text = "Yao"
@@ -37,18 +60,41 @@ def test_get_debtorledger_ReturnsCorrectObj():
     bob_debtor_weight = 48
     sue_debtor_weight = 66
     yao_agenda = agendaunit_shop(yao_text)
-    yao_agenda.add_otherunit(bob_text, 2, yao_debtor_weight)
-    yao_agenda.add_otherunit(sue_text, 2, bob_debtor_weight)
-    yao_agenda.add_otherunit(yao_text, 2, sue_debtor_weight)
+    yao_agenda.add_otherunit(bob_text, 2, bob_debtor_weight)
+    yao_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
+    yao_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
 
     # WHEN
     yao_debtorledger = get_debtorledger(yao_agenda)
 
     # THEN
     assert len(yao_debtorledger) == 3
-    assert yao_debtorledger.get(bob_text) == yao_debtor_weight
-    assert yao_debtorledger.get(sue_text) == bob_debtor_weight
-    assert yao_debtorledger.get(yao_text) == sue_debtor_weight
+    assert yao_debtorledger.get(bob_text) == bob_debtor_weight
+    assert yao_debtorledger.get(sue_text) == sue_debtor_weight
+    assert yao_debtorledger.get(yao_text) == yao_debtor_weight
+
+
+def test_get_debtorledger_ReturnsCorrectObjWithNoEmpty_debtor_weight():
+    # GIVEN
+    yao_text = "Yao"
+    bob_text = "Bob"
+    sue_text = "Sue"
+    yao_debtor_weight = 8
+    bob_debtor_weight = 48
+    sue_debtor_weight = 0
+    yao_agenda = agendaunit_shop(yao_text)
+    yao_agenda.add_otherunit(bob_text, 2, bob_debtor_weight)
+    yao_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
+    yao_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
+
+    # WHEN
+    yao_debtorledger = get_debtorledger(yao_agenda)
+
+    # THEN
+    assert yao_debtorledger.get(bob_text) == bob_debtor_weight
+    assert yao_debtorledger.get(sue_text) is None
+    assert yao_debtorledger.get(yao_text) == yao_debtor_weight
+    assert len(yao_debtorledger) == 2
 
 
 def test_RiverRun_set_other_tax_due_SetsAttr():

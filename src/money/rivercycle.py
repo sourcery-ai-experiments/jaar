@@ -10,6 +10,7 @@ def get_credorledger(x_agenda: AgendaUnit) -> dict[OtherID:float]:
     return {
         otherunit.other_id: otherunit.credor_weight
         for otherunit in x_agenda._others.values()
+        if otherunit.credor_weight > 0
     }
 
 
@@ -17,6 +18,7 @@ def get_debtorledger(x_agenda: AgendaUnit) -> dict[OtherID:float]:
     return {
         otherunit.other_id: otherunit.debtor_weight
         for otherunit in x_agenda._others.values()
+        if otherunit.debtor_weight > 0
     }
 
 
