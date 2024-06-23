@@ -103,7 +103,7 @@ def test_rivergrade_shop_ReturnsCorrectObjWithoutArgs():
     assert x_rivergrade.transactions_magnitude is None
 
 
-def test_RiverGrade_Exists():
+def test_RiverGrade_set_tax_due_amount_SetsCorrectAttrs():
     # GIVEN
     x_rivergrade = RiverGrade()
     assert x_rivergrade.tax_due_amount is None

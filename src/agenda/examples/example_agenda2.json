@@ -3008,7 +3008,7 @@
                                 "_weight": 1,
                                 "pledge": true
                             },
-                            "be responsible for utilities bills": {
+                            "be responsible for utilities": {
                                 "_balancelinks": {
                                     "Perrison": {
                                         "credor_weight": 1.0,
@@ -3017,7 +3017,7 @@
                                     }
                                 },
                                 "_is_expanded": true,
-                                "_label": "be responsible for utilities bills",
+                                "_label": "be responsible for utilities",
                                 "_meld_strategy": "default",
                                 "_reasonunits": {
                                     "A,time,jajatime": {

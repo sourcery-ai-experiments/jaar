@@ -444,14 +444,14 @@ def test_agenda4other_hasCorrectLevel1StructureNoBelieflessAncestors():
     vacuum_idea = ideaunit_shop(_label=vacuum_text, pledge=True)
     x_agenda.add_idea(vacuum_idea, parent_road=casa_road)
 
-    billy_other_id = OtherID("billy")
-    x_agenda.add_otherunit(other_id=billy_other_id)
-    billy_bl = balancelink_shop(belief_id=billy_other_id)
+    yao_other_id = OtherID("Yao")
+    x_agenda.add_otherunit(other_id=yao_other_id)
+    yao_bl = balancelink_shop(belief_id=yao_other_id)
     yrx = x_agenda._idearoot
-    yrx._kids[week_text].set_balancelink(balancelink=billy_bl)
-    yrx._kids[feed_text].set_balancelink(balancelink=billy_bl)
+    yrx._kids[week_text].set_balancelink(balancelink=yao_bl)
+    yrx._kids[feed_text].set_balancelink(balancelink=yao_bl)
     nation_text = "nation-state"
-    yrx._kids[nation_text].set_balancelink(balancelink=billy_bl)
+    yrx._kids[nation_text].set_balancelink(balancelink=yao_bl)
 
     sue_other_id = OtherID(sue_text)
     x_agenda.add_otherunit(other_id=sue_other_id)
