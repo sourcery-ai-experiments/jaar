@@ -102,13 +102,13 @@ def test_otherunit_shop_CorrectlySetsAttributes_road_delimiter():
 
 def test_otherunit_shop_CorrectlySetsAttributes_pixel():
     # GIVEN
-    plank_float = 00.45
+    pixel_float = 00.45
 
     # WHEN
-    todd_otherunit = otherunit_shop("Todd", _pixel=plank_float)
+    todd_otherunit = otherunit_shop("Todd", _pixel=pixel_float)
 
     # THEN
-    assert todd_otherunit._pixel == plank_float
+    assert todd_otherunit._pixel == pixel_float
 
 
 def test_OtherUnit_set_pixel_CorrectlySetsAttribute():
