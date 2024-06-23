@@ -123,7 +123,7 @@ class RiverGrade:
     userhub: UserHub = None
     other_id: OtherID = None
     number: int = None
-    tax_due_amount: float = None
+    tax_bill_amount: float = None
     grant_amount: float = None
     debtor_rank_num: float = None
     credor_rank_num: float = None
@@ -138,8 +138,8 @@ class RiverGrade:
     transactions_count: float = None
     transactions_magnitude: float = None
 
-    def set_tax_due_amount(self, x_tax_due_amount: float):
-        self.tax_due_amount = x_tax_due_amount
+    def set_tax_bill_amount(self, x_tax_bill_amount: float):
+        self.tax_bill_amount = x_tax_bill_amount
         self.set_tax_paid_bool()
 
     def set_tax_paid_amount(self, x_tax_paid_amount: float):
@@ -148,7 +148,8 @@ class RiverGrade:
 
     def set_tax_paid_bool(self):
         self.tax_paid_bool = (
-            self.tax_due_amount != None and self.tax_due_amount == self.tax_paid_amount
+            self.tax_bill_amount != None
+            and self.tax_bill_amount == self.tax_paid_amount
         )
 
 

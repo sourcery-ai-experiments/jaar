@@ -173,7 +173,7 @@ class RiverRun:
         for x_other_id, other_rivergrade in self._rivergrades.items():
             tax_due_remaining = self.get_other_tax_due(x_other_id)
             tax_due_paid = self.get_other_tax_yield(x_other_id)
-            other_rivergrade.set_tax_due_amount(tax_due_paid + tax_due_remaining)
+            other_rivergrade.set_tax_bill_amount(tax_due_paid + tax_due_remaining)
             other_rivergrade.set_tax_paid_amount(tax_due_paid)
 
     def _set_debtor_count_credor_count(self):

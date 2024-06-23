@@ -28,7 +28,7 @@ def test_RiverRun_create_metrics_CorrectChanges_cycleledger_Scenario01():
     assert yao_rivergrade.userhub == yao_userhub
     assert yao_rivergrade.number == 0
     assert yao_rivergrade.grant_amount == yao_userhub.econ_money_magnitude
-    assert yao_rivergrade.tax_due_amount == 0
+    assert yao_rivergrade.tax_bill_amount == 0
     assert yao_rivergrade.tax_paid_amount == 0
     assert yao_rivergrade.tax_paid_bool
     # assert yao_rivergrade.tax_paid_rank_num == 1
@@ -71,7 +71,7 @@ def test_RiverRun_create_metrics_CorrectChanges_cycleledger_Scenario02():
     assert yao_rivergrade.userhub == yao_userhub
     assert yao_rivergrade.number == 0
     assert yao_rivergrade.grant_amount == yao_userhub.econ_money_magnitude
-    assert yao_rivergrade.tax_due_amount == 0
+    assert yao_rivergrade.tax_bill_amount == 0
     assert yao_rivergrade.tax_paid_amount == 0
     assert yao_rivergrade.tax_paid_bool
     # assert yao_rivergrade.tax_paid_rank_num == 1
@@ -120,7 +120,7 @@ def test_RiverRun_create_metrics_CorrectChanges_cycleledger_Scenario03():
     assert yao_rivergrade.userhub == yao_userhub
     assert yao_rivergrade.number == 0
     assert yao_rivergrade.grant_amount == yao_userhub.econ_money_magnitude
-    assert yao_rivergrade.tax_due_amount == 0
+    assert yao_rivergrade.tax_bill_amount == 0
     assert yao_rivergrade.tax_paid_amount == 0
     assert yao_rivergrade.tax_paid_bool
     # assert yao_rivergrade.tax_paid_rank_num == 1
@@ -171,7 +171,7 @@ def test_RiverRun_create_metrics_CorrectChanges_cycleledger_Scenario04():
     sue_rivergrade = x_riverrun.get_rivergrade(sue_text)
     assert yao_rivergrade.grant_amount == yao_userhub.econ_money_magnitude * 0.2
     assert sue_rivergrade.grant_amount == yao_userhub.econ_money_magnitude * 0.8
-    assert yao_rivergrade.tax_due_amount == 0
+    assert yao_rivergrade.tax_bill_amount == 0
     assert yao_rivergrade.tax_paid_amount == 0
     assert yao_rivergrade.tax_paid_bool
     # assert yao_rivergrade.tax_paid_rank_num == 1
@@ -213,6 +213,6 @@ def test_RiverRun_create_metrics_CorrectChanges_cycleledger_Scenario05():
     assert yao_rivergrade.userhub == yao_userhub
     assert yao_rivergrade.number == 0
     assert yao_rivergrade.grant_amount == econ_money_amount
-    assert yao_rivergrade.tax_due_amount == econ_money_amount
+    assert yao_rivergrade.tax_bill_amount == econ_money_amount
     assert yao_rivergrade.tax_paid_amount == econ_money_amount
     assert yao_rivergrade.tax_paid_bool
