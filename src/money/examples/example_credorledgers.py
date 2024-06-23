@@ -1,7 +1,7 @@
 from src._road.road import PersonID, OtherID
 from src.agenda.agenda import agendaunit_shop
 from src.listen.userhub import UserHub, userhub_shop
-from src.money.river_cycle import get_credorledger
+from src.money.rivercycle import get_credorledger
 
 
 def example_yao_userhub() -> UserHub:

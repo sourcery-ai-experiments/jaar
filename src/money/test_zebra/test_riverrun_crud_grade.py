@@ -1,4 +1,5 @@
-from src.money.river_cycle import riverrun_shop, rivergrade_shop
+from src.money.rivercycle import rivergrade_shop
+from src.money.riverrun import riverrun_shop
 from src.money.examples.example_credorledgers import example_yao_userhub
 
 
@@ -22,6 +23,7 @@ def test_RiverRun_set_initial_rivergrade_SetsAttr():
         yao_userhub, bob_text, yao_number, x_debtor_count, x_credor_count
     )
     bob_rivergrade.grant_amount = 0
+    bob_rivergrade.set_tax_paid_amount(0)
     assert yao_riverrun._rivergrades.get(bob_text) != None
     gen_rivergrade = yao_riverrun._rivergrades.get(bob_text)
     assert gen_rivergrade.debtor_count == x_debtor_count

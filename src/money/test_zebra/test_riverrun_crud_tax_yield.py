@@ -1,6 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.listen.userhub import userhub_shop
-from src.money.river_cycle import riverrun_shop, get_debtorledger
+from src.money.rivercycle import get_debtorledger
+from src.money.riverrun import riverrun_shop
 from src.money.examples.example_credorledgers import example_yao_userhub
 
 

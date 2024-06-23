@@ -1,5 +1,5 @@
 from src.money.examples.example_credorledgers import example_yao_userhub
-from src.money.river_cycle import RiverGrade, rivergrade_shop
+from src.money.rivercycle import RiverGrade, rivergrade_shop
 
 
 def test_RiverGrade_Exists():
@@ -101,3 +101,33 @@ def test_rivergrade_shop_ReturnsCorrectObjWithoutArgs():
     assert x_rivergrade.credor_rank_percent is None
     assert x_rivergrade.transactions_count is None
     assert x_rivergrade.transactions_magnitude is None
+
+
+def test_RiverGrade_Exists():
+    # GIVEN
+    x_rivergrade = RiverGrade()
+    assert x_rivergrade.tax_due_amount is None
+    assert x_rivergrade.tax_paid_amount is None
+    assert x_rivergrade.tax_paid_bool is None
+
+    # WHEN
+    x_tax_due_amount = 88
+    x_rivergrade.set_tax_due_amount(x_tax_due_amount)
+    # THEN
+    assert x_rivergrade.tax_due_amount == x_tax_due_amount
+    assert x_rivergrade.tax_paid_amount is None
+    assert x_rivergrade.tax_paid_bool == False
+
+    # WHEN
+    x_tax_paid_amount = 77
+    x_rivergrade.set_tax_paid_amount(x_tax_paid_amount)
+    # THEN
+    assert x_rivergrade.tax_due_amount == x_tax_due_amount
+    assert x_rivergrade.tax_paid_amount == x_tax_paid_amount
+    assert x_rivergrade.tax_paid_bool == False
+
+    # WHEN
+    x_rivergrade.set_tax_paid_amount(x_tax_due_amount)
+    # THEN
+    assert x_rivergrade.tax_due_amount == x_rivergrade.tax_paid_amount
+    assert x_rivergrade.tax_paid_bool == True

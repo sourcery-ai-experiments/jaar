@@ -1,6 +1,6 @@
 from src.agenda.agenda import agendaunit_shop
 from src.listen.userhub import userhub_shop
-from src.money.river_cycle import (
+from src.money.rivercycle import (
     RiverBook,
     riverbook_shop,
     create_riverbook,

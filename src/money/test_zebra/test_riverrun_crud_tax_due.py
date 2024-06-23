@@ -1,6 +1,7 @@
 from src.agenda.agenda import agendaunit_shop
 from src.listen.userhub import userhub_shop
-from src.money.river_cycle import get_credorledger, get_debtorledger, riverrun_shop
+from src.money.rivercycle import get_credorledger, get_debtorledger
+from src.money.riverrun import riverrun_shop
 from src.money.examples.example_credorledgers import example_yao_userhub
 
 
@@ -66,23 +67,23 @@ def test_RiverRun_set_other_tax_due_SetsAttr():
     assert bob_riverrun.tax_dues.get(yao_text) == yao_tax_due
 
 
-def test_RiverRun_tax_dues_is_empty_ReturnsObj():
+def test_RiverRun_tax_dues_unpaid_ReturnsObj():
     # GIVEN
     yao_userhub = example_yao_userhub()
     x_riverrun = riverrun_shop(yao_userhub)
-    assert x_riverrun.tax_dues_is_empty()
+    assert x_riverrun.tax_dues_unpaid() == False
 
     # WHEN
     yao_text = "Yao"
     yao_tax_due = 500
     x_riverrun.set_other_tax_due(yao_text, yao_tax_due)
     # THEN
-    assert x_riverrun.tax_dues_is_empty() == False
+    assert x_riverrun.tax_dues_unpaid()
 
     # WHEN
     x_riverrun.delete_tax_due(yao_text)
     # THEN
-    assert x_riverrun.tax_dues_is_empty()
+    assert x_riverrun.tax_dues_unpaid() == False
 
     # WHEN
     bob_text = "Yao"
@@ -90,12 +91,12 @@ def test_RiverRun_tax_dues_is_empty_ReturnsObj():
     x_riverrun.set_other_tax_due(bob_text, bob_tax_due)
     x_riverrun.set_other_tax_due(yao_text, yao_tax_due)
     # THEN
-    assert x_riverrun.tax_dues_is_empty() == False
+    assert x_riverrun.tax_dues_unpaid()
 
     # WHEN
     x_riverrun.delete_tax_due(yao_text)
     # THEN
-    assert x_riverrun.tax_dues_is_empty()
+    assert x_riverrun.tax_dues_unpaid() == False
 
 
 def test_RiverRun_reset_tax_dues_CorrectlySetsAttr():
@@ -117,13 +118,13 @@ def test_RiverRun_reset_tax_dues_CorrectlySetsAttr():
     bob_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
     bob_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
     bob_debtorledger = get_debtorledger(bob_agenda)
-    assert bob_riverrun.tax_dues_is_empty()
+    assert bob_riverrun.tax_dues_unpaid() == False
 
     # WHEN
     bob_riverrun.reset_tax_dues(bob_debtorledger)
 
     # THEN
-    assert bob_riverrun.tax_dues_is_empty() == False
+    assert bob_riverrun.tax_dues_unpaid()
     bob_riverrun = bob_riverrun.tax_dues
     assert bob_riverrun.get(bob_text) == 380
     assert bob_riverrun.get(sue_text) == 560

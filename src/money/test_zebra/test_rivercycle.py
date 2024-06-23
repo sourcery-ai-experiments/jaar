@@ -5,7 +5,7 @@ from src.money.examples.example_credorledgers import (
     example_bob_credorledger,
     example_zia_credorledger,
 )
-from src.money.river_cycle import (
+from src.money.rivercycle import (
     create_riverbook,
     RiverCycle,
     rivercycle_shop,
