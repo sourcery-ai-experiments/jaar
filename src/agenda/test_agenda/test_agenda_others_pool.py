@@ -33,7 +33,7 @@ def test_AgendaUnit_set_other_credor_pool_RaisesErrorWhenArgIsNotMultiple():
     zia_agenda = agendaunit_shop(zia_text)
     x_other_credor_pool = 23
     zia_agenda.set_other_credor_pool(x_other_credor_pool)
-    assert zia_agenda._planck == 1
+    assert zia_agenda._pixel == 1
     assert zia_agenda._other_credor_pool == x_other_credor_pool
 
     # WHEN
@@ -42,7 +42,7 @@ def test_AgendaUnit_set_other_credor_pool_RaisesErrorWhenArgIsNotMultiple():
         zia_agenda.set_other_credor_pool(new_other_credor_pool)
     assert (
         str(excinfo.value)
-        == f"Agenda '{zia_text}' cannot set _other_credor_pool='{new_other_credor_pool}'. It is not divisible by planck '{zia_agenda._planck}'"
+        == f"Agenda '{zia_text}' cannot set _other_credor_pool='{new_other_credor_pool}'. It is not divisible by pixel '{zia_agenda._pixel}'"
     )
 
 
@@ -80,7 +80,7 @@ def test_AgendaUnit_set_other_credor_pool_CorrectlyModifies_others_credor_weight
     assert zia_agenda.get_other(zia_text).credor_weight == new_zia_credor_weight
 
 
-def test_AgendaUnit_set_other_credor_pool_CorrectlySetsAttrsWhenWeightsNotDivisibleBy_planckAND_correct_planck_issuesIsFalse():
+def test_AgendaUnit_set_other_credor_pool_CorrectlySetsAttrsWhenWeightsNotDivisibleBy_pixelAND_correct_pixel_issuesIsFalse():
     # GIVEN
     yao_text = "Yao"
     wei_text = "Wei"
@@ -108,7 +108,7 @@ def test_AgendaUnit_set_other_credor_pool_CorrectlySetsAttrsWhenWeightsNotDivisi
     zia_agenda.set_other_credor_pool(
         new_other_credor_pool=new_sum,
         update_others_credor_weight=True,
-        correct_planck_issues=False,
+        correct_pixel_issues=False,
     )
 
     # THEN
@@ -125,7 +125,7 @@ def test_AgendaUnit_set_other_credor_pool_CorrectlySetsAttrsWhenWeightsNotDivisi
     )
 
 
-def test_AgendaUnit_set_other_credor_pool_SetAttrWhenEmpty_correct_planck_issues_IsTrue():
+def test_AgendaUnit_set_other_credor_pool_SetAttrWhenEmpty_correct_pixel_issues_IsTrue():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
 
@@ -134,7 +134,7 @@ def test_AgendaUnit_set_other_credor_pool_SetAttrWhenEmpty_correct_planck_issues
     zia_agenda.set_other_credor_pool(
         new_other_credor_pool=new_sum,
         update_others_credor_weight=True,
-        correct_planck_issues=True,
+        correct_pixel_issues=True,
     )
 
     # THEN
@@ -142,7 +142,7 @@ def test_AgendaUnit_set_other_credor_pool_SetAttrWhenEmpty_correct_planck_issues
     assert zia_agenda.get_otherunits_credor_weight_sum() == 0
 
 
-def test_AgendaUnit_set_other_credor_pool_CorrectlySetsAttrsWhenWeightsNotDivisibleBy_planckAND_correct_planck_issuesIsTrue():
+def test_AgendaUnit_set_other_credor_pool_CorrectlySetsAttrsWhenWeightsNotDivisibleBy_pixelAND_correct_pixel_issuesIsTrue():
     # GIVEN
     yao_text = "Yao"
     wei_text = "Wei"
@@ -164,21 +164,21 @@ def test_AgendaUnit_set_other_credor_pool_CorrectlySetsAttrsWhenWeightsNotDivisi
     zia_agenda.set_other_credor_pool(
         new_other_credor_pool=new_sum,
         update_others_credor_weight=True,
-        correct_planck_issues=True,
+        correct_pixel_issues=True,
     )
 
     # THEN
     assert zia_agenda._other_credor_pool == new_sum
     assert zia_agenda.get_otherunits_credor_weight_sum() == 117
-    planck_valid_yao_credor_weight = (yao_credor_weight * new_ratio) - 0.5
-    planck_valid_wei_credor_weight = (wei_credor_weight * new_ratio) - 0.5
-    planck_valid_zia_credor_weight = (zia_credor_weight * new_ratio) - 0.5
+    pixel_valid_yao_credor_weight = (yao_credor_weight * new_ratio) - 0.5
+    pixel_valid_wei_credor_weight = (wei_credor_weight * new_ratio) - 0.5
+    pixel_valid_zia_credor_weight = (zia_credor_weight * new_ratio) - 0.5
     other_yao_credor_weight = zia_agenda.get_other(yao_text).credor_weight
     other_wei_credor_weight = zia_agenda.get_other(wei_text).credor_weight
     other_zia_credor_weight = zia_agenda.get_other(zia_text).credor_weight
-    assert other_yao_credor_weight == planck_valid_yao_credor_weight
-    assert other_wei_credor_weight == planck_valid_wei_credor_weight
-    assert other_zia_credor_weight == planck_valid_zia_credor_weight + 1
+    assert other_yao_credor_weight == pixel_valid_yao_credor_weight
+    assert other_wei_credor_weight == pixel_valid_wei_credor_weight
+    assert other_zia_credor_weight == pixel_valid_zia_credor_weight + 1
     assert (
         zia_agenda.get_otherunits_credor_weight_sum() == zia_agenda._other_credor_pool
     )
@@ -220,7 +220,7 @@ def test_AgendaUnit_set_other_debtor_pool_RaisesErrorWhenArgIsNotMultiple():
     zia_agenda.set_other_debtor_pool(
         x_other_debtor_pool, update_others_debtor_weight=True
     )
-    assert zia_agenda._planck == 1
+    assert zia_agenda._pixel == 1
     assert zia_agenda._other_debtor_pool == x_other_debtor_pool
 
     # WHEN
@@ -231,7 +231,7 @@ def test_AgendaUnit_set_other_debtor_pool_RaisesErrorWhenArgIsNotMultiple():
         )
     assert (
         str(excinfo.value)
-        == f"Agenda '{zia_text}' cannot set _other_debtor_pool='{new_other_debtor_pool}'. It is not divisible by planck '{zia_agenda._planck}'"
+        == f"Agenda '{zia_text}' cannot set _other_debtor_pool='{new_other_debtor_pool}'. It is not divisible by pixel '{zia_agenda._pixel}'"
     )
 
 
@@ -269,7 +269,7 @@ def test_AgendaUnit_set_other_debtor_pool_CorrectlyModifies_others_debtor_weight
     assert zia_agenda.get_other(zia_text).debtor_weight == new_zia_debtor_weight
 
 
-def test_AgendaUnit_set_other_debtor_pool_SetAttrWhenEmpty_correct_planck_issues_IsTrue():
+def test_AgendaUnit_set_other_debtor_pool_SetAttrWhenEmpty_correct_pixel_issues_IsTrue():
     # GIVEN
     zia_agenda = agendaunit_shop("Zia")
 
@@ -278,7 +278,7 @@ def test_AgendaUnit_set_other_debtor_pool_SetAttrWhenEmpty_correct_planck_issues
     zia_agenda.set_other_debtor_pool(
         new_other_debtor_pool=new_sum,
         update_others_debtor_weight=True,
-        correct_planck_issues=True,
+        correct_pixel_issues=True,
     )
 
     # THEN
@@ -286,7 +286,7 @@ def test_AgendaUnit_set_other_debtor_pool_SetAttrWhenEmpty_correct_planck_issues
     assert zia_agenda.get_otherunits_debtor_weight_sum() == 0
 
 
-def test_AgendaUnit_set_other_debtor_pool_CorrectlySetsAttrsWhenWeightsNotDivisibleBy_planckAND_correct_planck_issuesIsFalse():
+def test_AgendaUnit_set_other_debtor_pool_CorrectlySetsAttrsWhenWeightsNotDivisibleBy_pixelAND_correct_pixel_issuesIsFalse():
     # GIVEN
     yao_text = "Yao"
     wei_text = "Wei"
@@ -314,7 +314,7 @@ def test_AgendaUnit_set_other_debtor_pool_CorrectlySetsAttrsWhenWeightsNotDivisi
     zia_agenda.set_other_debtor_pool(
         new_other_debtor_pool=new_sum,
         update_others_debtor_weight=True,
-        correct_planck_issues=False,
+        correct_pixel_issues=False,
     )
 
     # THEN
@@ -331,7 +331,7 @@ def test_AgendaUnit_set_other_debtor_pool_CorrectlySetsAttrsWhenWeightsNotDivisi
     )
 
 
-def test_AgendaUnit_set_other_debtor_pool_CorrectlySetsAttrsWhenWeightsNotDivisibleBy_planckAND_correct_planck_issuesIsTrue():
+def test_AgendaUnit_set_other_debtor_pool_CorrectlySetsAttrsWhenWeightsNotDivisibleBy_pixelAND_correct_pixel_issuesIsTrue():
     # GIVEN
     yao_text = "Yao"
     wei_text = "Wei"
@@ -353,21 +353,21 @@ def test_AgendaUnit_set_other_debtor_pool_CorrectlySetsAttrsWhenWeightsNotDivisi
     zia_agenda.set_other_debtor_pool(
         new_other_debtor_pool=new_sum,
         update_others_debtor_weight=True,
-        correct_planck_issues=True,
+        correct_pixel_issues=True,
     )
 
     # THEN
     assert zia_agenda._other_debtor_pool == new_sum
     assert zia_agenda.get_otherunits_debtor_weight_sum() == 117
-    planck_valid_yao_debtor_weight = (yao_debtor_weight * new_ratio) - 0.5
-    planck_valid_wei_debtor_weight = (wei_debtor_weight * new_ratio) - 0.5
-    planck_valid_zia_debtor_weight = (zia_debtor_weight * new_ratio) - 0.5
+    pixel_valid_yao_debtor_weight = (yao_debtor_weight * new_ratio) - 0.5
+    pixel_valid_wei_debtor_weight = (wei_debtor_weight * new_ratio) - 0.5
+    pixel_valid_zia_debtor_weight = (zia_debtor_weight * new_ratio) - 0.5
     other_yao_debtor_weight = zia_agenda.get_other(yao_text).debtor_weight
     other_wei_debtor_weight = zia_agenda.get_other(wei_text).debtor_weight
     other_zia_debtor_weight = zia_agenda.get_other(zia_text).debtor_weight
-    assert other_yao_debtor_weight == planck_valid_yao_debtor_weight
-    assert other_wei_debtor_weight == planck_valid_wei_debtor_weight
-    assert other_zia_debtor_weight == planck_valid_zia_debtor_weight + 1
+    assert other_yao_debtor_weight == pixel_valid_yao_debtor_weight
+    assert other_wei_debtor_weight == pixel_valid_wei_debtor_weight
+    assert other_zia_debtor_weight == pixel_valid_zia_debtor_weight + 1
     assert (
         zia_agenda.get_otherunits_debtor_weight_sum() == zia_agenda._other_debtor_pool
     )

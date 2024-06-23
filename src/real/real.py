@@ -1,6 +1,6 @@
 from src._instrument.file import set_dir, delete_dir, dir_files
 from src._road.jaar_config import get_atoms_folder
-from src._road.finance import default_planck_if_none, default_penny_if_none
+from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import AgendaUnit
 from src.listen.basis_agendas import get_default_work_agenda
@@ -35,7 +35,7 @@ class RealUnit:
     _journal_db: str = None
     _atoms_dir: str = None
     _road_delimiter: str = None
-    _planck: float = None
+    _pixel: float = None
     _penny: float = None
 
     # directory setup
@@ -64,7 +64,7 @@ class RealUnit:
                 person_id=x_person_id,
                 econ_road=None,
                 road_delimiter=self._road_delimiter,
-                planck=self._planck,
+                pixel=self._pixel,
             )
             for x_person_id in x_person_ids
         }
@@ -111,7 +111,7 @@ class RealUnit:
             reals_dir=self.reals_dir,
             econ_road=None,
             road_delimiter=self._road_delimiter,
-            planck=self._planck,
+            pixel=self._pixel,
         )
 
     def init_person_econs(self, person_id: PersonID):
@@ -133,7 +133,7 @@ class RealUnit:
                 econ_road=None,
                 # "role_job",
                 road_delimiter=self._road_delimiter,
-                planck=self._planck,
+                pixel=self._pixel,
             )
             for econ_road in healer_dict.keys():
                 self._set_person_role(healer_userhub, econ_road, x_duty)
@@ -162,7 +162,7 @@ class RealUnit:
                 econ_road=None,
                 # "role_job",
                 road_delimiter=self._road_delimiter,
-                planck=self._planck,
+                pixel=self._pixel,
             )
             healer_userhub.create_duty_treasury_db_files()
             for econ_road in healer_dict.keys():
@@ -173,7 +173,7 @@ class RealUnit:
                     econ_road=econ_road,
                     # "role_job",
                     road_delimiter=self._road_delimiter,
-                    planck=self._planck,
+                    pixel=self._pixel,
                 )
                 econ_userhub.save_role_agenda(x_duty)
                 create_job_file_from_role_file(econ_userhub, person_id)
@@ -206,14 +206,14 @@ def realunit_shop(
     reals_dir: str,
     in_memory_journal: bool = None,
     _road_delimiter: str = None,
-    _planck: float = None,
+    _pixel: float = None,
     _penny: float = None,
 ) -> RealUnit:
     real_x = RealUnit(
         real_id=real_id,
         reals_dir=reals_dir,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
-        _planck=default_planck_if_none(_planck),
+        _pixel=default_pixel_if_none(_pixel),
         _penny=default_penny_if_none(_penny),
     )
     real_x._set_real_dirs(in_memory_journal=in_memory_journal)

@@ -117,11 +117,9 @@ def test_UserHub_initialize_work_file_CorrectlyDoesNotOverwrite(
     # GIVEN
     sue_text = "Sue"
     sue_real_dir = f"{env_dir()}/{root_label()}"
-    sue_planck = 7
-    sue_userhub = userhub_shop(
-        env_dir(), root_label(), sue_text, None, planck=sue_planck
-    )
-    sue_agenda = agendaunit_shop(sue_text, root_label(), _planck=sue_planck)
+    sue_pixel = 7
+    sue_userhub = userhub_shop(env_dir(), root_label(), sue_text, None, pixel=sue_pixel)
+    sue_agenda = agendaunit_shop(sue_text, root_label(), _pixel=sue_pixel)
     sue_userhub.initialize_work_file(sue_agenda)
     assert sue_userhub.work_file_exists()
     delete_dir(sue_userhub.work_path())
@@ -145,7 +143,7 @@ def test_UserHub_initialize_work_file_CorrectlyDoesNotOverwrite(
     work_agenda = agendaunit_get_from_json(work_file_text)
     assert work_agenda._real_id == root_label()
     assert work_agenda._owner_id == sue_text
-    assert work_agenda._planck == sue_planck
+    assert work_agenda._pixel == sue_pixel
 
 
 def test_UserHub_initialize_work_file_CreatesDirsAndFiles(env_dir_setup_cleanup):

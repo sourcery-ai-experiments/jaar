@@ -52,8 +52,8 @@ def test_examples_agenda_v001_has_others():
 
 def test_AgendaUnit_set_other_CorrectlySets_others_beliefs():
     # GIVEN
-    x_planck = 0.5
-    yao_agenda = agendaunit_shop("Yao", _planck=x_planck)
+    x_pixel = 0.5
+    yao_agenda = agendaunit_shop("Yao", _pixel=x_pixel)
     yao_agenda.calc_agenda_metrics()
     assert len(yao_agenda._others) == 0
     assert len(yao_agenda._beliefs) == 0
@@ -67,7 +67,7 @@ def test_AgendaUnit_set_other_CorrectlySets_others_beliefs():
     yao_agenda.set_otherunit(otherunit=otherunit_shop(OtherID(patr_text)))
 
     # THEN
-    assert yao_agenda._others.get(rico_text)._planck == x_planck
+    assert yao_agenda._others.get(rico_text)._pixel == x_pixel
     assert len(yao_agenda._others) == 3
     assert len(yao_agenda._beliefs) == 3
     assert yao_agenda._beliefs["rico"]._other_mirror == True
@@ -90,8 +90,8 @@ def test_AgendaUnit_set_other_CorrectlySets_others_beliefs():
 
 def test_AgendaUnit_add_otherunit_CorrectlySets_others():
     # GIVEN
-    x_planck = 0.5
-    yao_agenda = agendaunit_shop("Yao", _planck=x_planck)
+    x_pixel = 0.5
+    yao_agenda = agendaunit_shop("Yao", _pixel=x_pixel)
     rico_text = "rico"
     carm_text = "carmen"
     patr_text = "patrick"
@@ -107,7 +107,7 @@ def test_AgendaUnit_add_otherunit_CorrectlySets_others():
     assert yao_agenda.get_beliefunit(rico_text)._other_mirror == True
     assert yao_agenda._others.get(patr_text).credor_weight == 17
     assert yao_agenda._others.get(carm_text).debtor_weight == 5
-    assert yao_agenda._others.get(patr_text)._planck == x_planck
+    assert yao_agenda._others.get(patr_text)._pixel == x_pixel
 
 
 def test_AgendaUnit_other_exists_ReturnsObj():

@@ -396,7 +396,7 @@
                 "python_type": "float",
                 "sqlite_datatype": "REAL"
             },
-            "_planck": {
+            "_pixel": {
                 "python_type": "float",
                 "sqlite_datatype": "REAL"
             },

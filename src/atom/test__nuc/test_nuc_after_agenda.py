@@ -56,7 +56,7 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     new5_arg = "_meld_strategy"
     x_quarkunit.set_optional_arg(new5_arg, new5_value)
     new6_value = 0.5
-    new6_arg = "_planck"
+    new6_arg = "_pixel"
     x_quarkunit.set_optional_arg(new6_arg, new6_value)
     sue_nucunit.set_quarkunit(x_quarkunit)
     new7_value = 0.025
@@ -75,8 +75,8 @@ def test_NucUnit_get_edited_agenda_ReturnsCorrectObj_AgendaUnitSimpleAttrs():
     assert after_sue_agendaunit._meld_strategy == new5_value
     assert after_sue_agendaunit._weight == new1_value
     assert after_sue_agendaunit._weight != before_sue_agendaunit._weight
-    assert after_sue_agendaunit._planck == new6_value
-    assert after_sue_agendaunit._planck != before_sue_agendaunit._planck
+    assert after_sue_agendaunit._pixel == new6_value
+    assert after_sue_agendaunit._pixel != before_sue_agendaunit._pixel
     assert after_sue_agendaunit._penny == new7_value
     assert after_sue_agendaunit._penny != before_sue_agendaunit._penny
 

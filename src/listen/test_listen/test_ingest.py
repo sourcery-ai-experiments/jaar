@@ -82,14 +82,14 @@ def test_generate_ingest_list_ReturnsCorrectList_v1():
     clean_text = "clean"
     zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
     zia_debtor_pool = 78
-    zia_planck = 2
+    zia_pixel = 2
     assert len(zia_agendaunit.get_intent_dict()) == 1
 
     # WHEN
     ingested_list = generate_ingest_list(
         item_list=list(zia_agendaunit.get_intent_dict().values()),
         debtor_amount=zia_debtor_pool,
-        planck=zia_planck,
+        pixel=zia_pixel,
     )
 
     # THEN
@@ -109,14 +109,14 @@ def test_generate_ingest_list_ReturnsCorrectList_v2():
     zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
     zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, pledge=True))
     zia_debtor_pool = 32
-    zia_planck = 2
+    zia_pixel = 2
     assert len(zia_agendaunit.get_intent_dict()) == 2
 
     # WHEN
     ingested_list = generate_ingest_list(
         item_list=list(zia_agendaunit.get_intent_dict().values()),
         debtor_amount=zia_debtor_pool,
-        planck=zia_planck,
+        pixel=zia_pixel,
     )
 
     # THEN
@@ -140,14 +140,14 @@ def test_generate_ingest_list_ReturnsCorrectList_v3():
     zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
     zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, pledge=True))
     zia_debtor_pool = 32
-    zia_planck = 2
+    zia_pixel = 2
     assert len(zia_agendaunit.get_intent_dict()) == 2
 
     # WHEN
     ingested_list = generate_ingest_list(
         item_list=list(zia_agendaunit.get_intent_dict().values()),
         debtor_amount=zia_debtor_pool,
-        planck=zia_planck,
+        pixel=zia_pixel,
     )
 
     # THEN
@@ -169,14 +169,14 @@ def test_generate_ingest_list_ReturnsCorrectList_v4():
     zia_agendaunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
     zia_agendaunit.add_l1_idea(ideaunit_shop(cook_text, _weight=2, pledge=True))
     zia_debtor_pool = 32
-    zia_planck = 2
+    zia_pixel = 2
     assert len(zia_agendaunit.get_intent_dict()) == 2
 
     # WHEN
     ingested_list = generate_ingest_list(
         item_list=list(zia_agendaunit.get_intent_dict().values()),
         debtor_amount=zia_debtor_pool,
-        planck=zia_planck,
+        pixel=zia_pixel,
     )
 
     # THEN

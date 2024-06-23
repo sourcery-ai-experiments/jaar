@@ -4,7 +4,7 @@ from src._road.road import (
     create_road,
     get_default_real_id_roadnode as root_label,
 )
-from src._road.finance import default_planck_if_none, default_penny_if_none
+from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src._road.jaar_config import (
     get_atoms_folder,
     get_test_reals_dir,
@@ -71,7 +71,7 @@ def test_UserHub_Exists():
     assert x_userhub.person_id is None
     assert x_userhub.econ_road is None
     assert x_userhub.road_delimiter is None
-    assert x_userhub.planck is None
+    assert x_userhub.pixel is None
     assert x_userhub.penny is None
     assert x_userhub.econ_money_magnitude is None
 
@@ -96,7 +96,7 @@ def test_userhub_shop_ReturnsCorrectObj():
     x_real_id = "music"
     sue_text = "Sue"
     x_road_delimiter = "/"
-    x_planck = 9
+    x_pixel = 9
     x_penny = 3
     x_money_magnitude = 900
 
@@ -107,7 +107,7 @@ def test_userhub_shop_ReturnsCorrectObj():
         person_id=sue_text,
         econ_road=None,
         road_delimiter=x_road_delimiter,
-        planck=x_planck,
+        pixel=x_pixel,
         penny=x_penny,
         econ_money_magnitude=x_money_magnitude,
     )
@@ -117,7 +117,7 @@ def test_userhub_shop_ReturnsCorrectObj():
     assert x_userhub.real_id == x_real_id
     assert x_userhub.person_id == sue_text
     assert x_userhub.road_delimiter == x_road_delimiter
-    assert x_userhub.planck == x_planck
+    assert x_userhub.pixel == x_pixel
     assert x_userhub.penny == x_penny
     assert x_userhub.econ_money_magnitude == x_money_magnitude
     assert x_userhub.real_dir() == f"{x_reals_dir}/{x_real_id}"
@@ -155,7 +155,7 @@ def test_userhub_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_userhub.real_dir() == f"{get_test_reals_dir()}/{get_test_real_id()}"
     assert sue_userhub.person_id == sue_text
     assert sue_userhub.road_delimiter == default_road_delimiter_if_none()
-    assert sue_userhub.planck == default_planck_if_none()
+    assert sue_userhub.pixel == default_pixel_if_none()
     assert sue_userhub.penny == default_penny_if_none()
     assert sue_userhub.persons_dir() == f"{sue_userhub.real_dir()}/persons"
     x_userhub = userhub_shop(None, None, sue_text)

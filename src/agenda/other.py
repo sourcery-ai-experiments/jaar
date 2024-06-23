@@ -1,5 +1,5 @@
 from src._road.road import OtherID, default_road_delimiter_if_none, validate_roadnode
-from src._road.finance import default_planck_if_none
+from src._road.finance import default_pixel_if_none
 from dataclasses import dataclass
 from src._instrument.python import get_1_if_None, get_dict_from_json, get_0_if_None
 
@@ -8,7 +8,7 @@ class InvalidOtherException(Exception):
     pass
 
 
-class _planck_RatioException(Exception):
+class _pixel_RatioException(Exception):
     pass
 
 
@@ -16,7 +16,7 @@ class _planck_RatioException(Exception):
 class OtherCore:
     other_id: OtherID = None
     _road_delimiter: str = None
-    _planck: float = None
+    _pixel: float = None
 
     def set_other_id(self, x_other_id: OtherID):
         self.other_id = validate_roadnode(x_other_id, self._road_delimiter)
@@ -51,8 +51,8 @@ class OtherUnit(OtherCore):
     _treasury_voice_rank: int = None
     _treasury_voice_hx_lowest_rank: int = None
 
-    def set_planck(self, x_planck: float):
-        self._planck = x_planck
+    def set_pixel(self, x_pixel: float):
+        self._pixel = x_pixel
 
     def clear_output_agenda_meld_order(self):
         self._output_agenda_meld_order = None
@@ -138,16 +138,16 @@ class OtherUnit(OtherCore):
         x_dict["_output_agenda_meld_order"] = self._output_agenda_meld_order
 
     def set_credor_weight(self, credor_weight: int):
-        if (credor_weight / self._planck).is_integer() is False:
-            raise _planck_RatioException(
-                f"'{credor_weight}' is not divisible by planck '{self._planck}'"
+        if (credor_weight / self._pixel).is_integer() is False:
+            raise _pixel_RatioException(
+                f"'{credor_weight}' is not divisible by pixel '{self._pixel}'"
             )
         self.credor_weight = credor_weight
 
     def set_debtor_weight(self, debtor_weight: int):
-        if (debtor_weight / self._planck).is_integer() is False:
-            raise _planck_RatioException(
-                f"'{debtor_weight}' is not divisible by planck '{self._planck}'"
+        if (debtor_weight / self._pixel).is_integer() is False:
+            raise _pixel_RatioException(
+                f"'{debtor_weight}' is not divisible by pixel '{self._pixel}'"
             )
         self.debtor_weight = debtor_weight
 
@@ -279,7 +279,7 @@ def otherunit_shop(
     _credor_operational: bool = None,
     _debtor_operational: bool = None,
     _road_delimiter: str = None,
-    _planck: float = None,
+    _pixel: float = None,
 ) -> OtherUnit:
     x_otherunit = OtherUnit(
         credor_weight=get_1_if_None(credor_weight),
@@ -297,7 +297,7 @@ def otherunit_shop(
         _treasury_due_paid=None,
         _treasury_due_diff=None,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
-        _planck=default_planck_if_none(_planck),
+        _pixel=default_pixel_if_none(_pixel),
     )
     x_otherunit.set_other_id(x_other_id=other_id)
     return x_otherunit

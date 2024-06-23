@@ -218,7 +218,7 @@ CREATE TABLE IF NOT EXISTS quark_mstr (
 ;"""
     assert generated_sqlstr.find(begin_sqlstr) == 0
     assert generated_sqlstr.find(end_sqlstr) > 0
-    assert generated_sqlstr.find(end_sqlstr) == 6103
+    assert generated_sqlstr.find(end_sqlstr) == 6102
     example_idea_reasonunit_text = (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )

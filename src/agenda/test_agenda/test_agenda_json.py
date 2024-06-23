@@ -181,7 +181,7 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     tiger_real_id = "tiger"
     zia_agenda.set_real_id(tiger_real_id)
     seven_int = 7
-    zia_agenda._planck = seven_int
+    zia_agenda._pixel = seven_int
     x_penny = 0.3
     zia_agenda._penny = x_penny
     override_text = "override"
@@ -210,7 +210,7 @@ def test_AgendaUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     assert agenda_dict["_real_id"] == zia_agenda._real_id
     assert agenda_dict["_weight"] == zia_agenda._weight
     assert agenda_dict["_meld_strategy"] == zia_agenda._meld_strategy
-    assert agenda_dict["_planck"] == zia_agenda._planck
+    assert agenda_dict["_pixel"] == zia_agenda._pixel
     assert agenda_dict["_penny"] == zia_agenda._penny
     with pytest_raises(Exception) as excinfo:
         agenda_dict["_other_credor_pool"]
@@ -300,8 +300,8 @@ def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():
     zia_agenda.set_max_tree_traverse(23)
     tiger_real_id = "tiger"
     zia_agenda.set_real_id(tiger_real_id)
-    zia_planck = 0.5
-    zia_agenda._planck = zia_planck
+    zia_pixel = 0.5
+    zia_agenda._pixel = zia_pixel
     zia_penny = 2
     zia_agenda._penny = zia_penny
     zia_other_credor_pool = 2
@@ -359,8 +359,8 @@ def test_agendaunit_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_agenda._owner_id != None
     assert json_agenda._owner_id == zia_agenda._owner_id
     assert json_agenda._real_id == zia_agenda._real_id
-    assert json_agenda._planck == zia_planck
-    assert json_agenda._planck == zia_agenda._planck
+    assert json_agenda._pixel == zia_pixel
+    assert json_agenda._pixel == zia_agenda._pixel
     assert json_agenda._penny == zia_penny
     assert json_agenda._penny == zia_agenda._penny
     assert json_agenda._max_tree_traverse == 23

@@ -181,9 +181,9 @@ def _modify_agenda_update_agendaunit(x_agenda: AgendaUnit, x_quark: QuarkUnit):
     x_arg = "_weight"
     if x_quark.get_value(x_arg) != None:
         x_agenda._weight = x_quark.get_value(x_arg)
-    x_arg = "_planck"
+    x_arg = "_pixel"
     if x_quark.get_value(x_arg) != None:
-        x_agenda._planck = x_quark.get_value(x_arg)
+        x_agenda._pixel = x_quark.get_value(x_arg)
     x_arg = "_penny"
     if x_quark.get_value(x_arg) != None:
         x_agenda._penny = x_quark.get_value(x_arg)
@@ -542,7 +542,7 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj._meld_strategy != y_obj._meld_strategy
             or x_obj._other_credor_pool != y_obj._other_credor_pool
             or x_obj._other_debtor_pool != y_obj._other_debtor_pool
-            or x_obj._planck != y_obj._planck
+            or x_obj._pixel != y_obj._pixel
         )
     elif category in {"agenda_belief_otherlink", "agenda_idea_balancelink"}:
         return (x_obj.credor_weight != y_obj.credor_weight) or (

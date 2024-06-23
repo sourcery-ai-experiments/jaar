@@ -160,8 +160,8 @@ class NucUnit:
             )
         if before_agenda._weight != after_agenda._weight:
             x_quarkunit.set_optional_arg("_weight", after_agenda._weight)
-        if before_agenda._planck != after_agenda._planck:
-            x_quarkunit.set_optional_arg("_planck", after_agenda._planck)
+        if before_agenda._pixel != after_agenda._pixel:
+            x_quarkunit.set_optional_arg("_pixel", after_agenda._pixel)
         self.set_quarkunit(x_quarkunit)
 
     def add_quarkunit_otherunits(

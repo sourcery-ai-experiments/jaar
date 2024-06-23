@@ -1,5 +1,5 @@
 from src._road.road import default_road_delimiter_if_none
-from src._road.finance import default_planck_if_none
+from src._road.finance import default_pixel_if_none
 from src.agenda.other import (
     OtherUnit,
     otherunit_shop,
@@ -40,7 +40,7 @@ def test_OtherUnit_exists():
     assert bob_otherunit._treasury_voice_hx_lowest_rank is None
     assert bob_otherunit._output_agenda_meld_order is None
     assert bob_otherunit._road_delimiter is None
-    assert bob_otherunit._planck is None
+    assert bob_otherunit._pixel is None
 
 
 def test_OtherUnit_set_other_id_CorrectlySetsAttr():
@@ -86,7 +86,7 @@ def test_otherunit_shop_CorrectlySetsAttributes():
     assert todd_otherunit._agenda_intent_ratio_cred == 0
     assert todd_otherunit._agenda_intent_ratio_debt == 0
     assert todd_otherunit._road_delimiter == default_road_delimiter_if_none()
-    assert todd_otherunit._planck == default_planck_if_none()
+    assert todd_otherunit._pixel == default_pixel_if_none()
 
 
 def test_otherunit_shop_CorrectlySetsAttributes_road_delimiter():
@@ -100,28 +100,28 @@ def test_otherunit_shop_CorrectlySetsAttributes_road_delimiter():
     assert todd_otherunit._road_delimiter == slash_text
 
 
-def test_otherunit_shop_CorrectlySetsAttributes_planck():
+def test_otherunit_shop_CorrectlySetsAttributes_pixel():
     # GIVEN
     plank_float = 00.45
 
     # WHEN
-    todd_otherunit = otherunit_shop("Todd", _planck=plank_float)
+    todd_otherunit = otherunit_shop("Todd", _pixel=plank_float)
 
     # THEN
-    assert todd_otherunit._planck == plank_float
+    assert todd_otherunit._pixel == plank_float
 
 
-def test_OtherUnit_set_planck_CorrectlySetsAttribute():
+def test_OtherUnit_set_pixel_CorrectlySetsAttribute():
     # GIVEN
     bob_otherunit = otherunit_shop("Bob")
-    assert bob_otherunit._planck == 1
+    assert bob_otherunit._pixel == 1
 
     # WHEN
-    x_planck = 5
-    bob_otherunit.set_planck(x_planck)
+    x_pixel = 5
+    bob_otherunit.set_pixel(x_pixel)
 
     # THEN
-    assert bob_otherunit._planck == x_planck
+    assert bob_otherunit._pixel == x_pixel
 
 
 def test_OtherUnit_set_output_agenda_meld_order_CorrectlySetsAttribute():
@@ -168,7 +168,7 @@ def test_OtherUnit_set_credor_weight_RaisesErrorWhen_credor_weight_IsNotMultiple
     bob_otherunit = otherunit_shop("Bob")
     x_credor_weight = 23
     bob_otherunit.set_credor_weight(x_credor_weight)
-    assert bob_otherunit._planck == 1
+    assert bob_otherunit._pixel == 1
     assert bob_otherunit.credor_weight == x_credor_weight
 
     # WHEN
@@ -177,7 +177,7 @@ def test_OtherUnit_set_credor_weight_RaisesErrorWhen_credor_weight_IsNotMultiple
         bob_otherunit.set_credor_weight(new_credor_weight)
     assert (
         str(excinfo.value)
-        == f"'{new_credor_weight}' is not divisible by planck '{bob_otherunit._planck}'"
+        == f"'{new_credor_weight}' is not divisible by pixel '{bob_otherunit._pixel}'"
     )
 
 
@@ -198,7 +198,7 @@ def test_OtherUnit_set_debtor_weight_RaisesErrorWhen_debtor_weight_IsNotMultiple
     bob_otherunit = otherunit_shop("Bob")
     x_debtor_weight = 23
     bob_otherunit.set_debtor_weight(x_debtor_weight)
-    assert bob_otherunit._planck == 1
+    assert bob_otherunit._pixel == 1
     assert bob_otherunit.debtor_weight == x_debtor_weight
 
     # WHEN
@@ -207,7 +207,7 @@ def test_OtherUnit_set_debtor_weight_RaisesErrorWhen_debtor_weight_IsNotMultiple
         bob_otherunit.set_debtor_weight(new_debtor_weight)
     assert (
         str(excinfo.value)
-        == f"'{new_debtor_weight}' is not divisible by planck '{bob_otherunit._planck}'"
+        == f"'{new_debtor_weight}' is not divisible by pixel '{bob_otherunit._pixel}'"
     )
 
 

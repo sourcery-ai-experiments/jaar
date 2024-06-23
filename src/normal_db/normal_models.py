@@ -16,7 +16,7 @@ class AgendaTable(Base):
     _other_credor_pool = Column(Integer)
     _other_debtor_pool = Column(Integer)
     _penny = Column(Float)
-    _planck = Column(Float)
+    _pixel = Column(Float)
     _weight = Column(Integer)
 
 

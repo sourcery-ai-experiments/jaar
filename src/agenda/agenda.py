@@ -7,8 +7,8 @@ from src._instrument.python import (
     get_empty_dict_if_none,
 )
 from src._road.finance import (
-    trim_planck_excess,
-    default_planck_if_none,
+    trim_pixel_excess,
+    default_pixel_if_none,
     default_penny_if_none,
 )
 from src._road.jaar_config import max_tree_traverse_default
@@ -110,7 +110,7 @@ class Exception_econs_justified(Exception):
     pass
 
 
-class _planck_RatioException(Exception):
+class _pixel_RatioException(Exception):
     pass
 
 
@@ -133,7 +133,7 @@ class AgendaUnit:
     _idearoot: IdeaUnit = None
     _max_tree_traverse: int = None
     _road_delimiter: str = None
-    _planck: float = None
+    _pixel: float = None
     _penny: float = None
     _monetary_desc: str = None
     _other_credor_pool: int = None
@@ -168,23 +168,23 @@ class AgendaUnit:
         self.set_other_credor_pool(
             new_other_credor_pool=x_other_pool,
             update_others_credor_weight=True,
-            correct_planck_issues=True,
+            correct_pixel_issues=True,
         )
         self.set_other_debtor_pool(
             new_other_debtor_pool=x_other_pool,
             update_others_debtor_weight=True,
-            correct_planck_issues=True,
+            correct_pixel_issues=True,
         )
 
     def set_other_credor_pool(
         self,
         new_other_credor_pool: int,
         update_others_credor_weight: bool = False,
-        correct_planck_issues: bool = False,
+        correct_pixel_issues: bool = False,
     ):
-        if (new_other_credor_pool / self._planck).is_integer() is False:
-            raise _planck_RatioException(
-                f"Agenda '{self._owner_id}' cannot set _other_credor_pool='{new_other_credor_pool}'. It is not divisible by planck '{self._planck}'"
+        if (new_other_credor_pool / self._pixel).is_integer() is False:
+            raise _pixel_RatioException(
+                f"Agenda '{self._owner_id}' cannot set _other_credor_pool='{new_other_credor_pool}'. It is not divisible by pixel '{self._pixel}'"
             )
 
         if update_others_credor_weight:
@@ -192,16 +192,16 @@ class AgendaUnit:
             if old_other_credor_pool != 0:
                 x_ratio = new_other_credor_pool / old_other_credor_pool
                 for x_other in self._others.values():
-                    new_other_credor_weight = trim_planck_excess(
-                        num=x_other.credor_weight * x_ratio, planck=x_other._planck
+                    new_other_credor_weight = trim_pixel_excess(
+                        num=x_other.credor_weight * x_ratio, pixel=x_other._pixel
                     )
                     x_other.set_credor_weight(new_other_credor_weight)
 
         self._other_credor_pool = new_other_credor_pool
-        if correct_planck_issues:
-            self._correct_any_credor_planck_issues()
+        if correct_pixel_issues:
+            self._correct_any_credor_pixel_issues()
 
-    def _correct_any_credor_planck_issues(self):
+    def _correct_any_credor_pixel_issues(self):
         if self.get_otherunits_credor_weight_sum() != self._other_credor_pool:
             missing_credor_weight = (
                 self._other_credor_pool - self.get_otherunits_credor_weight_sum()
@@ -209,23 +209,23 @@ class AgendaUnit:
             if len(self._others) > 0:
                 otherunits = list(self._others.values())
                 # others_count = len(self._others)
-                # planck_count = missing_credor_weight / self._planck
-                # if planck_count <= others_count:
-                for _ in range(0, missing_credor_weight, self._planck):
+                # pixel_count = missing_credor_weight / self._pixel
+                # if pixel_count <= others_count:
+                for _ in range(0, missing_credor_weight, self._pixel):
                     x_otherunit = otherunits.pop()
                     x_otherunit.set_credor_weight(
-                        x_otherunit.credor_weight + self._planck
+                        x_otherunit.credor_weight + self._pixel
                     )
 
     def set_other_debtor_pool(
         self,
         new_other_debtor_pool: int,
         update_others_debtor_weight: bool = False,
-        correct_planck_issues: bool = False,
+        correct_pixel_issues: bool = False,
     ):
-        if (new_other_debtor_pool / self._planck).is_integer() is False:
-            raise _planck_RatioException(
-                f"Agenda '{self._owner_id}' cannot set _other_debtor_pool='{new_other_debtor_pool}'. It is not divisible by planck '{self._planck}'"
+        if (new_other_debtor_pool / self._pixel).is_integer() is False:
+            raise _pixel_RatioException(
+                f"Agenda '{self._owner_id}' cannot set _other_debtor_pool='{new_other_debtor_pool}'. It is not divisible by pixel '{self._pixel}'"
             )
 
         if update_others_debtor_weight:
@@ -233,15 +233,15 @@ class AgendaUnit:
             if old_other_debtor_pool != 0:
                 x_ratio = new_other_debtor_pool / old_other_debtor_pool
                 for x_other in self._others.values():
-                    new_other_debtor_weight = trim_planck_excess(
-                        num=x_other.debtor_weight * x_ratio, planck=x_other._planck
+                    new_other_debtor_weight = trim_pixel_excess(
+                        num=x_other.debtor_weight * x_ratio, pixel=x_other._pixel
                     )
                     x_other.set_debtor_weight(new_other_debtor_weight)
         self._other_debtor_pool = new_other_debtor_pool
-        if correct_planck_issues:
-            self._correct_any_debtor_planck_issues()
+        if correct_pixel_issues:
+            self._correct_any_debtor_pixel_issues()
 
-    def _correct_any_debtor_planck_issues(self):
+    def _correct_any_debtor_pixel_issues(self):
         if self.get_otherunits_debtor_weight_sum() != self._other_debtor_pool:
             missing_debtor_weight = (
                 self._other_debtor_pool - self.get_otherunits_debtor_weight_sum()
@@ -249,12 +249,12 @@ class AgendaUnit:
             if len(self._others) > 0:
                 otherunits = list(self._others.values())
                 # others_count = len(self._others)
-                # planck_count = missing_debtor_weight / self._planck
-                # if planck_count <= others_count:
-                for _ in range(0, missing_debtor_weight, self._planck):
+                # pixel_count = missing_debtor_weight / self._pixel
+                # if pixel_count <= others_count:
+                for _ in range(0, missing_debtor_weight, self._pixel):
                     x_otherunit = otherunits.pop()
                     x_otherunit.set_debtor_weight(
-                        x_otherunit.debtor_weight + self._planck
+                        x_otherunit.debtor_weight + self._pixel
                     )
 
     def make_road(
@@ -656,8 +656,8 @@ class AgendaUnit:
     def set_otherunit(self, otherunit: OtherUnit):
         if otherunit._road_delimiter != self._road_delimiter:
             otherunit._road_delimiter = self._road_delimiter
-        if otherunit._planck != self._planck:
-            otherunit._planck = self._planck
+        if otherunit._pixel != self._pixel:
+            otherunit._pixel = self._pixel
         self._others[otherunit.other_id] = otherunit
 
         try:
@@ -2050,7 +2050,7 @@ class AgendaUnit:
             "_beliefs": self.get_beliefunits_dict(),
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
-            "_planck": self._planck,
+            "_pixel": self._pixel,
             "_penny": self._penny,
             "_owner_id": self._owner_id,
             "_real_id": self._real_id,
@@ -2316,7 +2316,7 @@ def agendaunit_shop(
     _owner_id: OwnerID = None,
     _real_id: RealID = None,
     _road_delimiter: str = None,
-    _planck: float = None,
+    _pixel: float = None,
     _penny: float = None,
     _weight: float = None,
     _meld_strategy: MeldStrategy = None,
@@ -2338,7 +2338,7 @@ def agendaunit_shop(
         _econ_dict=get_empty_dict_if_none(None),
         _healers_dict=get_empty_dict_if_none(None),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
-        _planck=default_planck_if_none(_planck),
+        _pixel=default_pixel_if_none(_pixel),
         _penny=default_penny_if_none(_penny),
         _meld_strategy=validate_meld_strategy(_meld_strategy),
         _econs_justified=get_False_if_None(),
@@ -2370,8 +2370,8 @@ def get_from_dict(agenda_dict: dict) -> AgendaUnit:
     x_agenda._road_delimiter = default_road_delimiter_if_none(
         get_obj_from_agenda_dict(agenda_dict, "_road_delimiter")
     )
-    x_agenda._planck = default_planck_if_none(
-        get_obj_from_agenda_dict(agenda_dict, "_planck")
+    x_agenda._pixel = default_pixel_if_none(
+        get_obj_from_agenda_dict(agenda_dict, "_pixel")
     )
     x_agenda._penny = default_penny_if_none(
         get_obj_from_agenda_dict(agenda_dict, "_penny")

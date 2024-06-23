@@ -1,6 +1,6 @@
 from src._road.finance import (
-    default_planck_if_none,
-    trim_planck_excess,
+    default_pixel_if_none,
+    trim_pixel_excess,
     FinanceUnit,
     default_penny_if_none,
     trim_penny_excess,
@@ -24,21 +24,21 @@ def test_FinanceUnit_exists():
     )
 
 
-def test_default_planck_if_none_ReturnsCorrectObj():
+def test_default_pixel_if_none_ReturnsCorrectObj():
     # GIVEN / WHEN / THEN
-    assert default_planck_if_none() == 1
-    assert default_planck_if_none(5) == 5
-    assert default_planck_if_none(0.03) == 0.03
+    assert default_pixel_if_none() == 1
+    assert default_pixel_if_none(5) == 5
+    assert default_pixel_if_none(0.03) == 0.03
 
 
-def test_trim_planck_excess_ReturnsCorrectedFloat():
+def test_trim_pixel_excess_ReturnsCorrectedFloat():
     # GIVEN / WHEN / THEN
-    assert trim_planck_excess(num=5.5, planck=1) == 5
-    assert trim_planck_excess(num=0.5, planck=1) == 0
-    assert trim_planck_excess(num=5.5, planck=0.1) == 5.5
-    assert trim_planck_excess(num=0.5, planck=0.01) == 0.5
-    assert trim_planck_excess(num=0.56, planck=0.1) == 0.5
-    assert trim_planck_excess(num=0.56, planck=0.133) == 0.532
+    assert trim_pixel_excess(num=5.5, pixel=1) == 5
+    assert trim_pixel_excess(num=0.5, pixel=1) == 0
+    assert trim_pixel_excess(num=5.5, pixel=0.1) == 5.5
+    assert trim_pixel_excess(num=0.5, pixel=0.01) == 0.5
+    assert trim_pixel_excess(num=0.56, pixel=0.1) == 0.5
+    assert trim_pixel_excess(num=0.56, pixel=0.133) == 0.532
 
 
 def test_default_penny_if_none_ReturnsCorrectObj():
@@ -50,9 +50,9 @@ def test_default_penny_if_none_ReturnsCorrectObj():
 
 def test_trim_penny_excess_ReturnsCorrectedFloat():
     # GIVEN / WHEN / THEN
-    assert trim_penny_excess(num=5.5, planck=1) == 5
-    assert trim_penny_excess(num=0.5, planck=1) == 0
-    assert trim_penny_excess(num=5.5, planck=0.1) == 5.5
-    assert trim_penny_excess(num=0.5, planck=0.01) == 0.5
-    assert trim_penny_excess(num=0.56, planck=0.1) == 0.5
-    assert trim_penny_excess(num=0.56, planck=0.133) == 0.532
+    assert trim_penny_excess(num=5.5, pixel=1) == 5
+    assert trim_penny_excess(num=0.5, pixel=1) == 0
+    assert trim_penny_excess(num=5.5, pixel=0.1) == 5.5
+    assert trim_penny_excess(num=0.5, pixel=0.01) == 0.5
+    assert trim_penny_excess(num=0.56, pixel=0.1) == 0.5
+    assert trim_penny_excess(num=0.56, pixel=0.133) == 0.532

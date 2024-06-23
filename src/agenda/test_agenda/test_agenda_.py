@@ -1,4 +1,4 @@
-from src._road.finance import default_planck_if_none, default_penny_if_none
+from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src.agenda.examples.example_agendas import (
     get_agenda_1Task_1CE0MinutesReason_1Fact,
 )
@@ -26,7 +26,7 @@ def test_AgendaUnit_Exists():
     assert x_agenda._idearoot is None
     assert x_agenda._max_tree_traverse is None
     assert x_agenda._road_delimiter is None
-    assert x_agenda._planck is None
+    assert x_agenda._pixel is None
     assert x_agenda._penny is None
     assert x_agenda._monetary_desc is None
     assert x_agenda._other_credor_pool is None
@@ -52,7 +52,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     iowa_real_id = "Iowa"
     slash_road_delimiter = "/"
     override_meld_strategy = "override"
-    five_planck = 5
+    five_pixel = 5
     penny_float = 1
 
     # WHEN
@@ -61,7 +61,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
         _real_id=iowa_real_id,
         _road_delimiter=slash_road_delimiter,
         _meld_strategy=override_meld_strategy,
-        _planck=five_planck,
+        _pixel=five_pixel,
         _penny=penny_float,
     )
     assert x_agenda
@@ -73,7 +73,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_agenda._idearoot != None
     assert x_agenda._max_tree_traverse == 3
     assert x_agenda._road_delimiter == slash_road_delimiter
-    assert x_agenda._planck == five_planck
+    assert x_agenda._pixel == five_pixel
     assert x_agenda._penny == penny_float
     assert x_agenda._monetary_desc is None
     assert x_agenda._other_credor_pool is None
@@ -111,7 +111,7 @@ def test_AgendaUnit_shop_ReturnsCorrectObjectWithCorrectEmptyField():
     assert x_agenda._owner_id == ""
     assert x_agenda._real_id == root_label()
     assert x_agenda._road_delimiter == default_road_delimiter_if_none()
-    assert x_agenda._planck == default_planck_if_none()
+    assert x_agenda._pixel == default_pixel_if_none()
     assert x_agenda._penny == default_penny_if_none()
 
 

@@ -43,7 +43,7 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     assert yao_empty_job._last_atom_id is None
     assert yao_empty_job.get_beliefunits_dict() == {}
     assert yao_empty_job._road_delimiter == yao_duty._road_delimiter
-    assert yao_empty_job._planck == yao_duty._planck
+    assert yao_empty_job._pixel == yao_duty._pixel
     assert yao_empty_job._penny == yao_duty._penny
     assert yao_empty_job._monetary_desc is None
     assert yao_empty_job._other_credor_pool != yao_duty._other_credor_pool
@@ -86,7 +86,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     assert yao_basis_job._last_atom_id == yao_role._last_atom_id
     assert yao_basis_job.get_beliefunits_dict() == yao_role.get_beliefunits_dict()
     assert yao_basis_job._road_delimiter == yao_role._road_delimiter
-    assert yao_basis_job._planck == yao_role._planck
+    assert yao_basis_job._pixel == yao_role._pixel
     assert yao_basis_job._monetary_desc == yao_role._monetary_desc
     assert yao_basis_job._other_credor_pool == yao_role._other_credor_pool
     assert yao_basis_job._other_debtor_pool == yao_role._other_debtor_pool
@@ -104,13 +104,13 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     sue_text = "Sue"
     blue_text = "blue"
     slash_text = "/"
-    five_planck = 5
+    five_pixel = 5
     sue_other_pool = 800
     casa_text = "casa"
     bob_text = "Bob"
     last_atom_id = 7
     sue_max_tree_traverse = 9
-    sue_agendaunit = agendaunit_shop(sue_text, blue_text, slash_text, five_planck)
+    sue_agendaunit = agendaunit_shop(sue_text, blue_text, slash_text, five_pixel)
     sue_agendaunit.set_last_atom_id(last_atom_id)
     sue_agendaunit.add_otherunit(bob_text, 3, 4)
     swim_text = "/swimmers"
@@ -131,7 +131,7 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     assert default_work_agenda._real_id == sue_agendaunit._real_id
     assert default_work_agenda._real_id == blue_text
     assert default_work_agenda._road_delimiter == slash_text
-    assert default_work_agenda._planck == five_planck
+    assert default_work_agenda._pixel == five_pixel
     assert default_work_agenda._other_credor_pool is None
     assert default_work_agenda._other_debtor_pool is None
     assert default_work_agenda._max_tree_traverse == sue_max_tree_traverse

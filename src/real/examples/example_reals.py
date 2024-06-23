@@ -42,7 +42,7 @@ def create_example_real1() -> RealUnit:
         person_id=yao_userhub.person_id,
         econ_road=None,
         road_delimiter=yao_userhub.road_delimiter,
-        planck=yao_userhub.planck,
+        pixel=yao_userhub.pixel,
     )
     x_userhub.save_duty_agenda(yao_duty_agenda)
     yao_userhub.create_duty_treasury_db_files()

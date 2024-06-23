@@ -348,7 +348,7 @@ def test_get_normalized_agenda_table_build_ReturnsCorrectObj():
     assert agendaunit_columns.get("_other_credor_pool") != None
     assert agendaunit_columns.get("_other_debtor_pool") != None
     assert agendaunit_columns.get("_penny") != None
-    assert agendaunit_columns.get("_planck") != None
+    assert agendaunit_columns.get("_pixel") != None
     assert agendaunit_columns.get("_weight") != None
 
     assert len(cat_otherunit) == 2

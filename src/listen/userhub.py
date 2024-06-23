@@ -23,7 +23,7 @@ from src._road.jaar_config import (
     init_atom_id,
 )
 from src._road.finance import (
-    default_planck_if_none,
+    default_pixel_if_none,
     default_penny_if_none,
     default_money_magnitude_if_none,
 )
@@ -98,7 +98,7 @@ class UserHub:
     real_id: str = None
     econ_road: RoadUnit = None
     road_delimiter: str = None
-    planck: float = None
+    pixel: float = None
     penny: float = None
     econ_money_magnitude: float = None
 
@@ -181,7 +181,7 @@ class UserHub:
             _owner_id=self.person_id,
             _real_id=self.real_id,
             _road_delimiter=self.road_delimiter,
-            _planck=self.planck,
+            _pixel=self.pixel,
             _penny=self.penny,
         )
         x_agendaunit._last_atom_id = init_atom_id()
@@ -492,7 +492,7 @@ class UserHub:
             real_id=self.real_id,
             person_id=speaker_id,
             road_delimiter=self.road_delimiter,
-            planck=self.planck,
+            pixel=self.pixel,
         )
         return speaker_userhub.get_work_agenda()
 
@@ -514,7 +514,7 @@ class UserHub:
             person_id=healer_id,
             econ_road=self.econ_road,
             road_delimiter=self.road_delimiter,
-            planck=self.planck,
+            pixel=self.pixel,
         )
         return speaker_userhub.get_job_agenda(speaker_id)
 
@@ -576,7 +576,7 @@ def userhub_shop(
     person_id: PersonID = None,
     econ_road: RoadUnit = None,
     road_delimiter: str = None,
-    planck: float = None,
+    pixel: float = None,
     penny: float = None,
     econ_money_magnitude: float = None,
 ) -> UserHub:
@@ -591,7 +591,7 @@ def userhub_shop(
         person_id=validate_roadnode(person_id, road_delimiter),
         econ_road=econ_road,
         road_delimiter=default_road_delimiter_if_none(road_delimiter),
-        planck=default_planck_if_none(planck),
+        pixel=default_pixel_if_none(pixel),
         penny=default_penny_if_none(penny),
         econ_money_magnitude=default_money_magnitude_if_none(econ_money_magnitude),
     )

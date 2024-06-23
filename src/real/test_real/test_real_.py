@@ -1,4 +1,4 @@
-from src._road.finance import default_planck_if_none, default_penny_if_none
+from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src._road.jaar_config import get_atoms_folder, get_json_filename
 from src._road.road import default_road_delimiter_if_none
 from src.agenda.healer import healerhold_shop
@@ -18,7 +18,7 @@ def test_RealUnit_exists(env_dir_setup_cleanup):
     assert music_real._journal_db is None
     assert music_real._atoms_dir is None
     assert music_real._road_delimiter is None
-    assert music_real._planck is None
+    assert music_real._pixel is None
     assert music_real._penny is None
 
 
@@ -37,7 +37,7 @@ def test_realunit_shop_ReturnsRealUnit(env_dir_setup_cleanup):
     assert music_real._persons_dir != None
     assert music_real._atoms_dir != None
     assert music_real._road_delimiter == default_road_delimiter_if_none()
-    assert music_real._planck == default_planck_if_none()
+    assert music_real._pixel == default_pixel_if_none()
     assert music_real._penny == default_penny_if_none()
 
 
@@ -45,7 +45,7 @@ def test_realunit_shop_ReturnsRealUnitWith_road_delimiter(env_dir_setup_cleanup)
     # GIVEN
     music_text = "music"
     slash_text = "/"
-    planck_float = 9
+    pixel_float = 9
     penny_float = 3
 
     # WHEN
@@ -54,13 +54,13 @@ def test_realunit_shop_ReturnsRealUnitWith_road_delimiter(env_dir_setup_cleanup)
         reals_dir=get_test_reals_dir(),
         in_memory_journal=True,
         _road_delimiter=slash_text,
-        _planck=planck_float,
+        _pixel=pixel_float,
         _penny=penny_float,
     )
 
     # THEN
     assert music_real._road_delimiter == slash_text
-    assert music_real._planck == planck_float
+    assert music_real._pixel == pixel_float
     assert music_real._penny == penny_float
 
 
@@ -114,16 +114,16 @@ def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(env_dir_setup_clean
     # GIVEN
     music_text = "music"
     slash_text = "/"
-    x_planck = 5
+    x_pixel = 5
     music_real = realunit_shop(
         music_text,
         get_test_reals_dir(),
         _road_delimiter=slash_text,
-        _planck=x_planck,
+        _pixel=x_pixel,
         in_memory_journal=True,
     )
     luca_text = "Luca"
-    luca_userhub = userhub_shop(None, music_text, luca_text, None, planck=x_planck)
+    luca_userhub = userhub_shop(None, music_text, luca_text, None, pixel=x_pixel)
     assert os_path_exists(luca_userhub.work_path()) is False
 
     # WHEN
@@ -248,7 +248,7 @@ def test_RealUnit_get_person_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
         person_id=luca_text,
         econ_road=None,
         road_delimiter=music_real._road_delimiter,
-        planck=music_real._planck,
+        pixel=music_real._pixel,
     )
     todd_userhub = userhub_shop(
         reals_dir=music_real.reals_dir,
@@ -256,7 +256,7 @@ def test_RealUnit_get_person_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
         person_id=todd_text,
         econ_road=None,
         road_delimiter=music_real._road_delimiter,
-        planck=music_real._planck,
+        pixel=music_real._pixel,
     )
     assert music_all_persons.get(luca_text) == luca_userhub
     assert music_all_persons.get(todd_text) == todd_userhub

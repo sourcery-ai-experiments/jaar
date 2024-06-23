@@ -13,10 +13,10 @@ def create_empty_agenda(
     if x_owner_id is None:
         x_owner_id = ref_agenda._owner_id
     x_road_delimiter = ref_agenda._road_delimiter
-    x_planck = ref_agenda._planck
+    x_pixel = ref_agenda._pixel
     x_penny = ref_agenda._penny
     return agendaunit_shop(
-        x_owner_id, ref_agenda._real_id, x_road_delimiter, x_planck, x_penny
+        x_owner_id, ref_agenda._real_id, x_road_delimiter, x_pixel, x_penny
     )
 
 

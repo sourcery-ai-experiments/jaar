@@ -162,7 +162,7 @@ def test_UserHub_get_agenda_from_quark_files_ReturnsFileWithZeroQuarks(
     assert yao_agenda._owner_id == yao_text
     assert yao_agenda._real_id == yao_userhub.real_id
     assert yao_agenda._road_delimiter == yao_userhub.road_delimiter
-    assert yao_agenda._planck == yao_userhub.planck
+    assert yao_agenda._pixel == yao_userhub.pixel
 
 
 def test_UserHub_get_agenda_from_quark_files_ReturnsCorrectFile_SimpleIdea(

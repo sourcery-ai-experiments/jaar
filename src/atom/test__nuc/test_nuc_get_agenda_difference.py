@@ -152,14 +152,14 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_AgendaUnit_simpl
     before_sue_agenda = agendaunit_shop(sue_text)
     after_sue_agenda = copy_deepcopy(before_sue_agenda)
     x_agendaUnit_weight = 55
-    x_planck = 0.5
+    x_pixel = 0.5
     x_max_tree_traverse = 66
     x_meld_strategy = "override"
     x_monetary_desc = "dragon funds"
     x_other_credor_pool = 77
     x_other_debtor_pool = 88
     after_sue_agenda._weight = x_agendaUnit_weight
-    after_sue_agenda._planck = x_planck
+    after_sue_agenda._pixel = x_pixel
     after_sue_agenda.set_max_tree_traverse(x_max_tree_traverse)
     after_sue_agenda.set_meld_strategy(x_meld_strategy)
     after_sue_agenda.set_monetary_desc(x_monetary_desc)
@@ -179,7 +179,7 @@ def test_NucUnit_add_all_different_quarkunits_Creates_QuarkUnit_AgendaUnit_simpl
     assert rico_quarkunit.get_value("_other_credor_pool") == x_other_credor_pool
     assert rico_quarkunit.get_value("_other_debtor_pool") == x_other_debtor_pool
     assert rico_quarkunit.get_value("_weight") == x_agendaUnit_weight
-    assert rico_quarkunit.get_value("_planck") == x_planck
+    assert rico_quarkunit.get_value("_pixel") == x_pixel
 
     print(f"{get_quarkunit_total_count(sue_nucunit)=}")
     assert get_quarkunit_total_count(sue_nucunit) == 1
