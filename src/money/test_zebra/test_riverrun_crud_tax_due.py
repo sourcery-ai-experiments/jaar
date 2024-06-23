@@ -145,7 +145,7 @@ def test_RiverRun_tax_dues_unpaid_ReturnsObj():
     assert x_riverrun.tax_dues_unpaid() == False
 
 
-def test_RiverRun_reset_tax_dues_CorrectlySetsAttr():
+def test_RiverRun_set_tax_dues_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
     bob_money_amount = 1000
@@ -167,7 +167,7 @@ def test_RiverRun_reset_tax_dues_CorrectlySetsAttr():
     assert bob_riverrun.tax_dues_unpaid() == False
 
     # WHEN
-    bob_riverrun.reset_tax_dues(bob_debtorledger)
+    bob_riverrun.set_tax_dues(bob_debtorledger)
 
     # THEN
     assert bob_riverrun.tax_dues_unpaid()
@@ -203,7 +203,7 @@ def test_RiverRun_other_has_tax_due_ReturnsCorrectBool():
     assert bob_riverrun.other_has_tax_due(zia_text) == False
 
     # WHEN
-    bob_riverrun.reset_tax_dues(bob_debtorledger)
+    bob_riverrun.set_tax_dues(bob_debtorledger)
 
     # THEN
     assert bob_riverrun.other_has_tax_due(bob_text)
@@ -258,7 +258,7 @@ def test_RiverRun_get_other_tax_due_ReturnsCorrectObj():
     assert bob_riverrun.get_other_tax_due(zia_text) == 0
 
     # WHEN
-    bob_riverrun.reset_tax_dues(bob_debtorledger)
+    bob_riverrun.set_tax_dues(bob_debtorledger)
 
     # THEN
     assert bob_riverrun.other_has_tax_due(bob_text)
@@ -286,7 +286,7 @@ def test_RiverRun_levy_tax_due_SetsAttr():
     bob_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
     bob_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
     bob_debtorledger = get_debtorledger(bob_agenda)
-    bob_riverrun.reset_tax_dues(bob_debtorledger)
+    bob_riverrun.set_tax_dues(bob_debtorledger)
     assert bob_riverrun.get_other_tax_due(bob_text) == 380
 
     # WHEN / THEN

@@ -216,7 +216,7 @@ def test_RiverRun_levy_tax_due_SetsAttr():
     bob_agenda.add_otherunit(sue_text, 2, sue_tax_yield)
     bob_agenda.add_otherunit(yao_text, 2, yao_tax_yield)
     bob_debtorledger = get_debtorledger(bob_agenda)
-    bob_riverrun.reset_tax_dues(bob_debtorledger)
+    bob_riverrun.set_tax_dues(bob_debtorledger)
     assert bob_riverrun.get_other_tax_due(bob_text) == 380
     assert bob_riverrun.get_other_tax_yield(bob_text) == 0
 

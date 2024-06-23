@@ -10,7 +10,7 @@ from src.money.rivercycle import (
     RiverGrade,
     rivergrade_shop,
     create_init_rivercycle,
-    get_init_rivercycle_cycleledger,
+    create_next_rivercycle,
 )
 from src.listen.userhub import UserHub
 from dataclasses import dataclass
@@ -68,6 +68,7 @@ class RiverRun:
 
         for payee_to_delete in delete_from_cycleledger:
             cycleledger.pop(payee_to_delete)
+        return cycleledger
 
     def set_other_tax_due(self, x_other_id: OtherID, tax_due: float):
         self.tax_dues[x_other_id] = tax_due
@@ -75,7 +76,7 @@ class RiverRun:
     def tax_dues_unpaid(self) -> bool:
         return len(self.tax_dues) != 0
 
-    def reset_tax_dues(self, debtorledger: dict[OtherID:float]):
+    def set_tax_dues(self, debtorledger: dict[OtherID:float]):
         x_amount = self.userhub.econ_money_magnitude
         self.tax_dues = allot_scale(debtorledger, x_amount, self.userhub.penny)
 
@@ -130,17 +131,6 @@ class RiverRun:
             x_tax_yield = self.get_other_tax_yield(x_other_id) + x_tax_yield
         self.set_other_tax_yield(x_other_id, x_tax_yield)
 
-    def set_initial_rivergrade(self, other_id: OtherID):
-        x_rivergrade = rivergrade_shop(
-            self.userhub, other_id, self.number, self._debtor_count, self._credor_count
-        )
-        other_grant = self._grants.get(other_id)
-        if other_grant is None:
-            other_grant = 0
-        x_rivergrade.grant_amount = other_grant
-        x_rivergrade.set_tax_paid_amount(self.get_other_tax_yield(other_id))
-        self._rivergrades[other_id] = x_rivergrade
-
     def get_rivergrade(self, other_id: OtherID) -> RiverGrade:
         return self._rivergrades.get(other_id)
 
@@ -150,7 +140,17 @@ class RiverRun:
     def rivergrade_exists(self, other_id: OtherID) -> bool:
         return self._rivergrades.get(other_id) != None
 
-    def reset_initial_rivergrades(self):
+    def _get_other_grant(self, other_id: OtherID) -> float:
+        return get_0_if_None(self._grants.get(other_id))
+
+    def set_initial_rivergrade(self, other_id: OtherID):
+        x_rivergrade = rivergrade_shop(self.userhub, other_id, self.number)
+        x_rivergrade.debtor_count = self._debtor_count
+        x_rivergrade.credor_count = self._credor_count
+        x_rivergrade.grant_amount = self._get_other_grant(other_id)
+        self._rivergrades[other_id] = x_rivergrade
+
+    def set_all_initial_rivergrades(self):
         self._rivergrades = {}
         all_other_ids = self.get_all_econ_credorledger_other_ids()
         for other_id in all_other_ids:
@@ -158,26 +158,37 @@ class RiverRun:
 
     def calc_metrics(self):
         self._cycle_count = 0
+        self._set_debtor_count_credor_count()
+        self._set_grants()
+        self.set_all_initial_rivergrades()
+
+        x_rivercyle = create_init_rivercycle(self.userhub, self.econ_credorledgers)
+        x_cyclelegder = x_rivercyle.create_cylceledger()
+        self._cycle_count = 0
+        while self.cycle_max > self._cycle_count and self.tax_dues_unpaid():
+            x_cyclelegder = self.levy_tax_dues(x_cyclelegder)
+            x_rivercyle = create_next_rivercycle(x_rivercyle, x_cyclelegder)
+            self._cycle_count += 1
+
+        for x_other_id, other_rivergrade in self._rivergrades.items():
+            tax_due_remaining = self.get_other_tax_due(x_other_id)
+            tax_due_paid = self.get_other_tax_yield(x_other_id)
+            other_rivergrade.set_tax_due_amount(tax_due_paid + tax_due_remaining)
+            other_rivergrade.set_tax_paid_amount(tax_due_paid)
+
+    def _set_debtor_count_credor_count(self):
         tax_dues_others = set(self.tax_dues.keys())
         tax_yields_others = set(self._tax_yields.keys())
         self._debtor_count = len(tax_dues_others.union(tax_yields_others))
         self._credor_count = len(self.econ_credorledgers.get(self.userhub.person_id))
+
+    def _set_grants(self):
         grant_credorledger = self.econ_credorledgers.get(self.userhub.person_id)
         self._grants = allot_scale(
             ledger=grant_credorledger,
             scale_number=self.userhub.econ_money_magnitude,
             grain_unit=self.userhub.penny,
         )
-        self.reset_initial_rivergrades()
-        self._cycle_count = 1
-        init_rivercylce = create_init_rivercycle(self.userhub, self.econ_credorledgers)
-        while self.cycle_max > self._cycle_count and self.tax_dues_unpaid():
-            print(f"{self._cycle_count=}")
-
-            self._cycle_count += 1
-
-        for x_other_id, other_rivergrade in self._rivergrades.items():
-            other_rivergrade.set_tax_due_amount(self.get_other_tax_due(x_other_id))
 
 
 def riverrun_shop(

@@ -6,12 +6,11 @@ from src.money.examples.example_credorledgers import (
     example_zia_credorledger,
 )
 from src.money.rivercycle import (
+    get_credorledger,
     create_riverbook,
     RiverCycle,
     rivercycle_shop,
     create_init_rivercycle,
-    get_init_rivercycle_cycleledger,
-    get_credorledger,
     create_next_rivercycle,
 )
 
@@ -170,34 +169,6 @@ def test_create_init_rivercycle_ReturnsObjScenarioThree_otherunit():
     assert yao_riverbook._rivergrants.get(yao_text) == 350000000
     assert yao_riverbook._rivergrants.get(bob_text) == 150000000
     assert yao_riverbook._rivergrants.get(zia_text) == 500000000
-
-
-def test_get_init_rivercycle_cycleledger_ReturnsObj():
-    # GIVEN
-    yao_text = "Yao"
-    bob_text = "Bob"
-    zia_text = "Zia"
-    yao_credor_weight = 7
-    bob_credor_weight = 3
-    zia_credor_weight = 10
-    yao_userhub = userhub_shop(None, None, yao_text)
-    yao_agenda = agendaunit_shop(yao_text)
-    yao_agenda.add_otherunit(yao_text, yao_credor_weight)
-    yao_agenda.add_otherunit(bob_text, bob_credor_weight)
-    yao_agenda.add_otherunit(zia_text, zia_credor_weight)
-    yao_credorledger = get_credorledger(yao_agenda)
-    econ_credorledgers = {yao_text: yao_credorledger}
-
-    # WHEN
-    init_rivercycle_cycleledger = get_init_rivercycle_cycleledger(
-        yao_userhub, econ_credorledgers
-    )
-
-    # THEN
-    assert len(init_rivercycle_cycleledger) == 3
-    assert init_rivercycle_cycleledger.get(yao_text) == 350000000
-    assert init_rivercycle_cycleledger.get(bob_text) == 150000000
-    assert init_rivercycle_cycleledger.get(zia_text) == 500000000
 
 
 def test_create_next_rivercycle_ReturnsObjScenarioThree_otherunit():

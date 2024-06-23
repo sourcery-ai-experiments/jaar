@@ -105,14 +105,6 @@ def create_init_rivercycle(
     return x_rivercycle
 
 
-def get_init_rivercycle_cycleledger(
-    leader_userhub: UserHub,
-    econ_credorledgers: dict[OwnerID : dict[OtherID:float]],
-) -> dict[OtherID:float]:
-    init_rivercycle = create_init_rivercycle(leader_userhub, econ_credorledgers)
-    return init_rivercycle.create_cylceledger()
-
-
 def create_next_rivercycle(
     prev_rivercycle: RiverCycle, prev_cycle_cycleledger_post_tax: dict[OtherID:float]
 ) -> RiverCycle:

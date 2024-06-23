@@ -16,11 +16,11 @@ def test_RiverRun_levy_tax_dues_CorrectChanges_cycleledger_Scenario01():
     assert x_cycleledger.get(yao_text) == yao_paid
 
     # WHEN
-    x_riverrun.levy_tax_dues(x_cycleledger)
+    y_cycleledger = x_riverrun.levy_tax_dues(x_cycleledger)
 
     # THEN
     assert x_riverrun.get_other_tax_due(yao_text) == 0
-    assert x_cycleledger.get(yao_text) == yao_paid - yao_tax_due
+    assert y_cycleledger.get(yao_text) == yao_paid - yao_tax_due
 
 
 def test_RiverRun_levy_tax_dues_CorrectChanges_cycleledger_Scenario02():
@@ -43,10 +43,10 @@ def test_RiverRun_levy_tax_dues_CorrectChanges_cycleledger_Scenario02():
     assert x_cycleledger.get(bob_text) == bob_paid
 
     # WHEN
-    x_riverrun.levy_tax_dues(x_cycleledger)
+    y_cycleledger = x_riverrun.levy_tax_dues(x_cycleledger)
 
     # THEN
     assert x_riverrun.get_other_tax_due(yao_text) == 0
     assert x_riverrun.get_other_tax_due(bob_text) == 27
-    assert x_cycleledger.get(yao_text) == yao_paid - yao_tax_due
-    assert x_cycleledger.get(bob_text) is None
+    assert y_cycleledger.get(yao_text) == yao_paid - yao_tax_due
+    assert y_cycleledger.get(bob_text) is None
