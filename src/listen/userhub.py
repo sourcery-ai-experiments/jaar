@@ -47,7 +47,7 @@ from src.atom.quark import (
     get_from_json as quarkunit_get_from_json,
     modify_agenda_with_quarkunit,
 )
-from src.listen.basis_agendas import get_default_work_agenda
+from src.listen.basis_agendas import get_default_goal_agenda
 from src.atom.atom import AtomUnit, atomunit_shop, create_atomunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -59,7 +59,7 @@ class Invalid_duty_Exception(Exception):
     pass
 
 
-class Invalid_work_Exception(Exception):
+class Invalid_goal_Exception(Exception):
     pass
 
 
@@ -123,8 +123,8 @@ class UserHub:
     def duty_dir(self) -> str:
         return f"{self.person_dir()}/duty"
 
-    def work_dir(self) -> str:
-        return f"{self.person_dir()}/work"
+    def goal_dir(self) -> str:
+        return f"{self.person_dir()}/goal"
 
     def duty_file_name(self):
         return get_json_filename(self.person_id)
@@ -132,11 +132,11 @@ class UserHub:
     def duty_file_path(self):
         return f"{self.duty_dir()}/{self.duty_file_name()}"
 
-    def work_file_name(self):
+    def goal_file_name(self):
         return get_json_filename(self.person_id)
 
-    def work_path(self):
-        return f"{self.work_dir()}/{self.work_file_name()}"
+    def goal_path(self):
+        return f"{self.goal_dir()}/{self.goal_file_name()}"
 
     def save_file_duty(self, file_text: str, replace: bool):
         save_file(
@@ -146,10 +146,10 @@ class UserHub:
             replace=replace,
         )
 
-    def save_file_work(self, file_text: str, replace: bool):
+    def save_file_goal(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.work_dir(),
-            file_name=self.work_file_name(),
+            dest_dir=self.goal_dir(),
+            file_name=self.goal_file_name(),
             file_text=file_text,
             replace=replace,
         )
@@ -157,8 +157,8 @@ class UserHub:
     def duty_file_exists(self) -> bool:
         return os_path_exists(self.duty_file_path())
 
-    def work_file_exists(self) -> bool:
-        return os_path_exists(self.work_path())
+    def goal_file_exists(self) -> bool:
+        return os_path_exists(self.goal_path())
 
     def open_file_duty(self):
         return open_file(self.duty_dir(), self.duty_file_name())
@@ -190,8 +190,8 @@ class UserHub:
     def delete_duty_file(self):
         delete_dir(self.duty_file_path())
 
-    def open_file_work(self):
-        return open_file(self.work_dir(), self.work_file_name())
+    def open_file_goal(self):
+        return open_file(self.goal_dir(), self.goal_file_name())
 
     def get_max_quark_file_number(self) -> int:
         if not os_path_exists(self.quarks_dir()):
@@ -442,16 +442,16 @@ class UserHub:
         x_file_name = self.owner_file_name(x_agenda._owner_id)
         save_file(self.jobs_dir(), x_file_name, x_agenda.get_json())
 
-    def save_work_agenda(self, x_agenda: AgendaUnit):
+    def save_goal_agenda(self, x_agenda: AgendaUnit):
         if x_agenda._owner_id != self.person_id:
-            raise Invalid_work_Exception(
-                f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s work agenda."
+            raise Invalid_goal_Exception(
+                f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s goal agenda."
             )
-        self.save_file_work(x_agenda.get_json(), True)
+        self.save_file_goal(x_agenda.get_json(), True)
 
-    def initialize_work_file(self, duty: AgendaUnit):
-        if self.work_file_exists() is False:
-            self.save_work_agenda(get_default_work_agenda(duty))
+    def initialize_goal_file(self, duty: AgendaUnit):
+        if self.goal_file_exists() is False:
+            self.save_goal_agenda(get_default_goal_agenda(duty))
 
     def role_file_exists(self, owner_id: PersonID) -> bool:
         return os_path_exists(self.role_path(owner_id))
@@ -471,10 +471,10 @@ class UserHub:
         file_content = open_file(self.jobs_dir(), self.owner_file_name(owner_id))
         return agendaunit_get_from_json(file_content)
 
-    def get_work_agenda(self) -> AgendaUnit:
-        if self.work_file_exists() is False:
+    def get_goal_agenda(self) -> AgendaUnit:
+        if self.goal_file_exists() is False:
             return None
-        file_content = self.open_file_work()
+        file_content = self.open_file_goal()
         return agendaunit_get_from_json(file_content)
 
     def delete_role_file(self, owner_id: PersonID):
@@ -494,7 +494,7 @@ class UserHub:
             road_delimiter=self.road_delimiter,
             pixel=self.pixel,
         )
-        return speaker_userhub.get_work_agenda()
+        return speaker_userhub.get_goal_agenda()
 
     def get_perspective_agenda(self, speaker: AgendaUnit) -> AgendaUnit:
         # get copy of agenda without any metrics

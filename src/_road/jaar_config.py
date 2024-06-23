@@ -26,8 +26,8 @@ def duty_str() -> str:
     return "duty"
 
 
-def work_str() -> str:
-    return "work"
+def goal_str() -> str:
+    return "goal"
 
 
 def jobs_str() -> str:

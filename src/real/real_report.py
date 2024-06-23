@@ -63,21 +63,21 @@ def get_real_dutys_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     return fig
 
 
-def get_real_works_others_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_goals_others_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all person paths
     person_userhubs = x_real.get_person_userhubs()
-    # for all persons get work
-    work_dfs = []
+    # for all persons get goal
+    goal_dfs = []
     for x_userhub in person_userhubs.values():
-        work_agenda = x_userhub.get_work_agenda()
-        work_agenda.calc_agenda_metrics()
-        work_df = get_agenda_otherunits_dataframe(work_agenda)
-        work_df.insert(0, "owner_id", work_agenda._owner_id)
-        work_dfs.append(work_df)
-    return pandas_concat(work_dfs, ignore_index=True)
+        goal_agenda = x_userhub.get_goal_agenda()
+        goal_agenda.calc_agenda_metrics()
+        goal_df = get_agenda_otherunits_dataframe(goal_agenda)
+        goal_df.insert(0, "owner_id", goal_agenda._owner_id)
+        goal_dfs.append(goal_df)
+    return pandas_concat(goal_dfs, ignore_index=True)
 
 
-def get_real_works_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_goals_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "other_id",
@@ -88,7 +88,7 @@ def get_real_works_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_agenda_intent_cred",
         "_agenda_intent_debt",
     ]
-    df = get_real_works_others_dataframe(x_real)
+    df = get_real_goals_others_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -111,7 +111,7 @@ def get_real_works_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', work others metrics"
+    fig_title = f"Real '{x_real.real_id}', goal others metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -178,20 +178,20 @@ def get_real_dutys_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     return fig
 
 
-def get_real_works_intent_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_goals_intent_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all person paths
     person_userhubs = x_real.get_person_userhubs()
-    # for all persons get work
-    work_dfs = []
+    # for all persons get goal
+    goal_dfs = []
     for x_userhub in person_userhubs.values():
-        work_agenda = x_userhub.get_work_agenda()
-        work_agenda.calc_agenda_metrics()
-        work_df = get_agenda_intent_dataframe(work_agenda)
-        work_dfs.append(work_df)
-    return pandas_concat(work_dfs, ignore_index=True)
+        goal_agenda = x_userhub.get_goal_agenda()
+        goal_agenda.calc_agenda_metrics()
+        goal_df = get_agenda_intent_dataframe(goal_agenda)
+        goal_dfs.append(goal_df)
+    return pandas_concat(goal_dfs, ignore_index=True)
 
 
-def get_real_works_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_goals_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "agenda_importance",
@@ -204,7 +204,7 @@ def get_real_works_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_numor",
         "_reest",
     ]
-    df = get_real_works_intent_dataframe(x_real)
+    df = get_real_goals_intent_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -229,7 +229,7 @@ def get_real_works_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', work intent metrics"
+    fig_title = f"Real '{x_real.real_id}', goal intent metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

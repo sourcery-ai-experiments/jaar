@@ -3,7 +3,7 @@ from src._road.jaar_config import get_json_filename
 from src.agenda.idea import ideaunit_shop
 from src.agenda.agenda import agendaunit_shop
 from src.listen.userhub import userhub_shop
-from src.listen.listen import create_listen_basis, listen_to_intents_duty_work
+from src.listen.listen import create_listen_basis, listen_to_intents_duty_goal
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as env_dir,
     env_dir_setup_cleanup,
@@ -27,7 +27,7 @@ from src.listen.examples.example_listen import (
 from os.path import exists as os_path_exists
 
 
-def test_listen_to_intents_duty_work_AddsTasksToAgendaWhenNo_suffbeliefIsSet(
+def test_listen_to_intents_duty_goal_AddsTasksToAgendaWhenNo_suffbeliefIsSet(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -42,25 +42,25 @@ def test_listen_to_intents_duty_work_AddsTasksToAgendaWhenNo_suffbeliefIsSet(
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_duty_agenda(yao_duty)
 
-    zia_work = agendaunit_shop(zia_text)
-    zia_work.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    zia_work.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_work.add_otherunit(yao_text, debtor_weight=12)
+    zia_goal = agendaunit_shop(zia_text)
+    zia_goal.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
+    zia_goal.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    zia_goal.add_otherunit(yao_text, debtor_weight=12)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_work_agenda(zia_work)
+    zia_userhub.save_goal_agenda(zia_goal)
 
-    new_yao_work = create_listen_basis(yao_duty)
-    assert len(new_yao_work.get_intent_dict()) == 0
+    new_yao_goal = create_listen_basis(yao_duty)
+    assert len(new_yao_goal.get_intent_dict()) == 0
 
     # WHEN
-    print(f"{len(new_yao_work.get_idea_dict())=}")
-    listen_to_intents_duty_work(new_yao_work, yao_userhub)
+    print(f"{len(new_yao_goal.get_idea_dict())=}")
+    listen_to_intents_duty_goal(new_yao_goal, yao_userhub)
 
     # THEN
-    assert len(new_yao_work.get_intent_dict()) == 2
+    assert len(new_yao_goal.get_intent_dict()) == 2
 
 
-def test_listen_to_intents_duty_work_AddsTasksToAgenda(env_dir_setup_cleanup):
+def test_listen_to_intents_duty_goal_AddsTasksToAgenda(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_duty = agendaunit_shop(yao_text)
@@ -73,66 +73,66 @@ def test_listen_to_intents_duty_work_AddsTasksToAgenda(env_dir_setup_cleanup):
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_duty_agenda(yao_duty)
 
-    zia_work = agendaunit_shop(zia_text)
-    zia_work.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    zia_work.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_work.add_otherunit(yao_text, debtor_weight=12)
-    clean_ideaunit = zia_work.get_idea_obj(clean_road())
-    cook_ideaunit = zia_work.get_idea_obj(cook_road())
+    zia_goal = agendaunit_shop(zia_text)
+    zia_goal.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
+    zia_goal.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    zia_goal.add_otherunit(yao_text, debtor_weight=12)
+    clean_ideaunit = zia_goal.get_idea_obj(clean_road())
+    cook_ideaunit = zia_goal.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_work_agenda(zia_work)
-    new_yao_work = create_listen_basis(yao_duty)
-    assert len(new_yao_work.get_intent_dict()) == 0
+    zia_userhub.save_goal_agenda(zia_goal)
+    new_yao_goal = create_listen_basis(yao_duty)
+    assert len(new_yao_goal.get_intent_dict()) == 0
 
     # WHEN
-    print(f"{len(new_yao_work.get_idea_dict())=}")
-    listen_to_intents_duty_work(new_yao_work, yao_userhub)
+    print(f"{len(new_yao_goal.get_idea_dict())=}")
+    listen_to_intents_duty_goal(new_yao_goal, yao_userhub)
 
     # THEN
-    assert len(new_yao_work.get_intent_dict()) == 2
+    assert len(new_yao_goal.get_intent_dict()) == 2
 
 
-def test_listen_to_intents_duty_work_AddsTasksToAgendaWithDetailsDecidedBy_debtor_weight(
+def test_listen_to_intents_duty_goal_AddsTasksToAgendaWithDetailsDecidedBy_debtor_weight(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    zia_work = get_example_zia_speaker()
-    bob_work = get_example_bob_speaker()
-    bob_work.edit_idea_attr(
+    zia_goal = get_example_zia_speaker()
+    bob_goal = get_example_bob_speaker()
+    bob_goal.edit_idea_attr(
         road=cook_road(),
         reason_del_premise_base=eat_road(),
         reason_del_premise_need=hungry_road(),
     )
-    bob_cook_ideaunit = bob_work.get_idea_obj(cook_road())
-    zia_cook_ideaunit = zia_work.get_idea_obj(cook_road())
+    bob_cook_ideaunit = bob_goal.get_idea_obj(cook_road())
+    zia_cook_ideaunit = zia_goal.get_idea_obj(cook_road())
     assert bob_cook_ideaunit != zia_cook_ideaunit
     assert len(zia_cook_ideaunit._reasonunits) == 1
     assert len(bob_cook_ideaunit._reasonunits) == 0
-    zia_text = zia_work._owner_id
-    bob_text = bob_work._owner_id
+    zia_text = zia_goal._owner_id
+    bob_text = bob_goal._owner_id
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
     bob_userhub = userhub_shop(env_dir(), None, bob_text)
-    zia_userhub.save_work_agenda(zia_work)
-    bob_userhub.save_work_agenda(bob_work)
+    zia_userhub.save_goal_agenda(zia_goal)
+    bob_userhub.save_goal_agenda(bob_goal)
 
     yao_duty = get_example_yao_speaker()
     yao_text = yao_duty._owner_id
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_duty_agenda(yao_duty)
 
-    new_yao_work1 = create_listen_basis(yao_duty)
-    assert new_yao_work1.idea_exists(cook_road()) is False
+    new_yao_goal1 = create_listen_basis(yao_duty)
+    assert new_yao_goal1.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_intents_duty_work(new_yao_work1, yao_userhub)
+    listen_to_intents_duty_goal(new_yao_goal1, yao_userhub)
 
     # THEN
-    assert new_yao_work1.idea_exists(cook_road())
-    new_cook_idea = new_yao_work1.get_idea_obj(cook_road())
-    zia_otherunit = new_yao_work1.get_other(zia_text)
-    bob_otherunit = new_yao_work1.get_other(bob_text)
+    assert new_yao_goal1.idea_exists(cook_road())
+    new_cook_idea = new_yao_goal1.get_idea_obj(cook_road())
+    zia_otherunit = new_yao_goal1.get_other(zia_text)
+    bob_otherunit = new_yao_goal1.get_other(bob_text)
     assert zia_otherunit.debtor_weight < bob_otherunit.debtor_weight
     assert new_cook_idea.get_reasonunit(eat_road()) is None
 
@@ -141,23 +141,23 @@ def test_listen_to_intents_duty_work_AddsTasksToAgendaWithDetailsDecidedBy_debto
     yao_duty.add_otherunit(zia_text, None, yao_zia_debtor_weight)
     yao_duty.add_otherunit(bob_text, None, yao_bob_debtor_weight)
     yao_duty.set_other_pool(100)
-    new_yao_work2 = create_listen_basis(yao_duty)
-    assert new_yao_work2.idea_exists(cook_road()) is False
+    new_yao_goal2 = create_listen_basis(yao_duty)
+    assert new_yao_goal2.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_intents_duty_work(new_yao_work2, yao_userhub)
+    listen_to_intents_duty_goal(new_yao_goal2, yao_userhub)
 
     # THEN
-    assert new_yao_work2.idea_exists(cook_road())
-    new_cook_idea = new_yao_work2.get_idea_obj(cook_road())
-    zia_otherunit = new_yao_work2.get_other(zia_text)
-    bob_otherunit = new_yao_work2.get_other(bob_text)
+    assert new_yao_goal2.idea_exists(cook_road())
+    new_cook_idea = new_yao_goal2.get_idea_obj(cook_road())
+    zia_otherunit = new_yao_goal2.get_other(zia_text)
+    bob_otherunit = new_yao_goal2.get_other(bob_text)
     assert zia_otherunit.debtor_weight > bob_otherunit.debtor_weight
     zia_eat_reasonunit = zia_cook_ideaunit.get_reasonunit(eat_road())
     assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit
 
 
-def test_listen_to_intents_duty_work_ProcessesIrrationalAgenda(env_dir_setup_cleanup):
+def test_listen_to_intents_duty_goal_ProcessesIrrationalAgenda(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_duty = agendaunit_shop(yao_text)
@@ -175,65 +175,65 @@ def test_listen_to_intents_duty_work_ProcessesIrrationalAgenda(env_dir_setup_cle
     yao_userhub.save_duty_agenda(yao_duty)
 
     zia_text = "Zia"
-    zia_work = agendaunit_shop(zia_text)
-    zia_work.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    zia_work.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_work.add_otherunit(yao_text, debtor_weight=12)
-    clean_ideaunit = zia_work.get_idea_obj(clean_road())
-    cook_ideaunit = zia_work.get_idea_obj(cook_road())
+    zia_goal = agendaunit_shop(zia_text)
+    zia_goal.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
+    zia_goal.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    zia_goal.add_otherunit(yao_text, debtor_weight=12)
+    clean_ideaunit = zia_goal.get_idea_obj(clean_road())
+    cook_ideaunit = zia_goal.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_work_agenda(zia_work)
+    zia_userhub.save_goal_agenda(zia_goal)
 
-    sue_work = agendaunit_shop(sue_text)
-    sue_work.set_max_tree_traverse(5)
-    zia_work.add_otherunit(yao_text, debtor_weight=12)
+    sue_goal = agendaunit_shop(sue_text)
+    sue_goal.set_max_tree_traverse(5)
+    zia_goal.add_otherunit(yao_text, debtor_weight=12)
     vacuum_text = "vacuum"
-    vacuum_road = sue_work.make_l1_road(vacuum_text)
-    sue_work.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
-    vacuum_ideaunit = sue_work.get_idea_obj(vacuum_road)
+    vacuum_road = sue_goal.make_l1_road(vacuum_text)
+    sue_goal.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
+    vacuum_ideaunit = sue_goal.get_idea_obj(vacuum_road)
     vacuum_ideaunit._assignedunit.set_suffbelief(yao_text)
 
     egg_text = "egg first"
-    egg_road = sue_work.make_l1_road(egg_text)
-    sue_work.add_l1_idea(ideaunit_shop(egg_text))
+    egg_road = sue_goal.make_l1_road(egg_text)
+    sue_goal.add_l1_idea(ideaunit_shop(egg_text))
     chicken_text = "chicken first"
-    chicken_road = sue_work.make_l1_road(chicken_text)
-    sue_work.add_l1_idea(ideaunit_shop(chicken_text))
+    chicken_road = sue_goal.make_l1_road(chicken_text)
+    sue_goal.add_l1_idea(ideaunit_shop(chicken_text))
     # set egg pledge is True when chicken first is False
-    sue_work.edit_idea_attr(
+    sue_goal.edit_idea_attr(
         road=egg_road,
         pledge=True,
         reason_base=chicken_road,
         reason_suff_idea_active=True,
     )
     # set chick pledge is True when egg first is False
-    sue_work.edit_idea_attr(
+    sue_goal.edit_idea_attr(
         road=chicken_road,
         pledge=True,
         reason_base=egg_road,
         reason_suff_idea_active=False,
     )
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    sue_userhub.save_work_agenda(sue_work)
+    sue_userhub.save_goal_agenda(sue_goal)
 
     # WHEN
-    new_yao_work = create_listen_basis(yao_duty)
-    listen_to_intents_duty_work(new_yao_work, yao_userhub)
+    new_yao_goal = create_listen_basis(yao_duty)
+    listen_to_intents_duty_goal(new_yao_goal, yao_userhub)
 
     # THEN irrational agenda is ignored
-    assert len(new_yao_work.get_intent_dict()) != 3
-    assert len(new_yao_work.get_intent_dict()) == 2
-    zia_otherunit = new_yao_work.get_other(zia_text)
-    sue_otherunit = new_yao_work.get_other(sue_text)
+    assert len(new_yao_goal.get_intent_dict()) != 3
+    assert len(new_yao_goal.get_intent_dict()) == 2
+    zia_otherunit = new_yao_goal.get_other(zia_text)
+    sue_otherunit = new_yao_goal.get_other(sue_text)
     print(f"{sue_otherunit.debtor_weight=}")
     print(f"{sue_otherunit._irrational_debtor_weight=}")
     assert zia_otherunit._irrational_debtor_weight == 0
     assert sue_otherunit._irrational_debtor_weight == 51
 
 
-def test_listen_to_intents_duty_work_ProcessesMissingDebtorAgenda(
+def test_listen_to_intents_duty_goal_ProcessesMissingDebtorAgenda(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -254,33 +254,33 @@ def test_listen_to_intents_duty_work_ProcessesMissingDebtorAgenda(
     yao_duty.set_other_pool(yao_pool)
     yao_userhub.save_duty_agenda(yao_duty)
 
-    zia_work = agendaunit_shop(zia_text)
-    zia_work.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    zia_work.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_work.add_otherunit(yao_text, debtor_weight=12)
-    clean_ideaunit = zia_work.get_idea_obj(clean_road())
-    cook_ideaunit = zia_work.get_idea_obj(cook_road())
+    zia_goal = agendaunit_shop(zia_text)
+    zia_goal.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
+    zia_goal.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    zia_goal.add_otherunit(yao_text, debtor_weight=12)
+    clean_ideaunit = zia_goal.get_idea_obj(clean_road())
+    cook_ideaunit = zia_goal.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_work_agenda(zia_work)
+    zia_userhub.save_goal_agenda(zia_goal)
 
     # WHEN
-    new_yao_work = create_listen_basis(yao_duty)
-    listen_to_intents_duty_work(new_yao_work, yao_userhub)
+    new_yao_goal = create_listen_basis(yao_duty)
+    listen_to_intents_duty_goal(new_yao_goal, yao_userhub)
 
     # THEN irrational agenda is ignored
-    assert len(new_yao_work.get_intent_dict()) != 3
-    assert len(new_yao_work.get_intent_dict()) == 2
-    zia_otherunit = new_yao_work.get_other(zia_text)
-    sue_otherunit = new_yao_work.get_other(sue_text)
+    assert len(new_yao_goal.get_intent_dict()) != 3
+    assert len(new_yao_goal.get_intent_dict()) == 2
+    zia_otherunit = new_yao_goal.get_other(zia_text)
+    sue_otherunit = new_yao_goal.get_other(sue_text)
     print(f"{sue_otherunit.debtor_weight=}")
     print(f"{sue_otherunit._inallocable_debtor_weight=}")
     assert zia_otherunit._inallocable_debtor_weight == 0
     assert sue_otherunit._inallocable_debtor_weight == 51
 
 
-def test_listen_to_intents_duty_work_ListensToOwner_duty_AndNotOwner_work(
+def test_listen_to_intents_duty_goal_ListensToOwner_duty_AndNotOwner_goal(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -300,32 +300,32 @@ def test_listen_to_intents_duty_work_ListensToOwner_duty_AndNotOwner_work(
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_duty_agenda(yao_duty)
 
-    # Save Zia to work
+    # Save Zia to goal
     zia_text = "Zia"
-    zia_work = agendaunit_shop(zia_text)
-    zia_work.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    zia_work.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_work.add_otherunit(yao_text, debtor_weight=12)
-    clean_ideaunit = zia_work.get_idea_obj(clean_road())
-    cook_ideaunit = zia_work.get_idea_obj(cook_road())
+    zia_goal = agendaunit_shop(zia_text)
+    zia_goal.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
+    zia_goal.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    zia_goal.add_otherunit(yao_text, debtor_weight=12)
+    clean_ideaunit = zia_goal.get_idea_obj(clean_road())
+    cook_ideaunit = zia_goal.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_work_agenda(zia_work)
+    zia_userhub.save_goal_agenda(zia_goal)
 
     # save yao with task to roles
-    yao_old_work = agendaunit_shop(yao_text)
+    yao_old_goal = agendaunit_shop(yao_text)
     vacuum_text = "vacuum"
-    vacuum_road = yao_old_work.make_l1_road(vacuum_text)
-    yao_old_work.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
-    vacuum_ideaunit = yao_old_work.get_idea_obj(vacuum_road)
+    vacuum_road = yao_old_goal.make_l1_road(vacuum_text)
+    yao_old_goal.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
+    vacuum_ideaunit = yao_old_goal.get_idea_obj(vacuum_road)
     vacuum_ideaunit._assignedunit.set_suffbelief(yao_text)
-    yao_userhub.save_work_agenda(yao_old_work)
+    yao_userhub.save_goal_agenda(yao_old_goal)
 
     # WHEN
-    new_yao_work = create_listen_basis(yao_duty)
-    listen_to_intents_duty_work(new_yao_work, yao_userhub)
+    new_yao_goal = create_listen_basis(yao_duty)
+    listen_to_intents_duty_goal(new_yao_goal, yao_userhub)
 
     # THEN irrational agenda is ignored
-    assert len(new_yao_work.get_intent_dict()) != 3
-    assert len(new_yao_work.get_intent_dict()) == 2
+    assert len(new_yao_goal.get_intent_dict()) != 3
+    assert len(new_yao_goal.get_intent_dict()) == 2

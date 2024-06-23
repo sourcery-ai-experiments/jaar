@@ -5,7 +5,7 @@ from src.agenda.agenda import agendaunit_shop
 from src.listen.basis_agendas import (
     create_empty_agenda,
     create_listen_basis,
-    get_default_work_agenda,
+    get_default_goal_agenda,
 )
 
 
@@ -99,7 +99,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     assert job_zia_otherunit._inallocable_debtor_weight == 0
 
 
-def test_get_default_work_agenda_ReturnsCorrectObj():
+def test_get_default_goal_agenda_ReturnsCorrectObj():
     # GIVEN
     sue_text = "Sue"
     blue_text = "blue"
@@ -122,19 +122,19 @@ def test_get_default_work_agenda_ReturnsCorrectObj():
     sue_agendaunit.set_max_tree_traverse(sue_max_tree_traverse)
 
     # WHEN
-    default_work_agenda = get_default_work_agenda(sue_agendaunit)
+    default_goal_agenda = get_default_goal_agenda(sue_agendaunit)
 
     # THEN
-    default_work_agenda.calc_agenda_metrics()
-    assert default_work_agenda._owner_id == sue_agendaunit._owner_id
-    assert default_work_agenda._owner_id == sue_text
-    assert default_work_agenda._real_id == sue_agendaunit._real_id
-    assert default_work_agenda._real_id == blue_text
-    assert default_work_agenda._road_delimiter == slash_text
-    assert default_work_agenda._pixel == five_pixel
-    assert default_work_agenda._other_credor_pool is None
-    assert default_work_agenda._other_debtor_pool is None
-    assert default_work_agenda._max_tree_traverse == sue_max_tree_traverse
-    assert len(default_work_agenda.get_others_dict()) == 1
-    assert len(default_work_agenda.get_beliefunits_dict()) == 1
-    assert len(default_work_agenda._idea_dict) == 1
+    default_goal_agenda.calc_agenda_metrics()
+    assert default_goal_agenda._owner_id == sue_agendaunit._owner_id
+    assert default_goal_agenda._owner_id == sue_text
+    assert default_goal_agenda._real_id == sue_agendaunit._real_id
+    assert default_goal_agenda._real_id == blue_text
+    assert default_goal_agenda._road_delimiter == slash_text
+    assert default_goal_agenda._pixel == five_pixel
+    assert default_goal_agenda._other_credor_pool is None
+    assert default_goal_agenda._other_debtor_pool is None
+    assert default_goal_agenda._max_tree_traverse == sue_max_tree_traverse
+    assert len(default_goal_agenda.get_others_dict()) == 1
+    assert len(default_goal_agenda.get_beliefunits_dict()) == 1
+    assert len(default_goal_agenda._idea_dict) == 1

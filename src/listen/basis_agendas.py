@@ -35,9 +35,9 @@ def create_listen_basis(x_role: AgendaUnit) -> AgendaUnit:
     return x_listen
 
 
-def get_default_work_agenda(duty: AgendaUnit) -> AgendaUnit:
-    default_work_agenda = create_listen_basis(duty)
-    default_work_agenda._last_atom_id = duty._last_atom_id
-    default_work_agenda._other_credor_pool = None
-    default_work_agenda._other_debtor_pool = None
-    return default_work_agenda
+def get_default_goal_agenda(duty: AgendaUnit) -> AgendaUnit:
+    default_goal_agenda = create_listen_basis(duty)
+    default_goal_agenda._last_atom_id = duty._last_atom_id
+    default_goal_agenda._other_credor_pool = None
+    default_goal_agenda._other_debtor_pool = None
+    return default_goal_agenda

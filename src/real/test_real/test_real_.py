@@ -124,14 +124,14 @@ def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(env_dir_setup_clean
     )
     luca_text = "Luca"
     luca_userhub = userhub_shop(None, music_text, luca_text, None, pixel=x_pixel)
-    assert os_path_exists(luca_userhub.work_path()) is False
+    assert os_path_exists(luca_userhub.goal_path()) is False
 
     # WHEN
     music_real.init_person_econs(luca_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
-    assert os_path_exists(luca_userhub.work_path())
+    assert os_path_exists(luca_userhub.goal_path())
 
 
 def test_RealUnit_get_person_duty_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):

@@ -218,7 +218,7 @@ def get_yao_ohio_userhub() -> UserHub:
         real_id=yao_agenda._real_id,
         person_id=yao_agenda._owner_id,
         econ_road=get_ohio_road(),
-        # pipeline_duty_work_text(),
+        # pipeline_duty_goal_text(),
     )
 
 
@@ -229,7 +229,7 @@ def get_yao_iowa_userhub() -> UserHub:
         real_id=yao_agenda._real_id,
         person_id=yao_agenda._owner_id,
         econ_road=get_iowa_road(),
-        # pipeline_duty_work_text(),
+        # pipeline_duty_goal_text(),
     )
 
 
@@ -240,7 +240,7 @@ def get_zia_utah_userhub() -> UserHub:
         real_id=yao_agenda._real_id,
         person_id="Zia",
         econ_road=get_utah_road(),
-        # pipeline_duty_work_text(),
+        # pipeline_duty_goal_text(),
     )
 
 
@@ -292,7 +292,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     zia_utah_userhub = get_zia_utah_userhub()
     # delete_dir(yao_iowa_userhub.persons_dir())
     assert yao_iowa_userhub.duty_file_exists() is False
-    assert yao_iowa_userhub.work_file_exists() is False
+    assert yao_iowa_userhub.goal_file_exists() is False
     assert yao_iowa_userhub.job_file_exists(yao_text) is False
     assert yao_ohio_userhub.job_file_exists(yao_text) is False
     assert zia_utah_userhub.job_file_exists(yao_text) is False
@@ -306,23 +306,23 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     assert zia_utah_userhub.job_file_exists(yao_text)
 
     # WHEN
-    assert yao_iowa_userhub.work_file_exists() is False
+    assert yao_iowa_userhub.goal_file_exists() is False
     listen_to_person_jobs(yao_iowa_userhub)
-    assert yao_iowa_userhub.work_file_exists()
+    assert yao_iowa_userhub.goal_file_exists()
 
-    yao_work = yao_iowa_userhub.get_work_agenda()
-    yao_work.calc_agenda_metrics()
-    assert yao_work._others.keys() == yao_duty0._others.keys()
-    assert yao_work.get_other(yao_text)._irrational_debtor_weight == 0
-    assert yao_work.get_beliefunits_dict() == yao_duty0.get_beliefunits_dict()
-    assert len(yao_work._idea_dict) == 10
-    print(f"{yao_work._idea_dict.keys()=}")
-    print(f"{yao_work.get_factunits_dict().keys()=}")
-    assert yao_work.idea_exists(cook_road())
-    assert yao_work.idea_exists(clean_road())
-    assert yao_work.idea_exists(run_road()) is False
-    assert len(yao_work._idearoot._factunits) == 2
-    assert yao_work != yao_duty0
+    yao_goal = yao_iowa_userhub.get_goal_agenda()
+    yao_goal.calc_agenda_metrics()
+    assert yao_goal._others.keys() == yao_duty0._others.keys()
+    assert yao_goal.get_other(yao_text)._irrational_debtor_weight == 0
+    assert yao_goal.get_beliefunits_dict() == yao_duty0.get_beliefunits_dict()
+    assert len(yao_goal._idea_dict) == 10
+    print(f"{yao_goal._idea_dict.keys()=}")
+    print(f"{yao_goal.get_factunits_dict().keys()=}")
+    assert yao_goal.idea_exists(cook_road())
+    assert yao_goal.idea_exists(clean_road())
+    assert yao_goal.idea_exists(run_road()) is False
+    assert len(yao_goal._idearoot._factunits) == 2
+    assert yao_goal != yao_duty0
 
 
 def test_listen_to_person_jobs_Pipeline_Scenario1_yao_duty_CanOnlyReferenceItself(
@@ -359,7 +359,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_duty_CanOnlyReferenceItsel
     zia_utah_userhub = get_zia_utah_userhub()
     # delete_dir(yao_iowa_userhub.persons_dir())
     assert yao_iowa_userhub.duty_file_exists() is False
-    assert yao_iowa_userhub.work_file_exists() is False
+    assert yao_iowa_userhub.goal_file_exists() is False
     assert yao_iowa_userhub.job_file_exists(yao_text) is False
     assert yao_ohio_userhub.job_file_exists(yao_text) is False
     assert zia_utah_userhub.job_file_exists(yao_text) is False
@@ -374,29 +374,29 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_duty_CanOnlyReferenceItsel
     assert zia_utah_userhub.job_file_exists(yao_text) is False
 
     # WHEN
-    assert yao_iowa_userhub.work_file_exists() is False
+    assert yao_iowa_userhub.goal_file_exists() is False
     listen_to_person_jobs(yao_iowa_userhub)
-    assert yao_iowa_userhub.work_file_exists()
+    assert yao_iowa_userhub.goal_file_exists()
 
-    yao_work = yao_iowa_userhub.get_work_agenda()
-    yao_work.calc_agenda_metrics()
-    assert yao_work._others.keys() == yao_duty0._others.keys()
-    assert yao_work.get_other(yao_text)._irrational_debtor_weight == 0
-    assert yao_work.get_beliefunits_dict() == yao_duty0.get_beliefunits_dict()
-    assert len(yao_work._idea_dict) == 4
-    print(f"{yao_work._idea_dict.keys()=}")
-    print(f"{yao_work.get_factunits_dict().keys()=}")
-    assert yao_work.idea_exists(cook_road()) is False
-    assert yao_work.idea_exists(clean_road()) is False
-    assert yao_work.idea_exists(run_road()) is False
-    assert yao_work.idea_exists(get_swim_road())
-    assert yao_work.idea_exists(get_in_ocean_road())
-    assert yao_work.idea_exists(get_on_land_road()) is False
-    assert yao_work.get_fact(get_location_road()) != None
-    assert yao_work.get_fact(get_location_road()).pick == get_in_ocean_road()
-    assert len(yao_work.get_intent_dict()) == 1
-    assert len(yao_work._idearoot._factunits) == 1
-    assert yao_work != yao_duty0
+    yao_goal = yao_iowa_userhub.get_goal_agenda()
+    yao_goal.calc_agenda_metrics()
+    assert yao_goal._others.keys() == yao_duty0._others.keys()
+    assert yao_goal.get_other(yao_text)._irrational_debtor_weight == 0
+    assert yao_goal.get_beliefunits_dict() == yao_duty0.get_beliefunits_dict()
+    assert len(yao_goal._idea_dict) == 4
+    print(f"{yao_goal._idea_dict.keys()=}")
+    print(f"{yao_goal.get_factunits_dict().keys()=}")
+    assert yao_goal.idea_exists(cook_road()) is False
+    assert yao_goal.idea_exists(clean_road()) is False
+    assert yao_goal.idea_exists(run_road()) is False
+    assert yao_goal.idea_exists(get_swim_road())
+    assert yao_goal.idea_exists(get_in_ocean_road())
+    assert yao_goal.idea_exists(get_on_land_road()) is False
+    assert yao_goal.get_fact(get_location_road()) != None
+    assert yao_goal.get_fact(get_location_road()).pick == get_in_ocean_road()
+    assert len(yao_goal.get_intent_dict()) == 1
+    assert len(yao_goal._idearoot._factunits) == 1
+    assert yao_goal != yao_duty0
 
 
 def test_create_job_file_from_role_file_CreatesEmptyJob(env_dir_setup_cleanup):

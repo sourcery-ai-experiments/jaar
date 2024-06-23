@@ -211,16 +211,16 @@ def listen_to_speaker_intent(listener: AgendaUnit, speaker: AgendaUnit) -> Agend
     return _ingest_perspective_intent(listener, intent)
 
 
-def listen_to_intents_duty_work(listener_work: AgendaUnit, listener_userhub: UserHub):
-    for x_otherunit in get_ordered_debtors_roll(listener_work):
-        if x_otherunit.other_id == listener_work._owner_id:
-            listen_to_speaker_intent(listener_work, listener_userhub.get_duty_agenda())
+def listen_to_intents_duty_goal(listener_goal: AgendaUnit, listener_userhub: UserHub):
+    for x_otherunit in get_ordered_debtors_roll(listener_goal):
+        if x_otherunit.other_id == listener_goal._owner_id:
+            listen_to_speaker_intent(listener_goal, listener_userhub.get_duty_agenda())
         else:
             speaker_id = x_otherunit.other_id
-            speaker_work = listener_userhub.dw_speaker_agenda(speaker_id)
-            if speaker_work is None:
-                speaker_work = create_empty_agenda(listener_work, speaker_id)
-            listen_to_speaker_intent(listener_work, speaker_work)
+            speaker_goal = listener_userhub.dw_speaker_agenda(speaker_id)
+            if speaker_goal is None:
+                speaker_goal = create_empty_agenda(listener_goal, speaker_id)
+            listen_to_speaker_intent(listener_goal, speaker_goal)
 
 
 def listen_to_intents_role_job(listener_job: AgendaUnit, healer_userhub: UserHub):
@@ -248,23 +248,23 @@ def listen_to_facts_role_job(new_job: AgendaUnit, healer_userhub: UserHub):
                 listen_to_speaker_fact(new_job, speaker_job)
 
 
-def listen_to_facts_duty_work(new_work: AgendaUnit, listener_userhub: UserHub):
-    migrate_all_facts(listener_userhub.get_duty_agenda(), new_work)
-    for x_otherunit in get_ordered_debtors_roll(new_work):
+def listen_to_facts_duty_goal(new_goal: AgendaUnit, listener_userhub: UserHub):
+    migrate_all_facts(listener_userhub.get_duty_agenda(), new_goal)
+    for x_otherunit in get_ordered_debtors_roll(new_goal):
         speaker_id = x_otherunit.other_id
-        if speaker_id != new_work._owner_id:
-            speaker_work = listener_userhub.dw_speaker_agenda(speaker_id)
-            if speaker_work != None:
-                listen_to_speaker_fact(new_work, speaker_work)
+        if speaker_id != new_goal._owner_id:
+            speaker_goal = listener_userhub.dw_speaker_agenda(speaker_id)
+            if speaker_goal != None:
+                listen_to_speaker_fact(new_goal, speaker_goal)
 
 
-def listen_to_debtors_roll_duty_work(listener_userhub: UserHub) -> AgendaUnit:
+def listen_to_debtors_roll_duty_goal(listener_userhub: UserHub) -> AgendaUnit:
     duty = listener_userhub.get_duty_agenda()
     new_agenda = create_listen_basis(duty)
     if duty._other_debtor_pool is None:
         return new_agenda
-    listen_to_intents_duty_work(new_agenda, listener_userhub)
-    listen_to_facts_duty_work(new_agenda, listener_userhub)
+    listen_to_intents_duty_goal(new_agenda, listener_userhub)
+    listen_to_facts_duty_goal(new_agenda, listener_userhub)
     return new_agenda
 
 
@@ -282,45 +282,45 @@ def listen_to_debtors_roll_role_job(
 
 def listen_to_person_jobs(listener_userhub: UserHub) -> None:
     duty = listener_userhub.get_duty_agenda()
-    new_work = create_listen_basis(duty)
-    pre_work_dict = new_work.get_dict()
+    new_goal = create_listen_basis(duty)
+    pre_goal_dict = new_goal.get_dict()
     duty.calc_agenda_metrics()
-    new_work.calc_agenda_metrics()
+    new_goal.calc_agenda_metrics()
 
     for x_healer_id, econ_dict in duty._healers_dict.items():
         listener_id = listener_userhub.person_id
         healer_userhub = copy_deepcopy(listener_userhub)
         healer_userhub.person_id = x_healer_id
-        _pick_econ_jobs_and_listen(listener_id, econ_dict, healer_userhub, new_work)
+        _pick_econ_jobs_and_listen(listener_id, econ_dict, healer_userhub, new_goal)
 
-    if new_work.get_dict() == pre_work_dict:
+    if new_goal.get_dict() == pre_goal_dict:
         intent = list(duty.get_intent_dict().values())
-        _ingest_perspective_intent(new_work, intent)
-        listen_to_speaker_fact(new_work, duty)
+        _ingest_perspective_intent(new_goal, intent)
+        listen_to_speaker_fact(new_goal, duty)
 
-    listener_userhub.save_work_agenda(new_work)
+    listener_userhub.save_goal_agenda(new_goal)
 
 
 def _pick_econ_jobs_and_listen(
     listener_id: PersonID,
     econ_dict: dict[RoadUnit],
     healer_userhub: UserHub,
-    new_work: AgendaUnit,
+    new_goal: AgendaUnit,
 ):
     for econ_path in econ_dict:
         healer_userhub.econ_road = econ_path
-        pick_econ_job_and_listen(listener_id, healer_userhub, new_work)
+        pick_econ_job_and_listen(listener_id, healer_userhub, new_goal)
 
 
 def pick_econ_job_and_listen(
-    listener_person_id: PersonID, healer_userhub: UserHub, new_work: AgendaUnit
+    listener_person_id: PersonID, healer_userhub: UserHub, new_goal: AgendaUnit
 ):
     listener_id = listener_person_id
     if healer_userhub.job_file_exists(listener_id):
         econ_job = healer_userhub.get_job_agenda(listener_id)
     else:
-        econ_job = create_empty_agenda(new_work, new_work._owner_id)
-    listen_to_job_intent(new_work, econ_job)
+        econ_job = create_empty_agenda(new_goal, new_goal._owner_id)
+    listen_to_job_intent(new_goal, econ_job)
 
 
 def listen_to_job_intent(listener: AgendaUnit, job: AgendaUnit):
@@ -339,6 +339,6 @@ def create_job_file_from_role_file(healer_userhub: UserHub, person_id: PersonID)
     healer_userhub.save_job_agenda(x_job)
 
 
-def create_work_file_from_duty_file(userhub: UserHub):
-    x_work = listen_to_debtors_roll_duty_work(userhub)
-    userhub.save_work_agenda(x_work)
+def create_goal_file_from_duty_file(userhub: UserHub):
+    x_goal = listen_to_debtors_roll_duty_goal(userhub)
+    userhub.save_goal_agenda(x_goal)

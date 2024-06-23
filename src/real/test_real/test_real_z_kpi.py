@@ -1,12 +1,12 @@
 from src.real.real_report import (
     get_real_dutys_others_dataframe,
     get_real_dutys_others_plotly_fig,
-    get_real_works_others_dataframe,
-    get_real_works_others_plotly_fig,
+    get_real_goals_others_dataframe,
+    get_real_goals_others_plotly_fig,
     get_real_dutys_intent_dataframe,
     get_real_dutys_intent_plotly_fig,
-    get_real_works_intent_dataframe,
-    get_real_works_intent_plotly_fig,
+    get_real_goals_intent_dataframe,
+    get_real_goals_intent_plotly_fig,
 )
 from src.real.examples.example_reals import (
     create_example_real2,
@@ -65,15 +65,15 @@ def test_get_real_dutys_others_plotly_fig_DisplaysCorrectInfo(env_dir_setup_clea
     # assert 1 == 2
 
 
-def test_get_real_works_others_dataframe_ReturnsCorrectObj(
+def test_get_real_goals_others_dataframe_ReturnsCorrectObj(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = create_example_real2()
-    music_real.generate_all_work_agendas()
+    music_real.generate_all_goal_agendas()
 
     # WHEN
-    x_df = get_real_works_others_dataframe(music_real)
+    x_df = get_real_goals_others_dataframe(music_real)
 
     # THEN
     otherunit_colums = {
@@ -104,15 +104,15 @@ def test_get_real_works_others_dataframe_ReturnsCorrectObj(
     assert set(x_df.columns) == otherunit_colums
 
 
-def test_get_real_works_others_plotly_fig_DisplaysCorrectInfo(
+def test_get_real_goals_others_plotly_fig_DisplaysCorrectInfo(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = create_example_real2()
-    music_real.generate_all_work_agendas()
+    music_real.generate_all_goal_agendas()
 
     # WHEN
-    x_fig = get_real_works_others_plotly_fig(music_real)
+    x_fig = get_real_goals_others_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True
@@ -161,13 +161,13 @@ def test_get_real_dutys_intent_plotly_fig_DisplaysCorrectInfo(env_dir_setup_clea
     #     x_fig.show()
 
 
-def test_get_real_works_intent_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_get_real_goals_intent_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real4()
-    music_real.generate_all_work_agendas()
+    music_real.generate_all_goal_agendas()
 
     # WHEN
-    x_df = get_real_works_intent_dataframe(music_real)
+    x_df = get_real_goals_intent_dataframe(music_real)
 
     # THEN
     intent_colums = {
@@ -189,15 +189,15 @@ def test_get_real_works_intent_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup
     assert x_df.shape[0] in [8, 9]
 
 
-def test_get_real_works_intent_plotly_fig_DisplaysCorrectInfo(
+def test_get_real_goals_intent_plotly_fig_DisplaysCorrectInfo(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = create_example_real4()
-    music_real.generate_all_work_agendas()
+    music_real.generate_all_goal_agendas()
 
     # WHEN
-    x_fig = get_real_works_intent_plotly_fig(music_real)
+    x_fig = get_real_goals_intent_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True

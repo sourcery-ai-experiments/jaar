@@ -7,47 +7,47 @@ from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
 from os.path import exists as os_path_exists
 
 
-def test_RealUnit_generate_work_agenda_Sets_work_AgendaFile(env_dir_setup_cleanup):
+def test_RealUnit_generate_goal_agenda_Sets_goal_AgendaFile(env_dir_setup_cleanup):
     # GIVEN
     music_text = "Music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), True)
     sue_text = "Sue"
     sue_userhub = userhub_shop(None, music_text, sue_text, None)
-    x_sue_work_path = f"{music_real._persons_dir}/{sue_text}/work/{sue_text}.json"
-    assert os_path_exists(x_sue_work_path) is False
+    x_sue_goal_path = f"{music_real._persons_dir}/{sue_text}/goal/{sue_text}.json"
+    assert os_path_exists(x_sue_goal_path) is False
     music_real.init_person_econs(sue_text)
-    assert sue_userhub.work_path() == x_sue_work_path
-    assert os_path_exists(x_sue_work_path)
+    assert sue_userhub.goal_path() == x_sue_goal_path
+    assert os_path_exists(x_sue_goal_path)
 
     # WHEN
-    sue_work = music_real.generate_work_agenda(sue_text)
+    sue_goal = music_real.generate_goal_agenda(sue_text)
 
     # THEN
     example_agenda = agendaunit_shop(sue_text, music_text)
-    assert sue_work._real_id == example_agenda._real_id
-    assert sue_work._owner_id == example_agenda._owner_id
+    assert sue_goal._real_id == example_agenda._real_id
+    assert sue_goal._owner_id == example_agenda._owner_id
 
 
-def test_RealUnit_generate_work_agenda_ReturnsRegeneratedObj(env_dir_setup_cleanup):
+def test_RealUnit_generate_goal_agenda_ReturnsRegeneratedObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
     sue_text = "Sue"
     music_real.init_person_econs(sue_text)
     sue_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, sue_text, None)
-    before_sue_agenda = sue_userhub.get_work_agenda()
+    before_sue_agenda = sue_userhub.get_goal_agenda()
     bob_text = "Bob"
     before_sue_agenda.add_otherunit(bob_text)
-    sue_userhub.save_work_agenda(before_sue_agenda)
-    assert sue_userhub.get_work_agenda().other_exists(bob_text)
+    sue_userhub.save_goal_agenda(before_sue_agenda)
+    assert sue_userhub.get_goal_agenda().other_exists(bob_text)
 
     # WHEN
-    after_sue_agenda = music_real.generate_work_agenda(sue_text)
+    after_sue_agenda = music_real.generate_goal_agenda(sue_text)
 
-    # THEN method should wipe over work agenda
+    # THEN method should wipe over goal agenda
     assert after_sue_agenda.other_exists(bob_text) is False
 
 
-def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
+def test_RealUnit_generate_goal_agenda_SetsCorrectFileWithout_healerhold(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -55,9 +55,9 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     bob_text = "Bob"
     music_real.init_person_econs(bob_text)
     bob_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
-    before_bob_work_agenda = music_real.generate_work_agenda(bob_text)
+    before_bob_goal_agenda = music_real.generate_goal_agenda(bob_text)
     sue_text = "Sue"
-    assert before_bob_work_agenda.other_exists(sue_text) is False
+    assert before_bob_goal_agenda.other_exists(sue_text) is False
 
     # WHEN
     bob_duty_agenda = bob_userhub.get_duty_agenda()
@@ -65,21 +65,21 @@ def test_RealUnit_generate_work_agenda_SetsCorrectFileWithout_healerhold(
     bob_userhub.save_duty_agenda(bob_duty_agenda)
 
     # WHEN
-    after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
+    after_bob_goal_agenda = music_real.generate_goal_agenda(bob_text)
 
     # THEN
-    assert after_bob_work_agenda.other_exists(sue_text)
+    assert after_bob_goal_agenda.other_exists(sue_text)
 
 
-def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(env_dir_setup_cleanup):
+def test_RealUnit_generate_goal_agenda_SetsFileWith_healerhold(env_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
 
     bob_text = "Bob"
     music_real.init_person_econs(bob_text)
     bob_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
-    after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
-    assert after_bob_work_agenda.other_exists(bob_text) is False
+    after_bob_goal_agenda = music_real.generate_goal_agenda(bob_text)
+    assert after_bob_goal_agenda.other_exists(bob_text) is False
 
     # WHEN
     bob_duty_agenda = bob_userhub.get_duty_agenda()
@@ -93,13 +93,13 @@ def test_RealUnit_generate_work_agenda_SetsFileWith_healerhold(env_dir_setup_cle
     bob_duty_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_duty_agenda.add_idea(elpaso_idea, texas_road)
     bob_userhub.save_duty_agenda(bob_duty_agenda)
-    after_bob_work_agenda = music_real.generate_work_agenda(bob_text)
+    after_bob_goal_agenda = music_real.generate_goal_agenda(bob_text)
 
     # THEN
-    assert after_bob_work_agenda.other_exists(bob_text)
+    assert after_bob_goal_agenda.other_exists(bob_text)
 
 
-def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
+def test_RealUnit_generate_all_goal_agendas_SetsCorrectFiles(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -112,8 +112,8 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
     bob_userhub = userhub_shop(reals_dir, music_real.real_id, bob_text, None)
     music_real.init_person_econs(sue_text)
     sue_userhub = userhub_shop(reals_dir, music_real.real_id, sue_text, None)
-    bob_duty_agenda = music_real.generate_work_agenda(bob_text)
-    sue_duty_agenda = music_real.generate_work_agenda(sue_text)
+    bob_duty_agenda = music_real.generate_goal_agenda(bob_text)
+    sue_duty_agenda = music_real.generate_goal_agenda(sue_text)
 
     texas_text = "Texas"
     texas_road = bob_duty_agenda.make_l1_road(texas_text)
@@ -134,16 +134,16 @@ def test_RealUnit_generate_all_work_agendas_SetsCorrectFiles(
     sue_duty_agenda.add_idea(elpaso_idea, texas_road)
     sue_userhub.save_duty_agenda(sue_duty_agenda)
 
-    before_bob_work_agenda = music_real.get_work_file_agenda(bob_text)
-    before_sue_work_agenda = music_real.get_work_file_agenda(sue_text)
-    assert before_bob_work_agenda.other_exists(bob_text) is False
-    assert before_sue_work_agenda.other_exists(sue_text) is False
+    before_bob_goal_agenda = music_real.get_goal_file_agenda(bob_text)
+    before_sue_goal_agenda = music_real.get_goal_file_agenda(sue_text)
+    assert before_bob_goal_agenda.other_exists(bob_text) is False
+    assert before_sue_goal_agenda.other_exists(sue_text) is False
 
     # WHEN
-    music_real.generate_all_work_agendas()
+    music_real.generate_all_goal_agendas()
 
     # THEN
-    after_bob_work_agenda = music_real.get_work_file_agenda(bob_text)
-    after_sue_work_agenda = music_real.get_work_file_agenda(sue_text)
-    assert after_bob_work_agenda.other_exists(bob_text)
-    assert after_sue_work_agenda.other_exists(sue_text)
+    after_bob_goal_agenda = music_real.get_goal_file_agenda(bob_text)
+    after_sue_goal_agenda = music_real.get_goal_file_agenda(sue_text)
+    assert after_bob_goal_agenda.other_exists(bob_text)
+    assert after_sue_goal_agenda.other_exists(sue_text)

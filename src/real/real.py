@@ -3,11 +3,11 @@ from src._road.jaar_config import get_atoms_folder
 from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src.agenda.agenda import AgendaUnit
-from src.listen.basis_agendas import get_default_work_agenda
+from src.listen.basis_agendas import get_default_goal_agenda
 from src.listen.userhub import userhub_shop, UserHub
 from src.listen.listen import (
     listen_to_speaker_intent,
-    listen_to_debtors_roll_duty_work,
+    listen_to_debtors_roll_duty_goal,
     listen_to_debtors_roll_role_job,
     create_job_file_from_role_file,
 )
@@ -22,10 +22,10 @@ class RealUnit:
     pipeline1: atoms->duty
     pipeline2: duty->roles
     pipeline3: role->job
-    pipeline4: job->work
-    pipeline5: duty->work (direct)
-    pipeline6: duty->job->work (through jobs)
-    pipeline7: atoms->work (could be 5 of 6)
+    pipeline4: job->goal
+    pipeline5: duty->goal (direct)
+    pipeline6: duty->job->goal (through jobs)
+    pipeline7: atoms->goal (could be 5 of 6)
     """
 
     real_id: RealID
@@ -117,7 +117,7 @@ class RealUnit:
     def init_person_econs(self, person_id: PersonID):
         x_userhub = self._get_userhub(person_id)
         x_userhub.initialize_atom_duty_files()
-        x_userhub.initialize_work_file(self.get_person_duty_from_file(person_id))
+        x_userhub.initialize_goal_file(self.get_person_duty_from_file(person_id))
 
     def get_person_duty_from_file(self, person_id: PersonID) -> AgendaUnit:
         return self._get_userhub(person_id).get_duty_agenda()
@@ -148,12 +148,12 @@ class RealUnit:
         healer_userhub.create_treasury_db_file()
         healer_userhub.save_role_agenda(duty_agenda)
 
-    # work agenda management
-    def generate_work_agenda(self, person_id: PersonID) -> AgendaUnit:
+    # goal agenda management
+    def generate_goal_agenda(self, person_id: PersonID) -> AgendaUnit:
         listener_userhub = self._get_userhub(person_id)
         x_duty = listener_userhub.get_duty_agenda()
         x_duty.calc_agenda_metrics()
-        x_work = get_default_work_agenda(x_duty)
+        x_goal = get_default_goal_agenda(x_duty)
         for healer_id, healer_dict in x_duty._healers_dict.items():
             healer_userhub = userhub_shop(
                 reals_dir=self.reals_dir,
@@ -178,27 +178,27 @@ class RealUnit:
                 econ_userhub.save_role_agenda(x_duty)
                 create_job_file_from_role_file(econ_userhub, person_id)
                 x_job = econ_userhub.get_job_agenda(person_id)
-                listen_to_speaker_intent(x_work, x_job)
+                listen_to_speaker_intent(x_goal, x_job)
 
-        # if nothing has come from duty->role->job->work pipeline use duty->work pipeline
-        x_work.calc_agenda_metrics()
-        if len(x_work._idea_dict) == 1:
-            # pipeline_duty_work_text()
-            listen_to_debtors_roll_duty_work(listener_userhub)
-            listener_userhub.open_file_work()
-            x_work.calc_agenda_metrics()
-        if len(x_work._idea_dict) == 1:
-            x_work = x_duty
-        listener_userhub.save_work_agenda(x_work)
+        # if nothing has come from duty->role->job->goal pipeline use duty->goal pipeline
+        x_goal.calc_agenda_metrics()
+        if len(x_goal._idea_dict) == 1:
+            # pipeline_duty_goal_text()
+            listen_to_debtors_roll_duty_goal(listener_userhub)
+            listener_userhub.open_file_goal()
+            x_goal.calc_agenda_metrics()
+        if len(x_goal._idea_dict) == 1:
+            x_goal = x_duty
+        listener_userhub.save_goal_agenda(x_goal)
 
-        return self.get_work_file_agenda(person_id)
+        return self.get_goal_file_agenda(person_id)
 
-    def generate_all_work_agendas(self):
+    def generate_all_goal_agendas(self):
         for x_person_id in self._get_person_folder_names():
-            self.generate_work_agenda(x_person_id)
+            self.generate_goal_agenda(x_person_id)
 
-    def get_work_file_agenda(self, person_id: PersonID) -> AgendaUnit:
-        return self._get_userhub(person_id).get_work_agenda()
+    def get_goal_file_agenda(self, person_id: PersonID) -> AgendaUnit:
+        return self._get_userhub(person_id).get_goal_agenda()
 
 
 def realunit_shop(
