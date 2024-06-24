@@ -117,17 +117,17 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJobAgendaWithDetailsDecided
 
     yao_role = get_example_yao_speaker()
     sue_dakota_userhub.save_role_agenda(yao_role)
-    new_yao_goal1 = create_listen_basis(yao_role)
-    assert new_yao_goal1.idea_exists(cook_road()) is False
+    new_yao_duty1 = create_listen_basis(yao_role)
+    assert new_yao_duty1.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_intents_role_job(new_yao_goal1, sue_dakota_userhub)
+    listen_to_intents_role_job(new_yao_duty1, sue_dakota_userhub)
 
     # THEN
-    assert new_yao_goal1.idea_exists(cook_road())
-    new_cook_idea = new_yao_goal1.get_idea_obj(cook_road())
-    zia_otherunit = new_yao_goal1.get_other(zia_text)
-    bob_otherunit = new_yao_goal1.get_other(bob_text)
+    assert new_yao_duty1.idea_exists(cook_road())
+    new_cook_idea = new_yao_duty1.get_idea_obj(cook_road())
+    zia_otherunit = new_yao_duty1.get_other(zia_text)
+    bob_otherunit = new_yao_duty1.get_other(bob_text)
     assert zia_otherunit.debtor_weight < bob_otherunit.debtor_weight
     assert new_cook_idea.get_reasonunit(eat_road()) is None
 
@@ -136,17 +136,17 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJobAgendaWithDetailsDecided
     yao_role.add_otherunit(zia_text, None, yao_zia_debtor_weight)
     yao_role.add_otherunit(bob_text, None, yao_bob_debtor_weight)
     yao_role.set_other_pool(100)
-    new_yao_goal2 = create_listen_basis(yao_role)
-    assert new_yao_goal2.idea_exists(cook_road()) is False
+    new_yao_duty2 = create_listen_basis(yao_role)
+    assert new_yao_duty2.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_intents_role_job(new_yao_goal2, sue_dakota_userhub)
+    listen_to_intents_role_job(new_yao_duty2, sue_dakota_userhub)
 
     # THEN
-    assert new_yao_goal2.idea_exists(cook_road())
-    new_cook_idea = new_yao_goal2.get_idea_obj(cook_road())
-    zia_otherunit = new_yao_goal2.get_other(zia_text)
-    bob_otherunit = new_yao_goal2.get_other(bob_text)
+    assert new_yao_duty2.idea_exists(cook_road())
+    new_cook_idea = new_yao_duty2.get_idea_obj(cook_road())
+    zia_otherunit = new_yao_duty2.get_other(zia_text)
+    bob_otherunit = new_yao_duty2.get_other(bob_text)
     assert zia_otherunit.debtor_weight > bob_otherunit.debtor_weight
     zia_eat_reasonunit = zia_cook_ideaunit.get_reasonunit(eat_road())
     assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit

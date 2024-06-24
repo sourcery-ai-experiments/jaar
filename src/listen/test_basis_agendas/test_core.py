@@ -5,7 +5,7 @@ from src.agenda.agenda import agendaunit_shop
 from src.listen.basis_agendas import (
     create_empty_agenda,
     create_listen_basis,
-    get_default_goal_agenda,
+    get_default_duty_agenda,
 )
 
 
@@ -14,41 +14,41 @@ def test_create_empty_agenda_ReturnsCorrectObj():
     yao_text = "Yao"
     slash_text = "/"
     penny_float = 0.7
-    yao_duty = agendaunit_shop(yao_text, _road_delimiter=slash_text, _penny=penny_float)
-    yao_duty.add_l1_idea(ideaunit_shop("Iowa"))
+    yao_same = agendaunit_shop(yao_text, _road_delimiter=slash_text, _penny=penny_float)
+    yao_same.add_l1_idea(ideaunit_shop("Iowa"))
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_credor_pool = 87
     zia_debtor_pool = 81
-    yao_duty.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_same.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
     zia_irrational_debtor_weight = 11
     zia_inallocable_debtor_weight = 22
-    role_zia_otherunit = yao_duty.get_other(zia_text)
+    role_zia_otherunit = yao_same.get_other(zia_text)
     role_zia_otherunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
     role_zia_otherunit.add_inallocable_debtor_weight(zia_inallocable_debtor_weight)
     swim_belief = beliefunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
     swim_belief.set_otherlink(otherlink_shop(zia_text))
-    yao_duty.set_beliefunit(swim_belief)
-    yao_duty.set_other_credor_pool(zia_credor_pool, True)
-    yao_duty.set_other_debtor_pool(zia_debtor_pool, True)
+    yao_same.set_beliefunit(swim_belief)
+    yao_same.set_other_credor_pool(zia_credor_pool, True)
+    yao_same.set_other_debtor_pool(zia_debtor_pool, True)
 
     # WHEN
-    yao_empty_job = create_empty_agenda(yao_duty, x_owner_id=zia_text)
+    yao_empty_job = create_empty_agenda(yao_same, x_owner_id=zia_text)
 
     # THEN
-    assert yao_empty_job._owner_id != yao_duty._owner_id
+    assert yao_empty_job._owner_id != yao_same._owner_id
     assert yao_empty_job._owner_id == zia_text
-    assert yao_empty_job._real_id == yao_duty._real_id
+    assert yao_empty_job._real_id == yao_same._real_id
     assert yao_empty_job._last_atom_id is None
     assert yao_empty_job.get_beliefunits_dict() == {}
-    assert yao_empty_job._road_delimiter == yao_duty._road_delimiter
-    assert yao_empty_job._pixel == yao_duty._pixel
-    assert yao_empty_job._penny == yao_duty._penny
+    assert yao_empty_job._road_delimiter == yao_same._road_delimiter
+    assert yao_empty_job._pixel == yao_same._pixel
+    assert yao_empty_job._penny == yao_same._penny
     assert yao_empty_job._monetary_desc is None
-    assert yao_empty_job._other_credor_pool != yao_duty._other_credor_pool
+    assert yao_empty_job._other_credor_pool != yao_same._other_credor_pool
     assert yao_empty_job._other_credor_pool is None
-    assert yao_empty_job._other_debtor_pool != yao_duty._other_debtor_pool
+    assert yao_empty_job._other_debtor_pool != yao_same._other_debtor_pool
     assert yao_empty_job._other_debtor_pool is None
     yao_empty_job.calc_agenda_metrics()
     assert yao_empty_job._others == {}
@@ -99,7 +99,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     assert job_zia_otherunit._inallocable_debtor_weight == 0
 
 
-def test_get_default_goal_agenda_ReturnsCorrectObj():
+def test_get_default_duty_agenda_ReturnsCorrectObj():
     # GIVEN
     sue_text = "Sue"
     blue_text = "blue"
@@ -122,19 +122,19 @@ def test_get_default_goal_agenda_ReturnsCorrectObj():
     sue_agendaunit.set_max_tree_traverse(sue_max_tree_traverse)
 
     # WHEN
-    default_goal_agenda = get_default_goal_agenda(sue_agendaunit)
+    default_duty_agenda = get_default_duty_agenda(sue_agendaunit)
 
     # THEN
-    default_goal_agenda.calc_agenda_metrics()
-    assert default_goal_agenda._owner_id == sue_agendaunit._owner_id
-    assert default_goal_agenda._owner_id == sue_text
-    assert default_goal_agenda._real_id == sue_agendaunit._real_id
-    assert default_goal_agenda._real_id == blue_text
-    assert default_goal_agenda._road_delimiter == slash_text
-    assert default_goal_agenda._pixel == five_pixel
-    assert default_goal_agenda._other_credor_pool is None
-    assert default_goal_agenda._other_debtor_pool is None
-    assert default_goal_agenda._max_tree_traverse == sue_max_tree_traverse
-    assert len(default_goal_agenda.get_others_dict()) == 1
-    assert len(default_goal_agenda.get_beliefunits_dict()) == 1
-    assert len(default_goal_agenda._idea_dict) == 1
+    default_duty_agenda.calc_agenda_metrics()
+    assert default_duty_agenda._owner_id == sue_agendaunit._owner_id
+    assert default_duty_agenda._owner_id == sue_text
+    assert default_duty_agenda._real_id == sue_agendaunit._real_id
+    assert default_duty_agenda._real_id == blue_text
+    assert default_duty_agenda._road_delimiter == slash_text
+    assert default_duty_agenda._pixel == five_pixel
+    assert default_duty_agenda._other_credor_pool is None
+    assert default_duty_agenda._other_debtor_pool is None
+    assert default_duty_agenda._max_tree_traverse == sue_max_tree_traverse
+    assert len(default_duty_agenda.get_others_dict()) == 1
+    assert len(default_duty_agenda.get_beliefunits_dict()) == 1
+    assert len(default_duty_agenda._idea_dict) == 1

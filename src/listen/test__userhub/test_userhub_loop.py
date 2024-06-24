@@ -35,7 +35,7 @@ def test_UserHub_get_dw_perspective_agenda_ReturnsAgendaWith_owner_idSetToUserHu
     bob_agendaunit = get_agenda_with_4_levels()
     bob_agendaunit.set_owner_id(bob_text)
     bob_userhub = userhub_shop(env_dir(), real_id(), bob_text)
-    bob_userhub.save_goal_agenda(bob_agendaunit)
+    bob_userhub.save_duty_agenda(bob_agendaunit)
 
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)

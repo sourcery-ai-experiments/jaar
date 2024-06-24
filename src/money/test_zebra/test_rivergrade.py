@@ -7,13 +7,13 @@ def test_RiverGrade_Exists():
     x_rivergrade = RiverGrade()
 
     # THEN
-    #: Leader Duty get_other._debtor_weight (SELECT tax_due_amount FROM other WHERE other_id = bob_text)
+    #: Leader Same get_other._debtor_weight (SELECT tax_due_amount FROM other WHERE other_id = bob_text)
     assert x_rivergrade.userhub is None
     assert x_rivergrade.other_id is None
     assert x_rivergrade.number is None
-    #: Leader Duty get_other._debtor_weight (SELECT tax_due_amount FROM other WHERE other_id = bob_text)
+    #: Leader Same get_other._debtor_weight (SELECT tax_due_amount FROM other WHERE other_id = bob_text)
     assert x_rivergrade.tax_bill_amount is None
-    #: Leader Duty get_other._credor_weight (SELECT grant_amount FROM other WHERE other_id = bob_text)
+    #: Leader Same get_other._credor_weight (SELECT grant_amount FROM other WHERE other_id = bob_text)
     assert x_rivergrade.grant_amount is None
     #: SELECT COUNT(*) FROM other WHERE tax_due_amount > (SELECT tax_due_amount FROM other WHERE other_id = bob_text)
     assert x_rivergrade.debtor_rank_num is None

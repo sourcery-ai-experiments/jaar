@@ -125,15 +125,15 @@ def test_userhub_shop_ReturnsCorrectObj():
     assert x_userhub.person_dir() == f"{x_userhub.persons_dir()}/{sue_text}"
     assert x_userhub.econs_dir() == f"{x_userhub.person_dir()}/econs"
     assert x_userhub.quarks_dir() == f"{x_userhub.person_dir()}/quarks"
+    assert x_userhub.same_dir() == f"{x_userhub.person_dir()}/same"
     assert x_userhub.duty_dir() == f"{x_userhub.person_dir()}/duty"
-    assert x_userhub.goal_dir() == f"{x_userhub.person_dir()}/goal"
     assert x_userhub.atoms_dir() == f"{x_userhub.person_dir()}/{get_atoms_folder()}"
+    assert x_userhub.same_file_name() == f"{sue_text}.json"
+    x_same_file_path = f"{x_userhub.same_dir()}/{x_userhub.same_file_name()}"
+    assert x_userhub.same_file_path() == x_same_file_path
     assert x_userhub.duty_file_name() == f"{sue_text}.json"
-    x_duty_file_path = f"{x_userhub.duty_dir()}/{x_userhub.duty_file_name()}"
-    assert x_userhub.duty_file_path() == x_duty_file_path
-    assert x_userhub.goal_file_name() == f"{sue_text}.json"
-    x_goalpath = f"{x_userhub.goal_dir()}/{x_userhub.goal_file_name()}"
-    assert x_userhub.goal_path() == x_goalpath
+    x_dutypath = f"{x_userhub.duty_dir()}/{x_userhub.duty_file_name()}"
+    assert x_userhub.duty_path() == x_dutypath
 
 
 def test_userhub_shop_ReturnsCorrectObjWhenEmpty():
@@ -191,17 +191,54 @@ def test_userhub_shop_RaisesErrorIf_person_id_Contains_road_delimiter():
     )
 
 
+def test_UserHub_save_file_same_CorrectlySavesFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_userhub = userhub_shop(env_dir(), None, sue_text)
+    assert os_path_exists(sue_userhub.same_file_path()) is False
+
+    # WHEN
+    sue_userhub.save_file_same(file_text="fooboo", replace=True)
+
+    # THEN
+    assert os_path_exists(sue_userhub.same_file_path())
+
+
+def test_UserHub_same_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_userhub = userhub_shop(env_dir(), None, sue_text)
+    assert sue_userhub.same_file_exists() is False
+
+    # WHEN
+    sue_userhub.save_file_same(file_text="fooboo", replace=True)
+
+    # THEN
+    assert sue_userhub.same_file_exists()
+
+
+def test_UserHub_open_file_same_OpensFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_text = "Sue"
+    sue_userhub = userhub_shop(env_dir(), None, sue_text)
+    example_text = "fooboo"
+    sue_userhub.save_file_same(example_text, replace=True)
+
+    # WHEN / THEN
+    assert sue_userhub.open_file_same() == example_text
+
+
 def test_UserHub_save_file_duty_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert os_path_exists(sue_userhub.duty_file_path()) is False
+    assert os_path_exists(sue_userhub.duty_path()) is False
 
     # WHEN
     sue_userhub.save_file_duty(file_text="fooboo", replace=True)
 
     # THEN
-    assert os_path_exists(sue_userhub.duty_file_path())
+    assert os_path_exists(sue_userhub.duty_path())
 
 
 def test_UserHub_duty_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
@@ -228,61 +265,24 @@ def test_UserHub_open_file_duty_OpensFile(env_dir_setup_cleanup):
     assert sue_userhub.open_file_duty() == example_text
 
 
-def test_UserHub_save_file_goal_CorrectlySavesFile(env_dir_setup_cleanup):
-    # GIVEN
-    sue_text = "Sue"
-    sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert os_path_exists(sue_userhub.goal_path()) is False
-
-    # WHEN
-    sue_userhub.save_file_goal(file_text="fooboo", replace=True)
-
-    # THEN
-    assert os_path_exists(sue_userhub.goal_path())
-
-
-def test_UserHub_goal_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
-    # GIVEN
-    sue_text = "Sue"
-    sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert sue_userhub.goal_file_exists() is False
-
-    # WHEN
-    sue_userhub.save_file_goal(file_text="fooboo", replace=True)
-
-    # THEN
-    assert sue_userhub.goal_file_exists()
-
-
-def test_UserHub_open_file_goal_OpensFile(env_dir_setup_cleanup):
-    # GIVEN
-    sue_text = "Sue"
-    sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    example_text = "fooboo"
-    sue_userhub.save_file_goal(example_text, replace=True)
-
-    # WHEN / THEN
-    assert sue_userhub.open_file_goal() == example_text
-
-
-def test_UserHub_save_duty_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_same_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_agendaunit = get_agenda_with_4_levels()
     sue_text = sue_agendaunit._owner_id
     real_id = root_label()
     sue_userhub = userhub_shop(env_dir(), real_id, sue_text, None)
 
-    print(f"{sue_userhub.duty_file_path()=}")
-    assert sue_userhub.duty_file_exists() is False
+    print(f"{sue_userhub.same_file_path()=}")
+    assert sue_userhub.same_file_exists() is False
 
     # WHEN
-    sue_userhub.save_duty_agenda(sue_agendaunit)
+    sue_userhub.save_same_agenda(sue_agendaunit)
 
     # THEN
-    assert sue_userhub.duty_file_exists()
+    assert sue_userhub.same_file_exists()
 
 
-def test_UserHub_save_duty_agenda_RaisesErrorWhenAgenda_goal_id_IsWrong(
+def test_UserHub_save_same_agenda_RaisesErrorWhenAgenda_duty_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -294,11 +294,46 @@ def test_UserHub_save_duty_agenda_RaisesErrorWhenAgenda_goal_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_userhub.save_duty_agenda(agendaunit_shop(yao_text))
+        sue_userhub.save_same_agenda(agendaunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s duty agenda."
+        == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s same agenda."
     )
+
+
+def test_UserHub_get_same_agenda_OpensFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_agendaunit = get_agenda_with_4_levels()
+    sue_text = sue_agendaunit._owner_id
+    nation_text = "nation-state"
+    nation_road = create_road(root_label(), nation_text)
+    usa_text = "USA"
+    usa_road = create_road(nation_road, usa_text)
+    texas_text = "Texas"
+    texas_road = create_road(usa_road, texas_text)
+    sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
+    sue_userhub.save_same_agenda(sue_agendaunit)
+
+    # WHEN / THEN
+    assert sue_userhub.get_same_agenda().get_dict() == sue_agendaunit.get_dict()
+
+
+def test_UserHub_save_duty_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
+    # GIVEN
+    sue_agendaunit = get_agenda_with_4_levels()
+    sue_text = sue_agendaunit._owner_id
+
+    real_id = root_label()
+    sue_userhub = userhub_shop(env_dir(), real_id, sue_text, None)
+
+    print(f"{sue_userhub.duty_path()=}")
+    assert sue_userhub.duty_file_exists() is False
+
+    # WHEN
+    sue_userhub.save_duty_agenda(sue_agendaunit)
+
+    # THEN
+    assert sue_userhub.duty_file_exists()
 
 
 def test_UserHub_get_duty_agenda_OpensFile(env_dir_setup_cleanup):
@@ -318,52 +353,17 @@ def test_UserHub_get_duty_agenda_OpensFile(env_dir_setup_cleanup):
     assert sue_userhub.get_duty_agenda().get_dict() == sue_agendaunit.get_dict()
 
 
-def test_UserHub_save_goal_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
-    # GIVEN
-    sue_agendaunit = get_agenda_with_4_levels()
-    sue_text = sue_agendaunit._owner_id
-
-    real_id = root_label()
-    sue_userhub = userhub_shop(env_dir(), real_id, sue_text, None)
-
-    print(f"{sue_userhub.goal_path()=}")
-    assert sue_userhub.goal_file_exists() is False
-
-    # WHEN
-    sue_userhub.save_goal_agenda(sue_agendaunit)
-
-    # THEN
-    assert sue_userhub.goal_file_exists()
-
-
-def test_UserHub_get_goal_agenda_OpensFile(env_dir_setup_cleanup):
-    # GIVEN
-    sue_agendaunit = get_agenda_with_4_levels()
-    sue_text = sue_agendaunit._owner_id
-    nation_text = "nation-state"
-    nation_road = create_road(root_label(), nation_text)
-    usa_text = "USA"
-    usa_road = create_road(nation_road, usa_text)
-    texas_text = "Texas"
-    texas_road = create_road(usa_road, texas_text)
-    sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
-    sue_userhub.save_goal_agenda(sue_agendaunit)
-
-    # WHEN / THEN
-    assert sue_userhub.get_goal_agenda().get_dict() == sue_agendaunit.get_dict()
-
-
-def test_UserHub_get_goal_agenda_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
+def test_UserHub_get_duty_agenda_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
     # GIVEN
     sue_agendaunit = get_agenda_with_4_levels()
     sue_text = sue_agendaunit._owner_id
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
 
     # WHEN / THEN
-    assert sue_userhub.get_goal_agenda() is None
+    assert sue_userhub.get_duty_agenda() is None
 
 
-def test_UserHub_save_goal_agenda_RaisesErrorWhenAgenda_goal_id_IsWrong(
+def test_UserHub_save_duty_agenda_RaisesErrorWhenAgenda_duty_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -375,8 +375,8 @@ def test_UserHub_save_goal_agenda_RaisesErrorWhenAgenda_goal_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_userhub.save_goal_agenda(agendaunit_shop(yao_text))
+        sue_userhub.save_duty_agenda(agendaunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s goal agenda."
+        == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s duty agenda."
     )

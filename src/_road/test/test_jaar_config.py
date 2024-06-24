@@ -1,6 +1,6 @@
 from src._road.jaar_config import (
+    same_str,
     duty_str,
-    goal_str,
     get_rootpart_of_econ_dir,
     treasury_file_name,
     max_tree_traverse_default,
@@ -8,12 +8,12 @@ from src._road.jaar_config import (
 )
 
 
+def test_same_str():
+    assert same_str() == "same"
+
+
 def test_duty_str():
     assert duty_str() == "duty"
-
-
-def test_goal_str():
-    assert goal_str() == "goal"
 
 
 def test_get_rootpart_of_econ_dir_ReturnsCorrectObj():

@@ -447,7 +447,7 @@ def test_UserHub_create_save_atom_file_SaveCorrectObj(env_dir_setup_cleanup):
     assert sue_userhub.atom_file_exists(three_int) is False
 
     # WHEN
-    before_agenda = sue_userhub.default_duty_agenda()
+    before_agenda = sue_userhub.default_same_agenda()
     bob_text = "Bob"
     after_agenda = copy_deepcopy(before_agenda)
     after_agenda.add_otherunit(bob_text)
@@ -461,15 +461,15 @@ def test_UserHub_merge_any_atoms_ReturnsEqualObj(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
-    sue_userhub.save_duty_agenda(sue_userhub.default_duty_agenda())
-    duty_agenda = sue_userhub.get_duty_agenda()
-    duty_agenda._last_atom_id is None
+    sue_userhub.save_same_agenda(sue_userhub.default_same_agenda())
+    same_agenda = sue_userhub.get_same_agenda()
+    same_agenda._last_atom_id is None
 
     # WHEN
-    new_agenda = sue_userhub._merge_any_atoms(duty_agenda)
+    new_agenda = sue_userhub._merge_any_atoms(same_agenda)
 
     # THEN
-    assert new_agenda == duty_agenda
+    assert new_agenda == same_agenda
 
 
 def test_UserHub_merge_any_atoms_ReturnsObj_WithSingleatomModifies_1quark(
@@ -479,21 +479,21 @@ def test_UserHub_merge_any_atoms_ReturnsObj_WithSingleatomModifies_1quark(
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
     sue_userhub.save_atom_file(sue_1quarkunits_atomunit())
-    sue_userhub.save_duty_agenda(sue_userhub.default_duty_agenda())
-    duty_agenda = sue_userhub.get_duty_agenda()
-    print(f"{duty_agenda._real_id=}")
+    sue_userhub.save_same_agenda(sue_userhub.default_same_agenda())
+    same_agenda = sue_userhub.get_same_agenda()
+    print(f"{same_agenda._real_id=}")
     print(f"{sue_userhub.real_id=}")
     sports_text = "sports"
-    sports_road = duty_agenda.make_l1_road(sports_text)
+    sports_road = same_agenda.make_l1_road(sports_text)
     knee_text = "knee"
-    knee_road = duty_agenda.make_road(sports_road, knee_text)
-    assert duty_agenda.idea_exists(sports_road) is False
+    knee_road = same_agenda.make_road(sports_road, knee_text)
+    assert same_agenda.idea_exists(sports_road) is False
 
     # WHEN
-    new_agenda = sue_userhub._merge_any_atoms(duty_agenda)
+    new_agenda = sue_userhub._merge_any_atoms(same_agenda)
 
     # THEN
-    assert new_agenda != duty_agenda
+    assert new_agenda != same_agenda
     assert new_agenda.idea_exists(sports_road)
 
 
@@ -504,20 +504,20 @@ def test_UserHub_merge_any_atoms_ReturnsObj_WithSingleatomModifies_2quarks(
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
     sue_userhub.save_atom_file(sue_2quarkunits_atomunit())
-    sue_userhub.save_duty_agenda(sue_userhub.default_duty_agenda())
-    duty_agenda = sue_userhub.get_duty_agenda()
-    print(f"{duty_agenda._real_id=}")
+    sue_userhub.save_same_agenda(sue_userhub.default_same_agenda())
+    same_agenda = sue_userhub.get_same_agenda()
+    print(f"{same_agenda._real_id=}")
     sports_text = "sports"
-    sports_road = duty_agenda.make_l1_road(sports_text)
+    sports_road = same_agenda.make_l1_road(sports_text)
     knee_text = "knee"
-    knee_road = duty_agenda.make_road(sports_road, knee_text)
-    assert duty_agenda.idea_exists(sports_road) is False
-    assert duty_agenda.idea_exists(knee_road) is False
+    knee_road = same_agenda.make_road(sports_road, knee_text)
+    assert same_agenda.idea_exists(sports_road) is False
+    assert same_agenda.idea_exists(knee_road) is False
 
     # WHEN
-    new_agenda = sue_userhub._merge_any_atoms(duty_agenda)
+    new_agenda = sue_userhub._merge_any_atoms(same_agenda)
 
     # THEN
-    assert new_agenda != duty_agenda
+    assert new_agenda != same_agenda
     assert new_agenda.idea_exists(sports_road)
     assert new_agenda.idea_exists(knee_road)
