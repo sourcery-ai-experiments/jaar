@@ -497,8 +497,8 @@ SELECT
   owner_id cash_master
 , other_id due_owner_id
 , _treasury_due_paid due_total
-, _truth_intent_ratio_debt debt
-, (_truth_intent_ratio_debt - _treasury_due_paid) due_diff
+, _truth_agenda_ratio_debt debt
+, (_truth_agenda_ratio_debt - _treasury_due_paid) due_diff
 FROM truth_otherunit
 WHERE cash_master = '{cash_owner_id}'
     AND _treasury_due_paid IS NOT NULL
@@ -598,10 +598,10 @@ CREATE TABLE IF NOT EXISTS truth_otherunit (
 , other_id VARCHAR(255) NOT NULL
 , _truth_cred FLOAT
 , _truth_debt FLOAT
-, _truth_intent_cred FLOAT
-, _truth_intent_debt FLOAT
-, _truth_intent_ratio_cred FLOAT
-, _truth_intent_ratio_debt FLOAT
+, _truth_agenda_cred FLOAT
+, _truth_agenda_debt FLOAT
+, _truth_agenda_ratio_cred FLOAT
+, _truth_agenda_ratio_debt FLOAT
 , _credor_operational INT
 , _debtor_operational INT
 , _treasury_due_paid FLOAT
@@ -686,10 +686,10 @@ INSERT INTO truth_otherunit (
 , other_id
 , _truth_cred
 , _truth_debt
-, _truth_intent_cred
-, _truth_intent_debt
-, _truth_intent_ratio_cred
-, _truth_intent_ratio_debt
+, _truth_agenda_cred
+, _truth_agenda_debt
+, _truth_agenda_ratio_cred
+, _truth_agenda_ratio_debt
 , _credor_operational
 , _debtor_operational
 , _treasury_due_paid
@@ -703,10 +703,10 @@ VALUES (
 , '{x_otherunit.other_id}'
 , {sqlite_null(x_otherunit._truth_cred)} 
 , {sqlite_null(x_otherunit._truth_debt)}
-, {sqlite_null(x_otherunit._truth_intent_cred)}
-, {sqlite_null(x_otherunit._truth_intent_debt)}
-, {sqlite_null(x_otherunit._truth_intent_ratio_cred)}
-, {sqlite_null(x_otherunit._truth_intent_ratio_debt)}
+, {sqlite_null(x_otherunit._truth_agenda_cred)}
+, {sqlite_null(x_otherunit._truth_agenda_debt)}
+, {sqlite_null(x_otherunit._truth_agenda_ratio_cred)}
+, {sqlite_null(x_otherunit._truth_agenda_ratio_debt)}
 , {sqlite_bool(x_otherunit._credor_operational)}
 , {sqlite_bool(x_otherunit._debtor_operational)}
 , {sqlite_null(x_otherunit._treasury_due_paid)}
@@ -733,10 +733,10 @@ SELECT
 , other_id
 , _truth_cred
 , _truth_debt
-, _truth_intent_cred
-, _truth_intent_debt
-, _truth_intent_ratio_cred
-, _truth_intent_ratio_debt
+, _truth_agenda_cred
+, _truth_agenda_debt
+, _truth_agenda_ratio_cred
+, _truth_agenda_ratio_debt
 , _credor_operational
 , _debtor_operational
 , _treasury_due_paid
@@ -757,10 +757,10 @@ WHERE owner_id = '{payer_owner_id}'
             other_id=row[1],
             _truth_cred=row[2],
             _truth_debt=row[3],
-            _truth_intent_cred=row[4],
-            _truth_intent_debt=row[5],
-            _truth_intent_ratio_cred=row[6],
-            _truth_intent_ratio_debt=row[7],
+            _truth_agenda_cred=row[4],
+            _truth_agenda_debt=row[5],
+            _truth_agenda_ratio_cred=row[6],
+            _truth_agenda_ratio_debt=row[7],
             _credor_operational=row[8],
             _debtor_operational=row[9],
             _treasury_due_paid=row[10],
@@ -985,12 +985,12 @@ CREATE TABLE IF NOT EXISTS calendar (
 , report_date_range_start INT NOT NULL
 , report_date_range_cease INT NOT NULL
 , report_interval_length INT NOT NULL
-, report_interval_intent_task_max_count INT NOT NULL
-, report_interval_intent_state_max_count INT NOT NULL
+, report_interval_agenda_task_max_count INT NOT NULL
+, report_interval_agenda_state_max_count INT NOT NULL
 , time_begin INT NOT NULL
 , time_close INT NOT NULL
-, intent_idea_road VARCHAR(255) NOT NULL
-, intent_weight INT NOT NULL
+, agenda_idea_road VARCHAR(255) NOT NULL
+, agenda_weight INT NOT NULL
 , task INT NOT NULL
 , FOREIGN KEY(owner_id) REFERENCES truthunit(owner_id)
 )
@@ -1005,8 +1005,8 @@ class CalendarReport:
     date_range_start: int = None
     interval_count: int = None
     interval_length: int = None
-    intent_max_count_task: int = None
-    intent_max_count_state: int = None
+    agenda_max_count_task: int = None
+    agenda_max_count_state: int = None
 
     def get_date_range_length(self) -> int:
         return self.interval_length * self.interval_count
@@ -1023,16 +1023,16 @@ class CalendarReport:
 
 
 @dataclass
-class CalendarIntentUnit:
+class CalendarAgendaUnit:
     calendarreport: CalendarReport
     time_begin: int
     time_close: int
-    intent_idea_road: RoadUnit
-    intent_weight: float
+    agenda_idea_road: RoadUnit
+    agenda_weight: float
     task: bool
 
 
-def get_calendar_table_insert_sqlstr(x_obj: CalendarIntentUnit):
+def get_calendar_table_insert_sqlstr(x_obj: CalendarAgendaUnit):
     return f"""
 INSERT INTO calendar (
   owner_id
@@ -1040,12 +1040,12 @@ INSERT INTO calendar (
 , report_date_range_start
 , report_date_range_cease
 , report_interval_length
-, report_interval_intent_task_max_count
-, report_interval_intent_state_max_count
+, report_interval_agenda_task_max_count
+, report_interval_agenda_state_max_count
 , time_begin
 , time_close
-, intent_idea_road
-, intent_weight
+, agenda_idea_road
+, agenda_weight
 , task)
 VALUES (
   '{x_obj.calendarreport.owner_id}'
@@ -1053,12 +1053,12 @@ VALUES (
 , {sqlite_null(x_obj.calendarreport.date_range_start)}
 , {sqlite_null(x_obj.calendarreport.get_date_range_cease())}
 , {sqlite_null(x_obj.calendarreport.interval_length)}
-, {sqlite_null(x_obj.calendarreport.intent_max_count_task)}
-, {sqlite_null(x_obj.calendarreport.intent_max_count_state)}
+, {sqlite_null(x_obj.calendarreport.agenda_max_count_task)}
+, {sqlite_null(x_obj.calendarreport.agenda_max_count_state)}
 , {sqlite_null(x_obj.time_begin)}
 , {sqlite_null(x_obj.time_close)}
-, '{x_obj.intent_idea_road}'
-, {sqlite_null(x_obj.intent_weight)}
+, '{x_obj.agenda_idea_road}'
+, {sqlite_null(x_obj.agenda_weight)}
 , {sqlite_bool(x_obj.task)}
 )
 ;
@@ -1075,10 +1075,10 @@ INSERT INTO truth_otherunit (
 , other_id
 , _truth_cred
 , _truth_debt
-, _truth_intent_cred
-, _truth_intent_debt
-, _truth_intent_ratio_cred
-, _truth_intent_ratio_debt
+, _truth_agenda_cred
+, _truth_agenda_debt
+, _truth_agenda_ratio_cred
+, _truth_agenda_ratio_debt
 , _credor_operational
 , _debtor_operational
 , _treasury_due_paid
@@ -1092,10 +1092,10 @@ VALUES (
 , '{x_otherunit.other_id}'
 , {sqlite_null(x_otherunit._truth_cred)} 
 , {sqlite_null(x_otherunit._truth_debt)}
-, {sqlite_null(x_otherunit._truth_intent_cred)}
-, {sqlite_null(x_otherunit._truth_intent_debt)}
-, {sqlite_null(x_otherunit._truth_intent_ratio_cred)}
-, {sqlite_null(x_otherunit._truth_intent_ratio_debt)}
+, {sqlite_null(x_otherunit._truth_agenda_cred)}
+, {sqlite_null(x_otherunit._truth_agenda_debt)}
+, {sqlite_null(x_otherunit._truth_agenda_ratio_cred)}
+, {sqlite_null(x_otherunit._truth_agenda_ratio_debt)}
 , {sqlite_bool(x_otherunit._credor_operational)}
 , {sqlite_bool(x_otherunit._debtor_operational)}
 , {sqlite_null(x_otherunit._treasury_due_paid)}

@@ -32,7 +32,7 @@ from src.money.treasury_sqlstr import (
     get_truthtreasuryunits_dict,
     get_truthunit_update_sqlstr,
     CalendarReport,
-    CalendarIntentUnit,
+    CalendarAgendaUnit,
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,
 )
@@ -40,7 +40,7 @@ from sqlite3 import connect as sqlite3_connect, Connection
 from dataclasses import dataclass
 
 
-class IntentBaseDoesNotExistException(Exception):
+class AgendaBaseDoesNotExistException(Exception):
     pass
 
 
@@ -78,7 +78,7 @@ class MoneyUnit:
             for x_child_ledger in parent_truth_ledger._otherviews.values():
                 ledgers_count += 1
 
-                coin_range = parent_range * x_child_ledger._truth_intent_ratio_cred
+                coin_range = parent_range * x_child_ledger._truth_agenda_ratio_cred
                 coin_close = coin_onset + coin_range
 
                 # implies last object in dict
@@ -253,12 +253,12 @@ class MoneyUnit:
                 for sqlstr in get_create_table_if_not_exist_sqlstrs():
                     treasury_conn.execute(sqlstr)
 
-    def insert_intent_into_treasury(
+    def insert_agenda_into_treasury(
         self, x_truthunit: TruthUnit, x_calendarreport: CalendarReport
     ):
         if x_truthunit.idea_exists(x_calendarreport.time_road) is False:
-            raise IntentBaseDoesNotExistException(
-                f"Intent base cannot be '{x_calendarreport.time_road}' because it does not exist in truth '{x_truthunit._owner_id}'."
+            raise AgendaBaseDoesNotExistException(
+                f"Agenda base cannot be '{x_calendarreport.time_road}' because it does not exist in truth '{x_truthunit._owner_id}'."
             )
 
         with self.get_treasury_conn() as treasury_conn:
@@ -273,19 +273,19 @@ class MoneyUnit:
                     open=x_calendarreport.get_interval_begin(_),
                     nigh=x_calendarreport.get_interval_close(_),
                 )
-                x_intent_items = x_truthunit.get_intent_dict(
+                x_agenda_items = x_truthunit.get_agenda_dict(
                     base=x_calendarreport.time_road
                 )
-                for intent_item in x_intent_items.values():
-                    x_calendarintentunit = CalendarIntentUnit(
+                for agenda_item in x_agenda_items.values():
+                    x_calendaragendaunit = CalendarAgendaUnit(
                         calendarreport=x_calendarreport,
                         time_begin=x_calendarreport.get_interval_begin(_),
                         time_close=x_calendarreport.get_interval_close(_),
-                        intent_idea_road=intent_item.get_road(),
-                        intent_weight=intent_item._truth_importance,
-                        task=intent_item._task,
+                        agenda_idea_road=agenda_item.get_road(),
+                        agenda_weight=agenda_item._truth_importance,
+                        task=agenda_item._task,
                     )
-                    sqlstr = get_calendar_table_insert_sqlstr(x_calendarintentunit)
+                    sqlstr = get_calendar_table_insert_sqlstr(x_calendaragendaunit)
                     cur.execute(sqlstr)
 
     # exporting metrics to truth files

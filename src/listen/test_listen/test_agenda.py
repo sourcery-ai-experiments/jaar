@@ -1,11 +1,11 @@
 from src._truth.idea import ideaunit_shop
 from src._truth.truth import truthunit_shop
-from src.listen.listen import listen_to_speaker_intent, create_empty_truth
+from src.listen.listen import listen_to_speaker_agenda, create_empty_truth
 from copy import deepcopy as copy_deepcopy
 from pytest import raises as pytest_raises
 
 
-def test_listen_to_speaker_intent_RaisesErrorIfPoolIsNotSet():
+def test_listen_to_speaker_agenda_RaisesErrorIfPoolIsNotSet():
     # GIVEN
     yao_text = "Yao"
     yao_truthunit = truthunit_shop(yao_text)
@@ -14,14 +14,14 @@ def test_listen_to_speaker_intent_RaisesErrorIfPoolIsNotSet():
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        listen_to_speaker_intent(yao_truthunit, zia_truthunit)
+        listen_to_speaker_agenda(yao_truthunit, zia_truthunit)
     assert (
         str(excinfo.value)
         == f"listener '{yao_text}' truth is assumed to have {zia_truthunit._owner_id} otherunit."
     )
 
 
-def test_listen_to_speaker_intent_ReturnsEqualTruth():
+def test_listen_to_speaker_agenda_ReturnsEqualTruth():
     # GIVEN
     yao_text = "Yao"
     yao_truthunit = truthunit_shop(yao_text)
@@ -31,13 +31,13 @@ def test_listen_to_speaker_intent_ReturnsEqualTruth():
     zia_truthunit = truthunit_shop(zia_text)
 
     # WHEN
-    after_yao_truthunit = listen_to_speaker_intent(yao_truthunit, zia_truthunit)
+    after_yao_truthunit = listen_to_speaker_agenda(yao_truthunit, zia_truthunit)
 
     # THEN
     assert after_yao_truthunit == yao_truthunit
 
 
-def test_listen_to_speaker_intent_ReturnsSingleTaskTruth():
+def test_listen_to_speaker_agenda_ReturnsSingleTaskTruth():
     # GIVEN
     yao_text = "Yao"
     before_yao_truthunit = truthunit_shop(yao_text)
@@ -51,14 +51,14 @@ def test_listen_to_speaker_intent_ReturnsSingleTaskTruth():
     zia_truthunit = truthunit_shop(zia_text)
     zia_truthunit.add_otherunit(yao_text)
     zia_truthunit.add_l1_idea(zia_clean_ideaunit)
-    assert len(zia_truthunit.get_intent_dict()) == 0
+    assert len(zia_truthunit.get_agenda_dict()) == 0
     zia_yao_truthunit = copy_deepcopy(zia_truthunit)
     zia_yao_truthunit.set_owner_id(yao_text)
-    assert len(zia_yao_truthunit.get_intent_dict()) == 1
-    print(f"{zia_yao_truthunit.get_intent_dict()=}")
+    assert len(zia_yao_truthunit.get_agenda_dict()) == 1
+    print(f"{zia_yao_truthunit.get_agenda_dict()=}")
 
     # WHEN
-    after_yao_truthunit = listen_to_speaker_intent(before_yao_truthunit, zia_truthunit)
+    after_yao_truthunit = listen_to_speaker_agenda(before_yao_truthunit, zia_truthunit)
 
     # THEN
     clean_road = zia_truthunit.make_l1_road(clean_text)
@@ -67,10 +67,10 @@ def test_listen_to_speaker_intent_ReturnsSingleTaskTruth():
     assert yao_clean_ideaunit._weight != zia_clean_ideaunit._weight
     assert yao_clean_ideaunit._weight == yao_other_debtor_weight
     assert after_yao_truthunit == before_yao_truthunit
-    assert len(after_yao_truthunit.get_intent_dict()) == 1
+    assert len(after_yao_truthunit.get_agenda_dict()) == 1
 
 
-def test_listen_to_speaker_intent_ReturnsLevel2TaskTruth():
+def test_listen_to_speaker_agenda_ReturnsLevel2TaskTruth():
     # GIVEN
     yao_text = "Yao"
     before_yao_truthunit = truthunit_shop(yao_text)
@@ -85,14 +85,14 @@ def test_listen_to_speaker_intent_ReturnsLevel2TaskTruth():
     zia_clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     casa_road = zia_truthunit.make_l1_road("casa")
     zia_truthunit.add_idea(zia_clean_ideaunit, casa_road)
-    assert len(zia_truthunit.get_intent_dict()) == 0
+    assert len(zia_truthunit.get_agenda_dict()) == 0
     zia_yao_truthunit = copy_deepcopy(zia_truthunit)
     zia_yao_truthunit.set_owner_id(yao_text)
-    assert len(zia_yao_truthunit.get_intent_dict()) == 1
-    print(f"{zia_yao_truthunit.get_intent_dict()=}")
+    assert len(zia_yao_truthunit.get_agenda_dict()) == 1
+    print(f"{zia_yao_truthunit.get_agenda_dict()=}")
 
     # WHEN
-    after_yao_truthunit = listen_to_speaker_intent(before_yao_truthunit, zia_truthunit)
+    after_yao_truthunit = listen_to_speaker_agenda(before_yao_truthunit, zia_truthunit)
 
     # THEN
     clean_road = zia_truthunit.make_road(casa_road, clean_text)
@@ -105,10 +105,10 @@ def test_listen_to_speaker_intent_ReturnsLevel2TaskTruth():
     assert after_casa_ideaunit._weight != 1
     assert after_casa_ideaunit._weight == yao_debtor_weight
     assert after_yao_truthunit == before_yao_truthunit
-    assert len(after_yao_truthunit.get_intent_dict()) == 1
+    assert len(after_yao_truthunit.get_agenda_dict()) == 1
 
 
-def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskTruth():
+def test_listen_to_speaker_agenda_Returns2AgendaIdeasLevel2TaskTruth():
     # GIVEN
     yao_text = "Yao"
     before_yao_truthunit = truthunit_shop(yao_text)
@@ -133,13 +133,13 @@ def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskTruth():
     zia_truthunit.add_idea(yao_clean_ideaunit, casa_road)
     zia_truthunit.add_idea(yao_cook_ideaunit, casa_road)
     zia_truthunit.add_l1_idea(yao_fly_ideaunit)
-    assert len(zia_truthunit.get_intent_dict()) == 0
+    assert len(zia_truthunit.get_agenda_dict()) == 0
     zia_yao_truthunit = copy_deepcopy(zia_truthunit)
     zia_yao_truthunit.set_owner_id(yao_text)
-    assert len(zia_yao_truthunit.get_intent_dict()) == 3
+    assert len(zia_yao_truthunit.get_agenda_dict()) == 3
 
     # WHEN
-    after_yao_truthunit = listen_to_speaker_intent(before_yao_truthunit, zia_truthunit)
+    after_yao_truthunit = listen_to_speaker_agenda(before_yao_truthunit, zia_truthunit)
 
     # THEN
     clean_road = zia_truthunit.make_road(casa_road, clean_text)
@@ -158,12 +158,12 @@ def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskTruth():
     assert after_casa_ideaunit._weight != 1
     assert after_casa_ideaunit._weight == 27
     assert after_yao_truthunit == before_yao_truthunit
-    assert len(after_yao_truthunit.get_intent_dict()) == 3
+    assert len(after_yao_truthunit.get_agenda_dict()) == 3
     assert after_fly_ideaunit._weight != 1
     assert after_fly_ideaunit._weight == 28
 
 
-def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskTruthWhereAnIdeaUnitAlreadyExists():
+def test_listen_to_speaker_agenda_Returns2AgendaIdeasLevel2TaskTruthWhereAnIdeaUnitAlreadyExists():
     # GIVEN
     yao_text = "Yao"
     before_yao_truthunit = truthunit_shop(yao_text)
@@ -193,13 +193,13 @@ def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskTruthWhereAnIdeaU
     zia_truthunit.add_idea(yao_dish_ideaunit, casa_road)
     zia_truthunit.add_idea(yao_cook_ideaunit, casa_road)
     zia_truthunit.add_l1_idea(yao_fly_ideaunit)
-    assert len(zia_truthunit.get_intent_dict()) == 0
+    assert len(zia_truthunit.get_agenda_dict()) == 0
     zia_yao_truthunit = copy_deepcopy(zia_truthunit)
     zia_yao_truthunit.set_owner_id(yao_text)
-    assert len(zia_yao_truthunit.get_intent_dict()) == 3
+    assert len(zia_yao_truthunit.get_agenda_dict()) == 3
 
     # WHEN
-    after_yao_truthunit = listen_to_speaker_intent(before_yao_truthunit, zia_truthunit)
+    after_yao_truthunit = listen_to_speaker_agenda(before_yao_truthunit, zia_truthunit)
 
     # THEN
     cook_road = zia_truthunit.make_road(casa_road, cook_text)
@@ -217,12 +217,12 @@ def test_listen_to_speaker_intent_Returns2IntentIdeasLevel2TaskTruthWhereAnIdeaU
     assert after_casa_ideaunit._weight != 1
     assert after_casa_ideaunit._weight == 28
     assert after_yao_truthunit == before_yao_truthunit
-    assert len(after_yao_truthunit.get_intent_dict()) == 3
+    assert len(after_yao_truthunit.get_agenda_dict()) == 3
     assert after_fly_ideaunit._weight != 1
     assert after_fly_ideaunit._weight == 28
 
 
-def test_listen_to_speaker_intent_ProcessesIrrationalTruth():
+def test_listen_to_speaker_agenda_ProcessesIrrationalTruth():
     # GIVEN
     yao_text = "Yao"
     yao_role = truthunit_shop(yao_text)
@@ -271,11 +271,11 @@ def test_listen_to_speaker_intent_ProcessesIrrationalTruth():
     yao_job.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_job.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_job.set_other_pool(yao_pool)
-    yao_job = listen_to_speaker_intent(yao_job, sue_truthunit)
+    yao_job = listen_to_speaker_agenda(yao_job, sue_truthunit)
 
     # THEN irrational truth is ignored
-    assert len(yao_job.get_intent_dict()) != 3
-    assert len(yao_job.get_intent_dict()) == 0
+    assert len(yao_job.get_agenda_dict()) != 3
+    assert len(yao_job.get_agenda_dict()) == 0
     zia_otherunit = yao_job.get_other(zia_text)
     sue_otherunit = yao_job.get_other(sue_text)
     print(f"{sue_otherunit.debtor_weight=}")
@@ -284,7 +284,7 @@ def test_listen_to_speaker_intent_ProcessesIrrationalTruth():
     assert sue_otherunit._irrational_debtor_weight == 51
 
 
-def test_listen_to_speaker_intent_ProcessesBarrenTruth():
+def test_listen_to_speaker_agenda_ProcessesBarrenTruth():
     # GIVEN
     yao_text = "Yao"
     yao_role = truthunit_shop(yao_text)
@@ -305,11 +305,11 @@ def test_listen_to_speaker_intent_ProcessesBarrenTruth():
     yao_job.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_job.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_job.set_other_pool(yao_pool)
-    yao_job = listen_to_speaker_intent(yao_job, speaker=sue_job)
+    yao_job = listen_to_speaker_agenda(yao_job, speaker=sue_job)
 
     # THEN irrational truth is ignored
-    assert len(yao_job.get_intent_dict()) != 3
-    assert len(yao_job.get_intent_dict()) == 0
+    assert len(yao_job.get_agenda_dict()) != 3
+    assert len(yao_job.get_agenda_dict()) == 0
     zia_otherunit = yao_job.get_other(zia_text)
     sue_otherunit = yao_job.get_other(sue_text)
     print(f"{sue_otherunit.debtor_weight=}")

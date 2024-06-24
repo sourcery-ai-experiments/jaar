@@ -3,7 +3,7 @@ from src._road.jaar_config import get_json_filename
 from src._truth.idea import ideaunit_shop
 from src._truth.truth import truthunit_shop
 from src.listen.userhub import userhub_shop
-from src.listen.listen import create_listen_basis, listen_to_intents_role_job
+from src.listen.listen import create_listen_basis, listen_to_agendas_role_job
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as env_dir,
     env_dir_setup_cleanup,
@@ -28,7 +28,7 @@ from src.listen.examples.example_listen import (
 from os.path import exists as os_path_exists
 
 
-def test_listen_to_intent_role_job_intent_AddsTasksToJob_TruthWhenNo_suffbeliefIsSet(
+def test_listen_to_agenda_role_job_agenda_AddsTasksToJob_TruthWhenNo_suffbeliefIsSet(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -48,17 +48,17 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJob_TruthWhenNo_suffbeliefI
     yao_dakota_userhub = userhub_shop(env_dir(), None, yao_text, get_dakota_road())
     yao_dakota_userhub.save_job_truth(zia_job)
     new_yao_job = create_listen_basis(yao_role)
-    assert len(new_yao_job.get_intent_dict()) == 0
+    assert len(new_yao_job.get_agenda_dict()) == 0
 
     # WHEN
     print(f"{len(new_yao_job.get_idea_dict())=}")
-    listen_to_intents_role_job(new_yao_job, yao_dakota_userhub)
+    listen_to_agendas_role_job(new_yao_job, yao_dakota_userhub)
 
     # THEN
-    assert len(new_yao_job.get_intent_dict()) == 2
+    assert len(new_yao_job.get_agenda_dict()) == 2
 
 
-def test_listen_to_intent_role_job_intent_AddsTasksToJob_Truth(env_dir_setup_cleanup):
+def test_listen_to_agenda_role_job_agenda_AddsTasksToJob_Truth(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_role = truthunit_shop(yao_text)
@@ -83,17 +83,17 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJob_Truth(env_dir_setup_cle
     # zia_file_path = f"{jobs_dir}/{zia_text}.json"
     # print(f"{os_path_exists(zia_file_path)=}")
     new_yao_job = create_listen_basis(yao_role)
-    assert len(new_yao_job.get_intent_dict()) == 0
+    assert len(new_yao_job.get_agenda_dict()) == 0
 
     # WHEN
     print(f"{len(new_yao_job.get_idea_dict())=}")
-    listen_to_intents_role_job(new_yao_job, yao_dakota_userhub)
+    listen_to_agendas_role_job(new_yao_job, yao_dakota_userhub)
 
     # THEN
-    assert len(new_yao_job.get_intent_dict()) == 2
+    assert len(new_yao_job.get_agenda_dict()) == 2
 
 
-def test_listen_to_intent_role_job_intent_AddsTasksToJobTruthWithDetailsDecidedBy_debtor_weight(
+def test_listen_to_agenda_role_job_agenda_AddsTasksToJobTruthWithDetailsDecidedBy_debtor_weight(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -121,7 +121,7 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJobTruthWithDetailsDecidedB
     assert new_yao_live1.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_intents_role_job(new_yao_live1, sue_dakota_userhub)
+    listen_to_agendas_role_job(new_yao_live1, sue_dakota_userhub)
 
     # THEN
     assert new_yao_live1.idea_exists(cook_road())
@@ -140,7 +140,7 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJobTruthWithDetailsDecidedB
     assert new_yao_live2.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_intents_role_job(new_yao_live2, sue_dakota_userhub)
+    listen_to_agendas_role_job(new_yao_live2, sue_dakota_userhub)
 
     # THEN
     assert new_yao_live2.idea_exists(cook_road())
@@ -152,7 +152,7 @@ def test_listen_to_intent_role_job_intent_AddsTasksToJobTruthWithDetailsDecidedB
     assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit
 
 
-def test_listen_to_intent_role_job_intent_ProcessesIrrationalTruth(
+def test_listen_to_agenda_role_job_agenda_ProcessesIrrationalTruth(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -215,11 +215,11 @@ def test_listen_to_intent_role_job_intent_ProcessesIrrationalTruth(
 
     # WHEN
     new_yao_job = create_listen_basis(yao_role)
-    listen_to_intents_role_job(new_yao_job, yao_dakota_userhub)
+    listen_to_agendas_role_job(new_yao_job, yao_dakota_userhub)
 
     # THEN irrational truth is ignored
-    assert len(new_yao_job.get_intent_dict()) != 3
-    assert len(new_yao_job.get_intent_dict()) == 2
+    assert len(new_yao_job.get_agenda_dict()) != 3
+    assert len(new_yao_job.get_agenda_dict()) == 2
     zia_otherunit = new_yao_job.get_other(zia_text)
     sue_otherunit = new_yao_job.get_other(sue_text)
     print(f"{sue_otherunit.debtor_weight=}")
@@ -228,7 +228,7 @@ def test_listen_to_intent_role_job_intent_ProcessesIrrationalTruth(
     assert sue_otherunit._irrational_debtor_weight == 51
 
 
-def test_listen_to_intent_role_job_intent_ProcessesMissingDebtorJobTruth(
+def test_listen_to_agenda_role_job_agenda_ProcessesMissingDebtorJobTruth(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -260,11 +260,11 @@ def test_listen_to_intent_role_job_intent_ProcessesMissingDebtorJobTruth(
 
     # WHEN
     new_yao_job = create_listen_basis(yao_role)
-    listen_to_intents_role_job(new_yao_job, yao_dakota_userhub)
+    listen_to_agendas_role_job(new_yao_job, yao_dakota_userhub)
 
     # THEN irrational truth is ignored
-    assert len(new_yao_job.get_intent_dict()) != 3
-    assert len(new_yao_job.get_intent_dict()) == 2
+    assert len(new_yao_job.get_agenda_dict()) != 3
+    assert len(new_yao_job.get_agenda_dict()) == 2
     zia_otherunit = new_yao_job.get_other(zia_text)
     sue_otherunit = new_yao_job.get_other(sue_text)
     print(f"{sue_otherunit.debtor_weight=}")
@@ -273,7 +273,7 @@ def test_listen_to_intent_role_job_intent_ProcessesMissingDebtorJobTruth(
     assert sue_otherunit._inallocable_debtor_weight == 51
 
 
-def test_listen_to_intent_role_job_intent_ListensToOwner_role_AndNotOwner_job(
+def test_listen_to_agenda_role_job_agenda_ListensToOwner_role_AndNotOwner_job(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -316,14 +316,14 @@ def test_listen_to_intent_role_job_intent_ListensToOwner_role_AndNotOwner_job(
 
     # WHEN
     new_yao_job = create_listen_basis(yao_role)
-    listen_to_intents_role_job(new_yao_job, yao_dakota_userhub)
+    listen_to_agendas_role_job(new_yao_job, yao_dakota_userhub)
 
     # THEN irrational truth is ignored
-    assert len(new_yao_job.get_intent_dict()) != 3
-    assert len(new_yao_job.get_intent_dict()) == 2
+    assert len(new_yao_job.get_agenda_dict()) != 3
+    assert len(new_yao_job.get_agenda_dict()) == 2
 
 
-def test_listen_to_intent_role_job_intent_GetsIntentFromSrcTruthNotSpeakerSelf(
+def test_listen_to_agenda_role_job_agenda_GetsAgendaFromSrcTruthNotSpeakerSelf(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -348,7 +348,7 @@ def test_listen_to_intent_role_job_intent_GetsIntentFromSrcTruthNotSpeakerSelf(
     assert yao_new_job.idea_exists(clean_road()) is False
 
     # WHEN
-    listen_to_intents_role_job(yao_new_job, sue_dakota_userhub)
+    listen_to_agendas_role_job(yao_new_job, sue_dakota_userhub)
 
     # THEN
     assert yao_new_job.idea_exists(clean_road()) is False

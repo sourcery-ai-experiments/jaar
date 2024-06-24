@@ -3,7 +3,7 @@ from src._truth.truth import truthunit_shop
 from src.listen.listen import (
     create_listen_basis,
     listen_to_facts_role_job,
-    listen_to_intents_role_job,
+    listen_to_agendas_role_job,
 )
 from src.listen.examples.listen_env import get_texas_userhub, env_dir_setup_cleanup
 from src.listen.examples.example_listen import (
@@ -44,7 +44,7 @@ def test_listen_to_facts_role_job_SetsSingleFactUnit_v1(env_dir_setup_cleanup):
 
     new_yao_job = create_listen_basis(yao_role)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_intents_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_agendas_role_job(new_yao_job, sue_texas_userhub)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) != None
 
     # WHEN
@@ -77,7 +77,7 @@ def test_listen_to_facts_role_job_SetsSingleFactUnitWithDifferentTask(
 
     new_yao_job = create_listen_basis(yao_role)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_intents_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_agendas_role_job(new_yao_job, sue_texas_userhub)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) != None
     assert new_yao_job.get_fact(eat_road()) is None
 
@@ -109,7 +109,7 @@ def test_listen_to_facts_role_job_GetsFactsFromSrcTruthSelfNotSpeakerSelf(
     new_yao_job = create_listen_basis(yao_role)
     assert new_yao_job.get_fact(eat_road()) is None
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_intents_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_agendas_role_job(new_yao_job, sue_texas_userhub)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) != None
 
     # WHEN
@@ -142,7 +142,7 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirTruth_v
     new_yao_job = create_listen_basis(yao_role)
     assert new_yao_job.get_fact(eat_road()) is None
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_intents_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_agendas_role_job(new_yao_job, sue_texas_userhub)
     print(f"{new_yao_job.get_missing_fact_bases().keys()=}")
     print(f"{new_yao_job._idearoot._factunits.keys()=}")
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) != None
@@ -175,7 +175,7 @@ def test_listen_to_facts_role_job_SetsPrioritizesSelfFactsOverSpeakers(
     new_yao_job = create_listen_basis(yao_role)
     assert new_yao_job.get_fact(eat_road()) is None
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_intents_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_agendas_role_job(new_yao_job, sue_texas_userhub)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) != None
 
     # WHEN
@@ -210,7 +210,7 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirTruth_v
     new_yao_job1 = create_listen_basis(yao_role)
     assert new_yao_job1.get_fact(eat_road()) is None
     assert new_yao_job1.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_intents_role_job(new_yao_job1, sue_texas_userhub)
+    listen_to_agendas_role_job(new_yao_job1, sue_texas_userhub)
     print(f"{new_yao_job1.get_missing_fact_bases().keys()=}")
     print(f"{new_yao_job1._idearoot._factunits.keys()=}")
     assert new_yao_job1.get_missing_fact_bases().get(eat_road()) != None
@@ -234,7 +234,7 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirTruth_v
     yao_role.add_otherunit(bob_text, None, yao_bob_debtor_weight)
     yao_role.set_other_pool(100)
     new_yao_job2 = create_listen_basis(yao_role)
-    listen_to_intents_role_job(new_yao_job2, sue_texas_userhub)
+    listen_to_agendas_role_job(new_yao_job2, sue_texas_userhub)
     listen_to_facts_role_job(new_yao_job2, sue_texas_userhub)
 
     # THEN
@@ -281,7 +281,7 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirTruth_v
 #     new_yao_job = create_listen_basis(yao_role)
 #     print(f"{new_yao_job.get_idea_dict().keys()=}")
 #     # assert new_yao_job.get_missing_fact_bases().get(status_road) is None
-#     listen_to_intents_role_job(new_yao_job, texas_userhub)
+#     listen_to_agendas_role_job(new_yao_job, texas_userhub)
 #     print(f"{new_yao_job.get_idea_dict().keys()=}")
 #     assert new_yao_job.get_missing_fact_bases().get(status_road) != None
 

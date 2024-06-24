@@ -28,8 +28,8 @@ def test_OtherLink_exists():
         debtor_weight=bikers_debtor_weight,
         _truth_cred=0.7,
         _truth_debt=0.51,
-        _truth_intent_cred=0.66,
-        _truth_intent_debt=0.55,
+        _truth_agenda_cred=0.66,
+        _truth_agenda_debt=0.55,
     )
 
     # THEN
@@ -38,8 +38,8 @@ def test_OtherLink_exists():
     assert x_otherlink._truth_cred != None
     assert x_otherlink._truth_cred == 0.7
     assert x_otherlink._truth_debt == 0.51
-    assert x_otherlink._truth_intent_cred == 0.66
-    assert x_otherlink._truth_intent_debt == 0.55
+    assert x_otherlink._truth_agenda_cred == 0.66
+    assert x_otherlink._truth_agenda_debt == 0.55
 
 
 def test_otherlink_shop_set_truth_cred_debt_SetsAttrCorrectly():
@@ -48,12 +48,12 @@ def test_otherlink_shop_set_truth_cred_debt_SetsAttrCorrectly():
     bikers_credor_weight = 3.0
     otherlinks_sum_credor_weight = 60
     belief_truth_cred = 0.5
-    belief_truth_intent_cred = 0.98
+    belief_truth_agenda_cred = 0.98
 
     bikers_debtor_weight = 13.0
     otherlinks_sum_debtor_weight = 26.0
     belief_truth_debt = 0.9
-    belief_truth_intent_debt = 0.5151
+    belief_truth_agenda_debt = 0.5151
 
     x_otherlink = otherlink_shop(
         other_id=bikers_other_id,
@@ -62,8 +62,8 @@ def test_otherlink_shop_set_truth_cred_debt_SetsAttrCorrectly():
     )
     assert x_otherlink._truth_cred is None
     assert x_otherlink._truth_debt is None
-    assert x_otherlink._truth_intent_cred is None
-    assert x_otherlink._truth_intent_debt is None
+    assert x_otherlink._truth_agenda_cred is None
+    assert x_otherlink._truth_agenda_debt is None
 
     # WHEN
     x_otherlink.set_truth_cred_debt(
@@ -71,15 +71,15 @@ def test_otherlink_shop_set_truth_cred_debt_SetsAttrCorrectly():
         otherlinks_debtor_weight_sum=otherlinks_sum_debtor_weight,
         belief_truth_cred=belief_truth_cred,
         belief_truth_debt=belief_truth_debt,
-        belief_truth_intent_cred=belief_truth_intent_cred,
-        belief_truth_intent_debt=belief_truth_intent_debt,
+        belief_truth_agenda_cred=belief_truth_agenda_cred,
+        belief_truth_agenda_debt=belief_truth_agenda_debt,
     )
 
     # THEN
     assert x_otherlink._truth_cred == 0.025
     assert x_otherlink._truth_debt == 0.45
-    assert x_otherlink._truth_intent_cred == 0.049
-    assert x_otherlink._truth_intent_debt == 0.25755
+    assert x_otherlink._truth_agenda_cred == 0.049
+    assert x_otherlink._truth_agenda_debt == 0.25755
 
 
 def test_otherlink_shop_reset_truth_cred_debt():

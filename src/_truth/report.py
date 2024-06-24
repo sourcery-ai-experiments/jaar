@@ -12,10 +12,10 @@ def get_truth_otherunits_dataframe(x_truth: TruthUnit) -> DataFrame:
                 "debtor_weight",
                 "_truth_cred",
                 "_truth_debt",
-                "_truth_intent_cred",
-                "_truth_intent_debt",
-                "_truth_intent_ratio_cred",
-                "_truth_intent_ratio_debt",
+                "_truth_agenda_cred",
+                "_truth_agenda_debt",
+                "_truth_agenda_ratio_cred",
+                "_truth_agenda_ratio_debt",
                 "_credor_operational",
                 "_debtor_operational",
                 "_treasury_due_paid",
@@ -30,9 +30,9 @@ def get_truth_otherunits_dataframe(x_truth: TruthUnit) -> DataFrame:
     return DataFrame(x_otherunits_list)
 
 
-def get_truth_intent_dataframe(x_truth: TruthUnit, base: RoadUnit = None) -> DataFrame:
-    intent_dict = x_truth.get_intent_dict(base=base)
-    if intent_dict == {}:
+def get_truth_agenda_dataframe(x_truth: TruthUnit, base: RoadUnit = None) -> DataFrame:
+    agenda_dict = x_truth.get_agenda_dict(base=base)
+    if agenda_dict == {}:
         return DataFrame(
             columns=[
                 "owner_id",
@@ -48,7 +48,7 @@ def get_truth_intent_dataframe(x_truth: TruthUnit, base: RoadUnit = None) -> Dat
             ]
         )
     x_idea_list = []
-    for x_idea in intent_dict.values():
+    for x_idea in agenda_dict.values():
         idea_dict = {
             "owner_id": x_truth._owner_id,
             "truth_importance": x_idea._truth_importance,

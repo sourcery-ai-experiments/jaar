@@ -272,7 +272,7 @@ class IdeaUnit:
     _road_delimiter: str = None
     _healerhold_importance: float = None
 
-    def is_intent_item(self, necessary_base: RoadUnit = None) -> bool:
+    def is_agenda_item(self, necessary_base: RoadUnit = None) -> bool:
         # bool_x = False
         return (
             self.pledge and self._active and self.base_reasonunit_exists(necessary_base)

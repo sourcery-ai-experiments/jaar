@@ -141,7 +141,7 @@ def test_TruthUnit_add_idea_CanAddKidToKidIdea():
     assert new_york_idea._road_delimiter == sue_truth._road_delimiter
     new_york_idea.set_parent_road(parent_road="testing")
     assert sue_truth._idearoot._kids["casa"]._kids["new_york"]._parent_road == "testing"
-    assert sue_truth.get_intent_dict()
+    assert sue_truth.get_agenda_dict()
 
 
 def test_TruthUnit_add_idea_CanAddKidToGrandkidIdea():

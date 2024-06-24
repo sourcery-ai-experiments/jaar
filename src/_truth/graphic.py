@@ -3,7 +3,7 @@ from src._truth.idea import IdeaUnit
 from src._truth.truth import TruthUnit
 from src._truth.report import (
     get_truth_otherunits_dataframe,
-    get_truth_intent_dataframe,
+    get_truth_agenda_dataframe,
 )
 from plotly.graph_objects import (
     Figure as plotly_Figure,
@@ -148,8 +148,8 @@ def get_truth_others_plotly_fig(x_truth: TruthUnit) -> plotly_Figure:
         "debtor_weight",
         "_truth_cred",
         "_truth_debt",
-        "_truth_intent_cred",
-        "_truth_intent_debt",
+        "_truth_agenda_cred",
+        "_truth_agenda_debt",
     ]
     df = get_truth_otherunits_dataframe(x_truth)
     df.insert(1, "_other_credor_pool", x_truth._other_credor_pool)
@@ -168,8 +168,8 @@ def get_truth_others_plotly_fig(x_truth: TruthUnit) -> plotly_Figure:
                 df.debtor_weight,
                 df._truth_cred,
                 df._truth_debt,
-                df._truth_intent_cred,
-                df._truth_intent_debt,
+                df._truth_agenda_cred,
+                df._truth_agenda_debt,
             ],
             fill_color="lavender",
             align="left",
@@ -185,14 +185,14 @@ def get_truth_others_plotly_fig(x_truth: TruthUnit) -> plotly_Figure:
     return fig
 
 
-def get_truth_intent_plotly_fig(x_truth: TruthUnit) -> plotly_Figure:
+def get_truth_agenda_plotly_fig(x_truth: TruthUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "truth_importance",
         "_label",
         "_parent_road",
     ]
-    df = get_truth_intent_dataframe(x_truth)
+    df = get_truth_agenda_dataframe(x_truth)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -211,7 +211,7 @@ def get_truth_intent_plotly_fig(x_truth: TruthUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"OwnerID '{x_truth._owner_id}' truth intent"
+    fig_title = f"OwnerID '{x_truth._owner_id}' truth agenda"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

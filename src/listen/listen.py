@@ -16,17 +16,17 @@ class Missing_other_debtor_poolException(Exception):
     pass
 
 
-def generate_perspective_intent(perspective_truth: TruthUnit) -> list[IdeaUnit]:
+def generate_perspective_agenda(perspective_truth: TruthUnit) -> list[IdeaUnit]:
     for x_factunit in perspective_truth._idearoot._factunits.values():
         x_factunit.set_pick_to_base()
-    return list(perspective_truth.get_intent_dict().values())
+    return list(perspective_truth.get_agenda_dict().values())
 
 
-def _ingest_perspective_intent(
-    listener: TruthUnit, intent: list[IdeaUnit]
+def _ingest_perspective_agenda(
+    listener: TruthUnit, agenda: list[IdeaUnit]
 ) -> TruthUnit:
     debtor_amount = listener._other_debtor_pool
-    ingest_list = generate_ingest_list(intent, debtor_amount, listener._pixel)
+    ingest_list = generate_ingest_list(agenda, debtor_amount, listener._pixel)
     for ingest_ideaunit in ingest_list:
         _ingest_single_ideaunit(listener, ingest_ideaunit)
     return listener
@@ -190,7 +190,7 @@ def listen_to_speaker_fact(
             )
 
 
-def listen_to_speaker_intent(listener: TruthUnit, speaker: TruthUnit) -> TruthUnit:
+def listen_to_speaker_agenda(listener: TruthUnit, speaker: TruthUnit) -> TruthUnit:
     if listener.other_exists(speaker._owner_id) is False:
         raise Missing_other_debtor_poolException(
             f"listener '{listener._owner_id}' truth is assumed to have {speaker._owner_id} otherunit."
@@ -201,39 +201,39 @@ def listen_to_speaker_intent(listener: TruthUnit, speaker: TruthUnit) -> TruthUn
     if listener._other_debtor_pool is None:
         return _allocate_inallocable_debtor_weight(listener, speaker._owner_id)
     if listener._owner_id != speaker._owner_id:
-        intent = generate_perspective_intent(perspective_truth)
+        agenda = generate_perspective_agenda(perspective_truth)
     else:
-        intent = list(perspective_truth.get_all_pledges().values())
-    if len(intent) == 0:
+        agenda = list(perspective_truth.get_all_pledges().values())
+    if len(agenda) == 0:
         return _allocate_inallocable_debtor_weight(listener, speaker._owner_id)
-    return _ingest_perspective_intent(listener, intent)
+    return _ingest_perspective_agenda(listener, agenda)
 
 
-def listen_to_intents_same_live(listener_live: TruthUnit, listener_userhub: UserHub):
+def listen_to_agendas_same_live(listener_live: TruthUnit, listener_userhub: UserHub):
     for x_otherunit in get_ordered_debtors_roll(listener_live):
         if x_otherunit.other_id == listener_live._owner_id:
-            listen_to_speaker_intent(listener_live, listener_userhub.get_same_truth())
+            listen_to_speaker_agenda(listener_live, listener_userhub.get_same_truth())
         else:
             speaker_id = x_otherunit.other_id
             speaker_live = listener_userhub.dw_speaker_truth(speaker_id)
             if speaker_live is None:
                 speaker_live = create_empty_truth(listener_live, speaker_id)
-            listen_to_speaker_intent(listener_live, speaker_live)
+            listen_to_speaker_agenda(listener_live, speaker_live)
 
 
-def listen_to_intents_role_job(listener_job: TruthUnit, healer_userhub: UserHub):
+def listen_to_agendas_role_job(listener_job: TruthUnit, healer_userhub: UserHub):
     listener_id = listener_job._owner_id
     for x_otherunit in get_ordered_debtors_roll(listener_job):
         if x_otherunit.other_id == listener_id:
             listener_role = healer_userhub.get_role_truth(listener_id)
-            listen_to_speaker_intent(listener_job, listener_role)
+            listen_to_speaker_agenda(listener_job, listener_role)
         else:
             speaker_id = x_otherunit.other_id
             healer_id = healer_userhub.person_id
             speaker_job = healer_userhub.rj_speaker_truth(healer_id, speaker_id)
             if speaker_job is None:
                 speaker_job = create_empty_truth(listener_job, speaker_id)
-            listen_to_speaker_intent(listener_job, speaker_job)
+            listen_to_speaker_agenda(listener_job, speaker_job)
 
 
 def listen_to_facts_role_job(new_job: TruthUnit, healer_userhub: UserHub):
@@ -261,7 +261,7 @@ def listen_to_debtors_roll_same_live(listener_userhub: UserHub) -> TruthUnit:
     new_truth = create_listen_basis(same)
     if same._other_debtor_pool is None:
         return new_truth
-    listen_to_intents_same_live(new_truth, listener_userhub)
+    listen_to_agendas_same_live(new_truth, listener_userhub)
     listen_to_facts_same_live(new_truth, listener_userhub)
     return new_truth
 
@@ -273,7 +273,7 @@ def listen_to_debtors_roll_role_job(
     new_role = create_listen_basis(role)
     if role._other_debtor_pool is None:
         return new_role
-    listen_to_intents_role_job(new_role, healer_userhub)
+    listen_to_agendas_role_job(new_role, healer_userhub)
     listen_to_facts_role_job(new_role, healer_userhub)
     return new_role
 
@@ -292,8 +292,8 @@ def listen_to_person_jobs(listener_userhub: UserHub) -> None:
         _pick_econ_jobs_and_listen(listener_id, econ_dict, healer_userhub, new_live)
 
     if new_live.get_dict() == pre_live_dict:
-        intent = list(same.get_intent_dict().values())
-        _ingest_perspective_intent(new_live, intent)
+        agenda = list(same.get_agenda_dict().values())
+        _ingest_perspective_agenda(new_live, agenda)
         listen_to_speaker_fact(new_live, same)
 
     listener_userhub.save_live_truth(new_live)
@@ -318,10 +318,10 @@ def pick_econ_job_and_listen(
         econ_job = healer_userhub.get_job_truth(listener_id)
     else:
         econ_job = create_empty_truth(new_live, new_live._owner_id)
-    listen_to_job_intent(new_live, econ_job)
+    listen_to_job_agenda(new_live, econ_job)
 
 
-def listen_to_job_intent(listener: TruthUnit, job: TruthUnit):
+def listen_to_job_agenda(listener: TruthUnit, job: TruthUnit):
     for x_idea in job._idea_dict.values():
         if listener.idea_exists(x_idea.get_road()) is False:
             listener.add_idea(x_idea, x_idea._parent_road)

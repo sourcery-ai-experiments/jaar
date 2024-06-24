@@ -476,12 +476,12 @@ def test_TruthUnit_calc_truth_metrics_CorrectlyCalculatesRangeAttributes():
     assert sue_truth._idea_dict.get(clean_road)._active is False
 
 
-def test_get_intent_dict_ReturnsCorrectObj():
+def test_get_agenda_dict_ReturnsCorrectObj():
     # GIVEN
     sue_truth = get_truth_with_4_levels_and_2reasons()
 
     # WHEN
-    pledge_items = sue_truth.get_intent_dict()
+    pledge_items = sue_truth.get_agenda_dict()
 
     # THEN
     assert pledge_items != None

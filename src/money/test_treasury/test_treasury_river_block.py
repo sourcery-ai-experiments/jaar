@@ -36,10 +36,10 @@ def test_MoneyUnit_get_truth_otherunit_table_insert_sqlstr_CorrectlyPopulatesTab
     )
     tim_otherunit._truth_cred = 0.9
     tim_otherunit._truth_debt = 0.8
-    tim_otherunit._truth_intent_cred = 0.7
-    tim_otherunit._truth_intent_debt = 0.6
-    tim_otherunit._truth_intent_ratio_cred = 0.5
-    tim_otherunit._truth_intent_ratio_debt = 0.4
+    tim_otherunit._truth_agenda_cred = 0.7
+    tim_otherunit._truth_agenda_debt = 0.6
+    tim_otherunit._truth_agenda_ratio_cred = 0.5
+    tim_otherunit._truth_agenda_ratio_debt = 0.4
 
     tim_due_paid = 0.5151
     tim_cred_score = 0.5252
@@ -70,10 +70,10 @@ def test_MoneyUnit_get_truth_otherunit_table_insert_sqlstr_CorrectlyPopulatesTab
     assert tim_ledger.other_id == tim_text
     assert tim_ledger._truth_cred == 0.9
     assert tim_ledger._truth_debt == 0.8
-    assert tim_ledger._truth_intent_cred == 0.7
-    assert tim_ledger._truth_intent_debt == 0.6
-    assert tim_ledger._truth_intent_ratio_cred == 0.5
-    assert tim_ledger._truth_intent_ratio_debt == 0.4
+    assert tim_ledger._truth_agenda_cred == 0.7
+    assert tim_ledger._truth_agenda_debt == 0.6
+    assert tim_ledger._truth_agenda_ratio_cred == 0.5
+    assert tim_ledger._truth_agenda_ratio_debt == 0.4
     assert tim_ledger._credor_operational
     assert tim_ledger._debtor_operational == 0
     assert tim_ledger._treasury_due_paid == tim_due_paid
@@ -161,10 +161,10 @@ def test_MoneyUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cl
     )
     sal_otherunit._truth_cred = 0.9
     sal_otherunit._truth_debt = 0.8
-    sal_otherunit._truth_intent_cred = 0.7
-    sal_otherunit._truth_intent_debt = 0.6
-    sal_otherunit._truth_intent_ratio_cred = 0.5
-    sal_otherunit._truth_intent_ratio_debt = 0.4
+    sal_otherunit._truth_agenda_cred = 0.7
+    sal_otherunit._truth_agenda_debt = 0.6
+    sal_otherunit._truth_agenda_ratio_cred = 0.5
+    sal_otherunit._truth_agenda_ratio_debt = 0.4
 
     insert_sqlstr_sal = get_truth_otherunit_table_insert_sqlstr(
         bob_truth, sal_otherunit
@@ -176,10 +176,10 @@ def test_MoneyUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cl
     )
     tim_otherunit._truth_cred = 0.012
     tim_otherunit._truth_debt = 0.017
-    tim_otherunit._truth_intent_cred = 0.077
-    tim_otherunit._truth_intent_debt = 0.066
-    tim_otherunit._truth_intent_ratio_cred = 0.051
-    tim_otherunit._truth_intent_ratio_debt = 0.049
+    tim_otherunit._truth_agenda_cred = 0.077
+    tim_otherunit._truth_agenda_debt = 0.066
+    tim_otherunit._truth_agenda_ratio_cred = 0.051
+    tim_otherunit._truth_agenda_ratio_debt = 0.049
 
     insert_sqlstr_tim = get_truth_otherunit_table_insert_sqlstr(
         bob_truth, tim_otherunit
@@ -268,10 +268,10 @@ def test_RiverLedgerUnit_Exists():
         other_id=sal_text,
         _truth_cred=0.66,
         _truth_debt=0.2,
-        _truth_intent_cred=0.4,
-        _truth_intent_debt=0.15,
-        _truth_intent_ratio_cred=0.5,
-        _truth_intent_ratio_debt=0.12,
+        _truth_agenda_cred=0.4,
+        _truth_agenda_debt=0.15,
+        _truth_agenda_ratio_cred=0.5,
+        _truth_agenda_ratio_debt=0.12,
         _credor_operational=True,
         _debtor_operational=True,
     )
@@ -280,10 +280,10 @@ def test_RiverLedgerUnit_Exists():
         other_id=tom_text,
         _truth_cred=0.05,
         _truth_debt=0.09,
-        _truth_intent_cred=0.055,
-        _truth_intent_debt=0.0715,
-        _truth_intent_ratio_cred=0.00995,
-        _truth_intent_ratio_debt=0.00012,
+        _truth_agenda_cred=0.055,
+        _truth_agenda_debt=0.0715,
+        _truth_agenda_ratio_cred=0.00995,
+        _truth_agenda_ratio_debt=0.00012,
         _credor_operational=True,
         _debtor_operational=True,
     )
@@ -412,10 +412,10 @@ def test_MoneyUnit_get_truth_otherunit_table_update_treasury_due_paid_sqlstr_Cor
     )
     tom_otherunit._truth_cred = 0.9
     tom_otherunit._truth_debt = 0.8
-    tom_otherunit._truth_intent_cred = 0.7
-    tom_otherunit._truth_intent_debt = 0.6
-    tom_otherunit._truth_intent_ratio_cred = 0.5
-    tom_otherunit._truth_intent_ratio_debt = 0.411
+    tom_otherunit._truth_agenda_cred = 0.7
+    tom_otherunit._truth_agenda_debt = 0.6
+    tom_otherunit._truth_agenda_ratio_cred = 0.5
+    tom_otherunit._truth_agenda_ratio_debt = 0.411
 
     insert_sqlstr_tom = get_truth_otherunit_table_insert_sqlstr(
         bob_truth, tom_otherunit
@@ -425,10 +425,10 @@ def test_MoneyUnit_get_truth_otherunit_table_update_treasury_due_paid_sqlstr_Cor
     )
     sal_otherunit._truth_cred = 0.9
     sal_otherunit._truth_debt = 0.8
-    sal_otherunit._truth_intent_cred = 0.7
-    sal_otherunit._truth_intent_debt = 0.6
-    sal_otherunit._truth_intent_ratio_cred = 0.5
-    sal_otherunit._truth_intent_ratio_debt = 0.455
+    sal_otherunit._truth_agenda_cred = 0.7
+    sal_otherunit._truth_agenda_debt = 0.6
+    sal_otherunit._truth_agenda_ratio_cred = 0.5
+    sal_otherunit._truth_agenda_ratio_debt = 0.455
 
     insert_sqlstr_sal = get_truth_otherunit_table_insert_sqlstr(
         bob_truth, sal_otherunit

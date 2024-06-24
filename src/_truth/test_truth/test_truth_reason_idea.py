@@ -120,7 +120,7 @@ def test_TruthUnit_set_reasonunits_status():
     assert casa_idea._reasonunits[weekday_road] == casa_wk_reason
 
 
-def test_intent_returned_WhenNoReasonsExist():
+def test_agenda_returned_WhenNoReasonsExist():
     # GIVEN
     x_truth = example_truths_get_truth_with_4_levels()
 

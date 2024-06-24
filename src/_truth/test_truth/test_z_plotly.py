@@ -1,5 +1,5 @@
 from src._truth.examples.example_truths import (
-    truth_v001_with_large_intent,
+    truth_v001_with_large_agenda,
     get_truth_with_4_levels,
     get_truth_assignment_laundry_example1,
     get_truth_with_4_levels_and_2reasons,
@@ -9,7 +9,7 @@ from src._truth.truth import truthunit_shop
 from src._truth.graphic import (
     display_ideatree,
     get_truth_others_plotly_fig,
-    get_truth_intent_plotly_fig,
+    get_truth_agenda_plotly_fig,
 )
 
 
@@ -76,15 +76,15 @@ def test_get_truth_others_plotly_fig_DisplaysCorrectInfo():
     #   x_fig.show()
 
 
-def test_get_truth_intent_plotly_fig_DisplaysCorrectInfo():
+def test_get_truth_agenda_plotly_fig_DisplaysCorrectInfo():
     # GIVEN
-    yao_truth = truth_v001_with_large_intent()
+    yao_truth = truth_v001_with_large_agenda()
     week_text = "weekdays"
     week_road = yao_truth.make_l1_road(week_text)
-    assert len(yao_truth.get_intent_dict()) == 63
+    assert len(yao_truth.get_agenda_dict()) == 63
 
     # WHEN
-    x_fig = get_truth_intent_plotly_fig(yao_truth)
+    x_fig = get_truth_agenda_plotly_fig(yao_truth)
 
     # # THEN
     # show_figure = True

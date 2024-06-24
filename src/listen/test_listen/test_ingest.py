@@ -3,7 +3,7 @@ from src._truth.truth import truthunit_shop
 from src.listen.listen import (
     generate_ingest_list,
     _allocate_irrational_debtor_weight,
-    generate_perspective_intent,
+    generate_perspective_agenda,
 )
 
 
@@ -43,7 +43,7 @@ def test_allocate_irrational_debtor_weight_CorrectlySetsTruthAttr():
     assert zia_otherunit._irrational_debtor_weight == zia_debtor_weight
 
 
-def test_generate_perspective_intent_CorrectlyGrabsIntentTasks():
+def test_generate_perspective_agenda_CorrectlyGrabsAgendaTasks():
     # GIVEN
     yao_text = "Yao"
     yao_speaker = truthunit_shop(yao_text)
@@ -66,13 +66,13 @@ def test_generate_perspective_intent_CorrectlyGrabsIntentTasks():
         sweep_road, reason_base=status_road, reason_premise=dirty_road
     )
     yao_speaker.set_fact(status_road, clean_road)
-    assert len(yao_speaker.get_intent_dict()) == 0
+    assert len(yao_speaker.get_agenda_dict()) == 0
 
     # WHEN
-    intent_list = generate_perspective_intent(yao_speaker)
+    agenda_list = generate_perspective_agenda(yao_speaker)
 
     # THEN
-    assert len(intent_list) == 1
+    assert len(agenda_list) == 1
 
 
 def test_generate_ingest_list_ReturnsCorrectList_v1():
@@ -83,11 +83,11 @@ def test_generate_ingest_list_ReturnsCorrectList_v1():
     zia_truthunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
     zia_debtor_pool = 78
     zia_pixel = 2
-    assert len(zia_truthunit.get_intent_dict()) == 1
+    assert len(zia_truthunit.get_agenda_dict()) == 1
 
     # WHEN
     ingested_list = generate_ingest_list(
-        item_list=list(zia_truthunit.get_intent_dict().values()),
+        item_list=list(zia_truthunit.get_agenda_dict().values()),
         debtor_amount=zia_debtor_pool,
         pixel=zia_pixel,
     )
@@ -110,11 +110,11 @@ def test_generate_ingest_list_ReturnsCorrectList_v2():
     zia_truthunit.add_l1_idea(ideaunit_shop(cook_text, pledge=True))
     zia_debtor_pool = 32
     zia_pixel = 2
-    assert len(zia_truthunit.get_intent_dict()) == 2
+    assert len(zia_truthunit.get_agenda_dict()) == 2
 
     # WHEN
     ingested_list = generate_ingest_list(
-        item_list=list(zia_truthunit.get_intent_dict().values()),
+        item_list=list(zia_truthunit.get_agenda_dict().values()),
         debtor_amount=zia_debtor_pool,
         pixel=zia_pixel,
     )
@@ -141,11 +141,11 @@ def test_generate_ingest_list_ReturnsCorrectList_v3():
     zia_truthunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, pledge=True))
     zia_debtor_pool = 32
     zia_pixel = 2
-    assert len(zia_truthunit.get_intent_dict()) == 2
+    assert len(zia_truthunit.get_agenda_dict()) == 2
 
     # WHEN
     ingested_list = generate_ingest_list(
-        item_list=list(zia_truthunit.get_intent_dict().values()),
+        item_list=list(zia_truthunit.get_agenda_dict().values()),
         debtor_amount=zia_debtor_pool,
         pixel=zia_pixel,
     )
@@ -170,11 +170,11 @@ def test_generate_ingest_list_ReturnsCorrectList_v4():
     zia_truthunit.add_l1_idea(ideaunit_shop(cook_text, _weight=2, pledge=True))
     zia_debtor_pool = 32
     zia_pixel = 2
-    assert len(zia_truthunit.get_intent_dict()) == 2
+    assert len(zia_truthunit.get_agenda_dict()) == 2
 
     # WHEN
     ingested_list = generate_ingest_list(
-        item_list=list(zia_truthunit.get_intent_dict().values()),
+        item_list=list(zia_truthunit.get_agenda_dict().values()),
         debtor_amount=zia_debtor_pool,
         pixel=zia_pixel,
     )

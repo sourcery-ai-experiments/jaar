@@ -375,10 +375,10 @@ CREATE TABLE IF NOT EXISTS truth_otherunit (
 , other_id VARCHAR(255) NOT NULL
 , _truth_cred FLOAT
 , _truth_debt FLOAT
-, _truth_intent_cred FLOAT
-, _truth_intent_debt FLOAT
-, _truth_intent_ratio_cred FLOAT
-, _truth_intent_ratio_debt FLOAT
+, _truth_agenda_cred FLOAT
+, _truth_agenda_debt FLOAT
+, _truth_agenda_ratio_cred FLOAT
+, _truth_agenda_ratio_debt FLOAT
 , _credor_operational INT
 , _debtor_operational INT
 , _treasury_due_paid FLOAT

@@ -41,8 +41,8 @@ class BeliefUnit(BeliefCore):
     # calculated by TruthUnit.calc_truth_metrics()
     _truth_cred: float = None
     _truth_debt: float = None
-    _truth_intent_cred: float = None
-    _truth_intent_debt: float = None
+    _truth_agenda_cred: float = None
+    _truth_agenda_debt: float = None
 
     def set_belief_id(self, belief_id: BeliefID = None):
         if belief_id != None:
@@ -65,8 +65,8 @@ class BeliefUnit(BeliefCore):
     def reset_truth_cred_debt(self):
         self._truth_cred = 0
         self._truth_debt = 0
-        self._truth_intent_cred = 0
-        self._truth_intent_debt = 0
+        self._truth_agenda_cred = 0
+        self._truth_agenda_debt = 0
         for otherlink in self._others.values():
             otherlink.reset_truth_cred_debt()
 
@@ -84,8 +84,8 @@ class BeliefUnit(BeliefCore):
                 otherlinks_debtor_weight_sum=otherlinks_debtor_weight_sum,
                 belief_truth_cred=self._truth_cred,
                 belief_truth_debt=self._truth_debt,
-                belief_truth_intent_cred=self._truth_intent_cred,
-                belief_truth_intent_debt=self._truth_intent_debt,
+                belief_truth_agenda_cred=self._truth_agenda_cred,
+                belief_truth_agenda_debt=self._truth_agenda_debt,
             )
 
     def clear_otherlinks(self):
@@ -215,8 +215,8 @@ def beliefunit_shop(
         _others=get_empty_dict_if_none(_others),
         _truth_cred=get_0_if_None(),
         _truth_debt=get_0_if_None(),
-        _truth_intent_cred=get_0_if_None(),
-        _truth_intent_debt=get_0_if_None(),
+        _truth_agenda_cred=get_0_if_None(),
+        _truth_agenda_debt=get_0_if_None(),
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
     )
     x_beliefunit.set_belief_id(belief_id=belief_id)

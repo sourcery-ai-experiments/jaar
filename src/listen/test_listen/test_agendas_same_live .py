@@ -3,7 +3,7 @@ from src._road.jaar_config import get_json_filename
 from src._truth.idea import ideaunit_shop
 from src._truth.truth import truthunit_shop
 from src.listen.userhub import userhub_shop
-from src.listen.listen import create_listen_basis, listen_to_intents_same_live
+from src.listen.listen import create_listen_basis, listen_to_agendas_same_live
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as env_dir,
     env_dir_setup_cleanup,
@@ -27,7 +27,7 @@ from src.listen.examples.example_listen import (
 from os.path import exists as os_path_exists
 
 
-def test_listen_to_intents_same_live_AddsTasksToTruthWhenNo_suffbeliefIsSet(
+def test_listen_to_agendas_same_live_AddsTasksToTruthWhenNo_suffbeliefIsSet(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -50,17 +50,17 @@ def test_listen_to_intents_same_live_AddsTasksToTruthWhenNo_suffbeliefIsSet(
     zia_userhub.save_live_truth(zia_live)
 
     new_yao_live = create_listen_basis(yao_same)
-    assert len(new_yao_live.get_intent_dict()) == 0
+    assert len(new_yao_live.get_agenda_dict()) == 0
 
     # WHEN
     print(f"{len(new_yao_live.get_idea_dict())=}")
-    listen_to_intents_same_live(new_yao_live, yao_userhub)
+    listen_to_agendas_same_live(new_yao_live, yao_userhub)
 
     # THEN
-    assert len(new_yao_live.get_intent_dict()) == 2
+    assert len(new_yao_live.get_agenda_dict()) == 2
 
 
-def test_listen_to_intents_same_live_AddsTasksToTruth(env_dir_setup_cleanup):
+def test_listen_to_agendas_same_live_AddsTasksToTruth(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_same = truthunit_shop(yao_text)
@@ -84,17 +84,17 @@ def test_listen_to_intents_same_live_AddsTasksToTruth(env_dir_setup_cleanup):
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
     zia_userhub.save_live_truth(zia_live)
     new_yao_live = create_listen_basis(yao_same)
-    assert len(new_yao_live.get_intent_dict()) == 0
+    assert len(new_yao_live.get_agenda_dict()) == 0
 
     # WHEN
     print(f"{len(new_yao_live.get_idea_dict())=}")
-    listen_to_intents_same_live(new_yao_live, yao_userhub)
+    listen_to_agendas_same_live(new_yao_live, yao_userhub)
 
     # THEN
-    assert len(new_yao_live.get_intent_dict()) == 2
+    assert len(new_yao_live.get_agenda_dict()) == 2
 
 
-def test_listen_to_intents_same_live_AddsTasksToTruthWithDetailsDecidedBy_debtor_weight(
+def test_listen_to_agendas_same_live_AddsTasksToTruthWithDetailsDecidedBy_debtor_weight(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -126,7 +126,7 @@ def test_listen_to_intents_same_live_AddsTasksToTruthWithDetailsDecidedBy_debtor
     assert new_yao_live1.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_intents_same_live(new_yao_live1, yao_userhub)
+    listen_to_agendas_same_live(new_yao_live1, yao_userhub)
 
     # THEN
     assert new_yao_live1.idea_exists(cook_road())
@@ -145,7 +145,7 @@ def test_listen_to_intents_same_live_AddsTasksToTruthWithDetailsDecidedBy_debtor
     assert new_yao_live2.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_intents_same_live(new_yao_live2, yao_userhub)
+    listen_to_agendas_same_live(new_yao_live2, yao_userhub)
 
     # THEN
     assert new_yao_live2.idea_exists(cook_road())
@@ -157,7 +157,7 @@ def test_listen_to_intents_same_live_AddsTasksToTruthWithDetailsDecidedBy_debtor
     assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit
 
 
-def test_listen_to_intents_same_live_ProcessesIrrationalTruth(env_dir_setup_cleanup):
+def test_listen_to_agendas_same_live_ProcessesIrrationalTruth(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_same = truthunit_shop(yao_text)
@@ -220,11 +220,11 @@ def test_listen_to_intents_same_live_ProcessesIrrationalTruth(env_dir_setup_clea
 
     # WHEN
     new_yao_live = create_listen_basis(yao_same)
-    listen_to_intents_same_live(new_yao_live, yao_userhub)
+    listen_to_agendas_same_live(new_yao_live, yao_userhub)
 
     # THEN irrational truth is ignored
-    assert len(new_yao_live.get_intent_dict()) != 3
-    assert len(new_yao_live.get_intent_dict()) == 2
+    assert len(new_yao_live.get_agenda_dict()) != 3
+    assert len(new_yao_live.get_agenda_dict()) == 2
     zia_otherunit = new_yao_live.get_other(zia_text)
     sue_otherunit = new_yao_live.get_other(sue_text)
     print(f"{sue_otherunit.debtor_weight=}")
@@ -233,7 +233,7 @@ def test_listen_to_intents_same_live_ProcessesIrrationalTruth(env_dir_setup_clea
     assert sue_otherunit._irrational_debtor_weight == 51
 
 
-def test_listen_to_intents_same_live_ProcessesMissingDebtorTruth(
+def test_listen_to_agendas_same_live_ProcessesMissingDebtorTruth(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -267,11 +267,11 @@ def test_listen_to_intents_same_live_ProcessesMissingDebtorTruth(
 
     # WHEN
     new_yao_live = create_listen_basis(yao_same)
-    listen_to_intents_same_live(new_yao_live, yao_userhub)
+    listen_to_agendas_same_live(new_yao_live, yao_userhub)
 
     # THEN irrational truth is ignored
-    assert len(new_yao_live.get_intent_dict()) != 3
-    assert len(new_yao_live.get_intent_dict()) == 2
+    assert len(new_yao_live.get_agenda_dict()) != 3
+    assert len(new_yao_live.get_agenda_dict()) == 2
     zia_otherunit = new_yao_live.get_other(zia_text)
     sue_otherunit = new_yao_live.get_other(sue_text)
     print(f"{sue_otherunit.debtor_weight=}")
@@ -280,7 +280,7 @@ def test_listen_to_intents_same_live_ProcessesMissingDebtorTruth(
     assert sue_otherunit._inallocable_debtor_weight == 51
 
 
-def test_listen_to_intents_same_live_ListensToOwner_same_AndNotOwner_live(
+def test_listen_to_agendas_same_live_ListensToOwner_same_AndNotOwner_live(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -324,8 +324,8 @@ def test_listen_to_intents_same_live_ListensToOwner_same_AndNotOwner_live(
 
     # WHEN
     new_yao_live = create_listen_basis(yao_same)
-    listen_to_intents_same_live(new_yao_live, yao_userhub)
+    listen_to_agendas_same_live(new_yao_live, yao_userhub)
 
     # THEN irrational truth is ignored
-    assert len(new_yao_live.get_intent_dict()) != 3
-    assert len(new_yao_live.get_intent_dict()) == 2
+    assert len(new_yao_live.get_agenda_dict()) != 3
+    assert len(new_yao_live.get_agenda_dict()) == 2

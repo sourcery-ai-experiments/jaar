@@ -8,7 +8,7 @@ from src.money.money import moneyunit_shop
 from src.money.treasury_sqlstr import (
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,
-    CalendarIntentUnit,
+    CalendarAgendaUnit,
     CalendarReport,
 )
 from src.money.examples.econ_env import (
@@ -28,8 +28,8 @@ def test_CalendarReport_Exists():
     x_date_range_start = 1000000600
     x_interval_count = 20
     x_interval_length = 15
-    x_intent_max_count_task = 11
-    x_intent_max_count_state = 7
+    x_agenda_max_count_task = 11
+    x_agenda_max_count_state = 7
 
     # WHEN
     x_calendarreport = CalendarReport(
@@ -38,8 +38,8 @@ def test_CalendarReport_Exists():
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
         interval_length=x_interval_length,
-        intent_max_count_task=x_intent_max_count_task,
-        intent_max_count_state=x_intent_max_count_state,
+        agenda_max_count_task=x_agenda_max_count_task,
+        agenda_max_count_state=x_agenda_max_count_state,
     )
 
     # THEN
@@ -47,8 +47,8 @@ def test_CalendarReport_Exists():
     assert x_calendarreport.date_range_start == x_date_range_start
     assert x_calendarreport.interval_count == x_interval_count
     assert x_calendarreport.interval_length == x_interval_length
-    assert x_calendarreport.intent_max_count_task == x_intent_max_count_task
-    assert x_calendarreport.intent_max_count_state == x_intent_max_count_state
+    assert x_calendarreport.agenda_max_count_task == x_agenda_max_count_task
+    assert x_calendarreport.agenda_max_count_state == x_agenda_max_count_state
 
 
 def test_CalendarReport_CalculationMethodsReturnCorrectObj():
@@ -59,16 +59,16 @@ def test_CalendarReport_CalculationMethodsReturnCorrectObj():
     x_date_range_start = 1000000600
     x_interval_count = 20
     x_interval_length = 15
-    x_intent_max_count_task = 11
-    x_intent_max_count_state = 7
+    x_agenda_max_count_task = 11
+    x_agenda_max_count_state = 7
     x_calendarreport = CalendarReport(
         owner_id=bob_text,
         time_road=jaja_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
         interval_length=x_interval_length,
-        intent_max_count_task=x_intent_max_count_task,
-        intent_max_count_state=x_intent_max_count_state,
+        agenda_max_count_task=x_agenda_max_count_task,
+        agenda_max_count_state=x_agenda_max_count_state,
     )
 
     # WHEN / THEN
@@ -82,7 +82,7 @@ def test_CalendarReport_CalculationMethodsReturnCorrectObj():
     assert x_calendarreport.get_interval_close(interval_num=3) == 1000000660
 
 
-def test_CalendarIntentUnit_exists():
+def test_CalendarAgendaUnit_exists():
     # GIVEN
     bob_text = "Bob"
     time_road = create_road(root_label(), "time")
@@ -91,14 +91,14 @@ def test_CalendarIntentUnit_exists():
     # x_date_range_cease = 1000000900
     x_interval_count = 20
     x_interval_length = 15
-    x_intent_max_count_task = 11
-    x_intent_max_count_state = 7
+    x_agenda_max_count_task = 11
+    x_agenda_max_count_state = 7
     x_time_begin = 1000000615
     x_time_close = 1000000630
     casa_road = create_road(root_label(), "casa")
     clean_road = create_road(casa_road, "cleaning")
     fridge_road = create_road(clean_road, "clean fridge")
-    x_intent_weight = 0.5
+    x_agenda_weight = 0.5
     x_task = True
     x_calendarreport = CalendarReport(
         owner_id=bob_text,
@@ -106,27 +106,27 @@ def test_CalendarIntentUnit_exists():
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
         interval_length=x_interval_length,
-        intent_max_count_task=x_intent_max_count_task,
-        intent_max_count_state=x_intent_max_count_state,
+        agenda_max_count_task=x_agenda_max_count_task,
+        agenda_max_count_state=x_agenda_max_count_state,
     )
 
     # WHEN
-    x_calendarintentunit = CalendarIntentUnit(
+    x_calendaragendaunit = CalendarAgendaUnit(
         calendarreport=x_calendarreport,
         time_begin=x_time_begin,
         time_close=x_time_close,
-        intent_idea_road=fridge_road,
-        intent_weight=x_intent_weight,
+        agenda_idea_road=fridge_road,
+        agenda_weight=x_agenda_weight,
         task=x_task,
     )
 
     # THEN
-    assert x_calendarintentunit.calendarreport == x_calendarreport
-    assert x_calendarintentunit.time_begin == x_time_begin
-    assert x_calendarintentunit.time_close == x_time_close
-    assert x_calendarintentunit.intent_idea_road == fridge_road
-    assert x_calendarintentunit.intent_weight == x_intent_weight
-    assert x_calendarintentunit.task == x_task
+    assert x_calendaragendaunit.calendarreport == x_calendarreport
+    assert x_calendaragendaunit.time_begin == x_time_begin
+    assert x_calendaragendaunit.time_close == x_time_close
+    assert x_calendaragendaunit.agenda_idea_road == fridge_road
+    assert x_calendaragendaunit.agenda_weight == x_agenda_weight
+    assert x_calendaragendaunit.task == x_task
 
 
 def test_MoneyUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecord(
@@ -145,14 +145,14 @@ def test_MoneyUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecor
     x_date_range_start = 1000000600
     x_interval_count = 20
     x_interval_length = 15
-    x_intent_max_count_task = 11
-    x_intent_max_count_state = 7
+    x_agenda_max_count_task = 11
+    x_agenda_max_count_state = 7
     x_time_begin = 1000000615
     x_time_close = 1000000630
     casa_road = create_road(root_label(), "casa")
     clean_road = create_road(casa_road, "cleaning")
     fridge_road = create_road(clean_road, "clean fridge")
-    x_intent_weight = 0.5
+    x_agenda_weight = 0.5
     x_task = True
 
     # WHEN
@@ -162,20 +162,20 @@ def test_MoneyUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecor
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
         interval_length=x_interval_length,
-        intent_max_count_task=x_intent_max_count_task,
-        intent_max_count_state=x_intent_max_count_state,
+        agenda_max_count_task=x_agenda_max_count_task,
+        agenda_max_count_state=x_agenda_max_count_state,
     )
-    bob_calendarintentunit = CalendarIntentUnit(
+    bob_calendaragendaunit = CalendarAgendaUnit(
         calendarreport=x_calendarreport,
         time_begin=x_time_begin,
         time_close=x_time_close,
-        intent_idea_road=fridge_road,
-        intent_weight=x_intent_weight,
+        agenda_idea_road=fridge_road,
+        agenda_weight=x_agenda_weight,
         task=x_task,
     )
 
     # WHEN
-    calendar_insert_sqlstr = get_calendar_table_insert_sqlstr(bob_calendarintentunit)
+    calendar_insert_sqlstr = get_calendar_table_insert_sqlstr(bob_calendaragendaunit)
     print(f"{calendar_insert_sqlstr}")
     econ_conn = x_money.get_treasury_conn()
     econ_conn.execute(calendar_insert_sqlstr)
@@ -193,9 +193,9 @@ def test_MoneyUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecor
     assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 0
 
 
-def test_MoneyUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistError():
+def test_MoneyUnit_treasury_insert_agenda_into_treasury_RaisesBaseDoesNotExistError():
     # GIVEN
-    # A truth that has 1 intent item
+    # A truth that has 1 agenda item
     real_id = temp_real_id()
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.create_treasury_db(in_memory=True)
@@ -213,16 +213,16 @@ def test_MoneyUnit_treasury_insert_intent_into_treasury_RaisesBaseDoesNotExistEr
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        x_money.insert_intent_into_treasury(amos_truth, x_calendarreport)
+        x_money.insert_agenda_into_treasury(amos_truth, x_calendarreport)
     assert (
         str(excinfo.value)
-        == f"Intent base cannot be '{bad_road}' because it does not exist in truth '{amos_truth._owner_id}'."
+        == f"Agenda base cannot be '{bad_road}' because it does not exist in truth '{amos_truth._owner_id}'."
     )
 
 
-def test_MoneyUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasury():
+def test_MoneyUnit_treasury_insert_agenda_into_treasury_CorrectlyPopulatesTreasury():
     # GIVEN
-    # A truth that has 1 intent item
+    # A truth that has 1 agenda item
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.create_treasury_db(in_memory=True)
     x_money.refresh_treasury_job_truths_data()
@@ -236,8 +236,8 @@ def test_MoneyUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasu
     x_date_range_start = 1064131200
     x_interval_count = 5
     x_interval_length = 15
-    x_intent_max_count_task = 11
-    x_intent_max_count_state = 7
+    x_agenda_max_count_task = 11
+    x_agenda_max_count_state = 7
     # WHEN
     x_calendarreport = CalendarReport(
         owner_id=bob_truth._owner_id,
@@ -245,10 +245,10 @@ def test_MoneyUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasu
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
         interval_length=x_interval_length,
-        intent_max_count_task=x_intent_max_count_task,
-        intent_max_count_state=x_intent_max_count_state,
+        agenda_max_count_task=x_agenda_max_count_task,
+        agenda_max_count_state=x_agenda_max_count_state,
     )
-    x_money.insert_intent_into_treasury(bob_truth, x_calendarreport)
+    x_money.insert_agenda_into_treasury(bob_truth, x_calendarreport)
 
     # THEN
     assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 6
@@ -262,9 +262,9 @@ def test_MoneyUnit_treasury_insert_intent_into_treasury_CorrectlyPopulatesTreasu
         date_range_start=x_date_range_start,
         interval_count=new_interval_count,
         interval_length=x_interval_length,
-        intent_max_count_task=x_intent_max_count_task,
-        intent_max_count_state=x_intent_max_count_state,
+        agenda_max_count_task=x_agenda_max_count_task,
+        agenda_max_count_state=x_agenda_max_count_state,
     )
-    x_money.insert_intent_into_treasury(bob_truth, x_calendarreport)
+    x_money.insert_agenda_into_treasury(bob_truth, x_calendarreport)
     # THEN
     assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 4

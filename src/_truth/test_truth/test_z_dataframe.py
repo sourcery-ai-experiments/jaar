@@ -1,8 +1,8 @@
-from src._truth.examples.example_truths import truth_v001_with_large_intent
+from src._truth.examples.example_truths import truth_v001_with_large_agenda
 from src._truth.truth import truthunit_shop
 from src._truth.report import (
     get_truth_otherunits_dataframe,
-    get_truth_intent_dataframe,
+    get_truth_agenda_dataframe,
 )
 
 
@@ -30,10 +30,10 @@ def test_get_truth_otherunits_dataframe_ReturnsCorrectDataFrame():
         "debtor_weight",
         "_truth_cred",
         "_truth_debt",
-        "_truth_intent_cred",
-        "_truth_intent_debt",
-        "_truth_intent_ratio_cred",
-        "_truth_intent_ratio_debt",
+        "_truth_agenda_cred",
+        "_truth_agenda_debt",
+        "_truth_agenda_ratio_cred",
+        "_truth_agenda_ratio_debt",
         "_credor_operational",
         "_debtor_operational",
         "_treasury_due_paid",
@@ -63,10 +63,10 @@ def test_get_truth_otherunits_dataframe_ReturnsCorrectEmptyDataFrame():
         "debtor_weight",
         "_truth_cred",
         "_truth_debt",
-        "_truth_intent_cred",
-        "_truth_intent_debt",
-        "_truth_intent_ratio_cred",
-        "_truth_intent_ratio_debt",
+        "_truth_agenda_cred",
+        "_truth_agenda_debt",
+        "_truth_agenda_ratio_cred",
+        "_truth_agenda_ratio_debt",
         "_credor_operational",
         "_debtor_operational",
         "_treasury_due_paid",
@@ -82,15 +82,15 @@ def test_get_truth_otherunits_dataframe_ReturnsCorrectEmptyDataFrame():
     assert x_df.shape[0] == 0
 
 
-def test_get_truth_intent_dataframe_ReturnsCorrectDataFrame():
+def test_get_truth_agenda_dataframe_ReturnsCorrectDataFrame():
     # GIVEN
-    yao_truth = truth_v001_with_large_intent()
+    yao_truth = truth_v001_with_large_agenda()
     week_text = "weekdays"
     week_road = yao_truth.make_l1_road(week_text)
-    assert len(yao_truth.get_intent_dict()) == 63
+    assert len(yao_truth.get_agenda_dict()) == 63
 
     # WHEN
-    x_df = get_truth_intent_dataframe(yao_truth)
+    x_df = get_truth_agenda_dataframe(yao_truth)
     print(x_df)
 
     # THEN
@@ -112,13 +112,13 @@ def test_get_truth_intent_dataframe_ReturnsCorrectDataFrame():
     assert x_df.shape[0] == 63
 
 
-def test_get_truth_intent_dataframe_ReturnsCorrectEmptyDataFrame():
+def test_get_truth_agenda_dataframe_ReturnsCorrectEmptyDataFrame():
     # GIVEN
     yao_truth = truthunit_shop("Yao")
-    assert len(yao_truth.get_intent_dict()) == 0
+    assert len(yao_truth.get_agenda_dict()) == 0
 
     # WHEN
-    x_df = get_truth_intent_dataframe(yao_truth)
+    x_df = get_truth_agenda_dataframe(yao_truth)
     print(x_df)
 
     # THEN

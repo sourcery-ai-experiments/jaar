@@ -13,7 +13,7 @@ from src._truth.belief import (
 )
 from src._truth.examples.example_truths import (
     truth_v001 as examples_truth_v001,
-    truth_v001_with_large_intent as examples_truth_v001_with_large_intent,
+    truth_v001_with_large_agenda as examples_truth_v001_with_large_agenda,
 )
 from src._truth.truth import TruthUnit, truthunit_shop
 from src._truth.idea import ideaunit_shop, IdeaUnit
@@ -767,20 +767,20 @@ def test_TruthUnit_calc_truth_metrics_DoesNotRaiseError_other_debtor_poolWhenOth
     yao_truth.calc_truth_metrics()
 
 
-def clear_all_otherunits_beliefunits_truth_intent_cred_debt(x_truth: TruthUnit):
-    # DELETE truth_intent_debt and truth_intent_cred
+def clear_all_otherunits_beliefunits_truth_agenda_cred_debt(x_truth: TruthUnit):
+    # DELETE truth_agenda_debt and truth_agenda_cred
     for beliefunit_x in x_truth._beliefs.values():
         beliefunit_x.reset_truth_cred_debt()
         # for otherlink_x in beliefunit_x._others.values():
         #     print(f"{beliefunit_x.belief_id=} {otherlink_x.credor_weight=}  {otherlink_x._truth_cred:.6f} {otherlink_x.debtor_weight=} {otherlink_x._truth_debt:.6f} {otherlink_x.} ")
 
-    # DELETE truth_intent_debt and truth_intent_cred
+    # DELETE truth_agenda_debt and truth_agenda_cred
     for x_otherunit in x_truth._others.values():
         x_otherunit.reset_truth_cred_debt()
 
 
 @dataclass
-class BeliefIntentMetrics:
+class BeliefAgendaMetrics:
     sum_beliefunit_cred: float = 0
     sum_beliefunit_debt: float = 0
     sum_otherlink_cred: float = 0
@@ -789,115 +789,115 @@ class BeliefIntentMetrics:
 
     def set_sums(self, x_truth: TruthUnit):
         for beliefunit_x in x_truth._beliefs.values():
-            self.sum_beliefunit_cred += beliefunit_x._truth_intent_cred
-            self.sum_beliefunit_debt += beliefunit_x._truth_intent_debt
+            self.sum_beliefunit_cred += beliefunit_x._truth_agenda_cred
+            self.sum_beliefunit_debt += beliefunit_x._truth_agenda_debt
             for otherlink_x in beliefunit_x._others.values():
-                self.sum_otherlink_cred += otherlink_x._truth_intent_cred
-                self.sum_otherlink_debt += otherlink_x._truth_intent_debt
+                self.sum_otherlink_cred += otherlink_x._truth_agenda_cred
+                self.sum_otherlink_debt += otherlink_x._truth_agenda_debt
                 self.otherlink_count += 1
 
 
 @dataclass
-class OtherIntentMetrics:
-    sum_intent_cred: float = 0
-    sum_intent_debt: float = 0
-    sum_intent_ratio_cred: float = 0
-    sum_intent_ratio_debt: float = 0
+class OtherAgendaMetrics:
+    sum_agenda_cred: float = 0
+    sum_agenda_debt: float = 0
+    sum_agenda_ratio_cred: float = 0
+    sum_agenda_ratio_debt: float = 0
 
     def set_sums(self, x_truth: TruthUnit):
         for otherunit in x_truth._others.values():
-            self.sum_intent_cred += otherunit._truth_intent_cred
-            self.sum_intent_debt += otherunit._truth_intent_debt
-            self.sum_intent_ratio_cred += otherunit._truth_intent_ratio_cred
-            self.sum_intent_ratio_debt += otherunit._truth_intent_ratio_debt
+            self.sum_agenda_cred += otherunit._truth_agenda_cred
+            self.sum_agenda_debt += otherunit._truth_agenda_debt
+            self.sum_agenda_ratio_cred += otherunit._truth_agenda_ratio_cred
+            self.sum_agenda_ratio_debt += otherunit._truth_agenda_ratio_debt
 
 
 @dataclass
-class BalanceIntentMetrics:
-    sum_truth_intent_importance = 0
-    intent_no_count = 0
-    intent_yes_count = 0
-    intent_no_truth_i_sum = 0
-    intent_yes_truth_i_sum = 0
+class BalanceAgendaMetrics:
+    sum_truth_agenda_importance = 0
+    agenda_no_count = 0
+    agenda_yes_count = 0
+    agenda_no_truth_i_sum = 0
+    agenda_yes_truth_i_sum = 0
 
-    def set_sums(self, intent_dict: dict[RoadUnit:IdeaUnit]):
-        for intent_item in intent_dict.values():
-            self.sum_truth_intent_importance += intent_item._truth_importance
-            if intent_item._balancelines == {}:
-                self.intent_no_count += 1
-                self.intent_no_truth_i_sum += intent_item._truth_importance
+    def set_sums(self, agenda_dict: dict[RoadUnit:IdeaUnit]):
+        for agenda_item in agenda_dict.values():
+            self.sum_truth_agenda_importance += agenda_item._truth_importance
+            if agenda_item._balancelines == {}:
+                self.agenda_no_count += 1
+                self.agenda_no_truth_i_sum += agenda_item._truth_importance
             else:
-                self.intent_yes_count += 1
-                self.intent_yes_truth_i_sum += intent_item._truth_importance
+                self.agenda_yes_count += 1
+                self.agenda_yes_truth_i_sum += agenda_item._truth_importance
 
 
-def test_TruthUnit_intent_cred_debt_IsCorrectlySet():
+def test_TruthUnit_agenda_cred_debt_IsCorrectlySet():
     # GIVEN
-    x_truth = examples_truth_v001_with_large_intent()
-    clear_all_otherunits_beliefunits_truth_intent_cred_debt(x_truth=x_truth)
+    x_truth = examples_truth_v001_with_large_agenda()
+    clear_all_otherunits_beliefunits_truth_agenda_cred_debt(x_truth=x_truth)
 
-    # TEST truth_intent_debt and truth_intent_cred are empty
-    x_beliefintentmetrics = BeliefIntentMetrics()
-    x_beliefintentmetrics.set_sums(x_truth=x_truth)
-    assert x_beliefintentmetrics.sum_beliefunit_cred == 0
-    assert x_beliefintentmetrics.sum_beliefunit_debt == 0
-    assert x_beliefintentmetrics.sum_otherlink_cred == 0
-    assert x_beliefintentmetrics.sum_otherlink_debt == 0
+    # TEST truth_agenda_debt and truth_agenda_cred are empty
+    x_beliefagendametrics = BeliefAgendaMetrics()
+    x_beliefagendametrics.set_sums(x_truth=x_truth)
+    assert x_beliefagendametrics.sum_beliefunit_cred == 0
+    assert x_beliefagendametrics.sum_beliefunit_debt == 0
+    assert x_beliefagendametrics.sum_otherlink_cred == 0
+    assert x_beliefagendametrics.sum_otherlink_debt == 0
 
-    # TEST truth_intent_debt and truth_intent_cred are empty
-    x_otherintentmetrics = OtherIntentMetrics()
-    x_otherintentmetrics.set_sums(x_truth=x_truth)
-    assert x_otherintentmetrics.sum_intent_cred == 0
-    assert x_otherintentmetrics.sum_intent_debt == 0
-    assert x_otherintentmetrics.sum_intent_ratio_cred == 0
-    assert x_otherintentmetrics.sum_intent_ratio_debt == 0
+    # TEST truth_agenda_debt and truth_agenda_cred are empty
+    x_otheragendametrics = OtherAgendaMetrics()
+    x_otheragendametrics.set_sums(x_truth=x_truth)
+    assert x_otheragendametrics.sum_agenda_cred == 0
+    assert x_otheragendametrics.sum_agenda_debt == 0
+    assert x_otheragendametrics.sum_agenda_ratio_cred == 0
+    assert x_otheragendametrics.sum_agenda_ratio_debt == 0
 
     # WHEN
-    intent_dict = x_truth.get_intent_dict()
+    agenda_dict = x_truth.get_agenda_dict()
 
     # THEN
-    assert len(intent_dict) == 63
-    x_balanceintentmetrics = BalanceIntentMetrics()
-    x_balanceintentmetrics.set_sums(intent_dict=intent_dict)
-    # print(f"{sum_truth_intent_importance=}")
-    assert x_balanceintentmetrics.intent_no_count == 14
-    assert x_balanceintentmetrics.intent_yes_count == 49
-    assert x_balanceintentmetrics.intent_no_truth_i_sum == 0.0037472680016539662
-    assert x_balanceintentmetrics.intent_yes_truth_i_sum == 0.0027965049894874455
+    assert len(agenda_dict) == 63
+    x_balanceagendametrics = BalanceAgendaMetrics()
+    x_balanceagendametrics.set_sums(agenda_dict=agenda_dict)
+    # print(f"{sum_truth_agenda_importance=}")
+    assert x_balanceagendametrics.agenda_no_count == 14
+    assert x_balanceagendametrics.agenda_yes_count == 49
+    assert x_balanceagendametrics.agenda_no_truth_i_sum == 0.0037472680016539662
+    assert x_balanceagendametrics.agenda_yes_truth_i_sum == 0.0027965049894874455
     assert are_equal(
-        x_balanceintentmetrics.intent_no_truth_i_sum
-        + x_balanceintentmetrics.intent_yes_truth_i_sum,
-        x_balanceintentmetrics.sum_truth_intent_importance,
+        x_balanceagendametrics.agenda_no_truth_i_sum
+        + x_balanceagendametrics.agenda_yes_truth_i_sum,
+        x_balanceagendametrics.sum_truth_agenda_importance,
     )
-    assert x_balanceintentmetrics.sum_truth_intent_importance == 0.006543772991141412
+    assert x_balanceagendametrics.sum_truth_agenda_importance == 0.006543772991141412
 
-    x_beliefintentmetrics = BeliefIntentMetrics()
-    x_beliefintentmetrics.set_sums(x_truth=x_truth)
-    assert x_beliefintentmetrics.otherlink_count == 81
+    x_beliefagendametrics = BeliefAgendaMetrics()
+    x_beliefagendametrics.set_sums(x_truth=x_truth)
+    assert x_beliefagendametrics.otherlink_count == 81
     x_sum = 0.0027965049894874455
-    assert are_equal(x_beliefintentmetrics.sum_beliefunit_cred, x_sum)
-    assert are_equal(x_beliefintentmetrics.sum_beliefunit_debt, x_sum)
-    assert are_equal(x_beliefintentmetrics.sum_otherlink_cred, x_sum)
-    assert are_equal(x_beliefintentmetrics.sum_otherlink_debt, x_sum)
+    assert are_equal(x_beliefagendametrics.sum_beliefunit_cred, x_sum)
+    assert are_equal(x_beliefagendametrics.sum_beliefunit_debt, x_sum)
+    assert are_equal(x_beliefagendametrics.sum_otherlink_cred, x_sum)
+    assert are_equal(x_beliefagendametrics.sum_otherlink_debt, x_sum)
     assert are_equal(
-        x_balanceintentmetrics.intent_yes_truth_i_sum,
-        x_beliefintentmetrics.sum_beliefunit_cred,
+        x_balanceagendametrics.agenda_yes_truth_i_sum,
+        x_beliefagendametrics.sum_beliefunit_cred,
     )
 
     assert all_otherunits_have_legitimate_values(x_truth)
 
-    x_otherintentmetrics = OtherIntentMetrics()
-    x_otherintentmetrics.set_sums(x_truth=x_truth)
+    x_otheragendametrics = OtherAgendaMetrics()
+    x_otheragendametrics.set_sums(x_truth=x_truth)
     assert are_equal(
-        x_otherintentmetrics.sum_intent_cred,
-        x_balanceintentmetrics.sum_truth_intent_importance,
+        x_otheragendametrics.sum_agenda_cred,
+        x_balanceagendametrics.sum_truth_agenda_importance,
     )
     assert are_equal(
-        x_otherintentmetrics.sum_intent_debt,
-        x_balanceintentmetrics.sum_truth_intent_importance,
+        x_otheragendametrics.sum_agenda_debt,
+        x_balanceagendametrics.sum_truth_agenda_importance,
     )
-    assert are_equal(x_otherintentmetrics.sum_intent_ratio_cred, 1)
-    assert are_equal(x_otherintentmetrics.sum_intent_ratio_debt, 1)
+    assert are_equal(x_otheragendametrics.sum_agenda_ratio_cred, 1)
+    assert are_equal(x_otheragendametrics.sum_agenda_ratio_debt, 1)
 
     # otherunit_truth_cred_sum = 0.0
     # otherunit_truth_debt_sum = 0.0
@@ -924,7 +924,7 @@ def are_equal(x1: float, x2: float):
     return abs(x1 - x2) < e10
 
 
-def test_TruthUnit_intent_ratio_cred_debt_IsCorrectlySetWhenTruthIsEmpty():
+def test_TruthUnit_agenda_ratio_cred_debt_IsCorrectlySetWhenTruthIsEmpty():
     # GIVEN
     noa_truth = truthunit_shop("Noa")
     rico_text = "rico"
@@ -940,35 +940,35 @@ def test_TruthUnit_intent_ratio_cred_debt_IsCorrectlySetWhenTruthIsEmpty():
     noa_truth_carm_other = noa_truth._others.get(carm_text)
     noa_truth_patr_other = noa_truth._others.get(patr_text)
 
-    assert noa_truth_rico_other._truth_intent_cred in [0, None]
-    assert noa_truth_rico_other._truth_intent_debt in [0, None]
-    assert noa_truth_carm_other._truth_intent_cred in [0, None]
-    assert noa_truth_carm_other._truth_intent_debt in [0, None]
-    assert noa_truth_patr_other._truth_intent_cred in [0, None]
-    assert noa_truth_patr_other._truth_intent_debt in [0, None]
-    assert noa_truth_rico_other._truth_intent_ratio_cred != 0.05
-    assert noa_truth_rico_other._truth_intent_ratio_debt != 0.2
-    assert noa_truth_carm_other._truth_intent_ratio_cred != 0.15
-    assert noa_truth_carm_other._truth_intent_ratio_debt != 0.3
-    assert noa_truth_patr_other._truth_intent_ratio_cred != 0.8
-    assert noa_truth_patr_other._truth_intent_ratio_debt != 0.5
+    assert noa_truth_rico_other._truth_agenda_cred in [0, None]
+    assert noa_truth_rico_other._truth_agenda_debt in [0, None]
+    assert noa_truth_carm_other._truth_agenda_cred in [0, None]
+    assert noa_truth_carm_other._truth_agenda_debt in [0, None]
+    assert noa_truth_patr_other._truth_agenda_cred in [0, None]
+    assert noa_truth_patr_other._truth_agenda_debt in [0, None]
+    assert noa_truth_rico_other._truth_agenda_ratio_cred != 0.05
+    assert noa_truth_rico_other._truth_agenda_ratio_debt != 0.2
+    assert noa_truth_carm_other._truth_agenda_ratio_cred != 0.15
+    assert noa_truth_carm_other._truth_agenda_ratio_debt != 0.3
+    assert noa_truth_patr_other._truth_agenda_ratio_cred != 0.8
+    assert noa_truth_patr_other._truth_agenda_ratio_debt != 0.5
 
     # WHEN
     noa_truth.calc_truth_metrics()
 
     # THEN
-    assert noa_truth_rico_other._truth_intent_cred == 0
-    assert noa_truth_rico_other._truth_intent_debt == 0
-    assert noa_truth_carm_other._truth_intent_cred == 0
-    assert noa_truth_carm_other._truth_intent_debt == 0
-    assert noa_truth_patr_other._truth_intent_cred == 0
-    assert noa_truth_patr_other._truth_intent_debt == 0
-    assert noa_truth_rico_other._truth_intent_ratio_cred == 0.05
-    assert noa_truth_rico_other._truth_intent_ratio_debt == 0.2
-    assert noa_truth_carm_other._truth_intent_ratio_cred == 0.15
-    assert noa_truth_carm_other._truth_intent_ratio_debt == 0.3
-    assert noa_truth_patr_other._truth_intent_ratio_cred == 0.8
-    assert noa_truth_patr_other._truth_intent_ratio_debt == 0.5
+    assert noa_truth_rico_other._truth_agenda_cred == 0
+    assert noa_truth_rico_other._truth_agenda_debt == 0
+    assert noa_truth_carm_other._truth_agenda_cred == 0
+    assert noa_truth_carm_other._truth_agenda_debt == 0
+    assert noa_truth_patr_other._truth_agenda_cred == 0
+    assert noa_truth_patr_other._truth_agenda_debt == 0
+    assert noa_truth_rico_other._truth_agenda_ratio_cred == 0.05
+    assert noa_truth_rico_other._truth_agenda_ratio_debt == 0.2
+    assert noa_truth_carm_other._truth_agenda_ratio_cred == 0.15
+    assert noa_truth_carm_other._truth_agenda_ratio_debt == 0.3
+    assert noa_truth_patr_other._truth_agenda_ratio_cred == 0.8
+    assert noa_truth_patr_other._truth_agenda_ratio_debt == 0.5
 
 
 def test_TruthUnit_get_other_belief_ids_ReturnsCorrectObj():

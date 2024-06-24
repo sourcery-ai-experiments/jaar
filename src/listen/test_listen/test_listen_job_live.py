@@ -394,7 +394,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_same_CanOnlyReferenceItsel
     assert yao_live.idea_exists(get_on_land_road()) is False
     assert yao_live.get_fact(get_location_road()) != None
     assert yao_live.get_fact(get_location_road()).pick == get_in_ocean_road()
-    assert len(yao_live.get_intent_dict()) == 1
+    assert len(yao_live.get_agenda_dict()) == 1
     assert len(yao_live._idearoot._factunits) == 1
     assert yao_live != yao_same0
 

@@ -572,9 +572,9 @@ def test_TruthUnit_get_assignment_CorrectlyCreatesAssignmentTruthUnit_v1():
 
     # print(f"{laundry_do_idea=}")
 
-    assert len(cali_assignment.get_intent_dict()) == 1
-    print(f"{cali_assignment.get_intent_dict().keys()=}")
+    assert len(cali_assignment.get_agenda_dict()) == 1
+    print(f"{cali_assignment.get_agenda_dict().keys()=}")
     assert (
-        cali_assignment.get_intent_dict().get(laundry_task_road_road)._label
+        cali_assignment.get_agenda_dict().get(laundry_task_road_road)._label
         == laundry_task_road_text
     )

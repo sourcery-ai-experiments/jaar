@@ -606,7 +606,7 @@ class TruthUnit:
                 belief._truth_cred += balanceheir_truth_cred
                 belief._truth_debt += balanceheir_truth_debt
 
-    def add_to_belief_truth_intent_cred_debt(
+    def add_to_belief_truth_agenda_cred_debt(
         self,
         belief_id: BeliefID,
         balanceline_truth_cred: float,
@@ -618,24 +618,24 @@ class TruthUnit:
                 and balanceline_truth_cred != None
                 and balanceline_truth_debt != None
             ):
-                belief._truth_intent_cred += balanceline_truth_cred
-                belief._truth_intent_debt += balanceline_truth_debt
+                belief._truth_agenda_cred += balanceline_truth_cred
+                belief._truth_agenda_debt += balanceline_truth_debt
 
     def add_to_otherunit_truth_cred_debt(
         self,
         otherunit_other_id: OtherID,
         truth_cred,
         truth_debt: float,
-        truth_intent_cred: float,
-        truth_intent_debt: float,
+        truth_agenda_cred: float,
+        truth_agenda_debt: float,
     ):
         for otherunit in self._others.values():
             if otherunit.other_id == otherunit_other_id:
                 otherunit.add_truth_cred_debt(
                     truth_cred=truth_cred,
                     truth_debt=truth_debt,
-                    truth_intent_cred=truth_intent_cred,
-                    truth_intent_debt=truth_intent_debt,
+                    truth_agenda_cred=truth_agenda_cred,
+                    truth_agenda_debt=truth_agenda_debt,
                 )
 
     def del_otherunit(self, other_id: str):
@@ -1513,17 +1513,17 @@ class TruthUnit:
         if balancelink_del != None or balancelink != None:
             self.calc_truth_metrics()
 
-    def get_intent_dict(
+    def get_agenda_dict(
         self,
         base: RoadUnit = None,
-        intent_enterprise: bool = True,
-        intent_state: bool = True,
+        agenda_enterprise: bool = True,
+        agenda_state: bool = True,
     ) -> dict[RoadUnit:IdeaUnit]:
         self.calc_truth_metrics()
         return {
             x_idea.get_road(): x_idea
             for x_idea in self._idea_dict.values()
-            if x_idea.is_intent_item(necessary_base=base)
+            if x_idea.is_agenda_item(necessary_base=base)
         }
 
     def get_all_pledges(self) -> dict[RoadUnit:IdeaUnit]:
@@ -1531,7 +1531,7 @@ class TruthUnit:
         all_ideas = self._idea_dict.values()
         return {x_idea.get_road(): x_idea for x_idea in all_ideas if x_idea.pledge}
 
-    def set_intent_task_complete(self, task_road: RoadUnit, base: RoadUnit):
+    def set_agenda_task_complete(self, task_road: RoadUnit, base: RoadUnit):
         pledge_item = self.get_idea_obj(task_road)
         pledge_item.set_factunit_to_complete(self._idearoot._factunits[base])
 
@@ -1565,46 +1565,46 @@ class TruthUnit:
             x_otherunit.add_truth_cred_debt(
                 truth_cred=au_truth_cred,
                 truth_debt=au_truth_debt,
-                truth_intent_cred=0,
-                truth_intent_debt=0,
+                truth_agenda_cred=0,
+                truth_agenda_debt=0,
             )
 
-    def _add_to_otherunits_truth_intent_cred_debt(self, idea_truth_importance: float):
+    def _add_to_otherunits_truth_agenda_cred_debt(self, idea_truth_importance: float):
         sum_otherunit_credor_weight = self.get_otherunits_credor_weight_sum()
         sum_otherunit_debtor_weight = self.get_otherunits_debtor_weight_sum()
 
         for x_otherunit in self._others.values():
-            au_truth_intent_cred = (
+            au_truth_agenda_cred = (
                 idea_truth_importance * x_otherunit.get_credor_weight()
             ) / sum_otherunit_credor_weight
 
-            au_truth_intent_debt = (
+            au_truth_agenda_debt = (
                 idea_truth_importance * x_otherunit.get_debtor_weight()
             ) / sum_otherunit_debtor_weight
 
             x_otherunit.add_truth_cred_debt(
                 truth_cred=0,
                 truth_debt=0,
-                truth_intent_cred=au_truth_intent_cred,
-                truth_intent_debt=au_truth_intent_debt,
+                truth_agenda_cred=au_truth_agenda_cred,
+                truth_agenda_debt=au_truth_agenda_debt,
             )
 
-    def _set_otherunits_truth_intent_importance(self, truth_intent_importance: float):
+    def _set_otherunits_truth_agenda_importance(self, truth_agenda_importance: float):
         sum_otherunit_credor_weight = self.get_otherunits_credor_weight_sum()
         sum_otherunit_debtor_weight = self.get_otherunits_debtor_weight_sum()
 
         for x_otherunit in self._others.values():
-            au_truth_intent_cred = (
-                truth_intent_importance * x_otherunit.get_credor_weight()
+            au_truth_agenda_cred = (
+                truth_agenda_importance * x_otherunit.get_credor_weight()
             ) / sum_otherunit_credor_weight
 
-            au_truth_intent_debt = (
-                truth_intent_importance * x_otherunit.get_debtor_weight()
+            au_truth_agenda_debt = (
+                truth_agenda_importance * x_otherunit.get_debtor_weight()
             ) / sum_otherunit_debtor_weight
 
-            x_otherunit.add_truth_intent_cred_debt(
-                truth_intent_cred=au_truth_intent_cred,
-                truth_intent_debt=au_truth_intent_debt,
+            x_otherunit.add_truth_agenda_cred_debt(
+                truth_agenda_cred=au_truth_agenda_cred,
+                truth_agenda_debt=au_truth_agenda_debt,
             )
 
     def _reset_beliefunits_truth_cred_debt(self):
@@ -1621,20 +1621,20 @@ class TruthUnit:
                 balanceheir_truth_debt=balancelink_obj._truth_debt,
             )
 
-    def _allot_truth_intent_importance(self):
+    def _allot_truth_agenda_importance(self):
         for idea in self._idea_dict.values():
             # If there are no balancelines associated with idea
             # allot truth_importance via general otherunit
             # cred ratio and debt ratio
-            # if idea.is_intent_item() and idea._balancelines == {}:
-            if idea.is_intent_item():
+            # if idea.is_agenda_item() and idea._balancelines == {}:
+            if idea.is_agenda_item():
                 if idea._balancelines == {}:
-                    self._add_to_otherunits_truth_intent_cred_debt(
+                    self._add_to_otherunits_truth_agenda_cred_debt(
                         idea._truth_importance
                     )
                 else:
                     for x_balanceline in idea._balancelines.values():
-                        self.add_to_belief_truth_intent_cred_debt(
+                        self.add_to_belief_truth_agenda_cred_debt(
                             belief_id=x_balanceline.belief_id,
                             balanceline_truth_cred=x_balanceline._truth_cred,
                             balanceline_truth_debt=x_balanceline._truth_debt,
@@ -1648,22 +1648,22 @@ class TruthUnit:
                     otherunit_other_id=otherlink.other_id,
                     truth_cred=otherlink._truth_cred,
                     truth_debt=otherlink._truth_debt,
-                    truth_intent_cred=otherlink._truth_intent_cred,
-                    truth_intent_debt=otherlink._truth_intent_debt,
+                    truth_agenda_cred=otherlink._truth_agenda_cred,
+                    truth_agenda_debt=otherlink._truth_agenda_debt,
                 )
 
-    def _set_truth_intent_ratio_cred_debt(self):
-        truth_intent_ratio_cred_sum = 0
-        truth_intent_ratio_debt_sum = 0
+    def _set_truth_agenda_ratio_cred_debt(self):
+        truth_agenda_ratio_cred_sum = 0
+        truth_agenda_ratio_debt_sum = 0
 
         for x_otherunit in self._others.values():
-            truth_intent_ratio_cred_sum += x_otherunit._truth_intent_cred
-            truth_intent_ratio_debt_sum += x_otherunit._truth_intent_debt
+            truth_agenda_ratio_cred_sum += x_otherunit._truth_agenda_cred
+            truth_agenda_ratio_debt_sum += x_otherunit._truth_agenda_debt
 
         for x_otherunit in self._others.values():
-            x_otherunit.set_truth_intent_ratio_cred_debt(
-                truth_intent_ratio_cred_sum=truth_intent_ratio_cred_sum,
-                truth_intent_ratio_debt_sum=truth_intent_ratio_debt_sum,
+            x_otherunit.set_truth_agenda_ratio_cred_debt(
+                truth_agenda_ratio_cred_sum=truth_agenda_ratio_cred_sum,
+                truth_agenda_ratio_debt_sum=truth_agenda_ratio_debt_sum,
                 truth_otherunit_total_credor_weight=self.get_otherunits_credor_weight_sum(),
                 truth_otherunit_total_debtor_weight=self.get_otherunits_debtor_weight_sum(),
             )
@@ -1936,9 +1936,9 @@ class TruthUnit:
             self._rational = True
 
     def _after_all_tree_traverses_set_cred_debt(self):
-        self._allot_truth_intent_importance()
+        self._allot_truth_agenda_importance()
         self._allot_beliefs_truth_importance()
-        self._set_truth_intent_ratio_cred_debt()
+        self._set_truth_agenda_ratio_cred_debt()
 
     def _after_all_tree_traverses_set_healerhold_importance(self):
         self._set_econ_dict()

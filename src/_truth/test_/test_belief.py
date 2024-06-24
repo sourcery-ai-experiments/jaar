@@ -41,8 +41,8 @@ def test_BeliefUnit_exists():
     assert swim_beliefunit._others is None
     assert swim_beliefunit._truth_cred is None
     assert swim_beliefunit._truth_debt is None
-    assert swim_beliefunit._truth_intent_cred is None
-    assert swim_beliefunit._truth_intent_debt is None
+    assert swim_beliefunit._truth_agenda_cred is None
+    assert swim_beliefunit._truth_agenda_debt is None
     assert swim_beliefunit._road_delimiter is None
 
 
@@ -62,8 +62,8 @@ def test_beliefunit_shop_ReturnsCorrectObj():
     assert swim_beliefunit.belief_id == swim_text
     assert swim_beliefunit._truth_cred == 0
     assert swim_beliefunit._truth_debt == 0
-    assert swim_beliefunit._truth_intent_cred == 0
-    assert swim_beliefunit._truth_intent_debt == 0
+    assert swim_beliefunit._truth_agenda_cred == 0
+    assert swim_beliefunit._truth_agenda_debt == 0
     assert swim_beliefunit._road_delimiter == default_road_delimiter_if_none()
 
 
@@ -238,13 +238,13 @@ def test_BeliefUnit_reset_truth_importance_SetsAttrCorrectly():
     maria_beliefunit = beliefunit_shop(belief_id=maria_belief_id, _other_mirror=True)
     maria_beliefunit._truth_cred = 0.33
     maria_beliefunit._truth_debt = 0.44
-    maria_beliefunit._truth_intent_cred = 0.13
-    maria_beliefunit._truth_intent_debt = 0.23
+    maria_beliefunit._truth_agenda_cred = 0.13
+    maria_beliefunit._truth_agenda_debt = 0.23
     print(f"{maria_beliefunit}")
     assert maria_beliefunit._truth_cred == 0.33
     assert maria_beliefunit._truth_debt == 0.44
-    assert maria_beliefunit._truth_intent_cred == 0.13
-    assert maria_beliefunit._truth_intent_debt == 0.23
+    assert maria_beliefunit._truth_agenda_cred == 0.13
+    assert maria_beliefunit._truth_agenda_debt == 0.23
 
     # WHEN
     maria_beliefunit.reset_truth_cred_debt()
@@ -252,8 +252,8 @@ def test_BeliefUnit_reset_truth_importance_SetsAttrCorrectly():
     # THEN
     assert maria_beliefunit._truth_cred == 0
     assert maria_beliefunit._truth_debt == 0
-    assert maria_beliefunit._truth_intent_cred == 0
-    assert maria_beliefunit._truth_intent_debt == 0
+    assert maria_beliefunit._truth_agenda_cred == 0
+    assert maria_beliefunit._truth_agenda_debt == 0
 
 
 def test_BeliefUnit_reset_truth_importance_reset_otherlinks():
@@ -264,37 +264,37 @@ def test_BeliefUnit_reset_truth_importance_reset_otherlinks():
         other_id=todd_text,
         _truth_cred=0.13,
         _truth_debt=0.7,
-        _truth_intent_cred=0.53,
-        _truth_intent_debt=0.77,
+        _truth_agenda_cred=0.53,
+        _truth_agenda_debt=0.77,
     )
     mery_other = otherlink_shop(
         other_id=mery_text,
         _truth_cred=0.23,
         _truth_debt=0.5,
-        _truth_intent_cred=0.54,
-        _truth_intent_debt=0.57,
+        _truth_agenda_cred=0.54,
+        _truth_agenda_debt=0.57,
     )
     bikers_others = {todd_other.other_id: todd_other, mery_other.other_id: mery_other}
     bikers_belief_id = ",bikers"
     bikers_beliefunit = beliefunit_shop(belief_id=bikers_belief_id)
     bikers_beliefunit._truth_cred = (0.33,)
     bikers_beliefunit._truth_debt = (0.44,)
-    bikers_beliefunit._truth_intent_cred = (0.1,)
-    bikers_beliefunit._truth_intent_debt = (0.2,)
+    bikers_beliefunit._truth_agenda_cred = (0.1,)
+    bikers_beliefunit._truth_agenda_debt = (0.2,)
     bikers_beliefunit.set_otherlink(otherlink=todd_other)
     bikers_beliefunit.set_otherlink(otherlink=mery_other)
     print(f"{bikers_beliefunit}")
     biker_otherlink_todd = bikers_beliefunit._others.get(todd_text)
     assert biker_otherlink_todd._truth_cred == 0.13
     assert biker_otherlink_todd._truth_debt == 0.7
-    assert biker_otherlink_todd._truth_intent_cred == 0.53
-    assert biker_otherlink_todd._truth_intent_debt == 0.77
+    assert biker_otherlink_todd._truth_agenda_cred == 0.53
+    assert biker_otherlink_todd._truth_agenda_debt == 0.77
 
     biker_otherlink_mery = bikers_beliefunit._others.get(mery_text)
     assert biker_otherlink_mery._truth_cred == 0.23
     assert biker_otherlink_mery._truth_debt == 0.5
-    assert biker_otherlink_mery._truth_intent_cred == 0.54
-    assert biker_otherlink_mery._truth_intent_debt == 0.57
+    assert biker_otherlink_mery._truth_agenda_cred == 0.54
+    assert biker_otherlink_mery._truth_agenda_debt == 0.57
 
     # WHEN
     bikers_beliefunit.reset_truth_cred_debt()
@@ -302,12 +302,12 @@ def test_BeliefUnit_reset_truth_importance_reset_otherlinks():
     # THEN
     assert biker_otherlink_todd._truth_cred == 0
     assert biker_otherlink_todd._truth_debt == 0
-    assert biker_otherlink_todd._truth_intent_cred == 0
-    assert biker_otherlink_todd._truth_intent_debt == 0
+    assert biker_otherlink_todd._truth_agenda_cred == 0
+    assert biker_otherlink_todd._truth_agenda_debt == 0
     assert biker_otherlink_mery._truth_cred == 0
     assert biker_otherlink_mery._truth_debt == 0
-    assert biker_otherlink_mery._truth_intent_cred == 0
-    assert biker_otherlink_mery._truth_intent_debt == 0
+    assert biker_otherlink_mery._truth_agenda_cred == 0
+    assert biker_otherlink_mery._truth_agenda_debt == 0
 
 
 def test_otherlink_meld_ReturnsCorrectObj_BaseScenario():

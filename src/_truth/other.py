@@ -37,10 +37,10 @@ class OtherUnit(OtherCore):
     # set by Truth.calc_truth_metrics()
     _truth_cred: float = None
     _truth_debt: float = None
-    _truth_intent_cred: float = None
-    _truth_intent_debt: float = None
-    _truth_intent_ratio_cred: float = None
-    _truth_intent_ratio_debt: float = None
+    _truth_agenda_cred: float = None
+    _truth_agenda_debt: float = None
+    _truth_agenda_ratio_cred: float = None
+    _truth_agenda_ratio_debt: float = None
     _credor_operational: bool = None
     _debtor_operational: bool = None
     # set by River process
@@ -131,10 +131,10 @@ class OtherUnit(OtherCore):
     def _all_attrs_necessary_in_dict(self, x_dict):
         x_dict["_truth_cred"] = self._truth_cred
         x_dict["_truth_debt"] = self._truth_debt
-        x_dict["_truth_intent_cred"] = self._truth_intent_cred
-        x_dict["_truth_intent_debt"] = self._truth_intent_debt
-        x_dict["_truth_intent_ratio_cred"] = self._truth_intent_ratio_cred
-        x_dict["_truth_intent_ratio_debt"] = self._truth_intent_ratio_debt
+        x_dict["_truth_agenda_cred"] = self._truth_agenda_cred
+        x_dict["_truth_agenda_debt"] = self._truth_agenda_debt
+        x_dict["_truth_agenda_ratio_cred"] = self._truth_agenda_ratio_cred
+        x_dict["_truth_agenda_ratio_debt"] = self._truth_agenda_ratio_debt
         x_dict["_output_truth_meld_order"] = self._output_truth_meld_order
 
     def set_credor_weight(self, credor_weight: int):
@@ -160,10 +160,10 @@ class OtherUnit(OtherCore):
     def reset_truth_cred_debt(self):
         self._truth_cred = 0
         self._truth_debt = 0
-        self._truth_intent_cred = 0
-        self._truth_intent_debt = 0
-        self._truth_intent_ratio_cred = 0
-        self._truth_intent_ratio_debt = 0
+        self._truth_agenda_cred = 0
+        self._truth_agenda_debt = 0
+        self._truth_agenda_ratio_cred = 0
+        self._truth_agenda_ratio_debt = 0
 
     def add_irrational_debtor_weight(self, x_irrational_debtor_weight: float):
         self._irrational_debtor_weight += x_irrational_debtor_weight
@@ -179,37 +179,37 @@ class OtherUnit(OtherCore):
         self,
         truth_cred: float,
         truth_debt,
-        truth_intent_cred: float,
-        truth_intent_debt,
+        truth_agenda_cred: float,
+        truth_agenda_debt,
     ):
         self._truth_cred += truth_cred
         self._truth_debt += truth_debt
-        self._truth_intent_cred += truth_intent_cred
-        self._truth_intent_debt += truth_intent_debt
+        self._truth_agenda_cred += truth_agenda_cred
+        self._truth_agenda_debt += truth_agenda_debt
 
-    def set_truth_intent_ratio_cred_debt(
+    def set_truth_agenda_ratio_cred_debt(
         self,
-        truth_intent_ratio_cred_sum: float,
-        truth_intent_ratio_debt_sum: float,
+        truth_agenda_ratio_cred_sum: float,
+        truth_agenda_ratio_debt_sum: float,
         truth_otherunit_total_credor_weight: float,
         truth_otherunit_total_debtor_weight: float,
     ):
-        if truth_intent_ratio_cred_sum == 0:
-            self._truth_intent_ratio_cred = (
+        if truth_agenda_ratio_cred_sum == 0:
+            self._truth_agenda_ratio_cred = (
                 self.get_credor_weight() / truth_otherunit_total_credor_weight
             )
         else:
-            self._truth_intent_ratio_cred = (
-                self._truth_intent_cred / truth_intent_ratio_cred_sum
+            self._truth_agenda_ratio_cred = (
+                self._truth_agenda_cred / truth_agenda_ratio_cred_sum
             )
 
-        if truth_intent_ratio_debt_sum == 0:
-            self._truth_intent_ratio_debt = (
+        if truth_agenda_ratio_debt_sum == 0:
+            self._truth_agenda_ratio_debt = (
                 self.get_debtor_weight() / truth_otherunit_total_debtor_weight
             )
         else:
-            self._truth_intent_ratio_debt = (
-                self._truth_intent_debt / truth_intent_ratio_debt_sum
+            self._truth_agenda_ratio_debt = (
+                self._truth_agenda_debt / truth_agenda_ratio_debt_sum
             )
 
     def meld(self, exterior_otherunit):
@@ -290,10 +290,10 @@ def otherunit_shop(
         _debtor_operational=_debtor_operational,
         _truth_cred=get_0_if_None(),
         _truth_debt=get_0_if_None(),
-        _truth_intent_cred=get_0_if_None(),
-        _truth_intent_debt=get_0_if_None(),
-        _truth_intent_ratio_cred=get_0_if_None(),
-        _truth_intent_ratio_debt=get_0_if_None(),
+        _truth_agenda_cred=get_0_if_None(),
+        _truth_agenda_debt=get_0_if_None(),
+        _truth_agenda_ratio_cred=get_0_if_None(),
+        _truth_agenda_ratio_debt=get_0_if_None(),
         _treasury_due_paid=None,
         _treasury_due_diff=None,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
@@ -309,8 +309,8 @@ class OtherLink(OtherCore):
     debtor_weight: float = 1.0
     _truth_cred: float = None
     _truth_debt: float = None
-    _truth_intent_cred: float = None
-    _truth_intent_debt: float = None
+    _truth_agenda_cred: float = None
+    _truth_agenda_debt: float = None
 
     def get_dict(self) -> dict[str:str]:
         return {
@@ -325,8 +325,8 @@ class OtherLink(OtherCore):
         otherlinks_debtor_weight_sum: float,
         belief_truth_cred: float,
         belief_truth_debt: float,
-        belief_truth_intent_cred: float,
-        belief_truth_intent_debt: float,
+        belief_truth_agenda_cred: float,
+        belief_truth_agenda_debt: float,
     ):
         belief_truth_cred = get_1_if_None(belief_truth_cred)
         belief_truth_debt = get_1_if_None(belief_truth_debt)
@@ -335,14 +335,14 @@ class OtherLink(OtherCore):
 
         self._truth_cred = belief_truth_cred * credor_ratio
         self._truth_debt = belief_truth_debt * debtor_ratio
-        self._truth_intent_cred = belief_truth_intent_cred * credor_ratio
-        self._truth_intent_debt = belief_truth_intent_debt * debtor_ratio
+        self._truth_agenda_cred = belief_truth_agenda_cred * credor_ratio
+        self._truth_agenda_debt = belief_truth_agenda_debt * debtor_ratio
 
     def reset_truth_cred_debt(self):
         self._truth_cred = 0
         self._truth_debt = 0
-        self._truth_intent_cred = 0
-        self._truth_intent_debt = 0
+        self._truth_agenda_cred = 0
+        self._truth_agenda_debt = 0
 
     def meld(self, exterior_otherlink):
         if self.other_id != exterior_otherlink.other_id:
@@ -379,8 +379,8 @@ def otherlink_shop(
     debtor_weight: float = None,
     _truth_cred: float = None,
     _truth_debt: float = None,
-    _truth_intent_cred: float = None,
-    _truth_intent_debt: float = None,
+    _truth_agenda_cred: float = None,
+    _truth_agenda_debt: float = None,
 ) -> OtherLink:
     credor_weight = get_1_if_None(credor_weight)
     debtor_weight = get_1_if_None(debtor_weight)
@@ -390,8 +390,8 @@ def otherlink_shop(
         debtor_weight=debtor_weight,
         _truth_cred=_truth_cred,
         _truth_debt=_truth_debt,
-        _truth_intent_cred=_truth_intent_cred,
-        _truth_intent_debt=_truth_intent_debt,
+        _truth_agenda_cred=_truth_agenda_cred,
+        _truth_agenda_debt=_truth_agenda_debt,
     )
 
 

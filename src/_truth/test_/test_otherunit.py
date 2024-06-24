@@ -29,8 +29,8 @@ def test_OtherUnit_exists():
     assert bob_otherunit._inallocable_debtor_weight is None
     assert bob_otherunit._truth_cred is None
     assert bob_otherunit._truth_debt is None
-    assert bob_otherunit._truth_intent_cred is None
-    assert bob_otherunit._truth_intent_debt is None
+    assert bob_otherunit._truth_agenda_cred is None
+    assert bob_otherunit._truth_agenda_debt is None
     assert bob_otherunit._credor_operational is None
     assert bob_otherunit._debtor_operational is None
     assert bob_otherunit._treasury_due_paid is None
@@ -81,10 +81,10 @@ def test_otherunit_shop_CorrectlySetsAttributes():
     assert todd_otherunit._inallocable_debtor_weight == 0
     assert todd_otherunit._truth_cred == 0
     assert todd_otherunit._truth_debt == 0
-    assert todd_otherunit._truth_intent_cred == 0
-    assert todd_otherunit._truth_intent_debt == 0
-    assert todd_otherunit._truth_intent_ratio_cred == 0
-    assert todd_otherunit._truth_intent_ratio_debt == 0
+    assert todd_otherunit._truth_agenda_cred == 0
+    assert todd_otherunit._truth_agenda_debt == 0
+    assert todd_otherunit._truth_agenda_ratio_cred == 0
+    assert todd_otherunit._truth_agenda_ratio_debt == 0
     assert todd_otherunit._road_delimiter == default_road_delimiter_if_none()
     assert todd_otherunit._pixel == default_pixel_if_none()
 
@@ -310,16 +310,16 @@ def test_OtherUnit_reset_truth_cred_debt_SetsAttrCorrectly():
     bob_otherunit = otherunit_shop("Bob")
     bob_otherunit._truth_cred = 0.27
     bob_otherunit._truth_debt = 0.37
-    bob_otherunit._truth_intent_cred = 0.41
-    bob_otherunit._truth_intent_debt = 0.51
-    bob_otherunit._truth_intent_ratio_cred = 0.433
-    bob_otherunit._truth_intent_ratio_debt = 0.533
+    bob_otherunit._truth_agenda_cred = 0.41
+    bob_otherunit._truth_agenda_debt = 0.51
+    bob_otherunit._truth_agenda_ratio_cred = 0.433
+    bob_otherunit._truth_agenda_ratio_debt = 0.533
     assert bob_otherunit._truth_cred == 0.27
     assert bob_otherunit._truth_debt == 0.37
-    assert bob_otherunit._truth_intent_cred == 0.41
-    assert bob_otherunit._truth_intent_debt == 0.51
-    assert bob_otherunit._truth_intent_ratio_cred == 0.433
-    assert bob_otherunit._truth_intent_ratio_debt == 0.533
+    assert bob_otherunit._truth_agenda_cred == 0.41
+    assert bob_otherunit._truth_agenda_debt == 0.51
+    assert bob_otherunit._truth_agenda_ratio_cred == 0.433
+    assert bob_otherunit._truth_agenda_ratio_debt == 0.533
 
     # WHEN
     bob_otherunit.reset_truth_cred_debt()
@@ -327,10 +327,10 @@ def test_OtherUnit_reset_truth_cred_debt_SetsAttrCorrectly():
     # THEN
     assert bob_otherunit._truth_cred == 0
     assert bob_otherunit._truth_debt == 0
-    assert bob_otherunit._truth_intent_cred == 0
-    assert bob_otherunit._truth_intent_debt == 0
-    assert bob_otherunit._truth_intent_ratio_cred == 0
-    assert bob_otherunit._truth_intent_ratio_debt == 0
+    assert bob_otherunit._truth_agenda_cred == 0
+    assert bob_otherunit._truth_agenda_debt == 0
+    assert bob_otherunit._truth_agenda_ratio_cred == 0
+    assert bob_otherunit._truth_agenda_ratio_debt == 0
 
 
 def test_OtherUnit_add_truth_cred_debt_SetsAttrCorrectly():
@@ -338,73 +338,73 @@ def test_OtherUnit_add_truth_cred_debt_SetsAttrCorrectly():
     bob_otherunit = otherunit_shop("Bob")
     bob_otherunit._truth_cred = 0.4106
     bob_otherunit._truth_debt = 0.1106
-    bob_otherunit._truth_intent_cred = 0.41
-    bob_otherunit._truth_intent_debt = 0.51
-    assert bob_otherunit._truth_intent_cred == 0.41
-    assert bob_otherunit._truth_intent_debt == 0.51
+    bob_otherunit._truth_agenda_cred = 0.41
+    bob_otherunit._truth_agenda_debt = 0.51
+    assert bob_otherunit._truth_agenda_cred == 0.41
+    assert bob_otherunit._truth_agenda_debt == 0.51
 
     # WHEN
     bob_otherunit.add_truth_cred_debt(
         truth_cred=0.33,
         truth_debt=0.055,
-        truth_intent_cred=0.3,
-        truth_intent_debt=0.05,
+        truth_agenda_cred=0.3,
+        truth_agenda_debt=0.05,
     )
 
     # THEN
     assert bob_otherunit._truth_cred == 0.7406
     assert bob_otherunit._truth_debt == 0.1656
-    assert bob_otherunit._truth_intent_cred == 0.71
-    assert bob_otherunit._truth_intent_debt == 0.56
+    assert bob_otherunit._truth_agenda_cred == 0.71
+    assert bob_otherunit._truth_agenda_debt == 0.56
 
 
-def test_OtherUnit_set_truth_intent_ratio_cred_debt_SetsAttrCorrectly():
+def test_OtherUnit_set_truth_agenda_ratio_cred_debt_SetsAttrCorrectly():
     # GIVEN
     bob_otherunit = otherunit_shop("Bob", credor_weight=15, debtor_weight=7)
     bob_otherunit._truth_cred = 0.4106
     bob_otherunit._truth_debt = 0.1106
-    bob_otherunit._truth_intent_cred = 0.041
-    bob_otherunit._truth_intent_debt = 0.051
-    bob_otherunit._truth_intent_ratio_cred = 0
-    bob_otherunit._truth_intent_ratio_debt = 0
-    assert bob_otherunit._truth_intent_ratio_cred == 0
-    assert bob_otherunit._truth_intent_ratio_debt == 0
+    bob_otherunit._truth_agenda_cred = 0.041
+    bob_otherunit._truth_agenda_debt = 0.051
+    bob_otherunit._truth_agenda_ratio_cred = 0
+    bob_otherunit._truth_agenda_ratio_debt = 0
+    assert bob_otherunit._truth_agenda_ratio_cred == 0
+    assert bob_otherunit._truth_agenda_ratio_debt == 0
 
     # WHEN
-    bob_otherunit.set_truth_intent_ratio_cred_debt(
-        truth_intent_ratio_cred_sum=0.2,
-        truth_intent_ratio_debt_sum=0.5,
+    bob_otherunit.set_truth_agenda_ratio_cred_debt(
+        truth_agenda_ratio_cred_sum=0.2,
+        truth_agenda_ratio_debt_sum=0.5,
         truth_otherunit_total_credor_weight=20,
         truth_otherunit_total_debtor_weight=14,
     )
 
     # THEN
-    assert bob_otherunit._truth_intent_ratio_cred == 0.205
-    assert bob_otherunit._truth_intent_ratio_debt == 0.102
+    assert bob_otherunit._truth_agenda_ratio_cred == 0.205
+    assert bob_otherunit._truth_agenda_ratio_debt == 0.102
 
     # WHEN
-    bob_otherunit.set_truth_intent_ratio_cred_debt(
-        truth_intent_ratio_cred_sum=0,
-        truth_intent_ratio_debt_sum=0,
+    bob_otherunit.set_truth_agenda_ratio_cred_debt(
+        truth_agenda_ratio_cred_sum=0,
+        truth_agenda_ratio_debt_sum=0,
         truth_otherunit_total_credor_weight=20,
         truth_otherunit_total_debtor_weight=14,
     )
 
     # THEN
-    assert bob_otherunit._truth_intent_ratio_cred == 0.75
-    assert bob_otherunit._truth_intent_ratio_debt == 0.5
+    assert bob_otherunit._truth_agenda_ratio_cred == 0.75
+    assert bob_otherunit._truth_agenda_ratio_debt == 0.5
 
 
 def test_OtherUnit_set_treasury_attr_SetsAttrCorrectly():
     # GIVEN
-    x_truth_intent_ratio_cred = 0.077
-    x_truth_intent_ratio_debt = 0.066
+    x_truth_agenda_ratio_cred = 0.077
+    x_truth_agenda_ratio_debt = 0.066
 
     bob_otherunit = otherunit_shop("Bob")
-    bob_otherunit._truth_intent_ratio_cred = x_truth_intent_ratio_cred
-    bob_otherunit._truth_intent_ratio_debt = x_truth_intent_ratio_debt
-    assert bob_otherunit._truth_intent_ratio_cred == 0.077
-    assert bob_otherunit._truth_intent_ratio_debt == 0.066
+    bob_otherunit._truth_agenda_ratio_cred = x_truth_agenda_ratio_cred
+    bob_otherunit._truth_agenda_ratio_debt = x_truth_agenda_ratio_debt
+    assert bob_otherunit._truth_agenda_ratio_cred == 0.077
+    assert bob_otherunit._truth_agenda_ratio_debt == 0.066
     assert bob_otherunit._treasury_due_paid is None
     assert bob_otherunit._treasury_due_diff is None
     assert bob_otherunit._treasury_cred_score is None
@@ -423,8 +423,8 @@ def test_OtherUnit_set_treasury_attr_SetsAttrCorrectly():
         voice_rank=x_treasury_voice_rank,
     )
     # THEN
-    assert bob_otherunit._truth_intent_ratio_cred == x_truth_intent_ratio_cred
-    assert bob_otherunit._truth_intent_ratio_debt == x_truth_intent_ratio_debt
+    assert bob_otherunit._truth_agenda_ratio_cred == x_truth_agenda_ratio_cred
+    assert bob_otherunit._truth_agenda_ratio_debt == x_truth_agenda_ratio_debt
     assert bob_otherunit._treasury_due_paid == x_treasury_due_paid
     assert bob_otherunit._treasury_due_diff == x_treasury_due_diff
     assert bob_otherunit._treasury_cred_score == x_treasury_cred_score
@@ -434,11 +434,11 @@ def test_OtherUnit_set_treasury_attr_SetsAttrCorrectly():
 
 def test_OtherUnit_set_treasury_attr_CorrectlyDecreasesOrIgnores_treasury_voice_hx_lowest_rank():
     # GIVEN
-    x_truth_intent_ratio_cred = 0.077
-    x_truth_intent_ratio_debt = 0.066
+    x_truth_agenda_ratio_cred = 0.077
+    x_truth_agenda_ratio_debt = 0.066
     bob_otherunit = otherunit_shop("Bob")
-    bob_otherunit._truth_intent_ratio_cred = x_truth_intent_ratio_cred
-    bob_otherunit._truth_intent_ratio_debt = x_truth_intent_ratio_debt
+    bob_otherunit._truth_agenda_ratio_cred = x_truth_agenda_ratio_cred
+    bob_otherunit._truth_agenda_ratio_debt = x_truth_agenda_ratio_debt
     x_treasury_due_paid = 0.2
     x_treasury_due_diff = 0.123
     x_treasury_cred_score = 900
@@ -477,8 +477,8 @@ def test_OtherUnit_set_treasury_attr_CorrectlyDecreasesOrIgnores_treasury_voice_
 def test_OtherUnit_clear_treasurying_data_SetsAttrCorrectly_Method():
     # GIVEN
     bob_otherunit = otherunit_shop("Bob")
-    bob_otherunit._truth_intent_ratio_cred = 0.355
-    bob_otherunit._truth_intent_ratio_debt = 0.066
+    bob_otherunit._truth_agenda_ratio_cred = 0.355
+    bob_otherunit._truth_agenda_ratio_debt = 0.066
     x_treasury_cred_score = 900
     x_treasury_voice_rank = 45
     bob_otherunit.set_treasury_attr(
@@ -579,18 +579,18 @@ def test_OtherUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
 
     bob_truth_cred = 55
     bob_truth_debt = 47
-    bob_truth_intent_cred = 51
-    bob_truth_intent_debt = 67
-    bob_truth_intent_ratio_cred = 71
-    bob_truth_intent_ratio_debt = 73
+    bob_truth_agenda_cred = 51
+    bob_truth_agenda_debt = 67
+    bob_truth_agenda_ratio_cred = 71
+    bob_truth_agenda_ratio_debt = 73
     bob_output_truth_meld_order = 79
 
     bob_otherunit._truth_cred = bob_truth_cred
     bob_otherunit._truth_debt = bob_truth_debt
-    bob_otherunit._truth_intent_cred = bob_truth_intent_cred
-    bob_otherunit._truth_intent_debt = bob_truth_intent_debt
-    bob_otherunit._truth_intent_ratio_cred = bob_truth_intent_ratio_cred
-    bob_otherunit._truth_intent_ratio_debt = bob_truth_intent_ratio_debt
+    bob_otherunit._truth_agenda_cred = bob_truth_agenda_cred
+    bob_otherunit._truth_agenda_debt = bob_truth_agenda_debt
+    bob_otherunit._truth_agenda_ratio_cred = bob_truth_agenda_ratio_cred
+    bob_otherunit._truth_agenda_ratio_debt = bob_truth_agenda_ratio_debt
     bob_otherunit._output_truth_meld_order = bob_output_truth_meld_order
 
     print(f"{bob_text}")
@@ -609,10 +609,10 @@ def test_OtherUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
         "_inallocable_debtor_weight": bob_inallocable_debtor_weight,
         "_truth_cred": bob_truth_cred,
         "_truth_debt": bob_truth_debt,
-        "_truth_intent_cred": bob_truth_intent_cred,
-        "_truth_intent_debt": bob_truth_intent_debt,
-        "_truth_intent_ratio_cred": bob_truth_intent_ratio_cred,
-        "_truth_intent_ratio_debt": bob_truth_intent_ratio_debt,
+        "_truth_agenda_cred": bob_truth_agenda_cred,
+        "_truth_agenda_debt": bob_truth_agenda_debt,
+        "_truth_agenda_ratio_cred": bob_truth_agenda_ratio_cred,
+        "_truth_agenda_ratio_debt": bob_truth_agenda_ratio_debt,
         "_credor_operational": bob_credor_operational,
         "_debtor_operational": bob_debtor_operational,
         "_output_truth_meld_order": bob_output_truth_meld_order,

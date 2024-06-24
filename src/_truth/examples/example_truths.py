@@ -20,7 +20,7 @@ def truth_v001() -> TruthUnit:
     return truthunit_get_from_json(open_file(env_dir(), "example_truth1.json"))
 
 
-def truth_v001_with_large_intent() -> TruthUnit:
+def truth_v001_with_large_agenda() -> TruthUnit:
     yao_truth = truth_v001()
     day_minute_road = yao_truth.make_l1_road("day_minute")
     month_week_road = yao_truth.make_l1_road("month_week")
@@ -296,7 +296,7 @@ def get_truth_base_time_example() -> TruthUnit:
 
 
 def get_truth_irrational_example() -> TruthUnit:
-    # this truth has no conclusive intent because 2 pledge ideas are in contradiction
+    # this truth has no conclusive agenda because 2 pledge ideas are in contradiction
     # "egg first" is true when "chicken first" is false
     # "chicken first" is true when "egg first" is true
     # Step 0: if chicken._active == True, egg._active is set to False
@@ -460,7 +460,7 @@ def get_truth_with_tuesday_cleaning_task() -> TruthUnit:
     # print(f"{jaja_factheir.open % 10080=}")
     # print(f"{jaja_factheir.nigh % 10080=}")
 
-    # print(f"{bob_truth.get_intent_dict().keys()=}")
+    # print(f"{bob_truth.get_agenda_dict().keys()=}")
 
     return bob_truth
 

@@ -6,7 +6,7 @@ from src._truth.truth import TruthUnit
 from src.listen.basis_truths import get_default_live_truth
 from src.listen.userhub import userhub_shop, UserHub
 from src.listen.listen import (
-    listen_to_speaker_intent,
+    listen_to_speaker_agenda,
     listen_to_debtors_roll_same_live,
     listen_to_debtors_roll_role_job,
     create_job_file_from_role_file,
@@ -178,7 +178,7 @@ class RealUnit:
                 econ_userhub.save_role_truth(x_same)
                 create_job_file_from_role_file(econ_userhub, person_id)
                 x_job = econ_userhub.get_job_truth(person_id)
-                listen_to_speaker_intent(x_live, x_job)
+                listen_to_speaker_agenda(x_live, x_job)
 
         # if nothing has come from same->role->job->live pipeline use same->live pipeline
         x_live.calc_truth_metrics()
