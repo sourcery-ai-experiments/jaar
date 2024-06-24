@@ -725,7 +725,7 @@ def test_PremiseUnit_meld_casas():
     assert x_premise2 == x_premise2.meld(y2_premise)
 
 
-def test_PremiseUnit_meld_raises_NotSameRoadUnitError():
+def test_PremiseUnit_meld_raises_NotEqualRoadUnitError():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -743,7 +743,7 @@ def test_PremiseUnit_meld_raises_NotSameRoadUnitError():
     )
 
 
-def test_PremiseUnit_meld_raises_NotSameOpenError():
+def test_PremiseUnit_meld_raises_NotEqualOpenError():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -759,7 +759,7 @@ def test_PremiseUnit_meld_raises_NotSameOpenError():
     )
 
 
-def test_PremiseUnit_meld_raises_NotSameNighError():
+def test_PremiseUnit_meld_raises_NotEqualNighError():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)
@@ -775,7 +775,7 @@ def test_PremiseUnit_meld_raises_NotSameNighError():
     )
 
 
-def test_PremiseUnit_meld_raises_NotSameDivisorError():
+def test_PremiseUnit_meld_raises_NotEqualDivisorError():
     # GIVEN
     timetech_text = "timetech"
     timetech_road = create_road(root_label(), timetech_text)

@@ -721,7 +721,7 @@ def test_AgendaUnit_calc_agenda_metrics_CorrectlyRaisesErrorWhenEconIsLevelBelow
     )
 
 
-def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_justified_WhenTwoEconsAreOneTheSameLine():
+def test_AgendaUnit_calc_agenda_metrics_CorrectlySets_econs_justified_WhenTwoEconsAreOneTheEqualLine():
     # GIVEN
     sue_agenda = agendaunit_shop("Sue")
     yao_healerhold = healerhold_shop({"Yao"})

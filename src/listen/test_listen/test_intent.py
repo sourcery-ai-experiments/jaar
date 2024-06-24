@@ -21,7 +21,7 @@ def test_listen_to_speaker_intent_RaisesErrorIfPoolIsNotSet():
     )
 
 
-def test_listen_to_speaker_intent_ReturnsSameAgenda():
+def test_listen_to_speaker_intent_ReturnsEqualAgenda():
     # GIVEN
     yao_text = "Yao"
     yao_agendaunit = agendaunit_shop(yao_text)

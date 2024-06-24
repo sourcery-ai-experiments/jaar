@@ -57,20 +57,20 @@ class FactCore:
     def get_obj_key(self):
         return self.base
 
-    def meld(self, exterior_factcore, same_reason: bool = False):
-        if same_reason and exterior_factcore.base != self.base:
+    def meld(self, exterior_factcore, equal_reason: bool = False):
+        if equal_reason and exterior_factcore.base != self.base:
             raise InvalidReasonException(
                 f"Meld fail: base={exterior_factcore.base} is different {self.base=}"
             )
-        elif same_reason and exterior_factcore.pick != self.pick:
+        elif equal_reason and exterior_factcore.pick != self.pick:
             raise InvalidReasonException(
                 f"Meld fail: pick={exterior_factcore.pick} is different {self.pick=}"
             )
-        elif same_reason and exterior_factcore.open != self.open:
+        elif equal_reason and exterior_factcore.open != self.open:
             raise InvalidReasonException(
                 f"Meld fail: base={exterior_factcore.base} open={exterior_factcore.open} is different {self.open=}"
             )
-        elif same_reason and exterior_factcore.nigh != self.nigh:
+        elif equal_reason and exterior_factcore.nigh != self.nigh:
             raise InvalidReasonException(
                 f"Meld fail: base={exterior_factcore.base} nigh={exterior_factcore.nigh} is different {self.nigh=}"
             )

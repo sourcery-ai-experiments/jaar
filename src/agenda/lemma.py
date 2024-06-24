@@ -33,7 +33,7 @@ class Lemmas:
         fact_open = None
         fact_nigh = None
 
-        # if src_idea and fact_idea have same range return same src fact range
+        # if src_idea and fact_idea have equal range return equal src fact range
         if idea_begin == src_idea_begin and idea_close == src_idea_close:
             fact_open = src_open
             fact_nigh = src_nigh

@@ -539,7 +539,7 @@ def test_ReasonCore_meld_ReturnsCorrectObj_AddPremisescenario():
     assert len(x1_reason.premises) == 2
 
 
-def test_ReasonCore_meld_raises_NotSameRoadUnitError():
+def test_ReasonCore_meld_raises_NotEqualRoadUnitError():
     # GIVEN
     tech_text = "timetech"
     tech_road = create_road(root_label(), tech_text)

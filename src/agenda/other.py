@@ -215,7 +215,7 @@ class OtherUnit(OtherCore):
     def meld(self, exterior_otherunit):
         if self.other_id != exterior_otherunit.other_id:
             raise InvalidOtherException(
-                f"Meld fail OtherUnit='{self.other_id}' not the same as OtherUnit='{exterior_otherunit.other_id}"
+                f"Meld fail OtherUnit='{self.other_id}' not the equal as OtherUnit='{exterior_otherunit.other_id}"
             )
 
         self.credor_weight += exterior_otherunit.credor_weight
@@ -347,7 +347,7 @@ class OtherLink(OtherCore):
     def meld(self, exterior_otherlink):
         if self.other_id != exterior_otherlink.other_id:
             raise InvalidOtherException(
-                f"Meld fail OtherLink='{self.other_id}' not the same as OtherLink='{exterior_otherlink.other_id}"
+                f"Meld fail OtherLink='{self.other_id}' not the equal as OtherLink='{exterior_otherlink.other_id}"
             )
         self.credor_weight += exterior_otherlink.credor_weight
         self.debtor_weight += exterior_otherlink.debtor_weight

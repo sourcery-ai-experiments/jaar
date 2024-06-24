@@ -457,7 +457,7 @@ def test_UserHub_create_save_atom_file_SaveCorrectObj(env_dir_setup_cleanup):
     assert sue_userhub.atom_file_exists(three_int)
 
 
-def test_UserHub_merge_any_atoms_ReturnsSameObj(env_dir_setup_cleanup):
+def test_UserHub_merge_any_atoms_ReturnsEqualObj(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)

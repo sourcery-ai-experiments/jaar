@@ -5,7 +5,7 @@ from src.listen.special_func import create_pledge
 from copy import deepcopy as copy_deepcopy
 
 
-def test_create_pledge_SameAgendaWithEmptyParameters():
+def test_create_pledge_EqualAgendaWithEmptyParameters():
     # GIVEN
     sue_text = "Sue"
     sue_agenda = agendaunit_shop(sue_text)

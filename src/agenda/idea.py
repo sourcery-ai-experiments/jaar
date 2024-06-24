@@ -631,7 +631,7 @@ class IdeaUnit:
     ):
         if _idearoot and self._label != exterior_idea._label:
             raise InvalidIdeaException(
-                f"Meld fail idearoot _label '{self._label}' not the same as '{exterior_idea._label}'"
+                f"Meld fail idearoot _label '{self._label}' not the equal as '{exterior_idea._label}'"
             )
         if _idearoot:
             self._weight = 1

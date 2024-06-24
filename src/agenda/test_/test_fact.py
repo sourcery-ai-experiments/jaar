@@ -326,7 +326,7 @@ def test_factcores_meld_CorrectlyMeldDifferentObjs_v2():
     assert dish_af == bowl_af.meld(dish_af)
 
 
-def test_factcores_meld_raises_NotSameBaseRoadUnitError():
+def test_factcores_meld_raises_NotEqualBaseRoadUnitError():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -337,14 +337,14 @@ def test_factcores_meld_raises_NotSameBaseRoadUnitError():
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        hc_x == hc_x.meld(hc_y, same_reason=True)  # meld is a FactCore method
+        hc_x == hc_x.meld(hc_y, equal_reason=True)  # meld is a FactCore method
     assert (
         str(excinfo.value)
         == f"Meld fail: base={hc_y.base} is different self.base='{hc_x.base}'"
     )
 
 
-def test_factcores_meld_raises_NotSameFactRoadUnitError():
+def test_factcores_meld_raises_NotEqualFactRoadUnitError():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -355,14 +355,14 @@ def test_factcores_meld_raises_NotSameFactRoadUnitError():
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        hc_x == hc_x.meld(hc_y, same_reason=True)  # meld is a FactCore method
+        hc_x == hc_x.meld(hc_y, equal_reason=True)  # meld is a FactCore method
     assert (
         str(excinfo.value)
         == f"Meld fail: pick={hc_y.pick} is different self.pick='{hc_x.pick}'"
     )
 
 
-def test_factcores_meld_raises_NotSameOpenError():
+def test_factcores_meld_raises_NotEqualOpenError():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -373,14 +373,14 @@ def test_factcores_meld_raises_NotSameOpenError():
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        hc_x == hc_x.meld(hc_y, same_reason=True)  # meld is a FactCore method
+        hc_x == hc_x.meld(hc_y, equal_reason=True)  # meld is a FactCore method
     assert (
         str(excinfo.value)
         == f"Meld fail: base={hc_y.base} open={hc_y.open} is different self.open={hc_x.open}"
     )
 
 
-def test_factcores_meld_raises_NotSameNighError():
+def test_factcores_meld_raises_NotEqualNighError():
     # GIVEN
     tech_text = "tech"
     tech_road = create_road(root_label(), tech_text)
@@ -391,7 +391,7 @@ def test_factcores_meld_raises_NotSameNighError():
 
     # WHEN/THEN
     with pytest_raises(Exception) as excinfo:
-        hc_x == hc_x.meld(hc_y, same_reason=True)  # meld is a FactCore method
+        hc_x == hc_x.meld(hc_y, equal_reason=True)  # meld is a FactCore method
     assert (
         str(excinfo.value)
         == f"Meld fail: base={hc_y.base} nigh={hc_y.nigh} is different self.nigh={hc_x.nigh}"

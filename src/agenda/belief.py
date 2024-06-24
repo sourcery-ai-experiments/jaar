@@ -157,7 +157,7 @@ class BeliefUnit(BeliefCore):
             attrs = xl.pop()
             if attrs[1] != attrs[2]:
                 raise InvalidBeliefException(
-                    f"Meld fail BeliefUnit {self.belief_id} .{attrs[0]}='{attrs[1]}' not the same as .{attrs[0]}='{attrs[2]}"
+                    f"Meld fail BeliefUnit {self.belief_id} .{attrs[0]}='{attrs[1]}' not the equal as .{attrs[0]}='{attrs[2]}"
                 )
 
         # if self.belief_id != exterior_belief.belief_id:

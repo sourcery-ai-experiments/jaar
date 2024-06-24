@@ -210,7 +210,7 @@ def test_AgendaUnit_idearoot_meld_Add4IdeasScenario():
     assert bob1_agenda.get_idea_obj(free_road)._label == free_text
 
 
-def test_AgendaUnit_idearoot_meld_2SameIdeasScenario():
+def test_AgendaUnit_idearoot_meld_2EqualIdeasScenario():
     # GIVEN
     yao_text = "Yao"
     yao1_agenda = agendaunit_shop(yao_text)

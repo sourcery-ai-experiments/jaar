@@ -350,7 +350,7 @@ def test_otherlink_meld_ReturnsCorrectObj_GainScenario():
     assert bikers_belief._others.get(todd_text) != None
 
 
-def test_BeliefUnit_meld_RaiseSameother_idException():
+def test_BeliefUnit_meld_RaiseEqualother_idException():
     # GIVEN
     todd_text = "Todd"
     todd_belief = beliefunit_shop(belief_id=todd_text, _other_mirror=True)
@@ -362,7 +362,7 @@ def test_BeliefUnit_meld_RaiseSameother_idException():
         todd_belief.meld(mery_belief)
     assert (
         str(excinfo.value)
-        == f"Meld fail BeliefUnit {todd_belief.belief_id} .belief_id='{todd_belief.belief_id}' not the same as .belief_id='{mery_belief.belief_id}"
+        == f"Meld fail BeliefUnit {todd_belief.belief_id} .belief_id='{todd_belief.belief_id}' not the equal as .belief_id='{mery_belief.belief_id}"
     )
 
 

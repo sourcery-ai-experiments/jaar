@@ -768,7 +768,7 @@ def test_otherunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteD
     )
 
 
-def test_OtherUnit_meld_RaiseSameother_idException():
+def test_OtherUnit_meld_RaiseEqualother_idException():
     # GIVEN
     todd_text = "Todd"
     todd_other = otherunit_shop(other_id=todd_text)
@@ -780,7 +780,7 @@ def test_OtherUnit_meld_RaiseSameother_idException():
         todd_other.meld(mery_other)
     assert (
         str(excinfo.value)
-        == f"Meld fail OtherUnit='{todd_other.other_id}' not the same as OtherUnit='{mery_other.other_id}"
+        == f"Meld fail OtherUnit='{todd_other.other_id}' not the equal as OtherUnit='{mery_other.other_id}"
     )
 
 

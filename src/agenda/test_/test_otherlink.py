@@ -145,7 +145,7 @@ def test_otherlink_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     assert yao_obj_dict == otherlinks_dict
 
 
-def test_otherlink_meld_RaiseSameother_idException():
+def test_otherlink_meld_RaiseEqualother_idException():
     # GIVEN
     todd_text = "Todd"
     todd_other = otherlink_shop(other_id=todd_text)
@@ -157,7 +157,7 @@ def test_otherlink_meld_RaiseSameother_idException():
         todd_other.meld(mery_other)
     assert (
         str(excinfo.value)
-        == f"Meld fail OtherLink='{todd_other.other_id}' not the same as OtherLink='{mery_other.other_id}"
+        == f"Meld fail OtherLink='{todd_other.other_id}' not the equal as OtherLink='{mery_other.other_id}"
     )
 
 
