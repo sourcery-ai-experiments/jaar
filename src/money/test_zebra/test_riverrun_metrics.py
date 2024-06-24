@@ -216,3 +216,24 @@ def test_RiverRun_create_metrics_CorrectChanges_cycleledger_Scenario05():
     assert yao_rivergrade.tax_bill_amount == econ_money_amount
     assert yao_rivergrade.tax_paid_amount == econ_money_amount
     assert yao_rivergrade.tax_paid_bool
+
+
+def test_RiverRun_create_metrics_EachTimeResets_tax_yield():
+    # GIVEN / WHEN
+    yao_userhub = example_yao_userhub()
+    yao_text = "Yao"
+    yao_credor_weight = 500
+    x_riverrun = riverrun_shop(yao_userhub)
+    x_riverrun.set_econ_credorledger(yao_text, yao_text, yao_credor_weight)
+    x_riverrun.set_tax_dues({yao_text: 1})
+    econ_money_amount = yao_userhub.econ_money_magnitude
+    x_riverrun.calc_metrics()
+    assert x_riverrun.get_other_tax_due(yao_text) == 0
+    assert x_riverrun.get_other_tax_yield(yao_text) == econ_money_amount
+
+    # WHEN
+    x_riverrun.calc_metrics()
+
+    # THEN
+    assert x_riverrun.get_other_tax_due(yao_text) == 0
+    assert x_riverrun.get_other_tax_yield(yao_text) == econ_money_amount
