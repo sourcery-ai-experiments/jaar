@@ -1,8 +1,8 @@
 from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src._road.jaar_config import get_atoms_folder, get_json_filename
 from src._road.road import default_road_delimiter_if_none
-from src.agenda.healer import healerhold_shop
-from src.agenda.idea import ideaunit_shop
+from src._truth.healer import healerhold_shop
+from src._truth.idea import ideaunit_shop
 from src.listen.userhub import userhub_shop
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
@@ -124,14 +124,14 @@ def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(env_dir_setup_clean
     )
     luca_text = "Luca"
     luca_userhub = userhub_shop(None, music_text, luca_text, None, pixel=x_pixel)
-    assert os_path_exists(luca_userhub.duty_path()) is False
+    assert os_path_exists(luca_userhub.live_path()) is False
 
     # WHEN
     music_real.init_person_econs(luca_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
-    assert os_path_exists(luca_userhub.duty_path())
+    assert os_path_exists(luca_userhub.live_path())
 
 
 def test_RealUnit_get_person_same_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
@@ -142,9 +142,9 @@ def test_RealUnit_get_person_same_from_file_ReturnsCorrectObj(env_dir_setup_clea
     music_real.init_person_econs(luca_text)
     luca_userhub = userhub_shop(None, music_text, luca_text, None)
     bob_text = "Bob"
-    luca_same = luca_userhub.get_same_agenda()
+    luca_same = luca_userhub.get_same_truth()
     luca_same.add_otherunit(bob_text)
-    luca_userhub.save_same_agenda(luca_same)
+    luca_userhub.save_same_truth(luca_same)
 
     # WHEN
     gen_luca_same = music_real.get_person_same_from_file(luca_text)
@@ -166,33 +166,33 @@ def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     music_real.init_person_econs(todd_text)
     luca_userhub = userhub_shop(None, music_text, luca_text, None)
     todd_userhub = userhub_shop(None, music_text, todd_text, None)
-    luca_same_agenda = luca_userhub.get_same_agenda()
-    todd_same_agenda = todd_userhub.get_same_agenda()
+    luca_same_truth = luca_userhub.get_same_truth()
+    todd_same_truth = todd_userhub.get_same_truth()
 
-    luca_same_agenda.add_otherunit(luca_text)
-    luca_same_agenda.add_otherunit(todd_text)
-    todd_same_agenda.add_otherunit(luca_text)
-    todd_same_agenda.add_otherunit(todd_text)
+    luca_same_truth.add_otherunit(luca_text)
+    luca_same_truth.add_otherunit(todd_text)
+    todd_same_truth.add_otherunit(luca_text)
+    todd_same_truth.add_otherunit(todd_text)
     texas_text = "Texas"
-    texas_road = luca_same_agenda.make_l1_road(texas_text)
-    luca_same_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    todd_same_agenda.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    texas_road = luca_same_truth.make_l1_road(texas_text)
+    luca_same_truth.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    todd_same_truth.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
-    dallas_road = luca_same_agenda.make_road(texas_road, dallas_text)
+    dallas_road = luca_same_truth.make_road(texas_road, dallas_text)
     dallas_healerhold = healerhold_shop({luca_text, todd_text})
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
     elpaso_text = "el paso"
-    elpaso_road = luca_same_agenda.make_road(texas_road, elpaso_text)
+    elpaso_road = luca_same_truth.make_road(texas_road, elpaso_text)
     elpaso_healerhold = healerhold_shop({luca_text})
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
 
-    luca_same_agenda.add_idea(dallas_idea, texas_road)
-    luca_same_agenda.add_idea(elpaso_idea, texas_road)
-    todd_same_agenda.add_idea(dallas_idea, texas_road)
-    todd_same_agenda.add_idea(elpaso_idea, texas_road)
-    # display_ideatree(luca_same_agenda.calc_agenda_metrics(), mode="Econ").show()
-    luca_userhub.save_same_agenda(luca_same_agenda)
-    todd_userhub.save_same_agenda(todd_same_agenda)
+    luca_same_truth.add_idea(dallas_idea, texas_road)
+    luca_same_truth.add_idea(elpaso_idea, texas_road)
+    todd_same_truth.add_idea(dallas_idea, texas_road)
+    todd_same_truth.add_idea(elpaso_idea, texas_road)
+    # display_ideatree(luca_same_truth.calc_truth_metrics(), mode="Econ").show()
+    luca_userhub.save_same_truth(luca_same_truth)
+    todd_userhub.save_same_truth(todd_same_truth)
     luca_file_name = get_json_filename(luca_text)
     todd_file_name = get_json_filename(todd_text)
     luca_dallas_userhub = userhub_shop(None, music_text, luca_text, dallas_road)

@@ -1,4 +1,4 @@
-from src.agenda.agenda import agendaunit_shop
+from src._truth.truth import truthunit_shop
 from src.listen.userhub import userhub_shop
 from src.money.rivercycle import get_credorledger, get_debtorledger
 from src.money.riverrun import riverrun_shop
@@ -13,13 +13,13 @@ def test_get_credorledger_ReturnsCorrectObj():
     yao_credor_weight = 8
     bob_credor_weight = 48
     sue_credor_weight = 66
-    yao_agenda = agendaunit_shop(yao_text)
-    yao_agenda.add_otherunit(bob_text, yao_credor_weight)
-    yao_agenda.add_otherunit(sue_text, bob_credor_weight)
-    yao_agenda.add_otherunit(yao_text, sue_credor_weight)
+    yao_truth = truthunit_shop(yao_text)
+    yao_truth.add_otherunit(bob_text, yao_credor_weight)
+    yao_truth.add_otherunit(sue_text, bob_credor_weight)
+    yao_truth.add_otherunit(yao_text, sue_credor_weight)
 
     # WHEN
-    yao_credorledger = get_credorledger(yao_agenda)
+    yao_credorledger = get_credorledger(yao_truth)
 
     # THEN
     assert len(yao_credorledger) == 3
@@ -36,13 +36,13 @@ def test_get_credorledger_ReturnsCorrectObjWithNoEmpty_credor_weight():
     yao_credor_weight = 8
     bob_credor_weight = 0
     sue_credor_weight = 66
-    yao_agenda = agendaunit_shop(yao_text)
-    yao_agenda.add_otherunit(bob_text, bob_credor_weight)
-    yao_agenda.add_otherunit(sue_text, sue_credor_weight)
-    yao_agenda.add_otherunit(yao_text, yao_credor_weight)
+    yao_truth = truthunit_shop(yao_text)
+    yao_truth.add_otherunit(bob_text, bob_credor_weight)
+    yao_truth.add_otherunit(sue_text, sue_credor_weight)
+    yao_truth.add_otherunit(yao_text, yao_credor_weight)
 
     # WHEN
-    yao_credorledger = get_credorledger(yao_agenda)
+    yao_credorledger = get_credorledger(yao_truth)
 
     # THEN
     assert yao_credorledger.get(bob_text) is None
@@ -59,13 +59,13 @@ def test_get_debtorledger_ReturnsCorrectObj():
     yao_debtor_weight = 8
     bob_debtor_weight = 48
     sue_debtor_weight = 66
-    yao_agenda = agendaunit_shop(yao_text)
-    yao_agenda.add_otherunit(bob_text, 2, bob_debtor_weight)
-    yao_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
-    yao_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
+    yao_truth = truthunit_shop(yao_text)
+    yao_truth.add_otherunit(bob_text, 2, bob_debtor_weight)
+    yao_truth.add_otherunit(sue_text, 2, sue_debtor_weight)
+    yao_truth.add_otherunit(yao_text, 2, yao_debtor_weight)
 
     # WHEN
-    yao_debtorledger = get_debtorledger(yao_agenda)
+    yao_debtorledger = get_debtorledger(yao_truth)
 
     # THEN
     assert len(yao_debtorledger) == 3
@@ -82,13 +82,13 @@ def test_get_debtorledger_ReturnsCorrectObjWithNoEmpty_debtor_weight():
     yao_debtor_weight = 8
     bob_debtor_weight = 48
     sue_debtor_weight = 0
-    yao_agenda = agendaunit_shop(yao_text)
-    yao_agenda.add_otherunit(bob_text, 2, bob_debtor_weight)
-    yao_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
-    yao_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
+    yao_truth = truthunit_shop(yao_text)
+    yao_truth.add_otherunit(bob_text, 2, bob_debtor_weight)
+    yao_truth.add_otherunit(sue_text, 2, sue_debtor_weight)
+    yao_truth.add_otherunit(yao_text, 2, yao_debtor_weight)
 
     # WHEN
-    yao_debtorledger = get_debtorledger(yao_agenda)
+    yao_debtorledger = get_debtorledger(yao_truth)
 
     # THEN
     assert yao_debtorledger.get(bob_text) == bob_debtor_weight
@@ -159,11 +159,11 @@ def test_RiverRun_set_tax_dues_CorrectlySetsAttr():
     bob_debtor_weight = 38
     sue_debtor_weight = 56
     yao_debtor_weight = 6
-    bob_agenda = agendaunit_shop(bob_text)
-    bob_agenda.add_otherunit(bob_text, 2, bob_debtor_weight)
-    bob_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
-    bob_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
-    bob_debtorledger = get_debtorledger(bob_agenda)
+    bob_truth = truthunit_shop(bob_text)
+    bob_truth.add_otherunit(bob_text, 2, bob_debtor_weight)
+    bob_truth.add_otherunit(sue_text, 2, sue_debtor_weight)
+    bob_truth.add_otherunit(yao_text, 2, yao_debtor_weight)
+    bob_debtorledger = get_debtorledger(bob_truth)
     assert bob_riverrun.tax_dues_unpaid() == False
 
     # WHEN
@@ -192,11 +192,11 @@ def test_RiverRun_other_has_tax_due_ReturnsCorrectBool():
     yao_debtor_weight = 6
     bob_debtor_weight = 38
     sue_debtor_weight = 56
-    bob_agenda = agendaunit_shop(bob_text)
-    bob_agenda.add_otherunit(bob_text, 2, bob_debtor_weight)
-    bob_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
-    bob_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
-    bob_debtorledger = get_debtorledger(bob_agenda)
+    bob_truth = truthunit_shop(bob_text)
+    bob_truth.add_otherunit(bob_text, 2, bob_debtor_weight)
+    bob_truth.add_otherunit(sue_text, 2, sue_debtor_weight)
+    bob_truth.add_otherunit(yao_text, 2, yao_debtor_weight)
+    bob_debtorledger = get_debtorledger(bob_truth)
     assert bob_riverrun.other_has_tax_due(bob_text) == False
     assert bob_riverrun.other_has_tax_due(sue_text) == False
     assert bob_riverrun.other_has_tax_due(yao_text) == False
@@ -247,11 +247,11 @@ def test_RiverRun_get_other_tax_due_ReturnsCorrectObj():
     bob_debtor_weight = 38
     sue_debtor_weight = 56
     yao_debtor_weight = 6
-    bob_agenda = agendaunit_shop(bob_text)
-    bob_agenda.add_otherunit(bob_text, 2, bob_debtor_weight)
-    bob_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
-    bob_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
-    bob_debtorledger = get_debtorledger(bob_agenda)
+    bob_truth = truthunit_shop(bob_text)
+    bob_truth.add_otherunit(bob_text, 2, bob_debtor_weight)
+    bob_truth.add_otherunit(sue_text, 2, sue_debtor_weight)
+    bob_truth.add_otherunit(yao_text, 2, yao_debtor_weight)
+    bob_debtorledger = get_debtorledger(bob_truth)
     assert bob_riverrun.other_has_tax_due(bob_text) == False
     assert bob_riverrun.get_other_tax_due(bob_text) == 0
     assert bob_riverrun.other_has_tax_due(zia_text) == False
@@ -281,11 +281,11 @@ def test_RiverRun_levy_tax_due_SetsAttr():
     bob_debtor_weight = 38
     sue_debtor_weight = 56
     yao_debtor_weight = 6
-    bob_agenda = agendaunit_shop(bob_text)
-    bob_agenda.add_otherunit(bob_text, 2, bob_debtor_weight)
-    bob_agenda.add_otherunit(sue_text, 2, sue_debtor_weight)
-    bob_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
-    bob_debtorledger = get_debtorledger(bob_agenda)
+    bob_truth = truthunit_shop(bob_text)
+    bob_truth.add_otherunit(bob_text, 2, bob_debtor_weight)
+    bob_truth.add_otherunit(sue_text, 2, sue_debtor_weight)
+    bob_truth.add_otherunit(yao_text, 2, yao_debtor_weight)
+    bob_debtorledger = get_debtorledger(bob_truth)
     bob_riverrun.set_tax_dues(bob_debtorledger)
     assert bob_riverrun.get_other_tax_due(bob_text) == 380, 0
 

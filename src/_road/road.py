@@ -30,7 +30,7 @@ class HealerID(PersonID):
 
 
 class OwnerID(HealerID):
-    """A RoadNode used to identify a AgendaUnit's owner_id"""
+    """A RoadNode used to identify a TruthUnit's owner_id"""
 
     pass
 

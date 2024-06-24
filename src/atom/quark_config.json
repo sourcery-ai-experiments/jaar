@@ -1,5 +1,5 @@
 {
-    "agenda_belief_otherlink": {
+    "truth_belief_otherlink": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 25
@@ -35,7 +35,7 @@
             "quark_order": 12
         }
     },
-    "agenda_beliefunit": {
+    "truth_beliefunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 27
@@ -58,7 +58,7 @@
             "quark_order": 11
         }
     },
-    "agenda_idea_balancelink": {
+    "truth_idea_balancelink": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 23
@@ -94,7 +94,7 @@
             "quark_order": 14
         }
     },
-    "agenda_idea_factunit": {
+    "truth_idea_factunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 20
@@ -134,7 +134,7 @@
             "quark_order": 15
         }
     },
-    "agenda_idea_healerhold": {
+    "truth_idea_healerhold": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 22
@@ -158,7 +158,7 @@
         },
         "treasury_only": false
     },
-    "agenda_idea_reason_premiseunit": {
+    "truth_idea_reason_premiseunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 18
@@ -202,7 +202,7 @@
             "quark_order": 16
         }
     },
-    "agenda_idea_reasonunit": {
+    "truth_idea_reasonunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 19
@@ -234,7 +234,7 @@
             "quark_order": 17
         }
     },
-    "agenda_idea_suffbelief": {
+    "truth_idea_suffbelief": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 21
@@ -258,7 +258,7 @@
         },
         "treasury_only": false
     },
-    "agenda_ideaunit": {
+    "truth_ideaunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 24
@@ -334,7 +334,7 @@
             "quark_order": 13
         }
     },
-    "agenda_otherunit": {
+    "truth_otherunit": {
         "calculated_attrs": {},
         "DELETE": {
             "quark_order": 26
@@ -366,10 +366,10 @@
             "quark_order": 10
         }
     },
-    "agendaunit": {
+    "truthunit": {
         "calculated_attrs": {},
         "normal_specs": {
-            "normal_table_name": "agenda"
+            "normal_table_name": "truth"
         },
         "optional_args": {
             "_max_tree_traverse": {

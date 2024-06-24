@@ -9,7 +9,7 @@ from src.listen.examples.listen_env import (
 from os.path import exists as os_path_exists
 
 
-def test_UserHub_default_same_agenda_ReturnsCorrectObj():
+def test_UserHub_default_same_truth_ReturnsCorrectObj():
     # GIVEN
     sue_text = "Sue"
     slash_text = "/"
@@ -26,7 +26,7 @@ def test_UserHub_default_same_agenda_ReturnsCorrectObj():
     )
 
     # WHEN
-    sue_default_same = sue_userhub.default_same_agenda()
+    sue_default_same = sue_userhub.default_same_truth()
 
     # THEN
     assert sue_default_same._real_id == sue_userhub.real_id
@@ -40,7 +40,7 @@ def test_UserHub_delete_same_file_DeletesSameFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
-    sue_userhub.save_same_agenda(sue_userhub.default_same_agenda())
+    sue_userhub.save_same_truth(sue_userhub.default_same_truth())
     assert sue_userhub.same_file_exists()
 
     # WHEN
@@ -88,8 +88,8 @@ def test_UserHub_create_same_from_atoms_CreatesSameFileFromAtomFiles(
 
     # THEN
     assert sue_userhub.same_file_exists()
-    static_sue_same = sue_userhub._merge_any_atoms(sue_userhub.default_same_agenda())
-    assert sue_userhub.get_same_agenda().get_dict() == static_sue_same.get_dict()
+    static_sue_same = sue_userhub._merge_any_atoms(sue_userhub.default_same_truth())
+    assert sue_userhub.get_same_truth().get_dict() == static_sue_same.get_dict()
 
 
 def test_UserHub_create_initial_atom_and_same_files_CreatesAtomFilesAndSameFile(
@@ -110,8 +110,8 @@ def test_UserHub_create_initial_atom_and_same_files_CreatesAtomFilesAndSameFile(
     # THEN
     assert os_path_exists(init_atom_file_path)
     assert sue_userhub.same_file_exists()
-    static_sue_same = sue_userhub._merge_any_atoms(sue_userhub.default_same_agenda())
-    assert sue_userhub.get_same_agenda().get_dict() == static_sue_same.get_dict()
+    static_sue_same = sue_userhub._merge_any_atoms(sue_userhub.default_same_truth())
+    assert sue_userhub.get_same_truth().get_dict() == static_sue_same.get_dict()
 
 
 def test_UserHub_create_initial_atom_files_from_same_SavesOnlyAtomFiles(
@@ -121,11 +121,11 @@ def test_UserHub_create_initial_atom_files_from_same_SavesOnlyAtomFiles(
     sue_text = "Sue"
     seven_int = 7
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text, pixel=seven_int)
-    sue_same_agenda = sue_userhub.default_same_agenda()
+    sue_same_truth = sue_userhub.default_same_truth()
     bob_text = "Bob"
-    sue_same_agenda.add_otherunit(bob_text)
+    sue_same_truth.add_otherunit(bob_text)
     assert sue_userhub.same_file_exists() is False
-    sue_userhub.save_same_agenda(sue_same_agenda)
+    sue_userhub.save_same_truth(sue_same_truth)
     assert sue_userhub.same_file_exists()
     init_atom_file_path = f"{sue_userhub.atoms_dir()}/{init_atom_id()}.json"
     assert os_path_exists(init_atom_file_path) is False
@@ -153,10 +153,10 @@ def test_UserHub_initialize_atom_same_files_CorrectlySavesSameFileAndAtomFile(
     sue_userhub.initialize_atom_same_files()
 
     # THEN
-    same_agenda = sue_userhub.get_same_agenda()
-    assert same_agenda._real_id == real_id()
-    assert same_agenda._owner_id == sue_text
-    assert same_agenda._pixel == seven_int
+    same_truth = sue_userhub.get_same_truth()
+    assert same_truth._real_id == real_id()
+    assert same_truth._owner_id == sue_text
+    assert same_truth._pixel == seven_int
     assert os_path_exists(init_atom_file_path)
 
 
@@ -178,10 +178,10 @@ def test_UserHub_initialize_atom_same_files_CorrectlySavesOnlySameFile(
     sue_userhub.initialize_atom_same_files()
 
     # THEN
-    same_agenda = sue_userhub.get_same_agenda()
-    assert same_agenda._real_id == real_id()
-    assert same_agenda._owner_id == sue_text
-    assert same_agenda._pixel == seven_int
+    same_truth = sue_userhub.get_same_truth()
+    assert same_truth._real_id == real_id()
+    assert same_truth._owner_id == sue_text
+    assert same_truth._pixel == seven_int
     assert os_path_exists(init_atom_file_path)
 
 
@@ -193,10 +193,10 @@ def test_UserHub_initialize_atom_same_files_CorrectlySavesOnlyatomFile(
     seven_int = 7
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text, pixel=seven_int)
     sue_userhub.initialize_atom_same_files()
-    sue_same_agenda = sue_userhub.get_same_agenda()
+    sue_same_truth = sue_userhub.get_same_truth()
     bob_text = "Bob"
-    sue_same_agenda.add_otherunit(bob_text)
-    sue_userhub.save_same_agenda(sue_same_agenda)
+    sue_same_truth.add_otherunit(bob_text)
+    sue_userhub.save_same_truth(sue_same_truth)
     assert sue_userhub.same_file_exists()
     init_atom_file_path = f"{sue_userhub.atoms_dir()}/{init_atom_id()}.json"
     delete_dir(sue_userhub.atoms_dir())
@@ -206,10 +206,10 @@ def test_UserHub_initialize_atom_same_files_CorrectlySavesOnlyatomFile(
     sue_userhub.initialize_atom_same_files()
 
     # THEN
-    assert sue_same_agenda._real_id == real_id()
-    assert sue_same_agenda._owner_id == sue_text
-    assert sue_same_agenda._pixel == seven_int
-    assert sue_same_agenda.other_exists(bob_text)
+    assert sue_same_truth._real_id == real_id()
+    assert sue_same_truth._owner_id == sue_text
+    assert sue_same_truth._pixel == seven_int
+    assert sue_same_truth.other_exists(bob_text)
     assert os_path_exists(init_atom_file_path)
 
 
@@ -221,19 +221,19 @@ def test_UserHub_append_atoms_to_same_file_AddsatomsToSameFile(
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
     sue_userhub.initialize_atom_same_files()
     sue_userhub.save_atom_file(sue_2quarkunits_atomunit())
-    same_agenda = sue_userhub.get_same_agenda()
-    print(f"{same_agenda._real_id=}")
+    same_truth = sue_userhub.get_same_truth()
+    print(f"{same_truth._real_id=}")
     sports_text = "sports"
-    sports_road = same_agenda.make_l1_road(sports_text)
+    sports_road = same_truth.make_l1_road(sports_text)
     knee_text = "knee"
-    knee_road = same_agenda.make_road(sports_road, knee_text)
-    assert same_agenda.idea_exists(sports_road) is False
-    assert same_agenda.idea_exists(knee_road) is False
+    knee_road = same_truth.make_road(sports_road, knee_text)
+    assert same_truth.idea_exists(sports_road) is False
+    assert same_truth.idea_exists(knee_road) is False
 
     # WHEN
-    new_agenda = sue_userhub.append_atoms_to_same_file()
+    new_truth = sue_userhub.append_atoms_to_same_file()
 
     # THEN
-    assert new_agenda != same_agenda
-    assert new_agenda.idea_exists(sports_road)
-    assert new_agenda.idea_exists(knee_road)
+    assert new_truth != same_truth
+    assert new_truth.idea_exists(sports_road)
+    assert new_truth.idea_exists(knee_road)

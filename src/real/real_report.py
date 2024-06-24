@@ -1,6 +1,6 @@
-from src.agenda.report import (
-    get_agenda_otherunits_dataframe,
-    get_agenda_intent_dataframe,
+from src._truth.report import (
+    get_truth_otherunits_dataframe,
+    get_truth_intent_dataframe,
 )
 from src.real.real import RealUnit
 from pandas import DataFrame, concat as pandas_concat
@@ -13,10 +13,10 @@ def get_real_sames_others_dataframe(x_real: RealUnit) -> DataFrame:
     # for all persons get same
     same_dfs = []
     for x_userhub in person_userhubs.values():
-        same_agenda = x_userhub.get_same_agenda()
-        same_agenda.calc_agenda_metrics()
-        df = get_agenda_otherunits_dataframe(same_agenda)
-        df.insert(0, "owner_id", same_agenda._owner_id)
+        same_truth = x_userhub.get_same_truth()
+        same_truth.calc_truth_metrics()
+        df = get_truth_otherunits_dataframe(same_truth)
+        df.insert(0, "owner_id", same_truth._owner_id)
         same_dfs.append(df)
     return pandas_concat(same_dfs, ignore_index=True)
 
@@ -27,10 +27,10 @@ def get_real_sames_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "other_id",
         "credor_weight",
         "debtor_weight",
-        "_agenda_cred",
-        "_agenda_debt",
-        "_agenda_intent_cred",
-        "_agenda_intent_debt",
+        "_truth_cred",
+        "_truth_debt",
+        "_truth_intent_cred",
+        "_truth_intent_debt",
     ]
     df = get_real_sames_others_dataframe(x_real)
     header_dict = dict(
@@ -44,10 +44,10 @@ def get_real_sames_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
                 df.other_id,
                 df.credor_weight,
                 df.debtor_weight,
-                df._agenda_cred,
-                df._agenda_debt,
-                df._agenda_intent_cred,
-                df._agenda_intent_debt,
+                df._truth_cred,
+                df._truth_debt,
+                df._truth_intent_cred,
+                df._truth_intent_debt,
             ],
             fill_color="lavender",
             align="left",
@@ -63,32 +63,32 @@ def get_real_sames_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     return fig
 
 
-def get_real_dutys_others_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_lives_others_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all person paths
     person_userhubs = x_real.get_person_userhubs()
-    # for all persons get duty
-    duty_dfs = []
+    # for all persons get live
+    live_dfs = []
     for x_userhub in person_userhubs.values():
-        duty_agenda = x_userhub.get_duty_agenda()
-        duty_agenda.calc_agenda_metrics()
-        duty_df = get_agenda_otherunits_dataframe(duty_agenda)
-        duty_df.insert(0, "owner_id", duty_agenda._owner_id)
-        duty_dfs.append(duty_df)
-    return pandas_concat(duty_dfs, ignore_index=True)
+        live_truth = x_userhub.get_live_truth()
+        live_truth.calc_truth_metrics()
+        live_df = get_truth_otherunits_dataframe(live_truth)
+        live_df.insert(0, "owner_id", live_truth._owner_id)
+        live_dfs.append(live_df)
+    return pandas_concat(live_dfs, ignore_index=True)
 
 
-def get_real_dutys_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_lives_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "other_id",
         "credor_weight",
         "debtor_weight",
-        "_agenda_cred",
-        "_agenda_debt",
-        "_agenda_intent_cred",
-        "_agenda_intent_debt",
+        "_truth_cred",
+        "_truth_debt",
+        "_truth_intent_cred",
+        "_truth_intent_debt",
     ]
-    df = get_real_dutys_others_dataframe(x_real)
+    df = get_real_lives_others_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -100,10 +100,10 @@ def get_real_dutys_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
                 df.other_id,
                 df.credor_weight,
                 df.debtor_weight,
-                df._agenda_cred,
-                df._agenda_debt,
-                df._agenda_intent_cred,
-                df._agenda_intent_debt,
+                df._truth_cred,
+                df._truth_debt,
+                df._truth_intent_cred,
+                df._truth_intent_debt,
             ],
             fill_color="lavender",
             align="left",
@@ -111,7 +111,7 @@ def get_real_dutys_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', duty others metrics"
+    fig_title = f"Real '{x_real.real_id}', live others metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -125,9 +125,9 @@ def get_real_sames_intent_dataframe(x_real: RealUnit) -> DataFrame:
     # for all persons get same
     same_dfs = []
     for x_userhub in person_userhubs.values():
-        same_agenda = x_userhub.get_same_agenda()
-        same_agenda.calc_agenda_metrics()
-        df = get_agenda_intent_dataframe(same_agenda)
+        same_truth = x_userhub.get_same_truth()
+        same_truth.calc_truth_metrics()
+        df = get_truth_intent_dataframe(same_truth)
         same_dfs.append(df)
     return pandas_concat(same_dfs, ignore_index=True)
 
@@ -135,7 +135,7 @@ def get_real_sames_intent_dataframe(x_real: RealUnit) -> DataFrame:
 def get_real_sames_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
-        "agenda_importance",
+        "truth_importance",
         "_label",
         "_parent_road",
         "_begin",
@@ -154,7 +154,7 @@ def get_real_sames_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         cells=dict(
             values=[
                 df.owner_id,
-                df.agenda_importance,
+                df.truth_importance,
                 df._label,
                 df._parent_road,
                 df._begin,
@@ -178,23 +178,23 @@ def get_real_sames_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     return fig
 
 
-def get_real_dutys_intent_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_lives_intent_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all person paths
     person_userhubs = x_real.get_person_userhubs()
-    # for all persons get duty
-    duty_dfs = []
+    # for all persons get live
+    live_dfs = []
     for x_userhub in person_userhubs.values():
-        duty_agenda = x_userhub.get_duty_agenda()
-        duty_agenda.calc_agenda_metrics()
-        duty_df = get_agenda_intent_dataframe(duty_agenda)
-        duty_dfs.append(duty_df)
-    return pandas_concat(duty_dfs, ignore_index=True)
+        live_truth = x_userhub.get_live_truth()
+        live_truth.calc_truth_metrics()
+        live_df = get_truth_intent_dataframe(live_truth)
+        live_dfs.append(live_df)
+    return pandas_concat(live_dfs, ignore_index=True)
 
 
-def get_real_dutys_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_lives_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
-        "agenda_importance",
+        "truth_importance",
         "_label",
         "_parent_road",
         "_begin",
@@ -204,7 +204,7 @@ def get_real_dutys_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_numor",
         "_reest",
     ]
-    df = get_real_dutys_intent_dataframe(x_real)
+    df = get_real_lives_intent_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -213,7 +213,7 @@ def get_real_dutys_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         cells=dict(
             values=[
                 df.owner_id,
-                df.agenda_importance,
+                df.truth_importance,
                 df._label,
                 df._parent_road,
                 df._begin,
@@ -229,7 +229,7 @@ def get_real_dutys_intent_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', duty intent metrics"
+    fig_title = f"Real '{x_real.real_id}', live intent metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

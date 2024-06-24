@@ -1,6 +1,6 @@
 from src._road.road import RoadUnit, create_road, get_default_real_id_roadnode
-from src.agenda.idea import ideaunit_shop
-from src.agenda.agenda import agendaunit_shop, AgendaUnit
+from src._truth.idea import ideaunit_shop
+from src._truth.truth import truthunit_shop, TruthUnit
 
 
 def casa_text() -> str:
@@ -59,9 +59,9 @@ def run_road() -> RoadUnit:
     return create_road(casa_road(), run_text())
 
 
-def get_example_zia_speaker() -> AgendaUnit:
+def get_example_zia_speaker() -> TruthUnit:
     zia_text = "Zia"
-    zia_speaker = agendaunit_shop(zia_text)
+    zia_speaker = truthunit_shop(zia_text)
     zia_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     zia_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
     zia_speaker.add_idea(ideaunit_shop(full_text()), eat_road())
@@ -77,9 +77,9 @@ def get_example_zia_speaker() -> AgendaUnit:
     return zia_speaker
 
 
-def get_example_bob_speaker() -> AgendaUnit:
+def get_example_bob_speaker() -> TruthUnit:
     bob_text = "Bob"
-    bob_speaker = agendaunit_shop(bob_text)
+    bob_speaker = truthunit_shop(bob_text)
     bob_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     bob_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
     bob_speaker.add_idea(ideaunit_shop(full_text()), eat_road())
@@ -95,11 +95,11 @@ def get_example_bob_speaker() -> AgendaUnit:
     return bob_speaker
 
 
-def get_example_yao_speaker() -> AgendaUnit:
+def get_example_yao_speaker() -> TruthUnit:
     yao_text = "Yao"
     zia_text = "Zia"
     bob_text = "Bob"
-    yao_speaker = agendaunit_shop(yao_text)
+    yao_speaker = truthunit_shop(yao_text)
     yao_speaker.add_otherunit(yao_text, debtor_weight=12)
     yao_speaker.add_otherunit(zia_text, debtor_weight=36)
     yao_speaker.add_otherunit(bob_text, debtor_weight=48)

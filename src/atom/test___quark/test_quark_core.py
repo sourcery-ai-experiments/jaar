@@ -1,4 +1,4 @@
-from src.agenda.other import otherunit_shop
+from src._truth.other import otherunit_shop
 from src.atom.quark import QuarkUnit, quarkunit_shop, quark_insert, quark_delete
 
 
@@ -25,7 +25,7 @@ def test_quarkunit_shop_ReturnsCorrectObj():
     bob_required_dict = {"other_id": "huh"}
     bob_optional_dict = {cw_text: bob_otherunit.get_dict().get(cw_text)}
     bob_optional_dict[dw_text] = bob_otherunit.get_dict().get(dw_text)
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
 
     # WHEN
     x_quarkunit = quarkunit_shop(
@@ -46,7 +46,7 @@ def test_quarkunit_shop_ReturnsCorrectObj():
 def test_QuarkUnit_set_required_arg_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
     otherunit_quarkunit = quarkunit_shop(otherunit_text, quark_insert())
     assert otherunit_quarkunit.required_args == {}
 
@@ -61,7 +61,7 @@ def test_QuarkUnit_set_required_arg_CorrectlySetsAttr():
 def test_QuarkUnit_set_optional_arg_CorrectlySetsAttr():
     # GIVEN
     bob_text = "Bob"
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
     otherunit_quarkunit = quarkunit_shop(otherunit_text, quark_insert())
     assert otherunit_quarkunit.optional_args == {}
 
@@ -76,7 +76,7 @@ def test_QuarkUnit_set_optional_arg_CorrectlySetsAttr():
 def test_QuarkUnit_get_value_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
     otherunit_quarkunit = quarkunit_shop(otherunit_text, quark_insert())
     other_id_text = "other_id"
     otherunit_quarkunit.set_required_arg(x_key=other_id_text, x_value=bob_text)
@@ -87,7 +87,7 @@ def test_QuarkUnit_get_value_ReturnsCorrectObj():
 
 def test_QuarkUnit_is_optional_args_valid_ReturnsCorrectBoolean():
     # WHEN
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
     bob_insert_quarkunit = quarkunit_shop(otherunit_text, crud_text=quark_insert())
     assert bob_insert_quarkunit.is_optional_args_valid()
 
@@ -115,7 +115,7 @@ def test_QuarkUnit_is_valid_ReturnsCorrectBoolean_OtherUnit_INSERT():
     bob_credor_weight = 55
     bob_debtor_weight = 66
     bob_otherunit = otherunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
 
     # WHEN
     bob_insert_quarkunit = quarkunit_shop(otherunit_text, crud_text=quark_insert())
@@ -179,7 +179,7 @@ def test_QuarkUnit_get_value_ReturnsObj():
     bob_credor_weight = 55
     bob_debtor_weight = 66
     bob_otherunit = otherunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
     bob_insert_quarkunit = quarkunit_shop(otherunit_text, quark_insert())
     other_id_text = "other_id"
     cw_text = "credor_weight"
@@ -203,7 +203,7 @@ def test_QuarkUnit_get_value_ReturnsObj():
 
 def test_QuarkUnit_is_valid_ReturnsCorrectBoolean_OtherUnit_DELETE():
     bob_text = "Bob"
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
     delete_text = quark_delete()
 
     # WHEN
@@ -226,7 +226,7 @@ def test_QuarkUnit_set_quark_order_SetCorrectAttr():
     bob_text = "Bob"
     bob_credor_weight = 55
     bob_debtor_weight = 66
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
     bob_insert_quarkunit = quarkunit_shop(otherunit_text, quark_insert())
     other_id_text = "other_id"
     cw_text = "credor_weight"
@@ -246,7 +246,7 @@ def test_QuarkUnit_set_arg_SetsAny_required_arg_optional_arg():
     bob_text = "Bob"
     bob_credor_weight = 55
     bob_debtor_weight = 66
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
     bob_insert_quarkunit = quarkunit_shop(otherunit_text, quark_insert())
     other_id_text = "other_id"
     cw_text = "credor_weight"

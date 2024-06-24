@@ -26,8 +26,8 @@ def same_str() -> str:
     return "same"
 
 
-def duty_str() -> str:
-    return "duty"
+def live_str() -> str:
+    return "live"
 
 
 def jobs_str() -> str:

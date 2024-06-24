@@ -1,12 +1,12 @@
-from src.agenda.agenda import agendaunit_shop
+from src._truth.truth import truthunit_shop
 from src.money.treasury_sqlstr import (
-    get_agendaunit_table_create_sqlstr,
-    get_agendaunit_update_sqlstr,
-    get_agendaunits_select_sqlstr,
-    get_agenda_otherunit_table_create_sqlstr,
-    get_agenda_otherunit_table_update_treasury_due_paid_sqlstr,
-    get_agenda_otherunit_table_update_cred_score_sqlstr,
-    get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr,
+    get_truthunit_table_create_sqlstr,
+    get_truthunit_update_sqlstr,
+    get_truthunits_select_sqlstr,
+    get_truth_otherunit_table_create_sqlstr,
+    get_truth_otherunit_table_update_treasury_due_paid_sqlstr,
+    get_truth_otherunit_table_update_cred_score_sqlstr,
+    get_truth_otherunit_table_update_treasury_voice_rank_sqlstr,
     get_river_reach_table_touch_select_sqlstr,
     get_river_reach_table_final_select_sqlstr,
     get_river_reach_table_create_sqlstr,
@@ -16,13 +16,13 @@ from src.money.treasury_sqlstr import (
 from src._instrument.sqlite import sqlite_text
 
 
-def test_get_agendaunit_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_truthunit_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN /  WHEN
-    gen_sqlstr = get_agendaunit_table_create_sqlstr()
+    gen_sqlstr = get_truthunit_table_create_sqlstr()
 
     # THEN
     example_sqlstr = """
-CREATE TABLE IF NOT EXISTS agendaunit (
+CREATE TABLE IF NOT EXISTS truthunit (
   owner_id VARCHAR(255) PRIMARY KEY ASC
 , real_id VARCHAR(255) NOT NULL
 , rational INT NULL
@@ -33,19 +33,19 @@ CREATE TABLE IF NOT EXISTS agendaunit (
     assert gen_sqlstr == example_sqlstr
 
 
-def test_get_agendaunit_update_sqlstr_ReturnsCorrectStr():
+def test_get_truthunit_update_sqlstr_ReturnsCorrectStr():
     # GIVEN
     bob_owner_id = "Bob"
     bob_rational = False
-    bob_agenda = agendaunit_shop(_owner_id=bob_owner_id)
-    bob_agenda._rational = bob_rational
+    bob_truth = truthunit_shop(_owner_id=bob_owner_id)
+    bob_truth._rational = bob_rational
 
     # WHEN
-    gen_sqlstr = get_agendaunit_update_sqlstr(agenda=bob_agenda)
+    gen_sqlstr = get_truthunit_update_sqlstr(truth=bob_truth)
 
     # THEN
     example_sqlstr = f"""
-UPDATE agendaunit
+UPDATE truthunit
 SET rational = {sqlite_text(bob_rational)}
 WHERE owner_id = '{bob_owner_id}'
 ;
@@ -53,16 +53,16 @@ WHERE owner_id = '{bob_owner_id}'
     assert gen_sqlstr == example_sqlstr
 
 
-def test_get_agendaunits_select_sqlstr_ReturnsCorrectStr():
+def test_get_truthunits_select_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
-    generated_sqlstr = get_agendaunits_select_sqlstr()
+    generated_sqlstr = get_truthunits_select_sqlstr()
 
     # THEN
     example_sqlstr = """
 SELECT 
   owner_id
 , rational
-FROM agendaunit
+FROM truthunit
 ;
 """
     assert generated_sqlstr == example_sqlstr
@@ -71,25 +71,25 @@ FROM agendaunit
 def test_get_otherunit_select_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     bob_text = "Bob"
-    generated_sqlstr = get_agenda_otherunit_table_update_treasury_due_paid_sqlstr(
+    generated_sqlstr = get_truth_otherunit_table_update_treasury_due_paid_sqlstr(
         bob_text
     )
 
     # THEN
     example_sqlstr = f"""
-UPDATE agenda_otherunit
+UPDATE truth_otherunit
 SET _treasury_due_paid = (
     SELECT SUM(block.cash_close-block.cash_start) 
     FROM river_block block
     WHERE block.cash_master='{bob_text}' 
         AND block.dst_owner_id=block.cash_master
-        AND block.src_owner_id = agenda_otherunit.other_id
+        AND block.src_owner_id = truth_otherunit.other_id
     )
 WHERE EXISTS (
     SELECT block.cash_close
     FROM river_block block
-    WHERE agenda_otherunit.owner_id='{bob_text}' 
-        AND agenda_otherunit.other_id = block.dst_owner_id
+    WHERE truth_otherunit.owner_id='{bob_text}' 
+        AND truth_otherunit.other_id = block.dst_owner_id
 )
 ;
 """
@@ -313,8 +313,8 @@ CREATE TABLE IF NOT EXISTS river_reach (
 , set_num INT NOT NULL
 , reach_coin_start FLOAT NOT NULL
 , reach_coin_close FLOAT NOT NULL
-, FOREIGN KEY(cash_master) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(src_owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(cash_master) REFERENCES truthunit(owner_id)
+, FOREIGN KEY(src_owner_id) REFERENCES truthunit(owner_id)
 )
 ;
 """
@@ -364,21 +364,21 @@ ORDER BY range_sum DESC
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_agenda_otherunit_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_truth_otherunit_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
-    generated_sqlstr = get_agenda_otherunit_table_create_sqlstr()
+    generated_sqlstr = get_truth_otherunit_table_create_sqlstr()
 
     # THEN
     example_sqlstr = """
-CREATE TABLE IF NOT EXISTS agenda_otherunit (
+CREATE TABLE IF NOT EXISTS truth_otherunit (
   owner_id VARCHAR(255) NOT NULL 
 , other_id VARCHAR(255) NOT NULL
-, _agenda_cred FLOAT
-, _agenda_debt FLOAT
-, _agenda_intent_cred FLOAT
-, _agenda_intent_debt FLOAT
-, _agenda_intent_ratio_cred FLOAT
-, _agenda_intent_ratio_debt FLOAT
+, _truth_cred FLOAT
+, _truth_debt FLOAT
+, _truth_intent_cred FLOAT
+, _truth_intent_debt FLOAT
+, _truth_intent_ratio_cred FLOAT
+, _truth_intent_ratio_debt FLOAT
 , _credor_operational INT
 , _debtor_operational INT
 , _treasury_due_paid FLOAT
@@ -386,8 +386,8 @@ CREATE TABLE IF NOT EXISTS agenda_otherunit (
 , _treasury_cred_score FLOAT
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
-, FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(other_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(owner_id) REFERENCES truthunit(owner_id)
+, FOREIGN KEY(other_id) REFERENCES truthunit(owner_id)
 , UNIQUE(owner_id, other_id)
 )
 ;
@@ -395,48 +395,48 @@ CREATE TABLE IF NOT EXISTS agenda_otherunit (
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_agenda_otherunit_table_update_cred_score_sqlstr_ReturnsCorrectStr():
+def test_get_truth_otherunit_table_update_cred_score_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     yao_text = "Yao"
-    generated_sqlstr = get_agenda_otherunit_table_update_cred_score_sqlstr(yao_text)
+    generated_sqlstr = get_truth_otherunit_table_update_cred_score_sqlstr(yao_text)
 
     # THEN
     example_sqlstr = f"""
-UPDATE agenda_otherunit
+UPDATE truth_otherunit
 SET _treasury_cred_score = (
     SELECT SUM(reach_coin_close - reach_coin_start) range_sum
     FROM river_reach reach
-    WHERE reach.cash_master = agenda_otherunit.owner_id
-        AND reach.src_owner_id = agenda_otherunit.other_id
+    WHERE reach.cash_master = truth_otherunit.owner_id
+        AND reach.src_owner_id = truth_otherunit.other_id
     )
-WHERE agenda_otherunit.owner_id = '{yao_text}'
+WHERE truth_otherunit.owner_id = '{yao_text}'
 ;
 """
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr_ReturnsCorrectStr():
+def test_get_truth_otherunit_table_update_treasury_voice_rank_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     yao_text = "Yao"
-    generated_sqlstr = get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr(
+    generated_sqlstr = get_truth_otherunit_table_update_treasury_voice_rank_sqlstr(
         yao_text
     )
 
     # THEN
     example_sqlstr = f"""
-UPDATE agenda_otherunit
+UPDATE truth_otherunit
 SET _treasury_voice_rank = 
     (
     SELECT rn
     FROM (
         SELECT p2.other_id
         , row_number() over (order by p2._treasury_cred_score DESC) rn
-        FROM agenda_otherunit p2
+        FROM truth_otherunit p2
         WHERE p2.owner_id = '{yao_text}'
     ) p3
-    WHERE p3.other_id = agenda_otherunit.other_id AND agenda_otherunit.owner_id = '{yao_text}'
+    WHERE p3.other_id = truth_otherunit.other_id AND truth_otherunit.owner_id = '{yao_text}'
     )
-WHERE agenda_otherunit.owner_id = '{yao_text}'
+WHERE truth_otherunit.owner_id = '{yao_text}'
 ;
 """
     assert generated_sqlstr == example_sqlstr

@@ -103,7 +103,7 @@ def test_MoneyUnitcreate_treasury_db_CanCreateTreasuryInMemory(env_dir_setup_cle
     assert os_path_exists(x_money.userhub.treasury_db_path()) is False
 
 
-def test_MoneyUnit_refresh_treasury_job_agendas_data_CanConnectToTreasuryInMemory(
+def test_MoneyUnit_refresh_treasury_job_truths_data_CanConnectToTreasuryInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
@@ -113,7 +113,7 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CanConnectToTreasuryInMemor
     assert os_path_exists(x_money.userhub.treasury_db_path()) is False
 
     # WHEN
-    x_money.refresh_treasury_job_agendas_data()
+    x_money.refresh_treasury_job_truths_data()
 
     # THEN
     assert os_path_exists(x_money.userhub.treasury_db_path()) is False

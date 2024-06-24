@@ -62,31 +62,31 @@ screenshots and elucidatory text.
 <!-- TODO: Add elucidations -->
 base attributes vs reason attributess
 
-AgendaUnit objects
+TruthUnit objects
 
-AgendaUnit OtherUnit objects
+TruthUnit OtherUnit objects
 
-AgendaUnit BeliefUnit objects
+TruthUnit BeliefUnit objects
 
-AgendaUnit IdeaUnit objects
+TruthUnit IdeaUnit objects
 
-AgendaUnit IdeaUnit hierarchical structure
+TruthUnit IdeaUnit hierarchical structure
 
-AgendaUnit IdeaUnit BalanceLink objects
+TruthUnit IdeaUnit BalanceLink objects
 
-AgendaUnit IdeaUnit BalanceLine objects
+TruthUnit IdeaUnit BalanceLine objects
 
-AgendaUnit IdeaUnit BalanceHeir objects
+TruthUnit IdeaUnit BalanceHeir objects
 
-AgendaUnit IdeaUnit BalanceHeir objects
+TruthUnit IdeaUnit BalanceHeir objects
 
-AgendaUnit IdeaUnit Reason PremiseUnit objects
+TruthUnit IdeaUnit Reason PremiseUnit objects
 
-AgendaUnit IdeaUnit Reason PremiseHeir objects
+TruthUnit IdeaUnit Reason PremiseHeir objects
 
-AgendaUnit IdeaUnit FactUnit objects
+TruthUnit IdeaUnit FactUnit objects
 
-AgendaUnit IdeaUnit FactHeir objects
+TruthUnit IdeaUnit FactHeir objects
 
 
 ## 1.3 Test-Driven-Development

@@ -2,12 +2,12 @@ from src._instrument.file import set_dir, delete_dir, dir_files
 from src._road.jaar_config import get_atoms_folder
 from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
-from src.agenda.agenda import AgendaUnit
-from src.listen.basis_agendas import get_default_duty_agenda
+from src._truth.truth import TruthUnit
+from src.listen.basis_truths import get_default_live_truth
 from src.listen.userhub import userhub_shop, UserHub
 from src.listen.listen import (
     listen_to_speaker_intent,
-    listen_to_debtors_roll_same_duty,
+    listen_to_debtors_roll_same_live,
     listen_to_debtors_roll_role_job,
     create_job_file_from_role_file,
 )
@@ -22,10 +22,10 @@ class RealUnit:
     pipeline1: atoms->same
     pipeline2: same->roles
     pipeline3: role->job
-    pipeline4: job->duty
-    pipeline5: same->duty (direct)
-    pipeline6: same->job->duty (through jobs)
-    pipeline7: atoms->duty (could be 5 of 6)
+    pipeline4: job->live
+    pipeline5: same->live (direct)
+    pipeline6: same->job->live (through jobs)
+    pipeline7: atoms->live (could be 5 of 6)
     """
 
     real_id: RealID
@@ -117,14 +117,14 @@ class RealUnit:
     def init_person_econs(self, person_id: PersonID):
         x_userhub = self._get_userhub(person_id)
         x_userhub.initialize_atom_same_files()
-        x_userhub.initialize_duty_file(self.get_person_same_from_file(person_id))
+        x_userhub.initialize_live_file(self.get_person_same_from_file(person_id))
 
-    def get_person_same_from_file(self, person_id: PersonID) -> AgendaUnit:
-        return self._get_userhub(person_id).get_same_agenda()
+    def get_person_same_from_file(self, person_id: PersonID) -> TruthUnit:
+        return self._get_userhub(person_id).get_same_truth()
 
     def _set_all_healer_roles(self, person_id: PersonID):
         x_same = self.get_person_same_from_file(person_id)
-        x_same.calc_agenda_metrics()
+        x_same.calc_truth_metrics()
         for healer_id, healer_dict in x_same._healers_dict.items():
             healer_userhub = userhub_shop(
                 self.reals_dir,
@@ -142,18 +142,18 @@ class RealUnit:
         self,
         healer_userhub: UserHub,
         econ_road: RoadUnit,
-        same_agenda: AgendaUnit,
+        same_truth: TruthUnit,
     ):
         healer_userhub.econ_road = econ_road
         healer_userhub.create_treasury_db_file()
-        healer_userhub.save_role_agenda(same_agenda)
+        healer_userhub.save_role_truth(same_truth)
 
-    # duty agenda management
-    def generate_duty_agenda(self, person_id: PersonID) -> AgendaUnit:
+    # live truth management
+    def generate_live_truth(self, person_id: PersonID) -> TruthUnit:
         listener_userhub = self._get_userhub(person_id)
-        x_same = listener_userhub.get_same_agenda()
-        x_same.calc_agenda_metrics()
-        x_duty = get_default_duty_agenda(x_same)
+        x_same = listener_userhub.get_same_truth()
+        x_same.calc_truth_metrics()
+        x_live = get_default_live_truth(x_same)
         for healer_id, healer_dict in x_same._healers_dict.items():
             healer_userhub = userhub_shop(
                 reals_dir=self.reals_dir,
@@ -175,30 +175,30 @@ class RealUnit:
                     road_delimiter=self._road_delimiter,
                     pixel=self._pixel,
                 )
-                econ_userhub.save_role_agenda(x_same)
+                econ_userhub.save_role_truth(x_same)
                 create_job_file_from_role_file(econ_userhub, person_id)
-                x_job = econ_userhub.get_job_agenda(person_id)
-                listen_to_speaker_intent(x_duty, x_job)
+                x_job = econ_userhub.get_job_truth(person_id)
+                listen_to_speaker_intent(x_live, x_job)
 
-        # if nothing has come from same->role->job->duty pipeline use same->duty pipeline
-        x_duty.calc_agenda_metrics()
-        if len(x_duty._idea_dict) == 1:
-            # pipeline_same_duty_text()
-            listen_to_debtors_roll_same_duty(listener_userhub)
-            listener_userhub.open_file_duty()
-            x_duty.calc_agenda_metrics()
-        if len(x_duty._idea_dict) == 1:
-            x_duty = x_same
-        listener_userhub.save_duty_agenda(x_duty)
+        # if nothing has come from same->role->job->live pipeline use same->live pipeline
+        x_live.calc_truth_metrics()
+        if len(x_live._idea_dict) == 1:
+            # pipeline_same_live_text()
+            listen_to_debtors_roll_same_live(listener_userhub)
+            listener_userhub.open_file_live()
+            x_live.calc_truth_metrics()
+        if len(x_live._idea_dict) == 1:
+            x_live = x_same
+        listener_userhub.save_live_truth(x_live)
 
-        return self.get_duty_file_agenda(person_id)
+        return self.get_live_file_truth(person_id)
 
-    def generate_all_duty_agendas(self):
+    def generate_all_live_truths(self):
         for x_person_id in self._get_person_folder_names():
-            self.generate_duty_agenda(x_person_id)
+            self.generate_live_truth(x_person_id)
 
-    def get_duty_file_agenda(self, person_id: PersonID) -> AgendaUnit:
-        return self._get_userhub(person_id).get_duty_agenda()
+    def get_live_file_truth(self, person_id: PersonID) -> TruthUnit:
+        return self._get_userhub(person_id).get_live_truth()
 
 
 def realunit_shop(

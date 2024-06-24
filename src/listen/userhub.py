@@ -37,17 +37,17 @@ from src._road.road import (
     validate_roadnode,
     default_road_delimiter_if_none,
 )
-from src.agenda.agenda import (
-    AgendaUnit,
-    get_from_json as agendaunit_get_from_json,
-    agendaunit_shop,
+from src._truth.truth import (
+    TruthUnit,
+    get_from_json as truthunit_get_from_json,
+    truthunit_shop,
 )
 from src.atom.quark import (
     QuarkUnit,
     get_from_json as quarkunit_get_from_json,
-    modify_agenda_with_quarkunit,
+    modify_truth_with_quarkunit,
 )
-from src.listen.basis_agendas import get_default_duty_agenda
+from src.listen.basis_truths import get_default_live_truth
 from src.atom.atom import AtomUnit, atomunit_shop, create_atomunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -59,7 +59,7 @@ class Invalid_same_Exception(Exception):
     pass
 
 
-class Invalid_duty_Exception(Exception):
+class Invalid_live_Exception(Exception):
     pass
 
 
@@ -123,8 +123,8 @@ class UserHub:
     def same_dir(self) -> str:
         return f"{self.person_dir()}/same"
 
-    def duty_dir(self) -> str:
-        return f"{self.person_dir()}/duty"
+    def live_dir(self) -> str:
+        return f"{self.person_dir()}/live"
 
     def same_file_name(self):
         return get_json_filename(self.person_id)
@@ -132,11 +132,11 @@ class UserHub:
     def same_file_path(self):
         return f"{self.same_dir()}/{self.same_file_name()}"
 
-    def duty_file_name(self):
+    def live_file_name(self):
         return get_json_filename(self.person_id)
 
-    def duty_path(self):
-        return f"{self.duty_dir()}/{self.duty_file_name()}"
+    def live_path(self):
+        return f"{self.live_dir()}/{self.live_file_name()}"
 
     def save_file_same(self, file_text: str, replace: bool):
         save_file(
@@ -146,10 +146,10 @@ class UserHub:
             replace=replace,
         )
 
-    def save_file_duty(self, file_text: str, replace: bool):
+    def save_file_live(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.duty_dir(),
-            file_name=self.duty_file_name(),
+            dest_dir=self.live_dir(),
+            file_name=self.live_file_name(),
             file_text=file_text,
             replace=replace,
         )
@@ -157,41 +157,41 @@ class UserHub:
     def same_file_exists(self) -> bool:
         return os_path_exists(self.same_file_path())
 
-    def duty_file_exists(self) -> bool:
-        return os_path_exists(self.duty_path())
+    def live_file_exists(self) -> bool:
+        return os_path_exists(self.live_path())
 
     def open_file_same(self):
         return open_file(self.same_dir(), self.same_file_name())
 
-    def save_same_agenda(self, x_agenda: AgendaUnit):
-        if x_agenda._owner_id != self.person_id:
+    def save_same_truth(self, x_truth: TruthUnit):
+        if x_truth._owner_id != self.person_id:
             raise Invalid_same_Exception(
-                f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s same agenda."
+                f"TruthUnit with owner_id '{x_truth._owner_id}' cannot be saved as person_id '{self.person_id}''s same truth."
             )
-        self.save_file_same(x_agenda.get_json(), True)
+        self.save_file_same(x_truth.get_json(), True)
 
-    def get_same_agenda(self) -> AgendaUnit:
+    def get_same_truth(self) -> TruthUnit:
         if self.same_file_exists() is False:
             return None
         file_content = self.open_file_same()
-        return agendaunit_get_from_json(file_content)
+        return truthunit_get_from_json(file_content)
 
-    def default_same_agenda(self) -> AgendaUnit:
-        x_agendaunit = agendaunit_shop(
+    def default_same_truth(self) -> TruthUnit:
+        x_truthunit = truthunit_shop(
             _owner_id=self.person_id,
             _real_id=self.real_id,
             _road_delimiter=self.road_delimiter,
             _pixel=self.pixel,
             _penny=self.penny,
         )
-        x_agendaunit._last_atom_id = init_atom_id()
-        return x_agendaunit
+        x_truthunit._last_atom_id = init_atom_id()
+        return x_truthunit
 
     def delete_same_file(self):
         delete_dir(self.same_file_path())
 
-    def open_file_duty(self):
-        return open_file(self.duty_dir(), self.duty_file_name())
+    def open_file_live(self):
+        return open_file(self.live_dir(), self.live_file_name())
 
     def get_max_quark_file_number(self) -> int:
         if not os_path_exists(self.quarks_dir()):
@@ -230,8 +230,8 @@ class UserHub:
     def delete_quark_file(self, quark_number: int):
         delete_dir(self.quark_file_path(quark_number))
 
-    def _get_agenda_from_quark_files(self) -> AgendaUnit:
-        x_agenda = agendaunit_shop(self.person_id, self.real_id)
+    def _get_truth_from_quark_files(self) -> TruthUnit:
+        x_truth = truthunit_shop(self.person_id, self.real_id)
         if self.quark_file_exists(self.get_max_quark_file_number()):
             x_quark_files = dir_files(self.quarks_dir(), delete_extensions=True)
             sorted_quark_filenames = sorted(list(x_quark_files.keys()))
@@ -239,8 +239,8 @@ class UserHub:
             for x_quark_filename in sorted_quark_filenames:
                 x_file_text = x_quark_files.get(x_quark_filename)
                 x_quark = quarkunit_get_from_json(x_file_text)
-                modify_agenda_with_quarkunit(x_agenda, x_quark)
-        return x_agenda
+                modify_truth_with_quarkunit(x_truth, x_quark)
+        return x_truth
 
     def get_max_atom_file_number(self) -> int:
         if not os_path_exists(self.atoms_dir()):
@@ -318,12 +318,10 @@ class UserHub:
             _atoms_dir=self.atoms_dir(),
         )
 
-    def create_save_atom_file(
-        self, before_agenda: AgendaUnit, after_agenda: AgendaUnit
-    ):
+    def create_save_atom_file(self, before_truth: TruthUnit, after_truth: TruthUnit):
         new_atomunit = self._default_atomunit()
         new_nucunit = new_atomunit._nucunit
-        new_nucunit.add_all_different_quarkunits(before_agenda, after_agenda)
+        new_nucunit.add_all_different_quarkunits(before_truth, after_truth)
         self.save_atom_file(new_atomunit)
 
     def get_atomunit(self, atom_id: int) -> AtomUnit:
@@ -335,16 +333,16 @@ class UserHub:
         x_quarks_dir = self.quarks_dir()
         return create_atomunit_from_files(x_atoms_dir, atom_id, x_quarks_dir)
 
-    def _merge_any_atoms(self, x_agenda: AgendaUnit) -> AgendaUnit:
+    def _merge_any_atoms(self, x_truth: TruthUnit) -> TruthUnit:
         atoms_dir = self.atoms_dir()
-        atom_ints = get_integer_filenames(atoms_dir, x_agenda._last_atom_id)
+        atom_ints = get_integer_filenames(atoms_dir, x_truth._last_atom_id)
         if len(atom_ints) == 0:
-            return copy_deepcopy(x_agenda)
+            return copy_deepcopy(x_truth)
 
         for atom_int in atom_ints:
             x_atom = self.get_atomunit(atom_int)
-            new_agenda = x_atom._nucunit.get_edited_agenda(x_agenda)
-        return new_agenda
+            new_truth = x_atom._nucunit.get_edited_truth(x_truth)
+        return new_truth
 
     def _create_initial_atom_files_from_default(self):
         x_atomunit = atomunit_shop(
@@ -354,14 +352,14 @@ class UserHub:
             _quarks_dir=self.quarks_dir(),
         )
         x_atomunit._nucunit.add_all_different_quarkunits(
-            before_agenda=self.default_same_agenda(),
-            after_agenda=self.default_same_agenda(),
+            before_truth=self.default_same_truth(),
+            after_truth=self.default_same_truth(),
         )
         x_atomunit.save_files()
 
     def _create_same_from_atoms(self):
-        x_agenda = self._merge_any_atoms(self.default_same_agenda())
-        self.save_same_agenda(x_agenda)
+        x_truth = self._merge_any_atoms(self.default_same_truth())
+        self.save_same_truth(x_truth)
 
     def _create_initial_atom_and_same_files(self):
         self._create_initial_atom_files_from_default()
@@ -370,8 +368,8 @@ class UserHub:
     def _create_initial_atom_files_from_same(self):
         x_atomunit = self._default_atomunit()
         x_atomunit._nucunit.add_all_different_quarkunits(
-            before_agenda=self.default_same_agenda(),
-            after_agenda=self.get_same_agenda(),
+            before_truth=self.default_same_truth(),
+            after_truth=self.get_same_truth(),
         )
         x_atomunit.save_files()
 
@@ -386,10 +384,10 @@ class UserHub:
             self._create_initial_atom_files_from_same()
 
     def append_atoms_to_same_file(self):
-        same_agenda = self.get_same_agenda()
-        same_agenda = self._merge_any_atoms(same_agenda)
-        self.save_same_agenda(same_agenda)
-        return self.get_same_agenda()
+        same_truth = self.get_same_truth()
+        same_truth = self._merge_any_atoms(same_truth)
+        self.save_same_truth(same_truth)
+        return self.get_same_truth()
 
     def econ_dir(self) -> str:
         if self.econ_road is None:
@@ -434,24 +432,24 @@ class UserHub:
         except Exception:
             return []
 
-    def save_role_agenda(self, x_agenda: AgendaUnit):
-        x_file_name = self.owner_file_name(x_agenda._owner_id)
-        save_file(self.roles_dir(), x_file_name, x_agenda.get_json())
+    def save_role_truth(self, x_truth: TruthUnit):
+        x_file_name = self.owner_file_name(x_truth._owner_id)
+        save_file(self.roles_dir(), x_file_name, x_truth.get_json())
 
-    def save_job_agenda(self, x_agenda: AgendaUnit):
-        x_file_name = self.owner_file_name(x_agenda._owner_id)
-        save_file(self.jobs_dir(), x_file_name, x_agenda.get_json())
+    def save_job_truth(self, x_truth: TruthUnit):
+        x_file_name = self.owner_file_name(x_truth._owner_id)
+        save_file(self.jobs_dir(), x_file_name, x_truth.get_json())
 
-    def save_duty_agenda(self, x_agenda: AgendaUnit):
-        if x_agenda._owner_id != self.person_id:
-            raise Invalid_duty_Exception(
-                f"AgendaUnit with owner_id '{x_agenda._owner_id}' cannot be saved as person_id '{self.person_id}''s duty agenda."
+    def save_live_truth(self, x_truth: TruthUnit):
+        if x_truth._owner_id != self.person_id:
+            raise Invalid_live_Exception(
+                f"TruthUnit with owner_id '{x_truth._owner_id}' cannot be saved as person_id '{self.person_id}''s live truth."
             )
-        self.save_file_duty(x_agenda.get_json(), True)
+        self.save_file_live(x_truth.get_json(), True)
 
-    def initialize_duty_file(self, same: AgendaUnit):
-        if self.duty_file_exists() is False:
-            self.save_duty_agenda(get_default_duty_agenda(same))
+    def initialize_live_file(self, same: TruthUnit):
+        if self.live_file_exists() is False:
+            self.save_live_truth(get_default_live_truth(same))
 
     def role_file_exists(self, owner_id: PersonID) -> bool:
         return os_path_exists(self.role_path(owner_id))
@@ -459,23 +457,23 @@ class UserHub:
     def job_file_exists(self, owner_id: PersonID) -> bool:
         return os_path_exists(self.job_path(owner_id))
 
-    def get_role_agenda(self, owner_id: PersonID) -> AgendaUnit:
+    def get_role_truth(self, owner_id: PersonID) -> TruthUnit:
         if self.role_file_exists(owner_id) is False:
             return None
         file_content = open_file(self.roles_dir(), self.owner_file_name(owner_id))
-        return agendaunit_get_from_json(file_content)
+        return truthunit_get_from_json(file_content)
 
-    def get_job_agenda(self, owner_id: PersonID) -> AgendaUnit:
+    def get_job_truth(self, owner_id: PersonID) -> TruthUnit:
         if self.job_file_exists(owner_id) is False:
             return None
         file_content = open_file(self.jobs_dir(), self.owner_file_name(owner_id))
-        return agendaunit_get_from_json(file_content)
+        return truthunit_get_from_json(file_content)
 
-    def get_duty_agenda(self) -> AgendaUnit:
-        if self.duty_file_exists() is False:
+    def get_live_truth(self) -> TruthUnit:
+        if self.live_file_exists() is False:
             return None
-        file_content = self.open_file_duty()
-        return agendaunit_get_from_json(file_content)
+        file_content = self.open_file_live()
+        return truthunit_get_from_json(file_content)
 
     def delete_role_file(self, owner_id: PersonID):
         delete_dir(self.role_path(owner_id))
@@ -486,7 +484,7 @@ class UserHub:
     def delete_treasury_db_file(self):
         delete_dir(self.treasury_db_path())
 
-    def dw_speaker_agenda(self, speaker_id: PersonID) -> AgendaUnit:
+    def dw_speaker_truth(self, speaker_id: PersonID) -> TruthUnit:
         speaker_userhub = userhub_shop(
             reals_dir=self.reals_dir,
             real_id=self.real_id,
@@ -494,20 +492,18 @@ class UserHub:
             road_delimiter=self.road_delimiter,
             pixel=self.pixel,
         )
-        return speaker_userhub.get_duty_agenda()
+        return speaker_userhub.get_live_truth()
 
-    def get_perspective_agenda(self, speaker: AgendaUnit) -> AgendaUnit:
-        # get copy of agenda without any metrics
-        perspective_agenda = agendaunit_get_from_json(speaker.get_json())
-        perspective_agenda.set_owner_id(self.person_id)
-        return perspective_agenda
+    def get_perspective_truth(self, speaker: TruthUnit) -> TruthUnit:
+        # get copy of truth without any metrics
+        perspective_truth = truthunit_get_from_json(speaker.get_json())
+        perspective_truth.set_owner_id(self.person_id)
+        return perspective_truth
 
-    def get_dw_perspective_agenda(self, speaker_id: PersonID) -> AgendaUnit:
-        return self.get_perspective_agenda(self.dw_speaker_agenda(speaker_id))
+    def get_dw_perspective_truth(self, speaker_id: PersonID) -> TruthUnit:
+        return self.get_perspective_truth(self.dw_speaker_truth(speaker_id))
 
-    def rj_speaker_agenda(
-        self, healer_id: PersonID, speaker_id: PersonID
-    ) -> AgendaUnit:
+    def rj_speaker_truth(self, healer_id: PersonID, speaker_id: PersonID) -> TruthUnit:
         speaker_userhub = userhub_shop(
             reals_dir=self.reals_dir,
             real_id=self.real_id,
@@ -516,34 +512,34 @@ class UserHub:
             road_delimiter=self.road_delimiter,
             pixel=self.pixel,
         )
-        return speaker_userhub.get_job_agenda(speaker_id)
+        return speaker_userhub.get_job_truth(speaker_id)
 
-    def rj_perspective_agenda(
+    def rj_perspective_truth(
         self, healer_id: PersonID, speaker_id: PersonID
-    ) -> AgendaUnit:
-        speaker_job = self.rj_speaker_agenda(healer_id, speaker_id)
-        return self.get_perspective_agenda(speaker_job)
+    ) -> TruthUnit:
+        speaker_job = self.rj_speaker_truth(healer_id, speaker_id)
+        return self.get_perspective_truth(speaker_job)
 
     def get_econ_roads(self):
-        x_same_agenda = self.get_same_agenda()
-        x_same_agenda.calc_agenda_metrics()
-        if x_same_agenda._econs_justified is False:
-            x_str = f"Cannot get_econ_roads from '{self.person_id}' same agenda because 'AgendaUnit._econs_justified' is False."
+        x_same_truth = self.get_same_truth()
+        x_same_truth.calc_truth_metrics()
+        if x_same_truth._econs_justified is False:
+            x_str = f"Cannot get_econ_roads from '{self.person_id}' same truth because 'TruthUnit._econs_justified' is False."
             raise get_econ_roadsException(x_str)
-        if x_same_agenda._econs_buildable is False:
-            x_str = f"Cannot get_econ_roads from '{self.person_id}' same agenda because 'AgendaUnit._econs_buildable' is False."
+        if x_same_truth._econs_buildable is False:
+            x_str = f"Cannot get_econ_roads from '{self.person_id}' same truth because 'TruthUnit._econs_buildable' is False."
             raise get_econ_roadsException(x_str)
-        person_healer_dict = x_same_agenda._healers_dict.get(self.person_id)
+        person_healer_dict = x_same_truth._healers_dict.get(self.person_id)
         if person_healer_dict is None:
             return get_empty_set_if_none(None)
-        econ_roads = x_same_agenda._healers_dict.get(self.person_id).keys()
+        econ_roads = x_same_truth._healers_dict.get(self.person_id).keys()
         return get_empty_set_if_none(econ_roads)
 
     def save_all_same_roles(self):
-        same = self.get_same_agenda()
+        same = self.get_same_truth()
         for x_econ_road in self.get_econ_roads():
             self.econ_road = x_econ_road
-            self.save_role_agenda(same)
+            self.save_role_truth(same)
         self.econ_road = None
 
     def create_treasury_db_file(self):

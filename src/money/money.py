@@ -1,36 +1,36 @@
 from src._instrument.file import delete_dir
 from src._road.jaar_config import default_river_blocks_count
 from src._road.road import OwnerID
-from src.agenda.other import otherlink_shop
-from src.agenda.agenda import AgendaUnit
+from src._truth.other import otherlink_shop
+from src._truth.truth import TruthUnit
 from src.listen.userhub import UserHub
 from src.money.treasury_sqlstr import (
     get_othertreasuryunit_dict,
-    get_agenda_otherunit_table_insert_sqlstr,
-    get_agenda_otherunit_table_update_treasury_due_paid_sqlstr as update_treasury_due_paid_sqlstr,
-    get_agenda_otherunit_table_update_cred_score_sqlstr as update_cred_score_sqlstr,
-    get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr as update_treasury_voice_rank_sqlstr,
+    get_truth_otherunit_table_insert_sqlstr,
+    get_truth_otherunit_table_update_treasury_due_paid_sqlstr as update_treasury_due_paid_sqlstr,
+    get_truth_otherunit_table_update_cred_score_sqlstr as update_cred_score_sqlstr,
+    get_truth_otherunit_table_update_treasury_voice_rank_sqlstr as update_treasury_voice_rank_sqlstr,
     get_river_block_table_delete_sqlstr,
     get_river_block_table_insert_sqlstr,
     get_river_circle_table_insert_sqlstr,
     get_river_reach_table_final_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
-    get_agendaunit_table_insert_sqlstr,
+    get_truthunit_table_insert_sqlstr,
     get_river_ledger_unit,
     OtherDBUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
     OtherTreasuryUnit,
     IdeaCatalog,
-    get_agenda_ideaunit_table_insert_sqlstr,
-    get_agenda_ideaunit_dict,
+    get_truth_ideaunit_table_insert_sqlstr,
+    get_truth_ideaunit_dict,
     FactCatalog,
-    get_agenda_idea_factunit_table_insert_sqlstr,
+    get_truth_idea_factunit_table_insert_sqlstr,
     BeliefUnitCatalog,
-    get_agenda_beliefunit_table_insert_sqlstr,
-    get_agenda_beliefunit_dict,
-    get_agendatreasuryunits_dict,
-    get_agendaunit_update_sqlstr,
+    get_truth_beliefunit_table_insert_sqlstr,
+    get_truth_beliefunit_dict,
+    get_truthtreasuryunits_dict,
+    get_truthunit_update_sqlstr,
     CalendarReport,
     CalendarIntentUnit,
     get_calendar_table_insert_sqlstr,
@@ -50,7 +50,7 @@ class MoneyUnit:
     _treasury_db = None
 
     # treasurying
-    def set_cred_flow_for_agenda(self, owner_id: OwnerID, max_blocks_count: int = None):
+    def set_cred_flow_for_truth(self, owner_id: OwnerID, max_blocks_count: int = None):
         self._clear_all_source_river_data(owner_id)
         if max_blocks_count is None:
             max_blocks_count = default_river_blocks_count()
@@ -67,18 +67,18 @@ class MoneyUnit:
         general_circle = [self._get_root_river_ledger_unit(x_owner_id)]
         blocks_count = 0  # Transformations in river_block loop
         while blocks_count < max_blocks_count and general_circle != []:
-            parent_agenda_ledger = general_circle.pop(0)
-            ledgers_len = len(parent_agenda_ledger._otherviews.values())
-            parent_range = parent_agenda_ledger.get_range()
-            parent_close = parent_agenda_ledger.cash_cease
+            parent_truth_ledger = general_circle.pop(0)
+            ledgers_len = len(parent_truth_ledger._otherviews.values())
+            parent_range = parent_truth_ledger.get_range()
+            parent_close = parent_truth_ledger.cash_cease
 
             # Transformations in river_block loop
-            coin_onset = parent_agenda_ledger.cash_onset
+            coin_onset = parent_truth_ledger.cash_onset
             ledgers_count = 0
-            for x_child_ledger in parent_agenda_ledger._otherviews.values():
+            for x_child_ledger in parent_truth_ledger._otherviews.values():
                 ledgers_count += 1
 
-                coin_range = parent_range * x_child_ledger._agenda_intent_ratio_cred
+                coin_range = parent_range * x_child_ledger._truth_intent_ratio_cred
                 coin_close = coin_onset + coin_range
 
                 # implies last object in dict
@@ -92,8 +92,8 @@ class MoneyUnit:
                     cash_start=coin_onset,
                     cash_close=coin_close,
                     block_num=blocks_count,
-                    parent_block_num=parent_agenda_ledger.block_num,
-                    river_tree_level=parent_agenda_ledger.river_tree_level + 1,
+                    parent_block_num=parent_truth_ledger.block_num,
+                    river_tree_level=parent_truth_ledger.river_tree_level + 1,
                 )
                 river_ledger_x = self._insert_river_block_grab_river_ledger(
                     river_block_x
@@ -150,84 +150,82 @@ class MoneyUnit:
             treasury_conn.execute(update_treasury_voice_rank_sqlstr(owner_id))
 
             sal_othertreasuryunits = get_othertreasuryunit_dict(treasury_conn, owner_id)
-            x_agenda = self.userhub.get_job_agenda(owner_id=owner_id)
-            set_treasury_othertreasuryunits_to_agenda_otherunits(
-                x_agenda, sal_othertreasuryunits
+            x_truth = self.userhub.get_job_truth(owner_id=owner_id)
+            set_treasury_othertreasuryunits_to_truth_otherunits(
+                x_truth, sal_othertreasuryunits
             )
-            self.userhub.save_job_agenda(x_agenda)
+            self.userhub.save_job_truth(x_truth)
 
     def get_othertreasuryunits(self, owner_id: str) -> dict[str:OtherTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
             othertreasuryunits = get_othertreasuryunit_dict(treasury_conn, owner_id)
         return othertreasuryunits
 
-    def refresh_treasury_job_agendas_data(self, in_memory: bool = None):
+    def refresh_treasury_job_truths_data(self, in_memory: bool = None):
         if in_memory is None and self._treasury_db != None:
             in_memory = True
         self.create_treasury_db(in_memory=in_memory, overwrite=True)
-        self._treasury_populate_agendas_data()
+        self._treasury_populate_truths_data()
 
-    def _treasury_populate_agendas_data(self):
+    def _treasury_populate_truths_data(self):
         for person_id in self.userhub.get_jobs_dir_file_names_list():
-            agendaunit_x = self.userhub.get_job_agenda(person_id)
-            agendaunit_x.calc_agenda_metrics()
+            truthunit_x = self.userhub.get_job_truth(person_id)
+            truthunit_x.calc_truth_metrics()
 
-            self._treasury_insert_agendaunit(agendaunit_x)
-            self._treasury_insert_otherunit(agendaunit_x)
-            self._treasury_insert_beliefunit(agendaunit_x)
-            self._treasury_insert_ideaunit(agendaunit_x)
-            self._treasury_insert_fact(agendaunit_x)
+            self._treasury_insert_truthunit(truthunit_x)
+            self._treasury_insert_otherunit(truthunit_x)
+            self._treasury_insert_beliefunit(truthunit_x)
+            self._treasury_insert_ideaunit(truthunit_x)
+            self._treasury_insert_fact(truthunit_x)
 
-    def _treasury_insert_agendaunit(self, agendaunit_x: AgendaUnit):
+    def _treasury_insert_truthunit(self, truthunit_x: TruthUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            cur.execute(get_agendaunit_table_insert_sqlstr(x_agenda=agendaunit_x))
+            cur.execute(get_truthunit_table_insert_sqlstr(x_truth=truthunit_x))
 
-    def _treasury_set_agendaunit_attrs(self, agenda: AgendaUnit):
+    def _treasury_set_truthunit_attrs(self, truth: TruthUnit):
         with self.get_treasury_conn() as treasury_conn:
-            treasury_conn.execute(get_agendaunit_update_sqlstr(agenda))
+            treasury_conn.execute(get_truthunit_update_sqlstr(truth))
 
-    def _treasury_insert_otherunit(self, agendaunit_x: AgendaUnit):
+    def _treasury_insert_otherunit(self, truthunit_x: TruthUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for x_otherunit in agendaunit_x._others.values():
-                sqlstr = get_agenda_otherunit_table_insert_sqlstr(
-                    agendaunit_x, x_otherunit
+            for x_otherunit in truthunit_x._others.values():
+                sqlstr = get_truth_otherunit_table_insert_sqlstr(
+                    truthunit_x, x_otherunit
                 )
                 cur.execute(sqlstr)
 
-    def _treasury_insert_beliefunit(self, agendaunit_x: AgendaUnit):
+    def _treasury_insert_beliefunit(self, truthunit_x: TruthUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for beliefunit_x in agendaunit_x._beliefs.values():
-                agenda_beliefunit_x = BeliefUnitCatalog(
-                    owner_id=agendaunit_x._owner_id,
+            for beliefunit_x in truthunit_x._beliefs.values():
+                truth_beliefunit_x = BeliefUnitCatalog(
+                    owner_id=truthunit_x._owner_id,
                     beliefunit_belief_id=beliefunit_x.belief_id,
                 )
-                sqlstr = get_agenda_beliefunit_table_insert_sqlstr(agenda_beliefunit_x)
+                sqlstr = get_truth_beliefunit_table_insert_sqlstr(truth_beliefunit_x)
                 cur.execute(sqlstr)
 
-    def _treasury_insert_ideaunit(self, agendaunit_x: AgendaUnit):
+    def _treasury_insert_ideaunit(self, truthunit_x: TruthUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for idea_x in agendaunit_x._idea_dict.values():
-                agenda_ideaunit_x = IdeaCatalog(
-                    agendaunit_x._owner_id, idea_x.get_road()
-                )
-                sqlstr = get_agenda_ideaunit_table_insert_sqlstr(agenda_ideaunit_x)
+            for idea_x in truthunit_x._idea_dict.values():
+                truth_ideaunit_x = IdeaCatalog(truthunit_x._owner_id, idea_x.get_road())
+                sqlstr = get_truth_ideaunit_table_insert_sqlstr(truth_ideaunit_x)
                 cur.execute(sqlstr)
 
-    def _treasury_insert_fact(self, agendaunit_x: AgendaUnit):
+    def _treasury_insert_fact(self, truthunit_x: TruthUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for fact_x in agendaunit_x._idearoot._factunits.values():
-                agenda_idea_factunit_x = FactCatalog(
-                    owner_id=agendaunit_x._owner_id,
+            for fact_x in truthunit_x._idearoot._factunits.values():
+                truth_idea_factunit_x = FactCatalog(
+                    owner_id=truthunit_x._owner_id,
                     base=fact_x.base,
                     pick=fact_x.pick,
                 )
-                sqlstr = get_agenda_idea_factunit_table_insert_sqlstr(
-                    agenda_idea_factunit_x
+                sqlstr = get_truth_idea_factunit_table_insert_sqlstr(
+                    truth_idea_factunit_x
                 )
                 cur.execute(sqlstr)
 
@@ -256,11 +254,11 @@ class MoneyUnit:
                     treasury_conn.execute(sqlstr)
 
     def insert_intent_into_treasury(
-        self, x_agendaunit: AgendaUnit, x_calendarreport: CalendarReport
+        self, x_truthunit: TruthUnit, x_calendarreport: CalendarReport
     ):
-        if x_agendaunit.idea_exists(x_calendarreport.time_road) is False:
+        if x_truthunit.idea_exists(x_calendarreport.time_road) is False:
             raise IntentBaseDoesNotExistException(
-                f"Intent base cannot be '{x_calendarreport.time_road}' because it does not exist in agenda '{x_agendaunit._owner_id}'."
+                f"Intent base cannot be '{x_calendarreport.time_road}' because it does not exist in truth '{x_truthunit._owner_id}'."
             )
 
         with self.get_treasury_conn() as treasury_conn:
@@ -269,13 +267,13 @@ class MoneyUnit:
             del_sqlstr = get_calendar_table_delete_sqlstr(x_calendarreport.owner_id)
             cur.execute(del_sqlstr)
             for _ in range(x_calendarreport.interval_count):
-                x_agendaunit.set_fact(
+                x_truthunit.set_fact(
                     base=x_calendarreport.time_road,
                     pick=x_calendarreport.time_road,
                     open=x_calendarreport.get_interval_begin(_),
                     nigh=x_calendarreport.get_interval_close(_),
                 )
-                x_intent_items = x_agendaunit.get_intent_dict(
+                x_intent_items = x_truthunit.get_intent_dict(
                     base=x_calendarreport.time_road
                 )
                 for intent_item in x_intent_items.values():
@@ -284,19 +282,19 @@ class MoneyUnit:
                         time_begin=x_calendarreport.get_interval_begin(_),
                         time_close=x_calendarreport.get_interval_close(_),
                         intent_idea_road=intent_item.get_road(),
-                        intent_weight=intent_item._agenda_importance,
+                        intent_weight=intent_item._truth_importance,
                         task=intent_item._task,
                     )
                     sqlstr = get_calendar_table_insert_sqlstr(x_calendarintentunit)
                     cur.execute(sqlstr)
 
-    # exporting metrics to agenda files
+    # exporting metrics to truth files
     def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
-            owner_role = self.userhub.get_role_agenda(owner_id)
+            owner_role = self.userhub.get_role_truth(owner_id)
             for count_x, x_otherunit in enumerate(owner_role._others.values()):
                 x_otherunit.set_treasury_voice_rank(count_x)
-            self.userhub.save_role_agenda(owner_role)
+            self.userhub.save_role_truth(owner_role)
 
 
 def moneyunit_shop(x_userhub: UserHub, in_memory_treasury: bool = None) -> MoneyUnit:
@@ -308,10 +306,10 @@ def moneyunit_shop(x_userhub: UserHub, in_memory_treasury: bool = None) -> Money
     return x_moneyunit
 
 
-def set_treasury_othertreasuryunits_to_agenda_otherunits(
-    x_agenda: AgendaUnit, othertreasuryunits: dict[str:OtherTreasuryUnit]
+def set_treasury_othertreasuryunits_to_truth_otherunits(
+    x_truth: TruthUnit, othertreasuryunits: dict[str:OtherTreasuryUnit]
 ):
-    for x_otherunit in x_agenda._others.values():
+    for x_otherunit in x_truth._others.values():
         x_otherunit.clear_treasurying_data()
         othertreasuryunit = othertreasuryunits.get(x_otherunit.other_id)
         if othertreasuryunit != None:

@@ -14,7 +14,7 @@ def get_quark_example_ideaunit_sports(real_id: RealID = None) -> QuarkUnit:
     if real_id is None:
         real_id = get_test_real_id()
     sports_text = "sports"
-    x_category = "agenda_ideaunit"
+    x_category = "truth_ideaunit"
     label_text = "label"
     parent_road_text = "parent_road"
     insert_ideaunit_quarkunit = quarkunit_shop(x_category, quark_insert())
@@ -29,7 +29,7 @@ def get_quark_example_ideaunit_ball(real_id: RealID = None) -> QuarkUnit:
     sports_text = "sports"
     sports_road = create_road(real_id, sports_text)
     ball_text = "basketball"
-    x_category = "agenda_ideaunit"
+    x_category = "truth_ideaunit"
     label_text = "label"
     parent_road_text = "parent_road"
     insert_ideaunit_quarkunit = quarkunit_shop(x_category, quark_insert())
@@ -46,7 +46,7 @@ def get_quark_example_ideaunit_knee(real_id: RealID = None) -> QuarkUnit:
     knee_text = "knee"
     knee_begin = 1
     knee_close = 71
-    x_category = "agenda_ideaunit"
+    x_category = "truth_ideaunit"
     label_text = "label"
     parent_road_text = "parent_road"
     begin_text = "_begin"
@@ -70,7 +70,7 @@ def get_quark_example_factunit_knee(real_id: RealID = None) -> QuarkUnit:
     knee_road = create_road(real_id, knee_text)
     knee_open = 7
     knee_nigh = 23
-    x_category = "agenda_idea_factunit"
+    x_category = "truth_idea_factunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"
@@ -86,13 +86,13 @@ def get_quark_example_factunit_knee(real_id: RealID = None) -> QuarkUnit:
 def get_nucunit_carm_example() -> NucUnit:
     sue_nucunit = nucunit_shop()
 
-    agendaunit_text = "agendaunit"
-    pool_quarkunit = quarkunit_shop(agendaunit_text, quark_update())
+    truthunit_text = "truthunit"
+    pool_quarkunit = quarkunit_shop(truthunit_text, quark_update())
     pool_attribute = "_other_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 77)
     sue_nucunit.set_quarkunit(pool_quarkunit)
 
-    category = "agenda_otherunit"
+    category = "truth_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_delete())
     carm_quarkunit.set_required_arg("other_id", carm_text)

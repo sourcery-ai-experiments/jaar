@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS quark_hx (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )
     assert generated_sqlstr.find(example_idea_reasonunit_text) > 0
-    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3454
+    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3394
 
 
 def test_get_quark_hx_table_insert_sqlstr_ReturnsCorrectStr():
@@ -180,7 +180,7 @@ def test_get_quark_hx_table_insert_sqlstr_ReturnsCorrectStr():
     knee_open = 7
 
     # WHEN
-    x_category = "agenda_idea_factunit"
+    x_category = "truth_idea_factunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"
@@ -218,12 +218,12 @@ CREATE TABLE IF NOT EXISTS quark_mstr (
 ;"""
     assert generated_sqlstr.find(begin_sqlstr) == 0
     assert generated_sqlstr.find(end_sqlstr) > 0
-    assert generated_sqlstr.find(end_sqlstr) == 6102
+    assert generated_sqlstr.find(end_sqlstr) == 5991
     example_idea_reasonunit_text = (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )
     assert generated_sqlstr.find(example_idea_reasonunit_text) > 0
-    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3487
+    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3427
 
 
 def test_get_create_table_if_not_exist_sqlstrs_HasCorrectNumberOfNumber():

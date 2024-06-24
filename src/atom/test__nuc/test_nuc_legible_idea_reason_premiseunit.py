@@ -1,20 +1,20 @@
 from src.atom.quark import quarkunit_shop, quark_update, quark_insert, quark_delete
 from src.atom.nuc import nucunit_shop, create_legible_list
-from src.agenda.agenda import agendaunit_shop
+from src._truth.truth import truthunit_shop
 
 
 def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_INSERT_WithOutNumericArgs():
     # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_idea_reason_premiseunit"
+    sue_truth = truthunit_shop("Sue")
+    category = "truth_idea_reason_premiseunit"
     road_text = "road"
-    casa_road = sue_agenda.make_l1_road("casa")
-    road_value = sue_agenda.make_road(casa_road, "clean fridge")
+    casa_road = sue_truth.make_l1_road("casa")
+    road_value = sue_truth.make_road(casa_road, "clean fridge")
     base_text = "base"
-    casa_road = sue_agenda.make_l1_road("casa")
-    base_value = sue_agenda.make_road(casa_road, "fridge status")
+    casa_road = sue_truth.make_l1_road("casa")
+    base_value = sue_truth.make_road(casa_road, "fridge status")
     need_text = "need"
-    need_value = sue_agenda.make_road(base_value, "dirty")
+    need_value = sue_truth.make_road(base_value, "dirty")
     swim_quarkunit = quarkunit_shop(category, quark_insert())
     swim_quarkunit.set_arg(road_text, road_value)
     swim_quarkunit.set_arg(base_text, base_value)
@@ -24,7 +24,7 @@ def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_INSERT_WithOutNu
     x_nucunit.set_quarkunit(swim_quarkunit)
 
     # WHEN
-    legible_list = create_legible_list(x_nucunit, sue_agenda)
+    legible_list = create_legible_list(x_nucunit, sue_truth)
 
     # THEN
     x_str = f"PremiseUnit '{need_value}' created for reason '{base_value}' for idea '{road_value}'."
@@ -34,16 +34,16 @@ def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_INSERT_WithOutNu
 
 def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_INSERT_WithNumericArgs():
     # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_idea_reason_premiseunit"
+    sue_truth = truthunit_shop("Sue")
+    category = "truth_idea_reason_premiseunit"
     road_text = "road"
-    casa_road = sue_agenda.make_l1_road("casa")
-    road_value = sue_agenda.make_road(casa_road, "clean fridge")
+    casa_road = sue_truth.make_l1_road("casa")
+    road_value = sue_truth.make_road(casa_road, "clean fridge")
     base_text = "base"
-    casa_road = sue_agenda.make_l1_road("casa")
-    base_value = sue_agenda.make_road(casa_road, "fridge status")
+    casa_road = sue_truth.make_l1_road("casa")
+    base_value = sue_truth.make_road(casa_road, "fridge status")
     need_text = "need"
-    need_value = sue_agenda.make_road(base_value, "dirty")
+    need_value = sue_truth.make_road(base_value, "dirty")
     divisor_text = "divisor"
     nigh_text = "nigh"
     open_text = "open"
@@ -62,7 +62,7 @@ def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_INSERT_WithNumer
     x_nucunit.set_quarkunit(swim_quarkunit)
 
     # WHEN
-    legible_list = create_legible_list(x_nucunit, sue_agenda)
+    legible_list = create_legible_list(x_nucunit, sue_truth)
 
     # THEN
     x_str = f"PremiseUnit '{need_value}' created for reason '{base_value}' for idea '{road_value}'. Open={open_value}. Nigh={nigh_value}. Divisor={divisor_value}."
@@ -72,16 +72,16 @@ def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_INSERT_WithNumer
 
 def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_UPDATE_WithOutNumericArgs():
     # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_idea_reason_premiseunit"
+    sue_truth = truthunit_shop("Sue")
+    category = "truth_idea_reason_premiseunit"
     road_text = "road"
-    casa_road = sue_agenda.make_l1_road("casa")
-    road_value = sue_agenda.make_road(casa_road, "clean fridge")
+    casa_road = sue_truth.make_l1_road("casa")
+    road_value = sue_truth.make_road(casa_road, "clean fridge")
     base_text = "base"
-    casa_road = sue_agenda.make_l1_road("casa")
-    base_value = sue_agenda.make_road(casa_road, "fridge status")
+    casa_road = sue_truth.make_l1_road("casa")
+    base_value = sue_truth.make_road(casa_road, "fridge status")
     need_text = "need"
-    need_value = sue_agenda.make_road(base_value, "dirty")
+    need_value = sue_truth.make_road(base_value, "dirty")
     swim_quarkunit = quarkunit_shop(category, quark_update())
     swim_quarkunit.set_arg(road_text, road_value)
     swim_quarkunit.set_arg(base_text, base_value)
@@ -91,7 +91,7 @@ def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_UPDATE_WithOutNu
     x_nucunit.set_quarkunit(swim_quarkunit)
 
     # WHEN
-    legible_list = create_legible_list(x_nucunit, sue_agenda)
+    legible_list = create_legible_list(x_nucunit, sue_truth)
 
     # THEN
     x_str = f"PremiseUnit '{need_value}' updated for reason '{base_value}' for idea '{road_value}'."
@@ -101,16 +101,16 @@ def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_UPDATE_WithOutNu
 
 def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_UPDATE_WithNumericArgs():
     # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_idea_reason_premiseunit"
+    sue_truth = truthunit_shop("Sue")
+    category = "truth_idea_reason_premiseunit"
     road_text = "road"
-    casa_road = sue_agenda.make_l1_road("casa")
-    road_value = sue_agenda.make_road(casa_road, "clean fridge")
+    casa_road = sue_truth.make_l1_road("casa")
+    road_value = sue_truth.make_road(casa_road, "clean fridge")
     base_text = "base"
-    casa_road = sue_agenda.make_l1_road("casa")
-    base_value = sue_agenda.make_road(casa_road, "fridge status")
+    casa_road = sue_truth.make_l1_road("casa")
+    base_value = sue_truth.make_road(casa_road, "fridge status")
     need_text = "need"
-    need_value = sue_agenda.make_road(base_value, "dirty")
+    need_value = sue_truth.make_road(base_value, "dirty")
     divisor_text = "divisor"
     nigh_text = "nigh"
     open_text = "open"
@@ -129,7 +129,7 @@ def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_UPDATE_WithNumer
     x_nucunit.set_quarkunit(swim_quarkunit)
 
     # WHEN
-    legible_list = create_legible_list(x_nucunit, sue_agenda)
+    legible_list = create_legible_list(x_nucunit, sue_truth)
 
     # THEN
     x_str = f"PremiseUnit '{need_value}' updated for reason '{base_value}' for idea '{road_value}'. Open={open_value}. Nigh={nigh_value}. Divisor={divisor_value}."
@@ -139,16 +139,16 @@ def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_UPDATE_WithNumer
 
 def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_DELETE():
     # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_idea_reason_premiseunit"
+    sue_truth = truthunit_shop("Sue")
+    category = "truth_idea_reason_premiseunit"
     road_text = "road"
-    casa_road = sue_agenda.make_l1_road("casa")
-    road_value = sue_agenda.make_road(casa_road, "clean fridge")
+    casa_road = sue_truth.make_l1_road("casa")
+    road_value = sue_truth.make_road(casa_road, "clean fridge")
     base_text = "base"
-    casa_road = sue_agenda.make_l1_road("casa")
-    base_value = sue_agenda.make_road(casa_road, "fridge status")
+    casa_road = sue_truth.make_l1_road("casa")
+    base_value = sue_truth.make_road(casa_road, "fridge status")
     need_text = "need"
-    need_value = sue_agenda.make_road(base_value, "dirty")
+    need_value = sue_truth.make_road(base_value, "dirty")
     swim_quarkunit = quarkunit_shop(category, quark_delete())
     swim_quarkunit.set_arg(road_text, road_value)
     swim_quarkunit.set_arg(base_text, base_value)
@@ -158,7 +158,7 @@ def test_create_legible_list_ReturnsObj_idea_reason_premiseunit_DELETE():
     x_nucunit.set_quarkunit(swim_quarkunit)
 
     # WHEN
-    legible_list = create_legible_list(x_nucunit, sue_agenda)
+    legible_list = create_legible_list(x_nucunit, sue_truth)
 
     # THEN
     x_str = f"PremiseUnit '{need_value}' deleted from reason '{base_value}' for idea '{road_value}'."

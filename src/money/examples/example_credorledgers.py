@@ -1,5 +1,5 @@
 from src._road.road import PersonID, OtherID
-from src.agenda.agenda import agendaunit_shop
+from src._truth.truth import truthunit_shop
 from src.listen.userhub import UserHub, userhub_shop
 from src.money.examples.econ_env import temp_reals_dir, temp_real_id, get_texas_road
 from src.money.rivercycle import get_credorledger
@@ -20,11 +20,11 @@ def example_yao_credorledger() -> dict[str:float]:
     yao_credor_weight = 7
     bob_credor_weight = 3
     zia_credor_weight = 10
-    yao_agenda = agendaunit_shop(yao_text)
-    yao_agenda.add_otherunit(yao_text, yao_credor_weight)
-    yao_agenda.add_otherunit(bob_text, bob_credor_weight)
-    yao_agenda.add_otherunit(zia_text, zia_credor_weight)
-    return get_credorledger(yao_agenda)
+    yao_truth = truthunit_shop(yao_text)
+    yao_truth.add_otherunit(yao_text, yao_credor_weight)
+    yao_truth.add_otherunit(bob_text, bob_credor_weight)
+    yao_truth.add_otherunit(zia_text, zia_credor_weight)
+    return get_credorledger(yao_truth)
 
 
 def example_bob_credorledger() -> dict[str:float]:
@@ -34,11 +34,11 @@ def example_bob_credorledger() -> dict[str:float]:
     yao_credor_weight = 1
     bob_credor_weight = 7
     zia_credor_weight = 42
-    bob_agenda = agendaunit_shop(bob_text)
-    bob_agenda.add_otherunit(yao_text, yao_credor_weight)
-    bob_agenda.add_otherunit(bob_text, bob_credor_weight)
-    bob_agenda.add_otherunit(zia_text, zia_credor_weight)
-    return get_credorledger(bob_agenda)
+    bob_truth = truthunit_shop(bob_text)
+    bob_truth.add_otherunit(yao_text, yao_credor_weight)
+    bob_truth.add_otherunit(bob_text, bob_credor_weight)
+    bob_truth.add_otherunit(zia_text, zia_credor_weight)
+    return get_credorledger(bob_truth)
 
 
 def example_zia_credorledger() -> dict[str:float]:
@@ -48,11 +48,11 @@ def example_zia_credorledger() -> dict[str:float]:
     yao_credor_weight = 89
     bob_credor_weight = 150
     zia_credor_weight = 61
-    zia_agenda = agendaunit_shop(zia_text)
-    zia_agenda.add_otherunit(yao_text, yao_credor_weight)
-    zia_agenda.add_otherunit(bob_text, bob_credor_weight)
-    zia_agenda.add_otherunit(zia_text, zia_credor_weight)
-    return get_credorledger(zia_agenda)
+    zia_truth = truthunit_shop(zia_text)
+    zia_truth.add_otherunit(yao_text, yao_credor_weight)
+    zia_truth.add_otherunit(bob_text, bob_credor_weight)
+    zia_truth.add_otherunit(zia_text, zia_credor_weight)
+    return get_credorledger(zia_truth)
 
 
 def example_yao_bob_zia_credorledgers() -> dict[PersonID : dict[OtherID:float]]:

@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS calendar (
 , intent_idea_road VARCHAR(255) NOT NULL
 , intent_weight INT NOT NULL
 , task INT NOT NULL
-, FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(owner_id) REFERENCES truthunit(owner_id)
 )
 ;
 """

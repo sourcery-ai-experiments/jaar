@@ -1,5 +1,5 @@
 from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
-from src.agenda.agenda import agendaunit_shop, otherunit_shop
+from src._truth.truth import truthunit_shop, otherunit_shop
 from src.money.treasury_sqlstr import (
     get_river_reach_table_touch_select_sqlstr,
     get_river_circle_table_create_sqlstr,
@@ -7,10 +7,10 @@ from src.money.treasury_sqlstr import (
     get_river_reach_table_create_sqlstr,
     get_river_reach_table_insert_sqlstr,
     get_river_reach_table_final_insert_sqlstr,
-    get_agenda_otherunit_table_create_sqlstr,
-    get_agenda_otherunit_table_insert_sqlstr as other_insert_sqlstr,
-    get_agenda_otherunit_table_update_cred_score_sqlstr,
-    get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr,
+    get_truth_otherunit_table_create_sqlstr,
+    get_truth_otherunit_table_insert_sqlstr as other_insert_sqlstr,
+    get_truth_otherunit_table_update_cred_score_sqlstr,
+    get_truth_otherunit_table_update_treasury_voice_rank_sqlstr,
 )
 from sqlite3 import connect as sqlite3_connect
 
@@ -42,19 +42,19 @@ SELECT
         assert 1 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))
 
 
-def test_get_agenda_otherunit_table_update_cred_score_sqlstr_UpdatesWithoutError():
+def test_get_truth_otherunit_table_update_cred_score_sqlstr_UpdatesWithoutError():
     # GIVEN
     x_db = sqlite3_connect(":memory:")
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
     reach_text = "river_reach"
     with x_db as x_conn:
-        x_conn.execute(get_agenda_otherunit_table_create_sqlstr())
+        x_conn.execute(get_truth_otherunit_table_create_sqlstr())
         x_conn.execute(get_river_reach_table_create_sqlstr())
         assert 0 == get_single_result(x_conn, get_row_count_sqlstr(otherunit_text))
         assert 0 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))
 
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(yao_text)
+    yao_truth = truthunit_shop(yao_text)
 
     bob_text = "Bob"
     cal_text = "Cal"
@@ -77,9 +77,9 @@ def test_get_agenda_otherunit_table_update_cred_score_sqlstr_UpdatesWithoutError
     dee_select_sqlstr2 = f"SELECT '{yao_text}', '{dee_text}', 7, {dee_s2}, {dee_close2}"
 
     with x_db as x_conn:
-        x_conn.execute(other_insert_sqlstr(yao_agenda, bob_otherunit))
-        x_conn.execute(other_insert_sqlstr(yao_agenda, cal_otherunit))
-        x_conn.execute(other_insert_sqlstr(yao_agenda, dee_otherunit))
+        x_conn.execute(other_insert_sqlstr(yao_truth, bob_otherunit))
+        x_conn.execute(other_insert_sqlstr(yao_truth, cal_otherunit))
+        x_conn.execute(other_insert_sqlstr(yao_truth, dee_otherunit))
         x_conn.execute(get_river_reach_table_insert_sqlstr(bob_select_sqlstr))
         x_conn.execute(get_river_reach_table_insert_sqlstr(cal_select_sqlstr))
         x_conn.execute(get_river_reach_table_insert_sqlstr(dee_select_sqlstr1))
@@ -92,7 +92,7 @@ SELECT
   owner_id
 , other_id
 , _treasury_cred_score
-FROM agenda_otherunit
+FROM truth_otherunit
 WHERE owner_id = '{yao_text}'
 """
     with x_db as x_conn:
@@ -113,7 +113,7 @@ WHERE owner_id = '{yao_text}'
 
     # WHEN
     with x_db as x_conn:
-        x_conn.execute(get_agenda_otherunit_table_update_cred_score_sqlstr(yao_text))
+        x_conn.execute(get_truth_otherunit_table_update_cred_score_sqlstr(yao_text))
 
     # THEN
     with x_db as x_conn:
@@ -131,10 +131,10 @@ WHERE owner_id = '{yao_text}'
     assert y_rows[2][2] == (dee_close1 - dee_s1) + (dee_close2 - dee_s2)
 
 
-def test_get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr_UpdatesWithoutError():
+def test_get_truth_otherunit_table_update_treasury_voice_rank_sqlstr_UpdatesWithoutError():
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(yao_text)
+    yao_truth = truthunit_shop(yao_text)
     bob_text = "Bob"
     cal_text = "Cal"
     dee_text = "Dee"
@@ -162,13 +162,13 @@ def test_get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr_UpdatesWit
     print(f"{cal_otherunit._treasury_cred_score=}")
     print(f"{dee_otherunit._treasury_cred_score=}")
 
-    otherunit_text = "agenda_otherunit"
+    otherunit_text = "truth_otherunit"
     x_db = sqlite3_connect(":memory:")
     with x_db as x_conn:
-        x_conn.execute(get_agenda_otherunit_table_create_sqlstr())
-        x_conn.execute(other_insert_sqlstr(yao_agenda, bob_otherunit))
-        x_conn.execute(other_insert_sqlstr(yao_agenda, cal_otherunit))
-        x_conn.execute(other_insert_sqlstr(yao_agenda, dee_otherunit))
+        x_conn.execute(get_truth_otherunit_table_create_sqlstr())
+        x_conn.execute(other_insert_sqlstr(yao_truth, bob_otherunit))
+        x_conn.execute(other_insert_sqlstr(yao_truth, cal_otherunit))
+        x_conn.execute(other_insert_sqlstr(yao_truth, dee_otherunit))
         assert 3 == get_single_result(x_conn, get_row_count_sqlstr(otherunit_text))
 
     otherunit_select_str = f"""
@@ -177,7 +177,7 @@ SELECT
 , other_id
 , _treasury_cred_score
 , _treasury_voice_rank
-FROM agenda_otherunit
+FROM truth_otherunit
 WHERE owner_id = '{yao_text}'
 """
     with x_db as x_conn:
@@ -202,7 +202,7 @@ WHERE owner_id = '{yao_text}'
     # WHEN
     with x_db as x_conn:
         x_conn.execute(
-            get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr(yao_text)
+            get_truth_otherunit_table_update_treasury_voice_rank_sqlstr(yao_text)
         )
 
     # THEN
@@ -250,7 +250,7 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     #     # ex6_text = "ex6"
     #     # x_money = moneyunit_shop(real_id=ex6_text, econ_dir=temp_reals_dir())
     #     # x_money.set_road_nodes(sal_text)
-    #     # x_money.set_cred_flow_for_agenda(sal_text, max_blocks_count=100)
+    #     # x_money.set_cred_flow_for_truth(sal_text, max_blocks_count=100)
 
     #     # WHEN
     #     reach_sqlstr = get_river_reach_table_touch_select_sqlstr(sal_text)

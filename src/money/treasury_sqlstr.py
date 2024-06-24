@@ -7,7 +7,7 @@ from src._instrument.sqlite import (
     get_row_count_sqlstr,
     get_single_result,
 )
-from src.agenda.agenda import AgendaUnit, OtherUnit
+from src._truth.truth import TruthUnit, OtherUnit
 from dataclasses import dataclass
 from sqlite3 import Connection
 
@@ -47,8 +47,8 @@ CREATE TABLE IF NOT EXISTS river_reach (
 , set_num INT NOT NULL
 , reach_coin_start FLOAT NOT NULL
 , reach_coin_close FLOAT NOT NULL
-, FOREIGN KEY(cash_master) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(src_owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(cash_master) REFERENCES truthunit(owner_id)
+, FOREIGN KEY(src_owner_id) REFERENCES truthunit(owner_id)
 )
 ;
 """
@@ -281,9 +281,9 @@ CREATE TABLE IF NOT EXISTS river_block (
 , block_num INT NOT NULL
 , parent_block_num INT NULL
 , river_tree_level INT NOT NULL
-, FOREIGN KEY(cash_master) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(src_owner_id) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(dst_owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(cash_master) REFERENCES truthunit(owner_id)
+, FOREIGN KEY(src_owner_id) REFERENCES truthunit(owner_id)
+, FOREIGN KEY(dst_owner_id) REFERENCES truthunit(owner_id)
 )
 ;
 """
@@ -385,8 +385,8 @@ CREATE TABLE IF NOT EXISTS river_circle (
 , circle_num INT NOT NULL
 , coin_start FLOAT NOT NULL
 , coin_close FLOAT NOT NULL
-, FOREIGN KEY(cash_master) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(dst_owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(cash_master) REFERENCES truthunit(owner_id)
+, FOREIGN KEY(dst_owner_id) REFERENCES truthunit(owner_id)
 )
 ;
 """
@@ -497,9 +497,9 @@ SELECT
   owner_id cash_master
 , other_id due_owner_id
 , _treasury_due_paid due_total
-, _agenda_intent_ratio_debt debt
-, (_agenda_intent_ratio_debt - _treasury_due_paid) due_diff
-FROM agenda_otherunit
+, _truth_intent_ratio_debt debt
+, (_truth_intent_ratio_debt - _treasury_due_paid) due_diff
+FROM truth_otherunit
 WHERE cash_master = '{cash_owner_id}'
     AND _treasury_due_paid IS NOT NULL
 ;
@@ -521,11 +521,11 @@ WHERE cash_master = '{cash_owner_id}'
     return dict_x
 
 
-# agenda
-def get_agendaunit_table_create_sqlstr() -> str:
-    """Create table that references the owner_id of every agenda."""
+# truth
+def get_truthunit_table_create_sqlstr() -> str:
+    """Create table that references the owner_id of every truth."""
     return """
-CREATE TABLE IF NOT EXISTS agendaunit (
+CREATE TABLE IF NOT EXISTS truthunit (
   owner_id VARCHAR(255) PRIMARY KEY ASC
 , real_id VARCHAR(255) NOT NULL
 , rational INT NULL
@@ -535,73 +535,73 @@ CREATE TABLE IF NOT EXISTS agendaunit (
 """
 
 
-def get_agendaunit_table_insert_sqlstr(x_agenda: AgendaUnit) -> str:
+def get_truthunit_table_insert_sqlstr(x_truth: TruthUnit) -> str:
     return f"""
-INSERT INTO agendaunit (
+INSERT INTO truthunit (
   real_id
 , owner_id
 , rational
 )
 VALUES (
-  '{x_agenda._real_id}' 
-, '{x_agenda._owner_id}' 
+  '{x_truth._real_id}' 
+, '{x_truth._owner_id}' 
 , NULL
 )
 ;
 """
 
 
-def get_agendaunits_select_sqlstr():
+def get_truthunits_select_sqlstr():
     return """
 SELECT 
   owner_id
 , rational
-FROM agendaunit
+FROM truthunit
 ;
 """
 
 
 @dataclass
-class AgendaTreasuryUnit:
+class TruthTreasuryUnit:
     owner_id: PersonID
     rational: bool
 
 
-def get_agendatreasuryunits_dict(
+def get_truthtreasuryunits_dict(
     db_conn: Connection,
-) -> dict[PersonID:AgendaTreasuryUnit]:
-    results = db_conn.execute(get_agendaunits_select_sqlstr())
+) -> dict[PersonID:TruthTreasuryUnit]:
+    results = db_conn.execute(get_truthunits_select_sqlstr())
     dict_x = {}
     for row in results.fetchall():
-        x_agendatreasuryunit = AgendaTreasuryUnit(
+        x_truthtreasuryunit = TruthTreasuryUnit(
             owner_id=row[0], rational=sqlite_to_python(row[1])
         )
-        dict_x[x_agendatreasuryunit.owner_id] = x_agendatreasuryunit
+        dict_x[x_truthtreasuryunit.owner_id] = x_truthtreasuryunit
     return dict_x
 
 
-def get_agendaunit_update_sqlstr(agenda: AgendaUnit) -> str:
+def get_truthunit_update_sqlstr(truth: TruthUnit) -> str:
     return f"""
-UPDATE agendaunit
-SET rational = {sqlite_text(agenda._rational)}
-WHERE owner_id = '{agenda._owner_id}'
+UPDATE truthunit
+SET rational = {sqlite_text(truth._rational)}
+WHERE owner_id = '{truth._owner_id}'
 ;
 """
 
 
 # otherunit
-def get_agenda_otherunit_table_create_sqlstr() -> str:
-    """Create table that holds the starting river metrics for every agenda's other. All the metrics."""
+def get_truth_otherunit_table_create_sqlstr() -> str:
+    """Create table that holds the starting river metrics for every truth's other. All the metrics."""
     return """
-CREATE TABLE IF NOT EXISTS agenda_otherunit (
+CREATE TABLE IF NOT EXISTS truth_otherunit (
   owner_id VARCHAR(255) NOT NULL 
 , other_id VARCHAR(255) NOT NULL
-, _agenda_cred FLOAT
-, _agenda_debt FLOAT
-, _agenda_intent_cred FLOAT
-, _agenda_intent_debt FLOAT
-, _agenda_intent_ratio_cred FLOAT
-, _agenda_intent_ratio_debt FLOAT
+, _truth_cred FLOAT
+, _truth_debt FLOAT
+, _truth_intent_cred FLOAT
+, _truth_intent_debt FLOAT
+, _truth_intent_ratio_cred FLOAT
+, _truth_intent_ratio_debt FLOAT
 , _credor_operational INT
 , _debtor_operational INT
 , _treasury_due_paid FLOAT
@@ -609,87 +609,87 @@ CREATE TABLE IF NOT EXISTS agenda_otherunit (
 , _treasury_cred_score FLOAT
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
-, FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(other_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(owner_id) REFERENCES truthunit(owner_id)
+, FOREIGN KEY(other_id) REFERENCES truthunit(owner_id)
 , UNIQUE(owner_id, other_id)
 )
 ;
 """
 
 
-def get_agenda_otherunit_table_update_treasury_due_paid_sqlstr(
+def get_truth_otherunit_table_update_treasury_due_paid_sqlstr(
     cash_owner_id: PersonID,
 ) -> str:
     return f"""
-UPDATE agenda_otherunit
+UPDATE truth_otherunit
 SET _treasury_due_paid = (
     SELECT SUM(block.cash_close-block.cash_start) 
     FROM river_block block
     WHERE block.cash_master='{cash_owner_id}' 
         AND block.dst_owner_id=block.cash_master
-        AND block.src_owner_id = agenda_otherunit.other_id
+        AND block.src_owner_id = truth_otherunit.other_id
     )
 WHERE EXISTS (
     SELECT block.cash_close
     FROM river_block block
-    WHERE agenda_otherunit.owner_id='{cash_owner_id}' 
-        AND agenda_otherunit.other_id = block.dst_owner_id
+    WHERE truth_otherunit.owner_id='{cash_owner_id}' 
+        AND truth_otherunit.other_id = block.dst_owner_id
 )
 ;
 """
 
 
-def get_agenda_otherunit_table_update_cred_score_sqlstr(
+def get_truth_otherunit_table_update_cred_score_sqlstr(
     cash_owner_id: PersonID,
 ) -> str:
     return f"""
-UPDATE agenda_otherunit
+UPDATE truth_otherunit
 SET _treasury_cred_score = (
     SELECT SUM(reach_coin_close - reach_coin_start) range_sum
     FROM river_reach reach
-    WHERE reach.cash_master = agenda_otherunit.owner_id
-        AND reach.src_owner_id = agenda_otherunit.other_id
+    WHERE reach.cash_master = truth_otherunit.owner_id
+        AND reach.src_owner_id = truth_otherunit.other_id
     )
-WHERE agenda_otherunit.owner_id = '{cash_owner_id}'
+WHERE truth_otherunit.owner_id = '{cash_owner_id}'
 ;
 """
 
 
-def get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr(
+def get_truth_otherunit_table_update_treasury_voice_rank_sqlstr(
     owner_id: PersonID,
 ) -> str:
     return f"""
-UPDATE agenda_otherunit
+UPDATE truth_otherunit
 SET _treasury_voice_rank = 
     (
     SELECT rn
     FROM (
         SELECT p2.other_id
         , row_number() over (order by p2._treasury_cred_score DESC) rn
-        FROM agenda_otherunit p2
+        FROM truth_otherunit p2
         WHERE p2.owner_id = '{owner_id}'
     ) p3
-    WHERE p3.other_id = agenda_otherunit.other_id AND agenda_otherunit.owner_id = '{owner_id}'
+    WHERE p3.other_id = truth_otherunit.other_id AND truth_otherunit.owner_id = '{owner_id}'
     )
-WHERE agenda_otherunit.owner_id = '{owner_id}'
+WHERE truth_otherunit.owner_id = '{owner_id}'
 ;
 """
 
 
-def get_agenda_otherunit_table_insert_sqlstr(
-    x_agenda: AgendaUnit, x_otherunit: OtherUnit
+def get_truth_otherunit_table_insert_sqlstr(
+    x_truth: TruthUnit, x_otherunit: OtherUnit
 ) -> str:
     """Create table that holds a the output cred metrics."""
     return f"""
-INSERT INTO agenda_otherunit (
+INSERT INTO truth_otherunit (
   owner_id
 , other_id
-, _agenda_cred
-, _agenda_debt
-, _agenda_intent_cred
-, _agenda_intent_debt
-, _agenda_intent_ratio_cred
-, _agenda_intent_ratio_debt
+, _truth_cred
+, _truth_debt
+, _truth_intent_cred
+, _truth_intent_debt
+, _truth_intent_ratio_cred
+, _truth_intent_ratio_debt
 , _credor_operational
 , _debtor_operational
 , _treasury_due_paid
@@ -699,14 +699,14 @@ INSERT INTO agenda_otherunit (
 , _treasury_voice_hx_lowest_rank
 )
 VALUES (
-  '{x_agenda._owner_id}' 
+  '{x_truth._owner_id}' 
 , '{x_otherunit.other_id}'
-, {sqlite_null(x_otherunit._agenda_cred)} 
-, {sqlite_null(x_otherunit._agenda_debt)}
-, {sqlite_null(x_otherunit._agenda_intent_cred)}
-, {sqlite_null(x_otherunit._agenda_intent_debt)}
-, {sqlite_null(x_otherunit._agenda_intent_ratio_cred)}
-, {sqlite_null(x_otherunit._agenda_intent_ratio_debt)}
+, {sqlite_null(x_otherunit._truth_cred)} 
+, {sqlite_null(x_otherunit._truth_debt)}
+, {sqlite_null(x_otherunit._truth_intent_cred)}
+, {sqlite_null(x_otherunit._truth_intent_debt)}
+, {sqlite_null(x_otherunit._truth_intent_ratio_cred)}
+, {sqlite_null(x_otherunit._truth_intent_ratio_debt)}
 , {sqlite_bool(x_otherunit._credor_operational)}
 , {sqlite_bool(x_otherunit._debtor_operational)}
 , {sqlite_null(x_otherunit._treasury_due_paid)}
@@ -731,12 +731,12 @@ def get_otherview_dict(
 SELECT 
   owner_id
 , other_id
-, _agenda_cred
-, _agenda_debt
-, _agenda_intent_cred
-, _agenda_intent_debt
-, _agenda_intent_ratio_cred
-, _agenda_intent_ratio_debt
+, _truth_cred
+, _truth_debt
+, _truth_intent_cred
+, _truth_intent_debt
+, _truth_intent_ratio_cred
+, _truth_intent_ratio_debt
 , _credor_operational
 , _debtor_operational
 , _treasury_due_paid
@@ -744,7 +744,7 @@ SELECT
 , _treasury_cred_score
 , _treasury_voice_rank
 , _treasury_voice_hx_lowest_rank
-FROM agenda_otherunit
+FROM truth_otherunit
 WHERE owner_id = '{payer_owner_id}' 
 ;
 """
@@ -755,12 +755,12 @@ WHERE owner_id = '{payer_owner_id}'
         otherview_x = OtherDBUnit(
             owner_id=row[0],
             other_id=row[1],
-            _agenda_cred=row[2],
-            _agenda_debt=row[3],
-            _agenda_intent_cred=row[4],
-            _agenda_intent_debt=row[5],
-            _agenda_intent_ratio_cred=row[6],
-            _agenda_intent_ratio_debt=row[7],
+            _truth_cred=row[2],
+            _truth_debt=row[3],
+            _truth_intent_cred=row[4],
+            _truth_intent_debt=row[5],
+            _truth_intent_ratio_cred=row[6],
+            _truth_intent_ratio_debt=row[7],
             _credor_operational=row[8],
             _debtor_operational=row[9],
             _treasury_due_paid=row[10],
@@ -800,11 +800,11 @@ def get_river_ledger_unit(
     )
 
 
-# agenda_ideaunit
-def get_agenda_ideaunit_table_create_sqlstr() -> str:
+# truth_ideaunit
+def get_truth_ideaunit_table_create_sqlstr() -> str:
     """table that holds every road and its owner_id"""
     return """
-CREATE TABLE IF NOT EXISTS agenda_ideaunit (
+CREATE TABLE IF NOT EXISTS truth_ideaunit (
   owner_id VARCHAR(255) NOT NULL
 , idea_road VARCHAR(1000) NOT NULL
 )
@@ -812,9 +812,9 @@ CREATE TABLE IF NOT EXISTS agenda_ideaunit (
 """
 
 
-def get_agenda_ideaunit_row_count(db_conn: Connection, owner_id: str) -> str:
+def get_truth_ideaunit_row_count(db_conn: Connection, owner_id: str) -> str:
     sqlstr = f"""
-{get_row_count_sqlstr("agenda_ideaunit")} 
+{get_row_count_sqlstr("truth_ideaunit")} 
 WHERE owner_id = '{owner_id}'
 ;
 """
@@ -827,24 +827,24 @@ class IdeaCatalog:
     idea_road: str
 
 
-def get_agenda_ideaunit_table_insert_sqlstr(
-    agenda_ideaunit: IdeaCatalog,
+def get_truth_ideaunit_table_insert_sqlstr(
+    truth_ideaunit: IdeaCatalog,
 ) -> str:
-    # return f"""INSERT INTO agenda_ideaunit (owner_id, idea_road) VALUES ('{agenda_ideaunit.owner_id}', '{agenda_ideaunit.idea_road}');"""
+    # return f"""INSERT INTO truth_ideaunit (owner_id, idea_road) VALUES ('{truth_ideaunit.owner_id}', '{truth_ideaunit.idea_road}');"""
     return f"""
-INSERT INTO agenda_ideaunit (
+INSERT INTO truth_ideaunit (
   owner_id
 , idea_road
 )
 VALUES (
-  '{agenda_ideaunit.owner_id}'
-, '{create_road_without_root_node(agenda_ideaunit.idea_road)}'
+  '{truth_ideaunit.owner_id}'
+, '{create_road_without_root_node(truth_ideaunit.idea_road)}'
 )
 ;
 """
 
 
-def get_agenda_ideaunit_dict(db_conn: Connection, search_road: RoadUnit = None):
+def get_truth_ideaunit_dict(db_conn: Connection, search_road: RoadUnit = None):
     if search_road is None:
         where_clause = ""
     else:
@@ -854,7 +854,7 @@ def get_agenda_ideaunit_dict(db_conn: Connection, search_road: RoadUnit = None):
 SELECT 
   owner_id
 , idea_road
-FROM agenda_ideaunit
+FROM truth_ideaunit
 {where_clause}
 ;
 """
@@ -862,17 +862,17 @@ FROM agenda_ideaunit
 
     dict_x = {}
     for row in results.fetchall():
-        agenda_ideaunit_x = IdeaCatalog(owner_id=row[0], idea_road=row[1])
-        dict_key = f"{agenda_ideaunit_x.owner_id} {agenda_ideaunit_x.idea_road}"
-        dict_x[dict_key] = agenda_ideaunit_x
+        truth_ideaunit_x = IdeaCatalog(owner_id=row[0], idea_road=row[1])
+        dict_key = f"{truth_ideaunit_x.owner_id} {truth_ideaunit_x.idea_road}"
+        dict_x[dict_key] = truth_ideaunit_x
     return dict_x
 
 
-# agenda_idea_factunit
-def get_agenda_idea_factunit_table_create_sqlstr() -> str:
-    """table that holds every fact base and pick of every agenda. missing open/nigh. (clearly not used, maybe add in the future)"""
+# truth_idea_factunit
+def get_truth_idea_factunit_table_create_sqlstr() -> str:
+    """table that holds every fact base and pick of every truth. missing open/nigh. (clearly not used, maybe add in the future)"""
     return """
-CREATE TABLE IF NOT EXISTS agenda_idea_factunit (
+CREATE TABLE IF NOT EXISTS truth_idea_factunit (
   owner_id VARCHAR(255) NOT NULL
 , base VARCHAR(1000) NOT NULL
 , pick VARCHAR(1000) NOT NULL
@@ -881,9 +881,9 @@ CREATE TABLE IF NOT EXISTS agenda_idea_factunit (
 """
 
 
-def get_agenda_idea_factunit_row_count(db_conn: Connection, owner_id: str) -> str:
+def get_truth_idea_factunit_row_count(db_conn: Connection, owner_id: str) -> str:
     sqlstr = f"""
-{get_row_count_sqlstr("agenda_idea_factunit")} WHERE owner_id = '{owner_id}'
+{get_row_count_sqlstr("truth_idea_factunit")} WHERE owner_id = '{owner_id}'
 ;
 """
     return get_single_result(db_conn, sqlstr)
@@ -896,28 +896,28 @@ class FactCatalog:
     pick: str
 
 
-def get_agenda_idea_factunit_table_insert_sqlstr(
-    agenda_idea_factunit: FactCatalog,
+def get_truth_idea_factunit_table_insert_sqlstr(
+    truth_idea_factunit: FactCatalog,
 ) -> str:
     return f"""
-INSERT INTO agenda_idea_factunit (
+INSERT INTO truth_idea_factunit (
   owner_id
 , base
 , pick
 )
 VALUES (
-  '{agenda_idea_factunit.owner_id}'
-, '{agenda_idea_factunit.base}'
-, '{agenda_idea_factunit.pick}'
+  '{truth_idea_factunit.owner_id}'
+, '{truth_idea_factunit.base}'
+, '{truth_idea_factunit.pick}'
 )
 ;
 """
 
 
-# agenda_beliefunit
-def get_agenda_beliefunit_table_create_sqlstr() -> str:
+# truth_beliefunit
+def get_truth_beliefunit_table_create_sqlstr() -> str:
     return """
-CREATE TABLE IF NOT EXISTS agenda_beliefunit (
+CREATE TABLE IF NOT EXISTS truth_beliefunit (
   owner_id VARCHAR(255) NOT NULL
 , beliefunit_belief_id VARCHAR(1000) NOT NULL
 )
@@ -925,9 +925,9 @@ CREATE TABLE IF NOT EXISTS agenda_beliefunit (
 """
 
 
-def get_agenda_beliefunit_row_count(db_conn: Connection, owner_id: str) -> str:
+def get_truth_beliefunit_row_count(db_conn: Connection, owner_id: str) -> str:
     sqlstr = f"""
-{get_row_count_sqlstr("agenda_beliefunit")} WHERE owner_id = '{owner_id}'
+{get_row_count_sqlstr("truth_beliefunit")} WHERE owner_id = '{owner_id}'
 ;
 """
     return get_single_result(db_conn, sqlstr)
@@ -939,41 +939,41 @@ class BeliefUnitCatalog:
     beliefunit_belief_id: str
 
 
-def get_agenda_beliefunit_table_insert_sqlstr(
-    agenda_beliefunit: BeliefUnitCatalog,
+def get_truth_beliefunit_table_insert_sqlstr(
+    truth_beliefunit: BeliefUnitCatalog,
 ) -> str:
     return f"""
-INSERT INTO agenda_beliefunit (
+INSERT INTO truth_beliefunit (
   owner_id
 , beliefunit_belief_id
 )
 VALUES (
-  '{agenda_beliefunit.owner_id}'
-, '{agenda_beliefunit.beliefunit_belief_id}'
+  '{truth_beliefunit.owner_id}'
+, '{truth_beliefunit.beliefunit_belief_id}'
 )
 ;
 """
 
 
-def get_agenda_beliefunit_dict(db_conn: Connection) -> dict[str:BeliefUnitCatalog]:
+def get_truth_beliefunit_dict(db_conn: Connection) -> dict[str:BeliefUnitCatalog]:
     sqlstr = """
 SELECT 
   owner_id
 , beliefunit_belief_id
-FROM agenda_beliefunit
+FROM truth_beliefunit
 ;
 """
     results = db_conn.execute(sqlstr)
 
     dict_x = {}
     for row in results.fetchall():
-        agenda_beliefunit_x = BeliefUnitCatalog(
+        truth_beliefunit_x = BeliefUnitCatalog(
             owner_id=row[0], beliefunit_belief_id=row[1]
         )
         dict_key = (
-            f"{agenda_beliefunit_x.owner_id} {agenda_beliefunit_x.beliefunit_belief_id}"
+            f"{truth_beliefunit_x.owner_id} {truth_beliefunit_x.beliefunit_belief_id}"
         )
-        dict_x[dict_key] = agenda_beliefunit_x
+        dict_x[dict_key] = truth_beliefunit_x
     return dict_x
 
 
@@ -992,7 +992,7 @@ CREATE TABLE IF NOT EXISTS calendar (
 , intent_idea_road VARCHAR(255) NOT NULL
 , intent_weight INT NOT NULL
 , task INT NOT NULL
-, FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(owner_id) REFERENCES truthunit(owner_id)
 )
 ;
 """
@@ -1065,20 +1065,20 @@ VALUES (
 """
 
 
-def get_agenda_otherunit_table_insert_sqlstr(
-    x_agenda: AgendaUnit, x_otherunit: OtherUnit
+def get_truth_otherunit_table_insert_sqlstr(
+    x_truth: TruthUnit, x_otherunit: OtherUnit
 ) -> str:
     """Create table that holds a the output cred metrics."""
     return f"""
-INSERT INTO agenda_otherunit (
+INSERT INTO truth_otherunit (
   owner_id
 , other_id
-, _agenda_cred
-, _agenda_debt
-, _agenda_intent_cred
-, _agenda_intent_debt
-, _agenda_intent_ratio_cred
-, _agenda_intent_ratio_debt
+, _truth_cred
+, _truth_debt
+, _truth_intent_cred
+, _truth_intent_debt
+, _truth_intent_ratio_cred
+, _truth_intent_ratio_debt
 , _credor_operational
 , _debtor_operational
 , _treasury_due_paid
@@ -1088,14 +1088,14 @@ INSERT INTO agenda_otherunit (
 , _treasury_voice_hx_lowest_rank
 )
 VALUES (
-  '{x_agenda._owner_id}' 
+  '{x_truth._owner_id}' 
 , '{x_otherunit.other_id}'
-, {sqlite_null(x_otherunit._agenda_cred)} 
-, {sqlite_null(x_otherunit._agenda_debt)}
-, {sqlite_null(x_otherunit._agenda_intent_cred)}
-, {sqlite_null(x_otherunit._agenda_intent_debt)}
-, {sqlite_null(x_otherunit._agenda_intent_ratio_cred)}
-, {sqlite_null(x_otherunit._agenda_intent_ratio_debt)}
+, {sqlite_null(x_otherunit._truth_cred)} 
+, {sqlite_null(x_otherunit._truth_debt)}
+, {sqlite_null(x_otherunit._truth_intent_cred)}
+, {sqlite_null(x_otherunit._truth_intent_debt)}
+, {sqlite_null(x_otherunit._truth_intent_ratio_cred)}
+, {sqlite_null(x_otherunit._truth_intent_ratio_debt)}
 , {sqlite_bool(x_otherunit._credor_operational)}
 , {sqlite_bool(x_otherunit._debtor_operational)}
 , {sqlite_null(x_otherunit._treasury_due_paid)}
@@ -1117,13 +1117,13 @@ WHERE owner_id = '{calendar_owner_id}'
 
 
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
-    list_x = [get_agendaunit_table_create_sqlstr()]
-    list_x.append(get_agenda_idea_factunit_table_create_sqlstr())
-    list_x.append(get_agenda_ideaunit_table_create_sqlstr())
-    list_x.append(get_agenda_otherunit_table_create_sqlstr())
+    list_x = [get_truthunit_table_create_sqlstr()]
+    list_x.append(get_truth_idea_factunit_table_create_sqlstr())
+    list_x.append(get_truth_ideaunit_table_create_sqlstr())
+    list_x.append(get_truth_otherunit_table_create_sqlstr())
     list_x.append(get_river_block_table_create_sqlstr())
     list_x.append(get_river_circle_table_create_sqlstr())
     list_x.append(get_river_reach_table_create_sqlstr())
-    list_x.append(get_agenda_beliefunit_table_create_sqlstr())
+    list_x.append(get_truth_beliefunit_table_create_sqlstr())
     list_x.append(get_calendar_table_create_sqlstr())
     return list_x

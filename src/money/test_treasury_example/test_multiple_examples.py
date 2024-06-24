@@ -1,5 +1,5 @@
 from src.money.examples.econ_env import env_dir_setup_cleanup
-from src.money.examples.example_econ_agendas import (
+from src.money.examples.example_econ_truths import (
     # _delete_and_set_ex3,
     _delete_and_set_ex4,
     # _delete_and_set_ex5,

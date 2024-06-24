@@ -1,12 +1,12 @@
 from src.atom.quark import quarkunit_shop, quark_update, quark_insert, quark_delete
 from src.atom.nuc import nucunit_shop, create_legible_list
-from src.agenda.agenda import agendaunit_shop
+from src._truth.truth import truthunit_shop
 
 
 def test_create_legible_list_ReturnsObj_otherunit_INSERT():
     # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_ideaunit"
+    sue_truth = truthunit_shop("Sue")
+    category = "truth_ideaunit"
     label_text = "label"
     parent_road_text = "parent_road"
     _addin_text = "_addin"
@@ -22,16 +22,16 @@ def test_create_legible_list_ReturnsObj_otherunit_INSERT():
     _weight_text = "_weight"
     pledge_text = "pledge"
     label_value = "clean fridge"
-    parent_road_value = sue_agenda.make_l1_road("casa")
+    parent_road_value = sue_truth.make_l1_road("casa")
     _addin_value = 7
     _begin_value = 13
     _close_value = 17
     _denom_value = 23
     _meld_strategy_value = "example_text1"
-    _numeric_road_value = sue_agenda.make_l1_road("sports")
+    _numeric_road_value = sue_truth.make_l1_road("sports")
     _numor_value = 29
     _problem_bool_value = False
-    _range_source_road_value = sue_agenda.make_l1_road("greenways")
+    _range_source_road_value = sue_truth.make_l1_road("greenways")
     _reest_value = 37
     _weight_value = 43
     pledge_value = False
@@ -55,7 +55,7 @@ def test_create_legible_list_ReturnsObj_otherunit_INSERT():
     x_nucunit.set_quarkunit(clean_quarkunit)
 
     # WHEN
-    legible_list = create_legible_list(x_nucunit, sue_agenda)
+    legible_list = create_legible_list(x_nucunit, sue_truth)
 
     # THEN
     x_str = f"Created Idea '{label_value}' with parent_road {parent_road_value}. _addin={_addin_value}._begin={_begin_value}._close={_close_value}._denom={_denom_value}._meld_strategy={_meld_strategy_value}._numeric_road={_numeric_road_value}._numor={_numor_value}._problem_bool={_problem_bool_value}._range_source_road={_range_source_road_value}._reest={_reest_value}._weight={_weight_value}.pledge={pledge_value}."
@@ -65,8 +65,8 @@ def test_create_legible_list_ReturnsObj_otherunit_INSERT():
 
 def test_create_legible_list_ReturnsObj_otherunit_UPDATE():
     # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_ideaunit"
+    sue_truth = truthunit_shop("Sue")
+    category = "truth_ideaunit"
     label_text = "label"
     parent_road_text = "parent_road"
     _addin_text = "_addin"
@@ -82,16 +82,16 @@ def test_create_legible_list_ReturnsObj_otherunit_UPDATE():
     _weight_text = "_weight"
     pledge_text = "pledge"
     label_value = "clean fridge"
-    parent_road_value = sue_agenda.make_l1_road("casa")
+    parent_road_value = sue_truth.make_l1_road("casa")
     _addin_value = 7
     _begin_value = 13
     _close_value = 17
     _denom_value = 23
     _meld_strategy_value = "example_text1"
-    _numeric_road_value = sue_agenda.make_l1_road("sports")
+    _numeric_road_value = sue_truth.make_l1_road("sports")
     _numor_value = 29
     _problem_bool_value = False
-    _range_source_road_value = sue_agenda.make_l1_road("greenways")
+    _range_source_road_value = sue_truth.make_l1_road("greenways")
     _reest_value = 37
     _weight_value = 43
     pledge_value = False
@@ -115,7 +115,7 @@ def test_create_legible_list_ReturnsObj_otherunit_UPDATE():
     x_nucunit.set_quarkunit(clean_quarkunit)
 
     # WHEN
-    legible_list = create_legible_list(x_nucunit, sue_agenda)
+    legible_list = create_legible_list(x_nucunit, sue_truth)
 
     # THEN
     x_str = f"Idea '{label_value}' with parent_road {parent_road_value} transited these attributes: _addin={_addin_value}._begin={_begin_value}._close={_close_value}._denom={_denom_value}._meld_strategy={_meld_strategy_value}._numeric_road={_numeric_road_value}._numor={_numor_value}._problem_bool={_problem_bool_value}._range_source_road={_range_source_road_value}._reest={_reest_value}._weight={_weight_value}.pledge={pledge_value}."
@@ -125,12 +125,12 @@ def test_create_legible_list_ReturnsObj_otherunit_UPDATE():
 
 def test_create_legible_list_ReturnsObj_otherunit_DELETE():
     # GIVEN
-    sue_agenda = agendaunit_shop("Sue")
-    category = "agenda_ideaunit"
+    sue_truth = truthunit_shop("Sue")
+    category = "truth_ideaunit"
     label_text = "label"
     parent_road_text = "parent_road"
     label_value = "clean fridge"
-    parent_road_value = sue_agenda.make_l1_road("casa")
+    parent_road_value = sue_truth.make_l1_road("casa")
     clean_quarkunit = quarkunit_shop(category, quark_delete())
     clean_quarkunit.set_arg(label_text, label_value)
     clean_quarkunit.set_arg(parent_road_text, parent_road_value)
@@ -139,7 +139,7 @@ def test_create_legible_list_ReturnsObj_otherunit_DELETE():
     x_nucunit.set_quarkunit(clean_quarkunit)
 
     # WHEN
-    legible_list = create_legible_list(x_nucunit, sue_agenda)
+    legible_list = create_legible_list(x_nucunit, sue_truth)
 
     # THEN
     x_str = f"Idea '{label_value}' with parent_road {parent_road_value} was deleted."
