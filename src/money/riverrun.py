@@ -28,7 +28,11 @@ class RiverRun:
     # calculated fields
     _grants: dict[OtherID:float] = None
     _tax_yields: dict[OtherID:float] = None
+    _tax_got_prev: float = None
+    _tax_got_curr: float = None
     _cycle_count: int = None
+    _cycle_payees_prev: set = None
+    _cycle_payees_curr: set = None
     _debtor_count: int = None
     _credor_count: int = None
     _rivergrades: dict[OtherID:RiverGrade] = None
@@ -58,11 +62,13 @@ class RiverRun:
                     x_set.add(other_id)
         return x_set
 
-    def levy_tax_dues(self, cycleledger: dict[OtherID:float]):
+    def levy_tax_dues(self, cycleledger: tuple[dict[OtherID:float], float]):
         delete_from_cycleledger = []
+        tax_got_total = 0
         for payee, payee_amount in cycleledger.items():
             if self.other_has_tax_due(payee):
-                excess_payer_money = self.levy_tax_due(payee, payee_amount)
+                excess_payer_money, tax_got = self.levy_tax_due(payee, payee_amount)
+                tax_got_total += tax_got
                 if excess_payer_money == 0:
                     delete_from_cycleledger.append(payee)
                 else:
@@ -70,7 +76,7 @@ class RiverRun:
 
         for payee_to_delete in delete_from_cycleledger:
             cycleledger.pop(payee_to_delete)
-        return cycleledger
+        return cycleledger, tax_got_total
 
     def set_other_tax_due(self, x_other_id: OtherID, tax_due: float):
         self.tax_dues[x_other_id] = tax_due
@@ -94,17 +100,17 @@ class RiverRun:
 
     def levy_tax_due(self, x_other_id: OtherID, payer_money: float) -> float:
         if self.other_has_tax_due(x_other_id) == False:
-            return payer_money
+            return payer_money, 0
         x_tax_due = self.get_other_tax_due(x_other_id)
         if x_tax_due > payer_money:
             left_over_pay = x_tax_due - payer_money
             self.set_other_tax_due(x_other_id, left_over_pay)
             self.add_other_tax_yield(x_other_id, payer_money)
-            return 0
+            return 0, payer_money
         else:
             self.delete_tax_due(x_other_id)
             self.add_other_tax_yield(x_other_id, x_tax_due)
-            return payer_money - x_tax_due
+            return payer_money - x_tax_due, x_tax_due
 
     def get_ledger_dict(self) -> dict[OtherID:float]:
         return self.tax_dues
@@ -158,25 +164,36 @@ class RiverRun:
         for other_id in all_other_ids:
             self.set_initial_rivergrade(other_id)
 
-    def calc_metrics(self):
-        self._cycle_count = 0
-        self._set_debtor_count_credor_count()
-        self._set_grants()
-        self.set_all_initial_rivergrades()
-
-        x_rivercyle = create_init_rivercycle(self.userhub, self.econ_credorledgers)
-        x_cyclelegder = x_rivercyle.create_cylceledger()
-        self._cycle_count = 0
-        while self.cycle_max > self._cycle_count and self.tax_dues_unpaid():
-            x_cyclelegder = self.levy_tax_dues(x_cyclelegder)
-            x_rivercyle = create_next_rivercycle(x_rivercyle, x_cyclelegder)
-            self._cycle_count += 1
-
+    def _set_post_loop_rivergrade_attrs(self):
         for x_other_id, other_rivergrade in self._rivergrades.items():
             tax_due_remaining = self.get_other_tax_due(x_other_id)
             tax_due_paid = self.get_other_tax_yield(x_other_id)
             other_rivergrade.set_tax_bill_amount(tax_due_paid + tax_due_remaining)
             other_rivergrade.set_tax_paid_amount(tax_due_paid)
+
+    def calc_metrics(self):
+        self._set_debtor_count_credor_count()
+        self._set_grants()
+        self.set_all_initial_rivergrades()
+
+        self._cycle_count = 0
+        x_rivercyle = create_init_rivercycle(self.userhub, self.econ_credorledgers)
+        x_cyclelegder = x_rivercyle.create_cylceledger()
+        self._cycle_payees_curr = set(x_cyclelegder.keys())
+        x_cyclelegder, tax_got_curr = self.levy_tax_dues(x_cyclelegder)
+        self._set_tax_got_attrs(tax_got_curr)
+
+        while self.cycle_max > self._cycle_count and self.cycles_vary():
+            x_rivercyle = create_next_rivercycle(x_rivercyle, x_cyclelegder)
+            x_cyclelegder, tax_got_curr = self.levy_tax_dues(x_cyclelegder)
+
+            self._set_tax_got_attrs(tax_got_curr)
+            print(f"{self._tax_got_curr=} {self._tax_got_prev=}")
+            self._cycle_payees_prev = self._cycle_payees_curr
+            self._cycle_payees_curr = set(x_cyclelegder.keys())
+            self._cycle_count += 1
+
+        self._set_post_loop_rivergrade_attrs()
 
     def _set_debtor_count_credor_count(self):
         tax_dues_others = set(self.tax_dues.keys())
@@ -202,6 +219,19 @@ class RiverRun:
         for rivergrade_other in self._rivergrades.keys():
             self._save_rivergrade_file(rivergrade_other)
 
+    def _cycle_payees_vary(self) -> bool:
+        return self._cycle_payees_prev != self._cycle_payees_curr
+
+    def _set_tax_got_attrs(self, x_tax_got_curr: float):
+        self._tax_got_prev = self._tax_got_curr
+        self._tax_got_curr = x_tax_got_curr
+
+    def _tax_gotten(self) -> bool:
+        return max(self._tax_got_prev, self._tax_got_curr) > 0
+
+    def cycles_vary(self) -> bool:
+        return self._tax_gotten() or self._cycle_payees_vary()
+
 
 def riverrun_shop(
     userhub: UserHub,
@@ -220,6 +250,10 @@ def riverrun_shop(
         _tax_yields={},
     )
     x_riverun._cycle_count = 0
+    x_riverun._cycle_payees_prev = set()
+    x_riverun._cycle_payees_curr = set()
+    x_riverun._tax_got_prev = 0
+    x_riverun._tax_got_curr = 0
     if cycle_max is None:
         cycle_max = 10
     x_riverun.set_cycle_max(cycle_max)

@@ -221,14 +221,14 @@ def test_RiverRun_levy_tax_due_SetsAttr():
     assert bob_riverrun.get_other_tax_yield(bob_text) == 0
 
     # WHEN
-    excess_payer_money = bob_riverrun.levy_tax_due(bob_text, 5)
+    excess_payer_money, tax_got = bob_riverrun.levy_tax_due(bob_text, 5)
     # THEN
     assert excess_payer_money == 0
     assert bob_riverrun.get_other_tax_due(bob_text) == 375
     assert bob_riverrun.get_other_tax_yield(bob_text) == 5
 
     # WHEN
-    excess_payer_money = bob_riverrun.levy_tax_due(bob_text, 375)
+    excess_payer_money, tax_got = bob_riverrun.levy_tax_due(bob_text, 375)
     # THEN
     assert excess_payer_money == 0
     assert bob_riverrun.get_other_tax_due(bob_text) == 0
@@ -238,7 +238,7 @@ def test_RiverRun_levy_tax_due_SetsAttr():
     assert bob_riverrun.get_other_tax_due(sue_text) == 560
     assert bob_riverrun.get_other_tax_yield(sue_text) == 0
     # WHEN
-    excess_payer_money = bob_riverrun.levy_tax_due(sue_text, 1000)
+    excess_payer_money, tax_got = bob_riverrun.levy_tax_due(sue_text, 1000)
     # THEN
     assert excess_payer_money == 440
     assert bob_riverrun.get_other_tax_due(sue_text) == 0
@@ -249,7 +249,7 @@ def test_RiverRun_levy_tax_due_SetsAttr():
     assert bob_riverrun.get_other_tax_due(zia_text) == 0
     assert bob_riverrun.get_other_tax_yield(zia_text) == 0
     # WHEN
-    excess_payer_money = bob_riverrun.levy_tax_due(zia_text, 1000)
+    excess_payer_money, tax_got = bob_riverrun.levy_tax_due(zia_text, 1000)
     # THEN
     assert excess_payer_money == 1000
     assert bob_riverrun.get_other_tax_due(zia_text) == 0
@@ -259,8 +259,67 @@ def test_RiverRun_levy_tax_due_SetsAttr():
     assert bob_riverrun.get_other_tax_due(yao_text) == 60
     assert bob_riverrun.get_other_tax_yield(yao_text) == 0
     # WHEN
-    excess_payer_money = bob_riverrun.levy_tax_due(yao_text, 81)
+    excess_payer_money, tax_got = bob_riverrun.levy_tax_due(yao_text, 81)
     # THEN
     assert excess_payer_money == 21
     assert bob_riverrun.get_other_tax_due(yao_text) == 0
     assert bob_riverrun.get_other_tax_yield(yao_text) == 60
+
+
+def test_RiverRun_set_tax_got_attrs_SetsAttrs():
+    # GIVEN
+    six_tax_got = 6
+    ten_tax_got = 10
+    x_riverrun = riverrun_shop(example_yao_userhub())
+    assert x_riverrun._tax_got_curr == 0
+    assert x_riverrun._tax_got_prev == 0
+
+    # WHEN
+    x_riverrun._set_tax_got_attrs(six_tax_got)
+    # THEN
+    assert x_riverrun._tax_got_curr == six_tax_got
+    assert x_riverrun._tax_got_prev == 0
+
+    # WHEN
+    x_riverrun._set_tax_got_attrs(ten_tax_got)
+    # THEN
+    assert x_riverrun._tax_got_curr == ten_tax_got
+    assert x_riverrun._tax_got_prev == six_tax_got
+
+
+def test_RiverRun_tax_gotten_ReturnsObj():
+    # GIVEN
+    six_tax_got = 6
+    ten_tax_got = 10
+    x_riverrun = riverrun_shop(example_yao_userhub())
+    assert x_riverrun._tax_got_prev == 0
+    assert x_riverrun._tax_got_curr == 0
+    assert x_riverrun._tax_gotten() == False
+
+    # WHEN
+    x_riverrun._set_tax_got_attrs(six_tax_got)
+    # THEN
+    assert x_riverrun._tax_got_prev == 0
+    assert x_riverrun._tax_got_curr == six_tax_got
+    assert x_riverrun._tax_gotten()
+
+    # GIVEN
+    x_riverrun._set_tax_got_attrs(six_tax_got)
+    # THEN
+    assert x_riverrun._tax_got_prev == six_tax_got
+    assert x_riverrun._tax_got_curr == six_tax_got
+    assert x_riverrun._tax_gotten()
+
+    # WHEN
+    x_riverrun._set_tax_got_attrs(0)
+    # THEN
+    assert x_riverrun._tax_got_prev == six_tax_got
+    assert x_riverrun._tax_got_curr == 0
+    assert x_riverrun._tax_gotten()
+
+    # WHEN
+    x_riverrun._set_tax_got_attrs(0)
+    # THEN
+    assert x_riverrun._tax_got_prev == 0
+    assert x_riverrun._tax_got_curr == 0
+    assert x_riverrun._tax_gotten() == False

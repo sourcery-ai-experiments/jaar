@@ -287,32 +287,39 @@ def test_RiverRun_levy_tax_due_SetsAttr():
     bob_agenda.add_otherunit(yao_text, 2, yao_debtor_weight)
     bob_debtorledger = get_debtorledger(bob_agenda)
     bob_riverrun.set_tax_dues(bob_debtorledger)
-    assert bob_riverrun.get_other_tax_due(bob_text) == 380
+    assert bob_riverrun.get_other_tax_due(bob_text) == 380, 0
 
     # WHEN / THEN
-    excess_payer_money = bob_riverrun.levy_tax_due(bob_text, 5)
+    excess_payer_money, tax_got = bob_riverrun.levy_tax_due(bob_text, 5)
     assert excess_payer_money == 0
+    assert tax_got == 5
     assert bob_riverrun.get_other_tax_due(bob_text) == 375
 
     # WHEN /THEN
-    excess_payer_money = bob_riverrun.levy_tax_due(bob_text, 375)
+    excess_payer_money, tax_got = bob_riverrun.levy_tax_due(bob_text, 375)
     assert excess_payer_money == 0
+    assert tax_got == 375
     assert bob_riverrun.get_other_tax_due(bob_text) == 0
     assert bob_riverrun.other_has_tax_due(bob_text) == False
 
     # WHEN / THEN
     assert bob_riverrun.get_other_tax_due(sue_text) == 560
-    excess_payer_money = bob_riverrun.levy_tax_due(sue_text, 1000)
+    excess_payer_money, tax_got = bob_riverrun.levy_tax_due(sue_text, 1000)
     assert excess_payer_money == 440
+    assert tax_got == 560
     assert bob_riverrun.get_other_tax_due(sue_text) == 0
     assert bob_riverrun.tax_dues.get(sue_text) is None
 
     # WHEN / THEN
     zia_text = "Zia"
-    excess_payer_money = bob_riverrun.get_other_tax_due(zia_text)
-    assert excess_payer_money == 0
-    assert bob_riverrun.levy_tax_due(zia_text, 1000) == 1000
+    excess_payer_money, tax_got = bob_riverrun.levy_tax_due(zia_text, 1000)
+    assert excess_payer_money == 1000
+    assert tax_got == 0
+    assert bob_riverrun.get_other_tax_due(zia_text) == 0
 
     # WHEN / THEN
     assert bob_riverrun.get_other_tax_due(yao_text) == 60
-    assert bob_riverrun.levy_tax_due(yao_text, 81) == 21
+    excess_payer_money, tax_got = bob_riverrun.levy_tax_due(yao_text, 81)
+    assert excess_payer_money == 21
+    assert tax_got == 60
+    assert bob_riverrun.get_other_tax_due(yao_text) == 0

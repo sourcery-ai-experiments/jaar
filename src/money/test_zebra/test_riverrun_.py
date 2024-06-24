@@ -20,7 +20,11 @@ def test_RiverRun_Exists():
     assert x_riverrun._rivergrades is None
     assert x_riverrun._grants is None
     assert x_riverrun._tax_yields is None
+    assert x_riverrun._tax_got_prev is None
+    assert x_riverrun._tax_got_curr is None
     assert x_riverrun._cycle_count is None
+    assert x_riverrun._cycle_payees_prev is None
+    assert x_riverrun._cycle_payees_curr is None
     assert x_riverrun._debtor_count is None
     assert x_riverrun._credor_count is None
 
@@ -69,11 +73,15 @@ def test_riverrun_shop_ReturnsCorrectObjWithArg():
     assert x_riverrun.number == ten_int
     assert x_riverrun.econ_credorledgers == econ_credorledgers
     assert x_riverrun.tax_dues == x_tax_dues
+    assert x_riverrun.cycle_max == x_cycle_max
     assert x_riverrun._rivergrades == {}
     assert x_riverrun._grants == {}
     assert x_riverrun._tax_yields == {}
+    assert x_riverrun._tax_got_prev == 0
+    assert x_riverrun._tax_got_curr == 0
     assert x_riverrun._cycle_count == 0
-    assert x_riverrun.cycle_max == x_cycle_max
+    assert x_riverrun._cycle_payees_prev == set()
+    assert x_riverrun._cycle_payees_curr == set()
 
 
 def test_riverrun_shop_ReturnsCorrectObjWithoutArgs():
