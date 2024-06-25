@@ -1,7 +1,7 @@
 from src._world.world import worldunit_shop
 from src._world.idea import ideaunit_shop
 from src._world.reason_idea import reasonunit_shop
-from src._world.person import personunit_shop, personlink_shop
+from src._world.person import personunit_shop, belieflink_shop
 from src._world.belief import beliefunit_shop
 from src._world.examples.example_worlds import (
     get_world_with_4_levels as example_worlds_get_world_with_4_levels,
@@ -100,19 +100,19 @@ def test_worldunit_get_assignment_ReturnsCorrectBeliefs_Scenario1():
     swim_text = ",swimmers"
     jes_world.set_beliefunit(beliefunit_shop(belief_id=swim_text))
     swim_belief = jes_world._beliefs.get(swim_text)
-    swim_belief.set_personlink(personlink_shop(bob_text))
+    swim_belief.set_belieflink(belieflink_shop(bob_text))
 
     hike_text = ",hikers"
     jes_world.set_beliefunit(beliefunit_shop(belief_id=hike_text))
     hike_belief = jes_world._beliefs.get(hike_text)
-    hike_belief.set_personlink(personlink_shop(bob_text))
-    hike_belief.set_personlink(personlink_shop(noa_text))
+    hike_belief.set_belieflink(belieflink_shop(bob_text))
+    hike_belief.set_belieflink(belieflink_shop(noa_text))
 
     hunt_text = ",hunters"
     jes_world.set_beliefunit(beliefunit_shop(belief_id=hunt_text))
     hike_belief = jes_world._beliefs.get(hunt_text)
-    hike_belief.set_personlink(personlink_shop(noa_text))
-    hike_belief.set_personlink(personlink_shop(eli_text))
+    hike_belief.set_belieflink(belieflink_shop(noa_text))
+    hike_belief.set_belieflink(belieflink_shop(eli_text))
 
     # WHEN
     tx = worldunit_shop()

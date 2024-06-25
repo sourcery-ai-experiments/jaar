@@ -9,7 +9,7 @@ from src.normal_db.normal_models import (
     WorldTable,
     PersonUnitTable,
     BeliefTable,
-    PersonLinkTable,
+    BeliefLinkTable,
     IdeaTable,
     BalanceLinkTable,
     ReasonTable,
@@ -99,16 +99,16 @@ def test_normalized_table_BeliefTable_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_PersonLinkTable_personlink_Exists():
+def test_normalized_table_BeliefLinkTable_belieflink_Exists():
     # GIVEN
-    config_category = get_normalized_world_table_build().get("world_belief_personlink")
-    mapper = inspect(PersonLinkTable)
+    config_category = get_normalized_world_table_build().get("world_belief_belieflink")
+    mapper = inspect(BeliefLinkTable)
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "personlink"
-    assert config_table_name == PersonLinkTable.__tablename__
+    assert config_table_name == "belieflink"
+    assert config_table_name == BeliefLinkTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 

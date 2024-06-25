@@ -3,7 +3,7 @@ from src._world.world import (
     worldunit_shop,
     ideaunit_shop,
     beliefunit_shop,
-    personlink_shop,
+    belieflink_shop,
 )
 from src.money.money import moneyunit_shop
 from src.money.examples.econ_env import (

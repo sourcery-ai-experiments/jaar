@@ -6,7 +6,7 @@ from src._world.reason_assign import (
     create_assignedunit,
 )
 from src._world.belief import BeliefID, beliefunit_shop
-from src._world.person import personlink_shop
+from src._world.person import belieflink_shop
 from src._world.world import worldunit_shop
 from pytest import raises as pytest_raises
 
@@ -176,8 +176,8 @@ def test_AssignedHeir_get_all_suff_persons_ReturnsSingleDictWithAllPersons_v2():
 
     swim_text = ",swim"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    swim_belief.set_belieflink(belieflink=belieflink_shop(person_id=jim_text))
+    swim_belief.set_belieflink(belieflink=belieflink_shop(person_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim_belief)
 
     _suffbeliefs_x = {swim_text: -1}
@@ -268,8 +268,8 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
 
     swim_text = ",swim"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    swim_belief.set_belieflink(belieflink=belieflink_shop(person_id=jim_text))
+    swim_belief.set_belieflink(belieflink=belieflink_shop(person_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim_belief)
 
     _suffbeliefs_x = {swim_text: -1}
@@ -279,7 +279,7 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     assert assigned_heir_x._owner_id_assigned
 
     # WHEN
-    swim_belief.del_personlink(person_id=jim_text)
+    swim_belief.del_belieflink(person_id=jim_text)
     x_world.set_beliefunit(y_beliefunit=swim_belief)
     assigned_heir_x.set_owner_id_assigned(x_world._beliefs, x_world._owner_id)
 
@@ -299,8 +299,8 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffbeliefs_x_v3():
 
     swim_text = ",swim"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    swim_belief.set_belieflink(belieflink=belieflink_shop(person_id=jim_text))
+    swim_belief.set_belieflink(belieflink=belieflink_shop(person_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim_belief)
 
     _suffbeliefs_x = {swim_text: -1}
@@ -310,7 +310,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffbeliefs_x_v3():
     assert assigned_heir_x._owner_id_assigned
 
     # WHEN
-    swim_belief.del_personlink(person_id=jim_text)
+    swim_belief.del_belieflink(person_id=jim_text)
     x_world.set_beliefunit(y_beliefunit=swim_belief)
     assigned_heir_x.set_owner_id_assigned(x_world._beliefs, x_world._owner_id)
 
@@ -443,15 +443,15 @@ def test_AssignedHeir_set_suffbelief_AssignedUnit_NotEqual_ParentAssignedHeir_No
 
     swim2_text = ",swim2"
     swim2_belief = beliefunit_shop(belief_id=swim2_text)
-    swim2_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim2_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    swim2_belief.set_belieflink(belieflink=belieflink_shop(person_id=jim_text))
+    swim2_belief.set_belieflink(belieflink=belieflink_shop(person_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim2_belief)
 
     swim3_text = ",swim3"
     swim3_belief = beliefunit_shop(belief_id=swim3_text)
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=tom_text))
+    swim3_belief.set_belieflink(belieflink=belieflink_shop(person_id=jim_text))
+    swim3_belief.set_belieflink(belieflink=belieflink_shop(person_id=sue_text))
+    swim3_belief.set_belieflink(belieflink=belieflink_shop(person_id=tom_text))
     x_world.set_beliefunit(y_beliefunit=swim3_belief)
 
     parent_assignedunit = assignedunit_shop()
@@ -490,15 +490,15 @@ def test_AssignedHeir_set_suffbelief_AssignedUnit_NotEqualParentAssignedHeir_Rai
 
     swim2_text = ",swim2"
     swim2_belief = beliefunit_shop(belief_id=swim2_text)
-    swim2_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim2_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    swim2_belief.set_belieflink(belieflink=belieflink_shop(person_id=jim_text))
+    swim2_belief.set_belieflink(belieflink=belieflink_shop(person_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim2_belief)
 
     swim3_text = ",swim3"
     swim3_belief = beliefunit_shop(belief_id=swim3_text)
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=tom_text))
+    swim3_belief.set_belieflink(belieflink=belieflink_shop(person_id=jim_text))
+    swim3_belief.set_belieflink(belieflink=belieflink_shop(person_id=sue_text))
+    swim3_belief.set_belieflink(belieflink=belieflink_shop(person_id=tom_text))
     x_world.set_beliefunit(y_beliefunit=swim3_belief)
 
     parent_assignedunit = assignedunit_shop()

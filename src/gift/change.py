@@ -8,7 +8,7 @@ from src._instrument.python import (
 )
 from src._road.road import RoadUnit, get_terminus_node, get_parent_road
 from src._world.reason_idea import FactUnit, ReasonUnit
-from src._world.person import PersonLink, PersonID
+from src._world.person import BeliefLink, PersonID
 from src._world.belief import BeliefUnit, BeliefID
 from src._world.idea import IdeaUnit
 from src._world.world import WorldUnit, worldunit_shop
@@ -257,9 +257,9 @@ class ChangeUnit:
             x_atomunit = atomunit_shop("world_beliefunit", atom_insert())
             x_atomunit.set_required_arg("belief_id", insert_beliefunit.belief_id)
             self.set_atomunit(x_atomunit)
-            self.add_atomunit_personlinks_inserts(
+            self.add_atomunit_belieflinks_inserts(
                 after_beliefunit=insert_beliefunit,
-                insert_personlink_person_ids=set(insert_beliefunit._persons.keys()),
+                insert_belieflink_person_ids=set(insert_beliefunit._persons.keys()),
             )
 
     def add_atomunit_beliefunit_updates(
@@ -278,37 +278,37 @@ class ChangeUnit:
                 x_atomunit.set_required_arg("belief_id", after_beliefunit.belief_id)
                 self.set_atomunit(x_atomunit)
 
-            self.add_atomunit_beliefunit_update_personlinks(
+            self.add_atomunit_beliefunit_update_belieflinks(
                 after_beliefunit=after_beliefunit, before_beliefunit=before_beliefunit
             )
 
-    def add_atomunit_beliefunit_update_personlinks(
+    def add_atomunit_beliefunit_update_belieflinks(
         self, after_beliefunit: BeliefUnit, before_beliefunit: BeliefUnit
     ):
         after_person_ids = set(after_beliefunit._persons.keys())
         before_person_ids = set(before_beliefunit._persons.keys())
 
-        self.add_atomunit_personlinks_inserts(
+        self.add_atomunit_belieflinks_inserts(
             after_beliefunit=after_beliefunit,
-            insert_personlink_person_ids=after_person_ids.difference(before_person_ids),
+            insert_belieflink_person_ids=after_person_ids.difference(before_person_ids),
         )
 
-        self.add_atomunit_personlinks_delete(
+        self.add_atomunit_belieflinks_delete(
             before_belief_id=before_beliefunit.belief_id,
             before_person_ids=before_person_ids.difference(after_person_ids),
         )
 
         update_person_ids = before_person_ids.intersection(after_person_ids)
         for update_person_id in update_person_ids:
-            before_personlink = before_beliefunit.get_personlink(update_person_id)
-            after_personlink = after_beliefunit.get_personlink(update_person_id)
+            before_belieflink = before_beliefunit.get_belieflink(update_person_id)
+            after_belieflink = after_beliefunit.get_belieflink(update_person_id)
             if optional_args_different(
-                "world_belief_personlink", before_personlink, after_personlink
+                "world_belief_belieflink", before_belieflink, after_belieflink
             ):
-                self.add_atomunit_personlink_update(
+                self.add_atomunit_belieflink_update(
                     belief_id=after_beliefunit.belief_id,
-                    before_personlink=before_personlink,
-                    after_personlink=after_personlink,
+                    before_belieflink=before_belieflink,
+                    after_belieflink=after_belieflink,
                 )
 
     def add_atomunit_beliefunit_deletes(
@@ -320,51 +320,51 @@ class ChangeUnit:
             self.set_atomunit(x_atomunit)
 
             delete_beliefunit = before_world.get_beliefunit(delete_belief_id)
-            self.add_atomunit_personlinks_delete(
+            self.add_atomunit_belieflinks_delete(
                 delete_belief_id, set(delete_beliefunit._persons.keys())
             )
 
-    def add_atomunit_personlinks_inserts(
+    def add_atomunit_belieflinks_inserts(
         self,
         after_beliefunit: BeliefUnit,
-        insert_personlink_person_ids: list[PersonID],
+        insert_belieflink_person_ids: list[PersonID],
     ):
         after_belief_id = after_beliefunit.belief_id
-        for insert_person_id in insert_personlink_person_ids:
-            after_personlink = after_beliefunit.get_personlink(insert_person_id)
-            x_atomunit = atomunit_shop("world_belief_personlink", atom_insert())
+        for insert_person_id in insert_belieflink_person_ids:
+            after_belieflink = after_beliefunit.get_belieflink(insert_person_id)
+            x_atomunit = atomunit_shop("world_belief_belieflink", atom_insert())
             x_atomunit.set_required_arg("belief_id", after_belief_id)
-            x_atomunit.set_required_arg("person_id", after_personlink.person_id)
-            if after_personlink.credor_weight != None:
+            x_atomunit.set_required_arg("person_id", after_belieflink.person_id)
+            if after_belieflink.credor_weight != None:
                 x_atomunit.set_optional_arg(
-                    "credor_weight", after_personlink.credor_weight
+                    "credor_weight", after_belieflink.credor_weight
                 )
-            if after_personlink.debtor_weight != None:
+            if after_belieflink.debtor_weight != None:
                 x_atomunit.set_optional_arg(
-                    "debtor_weight", after_personlink.debtor_weight
+                    "debtor_weight", after_belieflink.debtor_weight
                 )
             self.set_atomunit(x_atomunit)
 
-    def add_atomunit_personlink_update(
+    def add_atomunit_belieflink_update(
         self,
         belief_id: BeliefID,
-        before_personlink: PersonLink,
-        after_personlink: PersonLink,
+        before_belieflink: BeliefLink,
+        after_belieflink: BeliefLink,
     ):
-        x_atomunit = atomunit_shop("world_belief_personlink", atom_update())
+        x_atomunit = atomunit_shop("world_belief_belieflink", atom_update())
         x_atomunit.set_required_arg("belief_id", belief_id)
-        x_atomunit.set_required_arg("person_id", after_personlink.person_id)
-        if after_personlink.credor_weight != before_personlink.credor_weight:
-            x_atomunit.set_optional_arg("credor_weight", after_personlink.credor_weight)
-        if after_personlink.debtor_weight != before_personlink.debtor_weight:
-            x_atomunit.set_optional_arg("debtor_weight", after_personlink.debtor_weight)
+        x_atomunit.set_required_arg("person_id", after_belieflink.person_id)
+        if after_belieflink.credor_weight != before_belieflink.credor_weight:
+            x_atomunit.set_optional_arg("credor_weight", after_belieflink.credor_weight)
+        if after_belieflink.debtor_weight != before_belieflink.debtor_weight:
+            x_atomunit.set_optional_arg("debtor_weight", after_belieflink.debtor_weight)
         self.set_atomunit(x_atomunit)
 
-    def add_atomunit_personlinks_delete(
+    def add_atomunit_belieflinks_delete(
         self, before_belief_id: BeliefID, before_person_ids: PersonID
     ):
         for delete_person_id in before_person_ids:
-            x_atomunit = atomunit_shop("world_belief_personlink", atom_delete())
+            x_atomunit = atomunit_shop("world_belief_belieflink", atom_delete())
             x_atomunit.set_required_arg("belief_id", before_belief_id)
             x_atomunit.set_required_arg("person_id", delete_person_id)
             self.set_atomunit(x_atomunit)
@@ -935,12 +935,12 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
         atoms_dict, [atom_delete(), "world_beliefunit"]
     )
 
-    x_list = [atom_insert(), "world_belief_personlink"]
-    belief_personlink_insert_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_update(), "world_belief_personlink"]
-    belief_personlink_update_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_delete(), "world_belief_personlink"]
-    belief_personlink_delete_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_insert(), "world_belief_belieflink"]
+    belief_belieflink_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "world_belief_belieflink"]
+    belief_belieflink_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "world_belief_belieflink"]
+    belief_belieflink_delete_dict = get_leg_obj(atoms_dict, x_list)
 
     x_list = [atom_insert(), "world_ideaunit"]
     world_ideaunit_insert_dict = get_leg_obj(atoms_dict, x_list)
@@ -1016,17 +1016,17 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
             leg_list, beliefunit_delete_dict, x_world
         )
 
-    if belief_personlink_insert_dict != None:
-        add_world_belief_personlink_insert_to_legible_list(
-            leg_list, belief_personlink_insert_dict, x_world
+    if belief_belieflink_insert_dict != None:
+        add_world_belief_belieflink_insert_to_legible_list(
+            leg_list, belief_belieflink_insert_dict, x_world
         )
-    if belief_personlink_update_dict != None:
-        add_world_belief_personlink_update_to_legible_list(
-            leg_list, belief_personlink_update_dict, x_world
+    if belief_belieflink_update_dict != None:
+        add_world_belief_belieflink_update_to_legible_list(
+            leg_list, belief_belieflink_update_dict, x_world
         )
-    if belief_personlink_delete_dict != None:
-        add_world_belief_personlink_delete_to_legible_list(
-            leg_list, belief_personlink_delete_dict, x_world
+    if belief_belieflink_delete_dict != None:
+        add_world_belief_belieflink_delete_to_legible_list(
+            leg_list, belief_belieflink_delete_dict, x_world
         )
 
     if world_ideaunit_insert_dict != None:
@@ -1248,28 +1248,28 @@ def add_world_beliefunit_delete_to_legible_list(
         legible_list.append(x_str)
 
 
-def add_world_belief_personlink_insert_to_legible_list(
-    legible_list: list[str], belief_personlink_insert_dict: dict, x_world: WorldUnit
+def add_world_belief_belieflink_insert_to_legible_list(
+    legible_list: list[str], belief_belieflink_insert_dict: dict, x_world: WorldUnit
 ):
-    for belief_personlink_dict in belief_personlink_insert_dict.values():
-        for belief_personlink_atom in belief_personlink_dict.values():
-            belief_id = belief_personlink_atom.get_value("belief_id")
-            person_id = belief_personlink_atom.get_value("person_id")
-            credor_weight_value = belief_personlink_atom.get_value("credor_weight")
-            debtor_weight_value = belief_personlink_atom.get_value("debtor_weight")
+    for belief_belieflink_dict in belief_belieflink_insert_dict.values():
+        for belief_belieflink_atom in belief_belieflink_dict.values():
+            belief_id = belief_belieflink_atom.get_value("belief_id")
+            person_id = belief_belieflink_atom.get_value("person_id")
+            credor_weight_value = belief_belieflink_atom.get_value("credor_weight")
+            debtor_weight_value = belief_belieflink_atom.get_value("debtor_weight")
             x_str = f"Belief '{belief_id}' has new member {person_id} with belief_cred={credor_weight_value} and belief_debt={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_world_belief_personlink_update_to_legible_list(
-    legible_list: list[str], belief_personlink_update_dict: dict, x_world: WorldUnit
+def add_world_belief_belieflink_update_to_legible_list(
+    legible_list: list[str], belief_belieflink_update_dict: dict, x_world: WorldUnit
 ):
-    for belief_personlink_dict in belief_personlink_update_dict.values():
-        for belief_personlink_atom in belief_personlink_dict.values():
-            belief_id = belief_personlink_atom.get_value("belief_id")
-            person_id = belief_personlink_atom.get_value("person_id")
-            credor_weight_value = belief_personlink_atom.get_value("credor_weight")
-            debtor_weight_value = belief_personlink_atom.get_value("debtor_weight")
+    for belief_belieflink_dict in belief_belieflink_update_dict.values():
+        for belief_belieflink_atom in belief_belieflink_dict.values():
+            belief_id = belief_belieflink_atom.get_value("belief_id")
+            person_id = belief_belieflink_atom.get_value("person_id")
+            credor_weight_value = belief_belieflink_atom.get_value("credor_weight")
+            debtor_weight_value = belief_belieflink_atom.get_value("debtor_weight")
             if credor_weight_value != None and debtor_weight_value != None:
                 x_str = f"Belief '{belief_id}' member {person_id} has new belief_cred={credor_weight_value} and belief_debt={debtor_weight_value}."
             elif credor_weight_value != None and debtor_weight_value is None:
@@ -1279,13 +1279,13 @@ def add_world_belief_personlink_update_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_world_belief_personlink_delete_to_legible_list(
-    legible_list: list[str], belief_personlink_delete_dict: dict, x_world: WorldUnit
+def add_world_belief_belieflink_delete_to_legible_list(
+    legible_list: list[str], belief_belieflink_delete_dict: dict, x_world: WorldUnit
 ):
-    for belief_personlink_dict in belief_personlink_delete_dict.values():
-        for belief_personlink_atom in belief_personlink_dict.values():
-            belief_id = belief_personlink_atom.get_value("belief_id")
-            person_id = belief_personlink_atom.get_value("person_id")
+    for belief_belieflink_dict in belief_belieflink_delete_dict.values():
+        for belief_belieflink_atom in belief_belieflink_dict.values():
+            belief_id = belief_belieflink_atom.get_value("belief_id")
+            person_id = belief_belieflink_atom.get_value("person_id")
             x_str = f"Belief '{belief_id}' no longer has member {person_id}."
             legible_list.append(x_str)
 

@@ -308,7 +308,7 @@ def personunit_shop(
 
 
 @dataclass
-class PersonLink(PersonCore):
+class BeliefLink(PersonCore):
     credor_weight: float = 1.0
     debtor_weight: float = 1.0
     _world_cred: float = None
@@ -325,8 +325,8 @@ class PersonLink(PersonCore):
 
     def set_world_cred_debt(
         self,
-        personlinks_credor_weight_sum: float,
-        personlinks_debtor_weight_sum: float,
+        belieflinks_credor_weight_sum: float,
+        belieflinks_debtor_weight_sum: float,
         belief_world_cred: float,
         belief_world_debt: float,
         belief_world_agenda_cred: float,
@@ -334,8 +334,8 @@ class PersonLink(PersonCore):
     ):
         belief_world_cred = get_1_if_None(belief_world_cred)
         belief_world_debt = get_1_if_None(belief_world_debt)
-        credor_ratio = self.credor_weight / personlinks_credor_weight_sum
-        debtor_ratio = self.debtor_weight / personlinks_debtor_weight_sum
+        credor_ratio = self.credor_weight / belieflinks_credor_weight_sum
+        debtor_ratio = self.debtor_weight / belieflinks_debtor_weight_sum
 
         self._world_cred = belief_world_cred * credor_ratio
         self._world_debt = belief_world_debt * debtor_ratio
@@ -348,35 +348,35 @@ class PersonLink(PersonCore):
         self._world_agenda_cred = 0
         self._world_agenda_debt = 0
 
-    def meld(self, exterior_personlink):
-        if self.person_id != exterior_personlink.person_id:
+    def meld(self, exterior_belieflink):
+        if self.person_id != exterior_belieflink.person_id:
             raise InvalidPersonException(
-                f"Meld fail PersonLink='{self.person_id}' not the equal as PersonLink='{exterior_personlink.person_id}"
+                f"Meld fail BeliefLink='{self.person_id}' not the equal as BeliefLink='{exterior_belieflink.person_id}"
             )
-        self.credor_weight += exterior_personlink.credor_weight
-        self.debtor_weight += exterior_personlink.debtor_weight
+        self.credor_weight += exterior_belieflink.credor_weight
+        self.debtor_weight += exterior_belieflink.debtor_weight
 
 
-def personlinks_get_from_json(personlinks_json: str) -> dict[str:PersonLink]:
-    personlinks_dict = get_dict_from_json(json_x=personlinks_json)
-    return personlinks_get_from_dict(x_dict=personlinks_dict)
+def belieflinks_get_from_json(belieflinks_json: str) -> dict[str:BeliefLink]:
+    belieflinks_dict = get_dict_from_json(json_x=belieflinks_json)
+    return belieflinks_get_from_dict(x_dict=belieflinks_dict)
 
 
-def personlinks_get_from_dict(x_dict: dict) -> dict[str:PersonLink]:
+def belieflinks_get_from_dict(x_dict: dict) -> dict[str:BeliefLink]:
     if x_dict is None:
         x_dict = {}
-    personlinks = {}
-    for personlinks_dict in x_dict.values():
-        x_person = personlink_shop(
-            person_id=personlinks_dict["person_id"],
-            credor_weight=personlinks_dict["credor_weight"],
-            debtor_weight=personlinks_dict["debtor_weight"],
+    belieflinks = {}
+    for belieflinks_dict in x_dict.values():
+        x_person = belieflink_shop(
+            person_id=belieflinks_dict["person_id"],
+            credor_weight=belieflinks_dict["credor_weight"],
+            debtor_weight=belieflinks_dict["debtor_weight"],
         )
-        personlinks[x_person.person_id] = x_person
-    return personlinks
+        belieflinks[x_person.person_id] = x_person
+    return belieflinks
 
 
-def personlink_shop(
+def belieflink_shop(
     person_id: PersonID,
     credor_weight: float = None,
     debtor_weight: float = None,
@@ -384,10 +384,10 @@ def personlink_shop(
     _world_debt: float = None,
     _world_agenda_cred: float = None,
     _world_agenda_debt: float = None,
-) -> PersonLink:
+) -> BeliefLink:
     credor_weight = get_1_if_None(credor_weight)
     debtor_weight = get_1_if_None(debtor_weight)
-    return PersonLink(
+    return BeliefLink(
         person_id=person_id,
         credor_weight=credor_weight,
         debtor_weight=debtor_weight,

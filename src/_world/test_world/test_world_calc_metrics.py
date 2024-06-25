@@ -4,7 +4,7 @@ from src._world.world import worldunit_shop, get_from_json as worldunit_get_from
 from src._world.idea import IdeaUnit, ideaunit_shop
 from src._world.reason_idea import reasonunit_shop
 from src._world.belief import beliefunit_shop, balancelink_shop
-from src._world.person import personlink_shop
+from src._world.person import belieflink_shop
 from src._world.reason_assign import assignedunit_shop
 from src._world.examples.example_worlds import (
     get_world_with_4_levels as example_worlds_get_world_with_4_levels,
@@ -625,15 +625,15 @@ def test_WorldUnit_create_agenda_item_CorrectlyCreatesAllWorldAttributes():
 
     # anna_text = "anna"
     # anna_personunit = personunit_shop(person_id=anna_text)
-    # anna_personlink = personlink_shop(person_id=anna_text)
+    # anna_belieflink = belieflink_shop(person_id=anna_text)
     # beto_text = "beto"
     # beto_personunit = personunit_shop(person_id=beto_text)
-    # beto_personlink = personlink_shop(person_id=beto_text)
+    # beto_belieflink = belieflink_shop(person_id=beto_text)
 
     family_text = ",family"
     # beliefunit_z = beliefunit_shop(belief_id=family_text)
-    # beliefunit_z.set_personlink(personlink=anna_personlink)
-    # beliefunit_z.set_personlink(personlink=beto_personlink)
+    # beliefunit_z.set_belieflink(belieflink=anna_belieflink)
+    # beliefunit_z.set_belieflink(belieflink=beto_belieflink)
     balancelink_z = balancelink_shop(belief_id=family_text)
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
 
@@ -787,7 +787,7 @@ def test_agenda_IsSetByAssignedUnit_2PersonBelief():
 
     run_text = ",runners"
     run_belief = beliefunit_shop(belief_id=run_text)
-    run_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    run_belief.set_belieflink(belieflink=belieflink_shop(person_id=sue_text))
     bob_world.set_beliefunit(y_beliefunit=run_belief)
 
     run_assignedunit = assignedunit_shop()
@@ -801,7 +801,7 @@ def test_agenda_IsSetByAssignedUnit_2PersonBelief():
     assert len(bob_world.get_agenda_dict()) == 0
 
     # WHEN
-    run_belief.set_personlink(personlink=personlink_shop(person_id=bob_text))
+    run_belief.set_belieflink(belieflink=belieflink_shop(person_id=bob_text))
     bob_world.set_beliefunit(y_beliefunit=run_belief)
 
     # THEN
