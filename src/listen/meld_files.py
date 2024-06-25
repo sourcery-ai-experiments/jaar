@@ -1,5 +1,5 @@
 from src._road.road import OwnerID
-from src._truth.truth import TruthUnit, get_from_json as truth_get_from_json
+from src._world.world import WorldUnit, get_from_json as world_get_from_json
 from src._instrument.file import dir_files, open_file
 from dataclasses import dataclass
 
@@ -13,10 +13,10 @@ class MeldeeOrderUnit:
 
 
 def get_meldeeorderunit(
-    primary_truth: TruthUnit, meldee_file_name: str
+    primary_world: WorldUnit, meldee_file_name: str
 ) -> MeldeeOrderUnit:
     file_src_owner_id = meldee_file_name.replace(".json", "")
-    primary_meldee_otherunit = primary_truth.get_other(file_src_owner_id)
+    primary_meldee_otherunit = primary_world.get_other(file_src_owner_id)
 
     default_voice_rank = 0
     default_voice_hx_lowest_rank = 0
@@ -40,23 +40,23 @@ def get_meldeeorderunit(
     )
 
 
-def get_file_names_in_voice_rank_order(primary_truth, meldees_dir) -> list[str]:
-    truth_voice_ranks = {}
+def get_file_names_in_voice_rank_order(primary_world, meldees_dir) -> list[str]:
+    world_voice_ranks = {}
     for meldee_file_name in dir_files(dir_path=meldees_dir):
-        meldee_orderunit = get_meldeeorderunit(primary_truth, meldee_file_name)
-        truth_voice_ranks[meldee_orderunit.owner_id] = meldee_orderunit
-    truths_voice_rank_ordered_list = list(truth_voice_ranks.values())
-    truths_voice_rank_ordered_list.sort(
+        meldee_orderunit = get_meldeeorderunit(primary_world, meldee_file_name)
+        world_voice_ranks[meldee_orderunit.owner_id] = meldee_orderunit
+    worlds_voice_rank_ordered_list = list(world_voice_ranks.values())
+    worlds_voice_rank_ordered_list.sort(
         key=lambda x: (x.voice_rank * -1, x.voice_hx_lowest_rank * -1, x.owner_id)
     )
     return [
         x_meldeeorderunit.file_name
-        for x_meldeeorderunit in truths_voice_rank_ordered_list
+        for x_meldeeorderunit in worlds_voice_rank_ordered_list
     ]
 
 
-def get_meld_of_truth_files(primary_truth: TruthUnit, meldees_dir: str) -> TruthUnit:
-    for x_filename in get_file_names_in_voice_rank_order(primary_truth, meldees_dir):
-        primary_truth.meld(truth_get_from_json(open_file(meldees_dir, x_filename)))
-    primary_truth.calc_truth_metrics()
-    return primary_truth
+def get_meld_of_world_files(primary_world: WorldUnit, meldees_dir: str) -> WorldUnit:
+    for x_filename in get_file_names_in_voice_rank_order(primary_world, meldees_dir):
+        primary_world.meld(world_get_from_json(open_file(meldees_dir, x_filename)))
+    primary_world.calc_world_metrics()
+    return primary_world

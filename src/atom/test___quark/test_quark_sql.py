@@ -20,7 +20,7 @@ def test_QuarkUnit_get_insert_sqlstr_RaisesErrorWhen_is_valid_False():
     knee_road = create_road("a", knee_text)
 
     # WHEN
-    x_category = "truth_idea_factunit"
+    x_category = "world_idea_factunit"
     update_disc_quarkunit = quarkunit_shop(x_category, quark_update())
     update_disc_quarkunit.set_required_arg("base", knee_road)
 
@@ -33,10 +33,10 @@ def test_QuarkUnit_get_insert_sqlstr_RaisesErrorWhen_is_valid_False():
     )
 
 
-def test_QuarkUnit_get_insert_sqlstr_ReturnsCorrectObj_TruthUnitSimpleAttrs():
+def test_QuarkUnit_get_insert_sqlstr_ReturnsCorrectObj_WorldUnitSimpleAttrs():
     # WHEN
     new2_value = 66
-    category = "truthunit"
+    category = "worldunit"
     opt_arg2 = "_max_tree_traverse"
     x_quarkunit = quarkunit_shop(category, quark_update())
     x_quarkunit.set_optional_arg(opt_arg2, new2_value)
@@ -62,7 +62,7 @@ def test_QuarkUnit_get_insert_sqlstr_ReturnsCorrectObj_idea_factunit():
     knee_text = "knee"
     knee_road = create_road("a", knee_text)
     knee_open = 7
-    x_category = "truth_idea_factunit"
+    x_category = "world_idea_factunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"
@@ -99,7 +99,7 @@ def test_get_quarkunit_from_rowdata_ReturnsCorrectObj_idea_factunit():
     knee_text = "knee"
     knee_road = create_road("a", knee_text)
     knee_open = 7
-    x_category = "truth_idea_factunit"
+    x_category = "world_idea_factunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"

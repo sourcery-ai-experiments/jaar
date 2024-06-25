@@ -1,6 +1,6 @@
-from src._truth.report import (
-    get_truth_otherunits_dataframe,
-    get_truth_agenda_dataframe,
+from src._world.report import (
+    get_world_otherunits_dataframe,
+    get_world_agenda_dataframe,
 )
 from src.real.real import RealUnit
 from pandas import DataFrame, concat as pandas_concat
@@ -13,10 +13,10 @@ def get_real_sames_others_dataframe(x_real: RealUnit) -> DataFrame:
     # for all persons get same
     same_dfs = []
     for x_userhub in person_userhubs.values():
-        same_truth = x_userhub.get_same_truth()
-        same_truth.calc_truth_metrics()
-        df = get_truth_otherunits_dataframe(same_truth)
-        df.insert(0, "owner_id", same_truth._owner_id)
+        same_world = x_userhub.get_same_world()
+        same_world.calc_world_metrics()
+        df = get_world_otherunits_dataframe(same_world)
+        df.insert(0, "owner_id", same_world._owner_id)
         same_dfs.append(df)
     return pandas_concat(same_dfs, ignore_index=True)
 
@@ -27,10 +27,10 @@ def get_real_sames_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "other_id",
         "credor_weight",
         "debtor_weight",
-        "_truth_cred",
-        "_truth_debt",
-        "_truth_agenda_cred",
-        "_truth_agenda_debt",
+        "_world_cred",
+        "_world_debt",
+        "_world_agenda_cred",
+        "_world_agenda_debt",
     ]
     df = get_real_sames_others_dataframe(x_real)
     header_dict = dict(
@@ -44,10 +44,10 @@ def get_real_sames_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
                 df.other_id,
                 df.credor_weight,
                 df.debtor_weight,
-                df._truth_cred,
-                df._truth_debt,
-                df._truth_agenda_cred,
-                df._truth_agenda_debt,
+                df._world_cred,
+                df._world_debt,
+                df._world_agenda_cred,
+                df._world_agenda_debt,
             ],
             fill_color="lavender",
             align="left",
@@ -69,10 +69,10 @@ def get_real_lives_others_dataframe(x_real: RealUnit) -> DataFrame:
     # for all persons get live
     live_dfs = []
     for x_userhub in person_userhubs.values():
-        live_truth = x_userhub.get_live_truth()
-        live_truth.calc_truth_metrics()
-        live_df = get_truth_otherunits_dataframe(live_truth)
-        live_df.insert(0, "owner_id", live_truth._owner_id)
+        live_world = x_userhub.get_live_world()
+        live_world.calc_world_metrics()
+        live_df = get_world_otherunits_dataframe(live_world)
+        live_df.insert(0, "owner_id", live_world._owner_id)
         live_dfs.append(live_df)
     return pandas_concat(live_dfs, ignore_index=True)
 
@@ -83,10 +83,10 @@ def get_real_lives_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "other_id",
         "credor_weight",
         "debtor_weight",
-        "_truth_cred",
-        "_truth_debt",
-        "_truth_agenda_cred",
-        "_truth_agenda_debt",
+        "_world_cred",
+        "_world_debt",
+        "_world_agenda_cred",
+        "_world_agenda_debt",
     ]
     df = get_real_lives_others_dataframe(x_real)
     header_dict = dict(
@@ -100,10 +100,10 @@ def get_real_lives_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
                 df.other_id,
                 df.credor_weight,
                 df.debtor_weight,
-                df._truth_cred,
-                df._truth_debt,
-                df._truth_agenda_cred,
-                df._truth_agenda_debt,
+                df._world_cred,
+                df._world_debt,
+                df._world_agenda_cred,
+                df._world_agenda_debt,
             ],
             fill_color="lavender",
             align="left",
@@ -125,9 +125,9 @@ def get_real_sames_agenda_dataframe(x_real: RealUnit) -> DataFrame:
     # for all persons get same
     same_dfs = []
     for x_userhub in person_userhubs.values():
-        same_truth = x_userhub.get_same_truth()
-        same_truth.calc_truth_metrics()
-        df = get_truth_agenda_dataframe(same_truth)
+        same_world = x_userhub.get_same_world()
+        same_world.calc_world_metrics()
+        df = get_world_agenda_dataframe(same_world)
         same_dfs.append(df)
     return pandas_concat(same_dfs, ignore_index=True)
 
@@ -135,7 +135,7 @@ def get_real_sames_agenda_dataframe(x_real: RealUnit) -> DataFrame:
 def get_real_sames_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
-        "truth_importance",
+        "world_importance",
         "_label",
         "_parent_road",
         "_begin",
@@ -154,7 +154,7 @@ def get_real_sames_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         cells=dict(
             values=[
                 df.owner_id,
-                df.truth_importance,
+                df.world_importance,
                 df._label,
                 df._parent_road,
                 df._begin,
@@ -184,9 +184,9 @@ def get_real_lives_agenda_dataframe(x_real: RealUnit) -> DataFrame:
     # for all persons get live
     live_dfs = []
     for x_userhub in person_userhubs.values():
-        live_truth = x_userhub.get_live_truth()
-        live_truth.calc_truth_metrics()
-        live_df = get_truth_agenda_dataframe(live_truth)
+        live_world = x_userhub.get_live_world()
+        live_world.calc_world_metrics()
+        live_df = get_world_agenda_dataframe(live_world)
         live_dfs.append(live_df)
     return pandas_concat(live_dfs, ignore_index=True)
 
@@ -194,7 +194,7 @@ def get_real_lives_agenda_dataframe(x_real: RealUnit) -> DataFrame:
 def get_real_lives_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
-        "truth_importance",
+        "world_importance",
         "_label",
         "_parent_road",
         "_begin",
@@ -213,7 +213,7 @@ def get_real_lives_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         cells=dict(
             values=[
                 df.owner_id,
-                df.truth_importance,
+                df.world_importance,
                 df._label,
                 df._parent_road,
                 df._begin,

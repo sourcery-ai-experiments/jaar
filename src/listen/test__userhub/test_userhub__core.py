@@ -11,9 +11,9 @@ from src._road.jaar_config import (
     get_test_real_id,
     get_rootpart_of_econ_dir,
 )
-from src._truth.truth import truthunit_shop
+from src._world.world import worldunit_shop
 from src.listen.userhub import UserHub, userhub_shop, get_econ_path
-from src.listen.examples.example_listen_truths import get_truth_with_4_levels
+from src.listen.examples.example_listen_worlds import get_world_with_4_levels
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as env_dir,
     env_dir_setup_cleanup,
@@ -265,10 +265,10 @@ def test_UserHub_open_file_live_OpensFile(env_dir_setup_cleanup):
     assert sue_userhub.open_file_live() == example_text
 
 
-def test_UserHub_save_same_truth_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_same_world_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
-    sue_truthunit = get_truth_with_4_levels()
-    sue_text = sue_truthunit._owner_id
+    sue_worldunit = get_world_with_4_levels()
+    sue_text = sue_worldunit._owner_id
     real_id = root_label()
     sue_userhub = userhub_shop(env_dir(), real_id, sue_text, None)
 
@@ -276,13 +276,13 @@ def test_UserHub_save_same_truth_CorrectlySavesFile(env_dir_setup_cleanup):
     assert sue_userhub.same_file_exists() is False
 
     # WHEN
-    sue_userhub.save_same_truth(sue_truthunit)
+    sue_userhub.save_same_world(sue_worldunit)
 
     # THEN
     assert sue_userhub.same_file_exists()
 
 
-def test_UserHub_save_same_truth_RaisesErrorWhenTruth_live_id_IsWrong(
+def test_UserHub_save_same_world_RaisesErrorWhenWorld_live_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -294,17 +294,17 @@ def test_UserHub_save_same_truth_RaisesErrorWhenTruth_live_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_userhub.save_same_truth(truthunit_shop(yao_text))
+        sue_userhub.save_same_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"TruthUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s same truth."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s same world."
     )
 
 
-def test_UserHub_get_same_truth_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_get_same_world_OpensFile(env_dir_setup_cleanup):
     # GIVEN
-    sue_truthunit = get_truth_with_4_levels()
-    sue_text = sue_truthunit._owner_id
+    sue_worldunit = get_world_with_4_levels()
+    sue_text = sue_worldunit._owner_id
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
     usa_text = "USA"
@@ -312,16 +312,16 @@ def test_UserHub_get_same_truth_OpensFile(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
-    sue_userhub.save_same_truth(sue_truthunit)
+    sue_userhub.save_same_world(sue_worldunit)
 
     # WHEN / THEN
-    assert sue_userhub.get_same_truth().get_dict() == sue_truthunit.get_dict()
+    assert sue_userhub.get_same_world().get_dict() == sue_worldunit.get_dict()
 
 
-def test_UserHub_save_live_truth_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_live_world_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
-    sue_truthunit = get_truth_with_4_levels()
-    sue_text = sue_truthunit._owner_id
+    sue_worldunit = get_world_with_4_levels()
+    sue_text = sue_worldunit._owner_id
 
     real_id = root_label()
     sue_userhub = userhub_shop(env_dir(), real_id, sue_text, None)
@@ -330,16 +330,16 @@ def test_UserHub_save_live_truth_CorrectlySavesFile(env_dir_setup_cleanup):
     assert sue_userhub.live_file_exists() is False
 
     # WHEN
-    sue_userhub.save_live_truth(sue_truthunit)
+    sue_userhub.save_live_world(sue_worldunit)
 
     # THEN
     assert sue_userhub.live_file_exists()
 
 
-def test_UserHub_get_live_truth_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_get_live_world_OpensFile(env_dir_setup_cleanup):
     # GIVEN
-    sue_truthunit = get_truth_with_4_levels()
-    sue_text = sue_truthunit._owner_id
+    sue_worldunit = get_world_with_4_levels()
+    sue_text = sue_worldunit._owner_id
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
     usa_text = "USA"
@@ -347,23 +347,23 @@ def test_UserHub_get_live_truth_OpensFile(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
-    sue_userhub.save_live_truth(sue_truthunit)
+    sue_userhub.save_live_world(sue_worldunit)
 
     # WHEN / THEN
-    assert sue_userhub.get_live_truth().get_dict() == sue_truthunit.get_dict()
+    assert sue_userhub.get_live_world().get_dict() == sue_worldunit.get_dict()
 
 
-def test_UserHub_get_live_truth_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
+def test_UserHub_get_live_world_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
     # GIVEN
-    sue_truthunit = get_truth_with_4_levels()
-    sue_text = sue_truthunit._owner_id
+    sue_worldunit = get_world_with_4_levels()
+    sue_text = sue_worldunit._owner_id
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
 
     # WHEN / THEN
-    assert sue_userhub.get_live_truth() is None
+    assert sue_userhub.get_live_world() is None
 
 
-def test_UserHub_save_live_truth_RaisesErrorWhenTruth_live_id_IsWrong(
+def test_UserHub_save_live_world_RaisesErrorWhenWorld_live_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -375,8 +375,8 @@ def test_UserHub_save_live_truth_RaisesErrorWhenTruth_live_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_userhub.save_live_truth(truthunit_shop(yao_text))
+        sue_userhub.save_live_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"TruthUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s live truth."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s live world."
     )

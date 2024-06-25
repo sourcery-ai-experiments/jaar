@@ -7,16 +7,16 @@ from src._instrument.python import (
     get_0_if_None,
 )
 from src._road.road import RoadUnit, get_terminus_node, get_parent_road
-from src._truth.reason_idea import FactUnit, ReasonUnit
-from src._truth.other import OtherLink, OtherID
-from src._truth.belief import BeliefUnit, BeliefID
-from src._truth.idea import IdeaUnit
-from src._truth.truth import TruthUnit, truthunit_shop
+from src._world.reason_idea import FactUnit, ReasonUnit
+from src._world.other import OtherLink, OtherID
+from src._world.belief import BeliefUnit, BeliefID
+from src._world.idea import IdeaUnit
+from src._world.world import WorldUnit, worldunit_shop
 from src.atom.quark_config import CRUD_command
 from src.atom.quark import (
     QuarkUnit,
     quarkunit_shop,
-    modify_truth_with_quarkunit,
+    modify_world_with_quarkunit,
     InvalidQuarkUnitException,
     quark_delete,
     quark_insert,
@@ -30,7 +30,7 @@ from copy import deepcopy as copy_deepcopy
 @dataclass
 class NucUnit:
     quarkunits: dict[CRUD_command : dict[str:QuarkUnit]] = None
-    _truth_build_validated: bool = None
+    _world_build_validated: bool = None
 
     def _get_crud_quarkunits_list(self) -> dict[CRUD_command : list[QuarkUnit]]:
         return get_all_nondictionary_objs(self.quarkunits)
@@ -63,11 +63,11 @@ class NucUnit:
         quarkunits_list = self.get_category_sorted_quarkunits_list()
         return sorted(quarkunits_list, key=lambda x: x.quark_order)
 
-    def get_edited_truth(self, before_truth: TruthUnit):
-        edited_truth = copy_deepcopy(before_truth)
+    def get_edited_world(self, before_world: WorldUnit):
+        edited_world = copy_deepcopy(before_world)
         for x_quarkunit in self.get_sorted_quarkunits():
-            modify_truth_with_quarkunit(edited_truth, x_quarkunit)
-        return edited_truth
+            modify_world_with_quarkunit(edited_world, x_quarkunit)
+        return edited_world
 
     def set_quarkunit(self, x_quarkunit: QuarkUnit):
         if x_quarkunit.is_valid() is False:
@@ -127,66 +127,66 @@ class NucUnit:
         return get_nested_value(self.quarkunits, x_keylist)
 
     def add_all_different_quarkunits(
-        self, before_truth: TruthUnit, after_truth: TruthUnit
+        self, before_world: WorldUnit, after_world: WorldUnit
     ):
-        before_truth.calc_truth_metrics()
-        after_truth.calc_truth_metrics()
-        self.add_quarkunits_truthunit_simple_attrs(before_truth, after_truth)
-        self.add_quarkunit_otherunits(before_truth, after_truth)
-        self.add_quarkunit_beliefunits(before_truth, after_truth)
-        self.add_quarkunits_ideas(before_truth, after_truth)
+        before_world.calc_world_metrics()
+        after_world.calc_world_metrics()
+        self.add_quarkunits_worldunit_simple_attrs(before_world, after_world)
+        self.add_quarkunit_otherunits(before_world, after_world)
+        self.add_quarkunit_beliefunits(before_world, after_world)
+        self.add_quarkunits_ideas(before_world, after_world)
 
-    def add_quarkunits_truthunit_simple_attrs(
-        self, before_truth: TruthUnit, after_truth: TruthUnit
+    def add_quarkunits_worldunit_simple_attrs(
+        self, before_world: WorldUnit, after_world: WorldUnit
     ):
-        if not optional_args_different("truthunit", before_truth, after_truth):
+        if not optional_args_different("worldunit", before_world, after_world):
             return
-        x_quarkunit = quarkunit_shop("truthunit", quark_update())
-        if before_truth._max_tree_traverse != after_truth._max_tree_traverse:
+        x_quarkunit = quarkunit_shop("worldunit", quark_update())
+        if before_world._max_tree_traverse != after_world._max_tree_traverse:
             x_quarkunit.set_optional_arg(
-                "_max_tree_traverse", after_truth._max_tree_traverse
+                "_max_tree_traverse", after_world._max_tree_traverse
             )
-        if before_truth._meld_strategy != after_truth._meld_strategy:
-            x_quarkunit.set_optional_arg("_meld_strategy", after_truth._meld_strategy)
-        if before_truth._monetary_desc != after_truth._monetary_desc:
-            x_quarkunit.set_optional_arg("_monetary_desc", after_truth._monetary_desc)
-        if before_truth._other_credor_pool != after_truth._other_credor_pool:
+        if before_world._meld_strategy != after_world._meld_strategy:
+            x_quarkunit.set_optional_arg("_meld_strategy", after_world._meld_strategy)
+        if before_world._monetary_desc != after_world._monetary_desc:
+            x_quarkunit.set_optional_arg("_monetary_desc", after_world._monetary_desc)
+        if before_world._other_credor_pool != after_world._other_credor_pool:
             x_quarkunit.set_optional_arg(
-                "_other_credor_pool", after_truth._other_credor_pool
+                "_other_credor_pool", after_world._other_credor_pool
             )
-        if before_truth._other_debtor_pool != after_truth._other_debtor_pool:
+        if before_world._other_debtor_pool != after_world._other_debtor_pool:
             x_quarkunit.set_optional_arg(
-                "_other_debtor_pool", after_truth._other_debtor_pool
+                "_other_debtor_pool", after_world._other_debtor_pool
             )
-        if before_truth._weight != after_truth._weight:
-            x_quarkunit.set_optional_arg("_weight", after_truth._weight)
-        if before_truth._pixel != after_truth._pixel:
-            x_quarkunit.set_optional_arg("_pixel", after_truth._pixel)
+        if before_world._weight != after_world._weight:
+            x_quarkunit.set_optional_arg("_weight", after_world._weight)
+        if before_world._pixel != after_world._pixel:
+            x_quarkunit.set_optional_arg("_pixel", after_world._pixel)
         self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunit_otherunits(self, before_truth: TruthUnit, after_truth: TruthUnit):
-        before_other_ids = set(before_truth._others.keys())
-        after_other_ids = set(after_truth._others.keys())
+    def add_quarkunit_otherunits(self, before_world: WorldUnit, after_world: WorldUnit):
+        before_other_ids = set(before_world._others.keys())
+        after_other_ids = set(after_world._others.keys())
 
         self.add_quarkunit_otherunit_inserts(
-            after_truth=after_truth,
+            after_world=after_world,
             insert_other_ids=after_other_ids.difference(before_other_ids),
         )
         self.add_quarkunit_otherunit_deletes(
             delete_other_ids=before_other_ids.difference(after_other_ids)
         )
         self.add_quarkunit_otherunit_updates(
-            before_truth=before_truth,
-            after_truth=after_truth,
+            before_world=before_world,
+            after_world=after_world,
             update_other_ids=before_other_ids.intersection(after_other_ids),
         )
 
     def add_quarkunit_otherunit_inserts(
-        self, after_truth: TruthUnit, insert_other_ids: set
+        self, after_world: WorldUnit, insert_other_ids: set
     ):
         for insert_other_id in insert_other_ids:
-            x_otherunit = after_truth.get_other(insert_other_id)
-            x_quarkunit = quarkunit_shop("truth_otherunit", quark_insert())
+            x_otherunit = after_world.get_other(insert_other_id)
+            x_quarkunit = quarkunit_shop("world_otherunit", quark_insert())
             x_quarkunit.set_required_arg("other_id", x_otherunit.other_id)
             if x_otherunit.credor_weight != None:
                 x_quarkunit.set_optional_arg("credor_weight", x_otherunit.credor_weight)
@@ -195,15 +195,15 @@ class NucUnit:
             self.set_quarkunit(x_quarkunit)
 
     def add_quarkunit_otherunit_updates(
-        self, before_truth: TruthUnit, after_truth: TruthUnit, update_other_ids: set
+        self, before_world: WorldUnit, after_world: WorldUnit, update_other_ids: set
     ):
         for other_id in update_other_ids:
-            after_otherunit = after_truth.get_other(other_id)
-            before_otherunit = before_truth.get_other(other_id)
+            after_otherunit = after_world.get_other(other_id)
+            before_otherunit = before_world.get_other(other_id)
             if optional_args_different(
-                "truth_otherunit", after_otherunit, before_otherunit
+                "world_otherunit", after_otherunit, before_otherunit
             ):
-                x_quarkunit = quarkunit_shop("truth_otherunit", quark_update())
+                x_quarkunit = quarkunit_shop("world_otherunit", quark_update())
                 x_quarkunit.set_required_arg("other_id", after_otherunit.other_id)
                 if before_otherunit.credor_weight != after_otherunit.credor_weight:
                     x_quarkunit.set_optional_arg(
@@ -217,46 +217,46 @@ class NucUnit:
 
     def add_quarkunit_otherunit_deletes(self, delete_other_ids: set):
         for delete_other_id in delete_other_ids:
-            x_quarkunit = quarkunit_shop("truth_otherunit", quark_delete())
+            x_quarkunit = quarkunit_shop("world_otherunit", quark_delete())
             x_quarkunit.set_required_arg("other_id", delete_other_id)
             self.set_quarkunit(x_quarkunit)
 
     def add_quarkunit_beliefunits(
-        self, before_truth: TruthUnit, after_truth: TruthUnit
+        self, before_world: WorldUnit, after_world: WorldUnit
     ):
         before_belief_ids = {
             before_belief_id
-            for before_belief_id in before_truth._beliefs.keys()
-            if before_truth.get_beliefunit(before_belief_id)._other_mirror is False
+            for before_belief_id in before_world._beliefs.keys()
+            if before_world.get_beliefunit(before_belief_id)._other_mirror is False
         }
         after_belief_ids = {
             after_belief_id
-            for after_belief_id in after_truth._beliefs.keys()
-            if after_truth.get_beliefunit(after_belief_id)._other_mirror is False
+            for after_belief_id in after_world._beliefs.keys()
+            if after_world.get_beliefunit(after_belief_id)._other_mirror is False
         }
 
         self.add_quarkunit_beliefunit_inserts(
-            after_truth=after_truth,
+            after_world=after_world,
             insert_belief_ids=after_belief_ids.difference(before_belief_ids),
         )
 
         self.add_quarkunit_beliefunit_deletes(
-            before_truth=before_truth,
+            before_world=before_world,
             delete_belief_ids=before_belief_ids.difference(after_belief_ids),
         )
 
         self.add_quarkunit_beliefunit_updates(
-            before_truth=before_truth,
-            after_truth=after_truth,
+            before_world=before_world,
+            after_world=after_world,
             update_belief_ids=before_belief_ids.intersection(after_belief_ids),
         )
 
     def add_quarkunit_beliefunit_inserts(
-        self, after_truth: TruthUnit, insert_belief_ids: set
+        self, after_world: WorldUnit, insert_belief_ids: set
     ):
         for insert_belief_id in insert_belief_ids:
-            insert_beliefunit = after_truth.get_beliefunit(insert_belief_id)
-            x_quarkunit = quarkunit_shop("truth_beliefunit", quark_insert())
+            insert_beliefunit = after_world.get_beliefunit(insert_belief_id)
+            x_quarkunit = quarkunit_shop("world_beliefunit", quark_insert())
             x_quarkunit.set_required_arg("belief_id", insert_beliefunit.belief_id)
             self.set_quarkunit(x_quarkunit)
             self.add_quarkunit_otherlinks_inserts(
@@ -266,17 +266,17 @@ class NucUnit:
 
     def add_quarkunit_beliefunit_updates(
         self,
-        before_truth: TruthUnit,
-        after_truth: TruthUnit,
+        before_world: WorldUnit,
+        after_world: WorldUnit,
         update_belief_ids: set,
     ):
         for belief_id in update_belief_ids:
-            after_beliefunit = after_truth.get_beliefunit(belief_id)
-            before_beliefunit = before_truth.get_beliefunit(belief_id)
+            after_beliefunit = after_world.get_beliefunit(belief_id)
+            before_beliefunit = before_world.get_beliefunit(belief_id)
             if optional_args_different(
-                "truth_beliefunit", before_beliefunit, after_beliefunit
+                "world_beliefunit", before_beliefunit, after_beliefunit
             ):
-                x_quarkunit = quarkunit_shop("truth_beliefunit", quark_update())
+                x_quarkunit = quarkunit_shop("world_beliefunit", quark_update())
                 x_quarkunit.set_required_arg("belief_id", after_beliefunit.belief_id)
                 self.set_quarkunit(x_quarkunit)
 
@@ -305,7 +305,7 @@ class NucUnit:
             before_otherlink = before_beliefunit.get_otherlink(update_other_id)
             after_otherlink = after_beliefunit.get_otherlink(update_other_id)
             if optional_args_different(
-                "truth_belief_otherlink", before_otherlink, after_otherlink
+                "world_belief_otherlink", before_otherlink, after_otherlink
             ):
                 self.add_quarkunit_otherlink_update(
                     belief_id=after_beliefunit.belief_id,
@@ -314,14 +314,14 @@ class NucUnit:
                 )
 
     def add_quarkunit_beliefunit_deletes(
-        self, before_truth: TruthUnit, delete_belief_ids: set
+        self, before_world: WorldUnit, delete_belief_ids: set
     ):
         for delete_belief_id in delete_belief_ids:
-            x_quarkunit = quarkunit_shop("truth_beliefunit", quark_delete())
+            x_quarkunit = quarkunit_shop("world_beliefunit", quark_delete())
             x_quarkunit.set_required_arg("belief_id", delete_belief_id)
             self.set_quarkunit(x_quarkunit)
 
-            delete_beliefunit = before_truth.get_beliefunit(delete_belief_id)
+            delete_beliefunit = before_world.get_beliefunit(delete_belief_id)
             self.add_quarkunit_otherlinks_delete(
                 delete_belief_id, set(delete_beliefunit._others.keys())
             )
@@ -334,7 +334,7 @@ class NucUnit:
         after_belief_id = after_beliefunit.belief_id
         for insert_other_id in insert_otherlink_other_ids:
             after_otherlink = after_beliefunit.get_otherlink(insert_other_id)
-            x_quarkunit = quarkunit_shop("truth_belief_otherlink", quark_insert())
+            x_quarkunit = quarkunit_shop("world_belief_otherlink", quark_insert())
             x_quarkunit.set_required_arg("belief_id", after_belief_id)
             x_quarkunit.set_required_arg("other_id", after_otherlink.other_id)
             if after_otherlink.credor_weight != None:
@@ -353,7 +353,7 @@ class NucUnit:
         before_otherlink: OtherLink,
         after_otherlink: OtherLink,
     ):
-        x_quarkunit = quarkunit_shop("truth_belief_otherlink", quark_update())
+        x_quarkunit = quarkunit_shop("world_belief_otherlink", quark_update())
         x_quarkunit.set_required_arg("belief_id", belief_id)
         x_quarkunit.set_required_arg("other_id", after_otherlink.other_id)
         if after_otherlink.credor_weight != before_otherlink.credor_weight:
@@ -366,35 +366,35 @@ class NucUnit:
         self, before_belief_id: BeliefID, before_other_ids: OtherID
     ):
         for delete_other_id in before_other_ids:
-            x_quarkunit = quarkunit_shop("truth_belief_otherlink", quark_delete())
+            x_quarkunit = quarkunit_shop("world_belief_otherlink", quark_delete())
             x_quarkunit.set_required_arg("belief_id", before_belief_id)
             x_quarkunit.set_required_arg("other_id", delete_other_id)
             self.set_quarkunit(x_quarkunit)
 
-    def add_quarkunits_ideas(self, before_truth: TruthUnit, after_truth: TruthUnit):
-        before_idea_roads = set(before_truth._idea_dict.keys())
-        after_idea_roads = set(after_truth._idea_dict.keys())
+    def add_quarkunits_ideas(self, before_world: WorldUnit, after_world: WorldUnit):
+        before_idea_roads = set(before_world._idea_dict.keys())
+        after_idea_roads = set(after_world._idea_dict.keys())
 
         self.add_quarkunit_idea_inserts(
-            after_truth=after_truth,
+            after_world=after_world,
             insert_idea_roads=after_idea_roads.difference(before_idea_roads),
         )
         self.add_quarkunit_idea_deletes(
-            before_truth=before_truth,
+            before_world=before_world,
             delete_idea_roads=before_idea_roads.difference(after_idea_roads),
         )
         self.add_quarkunit_idea_updates(
-            before_truth=before_truth,
-            after_truth=after_truth,
+            before_world=before_world,
+            after_world=after_world,
             update_roads=before_idea_roads.intersection(after_idea_roads),
         )
 
     def add_quarkunit_idea_inserts(
-        self, after_truth: TruthUnit, insert_idea_roads: set
+        self, after_world: WorldUnit, insert_idea_roads: set
     ):
         for insert_idea_road in insert_idea_roads:
-            insert_ideaunit = after_truth.get_idea_obj(insert_idea_road)
-            x_quarkunit = quarkunit_shop("truth_ideaunit", quark_insert())
+            insert_ideaunit = after_world.get_idea_obj(insert_idea_road)
+            x_quarkunit = quarkunit_shop("world_ideaunit", quark_insert())
             x_quarkunit.set_required_arg("parent_road", insert_ideaunit._parent_road)
             x_quarkunit.set_required_arg("label", insert_ideaunit._label)
             x_quarkunit.set_optional_arg("_addin", insert_ideaunit._addin)
@@ -432,15 +432,15 @@ class NucUnit:
             )
 
     def add_quarkunit_idea_updates(
-        self, before_truth: TruthUnit, after_truth: TruthUnit, update_roads: set
+        self, before_world: WorldUnit, after_world: WorldUnit, update_roads: set
     ):
         for idea_road in update_roads:
-            after_ideaunit = after_truth.get_idea_obj(idea_road)
-            before_ideaunit = before_truth.get_idea_obj(idea_road)
+            after_ideaunit = after_world.get_idea_obj(idea_road)
+            before_ideaunit = before_world.get_idea_obj(idea_road)
             if optional_args_different(
-                "truth_ideaunit", before_ideaunit, after_ideaunit
+                "world_ideaunit", before_ideaunit, after_ideaunit
             ):
-                x_quarkunit = quarkunit_shop("truth_ideaunit", quark_update())
+                x_quarkunit = quarkunit_shop("world_ideaunit", quark_update())
                 x_quarkunit.set_required_arg("parent_road", after_ideaunit._parent_road)
                 x_quarkunit.set_required_arg("label", after_ideaunit._label)
                 if before_ideaunit._addin != after_ideaunit._addin:
@@ -570,19 +570,19 @@ class NucUnit:
             )
 
     def add_quarkunit_idea_deletes(
-        self, before_truth: TruthUnit, delete_idea_roads: set
+        self, before_world: WorldUnit, delete_idea_roads: set
     ):
         for delete_idea_road in delete_idea_roads:
             x_parent_road = get_parent_road(
-                delete_idea_road, before_truth._road_delimiter
+                delete_idea_road, before_world._road_delimiter
             )
-            x_label = get_terminus_node(delete_idea_road, before_truth._road_delimiter)
-            x_quarkunit = quarkunit_shop("truth_ideaunit", quark_delete())
+            x_label = get_terminus_node(delete_idea_road, before_world._road_delimiter)
+            x_quarkunit = quarkunit_shop("world_ideaunit", quark_delete())
             x_quarkunit.set_required_arg("parent_road", x_parent_road)
             x_quarkunit.set_required_arg("label", x_label)
             self.set_quarkunit(x_quarkunit)
 
-            delete_ideaunit = before_truth.get_idea_obj(delete_idea_road)
+            delete_ideaunit = before_world.get_idea_obj(delete_idea_road)
             self.add_quarkunit_idea_factunit_deletes(
                 idea_road=delete_idea_road,
                 delete_factunit_bases=set(delete_ideaunit._factunits.keys()),
@@ -607,7 +607,7 @@ class NucUnit:
     ):
         for insert_reasonunit_base in insert_reasonunit_bases:
             after_reasonunit = after_ideaunit.get_reasonunit(insert_reasonunit_base)
-            x_quarkunit = quarkunit_shop("truth_idea_reasonunit", quark_insert())
+            x_quarkunit = quarkunit_shop("world_idea_reasonunit", quark_insert())
             x_quarkunit.set_required_arg("road", after_ideaunit.get_road())
             x_quarkunit.set_required_arg("base", after_reasonunit.base)
             if after_reasonunit.suff_idea_active != None:
@@ -632,9 +632,9 @@ class NucUnit:
             before_reasonunit = before_ideaunit.get_reasonunit(update_reasonunit_base)
             after_reasonunit = after_ideaunit.get_reasonunit(update_reasonunit_base)
             if optional_args_different(
-                "truth_idea_reasonunit", before_reasonunit, after_reasonunit
+                "world_idea_reasonunit", before_reasonunit, after_reasonunit
             ):
-                x_quarkunit = quarkunit_shop("truth_idea_reasonunit", quark_update())
+                x_quarkunit = quarkunit_shop("world_idea_reasonunit", quark_update())
                 x_quarkunit.set_required_arg("road", before_ideaunit.get_road())
                 x_quarkunit.set_required_arg("base", after_reasonunit.base)
                 if (
@@ -675,7 +675,7 @@ class NucUnit:
         self, before_ideaunit: IdeaUnit, delete_reasonunit_bases: set
     ):
         for delete_reasonunit_base in delete_reasonunit_bases:
-            x_quarkunit = quarkunit_shop("truth_idea_reasonunit", quark_delete())
+            x_quarkunit = quarkunit_shop("world_idea_reasonunit", quark_delete())
             x_quarkunit.set_required_arg("road", before_ideaunit.get_road())
             x_quarkunit.set_required_arg("base", delete_reasonunit_base)
             self.set_quarkunit(x_quarkunit)
@@ -696,7 +696,7 @@ class NucUnit:
         for insert_premise_need in insert_premise_needs:
             after_premiseunit = after_reasonunit.get_premise(insert_premise_need)
             x_quarkunit = quarkunit_shop(
-                "truth_idea_reason_premiseunit", quark_insert()
+                "world_idea_reason_premiseunit", quark_insert()
             )
             x_quarkunit.set_required_arg("road", idea_road)
             x_quarkunit.set_required_arg("base", after_reasonunit.base)
@@ -720,10 +720,10 @@ class NucUnit:
             before_premiseunit = before_reasonunit.get_premise(update_premise_need)
             after_premiseunit = after_reasonunit.get_premise(update_premise_need)
             if optional_args_different(
-                "truth_idea_reason_premiseunit", before_premiseunit, after_premiseunit
+                "world_idea_reason_premiseunit", before_premiseunit, after_premiseunit
             ):
                 x_quarkunit = quarkunit_shop(
-                    "truth_idea_reason_premiseunit", quark_update()
+                    "world_idea_reason_premiseunit", quark_update()
                 )
                 x_quarkunit.set_required_arg("road", idea_road)
                 x_quarkunit.set_required_arg("base", before_reasonunit.base)
@@ -744,7 +744,7 @@ class NucUnit:
     ):
         for delete_premise_need in delete_premise_needs:
             x_quarkunit = quarkunit_shop(
-                "truth_idea_reason_premiseunit", quark_delete()
+                "world_idea_reason_premiseunit", quark_delete()
             )
             x_quarkunit.set_required_arg("road", idea_road)
             x_quarkunit.set_required_arg("base", reasonunit_base)
@@ -755,7 +755,7 @@ class NucUnit:
         self, idea_road: RoadUnit, insert_suffbelief_belief_ids: set
     ):
         for insert_suffbelief_belief_id in insert_suffbelief_belief_ids:
-            x_quarkunit = quarkunit_shop("truth_idea_suffbelief", quark_insert())
+            x_quarkunit = quarkunit_shop("world_idea_suffbelief", quark_insert())
             x_quarkunit.set_required_arg("road", idea_road)
             x_quarkunit.set_required_arg("belief_id", insert_suffbelief_belief_id)
             self.set_quarkunit(x_quarkunit)
@@ -764,7 +764,7 @@ class NucUnit:
         self, idea_road: RoadUnit, delete_suffbelief_belief_ids: set
     ):
         for delete_suffbelief_belief_id in delete_suffbelief_belief_ids:
-            x_quarkunit = quarkunit_shop("truth_idea_suffbelief", quark_delete())
+            x_quarkunit = quarkunit_shop("world_idea_suffbelief", quark_delete())
             x_quarkunit.set_required_arg("road", idea_road)
             x_quarkunit.set_required_arg("belief_id", delete_suffbelief_belief_id)
             self.set_quarkunit(x_quarkunit)
@@ -776,7 +776,7 @@ class NucUnit:
             after_balancelink = after_ideaunit._balancelinks.get(
                 after_balancelink_belief_id
             )
-            x_quarkunit = quarkunit_shop("truth_idea_balancelink", quark_insert())
+            x_quarkunit = quarkunit_shop("world_idea_balancelink", quark_insert())
             x_quarkunit.set_required_arg("road", after_ideaunit.get_road())
             x_quarkunit.set_required_arg("belief_id", after_balancelink.belief_id)
             x_quarkunit.set_optional_arg(
@@ -801,9 +801,9 @@ class NucUnit:
                 update_balancelink_belief_id
             )
             if optional_args_different(
-                "truth_idea_balancelink", before_balancelink, after_balancelink
+                "world_idea_balancelink", before_balancelink, after_balancelink
             ):
-                x_quarkunit = quarkunit_shop("truth_idea_balancelink", quark_update())
+                x_quarkunit = quarkunit_shop("world_idea_balancelink", quark_update())
                 x_quarkunit.set_required_arg("road", before_ideaunit.get_road())
                 x_quarkunit.set_required_arg("belief_id", after_balancelink.belief_id)
                 if before_balancelink.credor_weight != after_balancelink.credor_weight:
@@ -820,7 +820,7 @@ class NucUnit:
         self, idea_road: RoadUnit, delete_balancelink_belief_ids: set
     ):
         for delete_balancelink_belief_id in delete_balancelink_belief_ids:
-            x_quarkunit = quarkunit_shop("truth_idea_balancelink", quark_delete())
+            x_quarkunit = quarkunit_shop("world_idea_balancelink", quark_delete())
             x_quarkunit.set_required_arg("road", idea_road)
             x_quarkunit.set_required_arg("belief_id", delete_balancelink_belief_id)
             self.set_quarkunit(x_quarkunit)
@@ -830,7 +830,7 @@ class NucUnit:
     ):
         for insert_factunit_base in insert_factunit_bases:
             insert_factunit = ideaunit._factunits.get(insert_factunit_base)
-            x_quarkunit = quarkunit_shop("truth_idea_factunit", quark_insert())
+            x_quarkunit = quarkunit_shop("world_idea_factunit", quark_insert())
             x_quarkunit.set_required_arg("road", ideaunit.get_road())
             x_quarkunit.set_required_arg("base", insert_factunit.base)
             if insert_factunit.pick != None:
@@ -851,9 +851,9 @@ class NucUnit:
             before_factunit = before_ideaunit._factunits.get(update_factunit_base)
             after_factunit = after_ideaunit._factunits.get(update_factunit_base)
             if optional_args_different(
-                "truth_idea_factunit", before_factunit, after_factunit
+                "world_idea_factunit", before_factunit, after_factunit
             ):
-                x_quarkunit = quarkunit_shop("truth_idea_factunit", quark_update())
+                x_quarkunit = quarkunit_shop("world_idea_factunit", quark_update())
                 x_quarkunit.set_required_arg("road", before_ideaunit.get_road())
                 x_quarkunit.set_required_arg("base", after_factunit.base)
                 if before_factunit.pick != after_factunit.pick:
@@ -868,7 +868,7 @@ class NucUnit:
         self, idea_road: RoadUnit, delete_factunit_bases: FactUnit
     ):
         for delete_factunit_base in delete_factunit_bases:
-            x_quarkunit = quarkunit_shop("truth_idea_factunit", quark_delete())
+            x_quarkunit = quarkunit_shop("world_idea_factunit", quark_delete())
             x_quarkunit.set_required_arg("road", idea_road)
             x_quarkunit.set_required_arg("base", delete_factunit_base)
             self.set_quarkunit(x_quarkunit)
@@ -895,18 +895,18 @@ class NucUnit:
 def nucunit_shop(quarkunits: dict[str:str] = None):
     return NucUnit(
         quarkunits=get_empty_dict_if_none(quarkunits),
-        _truth_build_validated=False,
+        _world_build_validated=False,
     )
 
 
-def validate_truth_build_from_nuc(x_nuc: NucUnit, x_truth: TruthUnit = None):
-    if x_truth is None:
-        x_truth = truthunit_shop()
+def validate_world_build_from_nuc(x_nuc: NucUnit, x_world: WorldUnit = None):
+    if x_world is None:
+        x_world = worldunit_shop()
 
-    x_truth = x_nuc.get_edited_truth(x_truth)
+    x_world = x_nuc.get_edited_world(x_world)
 
     try:
-        x_truth.calc_truth_metrics()
+        x_world.calc_world_metrics()
     except Exception:
         return False
 
@@ -919,212 +919,212 @@ def get_leg_obj(x_dict: dict, x_keylist) -> any:
     )
 
 
-def create_legible_list(x_nuc: NucUnit, x_truth: TruthUnit) -> list[str]:
+def create_legible_list(x_nuc: NucUnit, x_world: WorldUnit) -> list[str]:
     quarks_dict = x_nuc.quarkunits
-    truthunit_quark = get_leg_obj(quarks_dict, [quark_update(), "truthunit"])
+    worldunit_quark = get_leg_obj(quarks_dict, [quark_update(), "worldunit"])
 
     otherunit_insert_dict = get_leg_obj(
-        quarks_dict, [quark_insert(), "truth_otherunit"]
+        quarks_dict, [quark_insert(), "world_otherunit"]
     )
     otherunit_update_dict = get_leg_obj(
-        quarks_dict, [quark_update(), "truth_otherunit"]
+        quarks_dict, [quark_update(), "world_otherunit"]
     )
     otherunit_delete_dict = get_leg_obj(
-        quarks_dict, [quark_delete(), "truth_otherunit"]
+        quarks_dict, [quark_delete(), "world_otherunit"]
     )
 
     beliefunit_insert_dict = get_leg_obj(
-        quarks_dict, [quark_insert(), "truth_beliefunit"]
+        quarks_dict, [quark_insert(), "world_beliefunit"]
     )
     beliefunit_update_dict = get_leg_obj(
-        quarks_dict, [quark_update(), "truth_beliefunit"]
+        quarks_dict, [quark_update(), "world_beliefunit"]
     )
     beliefunit_delete_dict = get_leg_obj(
-        quarks_dict, [quark_delete(), "truth_beliefunit"]
+        quarks_dict, [quark_delete(), "world_beliefunit"]
     )
 
-    x_list = [quark_insert(), "truth_belief_otherlink"]
+    x_list = [quark_insert(), "world_belief_otherlink"]
     belief_otherlink_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "truth_belief_otherlink"]
+    x_list = [quark_update(), "world_belief_otherlink"]
     belief_otherlink_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "truth_belief_otherlink"]
+    x_list = [quark_delete(), "world_belief_otherlink"]
     belief_otherlink_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "truth_ideaunit"]
-    truth_ideaunit_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "truth_ideaunit"]
-    truth_ideaunit_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "truth_ideaunit"]
-    truth_ideaunit_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "world_ideaunit"]
+    world_ideaunit_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "world_ideaunit"]
+    world_ideaunit_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "world_ideaunit"]
+    world_ideaunit_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "truth_idea_balancelink"]
-    truth_idea_balancelink_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "truth_idea_balancelink"]
-    truth_idea_balancelink_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "truth_idea_balancelink"]
-    truth_idea_balancelink_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "world_idea_balancelink"]
+    world_idea_balancelink_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "world_idea_balancelink"]
+    world_idea_balancelink_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "world_idea_balancelink"]
+    world_idea_balancelink_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "truth_idea_reasonunit"]
-    truth_idea_reasonunit_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "truth_idea_reasonunit"]
-    truth_idea_reasonunit_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "truth_idea_reasonunit"]
-    truth_idea_reasonunit_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "world_idea_reasonunit"]
+    world_idea_reasonunit_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "world_idea_reasonunit"]
+    world_idea_reasonunit_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "world_idea_reasonunit"]
+    world_idea_reasonunit_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "truth_idea_reason_premiseunit"]
-    truth_idea_reason_premiseunit_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "truth_idea_reason_premiseunit"]
-    truth_idea_reason_premiseunit_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "truth_idea_reason_premiseunit"]
-    truth_idea_reason_premiseunit_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "world_idea_reason_premiseunit"]
+    world_idea_reason_premiseunit_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "world_idea_reason_premiseunit"]
+    world_idea_reason_premiseunit_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "world_idea_reason_premiseunit"]
+    world_idea_reason_premiseunit_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "truth_idea_suffbelief"]
-    truth_idea_suffbelief_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "truth_idea_suffbelief"]
-    truth_idea_suffbelief_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "world_idea_suffbelief"]
+    world_idea_suffbelief_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "world_idea_suffbelief"]
+    world_idea_suffbelief_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "truth_idea_healerhold"]
-    truth_idea_healerhold_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "truth_idea_healerhold"]
-    truth_idea_healerhold_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "world_idea_healerhold"]
+    world_idea_healerhold_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "world_idea_healerhold"]
+    world_idea_healerhold_delete_dict = get_leg_obj(quarks_dict, x_list)
 
-    x_list = [quark_insert(), "truth_idea_factunit"]
-    truth_idea_factunit_insert_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_update(), "truth_idea_factunit"]
-    truth_idea_factunit_update_dict = get_leg_obj(quarks_dict, x_list)
-    x_list = [quark_delete(), "truth_idea_factunit"]
-    truth_idea_factunit_delete_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_insert(), "world_idea_factunit"]
+    world_idea_factunit_insert_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_update(), "world_idea_factunit"]
+    world_idea_factunit_update_dict = get_leg_obj(quarks_dict, x_list)
+    x_list = [quark_delete(), "world_idea_factunit"]
+    world_idea_factunit_delete_dict = get_leg_obj(quarks_dict, x_list)
 
     leg_list = []
-    if truthunit_quark != None:
-        add_truthunit_legible_list(leg_list, truthunit_quark, x_truth)
+    if worldunit_quark != None:
+        add_worldunit_legible_list(leg_list, worldunit_quark, x_world)
     if otherunit_insert_dict != None:
-        add_truth_otherunit_insert_to_legible_list(
-            leg_list, otherunit_insert_dict, x_truth
+        add_world_otherunit_insert_to_legible_list(
+            leg_list, otherunit_insert_dict, x_world
         )
     if otherunit_update_dict != None:
-        add_truth_otherunit_update_to_legible_list(
-            leg_list, otherunit_update_dict, x_truth
+        add_world_otherunit_update_to_legible_list(
+            leg_list, otherunit_update_dict, x_world
         )
     if otherunit_delete_dict != None:
-        add_truth_otherunit_delete_to_legible_list(
-            leg_list, otherunit_delete_dict, x_truth
+        add_world_otherunit_delete_to_legible_list(
+            leg_list, otherunit_delete_dict, x_world
         )
 
     if beliefunit_insert_dict != None:
-        add_truth_beliefunit_insert_to_legible_list(
-            leg_list, beliefunit_insert_dict, x_truth
+        add_world_beliefunit_insert_to_legible_list(
+            leg_list, beliefunit_insert_dict, x_world
         )
     if beliefunit_update_dict != None:
-        add_truth_beliefunit_update_to_legible_list(
-            leg_list, beliefunit_update_dict, x_truth
+        add_world_beliefunit_update_to_legible_list(
+            leg_list, beliefunit_update_dict, x_world
         )
     if beliefunit_delete_dict != None:
-        add_truth_beliefunit_delete_to_legible_list(
-            leg_list, beliefunit_delete_dict, x_truth
+        add_world_beliefunit_delete_to_legible_list(
+            leg_list, beliefunit_delete_dict, x_world
         )
 
     if belief_otherlink_insert_dict != None:
-        add_truth_belief_otherlink_insert_to_legible_list(
-            leg_list, belief_otherlink_insert_dict, x_truth
+        add_world_belief_otherlink_insert_to_legible_list(
+            leg_list, belief_otherlink_insert_dict, x_world
         )
     if belief_otherlink_update_dict != None:
-        add_truth_belief_otherlink_update_to_legible_list(
-            leg_list, belief_otherlink_update_dict, x_truth
+        add_world_belief_otherlink_update_to_legible_list(
+            leg_list, belief_otherlink_update_dict, x_world
         )
     if belief_otherlink_delete_dict != None:
-        add_truth_belief_otherlink_delete_to_legible_list(
-            leg_list, belief_otherlink_delete_dict, x_truth
+        add_world_belief_otherlink_delete_to_legible_list(
+            leg_list, belief_otherlink_delete_dict, x_world
         )
 
-    if truth_ideaunit_insert_dict != None:
-        add_truth_ideaunit_insert_to_legible_list(
-            leg_list, truth_ideaunit_insert_dict, x_truth
+    if world_ideaunit_insert_dict != None:
+        add_world_ideaunit_insert_to_legible_list(
+            leg_list, world_ideaunit_insert_dict, x_world
         )
-    if truth_ideaunit_update_dict != None:
-        add_truth_ideaunit_update_to_legible_list(
-            leg_list, truth_ideaunit_update_dict, x_truth
+    if world_ideaunit_update_dict != None:
+        add_world_ideaunit_update_to_legible_list(
+            leg_list, world_ideaunit_update_dict, x_world
         )
-    if truth_ideaunit_delete_dict != None:
-        add_truth_ideaunit_delete_to_legible_list(
-            leg_list, truth_ideaunit_delete_dict, x_truth
-        )
-
-    if truth_idea_balancelink_insert_dict != None:
-        add_truth_idea_balancelink_insert_to_legible_list(
-            leg_list, truth_idea_balancelink_insert_dict, x_truth
-        )
-    if truth_idea_balancelink_update_dict != None:
-        add_truth_idea_balancelink_update_to_legible_list(
-            leg_list, truth_idea_balancelink_update_dict, x_truth
-        )
-    if truth_idea_balancelink_delete_dict != None:
-        add_truth_idea_balancelink_delete_to_legible_list(
-            leg_list, truth_idea_balancelink_delete_dict, x_truth
+    if world_ideaunit_delete_dict != None:
+        add_world_ideaunit_delete_to_legible_list(
+            leg_list, world_ideaunit_delete_dict, x_world
         )
 
-    if truth_idea_reasonunit_insert_dict != None:
-        add_truth_idea_reasonunit_insert_to_legible_list(
-            leg_list, truth_idea_reasonunit_insert_dict, x_truth
+    if world_idea_balancelink_insert_dict != None:
+        add_world_idea_balancelink_insert_to_legible_list(
+            leg_list, world_idea_balancelink_insert_dict, x_world
         )
-    if truth_idea_reasonunit_update_dict != None:
-        add_truth_idea_reasonunit_update_to_legible_list(
-            leg_list, truth_idea_reasonunit_update_dict, x_truth
+    if world_idea_balancelink_update_dict != None:
+        add_world_idea_balancelink_update_to_legible_list(
+            leg_list, world_idea_balancelink_update_dict, x_world
         )
-    if truth_idea_reasonunit_delete_dict != None:
-        add_truth_idea_reasonunit_delete_to_legible_list(
-            leg_list, truth_idea_reasonunit_delete_dict, x_truth
-        )
-
-    if truth_idea_reason_premiseunit_insert_dict != None:
-        add_truth_reason_premiseunit_insert_to_legible_list(
-            leg_list, truth_idea_reason_premiseunit_insert_dict, x_truth
-        )
-    if truth_idea_reason_premiseunit_update_dict != None:
-        add_truth_reason_premiseunit_update_to_legible_list(
-            leg_list, truth_idea_reason_premiseunit_update_dict, x_truth
-        )
-    if truth_idea_reason_premiseunit_delete_dict != None:
-        add_truth_reason_premiseunit_delete_to_legible_list(
-            leg_list, truth_idea_reason_premiseunit_delete_dict, x_truth
+    if world_idea_balancelink_delete_dict != None:
+        add_world_idea_balancelink_delete_to_legible_list(
+            leg_list, world_idea_balancelink_delete_dict, x_world
         )
 
-    if truth_idea_suffbelief_insert_dict != None:
-        add_truth_idea_suffbelief_insert_to_legible_list(
-            leg_list, truth_idea_suffbelief_insert_dict, x_truth
+    if world_idea_reasonunit_insert_dict != None:
+        add_world_idea_reasonunit_insert_to_legible_list(
+            leg_list, world_idea_reasonunit_insert_dict, x_world
         )
-    if truth_idea_suffbelief_delete_dict != None:
-        add_truth_idea_suffbelief_delete_to_legible_list(
-            leg_list, truth_idea_suffbelief_delete_dict, x_truth
+    if world_idea_reasonunit_update_dict != None:
+        add_world_idea_reasonunit_update_to_legible_list(
+            leg_list, world_idea_reasonunit_update_dict, x_world
         )
-
-    if truth_idea_healerhold_insert_dict != None:
-        add_truth_idea_healerhold_insert_to_legible_list(
-            leg_list, truth_idea_healerhold_insert_dict, x_truth
-        )
-    if truth_idea_healerhold_delete_dict != None:
-        add_truth_idea_healerhold_delete_to_legible_list(
-            leg_list, truth_idea_healerhold_delete_dict, x_truth
+    if world_idea_reasonunit_delete_dict != None:
+        add_world_idea_reasonunit_delete_to_legible_list(
+            leg_list, world_idea_reasonunit_delete_dict, x_world
         )
 
-    if truth_idea_factunit_insert_dict != None:
-        add_truth_idea_factunit_insert_to_legible_list(
-            leg_list, truth_idea_factunit_insert_dict, x_truth
+    if world_idea_reason_premiseunit_insert_dict != None:
+        add_world_reason_premiseunit_insert_to_legible_list(
+            leg_list, world_idea_reason_premiseunit_insert_dict, x_world
         )
-    if truth_idea_factunit_update_dict != None:
-        add_truth_idea_factunit_update_to_legible_list(
-            leg_list, truth_idea_factunit_update_dict, x_truth
+    if world_idea_reason_premiseunit_update_dict != None:
+        add_world_reason_premiseunit_update_to_legible_list(
+            leg_list, world_idea_reason_premiseunit_update_dict, x_world
         )
-    if truth_idea_factunit_delete_dict != None:
-        add_truth_idea_factunit_delete_to_legible_list(
-            leg_list, truth_idea_factunit_delete_dict, x_truth
+    if world_idea_reason_premiseunit_delete_dict != None:
+        add_world_reason_premiseunit_delete_to_legible_list(
+            leg_list, world_idea_reason_premiseunit_delete_dict, x_world
+        )
+
+    if world_idea_suffbelief_insert_dict != None:
+        add_world_idea_suffbelief_insert_to_legible_list(
+            leg_list, world_idea_suffbelief_insert_dict, x_world
+        )
+    if world_idea_suffbelief_delete_dict != None:
+        add_world_idea_suffbelief_delete_to_legible_list(
+            leg_list, world_idea_suffbelief_delete_dict, x_world
+        )
+
+    if world_idea_healerhold_insert_dict != None:
+        add_world_idea_healerhold_insert_to_legible_list(
+            leg_list, world_idea_healerhold_insert_dict, x_world
+        )
+    if world_idea_healerhold_delete_dict != None:
+        add_world_idea_healerhold_delete_to_legible_list(
+            leg_list, world_idea_healerhold_delete_dict, x_world
+        )
+
+    if world_idea_factunit_insert_dict != None:
+        add_world_idea_factunit_insert_to_legible_list(
+            leg_list, world_idea_factunit_insert_dict, x_world
+        )
+    if world_idea_factunit_update_dict != None:
+        add_world_idea_factunit_update_to_legible_list(
+            leg_list, world_idea_factunit_update_dict, x_world
+        )
+    if world_idea_factunit_delete_dict != None:
+        add_world_idea_factunit_delete_to_legible_list(
+            leg_list, world_idea_factunit_delete_dict, x_world
         )
 
     return leg_list
 
 
-def add_truthunit_legible_list(
-    legible_list: list[str], x_quark: QuarkUnit, x_truth: TruthUnit
+def add_worldunit_legible_list(
+    legible_list: list[str], x_quark: QuarkUnit, x_world: WorldUnit
 ):
     optional_args = x_quark.optional_args
     _weight_text = "_weight"
@@ -1141,21 +1141,21 @@ def add_truthunit_legible_list(
     _other_debtor_pool_value = optional_args.get(_other_debtor_pool_text)
     _weight_value = optional_args.get(_weight_text)
 
-    x_monetary_desc = x_truth._monetary_desc
+    x_monetary_desc = x_world._monetary_desc
     if x_monetary_desc is None:
-        x_monetary_desc = f"{x_truth._owner_id}'s monetary_desc"
+        x_monetary_desc = f"{x_world._owner_id}'s monetary_desc"
 
     if _max_tree_traverse_value != None:
         legible_list.append(
-            f"{x_truth._owner_id}'s maximum number of Truth output evaluations transited to {_max_tree_traverse_value}"
+            f"{x_world._owner_id}'s maximum number of World output evaluations transited to {_max_tree_traverse_value}"
         )
     if _meld_strategy_value != None:
         legible_list.append(
-            f"{x_truth._owner_id}'s Meld strategy transited to '{_meld_strategy_value}'"
+            f"{x_world._owner_id}'s Meld strategy transited to '{_meld_strategy_value}'"
         )
     if _monetary_desc_value != None:
         legible_list.append(
-            f"{x_truth._owner_id}'s monetary_desc is now called '{_monetary_desc_value}'"
+            f"{x_world._owner_id}'s monetary_desc is now called '{_monetary_desc_value}'"
         )
     if (
         _other_credor_pool_value != None
@@ -1175,14 +1175,14 @@ def add_truthunit_legible_list(
         )
     if _weight_value != None:
         legible_list.append(
-            f"{x_truth._owner_id}'s truth weight was transited to {_weight_value}"
+            f"{x_world._owner_id}'s world weight was transited to {_weight_value}"
         )
 
 
-def add_truth_otherunit_insert_to_legible_list(
-    legible_list: list[str], otherunit_dict: QuarkUnit, x_truth: TruthUnit
+def add_world_otherunit_insert_to_legible_list(
+    legible_list: list[str], otherunit_dict: QuarkUnit, x_world: WorldUnit
 ):
-    x_monetary_desc = x_truth._monetary_desc
+    x_monetary_desc = x_world._monetary_desc
     if x_monetary_desc is None:
         x_monetary_desc = "monetary_desc"
     for otherunit_quark in otherunit_dict.values():
@@ -1193,10 +1193,10 @@ def add_truth_otherunit_insert_to_legible_list(
         legible_list.append(x_str)
 
 
-def add_truth_otherunit_update_to_legible_list(
-    legible_list: list[str], otherunit_dict: QuarkUnit, x_truth: TruthUnit
+def add_world_otherunit_update_to_legible_list(
+    legible_list: list[str], otherunit_dict: QuarkUnit, x_world: WorldUnit
 ):
-    x_monetary_desc = x_truth._monetary_desc
+    x_monetary_desc = x_world._monetary_desc
     if x_monetary_desc is None:
         x_monetary_desc = "monetary_desc"
     for otherunit_quark in otherunit_dict.values():
@@ -1212,10 +1212,10 @@ def add_truth_otherunit_update_to_legible_list(
         legible_list.append(x_str)
 
 
-def add_truth_otherunit_delete_to_legible_list(
-    legible_list: list[str], otherunit_dict: QuarkUnit, x_truth: TruthUnit
+def add_world_otherunit_delete_to_legible_list(
+    legible_list: list[str], otherunit_dict: QuarkUnit, x_world: WorldUnit
 ):
-    x_monetary_desc = x_truth._monetary_desc
+    x_monetary_desc = x_world._monetary_desc
     if x_monetary_desc is None:
         x_monetary_desc = "monetary_desc"
     for otherunit_quark in otherunit_dict.values():
@@ -1224,8 +1224,8 @@ def add_truth_otherunit_delete_to_legible_list(
         legible_list.append(x_str)
 
 
-def add_truth_beliefunit_insert_to_legible_list(
-    legible_list: list[str], beliefunit_dict: QuarkUnit, x_truth: TruthUnit
+def add_world_beliefunit_insert_to_legible_list(
+    legible_list: list[str], beliefunit_dict: QuarkUnit, x_world: WorldUnit
 ):
     for beliefunit_quark in beliefunit_dict.values():
         belief_id = beliefunit_quark.get_value("belief_id")
@@ -1234,8 +1234,8 @@ def add_truth_beliefunit_insert_to_legible_list(
         legible_list.append(x_str)
 
 
-def add_truth_beliefunit_update_to_legible_list(
-    legible_list: list[str], beliefunit_dict: QuarkUnit, x_truth: TruthUnit
+def add_world_beliefunit_update_to_legible_list(
+    legible_list: list[str], beliefunit_dict: QuarkUnit, x_world: WorldUnit
 ):
     for beliefunit_quark in beliefunit_dict.values():
         belief_id = beliefunit_quark.get_value("belief_id")
@@ -1244,10 +1244,10 @@ def add_truth_beliefunit_update_to_legible_list(
         legible_list.append(x_str)
 
 
-def add_truth_beliefunit_delete_to_legible_list(
-    legible_list: list[str], beliefunit_dict: QuarkUnit, x_truth: TruthUnit
+def add_world_beliefunit_delete_to_legible_list(
+    legible_list: list[str], beliefunit_dict: QuarkUnit, x_world: WorldUnit
 ):
-    x_monetary_desc = x_truth._monetary_desc
+    x_monetary_desc = x_world._monetary_desc
     if x_monetary_desc is None:
         x_monetary_desc = "monetary_desc"
     for beliefunit_quark in beliefunit_dict.values():
@@ -1256,8 +1256,8 @@ def add_truth_beliefunit_delete_to_legible_list(
         legible_list.append(x_str)
 
 
-def add_truth_belief_otherlink_insert_to_legible_list(
-    legible_list: list[str], belief_otherlink_insert_dict: dict, x_truth: TruthUnit
+def add_world_belief_otherlink_insert_to_legible_list(
+    legible_list: list[str], belief_otherlink_insert_dict: dict, x_world: WorldUnit
 ):
     for belief_otherlink_dict in belief_otherlink_insert_dict.values():
         for belief_otherlink_quark in belief_otherlink_dict.values():
@@ -1269,8 +1269,8 @@ def add_truth_belief_otherlink_insert_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_belief_otherlink_update_to_legible_list(
-    legible_list: list[str], belief_otherlink_update_dict: dict, x_truth: TruthUnit
+def add_world_belief_otherlink_update_to_legible_list(
+    legible_list: list[str], belief_otherlink_update_dict: dict, x_world: WorldUnit
 ):
     for belief_otherlink_dict in belief_otherlink_update_dict.values():
         for belief_otherlink_quark in belief_otherlink_dict.values():
@@ -1287,8 +1287,8 @@ def add_truth_belief_otherlink_update_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_belief_otherlink_delete_to_legible_list(
-    legible_list: list[str], belief_otherlink_delete_dict: dict, x_truth: TruthUnit
+def add_world_belief_otherlink_delete_to_legible_list(
+    legible_list: list[str], belief_otherlink_delete_dict: dict, x_world: WorldUnit
 ):
     for belief_otherlink_dict in belief_otherlink_delete_dict.values():
         for belief_otherlink_quark in belief_otherlink_dict.values():
@@ -1298,8 +1298,8 @@ def add_truth_belief_otherlink_delete_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_ideaunit_insert_to_legible_list(
-    legible_list: list[str], ideaunit_insert_dict: dict, x_truth: TruthUnit
+def add_world_ideaunit_insert_to_legible_list(
+    legible_list: list[str], ideaunit_insert_dict: dict, x_world: WorldUnit
 ):
     label_text = "label"
     parent_road_text = "parent_road"
@@ -1362,8 +1362,8 @@ def add_truth_ideaunit_insert_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_ideaunit_update_to_legible_list(
-    legible_list: list[str], ideaunit_update_dict: dict, x_truth: TruthUnit
+def add_world_ideaunit_update_to_legible_list(
+    legible_list: list[str], ideaunit_update_dict: dict, x_world: WorldUnit
 ):
     label_text = "label"
     parent_road_text = "parent_road"
@@ -1424,8 +1424,8 @@ def add_truth_ideaunit_update_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_ideaunit_delete_to_legible_list(
-    legible_list: list[str], ideaunit_delete_dict: dict, x_truth: TruthUnit
+def add_world_ideaunit_delete_to_legible_list(
+    legible_list: list[str], ideaunit_delete_dict: dict, x_world: WorldUnit
 ):
     label_text = "label"
     parent_road_text = "parent_road"
@@ -1437,8 +1437,8 @@ def add_truth_ideaunit_delete_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_balancelink_insert_to_legible_list(
-    legible_list: list[str], idea_balancelink_insert_dict: dict, x_truth: TruthUnit
+def add_world_idea_balancelink_insert_to_legible_list(
+    legible_list: list[str], idea_balancelink_insert_dict: dict, x_world: WorldUnit
 ):
     for road_dict in idea_balancelink_insert_dict.values():
         for idea_balancelink_quark in road_dict.values():
@@ -1450,8 +1450,8 @@ def add_truth_idea_balancelink_insert_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_balancelink_update_to_legible_list(
-    legible_list: list[str], idea_balancelink_update_dict: dict, x_truth: TruthUnit
+def add_world_idea_balancelink_update_to_legible_list(
+    legible_list: list[str], idea_balancelink_update_dict: dict, x_world: WorldUnit
 ):
     for road_dict in idea_balancelink_update_dict.values():
         for idea_balancelink_quark in road_dict.values():
@@ -1468,8 +1468,8 @@ def add_truth_idea_balancelink_update_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_balancelink_delete_to_legible_list(
-    legible_list: list[str], idea_balancelink_delete_dict: dict, x_truth: TruthUnit
+def add_world_idea_balancelink_delete_to_legible_list(
+    legible_list: list[str], idea_balancelink_delete_dict: dict, x_world: WorldUnit
 ):
     for road_dict in idea_balancelink_delete_dict.values():
         for idea_balancelink_quark in road_dict.values():
@@ -1479,8 +1479,8 @@ def add_truth_idea_balancelink_delete_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_reasonunit_insert_to_legible_list(
-    legible_list: list[str], idea_reasonunit_insert_dict: dict, x_truth: TruthUnit
+def add_world_idea_reasonunit_insert_to_legible_list(
+    legible_list: list[str], idea_reasonunit_insert_dict: dict, x_world: WorldUnit
 ):
     for road_dict in idea_reasonunit_insert_dict.values():
         for idea_reasonunit_quark in road_dict.values():
@@ -1495,8 +1495,8 @@ def add_truth_idea_reasonunit_insert_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_reasonunit_update_to_legible_list(
-    legible_list: list[str], idea_reasonunit_update_dict: dict, x_truth: TruthUnit
+def add_world_idea_reasonunit_update_to_legible_list(
+    legible_list: list[str], idea_reasonunit_update_dict: dict, x_world: WorldUnit
 ):
     for road_dict in idea_reasonunit_update_dict.values():
         for idea_reasonunit_quark in road_dict.values():
@@ -1510,8 +1510,8 @@ def add_truth_idea_reasonunit_update_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_reasonunit_delete_to_legible_list(
-    legible_list: list[str], idea_reasonunit_delete_dict: dict, x_truth: TruthUnit
+def add_world_idea_reasonunit_delete_to_legible_list(
+    legible_list: list[str], idea_reasonunit_delete_dict: dict, x_world: WorldUnit
 ):
     for road_dict in idea_reasonunit_delete_dict.values():
         for idea_reasonunit_quark in road_dict.values():
@@ -1521,10 +1521,10 @@ def add_truth_idea_reasonunit_delete_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_reason_premiseunit_insert_to_legible_list(
+def add_world_reason_premiseunit_insert_to_legible_list(
     legible_list: list[str],
     idea_reason_premiseunit_insert_dict: dict,
-    x_truth: TruthUnit,
+    x_world: WorldUnit,
 ):
     road_text = "road"
     base_text = "base"
@@ -1551,10 +1551,10 @@ def add_truth_reason_premiseunit_insert_to_legible_list(
                 legible_list.append(x_str)
 
 
-def add_truth_reason_premiseunit_update_to_legible_list(
+def add_world_reason_premiseunit_update_to_legible_list(
     legible_list: list[str],
     idea_reason_premiseunit_update_dict: dict,
-    x_truth: TruthUnit,
+    x_world: WorldUnit,
 ):
     road_text = "road"
     base_text = "base"
@@ -1581,10 +1581,10 @@ def add_truth_reason_premiseunit_update_to_legible_list(
                 legible_list.append(x_str)
 
 
-def add_truth_reason_premiseunit_delete_to_legible_list(
+def add_world_reason_premiseunit_delete_to_legible_list(
     legible_list: list[str],
     idea_reason_premiseunit_delete_dict: dict,
-    x_truth: TruthUnit,
+    x_world: WorldUnit,
 ):
     road_text = "road"
     base_text = "base"
@@ -1599,8 +1599,8 @@ def add_truth_reason_premiseunit_delete_to_legible_list(
                 legible_list.append(x_str)
 
 
-def add_truth_idea_suffbelief_insert_to_legible_list(
-    legible_list: list[str], idea_suffbelief_insert_dict: dict, x_truth: TruthUnit
+def add_world_idea_suffbelief_insert_to_legible_list(
+    legible_list: list[str], idea_suffbelief_insert_dict: dict, x_world: WorldUnit
 ):
     for road_dict in idea_suffbelief_insert_dict.values():
         for idea_suffbelief_quark in road_dict.values():
@@ -1610,8 +1610,8 @@ def add_truth_idea_suffbelief_insert_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_suffbelief_delete_to_legible_list(
-    legible_list: list[str], idea_suffbelief_delete_dict: dict, x_truth: TruthUnit
+def add_world_idea_suffbelief_delete_to_legible_list(
+    legible_list: list[str], idea_suffbelief_delete_dict: dict, x_world: WorldUnit
 ):
     for road_dict in idea_suffbelief_delete_dict.values():
         for idea_suffbelief_quark in road_dict.values():
@@ -1621,8 +1621,8 @@ def add_truth_idea_suffbelief_delete_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_healerhold_insert_to_legible_list(
-    legible_list: list[str], idea_healerhold_insert_dict: dict, x_truth: TruthUnit
+def add_world_idea_healerhold_insert_to_legible_list(
+    legible_list: list[str], idea_healerhold_insert_dict: dict, x_world: WorldUnit
 ):
     for road_dict in idea_healerhold_insert_dict.values():
         for idea_healerhold_quark in road_dict.values():
@@ -1632,8 +1632,8 @@ def add_truth_idea_healerhold_insert_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_healerhold_delete_to_legible_list(
-    legible_list: list[str], idea_healerhold_delete_dict: dict, x_truth: TruthUnit
+def add_world_idea_healerhold_delete_to_legible_list(
+    legible_list: list[str], idea_healerhold_delete_dict: dict, x_world: WorldUnit
 ):
     for road_dict in idea_healerhold_delete_dict.values():
         for idea_healerhold_quark in road_dict.values():
@@ -1643,8 +1643,8 @@ def add_truth_idea_healerhold_delete_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_factunit_insert_to_legible_list(
-    legible_list: list[str], idea_factunit_insert_dict: dict, x_truth: TruthUnit
+def add_world_idea_factunit_insert_to_legible_list(
+    legible_list: list[str], idea_factunit_insert_dict: dict, x_world: WorldUnit
 ):
     road_text = "road"
     base_text = "base"
@@ -1666,8 +1666,8 @@ def add_truth_idea_factunit_insert_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_factunit_update_to_legible_list(
-    legible_list: list[str], idea_factunit_update_dict: dict, x_truth: TruthUnit
+def add_world_idea_factunit_update_to_legible_list(
+    legible_list: list[str], idea_factunit_update_dict: dict, x_world: WorldUnit
 ):
     road_text = "road"
     base_text = "base"
@@ -1689,8 +1689,8 @@ def add_truth_idea_factunit_update_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_truth_idea_factunit_delete_to_legible_list(
-    legible_list: list[str], idea_factunit_delete_dict: dict, x_truth: TruthUnit
+def add_world_idea_factunit_delete_to_legible_list(
+    legible_list: list[str], idea_factunit_delete_dict: dict, x_world: WorldUnit
 ):
     road_text = "road"
     base_text = "base"

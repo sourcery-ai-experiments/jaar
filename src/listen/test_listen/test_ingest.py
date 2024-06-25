@@ -1,5 +1,5 @@
-from src._truth.idea import ideaunit_shop
-from src._truth.truth import truthunit_shop
+from src._world.idea import ideaunit_shop
+from src._world.world import worldunit_shop
 from src.listen.listen import (
     generate_ingest_list,
     _allocate_irrational_debtor_weight,
@@ -10,7 +10,7 @@ from src.listen.listen import (
 # def test_create_ingest_idea_ReturnsCorrectIdea():
 #     clean_text = "clean"
 #     old_ideaunit = ideaunit_shop(clean_text, _weight=14)
-#     old_ideaunit.set_truth_importance(0.5)
+#     old_ideaunit.set_world_importance(0.5)
 #     swimmers_text = ",swimmers"
 #     old_ideaunit._assignedunit.set_suffbelief(swimmers_text)
 #     print(f"{old_ideaunit._weight=}")
@@ -26,18 +26,18 @@ from src.listen.listen import (
 #     assert new_ideaunit._weight == 99
 
 
-def test_allocate_irrational_debtor_weight_CorrectlySetsTruthAttr():
+def test_allocate_irrational_debtor_weight_CorrectlySetsWorldAttr():
     yao_text = "Yao"
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
-    yao_truth = truthunit_shop(yao_text)
-    yao_truth.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    zia_otherunit = yao_truth.get_other(zia_text)
+    yao_world = worldunit_shop(yao_text)
+    yao_world.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    zia_otherunit = yao_world.get_other(zia_text)
     assert zia_otherunit._irrational_debtor_weight == 0
 
     # WHEN
-    _allocate_irrational_debtor_weight(yao_truth, zia_text)
+    _allocate_irrational_debtor_weight(yao_world, zia_text)
 
     # THEN
     assert zia_otherunit._irrational_debtor_weight == zia_debtor_weight
@@ -46,7 +46,7 @@ def test_allocate_irrational_debtor_weight_CorrectlySetsTruthAttr():
 def test_generate_perspective_agenda_CorrectlyGrabsAgendaTasks():
     # GIVEN
     yao_text = "Yao"
-    yao_speaker = truthunit_shop(yao_text)
+    yao_speaker = worldunit_shop(yao_text)
     yao_speaker.add_otherunit(yao_text)
     yao_speaker.set_other_pool(20)
     casa_text = "casa"
@@ -78,24 +78,24 @@ def test_generate_perspective_agenda_CorrectlyGrabsAgendaTasks():
 def test_generate_ingest_list_ReturnsCorrectList_v1():
     # GIVEN
     zia_text = "Zia"
-    zia_truthunit = truthunit_shop(zia_text)
+    zia_worldunit = worldunit_shop(zia_text)
     clean_text = "clean"
-    zia_truthunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
+    zia_worldunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
     zia_debtor_pool = 78
     zia_pixel = 2
-    assert len(zia_truthunit.get_agenda_dict()) == 1
+    assert len(zia_worldunit.get_agenda_dict()) == 1
 
     # WHEN
     ingested_list = generate_ingest_list(
-        item_list=list(zia_truthunit.get_agenda_dict().values()),
+        item_list=list(zia_worldunit.get_agenda_dict().values()),
         debtor_amount=zia_debtor_pool,
         pixel=zia_pixel,
     )
 
     # THEN
-    # clean_road = zia_truthunit.make_l1_road(clean_text)
-    clean_road = zia_truthunit.make_l1_road(clean_text)
-    clean_ideaunit = zia_truthunit.get_idea_obj(clean_road)
+    # clean_road = zia_worldunit.make_l1_road(clean_text)
+    clean_road = zia_worldunit.make_l1_road(clean_text)
+    clean_ideaunit = zia_worldunit.get_idea_obj(clean_road)
     assert ingested_list[0] == clean_ideaunit
     assert ingested_list[0]._weight == zia_debtor_pool
 
@@ -103,29 +103,29 @@ def test_generate_ingest_list_ReturnsCorrectList_v1():
 def test_generate_ingest_list_ReturnsCorrectList_v2():
     # GIVEN
     zia_text = "Zia"
-    zia_truthunit = truthunit_shop(zia_text)
+    zia_worldunit = worldunit_shop(zia_text)
     clean_text = "clean"
     cook_text = "cook"
-    zia_truthunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
-    zia_truthunit.add_l1_idea(ideaunit_shop(cook_text, pledge=True))
+    zia_worldunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
+    zia_worldunit.add_l1_idea(ideaunit_shop(cook_text, pledge=True))
     zia_debtor_pool = 32
     zia_pixel = 2
-    assert len(zia_truthunit.get_agenda_dict()) == 2
+    assert len(zia_worldunit.get_agenda_dict()) == 2
 
     # WHEN
     ingested_list = generate_ingest_list(
-        item_list=list(zia_truthunit.get_agenda_dict().values()),
+        item_list=list(zia_worldunit.get_agenda_dict().values()),
         debtor_amount=zia_debtor_pool,
         pixel=zia_pixel,
     )
 
     # THEN
-    # clean_road = zia_truthunit.make_l1_road(clean_text)
+    # clean_road = zia_worldunit.make_l1_road(clean_text)
     assert len(ingested_list) == 2
-    clean_road = zia_truthunit.make_l1_road(clean_text)
-    cook_road = zia_truthunit.make_l1_road(cook_text)
-    clean_ideaunit = zia_truthunit.get_idea_obj(clean_road)
-    cook_ideaunit = zia_truthunit.get_idea_obj(cook_road)
+    clean_road = zia_worldunit.make_l1_road(clean_text)
+    cook_road = zia_worldunit.make_l1_road(cook_text)
+    clean_ideaunit = zia_worldunit.get_idea_obj(clean_road)
+    cook_ideaunit = zia_worldunit.get_idea_obj(cook_road)
     assert ingested_list[0] == cook_ideaunit
     assert ingested_list[0]._weight == 16.0
     assert ingested_list == [cook_ideaunit, clean_ideaunit]
@@ -134,27 +134,27 @@ def test_generate_ingest_list_ReturnsCorrectList_v2():
 def test_generate_ingest_list_ReturnsCorrectList_v3():
     # GIVEN
     zia_text = "Zia"
-    zia_truthunit = truthunit_shop(zia_text)
+    zia_worldunit = worldunit_shop(zia_text)
     clean_text = "clean"
     cook_text = "cook"
-    zia_truthunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
-    zia_truthunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, pledge=True))
+    zia_worldunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
+    zia_worldunit.add_l1_idea(ideaunit_shop(cook_text, _weight=3, pledge=True))
     zia_debtor_pool = 32
     zia_pixel = 2
-    assert len(zia_truthunit.get_agenda_dict()) == 2
+    assert len(zia_worldunit.get_agenda_dict()) == 2
 
     # WHEN
     ingested_list = generate_ingest_list(
-        item_list=list(zia_truthunit.get_agenda_dict().values()),
+        item_list=list(zia_worldunit.get_agenda_dict().values()),
         debtor_amount=zia_debtor_pool,
         pixel=zia_pixel,
     )
 
     # THEN
-    clean_road = zia_truthunit.make_l1_road(clean_text)
-    cook_road = zia_truthunit.make_l1_road(cook_text)
-    clean_ideaunit = zia_truthunit.get_idea_obj(clean_road)
-    cook_ideaunit = zia_truthunit.get_idea_obj(cook_road)
+    clean_road = zia_worldunit.make_l1_road(clean_text)
+    cook_road = zia_worldunit.make_l1_road(cook_text)
+    clean_ideaunit = zia_worldunit.get_idea_obj(clean_road)
+    cook_ideaunit = zia_worldunit.get_idea_obj(cook_road)
     assert ingested_list == [cook_ideaunit, clean_ideaunit]
     assert ingested_list[0]._weight == 24.0
     assert ingested_list[1]._weight == 8.0
@@ -163,27 +163,27 @@ def test_generate_ingest_list_ReturnsCorrectList_v3():
 def test_generate_ingest_list_ReturnsCorrectList_v4():
     # GIVEN
     zia_text = "Zia"
-    zia_truthunit = truthunit_shop(zia_text)
+    zia_worldunit = worldunit_shop(zia_text)
     clean_text = "clean"
     cook_text = "cook"
-    zia_truthunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
-    zia_truthunit.add_l1_idea(ideaunit_shop(cook_text, _weight=2, pledge=True))
+    zia_worldunit.add_l1_idea(ideaunit_shop(clean_text, pledge=True))
+    zia_worldunit.add_l1_idea(ideaunit_shop(cook_text, _weight=2, pledge=True))
     zia_debtor_pool = 32
     zia_pixel = 2
-    assert len(zia_truthunit.get_agenda_dict()) == 2
+    assert len(zia_worldunit.get_agenda_dict()) == 2
 
     # WHEN
     ingested_list = generate_ingest_list(
-        item_list=list(zia_truthunit.get_agenda_dict().values()),
+        item_list=list(zia_worldunit.get_agenda_dict().values()),
         debtor_amount=zia_debtor_pool,
         pixel=zia_pixel,
     )
 
     # THEN
-    clean_road = zia_truthunit.make_l1_road(clean_text)
-    cook_road = zia_truthunit.make_l1_road(cook_text)
-    clean_ideaunit = zia_truthunit.get_idea_obj(clean_road)
-    cook_ideaunit = zia_truthunit.get_idea_obj(cook_road)
+    clean_road = zia_worldunit.make_l1_road(clean_text)
+    cook_road = zia_worldunit.make_l1_road(cook_text)
+    clean_ideaunit = zia_worldunit.get_idea_obj(clean_road)
+    cook_ideaunit = zia_worldunit.get_idea_obj(cook_road)
     assert ingested_list[0]._weight == 22
     assert ingested_list[1]._weight == 10
     assert ingested_list == [cook_ideaunit, clean_ideaunit]

@@ -235,7 +235,7 @@ def test_RiverRun_calc_metrics_EachTimeResets_tax_yield():
     assert x_riverrun.get_other_tax_yield(yao_text) == econ_money_amount
 
 
-def test_RiverRun_calc_metrics_EndsRiverCycleLoopIfNoChanges():
+def test_RiverRun_calc_metrics_EndsRiverCycleLoopIfNoDifferencesBetweenCycles():
     # GIVEN / WHEN
     x_riverrun = riverrun_shop(example_yao_userhub())
     yao_text = "Yao"

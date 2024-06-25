@@ -62,31 +62,31 @@ screenshots and elucidatory text.
 <!-- TODO: Add elucidations -->
 base attributes vs reason attributess
 
-TruthUnit objects
+WorldUnit objects
 
-TruthUnit OtherUnit objects
+WorldUnit OtherUnit objects
 
-TruthUnit BeliefUnit objects
+WorldUnit BeliefUnit objects
 
-TruthUnit IdeaUnit objects
+WorldUnit IdeaUnit objects
 
-TruthUnit IdeaUnit hierarchical structure
+WorldUnit IdeaUnit hierarchical structure
 
-TruthUnit IdeaUnit BalanceLink objects
+WorldUnit IdeaUnit BalanceLink objects
 
-TruthUnit IdeaUnit BalanceLine objects
+WorldUnit IdeaUnit BalanceLine objects
 
-TruthUnit IdeaUnit BalanceHeir objects
+WorldUnit IdeaUnit BalanceHeir objects
 
-TruthUnit IdeaUnit BalanceHeir objects
+WorldUnit IdeaUnit BalanceHeir objects
 
-TruthUnit IdeaUnit Reason PremiseUnit objects
+WorldUnit IdeaUnit Reason PremiseUnit objects
 
-TruthUnit IdeaUnit Reason PremiseHeir objects
+WorldUnit IdeaUnit Reason PremiseHeir objects
 
-TruthUnit IdeaUnit FactUnit objects
+WorldUnit IdeaUnit FactUnit objects
 
-TruthUnit IdeaUnit FactHeir objects
+WorldUnit IdeaUnit FactHeir objects
 
 
 ## 1.3 Test-Driven-Development

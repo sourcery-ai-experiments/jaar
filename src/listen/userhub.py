@@ -37,17 +37,17 @@ from src._road.road import (
     validate_roadnode,
     default_road_delimiter_if_none,
 )
-from src._truth.truth import (
-    TruthUnit,
-    get_from_json as truthunit_get_from_json,
-    truthunit_shop,
+from src._world.world import (
+    WorldUnit,
+    get_from_json as worldunit_get_from_json,
+    worldunit_shop,
 )
 from src.atom.quark import (
     QuarkUnit,
     get_from_json as quarkunit_get_from_json,
-    modify_truth_with_quarkunit,
+    modify_world_with_quarkunit,
 )
-from src.listen.basis_truths import get_default_live_truth
+from src.listen.basis_worlds import get_default_live_world
 from src.atom.atom import AtomUnit, atomunit_shop, create_atomunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -87,7 +87,7 @@ def get_econ_jobs_dir(x_econ_dir: str) -> str:
     return f"{x_econ_dir}/{jobs_str()}"
 
 
-def get_gift_grades_dir(x_econ_dir: str) -> str:
+def get_econ_grades_dir(x_econ_dir: str) -> str:
     return f"{x_econ_dir}/{grades_folder()}"
 
 
@@ -163,29 +163,29 @@ class UserHub:
     def open_file_same(self):
         return open_file(self.same_dir(), self.same_file_name())
 
-    def save_same_truth(self, x_truth: TruthUnit):
-        if x_truth._owner_id != self.person_id:
+    def save_same_world(self, x_world: WorldUnit):
+        if x_world._owner_id != self.person_id:
             raise Invalid_same_Exception(
-                f"TruthUnit with owner_id '{x_truth._owner_id}' cannot be saved as person_id '{self.person_id}''s same truth."
+                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as person_id '{self.person_id}''s same world."
             )
-        self.save_file_same(x_truth.get_json(), True)
+        self.save_file_same(x_world.get_json(), True)
 
-    def get_same_truth(self) -> TruthUnit:
+    def get_same_world(self) -> WorldUnit:
         if self.same_file_exists() is False:
             return None
         file_content = self.open_file_same()
-        return truthunit_get_from_json(file_content)
+        return worldunit_get_from_json(file_content)
 
-    def default_same_truth(self) -> TruthUnit:
-        x_truthunit = truthunit_shop(
+    def default_same_world(self) -> WorldUnit:
+        x_worldunit = worldunit_shop(
             _owner_id=self.person_id,
             _real_id=self.real_id,
             _road_delimiter=self.road_delimiter,
             _pixel=self.pixel,
             _penny=self.penny,
         )
-        x_truthunit._last_atom_id = init_atom_id()
-        return x_truthunit
+        x_worldunit._last_atom_id = init_atom_id()
+        return x_worldunit
 
     def delete_same_file(self):
         delete_dir(self.same_file_path())
@@ -230,8 +230,8 @@ class UserHub:
     def delete_quark_file(self, quark_number: int):
         delete_dir(self.quark_file_path(quark_number))
 
-    def _get_truth_from_quark_files(self) -> TruthUnit:
-        x_truth = truthunit_shop(self.person_id, self.real_id)
+    def _get_world_from_quark_files(self) -> WorldUnit:
+        x_world = worldunit_shop(self.person_id, self.real_id)
         if self.quark_file_exists(self.get_max_quark_file_number()):
             x_quark_files = dir_files(self.quarks_dir(), delete_extensions=True)
             sorted_quark_filenames = sorted(list(x_quark_files.keys()))
@@ -239,8 +239,8 @@ class UserHub:
             for x_quark_filename in sorted_quark_filenames:
                 x_file_text = x_quark_files.get(x_quark_filename)
                 x_quark = quarkunit_get_from_json(x_file_text)
-                modify_truth_with_quarkunit(x_truth, x_quark)
-        return x_truth
+                modify_world_with_quarkunit(x_world, x_quark)
+        return x_world
 
     def get_max_atom_file_number(self) -> int:
         if not os_path_exists(self.atoms_dir()):
@@ -318,10 +318,10 @@ class UserHub:
             _atoms_dir=self.atoms_dir(),
         )
 
-    def create_save_atom_file(self, before_truth: TruthUnit, after_truth: TruthUnit):
+    def create_save_atom_file(self, before_world: WorldUnit, after_world: WorldUnit):
         new_atomunit = self._default_atomunit()
         new_nucunit = new_atomunit._nucunit
-        new_nucunit.add_all_different_quarkunits(before_truth, after_truth)
+        new_nucunit.add_all_different_quarkunits(before_world, after_world)
         self.save_atom_file(new_atomunit)
 
     def get_atomunit(self, atom_id: int) -> AtomUnit:
@@ -333,16 +333,16 @@ class UserHub:
         x_quarks_dir = self.quarks_dir()
         return create_atomunit_from_files(x_atoms_dir, atom_id, x_quarks_dir)
 
-    def _merge_any_atoms(self, x_truth: TruthUnit) -> TruthUnit:
+    def _merge_any_atoms(self, x_world: WorldUnit) -> WorldUnit:
         atoms_dir = self.atoms_dir()
-        atom_ints = get_integer_filenames(atoms_dir, x_truth._last_atom_id)
+        atom_ints = get_integer_filenames(atoms_dir, x_world._last_atom_id)
         if len(atom_ints) == 0:
-            return copy_deepcopy(x_truth)
+            return copy_deepcopy(x_world)
 
         for atom_int in atom_ints:
             x_atom = self.get_atomunit(atom_int)
-            new_truth = x_atom._nucunit.get_edited_truth(x_truth)
-        return new_truth
+            new_world = x_atom._nucunit.get_edited_world(x_world)
+        return new_world
 
     def _create_initial_atom_files_from_default(self):
         x_atomunit = atomunit_shop(
@@ -352,14 +352,14 @@ class UserHub:
             _quarks_dir=self.quarks_dir(),
         )
         x_atomunit._nucunit.add_all_different_quarkunits(
-            before_truth=self.default_same_truth(),
-            after_truth=self.default_same_truth(),
+            before_world=self.default_same_world(),
+            after_world=self.default_same_world(),
         )
         x_atomunit.save_files()
 
     def _create_same_from_atoms(self):
-        x_truth = self._merge_any_atoms(self.default_same_truth())
-        self.save_same_truth(x_truth)
+        x_world = self._merge_any_atoms(self.default_same_world())
+        self.save_same_world(x_world)
 
     def _create_initial_atom_and_same_files(self):
         self._create_initial_atom_files_from_default()
@@ -368,8 +368,8 @@ class UserHub:
     def _create_initial_atom_files_from_same(self):
         x_atomunit = self._default_atomunit()
         x_atomunit._nucunit.add_all_different_quarkunits(
-            before_truth=self.default_same_truth(),
-            after_truth=self.get_same_truth(),
+            before_world=self.default_same_world(),
+            after_world=self.get_same_world(),
         )
         x_atomunit.save_files()
 
@@ -384,10 +384,10 @@ class UserHub:
             self._create_initial_atom_files_from_same()
 
     def append_atoms_to_same_file(self):
-        same_truth = self.get_same_truth()
-        same_truth = self._merge_any_atoms(same_truth)
-        self.save_same_truth(same_truth)
-        return self.get_same_truth()
+        same_world = self.get_same_world()
+        same_world = self._merge_any_atoms(same_world)
+        self.save_same_world(same_world)
+        return self.get_same_world()
 
     def econ_dir(self) -> str:
         if self.econ_road is None:
@@ -424,7 +424,7 @@ class UserHub:
         return get_econ_jobs_dir(self.econ_dir())
 
     def grades_dir(self) -> str:
-        return get_gift_grades_dir(self.econ_dir())
+        return get_econ_grades_dir(self.econ_dir())
 
     def get_jobs_dir_file_names_list(self):
         try:
@@ -432,24 +432,24 @@ class UserHub:
         except Exception:
             return []
 
-    def save_role_truth(self, x_truth: TruthUnit):
-        x_file_name = self.owner_file_name(x_truth._owner_id)
-        save_file(self.roles_dir(), x_file_name, x_truth.get_json())
+    def save_role_world(self, x_world: WorldUnit):
+        x_file_name = self.owner_file_name(x_world._owner_id)
+        save_file(self.roles_dir(), x_file_name, x_world.get_json())
 
-    def save_job_truth(self, x_truth: TruthUnit):
-        x_file_name = self.owner_file_name(x_truth._owner_id)
-        save_file(self.jobs_dir(), x_file_name, x_truth.get_json())
+    def save_job_world(self, x_world: WorldUnit):
+        x_file_name = self.owner_file_name(x_world._owner_id)
+        save_file(self.jobs_dir(), x_file_name, x_world.get_json())
 
-    def save_live_truth(self, x_truth: TruthUnit):
-        if x_truth._owner_id != self.person_id:
+    def save_live_world(self, x_world: WorldUnit):
+        if x_world._owner_id != self.person_id:
             raise Invalid_live_Exception(
-                f"TruthUnit with owner_id '{x_truth._owner_id}' cannot be saved as person_id '{self.person_id}''s live truth."
+                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as person_id '{self.person_id}''s live world."
             )
-        self.save_file_live(x_truth.get_json(), True)
+        self.save_file_live(x_world.get_json(), True)
 
-    def initialize_live_file(self, same: TruthUnit):
+    def initialize_live_file(self, same: WorldUnit):
         if self.live_file_exists() is False:
-            self.save_live_truth(get_default_live_truth(same))
+            self.save_live_world(get_default_live_world(same))
 
     def role_file_exists(self, owner_id: PersonID) -> bool:
         return os_path_exists(self.role_path(owner_id))
@@ -457,23 +457,23 @@ class UserHub:
     def job_file_exists(self, owner_id: PersonID) -> bool:
         return os_path_exists(self.job_path(owner_id))
 
-    def get_role_truth(self, owner_id: PersonID) -> TruthUnit:
+    def get_role_world(self, owner_id: PersonID) -> WorldUnit:
         if self.role_file_exists(owner_id) is False:
             return None
         file_content = open_file(self.roles_dir(), self.owner_file_name(owner_id))
-        return truthunit_get_from_json(file_content)
+        return worldunit_get_from_json(file_content)
 
-    def get_job_truth(self, owner_id: PersonID) -> TruthUnit:
+    def get_job_world(self, owner_id: PersonID) -> WorldUnit:
         if self.job_file_exists(owner_id) is False:
             return None
         file_content = open_file(self.jobs_dir(), self.owner_file_name(owner_id))
-        return truthunit_get_from_json(file_content)
+        return worldunit_get_from_json(file_content)
 
-    def get_live_truth(self) -> TruthUnit:
+    def get_live_world(self) -> WorldUnit:
         if self.live_file_exists() is False:
             return None
         file_content = self.open_file_live()
-        return truthunit_get_from_json(file_content)
+        return worldunit_get_from_json(file_content)
 
     def delete_role_file(self, owner_id: PersonID):
         delete_dir(self.role_path(owner_id))
@@ -484,7 +484,7 @@ class UserHub:
     def delete_treasury_db_file(self):
         delete_dir(self.treasury_db_path())
 
-    def dw_speaker_truth(self, speaker_id: PersonID) -> TruthUnit:
+    def dw_speaker_world(self, speaker_id: PersonID) -> WorldUnit:
         speaker_userhub = userhub_shop(
             reals_dir=self.reals_dir,
             real_id=self.real_id,
@@ -492,18 +492,18 @@ class UserHub:
             road_delimiter=self.road_delimiter,
             pixel=self.pixel,
         )
-        return speaker_userhub.get_live_truth()
+        return speaker_userhub.get_live_world()
 
-    def get_perspective_truth(self, speaker: TruthUnit) -> TruthUnit:
-        # get copy of truth without any metrics
-        perspective_truth = truthunit_get_from_json(speaker.get_json())
-        perspective_truth.set_owner_id(self.person_id)
-        return perspective_truth
+    def get_perspective_world(self, speaker: WorldUnit) -> WorldUnit:
+        # get copy of world without any metrics
+        perspective_world = worldunit_get_from_json(speaker.get_json())
+        perspective_world.set_owner_id(self.person_id)
+        return perspective_world
 
-    def get_dw_perspective_truth(self, speaker_id: PersonID) -> TruthUnit:
-        return self.get_perspective_truth(self.dw_speaker_truth(speaker_id))
+    def get_dw_perspective_world(self, speaker_id: PersonID) -> WorldUnit:
+        return self.get_perspective_world(self.dw_speaker_world(speaker_id))
 
-    def rj_speaker_truth(self, healer_id: PersonID, speaker_id: PersonID) -> TruthUnit:
+    def rj_speaker_world(self, healer_id: PersonID, speaker_id: PersonID) -> WorldUnit:
         speaker_userhub = userhub_shop(
             reals_dir=self.reals_dir,
             real_id=self.real_id,
@@ -512,34 +512,34 @@ class UserHub:
             road_delimiter=self.road_delimiter,
             pixel=self.pixel,
         )
-        return speaker_userhub.get_job_truth(speaker_id)
+        return speaker_userhub.get_job_world(speaker_id)
 
-    def rj_perspective_truth(
+    def rj_perspective_world(
         self, healer_id: PersonID, speaker_id: PersonID
-    ) -> TruthUnit:
-        speaker_job = self.rj_speaker_truth(healer_id, speaker_id)
-        return self.get_perspective_truth(speaker_job)
+    ) -> WorldUnit:
+        speaker_job = self.rj_speaker_world(healer_id, speaker_id)
+        return self.get_perspective_world(speaker_job)
 
     def get_econ_roads(self):
-        x_same_truth = self.get_same_truth()
-        x_same_truth.calc_truth_metrics()
-        if x_same_truth._econs_justified is False:
-            x_str = f"Cannot get_econ_roads from '{self.person_id}' same truth because 'TruthUnit._econs_justified' is False."
+        x_same_world = self.get_same_world()
+        x_same_world.calc_world_metrics()
+        if x_same_world._econs_justified is False:
+            x_str = f"Cannot get_econ_roads from '{self.person_id}' same world because 'WorldUnit._econs_justified' is False."
             raise get_econ_roadsException(x_str)
-        if x_same_truth._econs_buildable is False:
-            x_str = f"Cannot get_econ_roads from '{self.person_id}' same truth because 'TruthUnit._econs_buildable' is False."
+        if x_same_world._econs_buildable is False:
+            x_str = f"Cannot get_econ_roads from '{self.person_id}' same world because 'WorldUnit._econs_buildable' is False."
             raise get_econ_roadsException(x_str)
-        person_healer_dict = x_same_truth._healers_dict.get(self.person_id)
+        person_healer_dict = x_same_world._healers_dict.get(self.person_id)
         if person_healer_dict is None:
             return get_empty_set_if_none(None)
-        econ_roads = x_same_truth._healers_dict.get(self.person_id).keys()
+        econ_roads = x_same_world._healers_dict.get(self.person_id).keys()
         return get_empty_set_if_none(econ_roads)
 
     def save_all_same_roles(self):
-        same = self.get_same_truth()
+        same = self.get_same_world()
         for x_econ_road in self.get_econ_roads():
             self.econ_road = x_econ_road
-            self.save_role_truth(same)
+            self.save_role_world(same)
         self.econ_road = None
 
     def create_treasury_db_file(self):

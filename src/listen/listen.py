@@ -4,9 +4,9 @@ from src._road.road import (
     get_root_node_from_road,
     PersonID,
 )
-from src._truth.idea import IdeaUnit
-from src._truth.truth import TruthUnit, OtherUnit
-from src.listen.basis_truths import create_empty_truth, create_listen_basis
+from src._world.idea import IdeaUnit
+from src._world.world import WorldUnit, OtherUnit
+from src.listen.basis_worlds import create_empty_world, create_listen_basis
 from src.listen.userhub import UserHub, userhub_shop
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
@@ -16,15 +16,15 @@ class Missing_other_debtor_poolException(Exception):
     pass
 
 
-def generate_perspective_agenda(perspective_truth: TruthUnit) -> list[IdeaUnit]:
-    for x_factunit in perspective_truth._idearoot._factunits.values():
+def generate_perspective_agenda(perspective_world: WorldUnit) -> list[IdeaUnit]:
+    for x_factunit in perspective_world._idearoot._factunits.values():
         x_factunit.set_pick_to_base()
-    return list(perspective_truth.get_agenda_dict().values())
+    return list(perspective_world.get_agenda_dict().values())
 
 
 def _ingest_perspective_agenda(
-    listener: TruthUnit, agenda: list[IdeaUnit]
-) -> TruthUnit:
+    listener: WorldUnit, agenda: list[IdeaUnit]
+) -> WorldUnit:
     debtor_amount = listener._other_debtor_pool
     ingest_list = generate_ingest_list(agenda, debtor_amount, listener._pixel)
     for ingest_ideaunit in ingest_list:
@@ -32,7 +32,7 @@ def _ingest_perspective_agenda(
     return listener
 
 
-def _allocate_irrational_debtor_weight(listener: TruthUnit, speaker_owner_id: PersonID):
+def _allocate_irrational_debtor_weight(listener: WorldUnit, speaker_owner_id: PersonID):
     speaker_otherunit = listener.get_other(speaker_owner_id)
     speaker_debtor_weight = speaker_otherunit.debtor_weight
     speaker_otherunit.add_irrational_debtor_weight(speaker_debtor_weight)
@@ -40,22 +40,22 @@ def _allocate_irrational_debtor_weight(listener: TruthUnit, speaker_owner_id: Pe
 
 
 def _allocate_inallocable_debtor_weight(
-    listener: TruthUnit, speaker_owner_id: PersonID
+    listener: WorldUnit, speaker_owner_id: PersonID
 ):
     speaker_otherunit = listener.get_other(speaker_owner_id)
     speaker_otherunit.add_inallocable_debtor_weight(speaker_otherunit.debtor_weight)
     return listener
 
 
-def get_speaker_perspective(speaker: TruthUnit, listener_owner_id: PersonID):
+def get_speaker_perspective(speaker: WorldUnit, listener_owner_id: PersonID):
     listener_userhub = userhub_shop("", "", listener_owner_id)
-    return listener_userhub.get_perspective_truth(speaker)
+    return listener_userhub.get_perspective_world(speaker)
 
 
 def _get_pixel_scaled_weight(
-    x_truth_importance: float, debtor_amount: float, pixel: float
+    x_world_importance: float, debtor_amount: float, pixel: float
 ) -> float:
-    x_ingest_weight = x_truth_importance * debtor_amount
+    x_ingest_weight = x_world_importance * debtor_amount
     return int(x_ingest_weight / pixel) * pixel
 
 
@@ -76,7 +76,7 @@ def create_ingest_idea(
     x_ideaunit: IdeaUnit, debtor_amount: float, pixel: float
 ) -> IdeaUnit:
     x_ideaunit._weight = _get_pixel_scaled_weight(
-        x_truth_importance=x_ideaunit._truth_importance,
+        x_world_importance=x_ideaunit._world_importance,
         debtor_amount=debtor_amount,
         pixel=pixel,
     )
@@ -95,7 +95,7 @@ def generate_ingest_list(
     return x_list
 
 
-def _ingest_single_ideaunit(listener: TruthUnit, ingest_ideaunit: IdeaUnit):
+def _ingest_single_ideaunit(listener: WorldUnit, ingest_ideaunit: IdeaUnit):
     weight_data = _create_weight_data(listener, ingest_ideaunit.get_road())
 
     if listener.idea_exists(ingest_ideaunit.get_road()) is False:
@@ -116,7 +116,7 @@ class WeightReplaceOrAddData:
     replace_weight_list: list = None
 
 
-def _create_weight_data(listener: TruthUnit, x_road: RoadUnit) -> list:
+def _create_weight_data(listener: WorldUnit, x_road: RoadUnit) -> list:
     weight_data = WeightReplaceOrAddData()
     weight_data.add_to_weight_list = []
     weight_data.replace_weight_list = []
@@ -132,7 +132,7 @@ def _create_weight_data(listener: TruthUnit, x_road: RoadUnit) -> list:
 
 
 def _add_and_replace_ideaunit_weights(
-    listener: TruthUnit,
+    listener: WorldUnit,
     replace_weight_list: list[RoadUnit],
     add_to_weight_list: list[RoadUnit],
     x_weight: float,
@@ -144,7 +144,7 @@ def _add_and_replace_ideaunit_weights(
         x_ideaunit._weight += x_weight
 
 
-def get_debtors_roll(x_role: TruthUnit) -> list[OtherUnit]:
+def get_debtors_roll(x_role: WorldUnit) -> list[OtherUnit]:
     return [
         x_otherunit
         for x_otherunit in x_role._others.values()
@@ -152,13 +152,13 @@ def get_debtors_roll(x_role: TruthUnit) -> list[OtherUnit]:
     ]
 
 
-def get_ordered_debtors_roll(x_truth: TruthUnit) -> list[OtherUnit]:
-    others_ordered_list = get_debtors_roll(x_truth)
+def get_ordered_debtors_roll(x_world: WorldUnit) -> list[OtherUnit]:
+    others_ordered_list = get_debtors_roll(x_world)
     others_ordered_list.sort(key=lambda x: (x.debtor_weight, x.other_id), reverse=True)
     return others_ordered_list
 
 
-def migrate_all_facts(src_listener: TruthUnit, dst_listener: TruthUnit):
+def migrate_all_facts(src_listener: WorldUnit, dst_listener: WorldUnit):
     for x_factunit in src_listener._idearoot._factunits.values():
         base_road = x_factunit.base
         pick_road = x_factunit.pick
@@ -172,10 +172,10 @@ def migrate_all_facts(src_listener: TruthUnit, dst_listener: TruthUnit):
 
 
 def listen_to_speaker_fact(
-    listener: TruthUnit,
-    speaker: TruthUnit,
+    listener: WorldUnit,
+    speaker: WorldUnit,
     missing_fact_bases: list[RoadUnit] = None,
-) -> TruthUnit:
+) -> WorldUnit:
     if missing_fact_bases is None:
         missing_fact_bases = list(listener.get_missing_fact_bases())
     for missing_fact_base in missing_fact_bases:
@@ -190,86 +190,86 @@ def listen_to_speaker_fact(
             )
 
 
-def listen_to_speaker_agenda(listener: TruthUnit, speaker: TruthUnit) -> TruthUnit:
+def listen_to_speaker_agenda(listener: WorldUnit, speaker: WorldUnit) -> WorldUnit:
     if listener.other_exists(speaker._owner_id) is False:
         raise Missing_other_debtor_poolException(
-            f"listener '{listener._owner_id}' truth is assumed to have {speaker._owner_id} otherunit."
+            f"listener '{listener._owner_id}' world is assumed to have {speaker._owner_id} otherunit."
         )
-    perspective_truth = get_speaker_perspective(speaker, listener._owner_id)
-    if perspective_truth._rational is False:
+    perspective_world = get_speaker_perspective(speaker, listener._owner_id)
+    if perspective_world._rational is False:
         return _allocate_irrational_debtor_weight(listener, speaker._owner_id)
     if listener._other_debtor_pool is None:
         return _allocate_inallocable_debtor_weight(listener, speaker._owner_id)
     if listener._owner_id != speaker._owner_id:
-        agenda = generate_perspective_agenda(perspective_truth)
+        agenda = generate_perspective_agenda(perspective_world)
     else:
-        agenda = list(perspective_truth.get_all_pledges().values())
+        agenda = list(perspective_world.get_all_pledges().values())
     if len(agenda) == 0:
         return _allocate_inallocable_debtor_weight(listener, speaker._owner_id)
     return _ingest_perspective_agenda(listener, agenda)
 
 
-def listen_to_agendas_same_live(listener_live: TruthUnit, listener_userhub: UserHub):
+def listen_to_agendas_same_live(listener_live: WorldUnit, listener_userhub: UserHub):
     for x_otherunit in get_ordered_debtors_roll(listener_live):
         if x_otherunit.other_id == listener_live._owner_id:
-            listen_to_speaker_agenda(listener_live, listener_userhub.get_same_truth())
+            listen_to_speaker_agenda(listener_live, listener_userhub.get_same_world())
         else:
             speaker_id = x_otherunit.other_id
-            speaker_live = listener_userhub.dw_speaker_truth(speaker_id)
+            speaker_live = listener_userhub.dw_speaker_world(speaker_id)
             if speaker_live is None:
-                speaker_live = create_empty_truth(listener_live, speaker_id)
+                speaker_live = create_empty_world(listener_live, speaker_id)
             listen_to_speaker_agenda(listener_live, speaker_live)
 
 
-def listen_to_agendas_role_job(listener_job: TruthUnit, healer_userhub: UserHub):
+def listen_to_agendas_role_job(listener_job: WorldUnit, healer_userhub: UserHub):
     listener_id = listener_job._owner_id
     for x_otherunit in get_ordered_debtors_roll(listener_job):
         if x_otherunit.other_id == listener_id:
-            listener_role = healer_userhub.get_role_truth(listener_id)
+            listener_role = healer_userhub.get_role_world(listener_id)
             listen_to_speaker_agenda(listener_job, listener_role)
         else:
             speaker_id = x_otherunit.other_id
             healer_id = healer_userhub.person_id
-            speaker_job = healer_userhub.rj_speaker_truth(healer_id, speaker_id)
+            speaker_job = healer_userhub.rj_speaker_world(healer_id, speaker_id)
             if speaker_job is None:
-                speaker_job = create_empty_truth(listener_job, speaker_id)
+                speaker_job = create_empty_world(listener_job, speaker_id)
             listen_to_speaker_agenda(listener_job, speaker_job)
 
 
-def listen_to_facts_role_job(new_job: TruthUnit, healer_userhub: UserHub):
-    role = healer_userhub.get_role_truth(new_job._owner_id)
+def listen_to_facts_role_job(new_job: WorldUnit, healer_userhub: UserHub):
+    role = healer_userhub.get_role_world(new_job._owner_id)
     migrate_all_facts(role, new_job)
     for x_otherunit in get_ordered_debtors_roll(new_job):
         if x_otherunit.other_id != new_job._owner_id:
-            speaker_job = healer_userhub.get_job_truth(x_otherunit.other_id)
+            speaker_job = healer_userhub.get_job_world(x_otherunit.other_id)
             if speaker_job != None:
                 listen_to_speaker_fact(new_job, speaker_job)
 
 
-def listen_to_facts_same_live(new_live: TruthUnit, listener_userhub: UserHub):
-    migrate_all_facts(listener_userhub.get_same_truth(), new_live)
+def listen_to_facts_same_live(new_live: WorldUnit, listener_userhub: UserHub):
+    migrate_all_facts(listener_userhub.get_same_world(), new_live)
     for x_otherunit in get_ordered_debtors_roll(new_live):
         speaker_id = x_otherunit.other_id
         if speaker_id != new_live._owner_id:
-            speaker_live = listener_userhub.dw_speaker_truth(speaker_id)
+            speaker_live = listener_userhub.dw_speaker_world(speaker_id)
             if speaker_live != None:
                 listen_to_speaker_fact(new_live, speaker_live)
 
 
-def listen_to_debtors_roll_same_live(listener_userhub: UserHub) -> TruthUnit:
-    same = listener_userhub.get_same_truth()
-    new_truth = create_listen_basis(same)
+def listen_to_debtors_roll_same_live(listener_userhub: UserHub) -> WorldUnit:
+    same = listener_userhub.get_same_world()
+    new_world = create_listen_basis(same)
     if same._other_debtor_pool is None:
-        return new_truth
-    listen_to_agendas_same_live(new_truth, listener_userhub)
-    listen_to_facts_same_live(new_truth, listener_userhub)
-    return new_truth
+        return new_world
+    listen_to_agendas_same_live(new_world, listener_userhub)
+    listen_to_facts_same_live(new_world, listener_userhub)
+    return new_world
 
 
 def listen_to_debtors_roll_role_job(
     healer_userhub: UserHub, listener_id: PersonID
-) -> TruthUnit:
-    role = healer_userhub.get_role_truth(listener_id)
+) -> WorldUnit:
+    role = healer_userhub.get_role_world(listener_id)
     new_role = create_listen_basis(role)
     if role._other_debtor_pool is None:
         return new_role
@@ -279,11 +279,11 @@ def listen_to_debtors_roll_role_job(
 
 
 def listen_to_person_jobs(listener_userhub: UserHub) -> None:
-    same = listener_userhub.get_same_truth()
+    same = listener_userhub.get_same_world()
     new_live = create_listen_basis(same)
     pre_live_dict = new_live.get_dict()
-    same.calc_truth_metrics()
-    new_live.calc_truth_metrics()
+    same.calc_world_metrics()
+    new_live.calc_world_metrics()
 
     for x_healer_id, econ_dict in same._healers_dict.items():
         listener_id = listener_userhub.person_id
@@ -296,14 +296,14 @@ def listen_to_person_jobs(listener_userhub: UserHub) -> None:
         _ingest_perspective_agenda(new_live, agenda)
         listen_to_speaker_fact(new_live, same)
 
-    listener_userhub.save_live_truth(new_live)
+    listener_userhub.save_live_world(new_live)
 
 
 def _pick_econ_jobs_and_listen(
     listener_id: PersonID,
     econ_dict: dict[RoadUnit],
     healer_userhub: UserHub,
-    new_live: TruthUnit,
+    new_live: WorldUnit,
 ):
     for econ_path in econ_dict:
         healer_userhub.econ_road = econ_path
@@ -311,17 +311,17 @@ def _pick_econ_jobs_and_listen(
 
 
 def pick_econ_job_and_listen(
-    listener_person_id: PersonID, healer_userhub: UserHub, new_live: TruthUnit
+    listener_person_id: PersonID, healer_userhub: UserHub, new_live: WorldUnit
 ):
     listener_id = listener_person_id
     if healer_userhub.job_file_exists(listener_id):
-        econ_job = healer_userhub.get_job_truth(listener_id)
+        econ_job = healer_userhub.get_job_world(listener_id)
     else:
-        econ_job = create_empty_truth(new_live, new_live._owner_id)
+        econ_job = create_empty_world(new_live, new_live._owner_id)
     listen_to_job_agenda(new_live, econ_job)
 
 
-def listen_to_job_agenda(listener: TruthUnit, job: TruthUnit):
+def listen_to_job_agenda(listener: WorldUnit, job: WorldUnit):
     for x_idea in job._idea_dict.values():
         if listener.idea_exists(x_idea.get_road()) is False:
             listener.add_idea(x_idea, x_idea._parent_road)
@@ -329,14 +329,14 @@ def listen_to_job_agenda(listener: TruthUnit, job: TruthUnit):
             listener.add_idea(x_idea, x_idea._parent_road)
     for x_fact_road, x_fact_unit in job._idearoot._factunits.items():
         listener._idearoot.set_factunit(x_fact_unit)
-    listener.calc_truth_metrics()
+    listener.calc_world_metrics()
 
 
 def create_job_file_from_role_file(healer_userhub: UserHub, person_id: PersonID):
     x_job = listen_to_debtors_roll_role_job(healer_userhub, listener_id=person_id)
-    healer_userhub.save_job_truth(x_job)
+    healer_userhub.save_job_world(x_job)
 
 
 def create_live_file_from_same_file(userhub: UserHub):
     x_live = listen_to_debtors_roll_same_live(userhub)
-    userhub.save_live_truth(x_live)
+    userhub.save_live_world(x_live)

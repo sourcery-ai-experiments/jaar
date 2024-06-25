@@ -1,4 +1,4 @@
-from src._truth.truth import truthunit_shop
+from src._world.world import worldunit_shop
 from src.listen.userhub import userhub_shop
 from src.money.rivercycle import (
     RiverBook,
@@ -37,14 +37,14 @@ def test_create_riverbook_ReturnsCorrectObj():
     # GIVEN
     yao_text = "Yao"
     sue_text = "Sue"
-    yao_truth = truthunit_shop(yao_text)
-    yao_truth.add_otherunit(yao_text)
-    yao_truth.add_otherunit(sue_text)
+    yao_world = worldunit_shop(yao_text)
+    yao_world.add_otherunit(yao_text)
+    yao_world.add_otherunit(sue_text)
     yao_userhub = userhub_shop(None, None, yao_text)
     yao_book_money_amount = 500
 
     # WHEN
-    yao_credorledger = get_credorledger(yao_truth)
+    yao_credorledger = get_credorledger(yao_world)
     yao_riverbook = create_riverbook(
         yao_userhub, yao_text, yao_credorledger, yao_book_money_amount
     )

@@ -1,32 +1,32 @@
 {
     "tables": {
-        "truth_beliefunit": {
+        "world_beliefunit": {
             "columns": {
                 "beliefunit_belief_id": {},
                 "owner_id": {}
             }
         },
-        "truth_idea_factunit": {
+        "world_idea_factunit": {
             "columns": {
                 "base": {},
                 "owner_id": {},
                 "pick": {}
             }
         },
-        "truth_ideaunit": {
+        "world_ideaunit": {
             "columns": {
                 "idea_road": {},
                 "owner_id": {}
             }
         },
-        "truth_otherunit": {
+        "world_otherunit": {
             "columns": {
-                "_truth_cred": {},
-                "_truth_debt": {},
-                "_truth_agenda_cred": {},
-                "_truth_agenda_debt": {},
-                "_truth_agenda_ratio_cred": {},
-                "_truth_agenda_ratio_debt": {},
+                "_world_cred": {},
+                "_world_debt": {},
+                "_world_agenda_cred": {},
+                "_world_agenda_debt": {},
+                "_world_agenda_ratio_cred": {},
+                "_world_agenda_ratio_debt": {},
                 "_credor_operational": {},
                 "_debtor_operational": {},
                 "_treasury_cred_score": {},
@@ -38,7 +38,7 @@
                 "other_id": {}
             }
         },
-        "truthunit": {
+        "worldunit": {
             "columns": {
                 "owner_id": {},
                 "rational": {},

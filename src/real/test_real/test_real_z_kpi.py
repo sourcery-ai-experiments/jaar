@@ -29,17 +29,17 @@ def test_get_real_sames_others_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup
         "other_id",
         "credor_weight",
         "debtor_weight",
-        "_truth_cred",
-        "_truth_debt",
-        "_truth_agenda_cred",
-        "_truth_agenda_debt",
-        "_truth_agenda_ratio_cred",
-        "_truth_agenda_ratio_debt",
+        "_world_cred",
+        "_world_debt",
+        "_world_agenda_cred",
+        "_world_agenda_debt",
+        "_world_agenda_ratio_cred",
+        "_world_agenda_ratio_debt",
         "_credor_operational",
         "_debtor_operational",
         "_treasury_due_paid",
         "_treasury_due_diff",
-        "_output_truth_meld_order",
+        "_output_world_meld_order",
         "_treasury_cred_score",
         "_treasury_voice_rank",
         "_treasury_voice_hx_lowest_rank",
@@ -70,7 +70,7 @@ def test_get_real_lives_others_dataframe_ReturnsCorrectObj(
 ):
     # GIVEN
     music_real = create_example_real2()
-    music_real.generate_all_live_truths()
+    music_real.generate_all_live_worlds()
 
     # WHEN
     x_df = get_real_lives_others_dataframe(music_real)
@@ -81,17 +81,17 @@ def test_get_real_lives_others_dataframe_ReturnsCorrectObj(
         "other_id",
         "credor_weight",
         "debtor_weight",
-        "_truth_cred",
-        "_truth_debt",
-        "_truth_agenda_cred",
-        "_truth_agenda_debt",
-        "_truth_agenda_ratio_cred",
-        "_truth_agenda_ratio_debt",
+        "_world_cred",
+        "_world_debt",
+        "_world_agenda_cred",
+        "_world_agenda_debt",
+        "_world_agenda_ratio_cred",
+        "_world_agenda_ratio_debt",
         "_credor_operational",
         "_debtor_operational",
         "_treasury_due_paid",
         "_treasury_due_diff",
-        "_output_truth_meld_order",
+        "_output_world_meld_order",
         "_treasury_cred_score",
         "_treasury_voice_rank",
         "_treasury_voice_hx_lowest_rank",
@@ -109,7 +109,7 @@ def test_get_real_lives_others_plotly_fig_DisplaysCorrectInfo(
 ):
     # GIVEN
     music_real = create_example_real2()
-    music_real.generate_all_live_truths()
+    music_real.generate_all_live_worlds()
 
     # WHEN
     x_fig = get_real_lives_others_plotly_fig(music_real)
@@ -131,7 +131,7 @@ def test_get_real_sames_agenda_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup
     # THEN
     agenda_colums = {
         "owner_id",
-        "truth_importance",
+        "world_importance",
         "_label",
         "_parent_road",
         "_begin",
@@ -164,7 +164,7 @@ def test_get_real_sames_agenda_plotly_fig_DisplaysCorrectInfo(env_dir_setup_clea
 def test_get_real_lives_agenda_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real4()
-    music_real.generate_all_live_truths()
+    music_real.generate_all_live_worlds()
 
     # WHEN
     x_df = get_real_lives_agenda_dataframe(music_real)
@@ -172,7 +172,7 @@ def test_get_real_lives_agenda_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup
     # THEN
     agenda_colums = {
         "owner_id",
-        "truth_importance",
+        "world_importance",
         "_label",
         "_parent_road",
         "_begin",
@@ -194,7 +194,7 @@ def test_get_real_lives_agenda_plotly_fig_DisplaysCorrectInfo(
 ):
     # GIVEN
     music_real = create_example_real4()
-    music_real.generate_all_live_truths()
+    music_real.generate_all_live_worlds()
 
     # WHEN
     x_fig = get_real_lives_agenda_plotly_fig(music_real)

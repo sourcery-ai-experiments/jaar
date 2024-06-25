@@ -1,8 +1,8 @@
 from src._instrument.file import delete_dir, save_file, open_file
 from src._instrument.sqlite import check_connection
-from src._truth.healer import healerhold_shop
-from src._truth.idea import ideaunit_shop
-from src._truth.graphic import display_ideatree
+from src._world.healer import healerhold_shop
+from src._world.idea import ideaunit_shop
+from src._world.graphic import display_ideatree
 from src.listen.userhub import userhub_shop, treasury_file_name
 from src.listen.examples.listen_env import (
     env_dir_setup_cleanup,
@@ -20,27 +20,27 @@ def test_UserHub_get_econ_roads_RaisesErrorWhen__econs_justified_IsFalse(
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
-    sue_userhub.save_same_truth(sue_userhub.default_same_truth())
-    sue_same_truth = sue_userhub.get_same_truth()
-    sue_same_truth.add_otherunit(sue_text)
+    sue_userhub.save_same_world(sue_userhub.default_same_world())
+    sue_same_world = sue_userhub.get_same_world()
+    sue_same_world.add_otherunit(sue_text)
     texas_text = "Texas"
-    texas_road = sue_same_truth.make_l1_road(texas_text)
+    texas_road = sue_same_world.make_l1_road(texas_text)
     dallas_text = "dallas"
-    dallas_road = sue_same_truth.make_road(texas_road, dallas_text)
-    sue_same_truth.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    sue_same_truth.add_idea(ideaunit_shop(dallas_text), texas_road)
-    sue_same_truth.edit_idea_attr(texas_road, healerhold=healerhold_shop({sue_text}))
-    sue_same_truth.edit_idea_attr(dallas_road, healerhold=healerhold_shop({sue_text}))
-    sue_same_truth.calc_truth_metrics()
-    assert sue_same_truth._econs_justified is False
-    sue_userhub.save_same_truth(sue_same_truth)
+    dallas_road = sue_same_world.make_road(texas_road, dallas_text)
+    sue_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    sue_same_world.add_idea(ideaunit_shop(dallas_text), texas_road)
+    sue_same_world.edit_idea_attr(texas_road, healerhold=healerhold_shop({sue_text}))
+    sue_same_world.edit_idea_attr(dallas_road, healerhold=healerhold_shop({sue_text}))
+    sue_same_world.calc_world_metrics()
+    assert sue_same_world._econs_justified is False
+    sue_userhub.save_same_world(sue_same_world)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         sue_userhub.get_econ_roads()
     assert (
         str(excinfo.value)
-        == f"Cannot get_econ_roads from '{sue_text}' same truth because 'TruthUnit._econs_justified' is False."
+        == f"Cannot get_econ_roads from '{sue_text}' same world because 'WorldUnit._econs_justified' is False."
     )
 
 
@@ -50,24 +50,24 @@ def test_UserHub_get_econ_roads_RaisesErrorWhen__econs_buildable_IsFalse(
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
-    sue_userhub.save_same_truth(sue_userhub.default_same_truth())
-    sue_same_truth = sue_userhub.get_same_truth()
-    sue_same_truth.add_otherunit(sue_text)
+    sue_userhub.save_same_world(sue_userhub.default_same_world())
+    sue_same_world = sue_userhub.get_same_world()
+    sue_same_world.add_otherunit(sue_text)
     texas_text = "Tex/as"
-    texas_road = sue_same_truth.make_l1_road(texas_text)
-    sue_same_truth.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    sue_same_truth.edit_idea_attr(texas_road, healerhold=healerhold_shop({sue_text}))
-    sue_same_truth.calc_truth_metrics()
-    assert sue_same_truth._econs_justified
-    assert sue_same_truth._econs_buildable is False
-    sue_userhub.save_same_truth(sue_same_truth)
+    texas_road = sue_same_world.make_l1_road(texas_text)
+    sue_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    sue_same_world.edit_idea_attr(texas_road, healerhold=healerhold_shop({sue_text}))
+    sue_same_world.calc_world_metrics()
+    assert sue_same_world._econs_justified
+    assert sue_same_world._econs_buildable is False
+    sue_userhub.save_same_world(sue_same_world)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
         sue_userhub.get_econ_roads()
     assert (
         str(excinfo.value)
-        == f"Cannot get_econ_roads from '{sue_text}' same truth because 'TruthUnit._econs_buildable' is False."
+        == f"Cannot get_econ_roads from '{sue_text}' same world because 'WorldUnit._econs_buildable' is False."
     )
 
 
@@ -75,23 +75,23 @@ def test_UserHub_get_econ_roads_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
-    sue_userhub.save_same_truth(sue_userhub.default_same_truth())
-    sue_same_truth = sue_userhub.get_same_truth()
-    sue_same_truth.add_otherunit(sue_text)
+    sue_userhub.save_same_world(sue_userhub.default_same_world())
+    sue_same_world = sue_userhub.get_same_world()
+    sue_same_world.add_otherunit(sue_text)
     texas_text = "Texas"
-    texas_road = sue_same_truth.make_l1_road(texas_text)
-    sue_same_truth.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    texas_road = sue_same_world.make_l1_road(texas_text)
+    sue_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     elpaso_text = "el paso"
-    dallas_road = sue_same_truth.make_road(texas_road, dallas_text)
-    elpaso_road = sue_same_truth.make_road(texas_road, elpaso_text)
+    dallas_road = sue_same_world.make_road(texas_road, dallas_text)
+    elpaso_road = sue_same_world.make_road(texas_road, elpaso_text)
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
-    sue_same_truth.add_idea(dallas_idea, texas_road)
-    sue_same_truth.add_idea(elpaso_idea, texas_road)
-    sue_same_truth.calc_truth_metrics()
-    # display_ideatree(sue_same_truth, mode="Econ").show()
-    sue_userhub.save_same_truth(sue_same_truth)
+    sue_same_world.add_idea(dallas_idea, texas_road)
+    sue_same_world.add_idea(elpaso_idea, texas_road)
+    sue_same_world.calc_world_metrics()
+    # display_ideatree(sue_same_world, mode="Econ").show()
+    sue_userhub.save_same_world(sue_same_world)
 
     # WHEN
     sue_econ_roads = sue_userhub.get_econ_roads()
@@ -108,25 +108,25 @@ def test_UserHub_save_all_same_roles_CorrectlySetsroles(
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
-    sue_userhub.save_same_truth(sue_userhub.default_same_truth())
-    sue_same_truth = sue_userhub.get_same_truth()
-    sue_same_truth.add_otherunit(sue_text)
+    sue_userhub.save_same_world(sue_userhub.default_same_world())
+    sue_same_world = sue_userhub.get_same_world()
+    sue_same_world.add_otherunit(sue_text)
     bob_text = "Bob"
-    sue_same_truth.add_otherunit(bob_text)
+    sue_same_world.add_otherunit(bob_text)
     texas_text = "Texas"
-    texas_road = sue_same_truth.make_l1_road(texas_text)
-    sue_same_truth.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    texas_road = sue_same_world.make_l1_road(texas_text)
+    sue_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
-    dallas_road = sue_same_truth.make_road(texas_road, dallas_text)
+    dallas_road = sue_same_world.make_road(texas_road, dallas_text)
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
-    sue_same_truth.add_idea(dallas_idea, texas_road)
+    sue_same_world.add_idea(dallas_idea, texas_road)
     elpaso_text = "el paso"
-    elpaso_road = sue_same_truth.make_road(texas_road, elpaso_text)
+    elpaso_road = sue_same_world.make_road(texas_road, elpaso_text)
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
-    sue_same_truth.add_idea(elpaso_idea, texas_road)
-    # sue_same_truth.calc_truth_metrics()
-    # display_ideatree(sue_same_truth, mode="Econ").show()
-    sue_userhub.save_same_truth(sue_same_truth)
+    sue_same_world.add_idea(elpaso_idea, texas_road)
+    # sue_same_world.calc_world_metrics()
+    # display_ideatree(sue_same_world, mode="Econ").show()
+    sue_userhub.save_same_world(sue_same_world)
     sue_dallas_userhub = userhub_shop(env_dir(), None, sue_text, dallas_road)
     sue_elpaso_userhub = userhub_shop(env_dir(), None, sue_text, elpaso_road)
     assert os_path_exists(sue_dallas_userhub.role_path(sue_text)) is False
@@ -148,10 +148,10 @@ def test_UserHub_create_treasury_db_file_CorrectlyCreatesDatabase(
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
-    sue_userhub.save_same_truth(sue_userhub.default_same_truth())
-    sue_same_truth = sue_userhub.get_same_truth()
+    sue_userhub.save_same_world(sue_userhub.default_same_world())
+    sue_same_world = sue_userhub.get_same_world()
     texas_text = "Texas"
-    texas_road = sue_same_truth.make_l1_road(texas_text)
+    texas_road = sue_same_world.make_l1_road(texas_text)
     sue_userhub.econ_road = texas_road
     assert os_path_exists(sue_userhub.treasury_db_path()) is False
 
@@ -194,10 +194,10 @@ def test_UserHub_treasury_db_file_exists_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
-    sue_userhub.save_same_truth(sue_userhub.default_same_truth())
-    sue_same_truth = sue_userhub.get_same_truth()
+    sue_userhub.save_same_world(sue_userhub.default_same_world())
+    sue_same_world = sue_userhub.get_same_world()
     texas_text = "Texas"
-    texas_road = sue_same_truth.make_l1_road(texas_text)
+    texas_road = sue_same_world.make_l1_road(texas_text)
     sue_userhub.econ_road = texas_road
     assert sue_userhub.treasury_db_file_exists() is False
 
@@ -247,23 +247,23 @@ def test_UserHub_create_same_treasury_db_files_CreatesDatabases(env_dir_setup_cl
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
-    sue_userhub.save_same_truth(sue_userhub.default_same_truth())
-    sue_same_truth = sue_userhub.get_same_truth()
-    sue_same_truth.add_otherunit(sue_text)
+    sue_userhub.save_same_world(sue_userhub.default_same_world())
+    sue_same_world = sue_userhub.get_same_world()
+    sue_same_world.add_otherunit(sue_text)
     texas_text = "Texas"
-    texas_road = sue_same_truth.make_l1_road(texas_text)
-    sue_same_truth.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    texas_road = sue_same_world.make_l1_road(texas_text)
+    sue_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
     elpaso_text = "el paso"
-    dallas_road = sue_same_truth.make_road(texas_road, dallas_text)
-    elpaso_road = sue_same_truth.make_road(texas_road, elpaso_text)
+    dallas_road = sue_same_world.make_road(texas_road, dallas_text)
+    elpaso_road = sue_same_world.make_road(texas_road, elpaso_text)
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=healerhold_shop({sue_text}))
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({sue_text}))
-    sue_same_truth.add_idea(dallas_idea, texas_road)
-    sue_same_truth.add_idea(elpaso_idea, texas_road)
-    sue_same_truth.calc_truth_metrics()
-    # display_ideatree(sue_same_truth, mode="Econ").show()
-    sue_userhub.save_same_truth(sue_same_truth)
+    sue_same_world.add_idea(dallas_idea, texas_road)
+    sue_same_world.add_idea(elpaso_idea, texas_road)
+    sue_same_world.calc_world_metrics()
+    # display_ideatree(sue_same_world, mode="Econ").show()
+    sue_userhub.save_same_world(sue_same_world)
 
     dallas_userhub = userhub_shop(env_dir(), None, sue_text, dallas_road)
     elpaso_userhub = userhub_shop(env_dir(), None, sue_text, elpaso_road)

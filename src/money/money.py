@@ -1,36 +1,36 @@
 from src._instrument.file import delete_dir
 from src._road.jaar_config import default_river_blocks_count
 from src._road.road import OwnerID
-from src._truth.other import otherlink_shop
-from src._truth.truth import TruthUnit
+from src._world.other import otherlink_shop
+from src._world.world import WorldUnit
 from src.listen.userhub import UserHub
 from src.money.treasury_sqlstr import (
     get_othertreasuryunit_dict,
-    get_truth_otherunit_table_insert_sqlstr,
-    get_truth_otherunit_table_update_treasury_due_paid_sqlstr as update_treasury_due_paid_sqlstr,
-    get_truth_otherunit_table_update_cred_score_sqlstr as update_cred_score_sqlstr,
-    get_truth_otherunit_table_update_treasury_voice_rank_sqlstr as update_treasury_voice_rank_sqlstr,
+    get_world_otherunit_table_insert_sqlstr,
+    get_world_otherunit_table_update_treasury_due_paid_sqlstr as update_treasury_due_paid_sqlstr,
+    get_world_otherunit_table_update_cred_score_sqlstr as update_cred_score_sqlstr,
+    get_world_otherunit_table_update_treasury_voice_rank_sqlstr as update_treasury_voice_rank_sqlstr,
     get_river_block_table_delete_sqlstr,
     get_river_block_table_insert_sqlstr,
     get_river_circle_table_insert_sqlstr,
     get_river_reach_table_final_insert_sqlstr,
     get_create_table_if_not_exist_sqlstrs,
-    get_truthunit_table_insert_sqlstr,
+    get_worldunit_table_insert_sqlstr,
     get_river_ledger_unit,
     OtherDBUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
     OtherTreasuryUnit,
     IdeaCatalog,
-    get_truth_ideaunit_table_insert_sqlstr,
-    get_truth_ideaunit_dict,
+    get_world_ideaunit_table_insert_sqlstr,
+    get_world_ideaunit_dict,
     FactCatalog,
-    get_truth_idea_factunit_table_insert_sqlstr,
+    get_world_idea_factunit_table_insert_sqlstr,
     BeliefUnitCatalog,
-    get_truth_beliefunit_table_insert_sqlstr,
-    get_truth_beliefunit_dict,
-    get_truthtreasuryunits_dict,
-    get_truthunit_update_sqlstr,
+    get_world_beliefunit_table_insert_sqlstr,
+    get_world_beliefunit_dict,
+    get_worldtreasuryunits_dict,
+    get_worldunit_update_sqlstr,
     CalendarReport,
     CalendarAgendaUnit,
     get_calendar_table_insert_sqlstr,
@@ -50,7 +50,7 @@ class MoneyUnit:
     _treasury_db = None
 
     # treasurying
-    def set_cred_flow_for_truth(self, owner_id: OwnerID, max_blocks_count: int = None):
+    def set_cred_flow_for_world(self, owner_id: OwnerID, max_blocks_count: int = None):
         self._clear_all_source_river_data(owner_id)
         if max_blocks_count is None:
             max_blocks_count = default_river_blocks_count()
@@ -67,18 +67,18 @@ class MoneyUnit:
         general_circle = [self._get_root_river_ledger_unit(x_owner_id)]
         blocks_count = 0  # Transformations in river_block loop
         while blocks_count < max_blocks_count and general_circle != []:
-            parent_truth_ledger = general_circle.pop(0)
-            ledgers_len = len(parent_truth_ledger._otherviews.values())
-            parent_range = parent_truth_ledger.get_range()
-            parent_close = parent_truth_ledger.cash_cease
+            parent_world_ledger = general_circle.pop(0)
+            ledgers_len = len(parent_world_ledger._otherviews.values())
+            parent_range = parent_world_ledger.get_range()
+            parent_close = parent_world_ledger.cash_cease
 
             # Transformations in river_block loop
-            coin_onset = parent_truth_ledger.cash_onset
+            coin_onset = parent_world_ledger.cash_onset
             ledgers_count = 0
-            for x_child_ledger in parent_truth_ledger._otherviews.values():
+            for x_child_ledger in parent_world_ledger._otherviews.values():
                 ledgers_count += 1
 
-                coin_range = parent_range * x_child_ledger._truth_agenda_ratio_cred
+                coin_range = parent_range * x_child_ledger._world_agenda_ratio_cred
                 coin_close = coin_onset + coin_range
 
                 # implies last object in dict
@@ -92,8 +92,8 @@ class MoneyUnit:
                     cash_start=coin_onset,
                     cash_close=coin_close,
                     block_num=blocks_count,
-                    parent_block_num=parent_truth_ledger.block_num,
-                    river_tree_level=parent_truth_ledger.river_tree_level + 1,
+                    parent_block_num=parent_world_ledger.block_num,
+                    river_tree_level=parent_world_ledger.river_tree_level + 1,
                 )
                 river_ledger_x = self._insert_river_block_grab_river_ledger(
                     river_block_x
@@ -150,82 +150,82 @@ class MoneyUnit:
             treasury_conn.execute(update_treasury_voice_rank_sqlstr(owner_id))
 
             sal_othertreasuryunits = get_othertreasuryunit_dict(treasury_conn, owner_id)
-            x_truth = self.userhub.get_job_truth(owner_id=owner_id)
-            set_treasury_othertreasuryunits_to_truth_otherunits(
-                x_truth, sal_othertreasuryunits
+            x_world = self.userhub.get_job_world(owner_id=owner_id)
+            set_treasury_othertreasuryunits_to_world_otherunits(
+                x_world, sal_othertreasuryunits
             )
-            self.userhub.save_job_truth(x_truth)
+            self.userhub.save_job_world(x_world)
 
     def get_othertreasuryunits(self, owner_id: str) -> dict[str:OtherTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
             othertreasuryunits = get_othertreasuryunit_dict(treasury_conn, owner_id)
         return othertreasuryunits
 
-    def refresh_treasury_job_truths_data(self, in_memory: bool = None):
+    def refresh_treasury_job_worlds_data(self, in_memory: bool = None):
         if in_memory is None and self._treasury_db != None:
             in_memory = True
         self.create_treasury_db(in_memory=in_memory, overwrite=True)
-        self._treasury_populate_truths_data()
+        self._treasury_populate_worlds_data()
 
-    def _treasury_populate_truths_data(self):
+    def _treasury_populate_worlds_data(self):
         for person_id in self.userhub.get_jobs_dir_file_names_list():
-            truthunit_x = self.userhub.get_job_truth(person_id)
-            truthunit_x.calc_truth_metrics()
+            worldunit_x = self.userhub.get_job_world(person_id)
+            worldunit_x.calc_world_metrics()
 
-            self._treasury_insert_truthunit(truthunit_x)
-            self._treasury_insert_otherunit(truthunit_x)
-            self._treasury_insert_beliefunit(truthunit_x)
-            self._treasury_insert_ideaunit(truthunit_x)
-            self._treasury_insert_fact(truthunit_x)
+            self._treasury_insert_worldunit(worldunit_x)
+            self._treasury_insert_otherunit(worldunit_x)
+            self._treasury_insert_beliefunit(worldunit_x)
+            self._treasury_insert_ideaunit(worldunit_x)
+            self._treasury_insert_fact(worldunit_x)
 
-    def _treasury_insert_truthunit(self, truthunit_x: TruthUnit):
+    def _treasury_insert_worldunit(self, worldunit_x: WorldUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            cur.execute(get_truthunit_table_insert_sqlstr(x_truth=truthunit_x))
+            cur.execute(get_worldunit_table_insert_sqlstr(x_world=worldunit_x))
 
-    def _treasury_set_truthunit_attrs(self, truth: TruthUnit):
+    def _treasury_set_worldunit_attrs(self, world: WorldUnit):
         with self.get_treasury_conn() as treasury_conn:
-            treasury_conn.execute(get_truthunit_update_sqlstr(truth))
+            treasury_conn.execute(get_worldunit_update_sqlstr(world))
 
-    def _treasury_insert_otherunit(self, truthunit_x: TruthUnit):
+    def _treasury_insert_otherunit(self, worldunit_x: WorldUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for x_otherunit in truthunit_x._others.values():
-                sqlstr = get_truth_otherunit_table_insert_sqlstr(
-                    truthunit_x, x_otherunit
+            for x_otherunit in worldunit_x._others.values():
+                sqlstr = get_world_otherunit_table_insert_sqlstr(
+                    worldunit_x, x_otherunit
                 )
                 cur.execute(sqlstr)
 
-    def _treasury_insert_beliefunit(self, truthunit_x: TruthUnit):
+    def _treasury_insert_beliefunit(self, worldunit_x: WorldUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for beliefunit_x in truthunit_x._beliefs.values():
-                truth_beliefunit_x = BeliefUnitCatalog(
-                    owner_id=truthunit_x._owner_id,
+            for beliefunit_x in worldunit_x._beliefs.values():
+                world_beliefunit_x = BeliefUnitCatalog(
+                    owner_id=worldunit_x._owner_id,
                     beliefunit_belief_id=beliefunit_x.belief_id,
                 )
-                sqlstr = get_truth_beliefunit_table_insert_sqlstr(truth_beliefunit_x)
+                sqlstr = get_world_beliefunit_table_insert_sqlstr(world_beliefunit_x)
                 cur.execute(sqlstr)
 
-    def _treasury_insert_ideaunit(self, truthunit_x: TruthUnit):
+    def _treasury_insert_ideaunit(self, worldunit_x: WorldUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for idea_x in truthunit_x._idea_dict.values():
-                truth_ideaunit_x = IdeaCatalog(truthunit_x._owner_id, idea_x.get_road())
-                sqlstr = get_truth_ideaunit_table_insert_sqlstr(truth_ideaunit_x)
+            for idea_x in worldunit_x._idea_dict.values():
+                world_ideaunit_x = IdeaCatalog(worldunit_x._owner_id, idea_x.get_road())
+                sqlstr = get_world_ideaunit_table_insert_sqlstr(world_ideaunit_x)
                 cur.execute(sqlstr)
 
-    def _treasury_insert_fact(self, truthunit_x: TruthUnit):
+    def _treasury_insert_fact(self, worldunit_x: WorldUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for fact_x in truthunit_x._idearoot._factunits.values():
-                truth_idea_factunit_x = FactCatalog(
-                    owner_id=truthunit_x._owner_id,
+            for fact_x in worldunit_x._idearoot._factunits.values():
+                world_idea_factunit_x = FactCatalog(
+                    owner_id=worldunit_x._owner_id,
                     base=fact_x.base,
                     pick=fact_x.pick,
                 )
-                sqlstr = get_truth_idea_factunit_table_insert_sqlstr(
-                    truth_idea_factunit_x
+                sqlstr = get_world_idea_factunit_table_insert_sqlstr(
+                    world_idea_factunit_x
                 )
                 cur.execute(sqlstr)
 
@@ -254,11 +254,11 @@ class MoneyUnit:
                     treasury_conn.execute(sqlstr)
 
     def insert_agenda_into_treasury(
-        self, x_truthunit: TruthUnit, x_calendarreport: CalendarReport
+        self, x_worldunit: WorldUnit, x_calendarreport: CalendarReport
     ):
-        if x_truthunit.idea_exists(x_calendarreport.time_road) is False:
+        if x_worldunit.idea_exists(x_calendarreport.time_road) is False:
             raise AgendaBaseDoesNotExistException(
-                f"Agenda base cannot be '{x_calendarreport.time_road}' because it does not exist in truth '{x_truthunit._owner_id}'."
+                f"Agenda base cannot be '{x_calendarreport.time_road}' because it does not exist in world '{x_worldunit._owner_id}'."
             )
 
         with self.get_treasury_conn() as treasury_conn:
@@ -267,13 +267,13 @@ class MoneyUnit:
             del_sqlstr = get_calendar_table_delete_sqlstr(x_calendarreport.owner_id)
             cur.execute(del_sqlstr)
             for _ in range(x_calendarreport.interval_count):
-                x_truthunit.set_fact(
+                x_worldunit.set_fact(
                     base=x_calendarreport.time_road,
                     pick=x_calendarreport.time_road,
                     open=x_calendarreport.get_interval_begin(_),
                     nigh=x_calendarreport.get_interval_close(_),
                 )
-                x_agenda_items = x_truthunit.get_agenda_dict(
+                x_agenda_items = x_worldunit.get_agenda_dict(
                     base=x_calendarreport.time_road
                 )
                 for agenda_item in x_agenda_items.values():
@@ -282,19 +282,19 @@ class MoneyUnit:
                         time_begin=x_calendarreport.get_interval_begin(_),
                         time_close=x_calendarreport.get_interval_close(_),
                         agenda_idea_road=agenda_item.get_road(),
-                        agenda_weight=agenda_item._truth_importance,
+                        agenda_weight=agenda_item._world_importance,
                         task=agenda_item._task,
                     )
                     sqlstr = get_calendar_table_insert_sqlstr(x_calendaragendaunit)
                     cur.execute(sqlstr)
 
-    # exporting metrics to truth files
+    # exporting metrics to world files
     def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
-            owner_role = self.userhub.get_role_truth(owner_id)
+            owner_role = self.userhub.get_role_world(owner_id)
             for count_x, x_otherunit in enumerate(owner_role._others.values()):
                 x_otherunit.set_treasury_voice_rank(count_x)
-            self.userhub.save_role_truth(owner_role)
+            self.userhub.save_role_world(owner_role)
 
 
 def moneyunit_shop(x_userhub: UserHub, in_memory_treasury: bool = None) -> MoneyUnit:
@@ -306,10 +306,10 @@ def moneyunit_shop(x_userhub: UserHub, in_memory_treasury: bool = None) -> Money
     return x_moneyunit
 
 
-def set_treasury_othertreasuryunits_to_truth_otherunits(
-    x_truth: TruthUnit, othertreasuryunits: dict[str:OtherTreasuryUnit]
+def set_treasury_othertreasuryunits_to_world_otherunits(
+    x_world: WorldUnit, othertreasuryunits: dict[str:OtherTreasuryUnit]
 ):
-    for x_otherunit in x_truth._others.values():
+    for x_otherunit in x_world._others.values():
         x_otherunit.clear_treasurying_data()
         othertreasuryunit = othertreasuryunits.get(x_otherunit.other_id)
         if othertreasuryunit != None:

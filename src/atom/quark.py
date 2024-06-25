@@ -5,11 +5,11 @@ from src._instrument.python import (
 )
 from src._instrument.sqlite import create_insert_sqlstr, RowData
 from src._road.road import create_road
-from src._truth.reason_idea import factunit_shop
-from src._truth.other import otherunit_shop, otherlink_shop
-from src._truth.belief import beliefunit_shop, balancelink_shop
-from src._truth.idea import ideaunit_shop
-from src._truth.truth import TruthUnit
+from src._world.reason_idea import factunit_shop
+from src._world.other import otherunit_shop, otherlink_shop
+from src._world.belief import beliefunit_shop, balancelink_shop
+from src._world.idea import ideaunit_shop
+from src._world.world import WorldUnit
 from src.atom.quark_config import (
     get_category_from_dict,
     quark_delete,
@@ -165,54 +165,54 @@ def get_from_json(x_str: str) -> QuarkUnit:
     return x_quark
 
 
-def _modify_truth_update_truthunit(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_update_worldunit(x_world: WorldUnit, x_quark: QuarkUnit):
     x_arg = "_max_tree_traverse"
     if x_quark.get_value(x_arg) != None:
-        x_truth.set_max_tree_traverse(x_quark.get_value(x_arg))
+        x_world.set_max_tree_traverse(x_quark.get_value(x_arg))
     x_arg = "_other_credor_pool"
     if x_quark.get_value(x_arg) != None:
-        x_truth.set_other_credor_pool(x_quark.get_value(x_arg))
+        x_world.set_other_credor_pool(x_quark.get_value(x_arg))
     x_arg = "_other_debtor_pool"
     if x_quark.get_value(x_arg) != None:
-        x_truth.set_other_debtor_pool(x_quark.get_value(x_arg))
+        x_world.set_other_debtor_pool(x_quark.get_value(x_arg))
     x_arg = "_meld_strategy"
     if x_quark.get_value(x_arg) != None:
-        x_truth.set_meld_strategy(x_quark.get_value(x_arg))
+        x_world.set_meld_strategy(x_quark.get_value(x_arg))
     x_arg = "_weight"
     if x_quark.get_value(x_arg) != None:
-        x_truth._weight = x_quark.get_value(x_arg)
+        x_world._weight = x_quark.get_value(x_arg)
     x_arg = "_pixel"
     if x_quark.get_value(x_arg) != None:
-        x_truth._pixel = x_quark.get_value(x_arg)
+        x_world._pixel = x_quark.get_value(x_arg)
     x_arg = "_penny"
     if x_quark.get_value(x_arg) != None:
-        x_truth._penny = x_quark.get_value(x_arg)
+        x_world._penny = x_quark.get_value(x_arg)
 
 
-def _modify_truth_beliefunit_delete(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_beliefunit_delete(x_world: WorldUnit, x_quark: QuarkUnit):
     belief_id = x_quark.get_value("belief_id")
-    x_truth.del_beliefunit(belief_id)
+    x_world.del_beliefunit(belief_id)
 
 
-def _modify_truth_beliefunit_update(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_beliefunit = x_truth.get_beliefunit(x_quark.get_value("belief_id"))
+def _modify_world_beliefunit_update(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_beliefunit = x_world.get_beliefunit(x_quark.get_value("belief_id"))
 
 
-def _modify_truth_beliefunit_insert(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_beliefunit_insert(x_world: WorldUnit, x_quark: QuarkUnit):
     x_beliefunit = beliefunit_shop(belief_id=x_quark.get_value("belief_id"))
-    x_truth.set_beliefunit(
+    x_world.set_beliefunit(
         x_beliefunit, create_missing_others=False, replace=False, add_otherlinks=False
     )
 
 
-def _modify_truth_belief_otherlink_delete(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_belief_otherlink_delete(x_world: WorldUnit, x_quark: QuarkUnit):
     x_other_id = x_quark.get_value("other_id")
     x_belief_id = x_quark.get_value("belief_id")
-    x_truth.get_beliefunit(x_belief_id).del_otherlink(x_other_id)
+    x_world.get_beliefunit(x_belief_id).del_otherlink(x_other_id)
 
 
-def _modify_truth_belief_otherlink_update(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_beliefunit = x_truth.get_beliefunit(x_quark.get_value("belief_id"))
+def _modify_world_belief_otherlink_update(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_beliefunit = x_world.get_beliefunit(x_quark.get_value("belief_id"))
     x_beliefunit.edit_otherlink(
         other_id=x_quark.get_value("other_id"),
         credor_weight=x_quark.get_value("credor_weight"),
@@ -220,8 +220,8 @@ def _modify_truth_belief_otherlink_update(x_truth: TruthUnit, x_quark: QuarkUnit
     )
 
 
-def _modify_truth_belief_otherlink_insert(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_beliefunit = x_truth.get_beliefunit(x_quark.get_value("belief_id"))
+def _modify_world_belief_otherlink_insert(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_beliefunit = x_world.get_beliefunit(x_quark.get_value("belief_id"))
     x_beliefunit.set_otherlink(
         otherlink_shop(
             other_id=x_quark.get_value("other_id"),
@@ -231,22 +231,22 @@ def _modify_truth_belief_otherlink_insert(x_truth: TruthUnit, x_quark: QuarkUnit
     )
 
 
-def _modify_truth_ideaunit_delete(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_ideaunit_delete(x_world: WorldUnit, x_quark: QuarkUnit):
     idea_road = create_road(
         x_quark.get_value("parent_road"),
         x_quark.get_value("label"),
-        delimiter=x_truth._road_delimiter,
+        delimiter=x_world._road_delimiter,
     )
-    x_truth.del_idea_obj(idea_road, del_children=x_quark.get_value("del_children"))
+    x_world.del_idea_obj(idea_road, del_children=x_quark.get_value("del_children"))
 
 
-def _modify_truth_ideaunit_update(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_ideaunit_update(x_world: WorldUnit, x_quark: QuarkUnit):
     idea_road = create_road(
         x_quark.get_value("parent_road"),
         x_quark.get_value("label"),
-        delimiter=x_truth._road_delimiter,
+        delimiter=x_world._road_delimiter,
     )
-    x_truth.edit_idea_attr(
+    x_world.edit_idea_attr(
         road=idea_road,
         addin=x_quark.get_value("_addin"),
         begin=x_quark.get_value("_begin"),
@@ -262,8 +262,8 @@ def _modify_truth_ideaunit_update(x_truth: TruthUnit, x_quark: QuarkUnit):
     )
 
 
-def _modify_truth_ideaunit_insert(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_truth.add_idea(
+def _modify_world_ideaunit_insert(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_world.add_idea(
         idea_kid=ideaunit_shop(
             _label=x_quark.get_value("label"),
             _addin=x_quark.get_value("_addin"),
@@ -282,15 +282,15 @@ def _modify_truth_ideaunit_insert(x_truth: TruthUnit, x_quark: QuarkUnit):
     )
 
 
-def _modify_truth_idea_balancelink_delete(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_truth.edit_idea_attr(
+def _modify_world_idea_balancelink_delete(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_world.edit_idea_attr(
         road=x_quark.get_value("road"),
         balancelink_del=x_quark.get_value("belief_id"),
     )
 
 
-def _modify_truth_idea_balancelink_update(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_idea = x_truth.get_idea_obj(x_quark.get_value("road"))
+def _modify_world_idea_balancelink_update(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_idea = x_world.get_idea_obj(x_quark.get_value("road"))
     x_balancelink = x_idea._balancelinks.get(x_quark.get_value("belief_id"))
     x_credor_weight = x_quark.get_value("credor_weight")
     if x_credor_weight != None and x_balancelink.credor_weight != x_credor_weight:
@@ -298,25 +298,25 @@ def _modify_truth_idea_balancelink_update(x_truth: TruthUnit, x_quark: QuarkUnit
     x_debtor_weight = x_quark.get_value("debtor_weight")
     if x_debtor_weight != None and x_balancelink.debtor_weight != x_debtor_weight:
         x_balancelink.debtor_weight = x_debtor_weight
-    x_truth.edit_idea_attr(x_quark.get_value("road"), balancelink=x_balancelink)
+    x_world.edit_idea_attr(x_quark.get_value("road"), balancelink=x_balancelink)
 
 
-def _modify_truth_idea_balancelink_insert(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_idea_balancelink_insert(x_world: WorldUnit, x_quark: QuarkUnit):
     x_balancelink = balancelink_shop(
         belief_id=x_quark.get_value("belief_id"),
         credor_weight=x_quark.get_value("credor_weight"),
         debtor_weight=x_quark.get_value("debtor_weight"),
     )
-    x_truth.edit_idea_attr(x_quark.get_value("road"), balancelink=x_balancelink)
+    x_world.edit_idea_attr(x_quark.get_value("road"), balancelink=x_balancelink)
 
 
-def _modify_truth_idea_factunit_delete(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_ideaunit = x_truth.get_idea_obj(x_quark.get_value("road"))
+def _modify_world_idea_factunit_delete(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_ideaunit = x_world.get_idea_obj(x_quark.get_value("road"))
     x_ideaunit.del_factunit(x_quark.get_value("base"))
 
 
-def _modify_truth_idea_factunit_update(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_ideaunit = x_truth.get_idea_obj(x_quark.get_value("road"))
+def _modify_world_idea_factunit_update(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_ideaunit = x_world.get_idea_obj(x_quark.get_value("road"))
     x_factunit = x_ideaunit._factunits.get(x_quark.get_value("base"))
     x_factunit.set_attr(
         pick=x_quark.get_value("pick"),
@@ -326,8 +326,8 @@ def _modify_truth_idea_factunit_update(x_truth: TruthUnit, x_quark: QuarkUnit):
     # x_ideaunit.set_factunit(x_factunit)
 
 
-def _modify_truth_idea_factunit_insert(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_truth.edit_idea_attr(
+def _modify_world_idea_factunit_insert(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_world.edit_idea_attr(
         road=x_quark.get_value("road"),
         factunit=factunit_shop(
             base=x_quark.get_value("base"),
@@ -338,41 +338,41 @@ def _modify_truth_idea_factunit_insert(x_truth: TruthUnit, x_quark: QuarkUnit):
     )
 
 
-def _modify_truth_idea_reasonunit_delete(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_ideaunit = x_truth.get_idea_obj(x_quark.get_value("road"))
+def _modify_world_idea_reasonunit_delete(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_ideaunit = x_world.get_idea_obj(x_quark.get_value("road"))
     x_ideaunit.del_reasonunit_base(x_quark.get_value("base"))
 
 
-def _modify_truth_idea_reasonunit_update(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_truth.edit_idea_attr(
+def _modify_world_idea_reasonunit_update(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_world.edit_idea_attr(
         road=x_quark.get_value("road"),
         reason_base=x_quark.get_value("base"),
         reason_suff_idea_active=x_quark.get_value("suff_idea_active"),
     )
 
 
-def _modify_truth_idea_reasonunit_insert(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_truth.edit_idea_attr(
+def _modify_world_idea_reasonunit_insert(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_world.edit_idea_attr(
         road=x_quark.get_value("road"),
         reason_base=x_quark.get_value("base"),
         reason_suff_idea_active=x_quark.get_value("suff_idea_active"),
     )
 
 
-def _modify_truth_idea_reason_premiseunit_delete(
-    x_truth: TruthUnit, x_quark: QuarkUnit
+def _modify_world_idea_reason_premiseunit_delete(
+    x_world: WorldUnit, x_quark: QuarkUnit
 ):
-    x_truth.edit_idea_attr(
+    x_world.edit_idea_attr(
         road=x_quark.get_value("road"),
         reason_del_premise_base=x_quark.get_value("base"),
         reason_del_premise_need=x_quark.get_value("need"),
     )
 
 
-def _modify_truth_idea_reason_premiseunit_update(
-    x_truth: TruthUnit, x_quark: QuarkUnit
+def _modify_world_idea_reason_premiseunit_update(
+    x_world: WorldUnit, x_quark: QuarkUnit
 ):
-    x_truth.edit_idea_attr(
+    x_world.edit_idea_attr(
         road=x_quark.get_value("road"),
         reason_base=x_quark.get_value("base"),
         reason_premise=x_quark.get_value("need"),
@@ -382,10 +382,10 @@ def _modify_truth_idea_reason_premiseunit_update(
     )
 
 
-def _modify_truth_idea_reason_premiseunit_insert(
-    x_truth: TruthUnit, x_quark: QuarkUnit
+def _modify_world_idea_reason_premiseunit_insert(
+    x_world: WorldUnit, x_quark: QuarkUnit
 ):
-    x_ideaunit = x_truth.get_idea_obj(x_quark.get_value("road"))
+    x_ideaunit = x_world.get_idea_obj(x_quark.get_value("road"))
     x_ideaunit.set_reason_premise(
         base=x_quark.get_value("base"),
         premise=x_quark.get_value("need"),
@@ -395,30 +395,30 @@ def _modify_truth_idea_reason_premiseunit_insert(
     )
 
 
-def _modify_truth_idea_suffbelief_delete(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_ideaunit = x_truth.get_idea_obj(x_quark.get_value("road"))
+def _modify_world_idea_suffbelief_delete(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_ideaunit = x_world.get_idea_obj(x_quark.get_value("road"))
     x_ideaunit._assignedunit.del_suffbelief(belief_id=x_quark.get_value("belief_id"))
 
 
-def _modify_truth_idea_suffbelief_insert(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_ideaunit = x_truth.get_idea_obj(x_quark.get_value("road"))
+def _modify_world_idea_suffbelief_insert(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_ideaunit = x_world.get_idea_obj(x_quark.get_value("road"))
     x_ideaunit._assignedunit.set_suffbelief(belief_id=x_quark.get_value("belief_id"))
 
 
-def _modify_truth_otherunit_delete(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_truth.del_otherunit(x_quark.get_value("other_id"))
+def _modify_world_otherunit_delete(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_world.del_otherunit(x_quark.get_value("other_id"))
 
 
-def _modify_truth_otherunit_update(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_truth.edit_otherunit(
+def _modify_world_otherunit_update(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_world.edit_otherunit(
         other_id=x_quark.get_value("other_id"),
         credor_weight=x_quark.get_value("credor_weight"),
         debtor_weight=x_quark.get_value("debtor_weight"),
     )
 
 
-def _modify_truth_otherunit_insert(x_truth: TruthUnit, x_quark: QuarkUnit):
-    x_truth.set_otherunit(
+def _modify_world_otherunit_insert(x_world: WorldUnit, x_quark: QuarkUnit):
+    x_world.set_otherunit(
         otherunit_shop(
             other_id=x_quark.get_value("other_id"),
             credor_weight=x_quark.get_value("credor_weight"),
@@ -427,115 +427,115 @@ def _modify_truth_otherunit_insert(x_truth: TruthUnit, x_quark: QuarkUnit):
     )
 
 
-def _modify_truth_truthunit(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_worldunit(x_world: WorldUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_update():
-        _modify_truth_update_truthunit(x_truth, x_quark)
+        _modify_world_update_worldunit(x_world, x_quark)
 
 
-def _modify_truth_beliefunit(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_beliefunit(x_world: WorldUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_truth_beliefunit_delete(x_truth, x_quark)
+        _modify_world_beliefunit_delete(x_world, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_truth_beliefunit_update(x_truth, x_quark)
+        _modify_world_beliefunit_update(x_world, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_truth_beliefunit_insert(x_truth, x_quark)
+        _modify_world_beliefunit_insert(x_world, x_quark)
 
 
-def _modify_truth_belief_otherlink(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_belief_otherlink(x_world: WorldUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_truth_belief_otherlink_delete(x_truth, x_quark)
+        _modify_world_belief_otherlink_delete(x_world, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_truth_belief_otherlink_update(x_truth, x_quark)
+        _modify_world_belief_otherlink_update(x_world, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_truth_belief_otherlink_insert(x_truth, x_quark)
+        _modify_world_belief_otherlink_insert(x_world, x_quark)
 
 
-def _modify_truth_ideaunit(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_ideaunit(x_world: WorldUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_truth_ideaunit_delete(x_truth, x_quark)
+        _modify_world_ideaunit_delete(x_world, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_truth_ideaunit_update(x_truth, x_quark)
+        _modify_world_ideaunit_update(x_world, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_truth_ideaunit_insert(x_truth, x_quark)
+        _modify_world_ideaunit_insert(x_world, x_quark)
 
 
-def _modify_truth_idea_balancelink(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_idea_balancelink(x_world: WorldUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_truth_idea_balancelink_delete(x_truth, x_quark)
+        _modify_world_idea_balancelink_delete(x_world, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_truth_idea_balancelink_update(x_truth, x_quark)
+        _modify_world_idea_balancelink_update(x_world, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_truth_idea_balancelink_insert(x_truth, x_quark)
+        _modify_world_idea_balancelink_insert(x_world, x_quark)
 
 
-def _modify_truth_idea_factunit(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_idea_factunit(x_world: WorldUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_truth_idea_factunit_delete(x_truth, x_quark)
+        _modify_world_idea_factunit_delete(x_world, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_truth_idea_factunit_update(x_truth, x_quark)
+        _modify_world_idea_factunit_update(x_world, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_truth_idea_factunit_insert(x_truth, x_quark)
+        _modify_world_idea_factunit_insert(x_world, x_quark)
 
 
-def _modify_truth_idea_reasonunit(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_idea_reasonunit(x_world: WorldUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_truth_idea_reasonunit_delete(x_truth, x_quark)
+        _modify_world_idea_reasonunit_delete(x_world, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_truth_idea_reasonunit_update(x_truth, x_quark)
+        _modify_world_idea_reasonunit_update(x_world, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_truth_idea_reasonunit_insert(x_truth, x_quark)
+        _modify_world_idea_reasonunit_insert(x_world, x_quark)
 
 
-def _modify_truth_idea_reason_premiseunit(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_idea_reason_premiseunit(x_world: WorldUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_truth_idea_reason_premiseunit_delete(x_truth, x_quark)
+        _modify_world_idea_reason_premiseunit_delete(x_world, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_truth_idea_reason_premiseunit_update(x_truth, x_quark)
+        _modify_world_idea_reason_premiseunit_update(x_world, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_truth_idea_reason_premiseunit_insert(x_truth, x_quark)
+        _modify_world_idea_reason_premiseunit_insert(x_world, x_quark)
 
 
-def _modify_truth_idea_suffbelief(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_idea_suffbelief(x_world: WorldUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_truth_idea_suffbelief_delete(x_truth, x_quark)
+        _modify_world_idea_suffbelief_delete(x_world, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_truth_idea_suffbelief_insert(x_truth, x_quark)
+        _modify_world_idea_suffbelief_insert(x_world, x_quark)
 
 
-def _modify_truth_otherunit(x_truth: TruthUnit, x_quark: QuarkUnit):
+def _modify_world_otherunit(x_world: WorldUnit, x_quark: QuarkUnit):
     if x_quark.crud_text == quark_delete():
-        _modify_truth_otherunit_delete(x_truth, x_quark)
+        _modify_world_otherunit_delete(x_world, x_quark)
     elif x_quark.crud_text == quark_update():
-        _modify_truth_otherunit_update(x_truth, x_quark)
+        _modify_world_otherunit_update(x_world, x_quark)
     elif x_quark.crud_text == quark_insert():
-        _modify_truth_otherunit_insert(x_truth, x_quark)
+        _modify_world_otherunit_insert(x_world, x_quark)
 
 
-def modify_truth_with_quarkunit(x_truth: TruthUnit, x_quark: QuarkUnit):
-    if x_quark.category == "truthunit":
-        _modify_truth_truthunit(x_truth, x_quark)
-    elif x_quark.category == "truth_beliefunit":
-        _modify_truth_beliefunit(x_truth, x_quark)
-    elif x_quark.category == "truth_belief_otherlink":
-        _modify_truth_belief_otherlink(x_truth, x_quark)
-    elif x_quark.category == "truth_ideaunit":
-        _modify_truth_ideaunit(x_truth, x_quark)
-    elif x_quark.category == "truth_idea_balancelink":
-        _modify_truth_idea_balancelink(x_truth, x_quark)
-    elif x_quark.category == "truth_idea_factunit":
-        _modify_truth_idea_factunit(x_truth, x_quark)
-    elif x_quark.category == "truth_idea_reasonunit":
-        _modify_truth_idea_reasonunit(x_truth, x_quark)
-    elif x_quark.category == "truth_idea_reason_premiseunit":
-        _modify_truth_idea_reason_premiseunit(x_truth, x_quark)
-    elif x_quark.category == "truth_idea_suffbelief":
-        _modify_truth_idea_suffbelief(x_truth, x_quark)
-    elif x_quark.category == "truth_otherunit":
-        _modify_truth_otherunit(x_truth, x_quark)
+def modify_world_with_quarkunit(x_world: WorldUnit, x_quark: QuarkUnit):
+    if x_quark.category == "worldunit":
+        _modify_world_worldunit(x_world, x_quark)
+    elif x_quark.category == "world_beliefunit":
+        _modify_world_beliefunit(x_world, x_quark)
+    elif x_quark.category == "world_belief_otherlink":
+        _modify_world_belief_otherlink(x_world, x_quark)
+    elif x_quark.category == "world_ideaunit":
+        _modify_world_ideaunit(x_world, x_quark)
+    elif x_quark.category == "world_idea_balancelink":
+        _modify_world_idea_balancelink(x_world, x_quark)
+    elif x_quark.category == "world_idea_factunit":
+        _modify_world_idea_factunit(x_world, x_quark)
+    elif x_quark.category == "world_idea_reasonunit":
+        _modify_world_idea_reasonunit(x_world, x_quark)
+    elif x_quark.category == "world_idea_reason_premiseunit":
+        _modify_world_idea_reason_premiseunit(x_world, x_quark)
+    elif x_quark.category == "world_idea_suffbelief":
+        _modify_world_idea_suffbelief(x_world, x_quark)
+    elif x_quark.category == "world_otherunit":
+        _modify_world_otherunit(x_world, x_quark)
 
 
 def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
-    if category == "truthunit":
+    if category == "worldunit":
         return (
             x_obj._weight != y_obj._weight
             or x_obj._max_tree_traverse != y_obj._max_tree_traverse
@@ -544,11 +544,11 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj._other_debtor_pool != y_obj._other_debtor_pool
             or x_obj._pixel != y_obj._pixel
         )
-    elif category in {"truth_belief_otherlink", "truth_idea_balancelink"}:
+    elif category in {"world_belief_otherlink", "world_idea_balancelink"}:
         return (x_obj.credor_weight != y_obj.credor_weight) or (
             x_obj.debtor_weight != y_obj.debtor_weight
         )
-    elif category == "truth_ideaunit":
+    elif category == "world_ideaunit":
         return (
             x_obj._addin != y_obj._addin
             or x_obj._begin != y_obj._begin
@@ -562,21 +562,21 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj._weight != y_obj._weight
             or x_obj.pledge != y_obj.pledge
         )
-    elif category == "truth_idea_factunit":
+    elif category == "world_idea_factunit":
         return (
             (x_obj.pick != y_obj.pick)
             or (x_obj.open != y_obj.open)
             or (x_obj.nigh != y_obj.nigh)
         )
-    elif category == "truth_idea_reasonunit":
+    elif category == "world_idea_reasonunit":
         return x_obj.suff_idea_active != y_obj.suff_idea_active
-    elif category == "truth_idea_reason_premiseunit":
+    elif category == "world_idea_reason_premiseunit":
         return (
             x_obj.open != y_obj.open
             or x_obj.nigh != y_obj.nigh
             or x_obj.divisor != y_obj.divisor
         )
-    elif category == "truth_otherunit":
+    elif category == "world_otherunit":
         return (x_obj.credor_weight != y_obj.credor_weight) or (
             x_obj.debtor_weight != y_obj.debtor_weight
         )

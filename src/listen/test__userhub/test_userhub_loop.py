@@ -1,56 +1,56 @@
 from src._road.jaar_config import get_test_real_id as real_id
 from src._road.road import create_road
 from src.listen.userhub import userhub_shop
-from src.listen.examples.example_listen_truths import get_truth_with_4_levels
+from src.listen.examples.example_listen_worlds import get_world_with_4_levels
 from src.listen.examples.listen_env import (
     env_dir_setup_cleanup,
     get_listen_temp_env_dir as env_dir,
 )
 
 
-def test_UserHub_get_perspective_truth_ReturnsTruthWith_owner_idSetToUserHub_person_id():
+def test_UserHub_get_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_person_id():
     # GIVEN
     bob_text = "Bob"
-    bob_truthunit = get_truth_with_4_levels()
-    bob_truthunit.set_owner_id(bob_text)
+    bob_worldunit = get_world_with_4_levels()
+    bob_worldunit.set_owner_id(bob_text)
 
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
 
     # WHEN
-    perspective_truthunit = sue_userhub.get_perspective_truth(bob_truthunit)
+    perspective_worldunit = sue_userhub.get_perspective_world(bob_worldunit)
 
     # THEN
-    assert perspective_truthunit.get_dict() != bob_truthunit.get_dict()
-    assert perspective_truthunit._owner_id == sue_text
-    perspective_truthunit.set_owner_id(bob_text)
-    assert perspective_truthunit.get_dict() == bob_truthunit.get_dict()
+    assert perspective_worldunit.get_dict() != bob_worldunit.get_dict()
+    assert perspective_worldunit._owner_id == sue_text
+    perspective_worldunit.set_owner_id(bob_text)
+    assert perspective_worldunit.get_dict() == bob_worldunit.get_dict()
 
 
-def test_UserHub_get_dw_perspective_truth_ReturnsTruthWith_owner_idSetToUserHub_person_id(
+def test_UserHub_get_dw_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_person_id(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     bob_text = "Bob"
-    bob_truthunit = get_truth_with_4_levels()
-    bob_truthunit.set_owner_id(bob_text)
+    bob_worldunit = get_world_with_4_levels()
+    bob_worldunit.set_owner_id(bob_text)
     bob_userhub = userhub_shop(env_dir(), real_id(), bob_text)
-    bob_userhub.save_live_truth(bob_truthunit)
+    bob_userhub.save_live_world(bob_worldunit)
 
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
 
     # WHEN
-    perspective_truthunit = sue_userhub.get_dw_perspective_truth(bob_text)
+    perspective_worldunit = sue_userhub.get_dw_perspective_world(bob_text)
 
     # THEN
-    assert perspective_truthunit._owner_id == sue_text
-    assert perspective_truthunit.get_dict() != bob_truthunit.get_dict()
-    perspective_truthunit.set_owner_id(bob_text)
-    assert perspective_truthunit.get_dict() == bob_truthunit.get_dict()
+    assert perspective_worldunit._owner_id == sue_text
+    assert perspective_worldunit.get_dict() != bob_worldunit.get_dict()
+    perspective_worldunit.set_owner_id(bob_text)
+    assert perspective_worldunit.get_dict() == bob_worldunit.get_dict()
 
 
-def test_UserHub_rj_perspective_truth_ReturnsTruthWith_owner_idSetToUserHub_person_id(
+def test_UserHub_rj_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_person_id(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -60,20 +60,20 @@ def test_UserHub_rj_perspective_truth_ReturnsTruthWith_owner_idSetToUserHub_pers
 
     bob_text = "Bob"
     yao_text = "Yao"
-    yao_truthunit = get_truth_with_4_levels()
-    yao_truthunit.set_owner_id(yao_text)
+    yao_worldunit = get_world_with_4_levels()
+    yao_worldunit.set_owner_id(yao_text)
 
     bob_iowa_userhub = userhub_shop(env_dir(), real_id(), bob_text, iowa_road)
-    bob_iowa_userhub.save_job_truth(yao_truthunit)
+    bob_iowa_userhub.save_job_world(yao_worldunit)
 
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text, iowa_road)
 
     # WHEN
-    perspective_truthunit = sue_userhub.rj_perspective_truth(bob_text, yao_text)
+    perspective_worldunit = sue_userhub.rj_perspective_world(bob_text, yao_text)
 
     # THEN
-    assert perspective_truthunit._owner_id == sue_text
-    assert perspective_truthunit.get_dict() != yao_truthunit.get_dict()
-    perspective_truthunit.set_owner_id(yao_text)
-    assert perspective_truthunit.get_dict() == yao_truthunit.get_dict()
+    assert perspective_worldunit._owner_id == sue_text
+    assert perspective_worldunit.get_dict() != yao_worldunit.get_dict()
+    perspective_worldunit.set_owner_id(yao_text)
+    assert perspective_worldunit.get_dict() == yao_worldunit.get_dict()

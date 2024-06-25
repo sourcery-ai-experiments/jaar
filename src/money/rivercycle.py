@@ -5,23 +5,23 @@ from src._instrument.python import (
 )
 from src._road.finance import allot_scale
 from src._road.road import OtherID, OwnerID
-from src._truth.truth import TruthUnit
+from src._world.world import WorldUnit
 from src.listen.userhub import UserHub
 from dataclasses import dataclass
 
 
-def get_credorledger(x_truth: TruthUnit) -> dict[OtherID:float]:
+def get_credorledger(x_world: WorldUnit) -> dict[OtherID:float]:
     return {
         otherunit.other_id: otherunit.credor_weight
-        for otherunit in x_truth._others.values()
+        for otherunit in x_world._others.values()
         if otherunit.credor_weight > 0
     }
 
 
-def get_debtorledger(x_truth: TruthUnit) -> dict[OtherID:float]:
+def get_debtorledger(x_world: WorldUnit) -> dict[OtherID:float]:
     return {
         otherunit.other_id: otherunit.debtor_weight
-        for otherunit in x_truth._others.values()
+        for otherunit in x_world._others.values()
         if otherunit.debtor_weight > 0
     }
 

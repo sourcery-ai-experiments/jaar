@@ -7,8 +7,8 @@ class Base(DeclarativeBase):
     pass
 
 
-class TruthTable(Base):
-    __tablename__ = "truth"
+class WorldTable(Base):
+    __tablename__ = "world"
     uid = Column(Integer, primary_key=True)
     _max_tree_traverse = Column(Integer)
     _meld_strategy = Column(String)

@@ -1,6 +1,6 @@
 from src._road.road import RoadUnit, create_road, get_default_real_id_roadnode, RoadNode
-from src._truth.idea import ideaunit_shop
-from src._truth.truth import TruthUnit, truthunit_shop
+from src._world.idea import ideaunit_shop
+from src._world.world import WorldUnit, worldunit_shop
 from src.listen.userhub import userhub_shop, UserHub
 from src.listen.listen import listen_to_person_jobs, create_job_file_from_role_file
 from src.listen.examples.listen_env import (
@@ -90,11 +90,11 @@ def run_road() -> RoadUnit:
     return create_road(casa_road(), run_text())
 
 
-def get_example_yao_truth() -> TruthUnit:
+def get_example_yao_world() -> WorldUnit:
     yao_text = "Yao"
     zia_text = "Zia"
     bob_text = "Bob"
-    yao_speaker = truthunit_shop(yao_text, get_default_real_id_roadnode())
+    yao_speaker = worldunit_shop(yao_text, get_default_real_id_roadnode())
     yao_speaker.add_idea(ideaunit_shop(run_text()), casa_road())
     yao_speaker.add_otherunit(yao_text, debtor_weight=10)
     yao_speaker.add_otherunit(zia_text, debtor_weight=30)
@@ -103,9 +103,9 @@ def get_example_yao_truth() -> TruthUnit:
     return yao_speaker
 
 
-def get_example_yao_job1_speaker() -> TruthUnit:
+def get_example_yao_job1_speaker() -> WorldUnit:
     yao_text = "Yao"
-    yao_speaker = get_example_yao_truth()
+    yao_speaker = get_example_yao_world()
     yao_speaker.del_idea_obj(run_road())
     yao_speaker.set_other_pool(40)
     yao_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
@@ -118,9 +118,9 @@ def get_example_yao_job1_speaker() -> TruthUnit:
     return yao_speaker
 
 
-def get_example_yao_job2_speaker() -> TruthUnit:
+def get_example_yao_job2_speaker() -> WorldUnit:
     yao_text = "Yao"
-    yao_speaker = get_example_yao_truth()
+    yao_speaker = get_example_yao_world()
     yao_speaker.del_idea_obj(run_road())
     yao_speaker.set_other_pool(30)
     yao_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
@@ -139,8 +139,8 @@ def get_example_yao_job2_speaker() -> TruthUnit:
     return yao_speaker
 
 
-def get_example_yao_job3_speaker() -> TruthUnit:
-    yao_speaker = get_example_yao_truth()
+def get_example_yao_job3_speaker() -> WorldUnit:
+    yao_speaker = get_example_yao_world()
     yao_speaker.del_idea_obj(run_road())
     yao_speaker.set_other_pool(10)
     yao_speaker.add_idea(ideaunit_shop(sweep_text(), pledge=True), casa_road())
@@ -212,32 +212,32 @@ def get_on_land_road() -> RoadUnit:
 
 
 def get_yao_ohio_userhub() -> UserHub:
-    yao_truth = get_example_yao_truth()
+    yao_world = get_example_yao_world()
     return userhub_shop(
         reals_dir=env_dir(),
-        real_id=yao_truth._real_id,
-        person_id=yao_truth._owner_id,
+        real_id=yao_world._real_id,
+        person_id=yao_world._owner_id,
         econ_road=get_ohio_road(),
         # pipeline_same_live_text(),
     )
 
 
 def get_yao_iowa_userhub() -> UserHub:
-    yao_truth = get_example_yao_truth()
+    yao_world = get_example_yao_world()
     return userhub_shop(
         reals_dir=env_dir(),
-        real_id=yao_truth._real_id,
-        person_id=yao_truth._owner_id,
+        real_id=yao_world._real_id,
+        person_id=yao_world._owner_id,
         econ_road=get_iowa_road(),
         # pipeline_same_live_text(),
     )
 
 
 def get_zia_utah_userhub() -> UserHub:
-    yao_truth = get_example_yao_truth()
+    yao_world = get_example_yao_world()
     return userhub_shop(
         reals_dir=env_dir(),
-        real_id=yao_truth._real_id,
+        real_id=yao_world._real_id,
         person_id="Zia",
         econ_road=get_utah_road(),
         # pipeline_same_live_text(),
@@ -245,7 +245,7 @@ def get_zia_utah_userhub() -> UserHub:
 
 
 def get_example_yao_same_with_3_healers():
-    yao_same = get_example_yao_truth()
+    yao_same = get_example_yao_world()
     yao_text = yao_same.get_other("Yao").other_id
     bob_text = yao_same.get_other("Bob").other_id
     zia_text = yao_same.get_other("Zia").other_id
@@ -276,7 +276,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     yao_same0.add_idea(ideaunit_shop(get_on_land_text()), get_location_road())
     yao_same0.add_l1_idea(ideaunit_shop(get_swim_text(), pledge=True))
     yao_same0.edit_reason(get_swim_road(), get_location_road(), get_in_ocean_road())
-    yao_same0.calc_truth_metrics()
+    yao_same0.calc_world_metrics()
     assert yao_same0._econ_dict.get(get_iowa_road())
     assert yao_same0._econ_dict.get(get_ohio_road())
     assert yao_same0._econ_dict.get(get_utah_road())
@@ -296,10 +296,10 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     assert yao_iowa_userhub.job_file_exists(yao_text) is False
     assert yao_ohio_userhub.job_file_exists(yao_text) is False
     assert zia_utah_userhub.job_file_exists(yao_text) is False
-    yao_iowa_userhub.save_same_truth(yao_same0)
-    yao_iowa_userhub.save_job_truth(yao_job1)
-    yao_ohio_userhub.save_job_truth(yao_job2)
-    zia_utah_userhub.save_job_truth(yao_job3)
+    yao_iowa_userhub.save_same_world(yao_same0)
+    yao_iowa_userhub.save_job_world(yao_job1)
+    yao_ohio_userhub.save_job_world(yao_job2)
+    zia_utah_userhub.save_job_world(yao_job3)
     assert yao_iowa_userhub.same_file_exists()
     assert yao_iowa_userhub.job_file_exists(yao_text)
     assert yao_ohio_userhub.job_file_exists(yao_text)
@@ -310,8 +310,8 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     listen_to_person_jobs(yao_iowa_userhub)
     assert yao_iowa_userhub.live_file_exists()
 
-    yao_live = yao_iowa_userhub.get_live_truth()
-    yao_live.calc_truth_metrics()
+    yao_live = yao_iowa_userhub.get_live_world()
+    yao_live.calc_world_metrics()
     assert yao_live._others.keys() == yao_same0._others.keys()
     assert yao_live.get_other(yao_text)._irrational_debtor_weight == 0
     assert yao_live.get_beliefunits_dict() == yao_same0.get_beliefunits_dict()
@@ -346,7 +346,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_same_CanOnlyReferenceItsel
     assert yao_same0._econ_dict.get(get_iowa_road())
     assert yao_same0._econ_dict.get(get_ohio_road())
     assert yao_same0._econ_dict.get(get_utah_road())
-    yao_same0.calc_truth_metrics()
+    yao_same0.calc_world_metrics()
     assert len(yao_same0._econ_dict) == 3
     # print(f"{yao_same0._idea_dict.keys()=}")
 
@@ -364,10 +364,10 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_same_CanOnlyReferenceItsel
     assert yao_ohio_userhub.job_file_exists(yao_text) is False
     assert zia_utah_userhub.job_file_exists(yao_text) is False
     print(f"{yao_same0.get_fact(get_location_road())=}")
-    yao_iowa_userhub.save_same_truth(yao_same0)
-    # yao_iowa_userhub.save_job_truth(yao_job1)
-    # yao_ohio_userhub.save_job_truth(yao_job2)
-    # zia_utah_userhub.save_job_truth(yao_job3)
+    yao_iowa_userhub.save_same_world(yao_same0)
+    # yao_iowa_userhub.save_job_world(yao_job1)
+    # yao_ohio_userhub.save_job_world(yao_job2)
+    # zia_utah_userhub.save_job_world(yao_job3)
     assert yao_iowa_userhub.same_file_exists()
     assert yao_iowa_userhub.job_file_exists(yao_text) is False
     assert yao_ohio_userhub.job_file_exists(yao_text) is False
@@ -378,8 +378,8 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_same_CanOnlyReferenceItsel
     listen_to_person_jobs(yao_iowa_userhub)
     assert yao_iowa_userhub.live_file_exists()
 
-    yao_live = yao_iowa_userhub.get_live_truth()
-    yao_live.calc_truth_metrics()
+    yao_live = yao_iowa_userhub.get_live_world()
+    yao_live.calc_world_metrics()
     assert yao_live._others.keys() == yao_same0._others.keys()
     assert yao_live.get_other(yao_text)._irrational_debtor_weight == 0
     assert yao_live.get_beliefunits_dict() == yao_same0.get_beliefunits_dict()
@@ -402,9 +402,9 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_same_CanOnlyReferenceItsel
 def test_create_job_file_from_role_file_CreatesEmptyJob(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_role = truthunit_shop(yao_text)
+    yao_role = worldunit_shop(yao_text)
     sue_texas_userhub = get_texas_userhub()
-    sue_texas_userhub.save_role_truth(yao_role)
+    sue_texas_userhub.save_role_world(yao_role)
     assert sue_texas_userhub.job_file_exists(yao_text) is False
 
     # WHEN
@@ -412,7 +412,7 @@ def test_create_job_file_from_role_file_CreatesEmptyJob(env_dir_setup_cleanup):
 
     # GIVEN
     assert sue_texas_userhub.job_file_exists(yao_text)
-    yao_job = sue_texas_userhub.get_job_truth(yao_text)
+    yao_job = sue_texas_userhub.get_job_world(yao_text)
     assert yao_job._owner_id != None
     assert yao_job._owner_id == yao_text
     assert yao_job.get_dict() == yao_role.get_dict()

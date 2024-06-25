@@ -180,7 +180,7 @@ def test_get_quark_hx_table_insert_sqlstr_ReturnsCorrectStr():
     knee_open = 7
 
     # WHEN
-    x_category = "truth_idea_factunit"
+    x_category = "world_idea_factunit"
     road_text = "road"
     base_text = "base"
     open_text = "open"

@@ -1,8 +1,8 @@
 from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from src._road.road import create_road, get_default_real_id_roadnode as root_label
-from src._truth.examples.example_truths import (
-    get_truth_1Task_1CE0MinutesReason_1Fact,
-    get_truth_with_tuesday_cleaning_task,
+from src._world.examples.example_worlds import (
+    get_world_1Task_1CE0MinutesReason_1Fact,
+    get_world_with_tuesday_cleaning_task,
 )
 from src.money.money import moneyunit_shop
 from src.money.treasury_sqlstr import (
@@ -136,7 +136,7 @@ def test_MoneyUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecor
     real_id = temp_real_id()
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.create_treasury_db(in_memory=True)
-    x_money.refresh_treasury_job_truths_data()
+    x_money.refresh_treasury_job_worlds_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
     assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 0
     bob_text = "Bob"
@@ -195,43 +195,43 @@ def test_MoneyUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecor
 
 def test_MoneyUnit_treasury_insert_agenda_into_treasury_RaisesBaseDoesNotExistError():
     # GIVEN
-    # A truth that has 1 agenda item
+    # A world that has 1 agenda item
     real_id = temp_real_id()
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.create_treasury_db(in_memory=True)
-    x_money.refresh_treasury_job_truths_data()
+    x_money.refresh_treasury_job_worlds_data()
 
-    amos_truth = get_truth_1Task_1CE0MinutesReason_1Fact()
+    amos_world = get_world_1Task_1CE0MinutesReason_1Fact()
 
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
     assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 0
 
     # WHEN
     bob_text = "Bob"
-    bad_road = amos_truth.make_l1_road("jajatime")
+    bad_road = amos_world.make_l1_road("jajatime")
     x_calendarreport = CalendarReport(bob_text, bad_road, 10, 19, 15, 11, 7)
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        x_money.insert_agenda_into_treasury(amos_truth, x_calendarreport)
+        x_money.insert_agenda_into_treasury(amos_world, x_calendarreport)
     assert (
         str(excinfo.value)
-        == f"Agenda base cannot be '{bad_road}' because it does not exist in truth '{amos_truth._owner_id}'."
+        == f"Agenda base cannot be '{bad_road}' because it does not exist in world '{amos_world._owner_id}'."
     )
 
 
 def test_MoneyUnit_treasury_insert_agenda_into_treasury_CorrectlyPopulatesTreasury():
     # GIVEN
-    # A truth that has 1 agenda item
+    # A world that has 1 agenda item
     x_money = moneyunit_shop(get_texas_userhub())
     x_money.create_treasury_db(in_memory=True)
-    x_money.refresh_treasury_job_truths_data()
+    x_money.refresh_treasury_job_worlds_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
     assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 0
 
     # WHEN
-    bob_truth = get_truth_with_tuesday_cleaning_task()
-    jajatime_road = bob_truth.make_road(bob_truth.make_l1_road("time"), "jajatime")
+    bob_world = get_world_with_tuesday_cleaning_task()
+    jajatime_road = bob_world.make_road(bob_world.make_l1_road("time"), "jajatime")
     print(f"{jajatime_road=}")
     x_date_range_start = 1064131200
     x_interval_count = 5
@@ -240,7 +240,7 @@ def test_MoneyUnit_treasury_insert_agenda_into_treasury_CorrectlyPopulatesTreasu
     x_agenda_max_count_state = 7
     # WHEN
     x_calendarreport = CalendarReport(
-        owner_id=bob_truth._owner_id,
+        owner_id=bob_world._owner_id,
         time_road=jajatime_road,
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
@@ -248,7 +248,7 @@ def test_MoneyUnit_treasury_insert_agenda_into_treasury_CorrectlyPopulatesTreasu
         agenda_max_count_task=x_agenda_max_count_task,
         agenda_max_count_state=x_agenda_max_count_state,
     )
-    x_money.insert_agenda_into_treasury(bob_truth, x_calendarreport)
+    x_money.insert_agenda_into_treasury(bob_world, x_calendarreport)
 
     # THEN
     assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 6
@@ -257,7 +257,7 @@ def test_MoneyUnit_treasury_insert_agenda_into_treasury_CorrectlyPopulatesTreasu
     new_interval_count = 3
     # WHEN
     x_calendarreport = CalendarReport(
-        owner_id=bob_truth._owner_id,
+        owner_id=bob_world._owner_id,
         time_road=jajatime_road,
         date_range_start=x_date_range_start,
         interval_count=new_interval_count,
@@ -265,6 +265,6 @@ def test_MoneyUnit_treasury_insert_agenda_into_treasury_CorrectlyPopulatesTreasu
         agenda_max_count_task=x_agenda_max_count_task,
         agenda_max_count_state=x_agenda_max_count_state,
     )
-    x_money.insert_agenda_into_treasury(bob_truth, x_calendarreport)
+    x_money.insert_agenda_into_treasury(bob_world, x_calendarreport)
     # THEN
     assert get_single_result(x_money.get_treasury_conn(), calendar_count_sqlstr) == 4

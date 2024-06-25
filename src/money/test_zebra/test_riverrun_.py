@@ -103,7 +103,7 @@ def test_riverrun_shop_ReturnsCorrectObjWithoutArgs():
     assert x_riverrun.cycle_max == 10
 
 
-def test_RiverRun_set_econ_credorledger_CorrectChangesAttr():
+def test_RiverRun_set_econ_credorledger_SetsAttr():
     # GIVEN
     yao_userhub = example_yao_userhub()
     yao_text = "Yao"
@@ -120,7 +120,7 @@ def test_RiverRun_set_econ_credorledger_CorrectChangesAttr():
     assert x_riverrun.econ_credorledgers == {yao_text: {yao_text: yao_credor_weight}}
 
 
-def test_RiverRun_delete_econ_credorledgers_owner_CorrectChangesAttr():
+def test_RiverRun_delete_econ_credorledgers_owner_SetsAttr():
     # GIVEN
     yao_userhub = example_yao_userhub()
     yao_text = "Yao"

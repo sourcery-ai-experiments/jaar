@@ -148,7 +148,7 @@ def test_UserHub_save_quark_file_CorrectlySavesFile(env_dir_setup_cleanup):
     assert quark_num2 == 12
 
 
-def test_UserHub_get_truth_from_quark_files_ReturnsFileWithZeroQuarks(
+def test_UserHub_get_world_from_quark_files_ReturnsFileWithZeroQuarks(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -156,16 +156,16 @@ def test_UserHub_get_truth_from_quark_files_ReturnsFileWithZeroQuarks(
     yao_userhub = userhub_shop(reals_dir(), real_id(), yao_text)
 
     # WHEN
-    yao_truth = yao_userhub._get_truth_from_quark_files()
+    yao_world = yao_userhub._get_world_from_quark_files()
 
     # THEN
-    assert yao_truth._owner_id == yao_text
-    assert yao_truth._real_id == yao_userhub.real_id
-    assert yao_truth._road_delimiter == yao_userhub.road_delimiter
-    assert yao_truth._pixel == yao_userhub.pixel
+    assert yao_world._owner_id == yao_text
+    assert yao_world._real_id == yao_userhub.real_id
+    assert yao_world._road_delimiter == yao_userhub.road_delimiter
+    assert yao_world._pixel == yao_userhub.pixel
 
 
-def test_UserHub_get_truth_from_quark_files_ReturnsCorrectFile_SimpleIdea(
+def test_UserHub_get_world_from_quark_files_ReturnsCorrectFile_SimpleIdea(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -177,19 +177,19 @@ def test_UserHub_get_truth_from_quark_files_ReturnsCorrectFile_SimpleIdea(
     yao_userhub.save_quark_file(sports_quark)
 
     # WHEN
-    yao_truth = yao_userhub._get_truth_from_quark_files()
+    yao_world = yao_userhub._get_world_from_quark_files()
 
     # THEN
-    assert yao_truth._owner_id == yao_text
-    assert yao_truth._real_id == yao_userhub.real_id
-    assert yao_truth._road_delimiter == yao_userhub.road_delimiter
+    assert yao_world._owner_id == yao_text
+    assert yao_world._real_id == yao_userhub.real_id
+    assert yao_world._road_delimiter == yao_userhub.road_delimiter
     sports_text = "sports"
-    sports_road = yao_truth.make_l1_road(sports_text)
+    sports_road = yao_world.make_l1_road(sports_text)
 
-    assert yao_truth.idea_exists(sports_road)
+    assert yao_world.idea_exists(sports_road)
 
 
-def test_UserHub_get_truth_from_quark_files_ReturnsCorrectFile_WithFactUnit(
+def test_UserHub_get_world_from_quark_files_ReturnsCorrectFile_WithFactUnit(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -205,13 +205,13 @@ def test_UserHub_get_truth_from_quark_files_ReturnsCorrectFile_WithFactUnit(
     print(f"{file_dir_files(yao_userhub.quarks_dir()).keys()=}")
 
     # WHEN
-    yao_truth = yao_userhub._get_truth_from_quark_files()
+    yao_world = yao_userhub._get_world_from_quark_files()
 
     # THEN
-    assert yao_truth._owner_id == yao_text
-    assert yao_truth._real_id == yao_userhub.real_id
-    assert yao_truth._road_delimiter == yao_userhub.road_delimiter
+    assert yao_world._owner_id == yao_text
+    assert yao_world._real_id == yao_userhub.real_id
+    assert yao_world._road_delimiter == yao_userhub.road_delimiter
     sports_text = "sports"
-    sports_road = yao_truth.make_l1_road(sports_text)
+    sports_road = yao_world.make_l1_road(sports_text)
 
-    assert yao_truth.idea_exists(sports_road)
+    assert yao_world.idea_exists(sports_road)

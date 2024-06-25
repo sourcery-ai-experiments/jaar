@@ -1,15 +1,15 @@
 from src._road.road import create_road, get_default_real_id_roadnode as root_label
-from src._truth.other import otherunit_shop
+from src._world.other import otherunit_shop
 from src.atom.nuc import (
     NucUnit,
     nucunit_shop,
-    validate_truth_build_from_nuc,
+    validate_world_build_from_nuc,
     quarkunit_shop,
     quark_update,
     quark_insert,
     quark_delete,
 )
-from src._truth.truth import truthunit_shop
+from src._world.world import worldunit_shop
 from src.atom.examples.example_nucs import get_nucunit_example1
 from src._instrument.python import x_is_json
 from pytest import raises as pytest_raises
@@ -21,7 +21,7 @@ def test_NucUnit_exists():
 
     # THEN
     assert x_nucunit.quarkunits is None
-    assert x_nucunit._truth_build_validated is None
+    assert x_nucunit._world_build_validated is None
 
 
 def test_nucunit_shop_ReturnsCorrectObj():
@@ -30,28 +30,28 @@ def test_nucunit_shop_ReturnsCorrectObj():
 
     # THEN
     assert ex1_nucunit.quarkunits == {}
-    assert ex1_nucunit._truth_build_validated is False
+    assert ex1_nucunit._world_build_validated is False
 
 
-def test_NucUnit_set_quarkunit_CorrectlySets_TruthUnitSimpleAttrs():
+def test_NucUnit_set_quarkunit_CorrectlySets_WorldUnitSimpleAttrs():
     # GIVEN
     ex1_nucunit = nucunit_shop()
     attribute_value = 55
-    category = "truthunit"
+    category = "worldunit"
     opt1_arg = "_weight"
     optional_args = {opt1_arg: attribute_value}
     required_args = {}
-    truth_weight_quarkunit = quarkunit_shop(
+    world_weight_quarkunit = quarkunit_shop(
         category,
         quark_update(),
         required_args=required_args,
         optional_args=optional_args,
     )
     assert ex1_nucunit.quarkunits == {}
-    assert truth_weight_quarkunit.quark_order is None
+    assert world_weight_quarkunit.quark_order is None
 
     # WHEN
-    ex1_nucunit.set_quarkunit(truth_weight_quarkunit)
+    ex1_nucunit.set_quarkunit(world_weight_quarkunit)
 
     # THEN
     assert len(ex1_nucunit.quarkunits) == 1
@@ -59,19 +59,19 @@ def test_NucUnit_set_quarkunit_CorrectlySets_TruthUnitSimpleAttrs():
     # print(f"{x_update_dict=}")
     x_category_quarkunit = x_update_dict.get(category)
     print(f"{x_category_quarkunit=}")
-    assert x_category_quarkunit == truth_weight_quarkunit
-    assert truth_weight_quarkunit.quark_order != None
+    assert x_category_quarkunit == world_weight_quarkunit
+    assert world_weight_quarkunit.quark_order != None
 
 
 def test_NucUnit_set_quarkunit_RaisesErrorWhen_is_valid_IsFalse():
     # GIVEN
     ex1_nucunit = nucunit_shop()
-    x_category = "truth_beliefunit"
-    truth_weight_quarkunit = quarkunit_shop(x_category, quark_update())
+    x_category = "world_beliefunit"
+    world_weight_quarkunit = quarkunit_shop(x_category, quark_update())
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        ex1_nucunit.set_quarkunit(truth_weight_quarkunit)
+        ex1_nucunit.set_quarkunit(world_weight_quarkunit)
     assert (
         str(excinfo.value)
         == f"""'{x_category}' UPDATE QuarkUnit is invalid
@@ -83,23 +83,23 @@ def test_NucUnit_set_quarkunit_RaisesErrorWhen_is_valid_IsFalse():
 def test_NucUnit_get_quark_ReturnsCorrectObj():
     # GIVEN
     ex1_nucunit = nucunit_shop()
-    truthunit_text = "truthunit"
+    worldunit_text = "worldunit"
     opt_arg1 = "_weight"
     opt_value = 55
-    truthunit_quarkunit = quarkunit_shop(truthunit_text, quark_update())
-    truthunit_quarkunit.set_optional_arg(x_key=opt_arg1, x_value=opt_value)
-    ex1_nucunit.set_quarkunit(truthunit_quarkunit)
+    worldunit_quarkunit = quarkunit_shop(worldunit_text, quark_update())
+    worldunit_quarkunit.set_optional_arg(x_key=opt_arg1, x_value=opt_value)
+    ex1_nucunit.set_quarkunit(worldunit_quarkunit)
 
     # WHEN
     gen_quarkunit = ex1_nucunit.get_quarkunit(
-        quark_update(), category=truthunit_text, required_args=[]
+        quark_update(), category=worldunit_text, required_args=[]
     )
 
     # THEN
-    assert gen_quarkunit == truthunit_quarkunit
+    assert gen_quarkunit == worldunit_quarkunit
 
 
-def test_NucUnit_add_quarkunit_CorrectlySets_TruthUnitSimpleAttrs():
+def test_NucUnit_add_quarkunit_CorrectlySets_WorldUnitSimpleAttrs():
     # GIVEN
     ex1_nucunit = nucunit_shop()
     assert ex1_nucunit.quarkunits == {}
@@ -107,11 +107,11 @@ def test_NucUnit_add_quarkunit_CorrectlySets_TruthUnitSimpleAttrs():
     # WHEN
     op2_arg = "_weight"
     op2_value = 55
-    truthunit_text = "truthunit"
+    worldunit_text = "worldunit"
     required_args = {}
     optional_args = {op2_arg: op2_value}
     ex1_nucunit.add_quarkunit(
-        truthunit_text,
+        worldunit_text,
         quark_update(),
         required_args,
         optional_args=optional_args,
@@ -120,12 +120,12 @@ def test_NucUnit_add_quarkunit_CorrectlySets_TruthUnitSimpleAttrs():
     # THEN
     assert len(ex1_nucunit.quarkunits) == 1
     x_update_dict = ex1_nucunit.quarkunits.get(quark_update())
-    x_quarkunit = x_update_dict.get(truthunit_text)
+    x_quarkunit = x_update_dict.get(worldunit_text)
     assert x_quarkunit != None
-    assert x_quarkunit.category == truthunit_text
+    assert x_quarkunit.category == worldunit_text
 
 
-def test_NucUnit_add_quarkunit_CorrectlySets_TruthUnit_otherunits():
+def test_NucUnit_add_quarkunit_CorrectlySets_WorldUnit_otherunits():
     # GIVEN
     ex1_nucunit = nucunit_shop()
     assert ex1_nucunit.quarkunits == {}
@@ -144,7 +144,7 @@ def test_NucUnit_add_quarkunit_CorrectlySets_TruthUnit_otherunits():
     bob_optional_dict = {cw_text: bob_otherunit.get_dict().get(cw_text)}
     bob_optional_dict[dw_text] = bob_otherunit.get_dict().get(dw_text)
     print(f"{bob_required_dict=}")
-    otherunit_text = "truth_otherunit"
+    otherunit_text = "world_otherunit"
     ex1_nucunit.add_quarkunit(
         category=otherunit_text,
         crud_text=quark_insert(),
@@ -197,11 +197,11 @@ def test_NucUnit_get_category_sorted_quarkunits_list_ReturnsCorrectObj():
 
     # THEN
     assert len(sue_quarks_list) == 2
-    assert sue_quarks_list[0] == update_dict.get("truthunit")
+    assert sue_quarks_list[0] == update_dict.get("worldunit")
     z_quark = sue_quarks_list[1]
     print(f"{z_quark=}")
-    print(delete_dict.get("truth_otherunit").keys())
-    carmen_otherunit_delete = delete_dict.get("truth_otherunit").get("Carmen")
+    print(delete_dict.get("world_otherunit").keys())
+    carmen_otherunit_delete = delete_dict.get("world_otherunit").get("Carmen")
     assert sue_quarks_list[1] == carmen_otherunit_delete
     # print(f"{sue_quark_order_dict.keys()=}")
     # # print(f"{sue_quark_order_dict.get(quark_update())=}")
@@ -214,22 +214,22 @@ def test_NucUnit_get_category_sorted_quarkunits_list_ReturnsCorrectObj():
     #         print(f"{x_quark.category=}")
 
 
-# def test_NucUnit_add_quarkunit_CorrectlySets_TruthUnit_max_tree_traverse():
+# def test_NucUnit_add_quarkunit_CorrectlySets_WorldUnit_max_tree_traverse():
 #     # GIVEN
 #     ex1_nucunit = nucunit_shop(get_sue_road())
 #     assert ex1_nucunit.quarkunits == {}
 
 #     # WHEN
 #     opt2_value = 55
-#     category = "truthunit"
+#     category = "worldunit"
 #     opt2_arg = "_weight"
 #     weight_quarkunit = quarkunit_shop(category, quark_update())
 #     weight_quarkunit.set_optional_arg(opt2_arg, opt2_value)
 #     ex1_nucunit.set_quarkunit(weight_quarkunit)
 #     # THEN
 #     assert len(ex1_nucunit.quarkunits.get(quark_update()).keys()) == 1
-#     sue_truthunit_dict = ex1_nucunit.quarkunits.get(quark_update())
-#     sue_weight_quarkunit = sue_truthunit_dict.get(category)
+#     sue_worldunit_dict = ex1_nucunit.quarkunits.get(quark_update())
+#     sue_weight_quarkunit = sue_worldunit_dict.get(category)
 #     print(f"{sue_weight_quarkunit=}")
 #     assert weight_quarkunit == sue_weight_quarkunit
 
@@ -279,15 +279,15 @@ def test_NucUnit_get_category_sorted_quarkunits_list_ReturnsCorrectObj():
 def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj():
     # GIVEN
     ex1_nucunit = get_nucunit_example1()
-    truthunit_text = "truthunit"
-    truth_otherunit_text = "truth_otherunit"
+    worldunit_text = "worldunit"
+    world_otherunit_text = "world_otherunit"
     update_dict = ex1_nucunit.quarkunits.get(quark_update())
     assert len(update_dict.keys()) == 1
-    assert update_dict.get(truthunit_text) != None
+    assert update_dict.get(worldunit_text) != None
     print(f"quark_order 28 {ex1_nucunit.quarkunits.get(quark_update()).keys()=}")
     delete_dict = ex1_nucunit.quarkunits.get(quark_delete())
     assert len(delete_dict.keys()) == 1
-    assert delete_dict.get(truth_otherunit_text) != None
+    assert delete_dict.get(world_otherunit_text) != None
     print(f"quark_order 26 {ex1_nucunit.quarkunits.get(quark_delete()).keys()=}")
 
     # WHEN
@@ -295,12 +295,12 @@ def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj():
 
     # THEN
     assert len(sue_quark_order_list) == 2
-    print(delete_dict.get("truth_otherunit").keys())
-    carmen_otherunit_delete = delete_dict.get("truth_otherunit").get("Carmen")
+    print(delete_dict.get("world_otherunit").keys())
+    carmen_otherunit_delete = delete_dict.get("world_otherunit").get("Carmen")
     # for quarkunit in sue_quark_order_list:
     #     print(f"{quarkunit.quark_order=}")
     assert sue_quark_order_list[0] == carmen_otherunit_delete
-    assert sue_quark_order_list[1] == update_dict.get(truthunit_text)
+    assert sue_quark_order_list[1] == update_dict.get(worldunit_text)
     # for crud_text, quark_list in sue_quark_order_dict.items():
     #     print(f"{crud_text=}")
     #     print(f"{len(quark_list)=}")
@@ -314,7 +314,7 @@ def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj_IdeaUnitsSorted():
     sports_text = "sports"
     sports_road = create_road(x_real_id, sports_text)
     knee_text = "knee"
-    x_category = "truth_ideaunit"
+    x_category = "world_ideaunit"
     label_text = "label"
     parent_road_text = "parent_road"
     sports_insert_ideaunit_quarkunit = quarkunit_shop(x_category, quark_insert())
@@ -350,7 +350,7 @@ def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj_Road_Sorted():
     sports_road = create_road(x_real_id, sports_text)
     knee_text = "knee"
     knee_road = create_road(sports_road, knee_text)
-    x_category = "truth_idea_balancelink"
+    x_category = "world_idea_balancelink"
     road_text = "road"
     belief_id_text = "belief_id"
     swimmers_text = ",Swimmers"
@@ -380,17 +380,17 @@ def test_NucUnit_get_sorted_quarkunits_ReturnsCorrectObj_Road_Sorted():
     #         print(f"{x_quark.category=}")
 
 
-def test_validate_truth_build_from_nuc_ReturnsCorrectObjGivenNoTruth():
+def test_validate_world_build_from_nuc_ReturnsCorrectObjGivenNoWorld():
     # GIVEN
     sue_nucunit = nucunit_shop()
 
-    truthunit_text = "truthunit"
-    x_quarkunit = quarkunit_shop(truthunit_text, quark_update())
+    worldunit_text = "worldunit"
+    x_quarkunit = quarkunit_shop(worldunit_text, quark_update())
     x_attribute = "_other_credor_pool"
     x_quarkunit.set_optional_arg(x_attribute, 100)
     sue_nucunit.set_quarkunit(x_quarkunit)
 
-    category = "truth_otherunit"
+    category = "world_otherunit"
     carm_text = "Carmen"
     x_quarkunit = quarkunit_shop(category, quark_insert())
     x_quarkunit.set_arg("other_id", carm_text)
@@ -398,7 +398,7 @@ def test_validate_truth_build_from_nuc_ReturnsCorrectObjGivenNoTruth():
     sue_nucunit.set_quarkunit(x_quarkunit)
 
     # WHEN/THEN
-    assert validate_truth_build_from_nuc(sue_nucunit) is False
+    assert validate_world_build_from_nuc(sue_nucunit) is False
 
     # WHEN
     rico_text = "Rico"
@@ -408,7 +408,7 @@ def test_validate_truth_build_from_nuc_ReturnsCorrectObjGivenNoTruth():
     sue_nucunit.set_quarkunit(x_quarkunit)
 
     # THEN
-    assert validate_truth_build_from_nuc(sue_nucunit)
+    assert validate_world_build_from_nuc(sue_nucunit)
 
     # WHEN
     bob_text = "Bob"
@@ -418,17 +418,17 @@ def test_validate_truth_build_from_nuc_ReturnsCorrectObjGivenNoTruth():
     sue_nucunit.set_quarkunit(x_quarkunit)
 
     # THEN
-    assert validate_truth_build_from_nuc(sue_nucunit) is False
+    assert validate_world_build_from_nuc(sue_nucunit) is False
 
 
-def test_validate_truth_build_from_nuc_ReturnsCorrectObjGivenTruth():
+def test_validate_world_build_from_nuc_ReturnsCorrectObjGivenWorld():
     # GIVEN
-    sue_truth = truthunit_shop("Sue")
-    sue_truth.set_other_credor_pool(100)
+    sue_world = worldunit_shop("Sue")
+    sue_world.set_other_credor_pool(100)
 
     sue_nucunit = nucunit_shop()
 
-    category = "truth_otherunit"
+    category = "world_otherunit"
     carm_text = "Carmen"
     x_quarkunit = quarkunit_shop(category, quark_insert())
     x_quarkunit.set_arg("other_id", carm_text)
@@ -436,9 +436,9 @@ def test_validate_truth_build_from_nuc_ReturnsCorrectObjGivenTruth():
     sue_nucunit.set_quarkunit(x_quarkunit)
 
     # WHEN/THEN
-    sue_truth = truthunit_shop("Sue")
-    sue_truth.set_other_credor_pool(100)
-    assert validate_truth_build_from_nuc(sue_nucunit, sue_truth) is False
+    sue_world = worldunit_shop("Sue")
+    sue_world.set_other_credor_pool(100)
+    assert validate_world_build_from_nuc(sue_nucunit, sue_world) is False
 
     # WHEN
     rico_text = "Rico"
@@ -448,9 +448,9 @@ def test_validate_truth_build_from_nuc_ReturnsCorrectObjGivenTruth():
     sue_nucunit.set_quarkunit(x_quarkunit)
 
     # THEN
-    sue_truth = truthunit_shop("Sue")
-    sue_truth.set_other_credor_pool(100)
-    assert validate_truth_build_from_nuc(sue_nucunit, sue_truth)
+    sue_world = worldunit_shop("Sue")
+    sue_world.set_other_credor_pool(100)
+    assert validate_world_build_from_nuc(sue_nucunit, sue_world)
 
     # WHEN
     bob_text = "Bob"
@@ -460,35 +460,35 @@ def test_validate_truth_build_from_nuc_ReturnsCorrectObjGivenTruth():
     sue_nucunit.set_quarkunit(x_quarkunit)
 
     # THEN
-    sue_truth = truthunit_shop("Sue")
-    sue_truth.set_other_credor_pool(100)
-    assert validate_truth_build_from_nuc(sue_nucunit, sue_truth) is False
+    sue_world = worldunit_shop("Sue")
+    sue_world.set_other_credor_pool(100)
+    assert validate_world_build_from_nuc(sue_nucunit, sue_world) is False
 
 
 def test_NucUnit_get_ordered_quarkunits_ReturnsCorrectObj_GivenNoStartingNumber():
     # GIVEN
     sue_nucunit = nucunit_shop()
-    truthunit_text = "truthunit"
-    pool_quarkunit = quarkunit_shop(truthunit_text, quark_update())
+    worldunit_text = "worldunit"
+    pool_quarkunit = quarkunit_shop(worldunit_text, quark_update())
     pool_attribute = "_other_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 100)
     sue_nucunit.set_quarkunit(pool_quarkunit)
-    category = "truth_otherunit"
+    category = "world_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_insert())
     carm_quarkunit.set_arg("other_id", carm_text)
     carm_quarkunit.set_arg("credor_weight", 70)
     sue_nucunit.set_quarkunit(carm_quarkunit)
-    sue_truth = truthunit_shop("Sue")
-    sue_truth.set_other_credor_pool(100)
+    sue_world = worldunit_shop("Sue")
+    sue_world.set_other_credor_pool(100)
     rico_text = "Rico"
     rico_quarkunit = quarkunit_shop(category, quark_insert())
     rico_quarkunit.set_arg("other_id", rico_text)
     rico_quarkunit.set_arg("credor_weight", 30)
     sue_nucunit.set_quarkunit(rico_quarkunit)
 
-    sue_truth = truthunit_shop("Sue")
-    assert validate_truth_build_from_nuc(sue_nucunit, sue_truth)
+    sue_world = worldunit_shop("Sue")
+    assert validate_world_build_from_nuc(sue_nucunit, sue_world)
 
     # WHEN
     nucunit_dict = sue_nucunit.get_ordered_quarkunits()
@@ -508,27 +508,27 @@ def test_NucUnit_get_ordered_quarkunits_ReturnsCorrectObj_GivenNoStartingNumber(
 def test_NucUnit_get_ordered_quarkunits_ReturnsCorrectObj_GivenStartingNumber():
     # GIVEN
     sue_nucunit = nucunit_shop()
-    truthunit_text = "truthunit"
-    pool_quarkunit = quarkunit_shop(truthunit_text, quark_update())
+    worldunit_text = "worldunit"
+    pool_quarkunit = quarkunit_shop(worldunit_text, quark_update())
     pool_attribute = "_other_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 100)
     sue_nucunit.set_quarkunit(pool_quarkunit)
-    category = "truth_otherunit"
+    category = "world_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_insert())
     carm_quarkunit.set_arg("other_id", carm_text)
     carm_quarkunit.set_arg("credor_weight", 70)
     sue_nucunit.set_quarkunit(carm_quarkunit)
-    sue_truth = truthunit_shop("Sue")
-    sue_truth.set_other_credor_pool(100)
+    sue_world = worldunit_shop("Sue")
+    sue_world.set_other_credor_pool(100)
     rico_text = "Rico"
     rico_quarkunit = quarkunit_shop(category, quark_insert())
     rico_quarkunit.set_arg("other_id", rico_text)
     rico_quarkunit.set_arg("credor_weight", 30)
     sue_nucunit.set_quarkunit(rico_quarkunit)
 
-    sue_truth = truthunit_shop("Sue")
-    assert validate_truth_build_from_nuc(sue_nucunit, sue_truth)
+    sue_world = worldunit_shop("Sue")
+    assert validate_world_build_from_nuc(sue_nucunit, sue_world)
 
     # WHEN
     nucunit_dict = sue_nucunit.get_ordered_quarkunits(5)
@@ -548,27 +548,27 @@ def test_NucUnit_get_ordered_quarkunits_ReturnsCorrectObj_GivenStartingNumber():
 def test_NucUnit_get_ordered_dict_ReturnsCorrectObj_GivenStartingNumber():
     # GIVEN
     sue_nucunit = nucunit_shop()
-    truthunit_text = "truthunit"
-    pool_quarkunit = quarkunit_shop(truthunit_text, quark_update())
+    worldunit_text = "worldunit"
+    pool_quarkunit = quarkunit_shop(worldunit_text, quark_update())
     pool_attribute = "_other_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 100)
     sue_nucunit.set_quarkunit(pool_quarkunit)
-    category = "truth_otherunit"
+    category = "world_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_insert())
     carm_quarkunit.set_arg("other_id", carm_text)
     carm_quarkunit.set_arg("credor_weight", 70)
     sue_nucunit.set_quarkunit(carm_quarkunit)
-    sue_truth = truthunit_shop("Sue")
-    sue_truth.set_other_credor_pool(100)
+    sue_world = worldunit_shop("Sue")
+    sue_world.set_other_credor_pool(100)
     rico_text = "Rico"
     rico_quarkunit = quarkunit_shop(category, quark_insert())
     rico_quarkunit.set_arg("other_id", rico_text)
     rico_quarkunit.set_arg("credor_weight", 30)
     sue_nucunit.set_quarkunit(rico_quarkunit)
 
-    sue_truth = truthunit_shop("Sue")
-    assert validate_truth_build_from_nuc(sue_nucunit, sue_truth)
+    sue_world = worldunit_shop("Sue")
+    assert validate_world_build_from_nuc(sue_nucunit, sue_world)
 
     # WHEN
     nucunit_dict = sue_nucunit.get_ordered_dict(5)
@@ -588,12 +588,12 @@ def test_NucUnit_get_ordered_dict_ReturnsCorrectObj_GivenStartingNumber():
 def test_NucUnit_get_json_ReturnsCorrectObj():
     # GIVEN
     sue_nucunit = nucunit_shop()
-    truthunit_text = "truthunit"
-    pool_quarkunit = quarkunit_shop(truthunit_text, quark_update())
+    worldunit_text = "worldunit"
+    pool_quarkunit = quarkunit_shop(worldunit_text, quark_update())
     pool_attribute = "_other_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 100)
     sue_nucunit.set_quarkunit(pool_quarkunit)
-    category = "truth_otherunit"
+    category = "world_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_insert())
     carm_quarkunit.set_arg("other_id", carm_text)
@@ -618,7 +618,7 @@ def test_NucUnit_quarkunit_exists_ReturnsCorrectObj():
     farm_nucunit = nucunit_shop()
 
     # WHEN / THEN
-    category = "truth_otherunit"
+    category = "world_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_insert())
     carm_quarkunit.set_arg("other_id", carm_text)

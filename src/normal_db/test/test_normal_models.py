@@ -1,12 +1,12 @@
 from src.atom.quark_config import (
-    get_normalized_truth_table_build,
+    get_normalized_world_table_build,
     normal_table_name_text,
     normal_specs_text,
     columns_text,
     sqlite_datatype_text,
 )
 from src.normal_db.normal_models import (
-    TruthTable,
+    WorldTable,
     OtherUnitTable,
     BeliefTable,
     OtherLinkTable,
@@ -61,21 +61,21 @@ def print_out_expected_class_attribute_declarations(config_category):
         print(f"    {config_column} = Column({declare_type})")
 
 
-def test_normalized_table_TruthTable_Exists():
+def test_normalized_table_WorldTable_Exists():
     # GIVEN
-    config_category = get_normalized_truth_table_build().get("truthunit")
-    mapper = inspect(TruthTable)
+    config_category = get_normalized_world_table_build().get("worldunit")
+    mapper = inspect(WorldTable)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "truth"
-    assert config_table_name == TruthTable.__tablename__
+    assert config_table_name == "world"
+    assert config_table_name == WorldTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 
 def test_normalized_table_OtherUnitTable_Exists():
     # GIVEN
-    config_category = get_normalized_truth_table_build().get("truth_otherunit")
+    config_category = get_normalized_world_table_build().get("world_otherunit")
     mapper = inspect(OtherUnitTable)
     # print_out_expected_class_attribute_declarations(config_category)
 
@@ -88,7 +88,7 @@ def test_normalized_table_OtherUnitTable_Exists():
 
 def test_normalized_table_BeliefTable_Exists():
     # GIVEN
-    config_category = get_normalized_truth_table_build().get("truth_beliefunit")
+    config_category = get_normalized_world_table_build().get("world_beliefunit")
     mapper = inspect(BeliefTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -101,7 +101,7 @@ def test_normalized_table_BeliefTable_Exists():
 
 def test_normalized_table_OtherLinkTable_otherlink_Exists():
     # GIVEN
-    config_category = get_normalized_truth_table_build().get("truth_belief_otherlink")
+    config_category = get_normalized_world_table_build().get("world_belief_otherlink")
     mapper = inspect(OtherLinkTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -114,7 +114,7 @@ def test_normalized_table_OtherLinkTable_otherlink_Exists():
 
 def test_normalized_table_IdeaTable_idea_Exists():
     # GIVEN
-    config_category = get_normalized_truth_table_build().get("truth_ideaunit")
+    config_category = get_normalized_world_table_build().get("world_ideaunit")
     mapper = inspect(IdeaTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -127,7 +127,7 @@ def test_normalized_table_IdeaTable_idea_Exists():
 
 def test_normalized_table_BalanceLinkTable_balancelink_Exists():
     # GIVEN
-    config_category = get_normalized_truth_table_build().get("truth_idea_balancelink")
+    config_category = get_normalized_world_table_build().get("world_idea_balancelink")
     mapper = inspect(BalanceLinkTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -140,7 +140,7 @@ def test_normalized_table_BalanceLinkTable_balancelink_Exists():
 
 def test_normalized_table_ReasonTable_reason_Exists():
     # GIVEN
-    config_category = get_normalized_truth_table_build().get("truth_idea_reasonunit")
+    config_category = get_normalized_world_table_build().get("world_idea_reasonunit")
     mapper = inspect(ReasonTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -153,8 +153,8 @@ def test_normalized_table_ReasonTable_reason_Exists():
 
 def test_normalized_table_PremiseTable_premise_Exists():
     # GIVEN
-    config_category = get_normalized_truth_table_build().get(
-        "truth_idea_reason_premiseunit"
+    config_category = get_normalized_world_table_build().get(
+        "world_idea_reason_premiseunit"
     )
     mapper = inspect(PremiseTable)
     print_out_expected_class_attribute_declarations(config_category)
@@ -168,7 +168,7 @@ def test_normalized_table_PremiseTable_premise_Exists():
 
 def test_normalized_table_SuffBeliefTable_suffbelief_Exists():
     # GIVEN
-    config_category = get_normalized_truth_table_build().get("truth_idea_suffbelief")
+    config_category = get_normalized_world_table_build().get("world_idea_suffbelief")
     mapper = inspect(SuffBeliefTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -181,7 +181,7 @@ def test_normalized_table_SuffBeliefTable_suffbelief_Exists():
 
 def test_normalized_table_HealerHoldTable_healerhold_Exists():
     # GIVEN
-    config_category = get_normalized_truth_table_build().get("truth_idea_healerhold")
+    config_category = get_normalized_world_table_build().get("world_idea_healerhold")
     mapper = inspect(HealerHoldTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -194,7 +194,7 @@ def test_normalized_table_HealerHoldTable_healerhold_Exists():
 
 def test_normalized_table_FactTable_fact_Exists():
     # GIVEN
-    config_category = get_normalized_truth_table_build().get("truth_idea_factunit")
+    config_category = get_normalized_world_table_build().get("world_idea_factunit")
     mapper = inspect(FactTable)
     print_out_expected_class_attribute_declarations(config_category)
 

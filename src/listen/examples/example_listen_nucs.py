@@ -14,7 +14,7 @@ def get_quark_example_ideaunit_sports(real_id: RealID = None) -> QuarkUnit:
     if real_id is None:
         real_id = get_test_real_id()
     sports_text = "sports"
-    x_category = "truth_ideaunit"
+    x_category = "world_ideaunit"
     label_text = "label"
     parent_road_text = "parent_road"
     insert_ideaunit_quarkunit = quarkunit_shop(x_category, quark_insert())
@@ -26,13 +26,13 @@ def get_quark_example_ideaunit_sports(real_id: RealID = None) -> QuarkUnit:
 def get_nucunit_carm_example() -> NucUnit:
     sue_nucunit = nucunit_shop()
 
-    truthunit_text = "truthunit"
-    pool_quarkunit = quarkunit_shop(truthunit_text, quark_update())
+    worldunit_text = "worldunit"
+    pool_quarkunit = quarkunit_shop(worldunit_text, quark_update())
     pool_attribute = "_other_credor_pool"
     pool_quarkunit.set_optional_arg(pool_attribute, 77)
     sue_nucunit.set_quarkunit(pool_quarkunit)
 
-    category = "truth_otherunit"
+    category = "world_otherunit"
     carm_text = "Carmen"
     carm_quarkunit = quarkunit_shop(category, quark_delete())
     carm_quarkunit.set_required_arg("other_id", carm_text)
@@ -43,9 +43,9 @@ def get_nucunit_carm_example() -> NucUnit:
 def get_nucunit_example1() -> NucUnit:
     sue_nucunit = nucunit_shop()
 
-    truthunit_text = "truthunit"
+    worldunit_text = "worldunit"
     weight_name = "_weight"
-    x_quarkunit = quarkunit_shop(truthunit_text, quark_update())
+    x_quarkunit = quarkunit_shop(worldunit_text, quark_update())
     x_quarkunit.set_optional_arg(weight_name, 55)
     x_attribute = "_max_tree_traverse"
     x_quarkunit.set_optional_arg(x_attribute, 66)
@@ -57,7 +57,7 @@ def get_nucunit_example1() -> NucUnit:
     x_quarkunit.set_optional_arg(x_attribute, "override")
     sue_nucunit.set_quarkunit(x_quarkunit)
 
-    category = "truth_otherunit"
+    category = "world_otherunit"
     carm_text = "Carmen"
     x_quarkunit = quarkunit_shop(category, quark_delete())
     x_quarkunit.set_required_arg("other_id", carm_text)
@@ -68,12 +68,12 @@ def get_nucunit_example1() -> NucUnit:
 def get_nucunit_example2() -> NucUnit:
     sue_nucunit = nucunit_shop()
 
-    truthunit_text = "truthunit"
-    x_quarkunit = quarkunit_shop(truthunit_text, quark_update())
+    worldunit_text = "worldunit"
+    x_quarkunit = quarkunit_shop(worldunit_text, quark_update())
     x_attribute = "_other_credor_pool"
     x_quarkunit.set_optional_arg(x_attribute, 77)
 
-    category = "truth_otherunit"
+    category = "world_otherunit"
     carm_text = "Carmen"
     x_quarkunit = quarkunit_shop(category, quark_delete())
     x_quarkunit.set_required_arg("other_id", carm_text)

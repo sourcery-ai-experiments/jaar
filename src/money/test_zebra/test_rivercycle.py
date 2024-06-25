@@ -1,4 +1,4 @@
-from src._truth.truth import truthunit_shop
+from src._world.world import worldunit_shop
 from src.listen.userhub import userhub_shop
 from src.money.examples.example_credorledgers import (
     example_yao_credorledger,
@@ -126,9 +126,9 @@ def test_create_init_rivercycle_ReturnsObjScenarioOne_otherunit():
     # GIVEN
     yao_text = "Yao"
     yao_userhub = userhub_shop(None, None, yao_text)
-    yao_truth = truthunit_shop(yao_text)
-    yao_truth.add_otherunit(yao_text)
-    yao_credorledger = get_credorledger(yao_truth)
+    yao_world = worldunit_shop(yao_text)
+    yao_world.add_otherunit(yao_text)
+    yao_credorledger = get_credorledger(yao_world)
     econ_credorledgers = {yao_text: yao_credorledger}
 
     # WHEN
@@ -149,11 +149,11 @@ def test_create_init_rivercycle_ReturnsObjScenarioThree_otherunit():
     bob_credor_weight = 3
     zia_credor_weight = 10
     yao_userhub = userhub_shop(None, None, yao_text)
-    yao_truth = truthunit_shop(yao_text)
-    yao_truth.add_otherunit(yao_text, yao_credor_weight)
-    yao_truth.add_otherunit(bob_text, bob_credor_weight)
-    yao_truth.add_otherunit(zia_text, zia_credor_weight)
-    yao_credorledger = get_credorledger(yao_truth)
+    yao_world = worldunit_shop(yao_text)
+    yao_world.add_otherunit(yao_text, yao_credor_weight)
+    yao_world.add_otherunit(bob_text, bob_credor_weight)
+    yao_world.add_otherunit(zia_text, zia_credor_weight)
+    yao_credorledger = get_credorledger(yao_world)
     econ_credorledgers = {yao_text: yao_credorledger}
     print(f"{econ_credorledgers=}")
 

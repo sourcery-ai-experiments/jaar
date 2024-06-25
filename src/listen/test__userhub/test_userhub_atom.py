@@ -447,11 +447,11 @@ def test_UserHub_create_save_atom_file_SaveCorrectObj(env_dir_setup_cleanup):
     assert sue_userhub.atom_file_exists(three_int) is False
 
     # WHEN
-    before_truth = sue_userhub.default_same_truth()
+    before_world = sue_userhub.default_same_world()
     bob_text = "Bob"
-    after_truth = copy_deepcopy(before_truth)
-    after_truth.add_otherunit(bob_text)
-    sue_userhub.create_save_atom_file(before_truth, after_truth)
+    after_world = copy_deepcopy(before_world)
+    after_world.add_otherunit(bob_text)
+    sue_userhub.create_save_atom_file(before_world, after_world)
 
     # THEN
     assert sue_userhub.atom_file_exists(three_int)
@@ -461,15 +461,15 @@ def test_UserHub_merge_any_atoms_ReturnsEqualObj(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
-    sue_userhub.save_same_truth(sue_userhub.default_same_truth())
-    same_truth = sue_userhub.get_same_truth()
-    same_truth._last_atom_id is None
+    sue_userhub.save_same_world(sue_userhub.default_same_world())
+    same_world = sue_userhub.get_same_world()
+    same_world._last_atom_id is None
 
     # WHEN
-    new_truth = sue_userhub._merge_any_atoms(same_truth)
+    new_world = sue_userhub._merge_any_atoms(same_world)
 
     # THEN
-    assert new_truth == same_truth
+    assert new_world == same_world
 
 
 def test_UserHub_merge_any_atoms_ReturnsObj_WithSingleatomModifies_1quark(
@@ -479,22 +479,22 @@ def test_UserHub_merge_any_atoms_ReturnsObj_WithSingleatomModifies_1quark(
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
     sue_userhub.save_atom_file(sue_1quarkunits_atomunit())
-    sue_userhub.save_same_truth(sue_userhub.default_same_truth())
-    same_truth = sue_userhub.get_same_truth()
-    print(f"{same_truth._real_id=}")
+    sue_userhub.save_same_world(sue_userhub.default_same_world())
+    same_world = sue_userhub.get_same_world()
+    print(f"{same_world._real_id=}")
     print(f"{sue_userhub.real_id=}")
     sports_text = "sports"
-    sports_road = same_truth.make_l1_road(sports_text)
+    sports_road = same_world.make_l1_road(sports_text)
     knee_text = "knee"
-    knee_road = same_truth.make_road(sports_road, knee_text)
-    assert same_truth.idea_exists(sports_road) is False
+    knee_road = same_world.make_road(sports_road, knee_text)
+    assert same_world.idea_exists(sports_road) is False
 
     # WHEN
-    new_truth = sue_userhub._merge_any_atoms(same_truth)
+    new_world = sue_userhub._merge_any_atoms(same_world)
 
     # THEN
-    assert new_truth != same_truth
-    assert new_truth.idea_exists(sports_road)
+    assert new_world != same_world
+    assert new_world.idea_exists(sports_road)
 
 
 def test_UserHub_merge_any_atoms_ReturnsObj_WithSingleatomModifies_2quarks(
@@ -504,20 +504,20 @@ def test_UserHub_merge_any_atoms_ReturnsObj_WithSingleatomModifies_2quarks(
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
     sue_userhub.save_atom_file(sue_2quarkunits_atomunit())
-    sue_userhub.save_same_truth(sue_userhub.default_same_truth())
-    same_truth = sue_userhub.get_same_truth()
-    print(f"{same_truth._real_id=}")
+    sue_userhub.save_same_world(sue_userhub.default_same_world())
+    same_world = sue_userhub.get_same_world()
+    print(f"{same_world._real_id=}")
     sports_text = "sports"
-    sports_road = same_truth.make_l1_road(sports_text)
+    sports_road = same_world.make_l1_road(sports_text)
     knee_text = "knee"
-    knee_road = same_truth.make_road(sports_road, knee_text)
-    assert same_truth.idea_exists(sports_road) is False
-    assert same_truth.idea_exists(knee_road) is False
+    knee_road = same_world.make_road(sports_road, knee_text)
+    assert same_world.idea_exists(sports_road) is False
+    assert same_world.idea_exists(knee_road) is False
 
     # WHEN
-    new_truth = sue_userhub._merge_any_atoms(same_truth)
+    new_world = sue_userhub._merge_any_atoms(same_world)
 
     # THEN
-    assert new_truth != same_truth
-    assert new_truth.idea_exists(sports_road)
-    assert new_truth.idea_exists(knee_road)
+    assert new_world != same_world
+    assert new_world.idea_exists(sports_road)
+    assert new_world.idea_exists(knee_road)

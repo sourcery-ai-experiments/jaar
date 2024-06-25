@@ -8,86 +8,86 @@ from src.atom.quark_config import (
     get_quark_order as q_order,
     set_mog,
     get_flattened_quark_table_build,
-    get_normalized_truth_table_build,
+    get_normalized_world_table_build,
     required_args_text,
     optional_args_text,
     normal_table_name_text,
     normal_specs_text,
     sqlite_datatype_text,
     python_type_text,
-    truthunit_text,
-    truth_otherunit_text,
-    truth_beliefunit_text,
-    truth_belief_otherlink_text,
-    truth_ideaunit_text,
-    truth_idea_balancelink_text,
-    truth_idea_reasonunit_text,
-    truth_idea_reason_premiseunit_text,
-    truth_idea_suffbelief_text,
-    truth_idea_healerhold_text,
-    truth_idea_factunit_text,
+    worldunit_text,
+    world_otherunit_text,
+    world_beliefunit_text,
+    world_belief_otherlink_text,
+    world_ideaunit_text,
+    world_idea_balancelink_text,
+    world_idea_reasonunit_text,
+    world_idea_reason_premiseunit_text,
+    world_idea_suffbelief_text,
+    world_idea_healerhold_text,
+    world_idea_factunit_text,
 )
 
 
-def test_truthunit_text_ReturnsObj():
-    assert truthunit_text() == "truthunit"
+def test_worldunit_text_ReturnsObj():
+    assert worldunit_text() == "worldunit"
 
 
-def test_truth_otherunit_text_ReturnsObj():
-    assert truth_otherunit_text() == "truth_otherunit"
+def test_world_otherunit_text_ReturnsObj():
+    assert world_otherunit_text() == "world_otherunit"
 
 
-def test_truth_beliefunit_text_ReturnsObj():
-    assert truth_beliefunit_text() == "truth_beliefunit"
+def test_world_beliefunit_text_ReturnsObj():
+    assert world_beliefunit_text() == "world_beliefunit"
 
 
-def test_truth_belief_otherlink_text_ReturnsObj():
-    assert truth_belief_otherlink_text() == "truth_belief_otherlink"
+def test_world_belief_otherlink_text_ReturnsObj():
+    assert world_belief_otherlink_text() == "world_belief_otherlink"
 
 
-def test_truth_ideaunit_text_ReturnsObj():
-    assert truth_ideaunit_text() == "truth_ideaunit"
+def test_world_ideaunit_text_ReturnsObj():
+    assert world_ideaunit_text() == "world_ideaunit"
 
 
-def test_truth_idea_balancelink_text_ReturnsObj():
-    assert truth_idea_balancelink_text() == "truth_idea_balancelink"
+def test_world_idea_balancelink_text_ReturnsObj():
+    assert world_idea_balancelink_text() == "world_idea_balancelink"
 
 
-def test_truth_idea_reasonunit_text_ReturnsObj():
-    assert truth_idea_reasonunit_text() == "truth_idea_reasonunit"
+def test_world_idea_reasonunit_text_ReturnsObj():
+    assert world_idea_reasonunit_text() == "world_idea_reasonunit"
 
 
-def test_truth_idea_reason_premiseunit_text_ReturnsObj():
-    assert truth_idea_reason_premiseunit_text() == "truth_idea_reason_premiseunit"
+def test_world_idea_reason_premiseunit_text_ReturnsObj():
+    assert world_idea_reason_premiseunit_text() == "world_idea_reason_premiseunit"
 
 
-def test_truth_idea_suffbelief_text_ReturnsObj():
-    assert truth_idea_suffbelief_text() == "truth_idea_suffbelief"
+def test_world_idea_suffbelief_text_ReturnsObj():
+    assert world_idea_suffbelief_text() == "world_idea_suffbelief"
 
 
-def test_truth_idea_healerhold_text_ReturnsObj():
-    assert truth_idea_healerhold_text() == "truth_idea_healerhold"
+def test_world_idea_healerhold_text_ReturnsObj():
+    assert world_idea_healerhold_text() == "world_idea_healerhold"
 
 
-def test_truth_idea_factunit_text_ReturnsObj():
-    assert truth_idea_factunit_text() == "truth_idea_factunit"
+def test_world_idea_factunit_text_ReturnsObj():
+    assert world_idea_factunit_text() == "world_idea_factunit"
 
 
 def test_quark_config_HasCorrect_category():
     assert category_ref() == {
-        truthunit_text(),
-        truth_otherunit_text(),
-        truth_beliefunit_text(),
-        truth_belief_otherlink_text(),
-        truth_ideaunit_text(),
-        truth_idea_balancelink_text(),
-        truth_idea_reasonunit_text(),
-        truth_idea_reason_premiseunit_text(),
-        truth_idea_suffbelief_text(),
-        truth_idea_healerhold_text(),
-        truth_idea_factunit_text(),
+        worldunit_text(),
+        world_otherunit_text(),
+        world_beliefunit_text(),
+        world_belief_otherlink_text(),
+        world_ideaunit_text(),
+        world_idea_balancelink_text(),
+        world_idea_reasonunit_text(),
+        world_idea_reason_premiseunit_text(),
+        world_idea_suffbelief_text(),
+        world_idea_healerhold_text(),
+        world_idea_factunit_text(),
     }
-    assert truth_otherunit_text() in category_ref()
+    assert world_otherunit_text() in category_ref()
     assert is_category_ref("idearoot") is False
 
 
@@ -152,65 +152,65 @@ def test_get_quark_config_dict_EveryCrudOperationHasNucOrderBelief():
     assert check_every_crud_dict_has_element(get_quark_config_dict(), quark_order_text)
     mog = quark_order_text
     # # Simple script for editing quark_config.json
-    # set_mog("truth_otherunit", quark_insert(), mog, 0)
-    # set_mog("truth_belief_otherlink", quark_insert(), mog, 1)
+    # set_mog("world_otherunit", quark_insert(), mog, 0)
+    # set_mog("world_belief_otherlink", quark_insert(), mog, 1)
     # set_mog("beliefunit", quark_insert(), mog, 2)
-    # set_mog("truth_ideaunit", quark_insert(), mog, 3)
-    # set_mog("truth_idea_balancelink", quark_insert(), mog, 4)
-    # set_mog("truth_idea_suffbelief", quark_insert(), mog, 5)
-    # set_mog("truth_idea_healerhold", quark_insert(), mog, 6)
-    # set_mog("truth_idea_factunit", quark_insert(), mog, 7)
-    # set_mog("truth_idea_reasonunit", quark_insert(), mog, 8)
-    # set_mog("truth_idea_reason_premiseunit", quark_insert(), mog, 9)
-    # set_mog("truth_otherunit", quark_update(), mog, 10)
+    # set_mog("world_ideaunit", quark_insert(), mog, 3)
+    # set_mog("world_idea_balancelink", quark_insert(), mog, 4)
+    # set_mog("world_idea_suffbelief", quark_insert(), mog, 5)
+    # set_mog("world_idea_healerhold", quark_insert(), mog, 6)
+    # set_mog("world_idea_factunit", quark_insert(), mog, 7)
+    # set_mog("world_idea_reasonunit", quark_insert(), mog, 8)
+    # set_mog("world_idea_reason_premiseunit", quark_insert(), mog, 9)
+    # set_mog("world_otherunit", quark_update(), mog, 10)
     # set_mog("beliefunit", quark_update(), mog, 11)
-    # set_mog("truth_belief_otherlink", quark_update(), mog, 12)
-    # set_mog("truth_ideaunit", quark_update(), mog, 13)
-    # set_mog("truth_idea_balancelink", quark_update(), mog, 14)
-    # set_mog("truth_idea_factunit", quark_update(), mog, 15)
-    # set_mog("truth_idea_reason_premiseunit", quark_update(), mog, 16)
-    # set_mog("truth_idea_reasonunit", quark_update(), mog, 17)
-    # set_mog("truth_idea_reason_premiseunit", quark_delete(), mog, 18)
-    # set_mog("truth_idea_reasonunit", quark_delete(), mog, 19)
-    # set_mog("truth_idea_factunit", quark_delete(), mog, 20)
-    # set_mog("truth_idea_suffbelief", quark_delete(), mog, 21)
-    # set_mog("truth_idea_healerhold", quark_delete(), mog, 22)
-    # set_mog("truth_idea_balancelink", quark_delete(), mog, 23)
-    # set_mog("truth_ideaunit", quark_delete(), mog, 24)
-    # set_mog("truth_belief_otherlink", quark_delete(), mog, 25)
-    # set_mog("truth_otherunit", quark_delete(), mog, 26)
+    # set_mog("world_belief_otherlink", quark_update(), mog, 12)
+    # set_mog("world_ideaunit", quark_update(), mog, 13)
+    # set_mog("world_idea_balancelink", quark_update(), mog, 14)
+    # set_mog("world_idea_factunit", quark_update(), mog, 15)
+    # set_mog("world_idea_reason_premiseunit", quark_update(), mog, 16)
+    # set_mog("world_idea_reasonunit", quark_update(), mog, 17)
+    # set_mog("world_idea_reason_premiseunit", quark_delete(), mog, 18)
+    # set_mog("world_idea_reasonunit", quark_delete(), mog, 19)
+    # set_mog("world_idea_factunit", quark_delete(), mog, 20)
+    # set_mog("world_idea_suffbelief", quark_delete(), mog, 21)
+    # set_mog("world_idea_healerhold", quark_delete(), mog, 22)
+    # set_mog("world_idea_balancelink", quark_delete(), mog, 23)
+    # set_mog("world_ideaunit", quark_delete(), mog, 24)
+    # set_mog("world_belief_otherlink", quark_delete(), mog, 25)
+    # set_mog("world_otherunit", quark_delete(), mog, 26)
     # set_mog("beliefunit", quark_delete(), mog, 27)
-    # set_mog("truthunit", quark_update(), mog, 28)
+    # set_mog("worldunit", quark_update(), mog, 28)
 
-    assert 0 == q_order("truth_otherunit", quark_insert(), mog, 0)
-    assert 1 == q_order("truth_belief_otherlink", quark_insert(), mog, 1)
-    assert 2 == q_order("truth_beliefunit", quark_insert(), mog, 2)
-    assert 3 == q_order("truth_ideaunit", quark_insert(), mog, 3)
-    assert 4 == q_order("truth_idea_balancelink", quark_insert(), mog, 4)
-    assert 5 == q_order("truth_idea_suffbelief", quark_insert(), mog, 5)
-    assert 6 == q_order("truth_idea_healerhold", quark_insert(), mog, 6)
-    assert 7 == q_order("truth_idea_factunit", quark_insert(), mog, 7)
-    assert 8 == q_order("truth_idea_reasonunit", quark_insert(), mog, 8)
-    assert 9 == q_order("truth_idea_reason_premiseunit", quark_insert(), mog, 9)
-    assert 10 == q_order("truth_otherunit", quark_update(), mog, 10)
-    assert 11 == q_order("truth_beliefunit", quark_update(), mog, 11)
-    assert 12 == q_order("truth_belief_otherlink", quark_update(), mog, 12)
-    assert 13 == q_order("truth_ideaunit", quark_update(), mog, 13)
-    assert 14 == q_order("truth_idea_balancelink", quark_update(), mog, 14)
-    assert 15 == q_order("truth_idea_factunit", quark_update(), mog, 15)
-    assert 16 == q_order("truth_idea_reason_premiseunit", quark_update(), mog, 16)
-    assert 17 == q_order("truth_idea_reasonunit", quark_update(), mog, 17)
-    assert 18 == q_order("truth_idea_reason_premiseunit", quark_delete(), mog, 18)
-    assert 19 == q_order("truth_idea_reasonunit", quark_delete(), mog, 19)
-    assert 20 == q_order("truth_idea_factunit", quark_delete(), mog, 20)
-    assert 21 == q_order("truth_idea_suffbelief", quark_delete(), mog, 21)
-    assert 22 == q_order("truth_idea_healerhold", quark_delete(), mog, 22)
-    assert 23 == q_order("truth_idea_balancelink", quark_delete(), mog, 23)
-    assert 24 == q_order("truth_ideaunit", quark_delete(), mog, 24)
-    assert 25 == q_order("truth_belief_otherlink", quark_delete(), mog, 25)
-    assert 26 == q_order("truth_otherunit", quark_delete(), mog, 26)
-    assert 27 == q_order("truth_beliefunit", quark_delete(), mog, 27)
-    assert 28 == q_order("truthunit", quark_update(), mog, 28)
+    assert 0 == q_order("world_otherunit", quark_insert(), mog, 0)
+    assert 1 == q_order("world_belief_otherlink", quark_insert(), mog, 1)
+    assert 2 == q_order("world_beliefunit", quark_insert(), mog, 2)
+    assert 3 == q_order("world_ideaunit", quark_insert(), mog, 3)
+    assert 4 == q_order("world_idea_balancelink", quark_insert(), mog, 4)
+    assert 5 == q_order("world_idea_suffbelief", quark_insert(), mog, 5)
+    assert 6 == q_order("world_idea_healerhold", quark_insert(), mog, 6)
+    assert 7 == q_order("world_idea_factunit", quark_insert(), mog, 7)
+    assert 8 == q_order("world_idea_reasonunit", quark_insert(), mog, 8)
+    assert 9 == q_order("world_idea_reason_premiseunit", quark_insert(), mog, 9)
+    assert 10 == q_order("world_otherunit", quark_update(), mog, 10)
+    assert 11 == q_order("world_beliefunit", quark_update(), mog, 11)
+    assert 12 == q_order("world_belief_otherlink", quark_update(), mog, 12)
+    assert 13 == q_order("world_ideaunit", quark_update(), mog, 13)
+    assert 14 == q_order("world_idea_balancelink", quark_update(), mog, 14)
+    assert 15 == q_order("world_idea_factunit", quark_update(), mog, 15)
+    assert 16 == q_order("world_idea_reason_premiseunit", quark_update(), mog, 16)
+    assert 17 == q_order("world_idea_reasonunit", quark_update(), mog, 17)
+    assert 18 == q_order("world_idea_reason_premiseunit", quark_delete(), mog, 18)
+    assert 19 == q_order("world_idea_reasonunit", quark_delete(), mog, 19)
+    assert 20 == q_order("world_idea_factunit", quark_delete(), mog, 20)
+    assert 21 == q_order("world_idea_suffbelief", quark_delete(), mog, 21)
+    assert 22 == q_order("world_idea_healerhold", quark_delete(), mog, 22)
+    assert 23 == q_order("world_idea_balancelink", quark_delete(), mog, 23)
+    assert 24 == q_order("world_ideaunit", quark_delete(), mog, 24)
+    assert 25 == q_order("world_belief_otherlink", quark_delete(), mog, 25)
+    assert 26 == q_order("world_otherunit", quark_delete(), mog, 26)
+    assert 27 == q_order("world_beliefunit", quark_delete(), mog, 27)
+    assert 28 == q_order("worldunit", quark_update(), mog, 28)
 
 
 def _every_category_dict_has_arg_elements(category_dict: dict) -> bool:
@@ -250,30 +250,30 @@ def test_get_flattened_quark_table_build_ReturnsCorrectObj():
 
     # THEN
     assert len(quark_columns) == 111
-    assert quark_columns.get("truthunit_UPDATE__other_credor_pool") == "INTEGER"
+    assert quark_columns.get("worldunit_UPDATE__other_credor_pool") == "INTEGER"
     # print(f"{quark_columns.keys()=}")
 
 
-def test_get_normalized_truth_table_build_ReturnsCorrectObj():
+def test_get_normalized_world_table_build_ReturnsCorrectObj():
     # GIVEN / WHEN
-    normalized_truth_table_build = get_normalized_truth_table_build()
-    nx = normalized_truth_table_build
+    normalized_world_table_build = get_normalized_world_table_build()
+    nx = normalized_world_table_build
 
     # THEN
     assert len(nx) == 11
-    cat_truthunit = nx.get(truthunit_text())
-    cat_otherunit = nx.get(truth_otherunit_text())
-    cat_belief = nx.get(truth_beliefunit_text())
-    cat_otherlink = nx.get(truth_belief_otherlink_text())
-    cat_idea = nx.get(truth_ideaunit_text())
-    cat_balancelink = nx.get(truth_idea_balancelink_text())
-    cat_reason = nx.get(truth_idea_reasonunit_text())
-    cat_premise = nx.get(truth_idea_reason_premiseunit_text())
-    cat_suffbelief = nx.get(truth_idea_suffbelief_text())
-    cat_healerhold = nx.get(truth_idea_healerhold_text())
-    cat_fact = nx.get(truth_idea_factunit_text())
+    cat_worldunit = nx.get(worldunit_text())
+    cat_otherunit = nx.get(world_otherunit_text())
+    cat_belief = nx.get(world_beliefunit_text())
+    cat_otherlink = nx.get(world_belief_otherlink_text())
+    cat_idea = nx.get(world_ideaunit_text())
+    cat_balancelink = nx.get(world_idea_balancelink_text())
+    cat_reason = nx.get(world_idea_reasonunit_text())
+    cat_premise = nx.get(world_idea_reason_premiseunit_text())
+    cat_suffbelief = nx.get(world_idea_suffbelief_text())
+    cat_healerhold = nx.get(world_idea_healerhold_text())
+    cat_fact = nx.get(world_idea_factunit_text())
 
-    assert cat_truthunit != None
+    assert cat_worldunit != None
     assert cat_otherunit != None
     assert cat_belief != None
     assert cat_otherlink != None
@@ -285,7 +285,7 @@ def test_get_normalized_truth_table_build_ReturnsCorrectObj():
     assert cat_healerhold != None
     assert cat_fact != None
 
-    normal_specs_truthunit = cat_truthunit.get(normal_specs_text())
+    normal_specs_worldunit = cat_worldunit.get(normal_specs_text())
     normal_specs_otherunit = cat_otherunit.get(normal_specs_text())
     normal_specs_belief = cat_belief.get(normal_specs_text())
     normal_specs_otherlink = cat_otherlink.get(normal_specs_text())
@@ -298,9 +298,9 @@ def test_get_normalized_truth_table_build_ReturnsCorrectObj():
     normal_specs_fact = cat_fact.get(normal_specs_text())
 
     columns_text = "columns"
-    print(f"{cat_truthunit.keys()=}")
+    print(f"{cat_worldunit.keys()=}")
     print(f"{normal_specs_text()=}")
-    assert normal_specs_truthunit != None
+    assert normal_specs_worldunit != None
     assert normal_specs_otherunit != None
     assert normal_specs_belief != None
     assert normal_specs_otherlink != None
@@ -312,7 +312,7 @@ def test_get_normalized_truth_table_build_ReturnsCorrectObj():
     assert normal_specs_healerhold != None
     assert normal_specs_fact != None
 
-    table_name_truthunit = normal_specs_truthunit.get(normal_table_name_text())
+    table_name_worldunit = normal_specs_worldunit.get(normal_table_name_text())
     table_name_otherunit = normal_specs_otherunit.get(normal_table_name_text())
     table_name_belief = normal_specs_belief.get(normal_table_name_text())
     table_name_otherlink = normal_specs_otherlink.get(normal_table_name_text())
@@ -324,7 +324,7 @@ def test_get_normalized_truth_table_build_ReturnsCorrectObj():
     table_name_healerhold = normal_specs_healerhold.get(normal_table_name_text())
     table_name_fact = normal_specs_fact.get(normal_table_name_text())
 
-    assert table_name_truthunit == "truth"
+    assert table_name_worldunit == "world"
     assert table_name_otherunit == "otherunit"
     assert table_name_belief == "beliefunit"
     assert table_name_otherlink == "otherlink"
@@ -336,20 +336,20 @@ def test_get_normalized_truth_table_build_ReturnsCorrectObj():
     assert table_name_healerhold == "healerhold"
     assert table_name_fact == "fact"
 
-    assert len(cat_truthunit) == 2
-    assert cat_truthunit.get(columns_text) != None
+    assert len(cat_worldunit) == 2
+    assert cat_worldunit.get(columns_text) != None
 
-    truthunit_columns = cat_truthunit.get(columns_text)
-    assert len(truthunit_columns) == 9
-    assert truthunit_columns.get("uid") != None
-    assert truthunit_columns.get("_max_tree_traverse") != None
-    assert truthunit_columns.get("_meld_strategy") != None
-    assert truthunit_columns.get("_monetary_desc") != None
-    assert truthunit_columns.get("_other_credor_pool") != None
-    assert truthunit_columns.get("_other_debtor_pool") != None
-    assert truthunit_columns.get("_penny") != None
-    assert truthunit_columns.get("_pixel") != None
-    assert truthunit_columns.get("_weight") != None
+    worldunit_columns = cat_worldunit.get(columns_text)
+    assert len(worldunit_columns) == 9
+    assert worldunit_columns.get("uid") != None
+    assert worldunit_columns.get("_max_tree_traverse") != None
+    assert worldunit_columns.get("_meld_strategy") != None
+    assert worldunit_columns.get("_monetary_desc") != None
+    assert worldunit_columns.get("_other_credor_pool") != None
+    assert worldunit_columns.get("_other_debtor_pool") != None
+    assert worldunit_columns.get("_penny") != None
+    assert worldunit_columns.get("_pixel") != None
+    assert worldunit_columns.get("_weight") != None
 
     assert len(cat_otherunit) == 2
     otherunit_columns = cat_otherunit.get(columns_text)

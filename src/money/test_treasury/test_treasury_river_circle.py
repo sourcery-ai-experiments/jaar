@@ -1,4 +1,4 @@
-from src._truth.truth import truthunit_shop
+from src._world.world import worldunit_shop
 from src.money.money import moneyunit_shop
 from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
 from src.money.treasury_sqlstr import (
@@ -20,19 +20,19 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     ava_text = "Ava"
     elu_text = "Elu"
 
-    sal_truth = truthunit_shop(_owner_id=sal_text)
-    sal_truth.add_otherunit(other_id=bob_text, credor_weight=2)
-    sal_truth.add_otherunit(other_id=tom_text, credor_weight=7)
-    sal_truth.add_otherunit(other_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_truth(sal_truth)
+    sal_world = worldunit_shop(_owner_id=sal_text)
+    sal_world.add_otherunit(other_id=bob_text, credor_weight=2)
+    sal_world.add_otherunit(other_id=tom_text, credor_weight=7)
+    sal_world.add_otherunit(other_id=ava_text, credor_weight=1)
+    x_money.userhub.save_job_world(sal_world)
 
-    bob_truth = truthunit_shop(_owner_id=bob_text)
-    bob_truth.add_otherunit(other_id=sal_text, credor_weight=3)
-    bob_truth.add_otherunit(other_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_truth(bob_truth)
+    bob_world = worldunit_shop(_owner_id=bob_text)
+    bob_world.add_otherunit(other_id=sal_text, credor_weight=3)
+    bob_world.add_otherunit(other_id=ava_text, credor_weight=1)
+    x_money.userhub.save_job_world(bob_world)
 
-    x_money.refresh_treasury_job_truths_data()
-    x_money.set_cred_flow_for_truth(owner_id=sal_text)
+    x_money.refresh_treasury_job_worlds_data()
+    x_money.set_cred_flow_for_world(owner_id=sal_text)
 
     with x_money.get_treasury_conn() as treasury_conn:
         assert len(get_river_circle_dict(treasury_conn, sal_text)) > 0
@@ -59,32 +59,32 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     ava_text = "Ava"
     elu_text = "Elu"
 
-    sal_truth = truthunit_shop(_owner_id=sal_text)
-    sal_truth.add_otherunit(other_id=bob_text, credor_weight=2)
-    sal_truth.add_otherunit(other_id=tom_text, credor_weight=7)
-    sal_truth.add_otherunit(other_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_truth(sal_truth)
+    sal_world = worldunit_shop(_owner_id=sal_text)
+    sal_world.add_otherunit(other_id=bob_text, credor_weight=2)
+    sal_world.add_otherunit(other_id=tom_text, credor_weight=7)
+    sal_world.add_otherunit(other_id=ava_text, credor_weight=1)
+    x_money.userhub.save_job_world(sal_world)
 
-    bob_truth = truthunit_shop(_owner_id=bob_text)
-    bob_truth.add_otherunit(other_id=sal_text, credor_weight=3)
-    bob_truth.add_otherunit(other_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_truth(bob_truth)
+    bob_world = worldunit_shop(_owner_id=bob_text)
+    bob_world.add_otherunit(other_id=sal_text, credor_weight=3)
+    bob_world.add_otherunit(other_id=ava_text, credor_weight=1)
+    x_money.userhub.save_job_world(bob_world)
 
-    tom_truth = truthunit_shop(_owner_id=tom_text)
-    tom_truth.add_otherunit(other_id=sal_text, credor_weight=2)
-    x_money.userhub.save_job_truth(tom_truth)
+    tom_world = worldunit_shop(_owner_id=tom_text)
+    tom_world.add_otherunit(other_id=sal_text, credor_weight=2)
+    x_money.userhub.save_job_world(tom_world)
 
-    ava_truth = truthunit_shop(_owner_id=ava_text)
-    ava_truth.add_otherunit(other_id=elu_text, credor_weight=2)
-    x_money.userhub.save_job_truth(ava_truth)
+    ava_world = worldunit_shop(_owner_id=ava_text)
+    ava_world.add_otherunit(other_id=elu_text, credor_weight=2)
+    x_money.userhub.save_job_world(ava_world)
 
-    elu_truth = truthunit_shop(_owner_id=elu_text)
-    elu_truth.add_otherunit(other_id=ava_text, credor_weight=19)
-    elu_truth.add_otherunit(other_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_truth(elu_truth)
+    elu_world = worldunit_shop(_owner_id=elu_text)
+    elu_world.add_otherunit(other_id=ava_text, credor_weight=19)
+    elu_world.add_otherunit(other_id=sal_text, credor_weight=1)
+    x_money.userhub.save_job_world(elu_world)
 
-    x_money.refresh_treasury_job_truths_data()
-    x_money.set_cred_flow_for_truth(owner_id=sal_text, max_blocks_count=100)
+    x_money.refresh_treasury_job_worlds_data()
+    x_money.set_cred_flow_for_world(owner_id=sal_text, max_blocks_count=100)
     with x_money.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(get_river_circle_table_delete_sqlstr(sal_text))
         assert len(get_river_circle_dict(treasury_conn, cash_owner_id=sal_text)) == 0

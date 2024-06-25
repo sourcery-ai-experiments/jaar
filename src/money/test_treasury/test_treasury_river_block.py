@@ -1,16 +1,16 @@
-from src._truth.truth import truthunit_shop, otherunit_shop
+from src._world.world import worldunit_shop, otherunit_shop
 from src.money.money import (
     moneyunit_shop,
-    set_treasury_othertreasuryunits_to_truth_otherunits,
+    set_treasury_othertreasuryunits_to_world_otherunits,
 )
 from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
 from src.money.treasury_sqlstr import (
     get_river_block_table_insert_sqlstr as river_block_insert,
     get_river_block_dict,
-    get_truth_otherunit_table_update_treasury_due_paid_sqlstr,
+    get_world_otherunit_table_update_treasury_due_paid_sqlstr,
     OtherTreasuryUnit,
     get_othertreasuryunit_dict,
-    get_truth_otherunit_table_insert_sqlstr,
+    get_world_otherunit_table_insert_sqlstr,
     get_otherview_dict,
     OtherDBUnit,
     RiverLedgerUnit,
@@ -19,27 +19,27 @@ from src.money.treasury_sqlstr import (
 )
 
 
-def test_MoneyUnit_get_truth_otherunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
+def test_MoneyUnit_get_world_otherunit_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 OtherUnits = 12 ledger rows
     x_money = moneyunit_shop(get_texas_userhub())
-    x_money.refresh_treasury_job_truths_data()
+    x_money.refresh_treasury_job_worlds_data()
 
     bob_text = "Bob"
     tim_text = "Tim"
-    bob_truth = truthunit_shop(_owner_id=bob_text)
+    bob_world = worldunit_shop(_owner_id=bob_text)
     tim_otherunit = otherunit_shop(
         other_id=tim_text,
         _credor_operational=True,
         _debtor_operational=False,
     )
-    tim_otherunit._truth_cred = 0.9
-    tim_otherunit._truth_debt = 0.8
-    tim_otherunit._truth_agenda_cred = 0.7
-    tim_otherunit._truth_agenda_debt = 0.6
-    tim_otherunit._truth_agenda_ratio_cred = 0.5
-    tim_otherunit._truth_agenda_ratio_debt = 0.4
+    tim_otherunit._world_cred = 0.9
+    tim_otherunit._world_debt = 0.8
+    tim_otherunit._world_agenda_cred = 0.7
+    tim_otherunit._world_agenda_debt = 0.6
+    tim_otherunit._world_agenda_ratio_cred = 0.5
+    tim_otherunit._world_agenda_ratio_debt = 0.4
 
     tim_due_paid = 0.5151
     tim_cred_score = 0.5252
@@ -49,7 +49,7 @@ def test_MoneyUnit_get_truth_otherunit_table_insert_sqlstr_CorrectlyPopulatesTab
     assert tim_otherunit._treasury_cred_score == tim_cred_score
     assert tim_otherunit._treasury_voice_rank == tim_voice_rank
 
-    insert_sqlstr = get_truth_otherunit_table_insert_sqlstr(bob_truth, tim_otherunit)
+    insert_sqlstr = get_world_otherunit_table_insert_sqlstr(bob_world, tim_otherunit)
     print(insert_sqlstr)
 
     # WHEN
@@ -68,12 +68,12 @@ def test_MoneyUnit_get_truth_otherunit_table_insert_sqlstr_CorrectlyPopulatesTab
     tim_ledger = ledger_dict.get(tim_text)
     assert tim_ledger.owner_id == bob_text
     assert tim_ledger.other_id == tim_text
-    assert tim_ledger._truth_cred == 0.9
-    assert tim_ledger._truth_debt == 0.8
-    assert tim_ledger._truth_agenda_cred == 0.7
-    assert tim_ledger._truth_agenda_debt == 0.6
-    assert tim_ledger._truth_agenda_ratio_cred == 0.5
-    assert tim_ledger._truth_agenda_ratio_debt == 0.4
+    assert tim_ledger._world_cred == 0.9
+    assert tim_ledger._world_debt == 0.8
+    assert tim_ledger._world_agenda_cred == 0.7
+    assert tim_ledger._world_agenda_debt == 0.6
+    assert tim_ledger._world_agenda_ratio_cred == 0.5
+    assert tim_ledger._world_agenda_ratio_debt == 0.4
     assert tim_ledger._credor_operational
     assert tim_ledger._debtor_operational == 0
     assert tim_ledger._treasury_due_paid == tim_due_paid
@@ -151,38 +151,38 @@ def test_RiverBlockUnit_block_returned_ReturnsCorrectBool():
 def test_MoneyUnit_get_river_ledger_unit_ReturnsRiverLedgerUnit(env_dir_setup_cleanup):
     # GIVEN Create example econ with 4 Healers, each with 3 OtherUnits = 12 ledger rows
     x_money = moneyunit_shop(get_texas_userhub())
-    x_money.refresh_treasury_job_truths_data()
+    x_money.refresh_treasury_job_worlds_data()
 
     bob_text = "Bob"
     sal_text = "Sal"
-    bob_truth = truthunit_shop(_owner_id=bob_text)
+    bob_world = worldunit_shop(_owner_id=bob_text)
     sal_otherunit = otherunit_shop(
         sal_text, _credor_operational=True, _debtor_operational=False
     )
-    sal_otherunit._truth_cred = 0.9
-    sal_otherunit._truth_debt = 0.8
-    sal_otherunit._truth_agenda_cred = 0.7
-    sal_otherunit._truth_agenda_debt = 0.6
-    sal_otherunit._truth_agenda_ratio_cred = 0.5
-    sal_otherunit._truth_agenda_ratio_debt = 0.4
+    sal_otherunit._world_cred = 0.9
+    sal_otherunit._world_debt = 0.8
+    sal_otherunit._world_agenda_cred = 0.7
+    sal_otherunit._world_agenda_debt = 0.6
+    sal_otherunit._world_agenda_ratio_cred = 0.5
+    sal_otherunit._world_agenda_ratio_debt = 0.4
 
-    insert_sqlstr_sal = get_truth_otherunit_table_insert_sqlstr(
-        bob_truth, sal_otherunit
+    insert_sqlstr_sal = get_world_otherunit_table_insert_sqlstr(
+        bob_world, sal_otherunit
     )
 
     tim_text = "Tim"
     tim_otherunit = otherunit_shop(
         tim_text, _credor_operational=True, _debtor_operational=False
     )
-    tim_otherunit._truth_cred = 0.012
-    tim_otherunit._truth_debt = 0.017
-    tim_otherunit._truth_agenda_cred = 0.077
-    tim_otherunit._truth_agenda_debt = 0.066
-    tim_otherunit._truth_agenda_ratio_cred = 0.051
-    tim_otherunit._truth_agenda_ratio_debt = 0.049
+    tim_otherunit._world_cred = 0.012
+    tim_otherunit._world_debt = 0.017
+    tim_otherunit._world_agenda_cred = 0.077
+    tim_otherunit._world_agenda_debt = 0.066
+    tim_otherunit._world_agenda_ratio_cred = 0.051
+    tim_otherunit._world_agenda_ratio_debt = 0.049
 
-    insert_sqlstr_tim = get_truth_otherunit_table_insert_sqlstr(
-        bob_truth, tim_otherunit
+    insert_sqlstr_tim = get_world_otherunit_table_insert_sqlstr(
+        bob_world, tim_otherunit
     )
 
     with x_money.get_treasury_conn() as treasury_conn:
@@ -266,24 +266,24 @@ def test_RiverLedgerUnit_Exists():
     x1_otherdbunit = OtherDBUnit(
         owner_id=bob_text,
         other_id=sal_text,
-        _truth_cred=0.66,
-        _truth_debt=0.2,
-        _truth_agenda_cred=0.4,
-        _truth_agenda_debt=0.15,
-        _truth_agenda_ratio_cred=0.5,
-        _truth_agenda_ratio_debt=0.12,
+        _world_cred=0.66,
+        _world_debt=0.2,
+        _world_agenda_cred=0.4,
+        _world_agenda_debt=0.15,
+        _world_agenda_ratio_cred=0.5,
+        _world_agenda_ratio_debt=0.12,
         _credor_operational=True,
         _debtor_operational=True,
     )
     x2_otherdbunit = OtherDBUnit(
         owner_id=bob_text,
         other_id=tom_text,
-        _truth_cred=0.05,
-        _truth_debt=0.09,
-        _truth_agenda_cred=0.055,
-        _truth_agenda_debt=0.0715,
-        _truth_agenda_ratio_cred=0.00995,
-        _truth_agenda_ratio_debt=0.00012,
+        _world_cred=0.05,
+        _world_debt=0.09,
+        _world_agenda_cred=0.055,
+        _world_agenda_debt=0.0715,
+        _world_agenda_ratio_cred=0.00995,
+        _world_agenda_ratio_debt=0.00012,
         _credor_operational=True,
         _debtor_operational=True,
     )
@@ -342,29 +342,29 @@ def test_OtherTreasuryUnit_exists():
     assert x_othertreasury.voice_rank == x_voice_rank
 
 
-def test_truth_set_treasury_attr_otherunits_CorrectlySetsOtherUnitTreasuryingAttr():
+def test_world_set_treasury_attr_otherunits_CorrectlySetsOtherUnitTreasuryingAttr():
     # GIVEN
     bob_text = "Bob"
-    x_truth = truthunit_shop(_owner_id=bob_text)
+    x_world = worldunit_shop(_owner_id=bob_text)
     sam_text = "sam"
     wil_text = "wil"
     fry_text = "fry"
     elu_text = "Elu"
-    x_truth.set_otherunit(otherunit=otherunit_shop(other_id=sam_text))
-    x_truth.set_otherunit(otherunit=otherunit_shop(other_id=wil_text))
-    x_truth.set_otherunit(otherunit=otherunit_shop(other_id=fry_text))
-    assert x_truth._others.get(sam_text)._treasury_due_paid is None
-    assert x_truth._others.get(sam_text)._treasury_due_diff is None
-    assert x_truth._others.get(wil_text)._treasury_due_paid is None
-    assert x_truth._others.get(wil_text)._treasury_due_diff is None
-    assert x_truth._others.get(fry_text)._treasury_due_paid is None
-    assert x_truth._others.get(fry_text)._treasury_due_diff is None
+    x_world.set_otherunit(otherunit=otherunit_shop(other_id=sam_text))
+    x_world.set_otherunit(otherunit=otherunit_shop(other_id=wil_text))
+    x_world.set_otherunit(otherunit=otherunit_shop(other_id=fry_text))
+    assert x_world._others.get(sam_text)._treasury_due_paid is None
+    assert x_world._others.get(sam_text)._treasury_due_diff is None
+    assert x_world._others.get(wil_text)._treasury_due_paid is None
+    assert x_world._others.get(wil_text)._treasury_due_diff is None
+    assert x_world._others.get(fry_text)._treasury_due_paid is None
+    assert x_world._others.get(fry_text)._treasury_due_diff is None
     elu_otherunit = otherunit_shop(other_id=elu_text)
     elu_otherunit._treasury_due_paid = 0.003
     elu_otherunit._treasury_due_diff = 0.007
-    x_truth.set_otherunit(otherunit=elu_otherunit)
-    assert x_truth._others.get(elu_text)._treasury_due_paid == 0.003
-    assert x_truth._others.get(elu_text)._treasury_due_diff == 0.007
+    x_world.set_otherunit(otherunit=elu_otherunit)
+    assert x_world._others.get(elu_text)._treasury_due_paid == 0.003
+    assert x_world._others.get(elu_text)._treasury_due_diff == 0.007
 
     othertreasuryunit_sam = OtherTreasuryUnit(
         bob_text, sam_text, 0.209, 0, 0.034, None, None
@@ -381,22 +381,22 @@ def test_truth_set_treasury_attr_otherunits_CorrectlySetsOtherUnitTreasuryingAtt
         othertreasuryunit_fry.due_owner_id: othertreasuryunit_fry,
     }
     # WHEN
-    set_treasury_othertreasuryunits_to_truth_otherunits(
-        x_truth, othertreasuryunits=othertreasuryunits
+    set_treasury_othertreasuryunits_to_world_otherunits(
+        x_world, othertreasuryunits=othertreasuryunits
     )
 
     # THEN
-    assert x_truth._others.get(sam_text)._treasury_due_paid == 0.209
-    assert x_truth._others.get(sam_text)._treasury_due_diff == 0.034
-    assert x_truth._others.get(wil_text)._treasury_due_paid == 0.501
-    assert x_truth._others.get(wil_text)._treasury_due_diff == 0.024
-    assert x_truth._others.get(fry_text)._treasury_due_paid == 0.111
-    assert x_truth._others.get(fry_text)._treasury_due_diff == 0.006
-    assert x_truth._others.get(elu_text)._treasury_due_paid is None
-    assert x_truth._others.get(elu_text)._treasury_due_diff is None
+    assert x_world._others.get(sam_text)._treasury_due_paid == 0.209
+    assert x_world._others.get(sam_text)._treasury_due_diff == 0.034
+    assert x_world._others.get(wil_text)._treasury_due_paid == 0.501
+    assert x_world._others.get(wil_text)._treasury_due_diff == 0.024
+    assert x_world._others.get(fry_text)._treasury_due_paid == 0.111
+    assert x_world._others.get(fry_text)._treasury_due_diff == 0.006
+    assert x_world._others.get(elu_text)._treasury_due_paid is None
+    assert x_world._others.get(elu_text)._treasury_due_diff is None
 
 
-def test_MoneyUnit_get_truth_otherunit_table_update_treasury_due_paid_sqlstr_CorrectlyPopulatesTable01(
+def test_MoneyUnit_get_world_otherunit_table_update_treasury_due_paid_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 OtherUnits = 12 ledger rows
@@ -406,32 +406,32 @@ def test_MoneyUnit_get_truth_otherunit_table_update_treasury_due_paid_sqlstr_Cor
     tom_text = "Tom"
     sal_text = "Sal"
 
-    bob_truth = truthunit_shop(_owner_id=bob_text)
+    bob_world = worldunit_shop(_owner_id=bob_text)
     tom_otherunit = otherunit_shop(
         tom_text, _credor_operational=True, _debtor_operational=False
     )
-    tom_otherunit._truth_cred = 0.9
-    tom_otherunit._truth_debt = 0.8
-    tom_otherunit._truth_agenda_cred = 0.7
-    tom_otherunit._truth_agenda_debt = 0.6
-    tom_otherunit._truth_agenda_ratio_cred = 0.5
-    tom_otherunit._truth_agenda_ratio_debt = 0.411
+    tom_otherunit._world_cred = 0.9
+    tom_otherunit._world_debt = 0.8
+    tom_otherunit._world_agenda_cred = 0.7
+    tom_otherunit._world_agenda_debt = 0.6
+    tom_otherunit._world_agenda_ratio_cred = 0.5
+    tom_otherunit._world_agenda_ratio_debt = 0.411
 
-    insert_sqlstr_tom = get_truth_otherunit_table_insert_sqlstr(
-        bob_truth, tom_otherunit
+    insert_sqlstr_tom = get_world_otherunit_table_insert_sqlstr(
+        bob_world, tom_otherunit
     )
     sal_otherunit = otherunit_shop(
         sal_text, _credor_operational=True, _debtor_operational=False
     )
-    sal_otherunit._truth_cred = 0.9
-    sal_otherunit._truth_debt = 0.8
-    sal_otherunit._truth_agenda_cred = 0.7
-    sal_otherunit._truth_agenda_debt = 0.6
-    sal_otherunit._truth_agenda_ratio_cred = 0.5
-    sal_otherunit._truth_agenda_ratio_debt = 0.455
+    sal_otherunit._world_cred = 0.9
+    sal_otherunit._world_debt = 0.8
+    sal_otherunit._world_agenda_cred = 0.7
+    sal_otherunit._world_agenda_debt = 0.6
+    sal_otherunit._world_agenda_ratio_cred = 0.5
+    sal_otherunit._world_agenda_ratio_debt = 0.455
 
-    insert_sqlstr_sal = get_truth_otherunit_table_insert_sqlstr(
-        bob_truth, sal_otherunit
+    insert_sqlstr_sal = get_world_otherunit_table_insert_sqlstr(
+        bob_world, sal_otherunit
     )
 
     river_block_1 = RiverBlockUnit(bob_text, bob_text, tom_text, 0.0, 0.2, 0, None, 1)
@@ -452,7 +452,7 @@ def test_MoneyUnit_get_truth_otherunit_table_update_treasury_due_paid_sqlstr_Cor
         treasury_conn.execute(ss0)
 
     # WHEN
-    mstr_sqlstr = get_truth_otherunit_table_update_treasury_due_paid_sqlstr(
+    mstr_sqlstr = get_world_otherunit_table_update_treasury_due_paid_sqlstr(
         cash_owner_id=bob_text
     )
     with x_money.get_treasury_conn() as treasury_conn:

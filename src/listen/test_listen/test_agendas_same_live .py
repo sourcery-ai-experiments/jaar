@@ -1,7 +1,7 @@
 from src._instrument.file import delete_dir, save_file
 from src._road.jaar_config import get_json_filename
-from src._truth.idea import ideaunit_shop
-from src._truth.truth import truthunit_shop
+from src._world.idea import ideaunit_shop
+from src._world.world import worldunit_shop
 from src.listen.userhub import userhub_shop
 from src.listen.listen import create_listen_basis, listen_to_agendas_same_live
 from src.listen.examples.listen_env import (
@@ -27,12 +27,12 @@ from src.listen.examples.example_listen import (
 from os.path import exists as os_path_exists
 
 
-def test_listen_to_agendas_same_live_AddsTasksToTruthWhenNo_suffbeliefIsSet(
+def test_listen_to_agendas_same_live_AddsTasksToWorldWhenNo_suffbeliefIsSet(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_same = truthunit_shop(yao_text)
+    yao_same = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
@@ -40,14 +40,14 @@ def test_listen_to_agendas_same_live_AddsTasksToTruthWhenNo_suffbeliefIsSet(
     yao_same.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_same.set_other_pool(zia_pool)
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
-    yao_userhub.save_same_truth(yao_same)
+    yao_userhub.save_same_world(yao_same)
 
-    zia_live = truthunit_shop(zia_text)
+    zia_live = worldunit_shop(zia_text)
     zia_live.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_live.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     zia_live.add_otherunit(yao_text, debtor_weight=12)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_live_truth(zia_live)
+    zia_userhub.save_live_world(zia_live)
 
     new_yao_live = create_listen_basis(yao_same)
     assert len(new_yao_live.get_agenda_dict()) == 0
@@ -60,10 +60,10 @@ def test_listen_to_agendas_same_live_AddsTasksToTruthWhenNo_suffbeliefIsSet(
     assert len(new_yao_live.get_agenda_dict()) == 2
 
 
-def test_listen_to_agendas_same_live_AddsTasksToTruth(env_dir_setup_cleanup):
+def test_listen_to_agendas_same_live_AddsTasksToWorld(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_same = truthunit_shop(yao_text)
+    yao_same = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
@@ -71,9 +71,9 @@ def test_listen_to_agendas_same_live_AddsTasksToTruth(env_dir_setup_cleanup):
     yao_same.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_same.set_other_pool(zia_pool)
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
-    yao_userhub.save_same_truth(yao_same)
+    yao_userhub.save_same_world(yao_same)
 
-    zia_live = truthunit_shop(zia_text)
+    zia_live = worldunit_shop(zia_text)
     zia_live.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_live.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     zia_live.add_otherunit(yao_text, debtor_weight=12)
@@ -82,7 +82,7 @@ def test_listen_to_agendas_same_live_AddsTasksToTruth(env_dir_setup_cleanup):
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_live_truth(zia_live)
+    zia_userhub.save_live_world(zia_live)
     new_yao_live = create_listen_basis(yao_same)
     assert len(new_yao_live.get_agenda_dict()) == 0
 
@@ -94,7 +94,7 @@ def test_listen_to_agendas_same_live_AddsTasksToTruth(env_dir_setup_cleanup):
     assert len(new_yao_live.get_agenda_dict()) == 2
 
 
-def test_listen_to_agendas_same_live_AddsTasksToTruthWithDetailsDecidedBy_debtor_weight(
+def test_listen_to_agendas_same_live_AddsTasksToWorldWithDetailsDecidedBy_debtor_weight(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -114,13 +114,13 @@ def test_listen_to_agendas_same_live_AddsTasksToTruthWithDetailsDecidedBy_debtor
     bob_text = bob_live._owner_id
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
     bob_userhub = userhub_shop(env_dir(), None, bob_text)
-    zia_userhub.save_live_truth(zia_live)
-    bob_userhub.save_live_truth(bob_live)
+    zia_userhub.save_live_world(zia_live)
+    bob_userhub.save_live_world(bob_live)
 
     yao_same = get_example_yao_speaker()
     yao_text = yao_same._owner_id
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
-    yao_userhub.save_same_truth(yao_same)
+    yao_userhub.save_same_world(yao_same)
 
     new_yao_live1 = create_listen_basis(yao_same)
     assert new_yao_live1.idea_exists(cook_road()) is False
@@ -157,10 +157,10 @@ def test_listen_to_agendas_same_live_AddsTasksToTruthWithDetailsDecidedBy_debtor
     assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit
 
 
-def test_listen_to_agendas_same_live_ProcessesIrrationalTruth(env_dir_setup_cleanup):
+def test_listen_to_agendas_same_live_ProcessesIrrationalWorld(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_same = truthunit_shop(yao_text)
+    yao_same = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
@@ -172,10 +172,10 @@ def test_listen_to_agendas_same_live_ProcessesIrrationalTruth(env_dir_setup_clea
     yao_pool = 92
     yao_same.set_other_pool(yao_pool)
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
-    yao_userhub.save_same_truth(yao_same)
+    yao_userhub.save_same_world(yao_same)
 
     zia_text = "Zia"
-    zia_live = truthunit_shop(zia_text)
+    zia_live = worldunit_shop(zia_text)
     zia_live.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_live.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     zia_live.add_otherunit(yao_text, debtor_weight=12)
@@ -184,9 +184,9 @@ def test_listen_to_agendas_same_live_ProcessesIrrationalTruth(env_dir_setup_clea
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_live_truth(zia_live)
+    zia_userhub.save_live_world(zia_live)
 
-    sue_live = truthunit_shop(sue_text)
+    sue_live = worldunit_shop(sue_text)
     sue_live.set_max_tree_traverse(5)
     zia_live.add_otherunit(yao_text, debtor_weight=12)
     vacuum_text = "vacuum"
@@ -216,13 +216,13 @@ def test_listen_to_agendas_same_live_ProcessesIrrationalTruth(env_dir_setup_clea
         reason_suff_idea_active=False,
     )
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    sue_userhub.save_live_truth(sue_live)
+    sue_userhub.save_live_world(sue_live)
 
     # WHEN
     new_yao_live = create_listen_basis(yao_same)
     listen_to_agendas_same_live(new_yao_live, yao_userhub)
 
-    # THEN irrational truth is ignored
+    # THEN irrational world is ignored
     assert len(new_yao_live.get_agenda_dict()) != 3
     assert len(new_yao_live.get_agenda_dict()) == 2
     zia_otherunit = new_yao_live.get_other(zia_text)
@@ -233,7 +233,7 @@ def test_listen_to_agendas_same_live_ProcessesIrrationalTruth(env_dir_setup_clea
     assert sue_otherunit._irrational_debtor_weight == 51
 
 
-def test_listen_to_agendas_same_live_ProcessesMissingDebtorTruth(
+def test_listen_to_agendas_same_live_ProcessesMissingDebtorWorld(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -241,7 +241,7 @@ def test_listen_to_agendas_same_live_ProcessesMissingDebtorTruth(
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     delete_dir(yao_userhub.same_file_path())  # don't know why I have to do this...
     print(f"{os_path_exists(yao_userhub.same_file_path())=}")
-    yao_same = truthunit_shop(yao_text)
+    yao_same = worldunit_shop(yao_text)
     zia_text = "Zia"
     sue_text = "Sue"
     zia_credor_weight = 47
@@ -252,9 +252,9 @@ def test_listen_to_agendas_same_live_ProcessesMissingDebtorTruth(
     yao_same.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
     yao_same.set_other_pool(yao_pool)
-    yao_userhub.save_same_truth(yao_same)
+    yao_userhub.save_same_world(yao_same)
 
-    zia_live = truthunit_shop(zia_text)
+    zia_live = worldunit_shop(zia_text)
     zia_live.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_live.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     zia_live.add_otherunit(yao_text, debtor_weight=12)
@@ -263,13 +263,13 @@ def test_listen_to_agendas_same_live_ProcessesMissingDebtorTruth(
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_live_truth(zia_live)
+    zia_userhub.save_live_world(zia_live)
 
     # WHEN
     new_yao_live = create_listen_basis(yao_same)
     listen_to_agendas_same_live(new_yao_live, yao_userhub)
 
-    # THEN irrational truth is ignored
+    # THEN irrational world is ignored
     assert len(new_yao_live.get_agenda_dict()) != 3
     assert len(new_yao_live.get_agenda_dict()) == 2
     zia_otherunit = new_yao_live.get_other(zia_text)
@@ -285,7 +285,7 @@ def test_listen_to_agendas_same_live_ListensToOwner_same_AndNotOwner_live(
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_same = truthunit_shop(yao_text)
+    yao_same = worldunit_shop(yao_text)
     yao_text = "Yao"
     yao_credor_weight = 57
     yao_debtor_weight = 51
@@ -298,11 +298,11 @@ def test_listen_to_agendas_same_live_ListensToOwner_same_AndNotOwner_live(
     yao_same.set_other_pool(yao_pool)
     # save yao without task to roles
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
-    yao_userhub.save_same_truth(yao_same)
+    yao_userhub.save_same_world(yao_same)
 
     # Save Zia to live
     zia_text = "Zia"
-    zia_live = truthunit_shop(zia_text)
+    zia_live = worldunit_shop(zia_text)
     zia_live.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_live.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     zia_live.add_otherunit(yao_text, debtor_weight=12)
@@ -311,21 +311,21 @@ def test_listen_to_agendas_same_live_ListensToOwner_same_AndNotOwner_live(
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_live_truth(zia_live)
+    zia_userhub.save_live_world(zia_live)
 
     # save yao with task to roles
-    yao_old_live = truthunit_shop(yao_text)
+    yao_old_live = worldunit_shop(yao_text)
     vacuum_text = "vacuum"
     vacuum_road = yao_old_live.make_l1_road(vacuum_text)
     yao_old_live.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
     vacuum_ideaunit = yao_old_live.get_idea_obj(vacuum_road)
     vacuum_ideaunit._assignedunit.set_suffbelief(yao_text)
-    yao_userhub.save_live_truth(yao_old_live)
+    yao_userhub.save_live_world(yao_old_live)
 
     # WHEN
     new_yao_live = create_listen_basis(yao_same)
     listen_to_agendas_same_live(new_yao_live, yao_userhub)
 
-    # THEN irrational truth is ignored
+    # THEN irrational world is ignored
     assert len(new_yao_live.get_agenda_dict()) != 3
     assert len(new_yao_live.get_agenda_dict()) == 2

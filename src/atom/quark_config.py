@@ -59,48 +59,48 @@ def optional_args_text() -> str:
     return "optional_args"
 
 
-def truthunit_text() -> str:
-    return "truthunit"
+def worldunit_text() -> str:
+    return "worldunit"
 
 
-def truth_otherunit_text() -> str:
-    return "truth_otherunit"
+def world_otherunit_text() -> str:
+    return "world_otherunit"
 
 
-def truth_beliefunit_text() -> str:
-    return "truth_beliefunit"
+def world_beliefunit_text() -> str:
+    return "world_beliefunit"
 
 
-def truth_belief_otherlink_text() -> str:
-    return "truth_belief_otherlink"
+def world_belief_otherlink_text() -> str:
+    return "world_belief_otherlink"
 
 
-def truth_ideaunit_text() -> str:
-    return "truth_ideaunit"
+def world_ideaunit_text() -> str:
+    return "world_ideaunit"
 
 
-def truth_idea_balancelink_text() -> str:
-    return "truth_idea_balancelink"
+def world_idea_balancelink_text() -> str:
+    return "world_idea_balancelink"
 
 
-def truth_idea_reasonunit_text() -> str:
-    return "truth_idea_reasonunit"
+def world_idea_reasonunit_text() -> str:
+    return "world_idea_reasonunit"
 
 
-def truth_idea_reason_premiseunit_text() -> str:
-    return "truth_idea_reason_premiseunit"
+def world_idea_reason_premiseunit_text() -> str:
+    return "world_idea_reason_premiseunit"
 
 
-def truth_idea_suffbelief_text() -> str:
-    return "truth_idea_suffbelief"
+def world_idea_suffbelief_text() -> str:
+    return "world_idea_suffbelief"
 
 
-def truth_idea_healerhold_text() -> str:
-    return "truth_idea_healerhold"
+def world_idea_healerhold_text() -> str:
+    return "world_idea_healerhold"
 
 
-def truth_idea_factunit_text() -> str:
-    return "truth_idea_factunit"
+def world_idea_factunit_text() -> str:
+    return "world_idea_factunit"
 
 
 def get_quark_config_file_name() -> str:
@@ -179,7 +179,7 @@ def get_flattened_quark_table_build() -> dict[str:]:
     return quark_table_columns
 
 
-def get_normalized_truth_table_build() -> dict[str : dict[str:]]:
+def get_normalized_world_table_build() -> dict[str : dict[str:]]:
     normal_tables_dict = {}
     quark_config = get_quark_config_dict()
     for x_category, category_dict in quark_config.items():
