@@ -43,9 +43,9 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyDeletesOldTreasuryI
     bob_text = "Bob"
     tom_text = "Tom"
 
-    bob_agentunit = worldunit_shop(bob_text)
-    bob_agentunit.add_otherunit(tom_text, credor_weight=3, debtor_weight=1)
-    x_money.userhub.save_job_world(bob_agentunit)
+    bob_worldunit = worldunit_shop(bob_text)
+    bob_worldunit.add_otherunit(tom_text, credor_weight=3, debtor_weight=1)
+    x_money.userhub.save_job_world(bob_worldunit)
     x_money.refresh_treasury_job_worlds_data()
     otherunit_count_sqlstr = get_row_count_sqlstr("world_otherunit")
     assert get_single_result(x_money.get_treasury_conn(), otherunit_count_sqlstr) == 1
@@ -67,9 +67,9 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyDeletesOldTreasuryF
     bob_text = "Bob"
     tom_text = "Tom"
 
-    bob_agentunit = worldunit_shop(bob_text)
-    bob_agentunit.add_otherunit(tom_text, credor_weight=3, debtor_weight=1)
-    x_money.userhub.save_job_world(bob_agentunit)
+    bob_worldunit = worldunit_shop(bob_text)
+    bob_worldunit.add_otherunit(tom_text, credor_weight=3, debtor_weight=1)
+    x_money.userhub.save_job_world(bob_worldunit)
     x_money.refresh_treasury_job_worlds_data()
     otherunit_count_sqlstr = get_row_count_sqlstr("world_otherunit")
     assert get_single_result(x_money.get_treasury_conn(), otherunit_count_sqlstr) == 1
@@ -93,29 +93,29 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyPopulatesOtherunitT
     sal_text = "Sal"
     elu_text = "Elu"
 
-    bob_agentunit = worldunit_shop(bob_text)
-    bob_agentunit.add_otherunit(tom_text, credor_weight=3, debtor_weight=1)
-    bob_agentunit.add_otherunit(sal_text, credor_weight=1, debtor_weight=4)
-    bob_agentunit.add_otherunit(elu_text, credor_weight=1, debtor_weight=4)
-    x_money.userhub.save_job_world(bob_agentunit)
+    bob_worldunit = worldunit_shop(bob_text)
+    bob_worldunit.add_otherunit(tom_text, credor_weight=3, debtor_weight=1)
+    bob_worldunit.add_otherunit(sal_text, credor_weight=1, debtor_weight=4)
+    bob_worldunit.add_otherunit(elu_text, credor_weight=1, debtor_weight=4)
+    x_money.userhub.save_job_world(bob_worldunit)
 
-    sal_agentunit = worldunit_shop(sal_text)
-    sal_agentunit.add_otherunit(bob_text, credor_weight=1, debtor_weight=4)
-    sal_agentunit.add_otherunit(tom_text, credor_weight=3, debtor_weight=1)
-    sal_agentunit.add_otherunit(elu_text, credor_weight=1, debtor_weight=4)
-    x_money.userhub.save_job_world(sal_agentunit)
+    sal_worldunit = worldunit_shop(sal_text)
+    sal_worldunit.add_otherunit(bob_text, credor_weight=1, debtor_weight=4)
+    sal_worldunit.add_otherunit(tom_text, credor_weight=3, debtor_weight=1)
+    sal_worldunit.add_otherunit(elu_text, credor_weight=1, debtor_weight=4)
+    x_money.userhub.save_job_world(sal_worldunit)
 
-    tom_agentunit = worldunit_shop(tom_text)
-    tom_agentunit.add_otherunit(bob_text, credor_weight=3, debtor_weight=1)
-    tom_agentunit.add_otherunit(sal_text, credor_weight=1, debtor_weight=4)
-    tom_agentunit.add_otherunit(elu_text, credor_weight=1, debtor_weight=4)
-    x_money.userhub.save_job_world(tom_agentunit)
+    tom_worldunit = worldunit_shop(tom_text)
+    tom_worldunit.add_otherunit(bob_text, credor_weight=3, debtor_weight=1)
+    tom_worldunit.add_otherunit(sal_text, credor_weight=1, debtor_weight=4)
+    tom_worldunit.add_otherunit(elu_text, credor_weight=1, debtor_weight=4)
+    x_money.userhub.save_job_world(tom_worldunit)
 
-    elu_agentunit = worldunit_shop(elu_text)
-    elu_agentunit.add_otherunit(bob_text, credor_weight=3, debtor_weight=1)
-    elu_agentunit.add_otherunit(tom_text, credor_weight=1, debtor_weight=4)
-    elu_agentunit.add_otherunit(elu_text, credor_weight=1, debtor_weight=4)
-    x_money.userhub.save_job_world(elu_agentunit)
+    elu_worldunit = worldunit_shop(elu_text)
+    elu_worldunit.add_otherunit(bob_text, credor_weight=3, debtor_weight=1)
+    elu_worldunit.add_otherunit(tom_text, credor_weight=1, debtor_weight=4)
+    elu_worldunit.add_otherunit(elu_text, credor_weight=1, debtor_weight=4)
+    x_money.userhub.save_job_world(elu_worldunit)
 
     otherunit_count_sqlstr = get_row_count_sqlstr("world_otherunit")
     assert get_single_result(x_money.get_treasury_conn(), otherunit_count_sqlstr) == 0

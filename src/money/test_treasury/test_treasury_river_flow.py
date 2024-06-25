@@ -34,18 +34,18 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyPopulatesothertreasuryunitTa
     tom_text = "Tom"
     sal_text = "Sal"
 
-    sal_agentunit = worldunit_shop(_owner_id=sal_text)
-    sal_agentunit.add_otherunit(other_id=bob_text, credor_weight=1)
-    sal_agentunit.add_otherunit(other_id=tom_text, credor_weight=3)
-    x_money.userhub.save_job_world(sal_agentunit)
+    sal_worldunit = worldunit_shop(_owner_id=sal_text)
+    sal_worldunit.add_otherunit(other_id=bob_text, credor_weight=1)
+    sal_worldunit.add_otherunit(other_id=tom_text, credor_weight=3)
+    x_money.userhub.save_job_world(sal_worldunit)
 
-    bob_agentunit = worldunit_shop(_owner_id=bob_text)
-    bob_agentunit.add_otherunit(other_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_agentunit)
+    bob_worldunit = worldunit_shop(_owner_id=bob_text)
+    bob_worldunit.add_otherunit(other_id=sal_text, credor_weight=1)
+    x_money.userhub.save_job_world(bob_worldunit)
 
-    tom_agentunit = worldunit_shop(_owner_id=tom_text)
-    tom_agentunit.add_otherunit(other_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_world(tom_agentunit)
+    tom_worldunit = worldunit_shop(_owner_id=tom_text)
+    tom_worldunit.add_otherunit(other_id=sal_text, credor_weight=1)
+    x_money.userhub.save_job_world(tom_worldunit)
 
     x_money.refresh_treasury_job_worlds_data()
     otherunit_count_sqlstr = get_row_count_sqlstr("world_otherunit")
