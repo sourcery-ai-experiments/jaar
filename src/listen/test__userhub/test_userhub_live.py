@@ -75,7 +75,7 @@ def test_UserHub_save_live_file_RaisesErrorWhenWorld_live_id_IsWrong(
         sue_userhub.save_live_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s live world."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s live world."
     )
 
 
@@ -134,9 +134,9 @@ def test_UserHub_initialize_live_file_CorrectlyDoesNotOverwrite(
     assert sue_userhub.live_file_exists()
 
     sue_real_dir = f"{env_dir()}/{root_label()}"
-    sue_persons_dir = f"{sue_real_dir}/persons"
-    sue_person_dir = f"{sue_persons_dir}/{sue_text}"
-    sue_live_dir = f"{sue_person_dir}/live"
+    sue_owners_dir = f"{sue_real_dir}/owners"
+    sue_owner_dir = f"{sue_owners_dir}/{sue_text}"
+    sue_live_dir = f"{sue_owner_dir}/live"
     sue_live_file_name = f"{sue_text}.json"
     live_file_text = open_file(dest_dir=sue_live_dir, file_name=sue_live_file_name)
     print(f"{live_file_text=}")

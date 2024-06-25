@@ -2,7 +2,7 @@ from src._road.road import RoadUnit, create_road, get_default_real_id_roadnode, 
 from src._world.idea import ideaunit_shop
 from src._world.world import WorldUnit, worldunit_shop
 from src.listen.userhub import userhub_shop, UserHub
-from src.listen.listen import listen_to_person_jobs, create_job_file_from_role_file
+from src.listen.listen import listen_to_owner_jobs, create_job_file_from_role_file
 from src.listen.examples.listen_env import (
     env_dir_setup_cleanup,
     get_listen_temp_env_dir as env_dir,
@@ -216,7 +216,7 @@ def get_yao_ohio_userhub() -> UserHub:
     return userhub_shop(
         reals_dir=env_dir(),
         real_id=yao_world._real_id,
-        person_id=yao_world._owner_id,
+        owner_id=yao_world._owner_id,
         econ_road=get_ohio_road(),
         # pipeline_same_live_text(),
     )
@@ -227,7 +227,7 @@ def get_yao_iowa_userhub() -> UserHub:
     return userhub_shop(
         reals_dir=env_dir(),
         real_id=yao_world._real_id,
-        person_id=yao_world._owner_id,
+        owner_id=yao_world._owner_id,
         econ_road=get_iowa_road(),
         # pipeline_same_live_text(),
     )
@@ -238,7 +238,7 @@ def get_zia_utah_userhub() -> UserHub:
     return userhub_shop(
         reals_dir=env_dir(),
         real_id=yao_world._real_id,
-        person_id="Zia",
+        owner_id="Zia",
         econ_road=get_utah_road(),
         # pipeline_same_live_text(),
     )
@@ -252,9 +252,9 @@ def get_example_yao_same_with_3_healers():
     iowa_idea = ideaunit_shop(get_iowa_text(), _problem_bool=True)
     ohio_idea = ideaunit_shop(get_ohio_text(), _problem_bool=True)
     utah_idea = ideaunit_shop(get_utah_text(), _problem_bool=True)
-    iowa_idea._healerhold.set_belief_id(get_yao_iowa_userhub().person_id)
-    ohio_idea._healerhold.set_belief_id(get_yao_ohio_userhub().person_id)
-    utah_idea._healerhold.set_belief_id(get_zia_utah_userhub().person_id)
+    iowa_idea._healerhold.set_belief_id(get_yao_iowa_userhub().owner_id)
+    ohio_idea._healerhold.set_belief_id(get_yao_ohio_userhub().owner_id)
+    utah_idea._healerhold.set_belief_id(get_zia_utah_userhub().owner_id)
     yao_same.add_idea(iowa_idea, get_usa_road())
     yao_same.add_idea(ohio_idea, get_usa_road())
     yao_same.add_idea(utah_idea, get_usa_road())
@@ -262,7 +262,7 @@ def get_example_yao_same_with_3_healers():
     return yao_same
 
 
-def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
+def test_listen_to_owner_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     # GIVEN
     # yao0_same with 3 debotors of different credor_weights
     # yao_job1 with 1 task, fact that doesn't want that task
@@ -290,7 +290,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     yao_iowa_userhub = get_yao_iowa_userhub()
     yao_ohio_userhub = get_yao_ohio_userhub()
     zia_utah_userhub = get_zia_utah_userhub()
-    # delete_dir(yao_iowa_userhub.persons_dir())
+    # delete_dir(yao_iowa_userhub.owners_dir())
     assert yao_iowa_userhub.same_file_exists() is False
     assert yao_iowa_userhub.live_file_exists() is False
     assert yao_iowa_userhub.job_file_exists(yao_text) is False
@@ -307,7 +307,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
 
     # WHEN
     assert yao_iowa_userhub.live_file_exists() is False
-    listen_to_person_jobs(yao_iowa_userhub)
+    listen_to_owner_jobs(yao_iowa_userhub)
     assert yao_iowa_userhub.live_file_exists()
 
     yao_live = yao_iowa_userhub.get_live_world()
@@ -325,7 +325,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     assert yao_live != yao_same0
 
 
-def test_listen_to_person_jobs_Pipeline_Scenario1_yao_same_CanOnlyReferenceItself(
+def test_listen_to_owner_jobs_Pipeline_Scenario1_yao_same_CanOnlyReferenceItself(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -357,7 +357,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_same_CanOnlyReferenceItsel
     yao_iowa_userhub = get_yao_iowa_userhub()
     yao_ohio_userhub = get_yao_ohio_userhub()
     zia_utah_userhub = get_zia_utah_userhub()
-    # delete_dir(yao_iowa_userhub.persons_dir())
+    # delete_dir(yao_iowa_userhub.owners_dir())
     assert yao_iowa_userhub.same_file_exists() is False
     assert yao_iowa_userhub.live_file_exists() is False
     assert yao_iowa_userhub.job_file_exists(yao_text) is False
@@ -375,7 +375,7 @@ def test_listen_to_person_jobs_Pipeline_Scenario1_yao_same_CanOnlyReferenceItsel
 
     # WHEN
     assert yao_iowa_userhub.live_file_exists() is False
-    listen_to_person_jobs(yao_iowa_userhub)
+    listen_to_owner_jobs(yao_iowa_userhub)
     assert yao_iowa_userhub.live_file_exists()
 
     yao_live = yao_iowa_userhub.get_live_world()

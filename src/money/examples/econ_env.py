@@ -17,8 +17,8 @@ def temp_reals_dir():
     return "src/money/examples/reals"
 
 
-def temp_person_id():
-    return "ex_person04"
+def temp_owner_id():
+    return "ex_owner04"
 
 
 @pytest_fixture()
@@ -38,7 +38,7 @@ def get_texas_road() -> RoadUnit:
 
 def get_texas_userhub() -> UserHub:
     return userhub_shop(
-        temp_reals_dir(), temp_real_id(), temp_person_id(), get_texas_road()
+        temp_reals_dir(), temp_real_id(), temp_owner_id(), get_texas_road()
     )
 
 

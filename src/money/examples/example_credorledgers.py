@@ -1,4 +1,4 @@
-from src._road.road import PersonID, OtherID
+from src._road.road import OwnerID, OtherID
 from src._world.world import worldunit_shop
 from src.listen.userhub import UserHub, userhub_shop
 from src.money.examples.econ_env import temp_reals_dir, temp_real_id, get_texas_road
@@ -55,7 +55,7 @@ def example_zia_credorledger() -> dict[str:float]:
     return get_credorledger(zia_world)
 
 
-def example_yao_bob_zia_credorledgers() -> dict[PersonID : dict[OtherID:float]]:
+def example_yao_bob_zia_credorledgers() -> dict[OwnerID : dict[OtherID:float]]:
     yao_text = "Yao"
     bob_text = "Bob"
     zia_text = "Zia"

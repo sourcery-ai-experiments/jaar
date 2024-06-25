@@ -23,7 +23,7 @@ def test_moneyunit_shop_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_texas_userhub = get_texas_userhub()
-    sue_texas_userhub.person_id = sue_text
+    sue_texas_userhub.owner_id = sue_text
 
     # WHEN
     texas_money = moneyunit_shop(sue_texas_userhub)
@@ -32,7 +32,7 @@ def test_moneyunit_shop_ReturnsObj(env_dir_setup_cleanup):
     assert texas_money != None
     assert texas_money.userhub.real_id != None
     assert texas_money._treasury_db != None
-    assert texas_money.userhub.person_id == sue_text
+    assert texas_money.userhub.owner_id == sue_text
     assert texas_money.userhub.road_delimiter == default_road_delimiter_if_none()
     assert texas_money.userhub == sue_texas_userhub
 

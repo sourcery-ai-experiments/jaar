@@ -5,7 +5,7 @@ from src._instrument.python import (
     get_dict_from_json,
 )
 from src._road.jaar_config import get_init_gift_id_if_None, get_json_filename
-from src._road.road import PersonID, RealID, get_default_real_id_roadnode
+from src._road.road import OwnerID, RealID, get_default_real_id_roadnode
 from src.gift.atom import AtomUnit, get_from_json as atomunit_get_from_json
 from src.gift.change import ChangeUnit, changeunit_shop
 from dataclasses import dataclass
@@ -15,21 +15,21 @@ from os.path import exists as os_path_exists
 @dataclass
 class GiftUnit:
     real_id: RealID = None
-    person_id: PersonID = None
+    owner_id: OwnerID = None
     _gift_id: int = None
-    _faces: set[PersonID] = None
+    _faces: set[OwnerID] = None
     _changeunit: ChangeUnit = None
     _change_start: int = None
     _gifts_dir: str = None
     _atoms_dir: str = None
 
-    def set_face(self, x_face: PersonID):
+    def set_face(self, x_face: OwnerID):
         self._faces.add(x_face)
 
-    def face_exists(self, x_face: PersonID) -> bool:
+    def face_exists(self, x_face: OwnerID) -> bool:
         return x_face in self._faces
 
-    def del_face(self, x_face: PersonID):
+    def del_face(self, x_face: OwnerID):
         self._faces.remove(x_face)
 
     def set_changeunit(self, x_changeunit: ChangeUnit):
@@ -47,7 +47,7 @@ class GiftUnit:
     def get_step_dict(self) -> dict[str:]:
         return {
             "real_id": self.real_id,
-            "person_id": self.person_id,
+            "owner_id": self.owner_id,
             "faces": {x_face: 1 for x_face in self._faces},
             "change": self._changeunit.get_ordered_atomunits(self._change_start),
         }
@@ -59,7 +59,7 @@ class GiftUnit:
     def get_changemetric_dict(self) -> dict:
         x_dict = self.get_step_dict()
         return {
-            "person_id": x_dict.get("person_id"),
+            "owner_id": x_dict.get("owner_id"),
             "faces": x_dict.get("faces"),
             "change_atom_numbers": self.get_change_atom_numbers(x_dict),
         }
@@ -109,10 +109,10 @@ class GiftUnit:
 
 
 def giftunit_shop(
-    person_id: PersonID,
+    owner_id: OwnerID,
     real_id: RealID = None,
     _gift_id: int = None,
-    _faces: set[PersonID] = None,
+    _faces: set[OwnerID] = None,
     _changeunit: ChangeUnit = None,
     _change_start: int = None,
     _gifts_dir: str = None,
@@ -124,7 +124,7 @@ def giftunit_shop(
         real_id = get_default_real_id_roadnode()
     x_giftunit = GiftUnit(
         real_id=real_id,
-        person_id=person_id,
+        owner_id=owner_id,
         _gift_id=get_init_gift_id_if_None(_gift_id),
         _faces=get_empty_set_if_none(_faces),
         _changeunit=_changeunit,
@@ -142,12 +142,12 @@ def create_giftunit_from_files(
 ) -> GiftUnit:
     gift_filename = get_json_filename(gift_id)
     gift_dict = get_dict_from_json(open_file(gifts_dir, gift_filename))
-    x_person_id = gift_dict.get("person_id")
+    x_owner_id = gift_dict.get("owner_id")
     x_real_id = gift_dict.get("real_id")
     x_faces = set(gift_dict.get("faces").keys())
     change_atom_numbers_list = gift_dict.get("change_atom_numbers")
     x_giftunit = giftunit_shop(
-        person_id=x_person_id,
+        owner_id=x_owner_id,
         real_id=x_real_id,
         _gift_id=gift_id,
         _faces=x_faces,

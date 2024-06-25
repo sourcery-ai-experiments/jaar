@@ -8,11 +8,11 @@ from plotly.graph_objects import Figure as plotly_Figure, Table as plotly_Table
 
 
 def get_real_sames_others_dataframe(x_real: RealUnit) -> DataFrame:
-    # get list of all person paths
-    person_userhubs = x_real.get_person_userhubs()
-    # for all persons get same
+    # get list of all owner paths
+    owner_userhubs = x_real.get_owner_userhubs()
+    # for all owners get same
     same_dfs = []
-    for x_userhub in person_userhubs.values():
+    for x_userhub in owner_userhubs.values():
         same_world = x_userhub.get_same_world()
         same_world.calc_world_metrics()
         df = get_world_otherunits_dataframe(same_world)
@@ -64,11 +64,11 @@ def get_real_sames_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
 
 
 def get_real_lives_others_dataframe(x_real: RealUnit) -> DataFrame:
-    # get list of all person paths
-    person_userhubs = x_real.get_person_userhubs()
-    # for all persons get live
+    # get list of all owner paths
+    owner_userhubs = x_real.get_owner_userhubs()
+    # for all owners get live
     live_dfs = []
-    for x_userhub in person_userhubs.values():
+    for x_userhub in owner_userhubs.values():
         live_world = x_userhub.get_live_world()
         live_world.calc_world_metrics()
         live_df = get_world_otherunits_dataframe(live_world)
@@ -120,11 +120,11 @@ def get_real_lives_others_plotly_fig(x_real: RealUnit) -> plotly_Figure:
 
 
 def get_real_sames_agenda_dataframe(x_real: RealUnit) -> DataFrame:
-    # get list of all person paths
-    person_userhubs = x_real.get_person_userhubs()
-    # for all persons get same
+    # get list of all owner paths
+    owner_userhubs = x_real.get_owner_userhubs()
+    # for all owners get same
     same_dfs = []
-    for x_userhub in person_userhubs.values():
+    for x_userhub in owner_userhubs.values():
         same_world = x_userhub.get_same_world()
         same_world.calc_world_metrics()
         df = get_world_agenda_dataframe(same_world)
@@ -179,11 +179,11 @@ def get_real_sames_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
 
 
 def get_real_lives_agenda_dataframe(x_real: RealUnit) -> DataFrame:
-    # get list of all person paths
-    person_userhubs = x_real.get_person_userhubs()
-    # for all persons get live
+    # get list of all owner paths
+    owner_userhubs = x_real.get_owner_userhubs()
+    # for all owners get live
     live_dfs = []
-    for x_userhub in person_userhubs.values():
+    for x_userhub in owner_userhubs.values():
         live_world = x_userhub.get_live_world()
         live_world.calc_world_metrics()
         live_df = get_world_agenda_dataframe(live_world)

@@ -1,6 +1,5 @@
 from src._road.road import (
     RoadNode,
-    PersonID,
     HealerID,
     OwnerID,
     OtherID,

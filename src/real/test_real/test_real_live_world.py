@@ -13,9 +13,9 @@ def test_RealUnit_generate_live_world_Sets_live_WorldFile(env_dir_setup_cleanup)
     music_real = realunit_shop(music_text, get_test_reals_dir(), True)
     sue_text = "Sue"
     sue_userhub = userhub_shop(None, music_text, sue_text, None)
-    x_sue_live_path = f"{music_real._persons_dir}/{sue_text}/live/{sue_text}.json"
+    x_sue_live_path = f"{music_real._owners_dir}/{sue_text}/live/{sue_text}.json"
     assert os_path_exists(x_sue_live_path) is False
-    music_real.init_person_econs(sue_text)
+    music_real.init_owner_econs(sue_text)
     assert sue_userhub.live_path() == x_sue_live_path
     assert os_path_exists(x_sue_live_path)
 
@@ -32,7 +32,7 @@ def test_RealUnit_generate_live_world_ReturnsRegeneratedObj(env_dir_setup_cleanu
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
     sue_text = "Sue"
-    music_real.init_person_econs(sue_text)
+    music_real.init_owner_econs(sue_text)
     sue_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, sue_text, None)
     before_sue_world = sue_userhub.get_live_world()
     bob_text = "Bob"
@@ -53,7 +53,7 @@ def test_RealUnit_generate_live_world_SetsCorrectFileWithout_healerhold(
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), True)
     bob_text = "Bob"
-    music_real.init_person_econs(bob_text)
+    music_real.init_owner_econs(bob_text)
     bob_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     before_bob_live_world = music_real.generate_live_world(bob_text)
     sue_text = "Sue"
@@ -76,7 +76,7 @@ def test_RealUnit_generate_live_world_SetsFileWith_healerhold(env_dir_setup_clea
     music_real = realunit_shop("music", get_test_reals_dir(), True)
 
     bob_text = "Bob"
-    music_real.init_person_econs(bob_text)
+    music_real.init_owner_econs(bob_text)
     bob_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     after_bob_live_world = music_real.generate_live_world(bob_text)
     assert after_bob_live_world.other_exists(bob_text) is False
@@ -107,10 +107,10 @@ def test_RealUnit_generate_all_live_worlds_SetsCorrectFiles(
 
     bob_text = "Bob"
     sue_text = "Sue"
-    music_real.init_person_econs(bob_text)
+    music_real.init_owner_econs(bob_text)
     reals_dir = music_real.reals_dir
     bob_userhub = userhub_shop(reals_dir, music_real.real_id, bob_text, None)
-    music_real.init_person_econs(sue_text)
+    music_real.init_owner_econs(sue_text)
     sue_userhub = userhub_shop(reals_dir, music_real.real_id, sue_text, None)
     bob_same_world = music_real.generate_live_world(bob_text)
     sue_same_world = music_real.generate_live_world(sue_text)

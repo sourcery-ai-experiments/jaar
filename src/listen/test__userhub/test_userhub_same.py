@@ -30,7 +30,7 @@ def test_UserHub_default_same_world_ReturnsCorrectObj():
 
     # THEN
     assert sue_default_same._real_id == sue_userhub.real_id
-    assert sue_default_same._owner_id == sue_userhub.person_id
+    assert sue_default_same._owner_id == sue_userhub.owner_id
     assert sue_default_same._road_delimiter == sue_userhub.road_delimiter
     assert sue_default_same._pixel == sue_userhub.pixel
     assert sue_default_same._penny == sue_userhub.penny

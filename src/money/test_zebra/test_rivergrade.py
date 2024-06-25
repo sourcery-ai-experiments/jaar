@@ -173,7 +173,7 @@ def test_RiverGrade_get_dict_ReturnsCorrectObj():
 
     # THEN
     assert rivergrade_dict.get("real_id") == yao_userhub.real_id
-    assert rivergrade_dict.get("healer_id") == yao_userhub.person_id
+    assert rivergrade_dict.get("healer_id") == yao_userhub.owner_id
     assert rivergrade_dict.get("econ_road") == yao_userhub.econ_road
     assert rivergrade_dict.get("tax_bill_amount") == x_tax_bill_amount
     assert rivergrade_dict.get("grant_amount") == x_grant_amount

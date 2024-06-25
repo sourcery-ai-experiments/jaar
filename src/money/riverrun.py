@@ -199,10 +199,10 @@ class RiverRun:
         tax_dues_others = set(self.tax_dues.keys())
         tax_yields_others = set(self._tax_yields.keys())
         self._debtor_count = len(tax_dues_others.union(tax_yields_others))
-        self._credor_count = len(self.econ_credorledgers.get(self.userhub.person_id))
+        self._credor_count = len(self.econ_credorledgers.get(self.userhub.owner_id))
 
     def _set_grants(self):
-        grant_credorledger = self.econ_credorledgers.get(self.userhub.person_id)
+        grant_credorledger = self.econ_credorledgers.get(self.userhub.owner_id)
         self._grants = allot_scale(
             ledger=grant_credorledger,
             scale_number=self.userhub.econ_money_magnitude,

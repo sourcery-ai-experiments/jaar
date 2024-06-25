@@ -499,7 +499,7 @@ def test_WorldUnit_get_idea_list_CorrectlyCalculatesBeliefWorldImportanceLWwithB
     )
 
 
-def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyCreatesNewPersonID():
+def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyCreatesNewOtherID():
     # GIVEN
     world = worldunit_shop("prom")
     rico_text = "rico"
@@ -529,7 +529,7 @@ def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyCreatesNewPersonID():
     assert len(world.get_beliefunit(jog_text)._others) == 1
 
 
-def test_WorldUnit_edit_Beliefunit_belief_id_raiseErrorNewPersonIDPreviouslyExists():
+def test_WorldUnit_edit_Beliefunit_belief_id_raiseErrorNewOtherIDPreviouslyExists():
     # GIVEN
     world = worldunit_shop("prom")
     rico_text = "rico"
@@ -552,7 +552,7 @@ def test_WorldUnit_edit_Beliefunit_belief_id_raiseErrorNewPersonIDPreviouslyExis
     )
 
 
-def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyMeldPersonIDs():
+def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyMeldOtherIDs():
     # GIVEN
     world = worldunit_shop("prom")
     rico_text = "rico"

@@ -9,8 +9,8 @@ from src.real.journal_sqlstr import (
     get_change_gift_link_table_create_sqlstr,
     get_change_table_create_sqlstr,
     get_gift_table_create_sqlstr,
-    get_gift_person_link_table_create_sqlstr,
-    get_person_mstr_table_create_sqlstr,
+    get_gift_owner_link_table_create_sqlstr,
+    get_owner_mstr_table_create_sqlstr,
     get_road_ref_table_create_sqlstr,
     get_road_ref_table_single_insert_sqlstr,
     get_road_ref_table_row_id_select_sqlstr,
@@ -21,9 +21,9 @@ def test_get_change_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN / THEN
     example_sqlstr = """
 CREATE TABLE IF NOT EXISTS change_mstr (
-  author_person_id VARCHAR(255) NOT NULL
+  author_owner_id VARCHAR(255) NOT NULL
 , author_change_number INT NOT NULL
-, UNIQUE(author_person_id, author_change_number)
+, UNIQUE(author_owner_id, author_change_number)
 )
 ;"""
     assert example_sqlstr == get_change_table_create_sqlstr()
@@ -48,9 +48,9 @@ def test_get_gift_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN / THEN
     example_sqlstr = """
 CREATE TABLE IF NOT EXISTS gift_mstr (
-  author_person_id VARCHAR(255) NOT NULL
+  author_owner_id VARCHAR(255) NOT NULL
 , author_gift_number INT NOT NULL
-, UNIQUE(author_person_id, author_gift_number)
+, UNIQUE(author_owner_id, author_gift_number)
 )
 ;"""
     assert example_sqlstr == get_gift_table_create_sqlstr()
@@ -71,31 +71,31 @@ CREATE TABLE change_gift_link
     assert example_sqlstr == get_change_gift_link_table_create_sqlstr()
 
 
-def test_get_gift_person_link_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_gift_owner_link_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN / THEN
     example_sqlstr = """
-CREATE TABLE gift_person_link
+CREATE TABLE gift_owner_link
 (
   gift_rowid INT NOT NULL
-, person_rowid INT NOT NULL
-, UNIQUE(gift_rowid, person_rowid)
+, owner_rowid INT NOT NULL
+, UNIQUE(gift_rowid, owner_rowid)
 , CONSTRAINT change_fk FOREIGN KEY (gift_rowid) REFERENCES gift_mstr (rowid)
-, CONSTRAINT person_fk FOREIGN KEY (person_rowid) REFERENCES person (rowid)
+, CONSTRAINT owner_fk FOREIGN KEY (owner_rowid) REFERENCES owner (rowid)
 )
 ;"""
-    assert example_sqlstr == get_gift_person_link_table_create_sqlstr()
+    assert example_sqlstr == get_gift_owner_link_table_create_sqlstr()
 
 
-def test_get_person_mstr_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_owner_mstr_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN / THEN
     example_sqlstr = """
-CREATE TABLE person_mstr
+CREATE TABLE owner_mstr
 (
-  person_id VARCHAR(255) NOT NULL
-, UNIQUE(person_id)
+  owner_id VARCHAR(255) NOT NULL
+, UNIQUE(owner_id)
 )
 ;"""
-    assert example_sqlstr == get_person_mstr_table_create_sqlstr()
+    assert example_sqlstr == get_owner_mstr_table_create_sqlstr()
 
 
 def test_get_road_ref_table_create_sqlstr_ReturnsCorrectStr():
@@ -156,7 +156,7 @@ def test_get_atom_hx_table_create_sqlstr_ReturnsCorrectStr():
     # THEN
     begin_sqlstr = """
 CREATE TABLE IF NOT EXISTS atom_hx (
-  person_id VARCHAR(255) NOT NULL"""
+  owner_id VARCHAR(255) NOT NULL"""
     end_sqlstr = """)
 ;"""
 
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS atom_hx (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )
     assert generated_sqlstr.find(example_idea_reasonunit_text) > 0
-    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3393
+    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3392
 
 
 def test_get_atom_hx_table_insert_sqlstr_ReturnsCorrectStr():
@@ -212,18 +212,18 @@ def test_get_atom_mstr_table_create_sqlstr_ReturnsCorrectStr():
     # THEN
     begin_sqlstr = """
 CREATE TABLE IF NOT EXISTS atom_mstr (
-  person_id VARCHAR(255) NOT NULL
+  owner_id VARCHAR(255) NOT NULL
 , atom_hx_row_id INT NOT NULL"""
     end_sqlstr = """)
 ;"""
     assert generated_sqlstr.find(begin_sqlstr) == 0
     assert generated_sqlstr.find(end_sqlstr) > 0
-    assert generated_sqlstr.find(end_sqlstr) == 5989
+    assert generated_sqlstr.find(end_sqlstr) == 5988
     example_idea_reasonunit_text = (
         "idea_reasonunit_UPDATE_suff_idea_active INTEGER NULL"
     )
     assert generated_sqlstr.find(example_idea_reasonunit_text) > 0
-    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3425
+    assert generated_sqlstr.find(example_idea_reasonunit_text) == 3424
 
 
 def test_get_create_table_if_not_exist_sqlstrs_HasCorrectNumberOfNumber():

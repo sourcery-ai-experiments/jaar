@@ -1,4 +1,4 @@
-from src._road.road import PersonID
+from src._road.road import OwnerID
 from src._world.world import WorldUnit, worldunit_shop
 
 
@@ -7,7 +7,7 @@ def _is_empty_world(x_world: WorldUnit) -> bool:
     return x_world.get_dict() == empty_world.get_dict()
 
 
-def create_empty_world(ref_world: WorldUnit, x_owner_id: PersonID = None) -> WorldUnit:
+def create_empty_world(ref_world: WorldUnit, x_owner_id: OwnerID = None) -> WorldUnit:
     if x_owner_id is None:
         x_owner_id = ref_world._owner_id
     x_road_delimiter = ref_world._road_delimiter

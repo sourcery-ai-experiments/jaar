@@ -30,7 +30,7 @@ def test_GiftUnit_exists():
 
     # THEN
     assert x_giftunit.real_id is None
-    assert x_giftunit.person_id is None
+    assert x_giftunit.owner_id is None
     assert x_giftunit._gift_id is None
     assert x_giftunit._faces is None
     assert x_giftunit._changeunit is None
@@ -44,11 +44,11 @@ def test_giftunit_shop_ReturnsCorrectObjGivenEmptyArgs():
     bob_text = "Bob"
 
     # WHEN
-    farm_giftunit = giftunit_shop(person_id=bob_text)
+    farm_giftunit = giftunit_shop(owner_id=bob_text)
 
     # THEN
     assert farm_giftunit.real_id == root_label()
-    assert farm_giftunit.person_id == bob_text
+    assert farm_giftunit.owner_id == bob_text
     assert farm_giftunit._gift_id == 0
     assert farm_giftunit._faces == set()
     assert farm_giftunit._changeunit == changeunit_shop()
@@ -71,7 +71,7 @@ def test_giftunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
     # WHEN
     farm_giftunit = giftunit_shop(
         real_id=music_text,
-        person_id=bob_text,
+        owner_id=bob_text,
         _gift_id=bob_gift_id,
         _faces=bob_faces,
         _changeunit=bob_changeunit,
@@ -82,7 +82,7 @@ def test_giftunit_shop_ReturnsCorrectObjGivenNonEmptyArgs():
 
     # THEN
     assert farm_giftunit.real_id == music_text
-    assert farm_giftunit.person_id == bob_text
+    assert farm_giftunit.owner_id == bob_text
     assert farm_giftunit._gift_id == bob_gift_id
     assert farm_giftunit._faces == bob_faces
     assert farm_giftunit._changeunit == bob_changeunit
@@ -99,17 +99,17 @@ def test_giftunit_shop_ReturnsCorrectObjGivenSomeArgs_v1():
     x_faces = {bob_text, tim_text, yao_text}
 
     # WHEN
-    farm_giftunit = giftunit_shop(person_id=bob_text, _faces=x_faces)
+    farm_giftunit = giftunit_shop(owner_id=bob_text, _faces=x_faces)
 
     # THEN
-    assert farm_giftunit.person_id == bob_text
+    assert farm_giftunit.owner_id == bob_text
     assert farm_giftunit._faces == x_faces
 
 
 def test_GiftUnit_set_face_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
-    farm_giftunit = giftunit_shop(person_id=bob_text)
+    farm_giftunit = giftunit_shop(owner_id=bob_text)
     tim_text = "Tim"
     assert farm_giftunit._faces == set()
     assert tim_text not in farm_giftunit._faces
@@ -124,7 +124,7 @@ def test_GiftUnit_set_face_SetsAttribute():
 def test_GiftUnit_face_exists_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    farm_giftunit = giftunit_shop(person_id=bob_text)
+    farm_giftunit = giftunit_shop(owner_id=bob_text)
     tim_text = "Tim"
     assert farm_giftunit._faces == set()
     assert tim_text not in farm_giftunit._faces
@@ -140,7 +140,7 @@ def test_GiftUnit_face_exists_ReturnsCorrectObj():
 def test_GiftUnit_del_face_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
-    farm_giftunit = giftunit_shop(person_id=bob_text)
+    farm_giftunit = giftunit_shop(owner_id=bob_text)
     tim_text = "Tim"
     yao_text = "Yao"
     farm_giftunit.set_face(tim_text)
@@ -159,7 +159,7 @@ def test_GiftUnit_del_face_SetsAttribute():
 def test_GiftUnit_set_changeunit_SetsAttribute():
     # GIVEN
     bob_text = "Bob"
-    farm_giftunit = giftunit_shop(person_id=bob_text)
+    farm_giftunit = giftunit_shop(owner_id=bob_text)
     assert farm_giftunit._changeunit == changeunit_shop()
 
     # WHEN
@@ -189,7 +189,7 @@ def test_GiftUnit_atomunit_exists_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
     farm_changeunit = changeunit_shop()
-    farm_giftunit = giftunit_shop(person_id=bob_text)
+    farm_giftunit = giftunit_shop(owner_id=bob_text)
     farm_giftunit.set_changeunit(farm_changeunit)
 
     # WHEN
@@ -211,7 +211,7 @@ def test_GiftUnit_del_changeunit_SetsAttribute():
     bob_text = "Bob"
     farm_changeunit = changeunit_shop()
     farm_changeunit.set_atomunit(get_atom_example_ideaunit_sports())
-    farm_giftunit = giftunit_shop(person_id=bob_text, _changeunit=farm_changeunit)
+    farm_giftunit = giftunit_shop(owner_id=bob_text, _changeunit=farm_changeunit)
     assert farm_giftunit._changeunit != changeunit_shop()
     assert farm_giftunit._changeunit == farm_changeunit
 
@@ -228,7 +228,7 @@ def test_GiftUnit_get_step_dict_ReturnsCorrectObj_Simple():
     tim_text = "Tim"
     yao_text = "Yao"
     music_text = "music"
-    farm_giftunit = giftunit_shop(real_id=music_text, person_id=bob_text)
+    farm_giftunit = giftunit_shop(real_id=music_text, owner_id=bob_text)
     farm_giftunit.set_face(tim_text)
     farm_giftunit.set_face(yao_text)
 
@@ -240,9 +240,9 @@ def test_GiftUnit_get_step_dict_ReturnsCorrectObj_Simple():
     assert x_dict.get(real_id_text) != None
     assert x_dict.get(real_id_text) == music_text
 
-    person_id_text = "person_id"
-    assert x_dict.get(person_id_text) != None
-    assert x_dict.get(person_id_text) == bob_text
+    owner_id_text = "owner_id"
+    assert x_dict.get(owner_id_text) != None
+    assert x_dict.get(owner_id_text) == bob_text
 
     faces_text = "faces"
     assert x_dict.get(faces_text) != None
@@ -343,9 +343,9 @@ def test_GiftUnit_get_changemetric_dict_ReturnsCorrectObj():
     x_dict = farm_giftunit.get_changemetric_dict()
 
     # THEN
-    person_id_text = "person_id"
-    assert x_dict.get(person_id_text) != None
-    assert x_dict.get(person_id_text) == bob_text
+    owner_id_text = "owner_id"
+    assert x_dict.get(owner_id_text) != None
+    assert x_dict.get(owner_id_text) == bob_text
 
     faces_text = "faces"
     assert x_dict.get(faces_text) != None

@@ -12,7 +12,7 @@ def create_example_real1() -> RealUnit:
     music_text = "music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     yao_text = "Yao"
-    music_real.init_person_econs(yao_text)
+    music_real.init_owner_econs(yao_text)
     yao_userhub = userhub_shop(None, music_text, yao_text, None)
     yao_same_world = yao_userhub.get_same_world()
 
@@ -39,7 +39,7 @@ def create_example_real1() -> RealUnit:
     x_userhub = userhub_shop(
         reals_dir=yao_userhub.reals_dir,
         real_id=yao_userhub.real_id,
-        person_id=yao_userhub.person_id,
+        owner_id=yao_userhub.owner_id,
         econ_road=None,
         road_delimiter=yao_userhub.road_delimiter,
         pixel=yao_userhub.pixel,
@@ -60,12 +60,12 @@ def create_example_real2() -> RealUnit:
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    music_real.init_person_econs(yao_text)
+    music_real.init_owner_econs(yao_text)
     yao_userhub = userhub_shop(None, music_text, yao_text, None)
     wei_userhub = userhub_shop(None, music_text, wei_text, None)
     zia_userhub = userhub_shop(None, music_text, zia_text, None)
-    music_real.init_person_econs(wei_text)
-    music_real.init_person_econs(zia_text)
+    music_real.init_owner_econs(wei_text)
+    music_real.init_owner_econs(zia_text)
     yao_same_world = yao_userhub.get_same_world()
     wei_same_world = wei_userhub.get_same_world()
     zia_same_world = zia_userhub.get_same_world()
@@ -126,9 +126,9 @@ def create_example_real3() -> RealUnit:
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    music_real.init_person_econs(yao_text)
-    music_real.init_person_econs(wei_text)
-    music_real.init_person_econs(zia_text)
+    music_real.init_owner_econs(yao_text)
+    music_real.init_owner_econs(wei_text)
+    music_real.init_owner_econs(zia_text)
     yao_userhub = userhub_shop(None, music_text, yao_text, None)
     wei_userhub = userhub_shop(None, music_text, wei_text, None)
     zia_userhub = userhub_shop(None, music_text, zia_text, None)
@@ -174,9 +174,9 @@ def create_example_real4() -> RealUnit:
     yao_text = "Yao"
     wei_text = "Wei"
     zia_text = "Zia"
-    music_real.init_person_econs(yao_text)
-    music_real.init_person_econs(wei_text)
-    music_real.init_person_econs(zia_text)
+    music_real.init_owner_econs(yao_text)
+    music_real.init_owner_econs(wei_text)
+    music_real.init_owner_econs(zia_text)
     yao_userhub = userhub_shop(None, music_text, yao_text, None)
     wei_userhub = userhub_shop(None, music_text, wei_text, None)
     zia_userhub = userhub_shop(None, music_text, zia_text, None)

@@ -2,7 +2,7 @@ from src._road.road import (
     get_ancestor_roads,
     RoadUnit,
     get_root_node_from_road,
-    PersonID,
+    OwnerID,
 )
 from src._world.idea import IdeaUnit
 from src._world.world import WorldUnit, OtherUnit
@@ -32,22 +32,20 @@ def _ingest_perspective_agenda(
     return listener
 
 
-def _allocate_irrational_debtor_weight(listener: WorldUnit, speaker_owner_id: PersonID):
+def _allocate_irrational_debtor_weight(listener: WorldUnit, speaker_owner_id: OwnerID):
     speaker_otherunit = listener.get_other(speaker_owner_id)
     speaker_debtor_weight = speaker_otherunit.debtor_weight
     speaker_otherunit.add_irrational_debtor_weight(speaker_debtor_weight)
     return listener
 
 
-def _allocate_inallocable_debtor_weight(
-    listener: WorldUnit, speaker_owner_id: PersonID
-):
+def _allocate_inallocable_debtor_weight(listener: WorldUnit, speaker_owner_id: OwnerID):
     speaker_otherunit = listener.get_other(speaker_owner_id)
     speaker_otherunit.add_inallocable_debtor_weight(speaker_otherunit.debtor_weight)
     return listener
 
 
-def get_speaker_perspective(speaker: WorldUnit, listener_owner_id: PersonID):
+def get_speaker_perspective(speaker: WorldUnit, listener_owner_id: OwnerID):
     listener_userhub = userhub_shop("", "", listener_owner_id)
     return listener_userhub.get_perspective_world(speaker)
 
@@ -229,7 +227,7 @@ def listen_to_agendas_role_job(listener_job: WorldUnit, healer_userhub: UserHub)
             listen_to_speaker_agenda(listener_job, listener_role)
         else:
             speaker_id = x_otherunit.other_id
-            healer_id = healer_userhub.person_id
+            healer_id = healer_userhub.owner_id
             speaker_job = healer_userhub.rj_speaker_world(healer_id, speaker_id)
             if speaker_job is None:
                 speaker_job = create_empty_world(listener_job, speaker_id)
@@ -267,7 +265,7 @@ def listen_to_debtors_roll_same_live(listener_userhub: UserHub) -> WorldUnit:
 
 
 def listen_to_debtors_roll_role_job(
-    healer_userhub: UserHub, listener_id: PersonID
+    healer_userhub: UserHub, listener_id: OwnerID
 ) -> WorldUnit:
     role = healer_userhub.get_role_world(listener_id)
     new_role = create_listen_basis(role)
@@ -278,7 +276,7 @@ def listen_to_debtors_roll_role_job(
     return new_role
 
 
-def listen_to_person_jobs(listener_userhub: UserHub) -> None:
+def listen_to_owner_jobs(listener_userhub: UserHub) -> None:
     same = listener_userhub.get_same_world()
     new_live = create_listen_basis(same)
     pre_live_dict = new_live.get_dict()
@@ -286,9 +284,9 @@ def listen_to_person_jobs(listener_userhub: UserHub) -> None:
     new_live.calc_world_metrics()
 
     for x_healer_id, econ_dict in same._healers_dict.items():
-        listener_id = listener_userhub.person_id
+        listener_id = listener_userhub.owner_id
         healer_userhub = copy_deepcopy(listener_userhub)
-        healer_userhub.person_id = x_healer_id
+        healer_userhub.owner_id = x_healer_id
         _pick_econ_jobs_and_listen(listener_id, econ_dict, healer_userhub, new_live)
 
     if new_live.get_dict() == pre_live_dict:
@@ -300,7 +298,7 @@ def listen_to_person_jobs(listener_userhub: UserHub) -> None:
 
 
 def _pick_econ_jobs_and_listen(
-    listener_id: PersonID,
+    listener_id: OwnerID,
     econ_dict: dict[RoadUnit],
     healer_userhub: UserHub,
     new_live: WorldUnit,
@@ -311,9 +309,9 @@ def _pick_econ_jobs_and_listen(
 
 
 def pick_econ_job_and_listen(
-    listener_person_id: PersonID, healer_userhub: UserHub, new_live: WorldUnit
+    listener_owner_id: OwnerID, healer_userhub: UserHub, new_live: WorldUnit
 ):
-    listener_id = listener_person_id
+    listener_id = listener_owner_id
     if healer_userhub.job_file_exists(listener_id):
         econ_job = healer_userhub.get_job_world(listener_id)
     else:
@@ -332,8 +330,8 @@ def listen_to_job_agenda(listener: WorldUnit, job: WorldUnit):
     listener.calc_world_metrics()
 
 
-def create_job_file_from_role_file(healer_userhub: UserHub, person_id: PersonID):
-    x_job = listen_to_debtors_roll_role_job(healer_userhub, listener_id=person_id)
+def create_job_file_from_role_file(healer_userhub: UserHub, owner_id: OwnerID):
+    x_job = listen_to_debtors_roll_role_job(healer_userhub, listener_id=owner_id)
     healer_userhub.save_job_world(x_job)
 
 

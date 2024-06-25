@@ -105,7 +105,7 @@ def create_init_rivercycle(
 ) -> RiverCycle:
     x_rivercycle = rivercycle_shop(leader_userhub, 0, econ_credorledgers)
     init_amount = leader_userhub.econ_money_magnitude
-    x_rivercycle.set_riverbook(leader_userhub.person_id, init_amount)
+    x_rivercycle.set_riverbook(leader_userhub.owner_id, init_amount)
     return x_rivercycle
 
 
@@ -159,7 +159,7 @@ class RiverGrade:
     def get_dict(self) -> dict:
         return {
             "real_id": self.userhub.real_id,
-            "healer_id": self.userhub.person_id,
+            "healer_id": self.userhub.owner_id,
             "econ_road": self.userhub.econ_road,
             "tax_bill_amount": self.tax_bill_amount,
             "grant_amount": self.grant_amount,

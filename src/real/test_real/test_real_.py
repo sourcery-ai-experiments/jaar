@@ -14,7 +14,7 @@ def test_RealUnit_exists(env_dir_setup_cleanup):
     music_real = RealUnit(real_id=music_text, reals_dir=get_test_reals_dir())
     assert music_real.real_id == music_text
     assert music_real.reals_dir == get_test_reals_dir()
-    assert music_real._persons_dir is None
+    assert music_real._owners_dir is None
     assert music_real._journal_db is None
     assert music_real._gifts_dir is None
     assert music_real._road_delimiter is None
@@ -34,7 +34,7 @@ def test_realunit_shop_ReturnsRealUnit(env_dir_setup_cleanup):
     # THEN
     assert music_real.real_id == music_text
     assert music_real.reals_dir == get_test_reals_dir()
-    assert music_real._persons_dir != None
+    assert music_real._owners_dir != None
     assert music_real._gifts_dir != None
     assert music_real._road_delimiter == default_road_delimiter_if_none()
     assert music_real._pixel == default_pixel_if_none()
@@ -69,17 +69,17 @@ def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(env_dir_setup_cleanup):
     music_text = "music"
     music_real = RealUnit(real_id=music_text, reals_dir=get_test_reals_dir())
     x_real_dir = f"{get_test_reals_dir()}/{music_text}"
-    x_persons_dir = f"{x_real_dir}/persons"
+    x_owners_dir = f"{x_real_dir}/owners"
     x_gifts_dir = f"{x_real_dir}/{get_gifts_folder()}"
     journal_file_name = "journal.db"
     journal_file_path = f"{x_real_dir}/{journal_file_name}"
 
     assert music_real._real_dir is None
-    assert music_real._persons_dir is None
+    assert music_real._owners_dir is None
     assert music_real._gifts_dir is None
     assert os_path_exists(x_real_dir) is False
     assert os_path_isdir(x_real_dir) is False
-    assert os_path_exists(x_persons_dir) is False
+    assert os_path_exists(x_owners_dir) is False
     assert os_path_exists(x_gifts_dir) is False
     assert os_path_exists(journal_file_path) is False
 
@@ -88,11 +88,11 @@ def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(env_dir_setup_cleanup):
 
     # THEN
     assert music_real._real_dir == x_real_dir
-    assert music_real._persons_dir == x_persons_dir
+    assert music_real._owners_dir == x_owners_dir
     assert music_real._gifts_dir == x_gifts_dir
     assert os_path_exists(x_real_dir)
     assert os_path_isdir(x_real_dir)
-    assert os_path_exists(x_persons_dir)
+    assert os_path_exists(x_owners_dir)
     assert os_path_exists(x_gifts_dir)
     assert os_path_exists(journal_file_path)
 
@@ -107,10 +107,10 @@ def test_realunit_shop_SetsRealsDirs(env_dir_setup_cleanup):
     # THEN
     assert music_real.real_id == music_text
     assert music_real._real_dir == f"{get_test_reals_dir()}/{music_text}"
-    assert music_real._persons_dir == f"{music_real._real_dir}/persons"
+    assert music_real._owners_dir == f"{music_real._real_dir}/owners"
 
 
-def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(env_dir_setup_cleanup):
+def test_RealUnit_init_owner_econs_CorrectlySetsDirAndFiles(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     slash_text = "/"
@@ -127,19 +127,19 @@ def test_RealUnit_init_person_econs_CorrectlySetsDirAndFiles(env_dir_setup_clean
     assert os_path_exists(luca_userhub.live_path()) is False
 
     # WHEN
-    music_real.init_person_econs(luca_text)
+    music_real.init_owner_econs(luca_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
     assert os_path_exists(luca_userhub.live_path())
 
 
-def test_RealUnit_get_person_same_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_RealUnit_get_owner_same_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
-    music_real.init_person_econs(luca_text)
+    music_real.init_owner_econs(luca_text)
     luca_userhub = userhub_shop(None, music_text, luca_text, None)
     bob_text = "Bob"
     luca_same = luca_userhub.get_same_world()
@@ -147,7 +147,7 @@ def test_RealUnit_get_person_same_from_file_ReturnsCorrectObj(env_dir_setup_clea
     luca_userhub.save_same_world(luca_same)
 
     # WHEN
-    gen_luca_same = music_real.get_person_same_from_file(luca_text)
+    gen_luca_same = music_real.get_owner_same_from_file(luca_text)
 
     # THEN
     assert gen_luca_same != None
@@ -162,8 +162,8 @@ def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
     todd_text = "Todd"
-    music_real.init_person_econs(luca_text)
-    music_real.init_person_econs(todd_text)
+    music_real.init_owner_econs(luca_text)
+    music_real.init_owner_econs(todd_text)
     luca_userhub = userhub_shop(None, music_text, luca_text, None)
     todd_userhub = userhub_shop(None, music_text, todd_text, None)
     luca_same_world = luca_userhub.get_same_world()
@@ -227,25 +227,25 @@ def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     assert os_path_exists(todd_dallas_todd_role_file_path)
 
 
-def test_RealUnit_get_person_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_RealUnit_get_owner_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), in_memory_journal=True)
     luca_text = "Luca"
     todd_text = "Todd"
 
     # WHEN / THEN
-    assert len(music_real.get_person_userhubs()) == 0
+    assert len(music_real.get_owner_userhubs()) == 0
 
     # WHEN
-    music_real.init_person_econs(luca_text)
-    music_real.init_person_econs(todd_text)
-    music_all_persons = music_real.get_person_userhubs()
+    music_real.init_owner_econs(luca_text)
+    music_real.init_owner_econs(todd_text)
+    music_all_owners = music_real.get_owner_userhubs()
 
     # THEN
     luca_userhub = userhub_shop(
         reals_dir=music_real.reals_dir,
         real_id=music_real.real_id,
-        person_id=luca_text,
+        owner_id=luca_text,
         econ_road=None,
         road_delimiter=music_real._road_delimiter,
         pixel=music_real._pixel,
@@ -253,11 +253,11 @@ def test_RealUnit_get_person_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
     todd_userhub = userhub_shop(
         reals_dir=music_real.reals_dir,
         real_id=music_real.real_id,
-        person_id=todd_text,
+        owner_id=todd_text,
         econ_road=None,
         road_delimiter=music_real._road_delimiter,
         pixel=music_real._pixel,
     )
-    assert music_all_persons.get(luca_text) == luca_userhub
-    assert music_all_persons.get(todd_text) == todd_userhub
-    assert len(music_real.get_person_userhubs()) == 2
+    assert music_all_owners.get(luca_text) == luca_userhub
+    assert music_all_owners.get(todd_text) == todd_userhub
+    assert len(music_real.get_owner_userhubs()) == 2

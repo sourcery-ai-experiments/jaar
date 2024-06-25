@@ -1,4 +1,4 @@
-from src._road.road import create_road_without_root_node, RoadUnit, PersonID, OtherID
+from src._road.road import create_road_without_root_node, RoadUnit, OwnerID, OtherID
 from src._instrument.sqlite import (
     sqlite_bool,
     sqlite_null,
@@ -26,7 +26,7 @@ ORDER BY range_sum DESC
 """
 
 
-def get_river_reach_table_final_insert_sqlstr(cash_master: PersonID) -> str:
+def get_river_reach_table_final_insert_sqlstr(cash_master: OwnerID) -> str:
     reach_final_sqlstr = get_river_reach_table_final_select_sqlstr(cash_master)
     return get_river_reach_table_insert_sqlstr(reach_final_sqlstr)
 
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS river_reach (
 """
 
 
-def get_river_reach_table_touch_select_sqlstr(cash_master: PersonID) -> str:
+def get_river_reach_table_touch_select_sqlstr(cash_master: OwnerID) -> str:
     return f"""
     SELECT 
     block.cash_master
@@ -114,7 +114,7 @@ def get_river_reach_table_touch_select_sqlstr(cash_master: PersonID) -> str:
 """
 
 
-def get_river_reach_table_final_select_sqlstr(cash_master: PersonID) -> str:
+def get_river_reach_table_final_select_sqlstr(cash_master: OwnerID) -> str:
     return f"""
 WITH reach_inter(coin_mstr, src, dst, reach_start, reach_close) AS (
 {get_river_reach_table_touch_select_sqlstr(cash_master)}
@@ -563,13 +563,13 @@ FROM worldunit
 
 @dataclass
 class WorldTreasuryUnit:
-    owner_id: PersonID
+    owner_id: OwnerID
     rational: bool
 
 
 def get_worldtreasuryunits_dict(
     db_conn: Connection,
-) -> dict[PersonID:WorldTreasuryUnit]:
+) -> dict[OwnerID:WorldTreasuryUnit]:
     results = db_conn.execute(get_worldunits_select_sqlstr())
     dict_x = {}
     for row in results.fetchall():
@@ -618,7 +618,7 @@ CREATE TABLE IF NOT EXISTS world_otherunit (
 
 
 def get_world_otherunit_table_update_treasury_due_paid_sqlstr(
-    cash_owner_id: PersonID,
+    cash_owner_id: OwnerID,
 ) -> str:
     return f"""
 UPDATE world_otherunit
@@ -640,7 +640,7 @@ WHERE EXISTS (
 
 
 def get_world_otherunit_table_update_cred_score_sqlstr(
-    cash_owner_id: PersonID,
+    cash_owner_id: OwnerID,
 ) -> str:
     return f"""
 UPDATE world_otherunit
@@ -656,7 +656,7 @@ WHERE world_otherunit.owner_id = '{cash_owner_id}'
 
 
 def get_world_otherunit_table_update_treasury_voice_rank_sqlstr(
-    owner_id: PersonID,
+    owner_id: OwnerID,
 ) -> str:
     return f"""
 UPDATE world_otherunit
@@ -725,7 +725,7 @@ class OtherDBUnit(OtherUnit):
 
 
 def get_otherview_dict(
-    db_conn: Connection, payer_owner_id: PersonID
+    db_conn: Connection, payer_owner_id: OwnerID
 ) -> dict[OtherID:OtherDBUnit]:
     sqlstr = f"""
 SELECT 
@@ -1000,7 +1000,7 @@ CREATE TABLE IF NOT EXISTS calendar (
 
 @dataclass
 class CalendarReport:
-    owner_id: PersonID = (None,)
+    owner_id: OwnerID = (None,)
     time_road: RoadUnit = None
     date_range_start: int = None
     interval_count: int = None

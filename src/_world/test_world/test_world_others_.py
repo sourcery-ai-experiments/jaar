@@ -1188,7 +1188,7 @@ def test_WorldUnit_OtherUnit_CorrectlyMergesBeliefUnitOtherLinks():
     assert len(swim_belief._others) == 1
 
 
-def test_WorldUnit_OtherUnit_raiseErrorNewPersonIDBeliefUnitPreviouslyExists():
+def test_WorldUnit_OtherUnit_raiseErrorNewOtherIDBeliefUnitPreviouslyExists():
     # GIVEN
     yao_world = worldunit_shop("Yao")
     rico_text = "rico"
@@ -1219,7 +1219,7 @@ def test_WorldUnit_OtherUnit_raiseErrorNewPersonIDBeliefUnitPreviouslyExists():
     )
 
 
-# def test_WorldUnit_OtherUnit_CorrectlyOverwriteNewPersonIDBeliefUnit():
+# def test_WorldUnit_OtherUnit_CorrectlyOverwriteNewOtherIDBeliefUnit():
 #     # GIVEN
 #     yao_world = worldunit_shop("Yao")
 #     rico_text = "rico"

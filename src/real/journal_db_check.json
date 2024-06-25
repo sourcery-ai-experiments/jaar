@@ -18,14 +18,14 @@
         "gift_mstr": {
             "columns": {}
         },
-        "gift_person_link": {
+        "gift_owner_link": {
             "columns": {
-                "person_id": {}
+                "owner_id": {}
             }
         },
-        "person_mstr": {
+        "owner_mstr": {
             "columns": {
-                "person_id": {}
+                "owner_id": {}
             }
         },
         "road_ref": {

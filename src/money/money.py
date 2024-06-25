@@ -168,8 +168,8 @@ class MoneyUnit:
         self._treasury_populate_worlds_data()
 
     def _treasury_populate_worlds_data(self):
-        for person_id in self.userhub.get_jobs_dir_file_names_list():
-            worldunit_x = self.userhub.get_job_world(person_id)
+        for owner_id in self.userhub.get_jobs_dir_file_names_list():
+            worldunit_x = self.userhub.get_job_world(owner_id)
             worldunit_x.calc_world_metrics()
 
             self._treasury_insert_worldunit(worldunit_x)

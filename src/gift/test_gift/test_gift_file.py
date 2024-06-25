@@ -18,10 +18,10 @@ from os.path import exists as os_path_exists
 def test_GiftUnit_save_atom_file_SavesCorrectFile(env_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{reals_dir()}/{real_id()}"
-    x_persons_dir = f"{x_real_dir}/persons"
+    x_owners_dir = f"{x_real_dir}/owners"
     sue_text = "Sue"
-    sue_person_dir = f"{x_persons_dir}/{sue_text}"
-    sue_atoms_dir = f"{sue_person_dir}/atoms"
+    sue_owner_dir = f"{x_owners_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_owner_dir}/atoms"
     two_int = 2
     six_int = 6
     two_filename = f"{two_int}.json"
@@ -48,10 +48,10 @@ def test_GiftUnit_save_atom_file_SavesCorrectFile(env_dir_setup_cleanup):
 def test_GiftUnit_atom_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{reals_dir()}/{real_id()}"
-    x_persons_dir = f"{x_real_dir}/persons"
+    x_owners_dir = f"{x_real_dir}/owners"
     sue_text = "Sue"
-    sue_person_dir = f"{x_persons_dir}/{sue_text}"
-    sue_atoms_dir = f"{sue_person_dir}/atoms"
+    sue_owner_dir = f"{x_owners_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_owner_dir}/atoms"
     two_int = 2
     six_int = 6
     two_filename = f"{two_int}.json"
@@ -75,10 +75,10 @@ def test_GiftUnit_atom_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
 def test_GiftUnit_open_atom_file_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{reals_dir()}/{real_id()}"
-    x_persons_dir = f"{x_real_dir}/persons"
+    x_owners_dir = f"{x_real_dir}/owners"
     sue_text = "Sue"
-    sue_person_dir = f"{x_persons_dir}/{sue_text}"
-    sue_atoms_dir = f"{sue_person_dir}/atoms"
+    sue_owner_dir = f"{x_owners_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_owner_dir}/atoms"
     two_int = 2
     six_int = 6
     two_filename = f"{two_int}.json"
@@ -102,11 +102,11 @@ def test_GiftUnit_open_atom_file_ReturnsCorrectObj(env_dir_setup_cleanup):
 def test_GiftUnit_save_gift_file_SavesCorrectFile(env_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{reals_dir()}/{real_id()}"
-    x_persons_dir = f"{x_real_dir}/persons"
+    x_owners_dir = f"{x_real_dir}/owners"
     sue_text = "Sue"
     sue_gift_id = 2
-    sue_person_dir = f"{x_persons_dir}/{sue_text}"
-    sue_gifts_dir = f"{sue_person_dir}/{get_gifts_folder()}"
+    sue_owner_dir = f"{x_owners_dir}/{sue_text}"
+    sue_gifts_dir = f"{sue_owner_dir}/{get_gifts_folder()}"
     two_int = 2
     six_int = 6
     two_filename = f"{two_int}.json"
@@ -129,17 +129,17 @@ def test_GiftUnit_save_gift_file_SavesCorrectFile(env_dir_setup_cleanup):
     gift_file_dict = get_dict_from_json(gift_file_json)
     print(f"{gift_file_dict=}")
     assert gift_file_dict.get("change_atom_numbers") == []
-    assert gift_file_dict.get("person_id") == sue_text
+    assert gift_file_dict.get("owner_id") == sue_text
     assert gift_file_dict.get("faces") == {}
 
 
 def test_GiftUnit_gift_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{reals_dir()}/{real_id()}"
-    x_persons_dir = f"{x_real_dir}/persons"
+    x_owners_dir = f"{x_real_dir}/owners"
     sue_text = "Sue"
-    sue_person_dir = f"{x_persons_dir}/{sue_text}"
-    sue_gifts_dir = f"{sue_person_dir}/{get_gifts_folder()}"
+    sue_owner_dir = f"{x_owners_dir}/{sue_text}"
+    sue_gifts_dir = f"{sue_owner_dir}/{get_gifts_folder()}"
     two_int = 2
     six_int = 6
     two_filename = f"{two_int}.json"
@@ -162,11 +162,11 @@ def test_GiftUnit_gift_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
 def test_GiftUnit_save_files_CorrectlySavesFiles(env_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{reals_dir()}/{real_id()}"
-    x_persons_dir = f"{x_real_dir}/persons"
+    x_owners_dir = f"{x_real_dir}/owners"
     sue_text = "Sue"
-    sue_person_dir = f"{x_persons_dir}/{sue_text}"
-    sue_atoms_dir = f"{sue_person_dir}/atoms"
-    sue_gifts_dir = f"{sue_person_dir}/{get_gifts_folder()}"
+    sue_owner_dir = f"{x_owners_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_owner_dir}/atoms"
+    sue_gifts_dir = f"{sue_owner_dir}/{get_gifts_folder()}"
 
     tim_text = "Tim"
     yao_text = "Yao"
@@ -199,10 +199,10 @@ def test_GiftUnit_save_files_CorrectlySavesFiles(env_dir_setup_cleanup):
 def test_GiftUnit_create_changeunit_from_atom_files_SetsAttr(env_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{reals_dir()}/{real_id()}"
-    x_persons_dir = f"{x_real_dir}/persons"
+    x_owners_dir = f"{x_real_dir}/owners"
     sue_text = "Sue"
-    sue_person_dir = f"{x_persons_dir}/{sue_text}"
-    sue_atoms_dir = f"{sue_person_dir}/atoms"
+    sue_owner_dir = f"{x_owners_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_owner_dir}/atoms"
 
     sue_giftunit = giftunit_shop(sue_text, _atoms_dir=sue_atoms_dir)
     four_int = 4
@@ -232,11 +232,11 @@ def test_GiftUnit_create_changeunit_from_atom_files_SetsAttr(env_dir_setup_clean
 def test_create_giftunit_from_files_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     x_real_dir = f"{reals_dir()}/{real_id()}"
-    x_persons_dir = f"{x_real_dir}/persons"
+    x_owners_dir = f"{x_real_dir}/owners"
     sue_text = "Sue"
-    sue_person_dir = f"{x_persons_dir}/{sue_text}"
-    sue_atoms_dir = f"{sue_person_dir}/atoms"
-    sue_gifts_dir = f"{sue_person_dir}/{get_gifts_folder()}"
+    sue_owner_dir = f"{x_owners_dir}/{sue_text}"
+    sue_atoms_dir = f"{sue_owner_dir}/atoms"
+    sue_gifts_dir = f"{sue_owner_dir}/{get_gifts_folder()}"
 
     tim_text = "Tim"
     yao_text = "Yao"
@@ -263,6 +263,6 @@ def test_create_giftunit_from_files_ReturnsCorrectObj(env_dir_setup_cleanup):
     )
 
     # THEN
-    assert src_sue_giftunit.person_id == new_sue_giftunit.person_id
+    assert src_sue_giftunit.owner_id == new_sue_giftunit.owner_id
     assert src_sue_giftunit._faces == new_sue_giftunit._faces
     assert src_sue_giftunit._changeunit == new_sue_giftunit._changeunit

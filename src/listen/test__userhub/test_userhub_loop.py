@@ -8,7 +8,7 @@ from src.listen.examples.listen_env import (
 )
 
 
-def test_UserHub_get_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_person_id():
+def test_UserHub_get_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_owner_id():
     # GIVEN
     bob_text = "Bob"
     bob_worldunit = get_world_with_4_levels()
@@ -27,7 +27,7 @@ def test_UserHub_get_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_per
     assert perspective_worldunit.get_dict() == bob_worldunit.get_dict()
 
 
-def test_UserHub_get_dw_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_person_id(
+def test_UserHub_get_dw_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_owner_id(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -50,7 +50,7 @@ def test_UserHub_get_dw_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_
     assert perspective_worldunit.get_dict() == bob_worldunit.get_dict()
 
 
-def test_UserHub_rj_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_person_id(
+def test_UserHub_rj_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_owner_id(
     env_dir_setup_cleanup,
 ):
     # GIVEN

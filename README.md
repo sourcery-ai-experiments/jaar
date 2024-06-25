@@ -21,8 +21,8 @@
 positions are aggregated by a listener into a coherant agenda that can include pledges 
 to do and pledges of states of existence. Listening and acting on it.
 
-A persons's agenda in the community is built by the the weighted intreprtation of
-1. Other persons agendas 
+A agents's agenda in the community is built by the the weighted intreprtation of
+1. Other agents agendas 
 2. Their own independent agenda
 
 Each agenda is saved as a JSON file. 

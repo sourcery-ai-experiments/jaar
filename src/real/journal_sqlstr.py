@@ -20,7 +20,7 @@ def get_atom_hx_table_create_sqlstr() -> str:
     """Create table that hold atom_hx."""
     x_str = f"""
 CREATE TABLE IF NOT EXISTS {atom_hx_table_name()} (
-  person_id VARCHAR(255) NOT NULL"""
+  owner_id VARCHAR(255) NOT NULL"""
 
     for x_key, x_value in get_flattened_atom_table_build().items():
         if x_value == "TEXT":
@@ -41,7 +41,7 @@ def get_atom_mstr_table_create_sqlstr() -> str:
     """Create table that holds atomunits."""
     x_str = f"""
 CREATE TABLE IF NOT EXISTS {atom_mstr_table_name()} (
-  person_id VARCHAR(255) NOT NULL
+  owner_id VARCHAR(255) NOT NULL
 , {atom_hx_table_name()}_row_id INT NOT NULL"""
 
     for x_key, x_value in get_flattened_atom_table_build().items():
@@ -71,9 +71,9 @@ CREATE TABLE atom_change_link
 def get_change_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS change_mstr (
-  author_person_id VARCHAR(255) NOT NULL
+  author_owner_id VARCHAR(255) NOT NULL
 , author_change_number INT NOT NULL
-, UNIQUE(author_person_id, author_change_number)
+, UNIQUE(author_owner_id, author_change_number)
 )
 ;"""
 
@@ -94,32 +94,32 @@ CREATE TABLE change_gift_link
 def get_gift_table_create_sqlstr() -> str:
     return """
 CREATE TABLE IF NOT EXISTS gift_mstr (
-  author_person_id VARCHAR(255) NOT NULL
+  author_owner_id VARCHAR(255) NOT NULL
 , author_gift_number INT NOT NULL
-, UNIQUE(author_person_id, author_gift_number)
+, UNIQUE(author_owner_id, author_gift_number)
 )
 ;"""
 
 
-def get_gift_person_link_table_create_sqlstr() -> str:
+def get_gift_owner_link_table_create_sqlstr() -> str:
     return """
-CREATE TABLE gift_person_link
+CREATE TABLE gift_owner_link
 (
   gift_rowid INT NOT NULL
-, person_rowid INT NOT NULL
-, UNIQUE(gift_rowid, person_rowid)
+, owner_rowid INT NOT NULL
+, UNIQUE(gift_rowid, owner_rowid)
 , CONSTRAINT change_fk FOREIGN KEY (gift_rowid) REFERENCES gift_mstr (rowid)
-, CONSTRAINT person_fk FOREIGN KEY (person_rowid) REFERENCES person (rowid)
+, CONSTRAINT owner_fk FOREIGN KEY (owner_rowid) REFERENCES owner (rowid)
 )
 ;"""
 
 
-def get_person_mstr_table_create_sqlstr() -> str:
+def get_owner_mstr_table_create_sqlstr() -> str:
     return """
-CREATE TABLE person_mstr
+CREATE TABLE owner_mstr
 (
-  person_id VARCHAR(255) NOT NULL
-, UNIQUE(person_id)
+  owner_id VARCHAR(255) NOT NULL
+, UNIQUE(owner_id)
 )
 ;"""
 
@@ -160,8 +160,8 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x.append(get_change_table_create_sqlstr())
     list_x.append(get_change_gift_link_table_create_sqlstr())
     list_x.append(get_gift_table_create_sqlstr())
-    list_x.append(get_gift_person_link_table_create_sqlstr())
-    list_x.append(get_person_mstr_table_create_sqlstr())
+    list_x.append(get_gift_owner_link_table_create_sqlstr())
+    list_x.append(get_owner_mstr_table_create_sqlstr())
     list_x.append(get_road_ref_table_create_sqlstr())
     return list_x
 

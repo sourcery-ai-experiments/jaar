@@ -26,7 +26,7 @@ def test_get_econ_path_ReturnsCorrectObj():
     # GIVEN
     sue_text = "Sue"
     peru_text = "peru"
-    sue_userhub = userhub_shop(None, real_id=peru_text, person_id=sue_text)
+    sue_userhub = userhub_shop(None, real_id=peru_text, owner_id=sue_text)
     texas_text = "texas"
     dallas_text = "dallas"
     elpaso_text = "el paso"
@@ -68,7 +68,7 @@ def test_UserHub_Exists():
     # THEN
     assert x_userhub.reals_dir is None
     assert x_userhub.real_id is None
-    assert x_userhub.person_id is None
+    assert x_userhub.owner_id is None
     assert x_userhub.econ_road is None
     assert x_userhub.road_delimiter is None
     assert x_userhub.pixel is None
@@ -104,7 +104,7 @@ def test_userhub_shop_ReturnsCorrectObj():
     x_userhub = userhub_shop(
         reals_dir=x_reals_dir,
         real_id=x_real_id,
-        person_id=sue_text,
+        owner_id=sue_text,
         econ_road=None,
         road_delimiter=x_road_delimiter,
         pixel=x_pixel,
@@ -115,19 +115,19 @@ def test_userhub_shop_ReturnsCorrectObj():
     # THEN
     assert x_userhub.reals_dir == x_reals_dir
     assert x_userhub.real_id == x_real_id
-    assert x_userhub.person_id == sue_text
+    assert x_userhub.owner_id == sue_text
     assert x_userhub.road_delimiter == x_road_delimiter
     assert x_userhub.pixel == x_pixel
     assert x_userhub.penny == x_penny
     assert x_userhub.econ_money_magnitude == x_money_magnitude
     assert x_userhub.real_dir() == f"{x_reals_dir}/{x_real_id}"
-    assert x_userhub.persons_dir() == f"{x_userhub.real_dir()}/persons"
-    assert x_userhub.person_dir() == f"{x_userhub.persons_dir()}/{sue_text}"
-    assert x_userhub.econs_dir() == f"{x_userhub.person_dir()}/econs"
-    assert x_userhub.atoms_dir() == f"{x_userhub.person_dir()}/atoms"
-    assert x_userhub.same_dir() == f"{x_userhub.person_dir()}/same"
-    assert x_userhub.live_dir() == f"{x_userhub.person_dir()}/live"
-    assert x_userhub.gifts_dir() == f"{x_userhub.person_dir()}/{get_gifts_folder()}"
+    assert x_userhub.owners_dir() == f"{x_userhub.real_dir()}/owners"
+    assert x_userhub.owner_dir() == f"{x_userhub.owners_dir()}/{sue_text}"
+    assert x_userhub.econs_dir() == f"{x_userhub.owner_dir()}/econs"
+    assert x_userhub.atoms_dir() == f"{x_userhub.owner_dir()}/atoms"
+    assert x_userhub.same_dir() == f"{x_userhub.owner_dir()}/same"
+    assert x_userhub.live_dir() == f"{x_userhub.owner_dir()}/live"
+    assert x_userhub.gifts_dir() == f"{x_userhub.owner_dir()}/{get_gifts_folder()}"
     assert x_userhub.same_file_name() == f"{sue_text}.json"
     x_same_file_path = f"{x_userhub.same_dir()}/{x_userhub.same_file_name()}"
     assert x_userhub.same_file_path() == x_same_file_path
@@ -153,11 +153,11 @@ def test_userhub_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_userhub.reals_dir == get_test_reals_dir()
     assert sue_userhub.real_id == get_test_real_id()
     assert sue_userhub.real_dir() == f"{get_test_reals_dir()}/{get_test_real_id()}"
-    assert sue_userhub.person_id == sue_text
+    assert sue_userhub.owner_id == sue_text
     assert sue_userhub.road_delimiter == default_road_delimiter_if_none()
     assert sue_userhub.pixel == default_pixel_if_none()
     assert sue_userhub.penny == default_penny_if_none()
-    assert sue_userhub.persons_dir() == f"{sue_userhub.real_dir()}/persons"
+    assert sue_userhub.owners_dir() == f"{sue_userhub.real_dir()}/owners"
     x_userhub = userhub_shop(None, None, sue_text)
     assert sue_userhub.econ_road == texas_road
     assert sue_userhub.econ_dir() == get_econ_path(x_userhub, texas_road)
@@ -177,14 +177,14 @@ def test_userhub_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_userhub.treasury_db_path() == treasury_file_path
 
 
-def test_userhub_shop_RaisesErrorIf_person_id_Contains_road_delimiter():
+def test_userhub_shop_RaisesErrorIf_owner_id_Contains_road_delimiter():
     # GIVEN
     slash_text = "/"
     bob_text = f"Bob{slash_text}Sue"
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        userhub_shop(None, None, person_id=bob_text, road_delimiter=slash_text)
+        userhub_shop(None, None, owner_id=bob_text, road_delimiter=slash_text)
     assert (
         str(excinfo.value)
         == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
@@ -297,7 +297,7 @@ def test_UserHub_save_same_world_RaisesErrorWhenWorld_live_id_IsWrong(
         sue_userhub.save_same_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s same world."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s same world."
     )
 
 
@@ -378,5 +378,5 @@ def test_UserHub_save_live_world_RaisesErrorWhenWorld_live_id_IsWrong(
         sue_userhub.save_live_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s live world."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s live world."
     )
