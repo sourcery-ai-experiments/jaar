@@ -21,7 +21,7 @@ def test_WorldUnit_Exists():
     assert x_world._real_id is None
     assert x_world._owner_id is None
     assert x_world._weight is None
-    assert x_world._others is None
+    assert x_world._persons is None
     assert x_world._beliefs is None
     assert x_world._idearoot is None
     assert x_world._max_tree_traverse is None
@@ -29,8 +29,8 @@ def test_WorldUnit_Exists():
     assert x_world._pixel is None
     assert x_world._penny is None
     assert x_world._monetary_desc is None
-    assert x_world._other_credor_pool is None
-    assert x_world._other_debtor_pool is None
+    assert x_world._person_credor_pool is None
+    assert x_world._person_debtor_pool is None
     assert x_world._last_gift_id is None
     assert x_world._meld_strategy is None
     assert x_world._originunit is None
@@ -68,7 +68,7 @@ def test_WorldUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_world._owner_id == noa_text
     assert x_world._real_id == iowa_real_id
     assert x_world._weight == 1
-    assert x_world._others == {}
+    assert x_world._persons == {}
     assert x_world._beliefs == {}
     assert x_world._idearoot != None
     assert x_world._max_tree_traverse == 3
@@ -76,8 +76,8 @@ def test_WorldUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_world._pixel == five_pixel
     assert x_world._penny == penny_float
     assert x_world._monetary_desc is None
-    assert x_world._other_credor_pool is None
-    assert x_world._other_debtor_pool is None
+    assert x_world._person_credor_pool is None
+    assert x_world._person_debtor_pool is None
     assert x_world._last_gift_id is None
     assert x_world._meld_strategy == override_meld_strategy
     assert x_world._originunit == originunit_shop()

@@ -16,17 +16,17 @@ def get_meldeeorderunit(
     primary_world: WorldUnit, meldee_file_name: str
 ) -> MeldeeOrderUnit:
     file_src_owner_id = meldee_file_name.replace(".json", "")
-    primary_meldee_otherunit = primary_world.get_other(file_src_owner_id)
+    primary_meldee_personunit = primary_world.get_person(file_src_owner_id)
 
     default_voice_rank = 0
     default_voice_hx_lowest_rank = 0
-    if primary_meldee_otherunit is None:
+    if primary_meldee_personunit is None:
         primary_voice_rank_for_meldee = default_voice_rank
         primary_voice_hx_lowest_rank_for_meldee = default_voice_hx_lowest_rank
     else:
-        primary_voice_rank_for_meldee = primary_meldee_otherunit._treasury_voice_rank
+        primary_voice_rank_for_meldee = primary_meldee_personunit._treasury_voice_rank
         primary_voice_hx_lowest_rank_for_meldee = (
-            primary_meldee_otherunit._treasury_voice_hx_lowest_rank
+            primary_meldee_personunit._treasury_voice_hx_lowest_rank
         )
         if primary_voice_rank_for_meldee is None:
             primary_voice_rank_for_meldee = default_voice_rank

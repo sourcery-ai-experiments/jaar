@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from src._world.belief import BeliefUnit, BeliefID
-from src._world.other import OtherID
+from src._world.person import PersonID
 
 
 class InvalidAssignHeirPopulateException(Exception):
@@ -49,30 +49,30 @@ class AssignedHeir:
     _suffbeliefs: dict[BeliefID:BeliefID]
     _owner_id_assigned: bool
 
-    def _get_all_others(
+    def _get_all_persons(
         self,
         world_beliefs: dict[BeliefID:BeliefUnit],
         belief_id_dict: dict[BeliefID:],
     ) -> dict[BeliefID:BeliefUnit]:
         dict_x = {}
         for belief_id_x in belief_id_dict:
-            dict_x |= world_beliefs.get(belief_id_x)._others
+            dict_x |= world_beliefs.get(belief_id_x)._persons
         return dict_x
 
-    def _get_all_suff_others(
+    def _get_all_suff_persons(
         self, world_beliefs: dict[BeliefID:BeliefUnit]
     ) -> dict[BeliefID:BeliefUnit]:
-        return self._get_all_others(world_beliefs, self._suffbeliefs)
+        return self._get_all_persons(world_beliefs, self._suffbeliefs)
 
     def set_owner_id_assigned(
-        self, world_beliefs: dict[BeliefID:BeliefUnit], world_owner_id: OtherID
+        self, world_beliefs: dict[BeliefID:BeliefUnit], world_owner_id: PersonID
     ):
         self._owner_id_assigned = False
         if self._suffbeliefs == {}:
             self._owner_id_assigned = True
         else:
-            all_suff_others_x = self._get_all_suff_others(world_beliefs)
-            if all_suff_others_x.get(world_owner_id) != None:
+            all_suff_persons_x = self._get_all_suff_persons(world_beliefs)
+            if all_suff_persons_x.get(world_owner_id) != None:
                 self._owner_id_assigned = True
 
     def set_suffbeliefs(
@@ -91,22 +91,22 @@ class AssignedHeir:
             for suffbelief in parent_assignheir._suffbeliefs.keys():
                 dict_x[suffbelief] = -1
         else:
-            # get all_others of parent assignedheir beliefs
-            all_parent_assignedheir_others = self._get_all_others(
+            # get all_persons of parent assignedheir beliefs
+            all_parent_assignedheir_persons = self._get_all_persons(
                 world_beliefs=world_beliefs,
                 belief_id_dict=parent_assignheir._suffbeliefs,
             )
-            # get all_others of assignedunit beliefs
-            all_assignedunit_others = self._get_all_others(
+            # get all_persons of assignedunit beliefs
+            all_assignedunit_persons = self._get_all_persons(
                 world_beliefs=world_beliefs,
                 belief_id_dict=assignunit._suffbeliefs,
             )
-            if not set(all_assignedunit_others).issubset(
-                set(all_parent_assignedheir_others)
+            if not set(all_assignedunit_persons).issubset(
+                set(all_parent_assignedheir_persons)
             ):
                 # else raise error
                 raise InvalidAssignHeirPopulateException(
-                    f"parent_assigned_heir does not contain all others of the idea's assignedunit\n{set(all_parent_assignedheir_others)=}\n\n{set(all_assignedunit_others)=}"
+                    f"parent_assigned_heir does not contain all persons of the idea's assignedunit\n{set(all_parent_assignedheir_persons)=}\n\n{set(all_assignedunit_persons)=}"
                 )
 
             # set dict_x = to assignedunit beliefs

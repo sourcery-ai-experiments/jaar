@@ -122,12 +122,12 @@ def test_RiverCylce_create_cylceledger_ReturnsCorrectObjTwoRiverBooks():
     assert one_cylceledger == {yao_text: yao_money, bob_text: bob_money}
 
 
-def test_create_init_rivercycle_ReturnsObjScenarioOne_otherunit():
+def test_create_init_rivercycle_ReturnsObjScenarioOne_personunit():
     # GIVEN
     yao_text = "Yao"
     yao_userhub = userhub_shop(None, None, yao_text)
     yao_world = worldunit_shop(yao_text)
-    yao_world.add_otherunit(yao_text)
+    yao_world.add_personunit(yao_text)
     yao_credorledger = get_credorledger(yao_world)
     econ_credorledgers = {yao_text: yao_credorledger}
 
@@ -140,7 +140,7 @@ def test_create_init_rivercycle_ReturnsObjScenarioOne_otherunit():
     assert yao_init_rivercycle.riverbooks.get(yao_text) != None
 
 
-def test_create_init_rivercycle_ReturnsObjScenarioThree_otherunit():
+def test_create_init_rivercycle_ReturnsObjScenarioThree_personunit():
     # GIVEN
     yao_text = "Yao"
     bob_text = "Bob"
@@ -150,9 +150,9 @@ def test_create_init_rivercycle_ReturnsObjScenarioThree_otherunit():
     zia_credor_weight = 10
     yao_userhub = userhub_shop(None, None, yao_text)
     yao_world = worldunit_shop(yao_text)
-    yao_world.add_otherunit(yao_text, yao_credor_weight)
-    yao_world.add_otherunit(bob_text, bob_credor_weight)
-    yao_world.add_otherunit(zia_text, zia_credor_weight)
+    yao_world.add_personunit(yao_text, yao_credor_weight)
+    yao_world.add_personunit(bob_text, bob_credor_weight)
+    yao_world.add_personunit(zia_text, zia_credor_weight)
     yao_credorledger = get_credorledger(yao_world)
     econ_credorledgers = {yao_text: yao_credorledger}
     print(f"{econ_credorledgers=}")
@@ -171,7 +171,7 @@ def test_create_init_rivercycle_ReturnsObjScenarioThree_otherunit():
     assert yao_riverbook._rivergrants.get(zia_text) == 500000000
 
 
-def test_create_next_rivercycle_ReturnsObjScenarioThree_otherunit():
+def test_create_next_rivercycle_ReturnsObjScenarioThree_personunit():
     # GIVEN
     yao_text = "Yao"
     bob_text = "Bob"

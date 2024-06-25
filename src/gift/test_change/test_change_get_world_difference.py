@@ -1,5 +1,5 @@
 from src._world.belief import balancelink_shop
-from src._world.other import otherlink_shop
+from src._world.person import personlink_shop
 from src._world.reason_idea import factunit_shop
 from src._world.idea import ideaunit_shop
 from src._world.belief import beliefunit_shop
@@ -60,7 +60,7 @@ def test_ChangeUnit_create_atomunits_CorrectHandlesEmptyWorlds():
     assert sue_changeunit.atomunits == {}
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_otherunit_insert():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_personunit_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_world = worldunit_shop(sue_text)
@@ -68,18 +68,18 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_otherunit_inser
     rico_text = "Rico"
     rico_credor_weight = 33
     rico_debtor_weight = 44
-    after_sue_world.add_otherunit(rico_text, rico_credor_weight, rico_debtor_weight)
+    after_sue_world.add_personunit(rico_text, rico_credor_weight, rico_debtor_weight)
 
     # WHEN
     sue_changeunit = changeunit_shop()
     sue_changeunit.add_all_different_atomunits(before_sue_world, after_sue_world)
 
     # THEN
-    assert len(sue_changeunit.atomunits.get(atom_insert()).get("world_otherunit")) == 1
+    assert len(sue_changeunit.atomunits.get(atom_insert()).get("world_personunit")) == 1
     sue_insert_dict = sue_changeunit.atomunits.get(atom_insert())
-    sue_otherunit_dict = sue_insert_dict.get("world_otherunit")
-    rico_atomunit = sue_otherunit_dict.get(rico_text)
-    assert rico_atomunit.get_value("other_id") == rico_text
+    sue_personunit_dict = sue_insert_dict.get("world_personunit")
+    rico_atomunit = sue_personunit_dict.get(rico_text)
+    assert rico_atomunit.get_value("person_id") == rico_text
     assert rico_atomunit.get_value("credor_weight") == rico_credor_weight
     assert rico_atomunit.get_value("debtor_weight") == rico_debtor_weight
 
@@ -87,17 +87,17 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_otherunit_inser
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_otherunit_delete():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_personunit_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_world = worldunit_shop(sue_text)
-    before_sue_world.add_otherunit("Yao")
-    before_sue_world.add_otherunit("Zia")
+    before_sue_world.add_personunit("Yao")
+    before_sue_world.add_personunit("Zia")
 
     after_sue_world = copy_deepcopy(before_sue_world)
 
     rico_text = "Rico"
-    before_sue_world.add_otherunit(rico_text)
+    before_sue_world.add_personunit(rico_text)
 
     # WHEN
     sue_changeunit = changeunit_shop()
@@ -105,34 +105,34 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_otherunit_delet
 
     # THEN
     rico_atomunit = get_nested_value(
-        sue_changeunit.atomunits, [atom_delete(), "world_otherunit", rico_text]
+        sue_changeunit.atomunits, [atom_delete(), "world_personunit", rico_text]
     )
-    assert rico_atomunit.get_value("other_id") == rico_text
+    assert rico_atomunit.get_value("person_id") == rico_text
 
     print(f"{get_atomunit_total_count(sue_changeunit)=}")
     print_atomunit_keys(sue_changeunit)
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_otherunit_update():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_personunit_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_world = worldunit_shop(sue_text)
     after_sue_world = copy_deepcopy(before_sue_world)
     rico_text = "Rico"
-    before_sue_world.add_otherunit(rico_text)
+    before_sue_world.add_personunit(rico_text)
     rico_credor_weight = 33
     rico_debtor_weight = 44
-    after_sue_world.add_otherunit(rico_text, rico_credor_weight, rico_debtor_weight)
+    after_sue_world.add_personunit(rico_text, rico_credor_weight, rico_debtor_weight)
 
     # WHEN
     sue_changeunit = changeunit_shop()
     sue_changeunit.add_all_different_atomunits(before_sue_world, after_sue_world)
 
     # THEN
-    x_keylist = [atom_update(), "world_otherunit", rico_text]
+    x_keylist = [atom_update(), "world_personunit", rico_text]
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
-    assert rico_atomunit.get_value("other_id") == rico_text
+    assert rico_atomunit.get_value("person_id") == rico_text
     assert rico_atomunit.get_value("credor_weight") == rico_credor_weight
     assert rico_atomunit.get_value("debtor_weight") == rico_debtor_weight
 
@@ -150,15 +150,15 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_WorldUnit_simpl
     x_max_tree_traverse = 66
     x_meld_strategy = "override"
     x_monetary_desc = "dragon funds"
-    x_other_credor_pool = 77
-    x_other_debtor_pool = 88
+    x_person_credor_pool = 77
+    x_person_debtor_pool = 88
     after_sue_world._weight = x_worldUnit_weight
     after_sue_world._pixel = x_pixel
     after_sue_world.set_max_tree_traverse(x_max_tree_traverse)
     after_sue_world.set_meld_strategy(x_meld_strategy)
     after_sue_world.set_monetary_desc(x_monetary_desc)
-    after_sue_world.set_other_credor_pool(x_other_credor_pool)
-    after_sue_world.set_other_debtor_pool(x_other_debtor_pool)
+    after_sue_world.set_person_credor_pool(x_person_credor_pool)
+    after_sue_world.set_person_debtor_pool(x_person_debtor_pool)
 
     # WHEN
     sue_changeunit = changeunit_shop()
@@ -170,8 +170,8 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_WorldUnit_simpl
     assert rico_atomunit.get_value("_max_tree_traverse") == x_max_tree_traverse
     assert rico_atomunit.get_value("_meld_strategy") == x_meld_strategy
     assert rico_atomunit.get_value("_monetary_desc") == x_monetary_desc
-    assert rico_atomunit.get_value("_other_credor_pool") == x_other_credor_pool
-    assert rico_atomunit.get_value("_other_debtor_pool") == x_other_debtor_pool
+    assert rico_atomunit.get_value("_person_credor_pool") == x_person_credor_pool
+    assert rico_atomunit.get_value("_person_debtor_pool") == x_person_debtor_pool
     assert rico_atomunit.get_value("_weight") == x_worldUnit_weight
     assert rico_atomunit.get_value("_pixel") == x_pixel
 
@@ -179,22 +179,22 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_WorldUnit_simpl
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_otherlink_insert():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_personlink_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_worldunit = worldunit_shop(sue_text)
     after_sue_worldunit = copy_deepcopy(before_sue_worldunit)
     rico_text = "Rico"
     carm_text = "Carmen"
-    after_sue_worldunit.add_otherunit(rico_text)
-    after_sue_worldunit.add_otherunit(carm_text)
+    after_sue_worldunit.add_personunit(rico_text)
+    after_sue_worldunit.add_personunit(carm_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
     rico_credor_weight = 77
     rico_debtor_weight = 88
-    rico_otherlink = otherlink_shop(rico_text, rico_credor_weight, rico_debtor_weight)
-    run_beliefunit.set_otherlink(rico_otherlink)
-    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
+    rico_personlink = personlink_shop(rico_text, rico_credor_weight, rico_debtor_weight)
+    run_beliefunit.set_personlink(rico_personlink)
+    run_beliefunit.set_personlink(personlink_shop(carm_text))
     after_sue_worldunit.set_beliefunit(run_beliefunit)
     # print(f"{after_sue_worldunit.get_beliefunit(run_text)=}")
 
@@ -211,10 +211,10 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_otherlin
     # print(f"\n{sue_changeunit.atomunits=}")
     print(f"\n{rico_atomunit=}")
 
-    x_keylist = [atom_insert(), "world_belief_otherlink", run_text, rico_text]
+    x_keylist = [atom_insert(), "world_belief_personlink", run_text, rico_text]
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("belief_id") == run_text
-    assert rico_atomunit.get_value("other_id") == rico_text
+    assert rico_atomunit.get_value("person_id") == rico_text
     assert rico_atomunit.get_value("credor_weight") == rico_credor_weight
     assert rico_atomunit.get_value("debtor_weight") == rico_debtor_weight
 
@@ -226,28 +226,28 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_otherlin
     assert get_atomunit_total_count(sue_changeunit) == 5
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_otherlink_update():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_personlink_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_worldunit = worldunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
-    before_sue_worldunit.add_otherunit(rico_text)
-    before_sue_worldunit.add_otherunit(carm_text)
+    before_sue_worldunit.add_personunit(rico_text)
+    before_sue_worldunit.add_personunit(carm_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
     before_rico_credor_weight = 77
     before_rico_debtor_weight = 88
-    run_beliefunit.set_otherlink(
-        otherlink_shop(rico_text, before_rico_credor_weight, before_rico_debtor_weight)
+    run_beliefunit.set_personlink(
+        personlink_shop(rico_text, before_rico_credor_weight, before_rico_debtor_weight)
     )
-    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
+    run_beliefunit.set_personlink(personlink_shop(carm_text))
     before_sue_worldunit.set_beliefunit(run_beliefunit)
     after_sue_worldunit = copy_deepcopy(before_sue_worldunit)
     after_run_beliefunit = after_sue_worldunit.get_beliefunit(run_text)
     after_rico_credor_weight = 55
     after_rico_debtor_weight = 66
-    after_run_beliefunit.edit_otherlink(
+    after_run_beliefunit.edit_personlink(
         rico_text, after_rico_credor_weight, after_rico_debtor_weight
     )
 
@@ -264,10 +264,10 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_otherlin
     # print(f"\n{sue_changeunit.atomunits=}")
     # print(f"\n{rico_atomunit=}")
 
-    x_keylist = [atom_update(), "world_belief_otherlink", run_text, rico_text]
+    x_keylist = [atom_update(), "world_belief_personlink", run_text, rico_text]
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("belief_id") == run_text
-    assert rico_atomunit.get_value("other_id") == rico_text
+    assert rico_atomunit.get_value("person_id") == rico_text
     assert rico_atomunit.get_value("credor_weight") == after_rico_credor_weight
     assert rico_atomunit.get_value("debtor_weight") == after_rico_debtor_weight
 
@@ -275,34 +275,34 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_otherlin
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_otherlink_delete():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_personlink_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_worldunit = worldunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
     dizz_text = "Dizzy"
-    before_sue_worldunit.add_otherunit(rico_text)
-    before_sue_worldunit.add_otherunit(carm_text)
-    before_sue_worldunit.add_otherunit(dizz_text)
+    before_sue_worldunit.add_personunit(rico_text)
+    before_sue_worldunit.add_personunit(carm_text)
+    before_sue_worldunit.add_personunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
-    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
+    run_beliefunit.set_personlink(personlink_shop(rico_text))
+    run_beliefunit.set_personlink(personlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_otherlink(otherlink_shop(rico_text))
-    fly_beliefunit.set_otherlink(otherlink_shop(carm_text))
-    fly_beliefunit.set_otherlink(otherlink_shop(dizz_text))
+    fly_beliefunit.set_personlink(personlink_shop(rico_text))
+    fly_beliefunit.set_personlink(personlink_shop(carm_text))
+    fly_beliefunit.set_personlink(personlink_shop(dizz_text))
     before_sue_worldunit.set_beliefunit(run_beliefunit)
     before_sue_worldunit.set_beliefunit(fly_beliefunit)
     after_sue_worldunit = copy_deepcopy(before_sue_worldunit)
     after_sue_worldunit.del_beliefunit(run_text)
     after_fly_beliefunit = after_sue_worldunit.get_beliefunit(fly_text)
-    after_fly_beliefunit.del_otherlink(dizz_text)
-    assert len(before_sue_worldunit.get_beliefunit(fly_text)._others) == 3
-    assert len(before_sue_worldunit.get_beliefunit(run_text)._others) == 2
-    assert len(after_sue_worldunit.get_beliefunit(fly_text)._others) == 2
+    after_fly_beliefunit.del_personlink(dizz_text)
+    assert len(before_sue_worldunit.get_beliefunit(fly_text)._persons) == 3
+    assert len(before_sue_worldunit.get_beliefunit(run_text)._persons) == 2
+    assert len(after_sue_worldunit.get_beliefunit(fly_text)._persons) == 2
     assert after_sue_worldunit.get_beliefunit(run_text) is None
 
     # WHEN
@@ -316,10 +316,10 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_otherlin
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("belief_id") == run_text
 
-    x_keylist = [atom_delete(), "world_belief_otherlink", fly_text, dizz_text]
+    x_keylist = [atom_delete(), "world_belief_personlink", fly_text, dizz_text]
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("belief_id") == fly_text
-    assert rico_atomunit.get_value("other_id") == dizz_text
+    assert rico_atomunit.get_value("person_id") == dizz_text
 
     print(f"{get_atomunit_total_count(sue_changeunit)=}")
     print_atomunit_keys(sue_changeunit)
@@ -514,18 +514,18 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     rico_text = "Rico"
     carm_text = "Carmen"
     dizz_text = "Dizzy"
-    before_sue_au.add_otherunit(rico_text)
-    before_sue_au.add_otherunit(carm_text)
-    before_sue_au.add_otherunit(dizz_text)
+    before_sue_au.add_personunit(rico_text)
+    before_sue_au.add_personunit(carm_text)
+    before_sue_au.add_personunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
-    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
+    run_beliefunit.set_personlink(personlink_shop(rico_text))
+    run_beliefunit.set_personlink(personlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_otherlink(otherlink_shop(rico_text))
-    fly_beliefunit.set_otherlink(otherlink_shop(carm_text))
-    fly_beliefunit.set_otherlink(otherlink_shop(dizz_text))
+    fly_beliefunit.set_personlink(personlink_shop(rico_text))
+    fly_beliefunit.set_personlink(personlink_shop(carm_text))
+    fly_beliefunit.set_personlink(personlink_shop(dizz_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     before_sue_au.set_beliefunit(fly_beliefunit)
     sports_text = "sports"
@@ -566,18 +566,18 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     rico_text = "Rico"
     carm_text = "Carmen"
     dizz_text = "Dizzy"
-    before_sue_au.add_otherunit(rico_text)
-    before_sue_au.add_otherunit(carm_text)
-    before_sue_au.add_otherunit(dizz_text)
+    before_sue_au.add_personunit(rico_text)
+    before_sue_au.add_personunit(carm_text)
+    before_sue_au.add_personunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
-    run_beliefunit.set_otherlink(otherlink_shop(carm_text))
+    run_beliefunit.set_personlink(personlink_shop(rico_text))
+    run_beliefunit.set_personlink(personlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_otherlink(otherlink_shop(rico_text))
-    fly_beliefunit.set_otherlink(otherlink_shop(carm_text))
-    fly_beliefunit.set_otherlink(otherlink_shop(dizz_text))
+    fly_beliefunit.set_personlink(personlink_shop(rico_text))
+    fly_beliefunit.set_personlink(personlink_shop(carm_text))
+    fly_beliefunit.set_personlink(personlink_shop(dizz_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     before_sue_au.set_beliefunit(fly_beliefunit)
     sports_text = "sports"
@@ -628,11 +628,11 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     before_sue_au = worldunit_shop(sue_text)
     rico_text = "Rico"
     carm_text = "Carmen"
-    before_sue_au.add_otherunit(rico_text)
-    before_sue_au.add_otherunit(carm_text)
+    before_sue_au.add_personunit(rico_text)
+    before_sue_au.add_personunit(carm_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_otherlink(otherlink_shop(rico_text))
+    run_beliefunit.set_personlink(personlink_shop(rico_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)
@@ -1156,7 +1156,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_suffbelief
     sue_text = "Sue"
     before_sue_worldunit = worldunit_shop(sue_text)
     rico_text = "Rico"
-    before_sue_worldunit.add_otherunit(rico_text)
+    before_sue_worldunit.add_personunit(rico_text)
     sports_text = "sports"
     sports_road = before_sue_worldunit.make_l1_road(sports_text)
     ball_text = "basketball"
@@ -1192,7 +1192,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_suffbelief
     sue_text = "Sue"
     before_sue_worldunit = worldunit_shop(sue_text)
     rico_text = "Rico"
-    before_sue_worldunit.add_otherunit(rico_text)
+    before_sue_worldunit.add_personunit(rico_text)
     sports_text = "sports"
     sports_road = before_sue_worldunit.make_l1_road(sports_text)
     ball_text = "basketball"

@@ -17,7 +17,7 @@ def test_listen_to_speaker_agenda_RaisesErrorIfPoolIsNotSet():
         listen_to_speaker_agenda(yao_worldunit, zia_worldunit)
     assert (
         str(excinfo.value)
-        == f"listener '{yao_text}' world is assumed to have {zia_worldunit._owner_id} otherunit."
+        == f"listener '{yao_text}' world is assumed to have {zia_worldunit._owner_id} personunit."
     )
 
 
@@ -26,8 +26,8 @@ def test_listen_to_speaker_agenda_ReturnsEqualWorld():
     yao_text = "Yao"
     yao_worldunit = worldunit_shop(yao_text)
     zia_text = "Zia"
-    yao_worldunit.add_otherunit(zia_text)
-    yao_worldunit.set_other_pool(100)
+    yao_worldunit.add_personunit(zia_text)
+    yao_worldunit.set_person_pool(100)
     zia_worldunit = worldunit_shop(zia_text)
 
     # WHEN
@@ -42,14 +42,14 @@ def test_listen_to_speaker_agenda_ReturnsSingleTaskWorld():
     yao_text = "Yao"
     before_yao_worldunit = worldunit_shop(yao_text)
     zia_text = "Zia"
-    before_yao_worldunit.add_otherunit(zia_text)
-    yao_other_debtor_weight = 77
-    before_yao_worldunit.set_other_pool(yao_other_debtor_weight)
+    before_yao_worldunit.add_personunit(zia_text)
+    yao_person_debtor_weight = 77
+    before_yao_worldunit.set_person_pool(yao_person_debtor_weight)
     clean_text = "clean"
     zia_clean_ideaunit = ideaunit_shop(clean_text, pledge=True)
     zia_clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_worldunit = worldunit_shop(zia_text)
-    zia_worldunit.add_otherunit(yao_text)
+    zia_worldunit.add_personunit(yao_text)
     zia_worldunit.add_l1_idea(zia_clean_ideaunit)
     assert len(zia_worldunit.get_agenda_dict()) == 0
     zia_yao_worldunit = copy_deepcopy(zia_worldunit)
@@ -65,7 +65,7 @@ def test_listen_to_speaker_agenda_ReturnsSingleTaskWorld():
     yao_clean_ideaunit = after_yao_worldunit.get_idea_obj(clean_road)
     print(f"{yao_clean_ideaunit._weight=}")
     assert yao_clean_ideaunit._weight != zia_clean_ideaunit._weight
-    assert yao_clean_ideaunit._weight == yao_other_debtor_weight
+    assert yao_clean_ideaunit._weight == yao_person_debtor_weight
     assert after_yao_worldunit == before_yao_worldunit
     assert len(after_yao_worldunit.get_agenda_dict()) == 1
 
@@ -75,11 +75,11 @@ def test_listen_to_speaker_agenda_ReturnsLevel2TaskWorld():
     yao_text = "Yao"
     before_yao_worldunit = worldunit_shop(yao_text)
     zia_text = "Zia"
-    before_yao_worldunit.add_otherunit(zia_text)
+    before_yao_worldunit.add_personunit(zia_text)
     yao_debtor_weight = 77
-    before_yao_worldunit.set_other_pool(yao_debtor_weight)
+    before_yao_worldunit.set_person_pool(yao_debtor_weight)
     zia_worldunit = worldunit_shop(zia_text)
-    zia_worldunit.add_otherunit(yao_text)
+    zia_worldunit.add_personunit(yao_text)
     clean_text = "clean"
     zia_clean_ideaunit = ideaunit_shop(clean_text, pledge=True)
     zia_clean_ideaunit._assignedunit.set_suffbelief(yao_text)
@@ -113,12 +113,12 @@ def test_listen_to_speaker_agenda_Returns2AgendaIdeasLevel2TaskWorld():
     yao_text = "Yao"
     before_yao_worldunit = worldunit_shop(yao_text)
     zia_text = "Zia"
-    before_yao_worldunit.add_otherunit(zia_text)
+    before_yao_worldunit.add_personunit(zia_text)
     yao_debtor_weight = 55
-    before_yao_worldunit.set_other_pool(yao_debtor_weight)
+    before_yao_worldunit.set_person_pool(yao_debtor_weight)
     zia_text = "Zia"
     zia_worldunit = worldunit_shop(zia_text)
-    zia_worldunit.add_otherunit(yao_text)
+    zia_worldunit.add_personunit(yao_text)
     clean_text = "clean"
     cook_text = "cook"
     fly_text = "fly"
@@ -168,12 +168,12 @@ def test_listen_to_speaker_agenda_Returns2AgendaIdeasLevel2TaskWorldWhereAnIdeaU
     yao_text = "Yao"
     before_yao_worldunit = worldunit_shop(yao_text)
     zia_text = "Zia"
-    before_yao_worldunit.add_otherunit(zia_text)
+    before_yao_worldunit.add_personunit(zia_text)
     yao_debtor_weight = 55
-    before_yao_worldunit.set_other_pool(yao_debtor_weight)
+    before_yao_worldunit.set_person_pool(yao_debtor_weight)
     zia_text = "Zia"
     zia_worldunit = worldunit_shop(zia_text)
-    zia_worldunit.add_otherunit(yao_text)
+    zia_worldunit.add_personunit(yao_text)
     dish_text = "dish"
     cook_text = "cook"
     fly_text = "fly"
@@ -232,10 +232,10 @@ def test_listen_to_speaker_agenda_ProcessesIrrationalWorld():
     sue_text = "Sue"
     sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_role.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_role.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_personunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_role.set_other_pool(yao_pool)
+    yao_role.set_person_pool(yao_pool)
 
     sue_worldunit = worldunit_shop(sue_text)
     sue_worldunit.set_max_tree_traverse(5)
@@ -268,20 +268,20 @@ def test_listen_to_speaker_agenda_ProcessesIrrationalWorld():
 
     # WHEN
     yao_job = create_empty_world(yao_role, yao_text)
-    yao_job.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_job.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
-    yao_job.set_other_pool(yao_pool)
+    yao_job.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_job.add_personunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_job.set_person_pool(yao_pool)
     yao_job = listen_to_speaker_agenda(yao_job, sue_worldunit)
 
     # THEN irrational world is ignored
     assert len(yao_job.get_agenda_dict()) != 3
     assert len(yao_job.get_agenda_dict()) == 0
-    zia_otherunit = yao_job.get_other(zia_text)
-    sue_otherunit = yao_job.get_other(sue_text)
-    print(f"{sue_otherunit.debtor_weight=}")
-    print(f"{sue_otherunit._irrational_debtor_weight=}")
-    assert zia_otherunit._irrational_debtor_weight == 0
-    assert sue_otherunit._irrational_debtor_weight == 51
+    zia_personunit = yao_job.get_person(zia_text)
+    sue_personunit = yao_job.get_person(sue_text)
+    print(f"{sue_personunit.debtor_weight=}")
+    print(f"{sue_personunit._irrational_debtor_weight=}")
+    assert zia_personunit._irrational_debtor_weight == 0
+    assert sue_personunit._irrational_debtor_weight == 51
 
 
 def test_listen_to_speaker_agenda_ProcessesBarrenWorld():
@@ -294,27 +294,27 @@ def test_listen_to_speaker_agenda_ProcessesBarrenWorld():
     sue_text = "Sue"
     sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_role.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_role.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_personunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_role.set_other_pool(yao_pool)
+    yao_role.set_person_pool(yao_pool)
 
     # WHEN
     sue_job = create_empty_world(yao_role, sue_text)
     yao_job = create_empty_world(yao_role, yao_text)
-    yao_job.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_job.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
-    yao_job.set_other_pool(yao_pool)
+    yao_job.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_job.add_personunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_job.set_person_pool(yao_pool)
     yao_job = listen_to_speaker_agenda(yao_job, speaker=sue_job)
 
     # THEN irrational world is ignored
     assert len(yao_job.get_agenda_dict()) != 3
     assert len(yao_job.get_agenda_dict()) == 0
-    zia_otherunit = yao_job.get_other(zia_text)
-    sue_otherunit = yao_job.get_other(sue_text)
-    print(f"{sue_otherunit.debtor_weight=}")
-    print(f"{sue_otherunit._irrational_debtor_weight=}")
-    assert zia_otherunit._irrational_debtor_weight == 0
-    assert zia_otherunit._inallocable_debtor_weight == 0
-    assert sue_otherunit._irrational_debtor_weight == 0
-    assert sue_otherunit._inallocable_debtor_weight == 51
+    zia_personunit = yao_job.get_person(zia_text)
+    sue_personunit = yao_job.get_person(sue_text)
+    print(f"{sue_personunit.debtor_weight=}")
+    print(f"{sue_personunit._irrational_debtor_weight=}")
+    assert zia_personunit._irrational_debtor_weight == 0
+    assert zia_personunit._inallocable_debtor_weight == 0
+    assert sue_personunit._irrational_debtor_weight == 0
+    assert sue_personunit._inallocable_debtor_weight == 51

@@ -3,11 +3,11 @@ from src._world.world import WorldUnit
 from pandas import DataFrame
 
 
-def get_world_otherunits_dataframe(x_world: WorldUnit) -> DataFrame:
-    if x_world._others == {}:
+def get_world_personunits_dataframe(x_world: WorldUnit) -> DataFrame:
+    if x_world._persons == {}:
         return DataFrame(
             columns=[
-                "other_id",
+                "person_id",
                 "credor_weight",
                 "debtor_weight",
                 "_world_cred",
@@ -26,8 +26,8 @@ def get_world_otherunits_dataframe(x_world: WorldUnit) -> DataFrame:
                 "_treasury_voice_hx_lowest_rank",
             ]
         )
-    x_otherunits_list = list(x_world.get_others_dict(all_attrs=True).values())
-    return DataFrame(x_otherunits_list)
+    x_personunits_list = list(x_world.get_persons_dict(all_attrs=True).values())
+    return DataFrame(x_personunits_list)
 
 
 def get_world_agenda_dataframe(x_world: WorldUnit, base: RoadUnit = None) -> DataFrame:

@@ -1,7 +1,7 @@
 from src._instrument.python import x_is_json, get_dict_from_json
 from src._road.road import default_road_delimiter_if_none
 from src._world.belief import beliefunit_shop, balancelink_shop
-from src._world.other import otherlink_shop
+from src._world.person import personlink_shop
 from src._world.healer import healerhold_shop
 from src._world.reason_assign import assignedunit_shop
 from src._world.reason_idea import factunit_shop
@@ -25,7 +25,7 @@ def test_WorldUnit_get_dict_ReturnsDictObject():
     day_hour_text = "day_hour"
     day_hour_road = x_world.make_l1_road(day_hour_text)
     day_hour_idea = x_world.get_idea_obj(day_hour_road)
-    day_hour_idea._originunit.set_originlink(other_id="Bob", weight=2)
+    day_hour_idea._originunit.set_originlink(person_id="Bob", weight=2)
     x_world.set_fact(
         base=day_hour_road,
         pick=day_hour_road,
@@ -38,10 +38,10 @@ def test_WorldUnit_get_dict_ReturnsDictObject():
     x_world._originunit.set_originlink(yao_text, 1)
     world_weight = 23
     x_world._weight = world_weight
-    x_other_credor_pool = 22
-    x_other_debtor_pool = 22
-    x_world.set_other_credor_pool(x_other_credor_pool)
-    x_world.set_other_debtor_pool(x_other_debtor_pool)
+    x_person_credor_pool = 22
+    x_person_debtor_pool = 22
+    x_world.set_person_credor_pool(x_person_credor_pool)
+    x_world.set_person_debtor_pool(x_person_debtor_pool)
     override_text = "override"
     x_world.set_meld_strategy(override_text)
     x_last_gift_id = 77
@@ -59,13 +59,13 @@ def test_WorldUnit_get_dict_ReturnsDictObject():
     assert world_dict["_weight"] == world_weight
     assert world_dict["_max_tree_traverse"] == x_world._max_tree_traverse
     assert world_dict["_road_delimiter"] == x_world._road_delimiter
-    assert world_dict["_other_credor_pool"] == x_world._other_credor_pool
-    assert world_dict["_other_debtor_pool"] == x_world._other_debtor_pool
-    assert world_dict["_other_debtor_pool"] == x_world._other_debtor_pool
+    assert world_dict["_person_credor_pool"] == x_world._person_credor_pool
+    assert world_dict["_person_debtor_pool"] == x_world._person_debtor_pool
+    assert world_dict["_person_debtor_pool"] == x_world._person_debtor_pool
     assert world_dict["_meld_strategy"] == x_world._meld_strategy
     assert world_dict["_last_gift_id"] == x_world._last_gift_id
-    assert len(world_dict["_others"]) == len(x_world._others)
-    assert len(world_dict["_others"]) != 12
+    assert len(world_dict["_persons"]) == len(x_world._persons)
+    assert len(world_dict["_persons"]) != 12
     assert len(world_dict["_beliefs"]) == 12
     assert len(world_dict["_beliefs"]) != len(x_world._beliefs)
 
@@ -107,7 +107,7 @@ def test_WorldUnit_get_dict_ReturnsDictObject():
     x_world_originlink = world_dict[originunit_text][_links][yao_text]
     print(f"{x_world_originlink=}")
     assert x_world_originlink
-    assert x_world_originlink["other_id"] == yao_text
+    assert x_world_originlink["person_id"] == yao_text
     assert x_world_originlink["weight"] == 1
 
 
@@ -132,10 +132,10 @@ def test_WorldUnit_get_dict_ReturnsDictWith_idearoot_healerhold():
     # GIVEN
     tom_world = worldunit_shop("Tom")
     yao_text = "Yao"
-    tom_world.add_otherunit(yao_text)
+    tom_world.add_personunit(yao_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_otherlink(otherlink_shop(yao_text))
+    run_beliefunit.set_personlink(personlink_shop(yao_text))
     tom_world.set_beliefunit(run_beliefunit)
     run_healerhold = healerhold_shop()
     run_healerhold.set_belief_id(x_belief_id=run_text)
@@ -187,10 +187,10 @@ def test_WorldUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     override_text = "override"
     zia_world.set_meld_strategy(override_text)
     yao_text = "Yao"
-    zia_world.add_otherunit(yao_text)
+    zia_world.add_personunit(yao_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_otherlink(otherlink_shop(yao_text))
+    run_beliefunit.set_personlink(personlink_shop(yao_text))
     zia_world.set_beliefunit(run_beliefunit)
     run_healerhold = healerhold_shop({run_text})
     zia_world.edit_idea_attr(road=zia_world._real_id, healerhold=run_healerhold)
@@ -213,11 +213,11 @@ def test_WorldUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     assert world_dict["_pixel"] == zia_world._pixel
     assert world_dict["_penny"] == zia_world._penny
     with pytest_raises(Exception) as excinfo:
-        world_dict["_other_credor_pool"]
-    assert str(excinfo.value) == "'_other_credor_pool'"
+        world_dict["_person_credor_pool"]
+    assert str(excinfo.value) == "'_person_credor_pool'"
     with pytest_raises(Exception) as excinfo:
-        world_dict["_other_debtor_pool"]
-    assert str(excinfo.value) == "'_other_debtor_pool'"
+        world_dict["_person_debtor_pool"]
+    assert str(excinfo.value) == "'_person_debtor_pool'"
     with pytest_raises(Exception) as excinfo:
         world_dict["_last_gift_id"]
 
@@ -304,29 +304,29 @@ def test_worldunit_get_from_json_ReturnsCorrectObjSimpleExample():
     zia_world._pixel = zia_pixel
     zia_penny = 2
     zia_world._penny = zia_penny
-    zia_other_credor_pool = 2
-    zia_other_debtor_pool = 2
-    zia_world.set_other_credor_pool(zia_other_credor_pool)
-    zia_world.set_other_debtor_pool(zia_other_debtor_pool)
+    zia_person_credor_pool = 2
+    zia_person_debtor_pool = 2
+    zia_world.set_person_credor_pool(zia_person_credor_pool)
+    zia_world.set_person_debtor_pool(zia_person_debtor_pool)
     zia_last_gift_id = 73
     zia_world.set_last_gift_id(zia_last_gift_id)
 
     shave_text = "shave"
     shave_road = zia_world.make_l1_road(shave_text)
     shave_idea_y1 = zia_world.get_idea_obj(shave_road)
-    shave_idea_y1._originunit.set_originlink(other_id="Sue", weight=4.3)
+    shave_idea_y1._originunit.set_originlink(person_id="Sue", weight=4.3)
     shave_idea_y1._problem_bool = True
     # print(f"{shave_road=}")
     # print(f"{json_shave_idea._label=} {json_shave_idea._parent_road=}")
 
     sue_text = "Sue"
-    zia_world.add_otherunit(other_id=sue_text)
+    zia_world.add_personunit(person_id=sue_text)
     tim_text = "Tim"
-    zia_world.add_otherunit(other_id=tim_text)
+    zia_world.add_personunit(person_id=tim_text)
     run_text = ",runners"
     run_belief = beliefunit_shop(belief_id=run_text)
-    run_belief.set_otherlink(otherlink=otherlink_shop(other_id=sue_text))
-    run_belief.set_otherlink(otherlink=otherlink_shop(other_id=tim_text))
+    run_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    run_belief.set_personlink(personlink=personlink_shop(person_id=tim_text))
     zia_world.set_beliefunit(y_beliefunit=run_belief)
 
     run_assignedunit = assignedunit_shop()
@@ -364,10 +364,10 @@ def test_worldunit_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_world._max_tree_traverse == 23
     assert json_world._max_tree_traverse == zia_world._max_tree_traverse
     assert json_world._road_delimiter == zia_world._road_delimiter
-    assert json_world._other_credor_pool == zia_world._other_credor_pool
-    assert json_world._other_debtor_pool == zia_world._other_debtor_pool
-    assert json_world._other_credor_pool == zia_other_credor_pool
-    assert json_world._other_debtor_pool == zia_other_debtor_pool
+    assert json_world._person_credor_pool == zia_world._person_credor_pool
+    assert json_world._person_debtor_pool == zia_world._person_debtor_pool
+    assert json_world._person_credor_pool == zia_person_credor_pool
+    assert json_world._person_debtor_pool == zia_person_debtor_pool
     assert json_world._meld_strategy == zia_world._meld_strategy
     assert json_world._meld_strategy == override_text
     assert json_world._last_gift_id == zia_world._last_gift_id
@@ -430,21 +430,21 @@ def test_worldunit_get_from_json_ReturnsCorrectObj_road_delimiter_Example():
     assert after_bob_world._road_delimiter == before_bob_world._road_delimiter
 
 
-def test_worldunit_get_from_json_ReturnsCorrectObj_road_delimiter_OtherExample():
+def test_worldunit_get_from_json_ReturnsCorrectObj_road_delimiter_PersonExample():
     # GIVEN
     slash_delimiter = "/"
     before_bob_world = worldunit_shop("Bob", _road_delimiter=slash_delimiter)
     bob_text = ",Bob"
-    before_bob_world.add_otherunit(bob_text)
-    assert before_bob_world.other_exists(bob_text)
+    before_bob_world.add_personunit(bob_text)
+    assert before_bob_world.person_exists(bob_text)
 
     # WHEN
     bob_json = before_bob_world.get_json()
     after_bob_world = worldunit_get_from_json(bob_json)
 
     # THEN
-    after_bob_otherunit = after_bob_world.get_other(bob_text)
-    assert after_bob_otherunit._road_delimiter == slash_delimiter
+    after_bob_personunit = after_bob_world.get_person(bob_text)
+    assert after_bob_personunit._road_delimiter == slash_delimiter
 
 
 def test_worldunit_get_from_json_ReturnsCorrectObj_road_delimiter_BeliefExample():

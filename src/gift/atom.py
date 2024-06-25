@@ -6,7 +6,7 @@ from src._instrument.python import (
 from src._instrument.sqlite import create_insert_sqlstr, RowData
 from src._road.road import create_road
 from src._world.reason_idea import factunit_shop
-from src._world.other import otherunit_shop, otherlink_shop
+from src._world.person import personunit_shop, personlink_shop
 from src._world.belief import beliefunit_shop, balancelink_shop
 from src._world.idea import ideaunit_shop
 from src._world.world import WorldUnit
@@ -169,12 +169,12 @@ def _modify_world_update_worldunit(x_world: WorldUnit, x_atom: AtomUnit):
     x_arg = "_max_tree_traverse"
     if x_atom.get_value(x_arg) != None:
         x_world.set_max_tree_traverse(x_atom.get_value(x_arg))
-    x_arg = "_other_credor_pool"
+    x_arg = "_person_credor_pool"
     if x_atom.get_value(x_arg) != None:
-        x_world.set_other_credor_pool(x_atom.get_value(x_arg))
-    x_arg = "_other_debtor_pool"
+        x_world.set_person_credor_pool(x_atom.get_value(x_arg))
+    x_arg = "_person_debtor_pool"
     if x_atom.get_value(x_arg) != None:
-        x_world.set_other_debtor_pool(x_atom.get_value(x_arg))
+        x_world.set_person_debtor_pool(x_atom.get_value(x_arg))
     x_arg = "_meld_strategy"
     if x_atom.get_value(x_arg) != None:
         x_world.set_meld_strategy(x_atom.get_value(x_arg))
@@ -201,30 +201,30 @@ def _modify_world_beliefunit_update(x_world: WorldUnit, x_atom: AtomUnit):
 def _modify_world_beliefunit_insert(x_world: WorldUnit, x_atom: AtomUnit):
     x_beliefunit = beliefunit_shop(belief_id=x_atom.get_value("belief_id"))
     x_world.set_beliefunit(
-        x_beliefunit, create_missing_others=False, replace=False, add_otherlinks=False
+        x_beliefunit, create_missing_persons=False, replace=False, add_personlinks=False
     )
 
 
-def _modify_world_belief_otherlink_delete(x_world: WorldUnit, x_atom: AtomUnit):
-    x_other_id = x_atom.get_value("other_id")
+def _modify_world_belief_personlink_delete(x_world: WorldUnit, x_atom: AtomUnit):
+    x_person_id = x_atom.get_value("person_id")
     x_belief_id = x_atom.get_value("belief_id")
-    x_world.get_beliefunit(x_belief_id).del_otherlink(x_other_id)
+    x_world.get_beliefunit(x_belief_id).del_personlink(x_person_id)
 
 
-def _modify_world_belief_otherlink_update(x_world: WorldUnit, x_atom: AtomUnit):
+def _modify_world_belief_personlink_update(x_world: WorldUnit, x_atom: AtomUnit):
     x_beliefunit = x_world.get_beliefunit(x_atom.get_value("belief_id"))
-    x_beliefunit.edit_otherlink(
-        other_id=x_atom.get_value("other_id"),
+    x_beliefunit.edit_personlink(
+        person_id=x_atom.get_value("person_id"),
         credor_weight=x_atom.get_value("credor_weight"),
         debtor_weight=x_atom.get_value("debtor_weight"),
     )
 
 
-def _modify_world_belief_otherlink_insert(x_world: WorldUnit, x_atom: AtomUnit):
+def _modify_world_belief_personlink_insert(x_world: WorldUnit, x_atom: AtomUnit):
     x_beliefunit = x_world.get_beliefunit(x_atom.get_value("belief_id"))
-    x_beliefunit.set_otherlink(
-        otherlink_shop(
-            other_id=x_atom.get_value("other_id"),
+    x_beliefunit.set_personlink(
+        personlink_shop(
+            person_id=x_atom.get_value("person_id"),
             credor_weight=x_atom.get_value("credor_weight"),
             debtor_weight=x_atom.get_value("debtor_weight"),
         )
@@ -399,22 +399,22 @@ def _modify_world_idea_suffbelief_insert(x_world: WorldUnit, x_atom: AtomUnit):
     x_ideaunit._assignedunit.set_suffbelief(belief_id=x_atom.get_value("belief_id"))
 
 
-def _modify_world_otherunit_delete(x_world: WorldUnit, x_atom: AtomUnit):
-    x_world.del_otherunit(x_atom.get_value("other_id"))
+def _modify_world_personunit_delete(x_world: WorldUnit, x_atom: AtomUnit):
+    x_world.del_personunit(x_atom.get_value("person_id"))
 
 
-def _modify_world_otherunit_update(x_world: WorldUnit, x_atom: AtomUnit):
-    x_world.edit_otherunit(
-        other_id=x_atom.get_value("other_id"),
+def _modify_world_personunit_update(x_world: WorldUnit, x_atom: AtomUnit):
+    x_world.edit_personunit(
+        person_id=x_atom.get_value("person_id"),
         credor_weight=x_atom.get_value("credor_weight"),
         debtor_weight=x_atom.get_value("debtor_weight"),
     )
 
 
-def _modify_world_otherunit_insert(x_world: WorldUnit, x_atom: AtomUnit):
-    x_world.set_otherunit(
-        otherunit_shop(
-            other_id=x_atom.get_value("other_id"),
+def _modify_world_personunit_insert(x_world: WorldUnit, x_atom: AtomUnit):
+    x_world.set_personunit(
+        personunit_shop(
+            person_id=x_atom.get_value("person_id"),
             credor_weight=x_atom.get_value("credor_weight"),
             debtor_weight=x_atom.get_value("debtor_weight"),
         )
@@ -435,13 +435,13 @@ def _modify_world_beliefunit(x_world: WorldUnit, x_atom: AtomUnit):
         _modify_world_beliefunit_insert(x_world, x_atom)
 
 
-def _modify_world_belief_otherlink(x_world: WorldUnit, x_atom: AtomUnit):
+def _modify_world_belief_personlink(x_world: WorldUnit, x_atom: AtomUnit):
     if x_atom.crud_text == atom_delete():
-        _modify_world_belief_otherlink_delete(x_world, x_atom)
+        _modify_world_belief_personlink_delete(x_world, x_atom)
     elif x_atom.crud_text == atom_update():
-        _modify_world_belief_otherlink_update(x_world, x_atom)
+        _modify_world_belief_personlink_update(x_world, x_atom)
     elif x_atom.crud_text == atom_insert():
-        _modify_world_belief_otherlink_insert(x_world, x_atom)
+        _modify_world_belief_personlink_insert(x_world, x_atom)
 
 
 def _modify_world_ideaunit(x_world: WorldUnit, x_atom: AtomUnit):
@@ -496,13 +496,13 @@ def _modify_world_idea_suffbelief(x_world: WorldUnit, x_atom: AtomUnit):
         _modify_world_idea_suffbelief_insert(x_world, x_atom)
 
 
-def _modify_world_otherunit(x_world: WorldUnit, x_atom: AtomUnit):
+def _modify_world_personunit(x_world: WorldUnit, x_atom: AtomUnit):
     if x_atom.crud_text == atom_delete():
-        _modify_world_otherunit_delete(x_world, x_atom)
+        _modify_world_personunit_delete(x_world, x_atom)
     elif x_atom.crud_text == atom_update():
-        _modify_world_otherunit_update(x_world, x_atom)
+        _modify_world_personunit_update(x_world, x_atom)
     elif x_atom.crud_text == atom_insert():
-        _modify_world_otherunit_insert(x_world, x_atom)
+        _modify_world_personunit_insert(x_world, x_atom)
 
 
 def modify_world_with_atomunit(x_world: WorldUnit, x_atom: AtomUnit):
@@ -510,8 +510,8 @@ def modify_world_with_atomunit(x_world: WorldUnit, x_atom: AtomUnit):
         _modify_world_worldunit(x_world, x_atom)
     elif x_atom.category == "world_beliefunit":
         _modify_world_beliefunit(x_world, x_atom)
-    elif x_atom.category == "world_belief_otherlink":
-        _modify_world_belief_otherlink(x_world, x_atom)
+    elif x_atom.category == "world_belief_personlink":
+        _modify_world_belief_personlink(x_world, x_atom)
     elif x_atom.category == "world_ideaunit":
         _modify_world_ideaunit(x_world, x_atom)
     elif x_atom.category == "world_idea_balancelink":
@@ -524,8 +524,8 @@ def modify_world_with_atomunit(x_world: WorldUnit, x_atom: AtomUnit):
         _modify_world_idea_reason_premiseunit(x_world, x_atom)
     elif x_atom.category == "world_idea_suffbelief":
         _modify_world_idea_suffbelief(x_world, x_atom)
-    elif x_atom.category == "world_otherunit":
-        _modify_world_otherunit(x_world, x_atom)
+    elif x_atom.category == "world_personunit":
+        _modify_world_personunit(x_world, x_atom)
 
 
 def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
@@ -534,11 +534,11 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             x_obj._weight != y_obj._weight
             or x_obj._max_tree_traverse != y_obj._max_tree_traverse
             or x_obj._meld_strategy != y_obj._meld_strategy
-            or x_obj._other_credor_pool != y_obj._other_credor_pool
-            or x_obj._other_debtor_pool != y_obj._other_debtor_pool
+            or x_obj._person_credor_pool != y_obj._person_credor_pool
+            or x_obj._person_debtor_pool != y_obj._person_debtor_pool
             or x_obj._pixel != y_obj._pixel
         )
-    elif category in {"world_belief_otherlink", "world_idea_balancelink"}:
+    elif category in {"world_belief_personlink", "world_idea_balancelink"}:
         return (x_obj.credor_weight != y_obj.credor_weight) or (
             x_obj.debtor_weight != y_obj.debtor_weight
         )
@@ -570,7 +570,7 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or x_obj.nigh != y_obj.nigh
             or x_obj.divisor != y_obj.divisor
         )
-    elif category == "world_otherunit":
+    elif category == "world_personunit":
         return (x_obj.credor_weight != y_obj.credor_weight) or (
             x_obj.debtor_weight != y_obj.debtor_weight
         )

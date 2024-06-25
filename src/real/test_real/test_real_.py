@@ -143,7 +143,7 @@ def test_RealUnit_get_owner_same_from_file_ReturnsCorrectObj(env_dir_setup_clean
     luca_userhub = userhub_shop(None, music_text, luca_text, None)
     bob_text = "Bob"
     luca_same = luca_userhub.get_same_world()
-    luca_same.add_otherunit(bob_text)
+    luca_same.add_personunit(bob_text)
     luca_userhub.save_same_world(luca_same)
 
     # WHEN
@@ -151,7 +151,7 @@ def test_RealUnit_get_owner_same_from_file_ReturnsCorrectObj(env_dir_setup_clean
 
     # THEN
     assert gen_luca_same != None
-    assert gen_luca_same.other_exists(bob_text)
+    assert gen_luca_same.person_exists(bob_text)
 
 
 def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
@@ -169,10 +169,10 @@ def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     luca_same_world = luca_userhub.get_same_world()
     todd_same_world = todd_userhub.get_same_world()
 
-    luca_same_world.add_otherunit(luca_text)
-    luca_same_world.add_otherunit(todd_text)
-    todd_same_world.add_otherunit(luca_text)
-    todd_same_world.add_otherunit(todd_text)
+    luca_same_world.add_personunit(luca_text)
+    luca_same_world.add_personunit(todd_text)
+    todd_same_world.add_personunit(luca_text)
+    todd_same_world.add_personunit(todd_text)
     texas_text = "Texas"
     texas_road = luca_same_world.make_l1_road(texas_text)
     luca_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))

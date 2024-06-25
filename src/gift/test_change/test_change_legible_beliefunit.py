@@ -47,12 +47,12 @@ def test_create_legible_list_ReturnsObj_beliefunit_DELETE():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_belief_otherlink_INSERT():
+def test_create_legible_list_ReturnsObj_belief_personlink_INSERT():
     # GIVEN
     sue_world = worldunit_shop("Sue")
-    category = "world_belief_otherlink"
+    category = "world_belief_personlink"
     belief_id_text = "belief_id"
-    other_id_text = "other_id"
+    person_id_text = "person_id"
     credor_weight_text = "credor_weight"
     debtor_weight_text = "debtor_weight"
     swim_text = f"{sue_world._road_delimiter}Swimmers"
@@ -61,7 +61,7 @@ def test_create_legible_list_ReturnsObj_belief_otherlink_INSERT():
     debtor_weight_value = 43
     rico_atomunit = atomunit_shop(category, atom_insert())
     rico_atomunit.set_arg(belief_id_text, swim_text)
-    rico_atomunit.set_arg(other_id_text, rico_text)
+    rico_atomunit.set_arg(person_id_text, rico_text)
     rico_atomunit.set_arg(credor_weight_text, credor_weight_value)
     rico_atomunit.set_arg(debtor_weight_text, debtor_weight_value)
     # print(f"{rico_atomunit=}")
@@ -77,12 +77,12 @@ def test_create_legible_list_ReturnsObj_belief_otherlink_INSERT():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_belief_otherlink_UPDATE_credor_weight_debtor_weight():
+def test_create_legible_list_ReturnsObj_belief_personlink_UPDATE_credor_weight_debtor_weight():
     # GIVEN
     sue_world = worldunit_shop("Sue")
-    category = "world_belief_otherlink"
+    category = "world_belief_personlink"
     belief_id_text = "belief_id"
-    other_id_text = "other_id"
+    person_id_text = "person_id"
     credor_weight_text = "credor_weight"
     debtor_weight_text = "debtor_weight"
     swim_text = f"{sue_world._road_delimiter}Swimmers"
@@ -91,7 +91,7 @@ def test_create_legible_list_ReturnsObj_belief_otherlink_UPDATE_credor_weight_de
     debtor_weight_value = 43
     rico_atomunit = atomunit_shop(category, atom_update())
     rico_atomunit.set_arg(belief_id_text, swim_text)
-    rico_atomunit.set_arg(other_id_text, rico_text)
+    rico_atomunit.set_arg(person_id_text, rico_text)
     rico_atomunit.set_arg(credor_weight_text, credor_weight_value)
     rico_atomunit.set_arg(debtor_weight_text, debtor_weight_value)
     # print(f"{rico_atomunit=}")
@@ -107,19 +107,19 @@ def test_create_legible_list_ReturnsObj_belief_otherlink_UPDATE_credor_weight_de
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_belief_otherlink_UPDATE_credor_weight():
+def test_create_legible_list_ReturnsObj_belief_personlink_UPDATE_credor_weight():
     # GIVEN
     sue_world = worldunit_shop("Sue")
-    category = "world_belief_otherlink"
+    category = "world_belief_personlink"
     belief_id_text = "belief_id"
-    other_id_text = "other_id"
+    person_id_text = "person_id"
     credor_weight_text = "credor_weight"
     swim_text = f"{sue_world._road_delimiter}Swimmers"
     rico_text = "Rico"
     credor_weight_value = 81
     rico_atomunit = atomunit_shop(category, atom_update())
     rico_atomunit.set_arg(belief_id_text, swim_text)
-    rico_atomunit.set_arg(other_id_text, rico_text)
+    rico_atomunit.set_arg(person_id_text, rico_text)
     rico_atomunit.set_arg(credor_weight_text, credor_weight_value)
     # print(f"{rico_atomunit=}")
     x_changeunit = changeunit_shop()
@@ -134,19 +134,19 @@ def test_create_legible_list_ReturnsObj_belief_otherlink_UPDATE_credor_weight():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_belief_otherlink_UPDATE_debtor_weight():
+def test_create_legible_list_ReturnsObj_belief_personlink_UPDATE_debtor_weight():
     # GIVEN
     sue_world = worldunit_shop("Sue")
-    category = "world_belief_otherlink"
+    category = "world_belief_personlink"
     belief_id_text = "belief_id"
-    other_id_text = "other_id"
+    person_id_text = "person_id"
     debtor_weight_text = "debtor_weight"
     swim_text = f"{sue_world._road_delimiter}Swimmers"
     rico_text = "Rico"
     debtor_weight_value = 43
     rico_atomunit = atomunit_shop(category, atom_update())
     rico_atomunit.set_arg(belief_id_text, swim_text)
-    rico_atomunit.set_arg(other_id_text, rico_text)
+    rico_atomunit.set_arg(person_id_text, rico_text)
     rico_atomunit.set_arg(debtor_weight_text, debtor_weight_value)
     # print(f"{rico_atomunit=}")
     x_changeunit = changeunit_shop()
@@ -161,17 +161,17 @@ def test_create_legible_list_ReturnsObj_belief_otherlink_UPDATE_debtor_weight():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_belief_otherlink_DELETE():
+def test_create_legible_list_ReturnsObj_belief_personlink_DELETE():
     # GIVEN
     sue_world = worldunit_shop("Sue")
-    category = "world_belief_otherlink"
+    category = "world_belief_personlink"
     belief_id_text = "belief_id"
-    other_id_text = "other_id"
+    person_id_text = "person_id"
     swim_text = f"{sue_world._road_delimiter}Swimmers"
     rico_text = "Rico"
     rico_atomunit = atomunit_shop(category, atom_delete())
     rico_atomunit.set_arg(belief_id_text, swim_text)
-    rico_atomunit.set_arg(other_id_text, rico_text)
+    rico_atomunit.set_arg(person_id_text, rico_text)
     # print(f"{rico_atomunit=}")
     x_changeunit = changeunit_shop()
     x_changeunit.set_atomunit(rico_atomunit)

@@ -1,368 +1,368 @@
 {
     "_beliefs": {
         ",ACME DevOps": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "Benjamin Stoddert": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Benjamin Stoddert"
+                    "person_id": "Benjamin Stoddert"
                 },
                 "Bob302": {
                     "credor_weight": 6.25,
                     "debtor_weight": 1,
-                    "other_id": "Bob302"
+                    "person_id": "Bob302"
                 },
                 "Charles Lee": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Charles Lee"
+                    "person_id": "Charles Lee"
                 },
                 "Jane Randolph": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Jane Randolph"
+                    "person_id": "Jane Randolph"
                 },
                 "Maria Reynolds": {
                     "credor_weight": 6.75,
                     "debtor_weight": 1,
-                    "other_id": "Maria Reynolds"
+                    "person_id": "Maria Reynolds"
                 },
                 "Martha Doubs": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Martha Doubs"
+                    "person_id": "Martha Doubs"
                 },
                 "Mikayla": {
                     "credor_weight": 10,
                     "debtor_weight": 1,
-                    "other_id": "Mikayla"
+                    "person_id": "Mikayla"
                 },
                 "Sam zamora": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Sam zamora"
+                    "person_id": "Sam zamora"
                 },
                 "Shadwell Harris": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Shadwell Harris"
+                    "person_id": "Shadwell Harris"
                 },
                 "WIlliam Wallace": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "WIlliam Wallace"
+                    "person_id": "WIlliam Wallace"
                 }
             },
             "belief_id": ",ACME DevOps"
         },
         ",ACME General": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "Benjamin Stoddert": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Benjamin Stoddert"
+                    "person_id": "Benjamin Stoddert"
                 },
                 "Charles Lee": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Charles Lee"
+                    "person_id": "Charles Lee"
                 },
                 "Martha Doubs": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Martha Doubs"
+                    "person_id": "Martha Doubs"
                 },
                 "Sam zamora": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Sam zamora"
+                    "person_id": "Sam zamora"
                 }
             },
             "belief_id": ",ACME General"
         },
         ",appreciates US DOLLAR": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "Bob302": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Bob302"
+                    "person_id": "Bob302"
                 },
                 "Perrison": {
                     "credor_weight": 5,
                     "debtor_weight": 1,
-                    "other_id": "Perrison"
+                    "person_id": "Perrison"
                 },
                 "Prashant": {
                     "credor_weight": 2,
                     "debtor_weight": 1,
-                    "other_id": "Prashant"
+                    "person_id": "Prashant"
                 },
                 "Renee Elise Goldsberry": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Renee Elise Goldsberry"
+                    "person_id": "Renee Elise Goldsberry"
                 }
             },
             "belief_id": ",appreciates US DOLLAR"
         },
         ",Climate Death": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "Philipa": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Philipa"
+                    "person_id": "Philipa"
                 },
                 "Renee Elise Goldsberry": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Renee Elise Goldsberry"
+                    "person_id": "Renee Elise Goldsberry"
                 },
                 "Thomas OSU": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Thomas OSU"
+                    "person_id": "Thomas OSU"
                 }
             },
             "belief_id": ",Climate Death"
         },
         ",Everyone": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "A a ron Jones": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "A a ron Jones"
+                    "person_id": "A a ron Jones"
                 },
                 "America": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "America"
+                    "person_id": "America"
                 },
                 "Anna": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Anna"
+                    "person_id": "Anna"
                 },
                 "Benjamin Stoddert": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Benjamin Stoddert"
+                    "person_id": "Benjamin Stoddert"
                 },
                 "Bob302": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Bob302"
+                    "person_id": "Bob302"
                 },
                 "Charles Lee": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Charles Lee"
+                    "person_id": "Charles Lee"
                 },
                 "Ernesto Chavez": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Ernesto Chavez"
+                    "person_id": "Ernesto Chavez"
                 },
                 "Jacque Chirac": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Jacque Chirac"
+                    "person_id": "Jacque Chirac"
                 },
                 "Jane Randolph": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Jane Randolph"
+                    "person_id": "Jane Randolph"
                 },
                 "Maria Reynolds": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Maria Reynolds"
+                    "person_id": "Maria Reynolds"
                 },
                 "Martha Doubs": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Martha Doubs"
+                    "person_id": "Martha Doubs"
                 },
                 "Mikayla": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Mikayla"
+                    "person_id": "Mikayla"
                 },
                 "Norberto": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Norberto"
+                    "person_id": "Norberto"
                 },
                 "Perrison": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Perrison"
+                    "person_id": "Perrison"
                 },
                 "Philipa": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Philipa"
+                    "person_id": "Philipa"
                 },
                 "Prashant": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Prashant"
+                    "person_id": "Prashant"
                 },
                 "Renee Elise Goldsberry": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Renee Elise Goldsberry"
+                    "person_id": "Renee Elise Goldsberry"
                 },
                 "Sam zamora": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Sam zamora"
+                    "person_id": "Sam zamora"
                 },
                 "Shadwell Harris": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Shadwell Harris"
+                    "person_id": "Shadwell Harris"
                 },
                 "Thomas OSU": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Thomas OSU"
+                    "person_id": "Thomas OSU"
                 },
                 "Travis Fox": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Travis Fox"
+                    "person_id": "Travis Fox"
                 },
                 "WIlliam Wallace": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "WIlliam Wallace"
+                    "person_id": "WIlliam Wallace"
                 }
             },
             "belief_id": ",Everyone"
         },
         ",Family": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "America": {
                     "credor_weight": 6.45,
                     "debtor_weight": 1,
-                    "other_id": "America"
+                    "person_id": "America"
                 },
                 "Anna": {
                     "credor_weight": 6.2,
                     "debtor_weight": 1,
-                    "other_id": "Anna"
+                    "person_id": "Anna"
                 },
                 "Travis Fox": {
                     "credor_weight": 6.35,
                     "debtor_weight": 1,
-                    "other_id": "Travis Fox"
+                    "person_id": "Travis Fox"
                 }
             },
             "belief_id": ",Family"
         },
         ",Friends": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "America": {
                     "credor_weight": 6.1,
                     "debtor_weight": 1,
-                    "other_id": "America"
+                    "person_id": "America"
                 },
                 "Perrison": {
                     "credor_weight": 6.4,
                     "debtor_weight": 1,
-                    "other_id": "Perrison"
+                    "person_id": "Perrison"
                 },
                 "Renee Elise Goldsberry": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Renee Elise Goldsberry"
+                    "person_id": "Renee Elise Goldsberry"
                 }
             },
             "belief_id": ",Friends"
         },
         ",hurt by us dollar": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "Renee Elise Goldsberry": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Renee Elise Goldsberry"
+                    "person_id": "Renee Elise Goldsberry"
                 }
             },
             "belief_id": ",hurt by us dollar"
         },
         ",OceanVista Apt": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "A a ron Jones": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "A a ron Jones"
+                    "person_id": "A a ron Jones"
                 },
                 "Jacque Chirac": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Jacque Chirac"
+                    "person_id": "Jacque Chirac"
                 },
                 "Norberto": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Norberto"
+                    "person_id": "Norberto"
                 }
             },
             "belief_id": ",OceanVista Apt"
         },
         ",People who identify by UTEP": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "Renee Elise Goldsberry": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Renee Elise Goldsberry"
+                    "person_id": "Renee Elise Goldsberry"
                 }
             },
             "belief_id": ",People who identify by UTEP"
         },
         ",Philosophy": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "Ernesto Chavez": {
                     "credor_weight": 6.5,
                     "debtor_weight": 1,
-                    "other_id": "Ernesto Chavez"
+                    "person_id": "Ernesto Chavez"
                 },
                 "Mikayla": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Mikayla"
+                    "person_id": "Mikayla"
                 },
                 "Philipa": {
                     "credor_weight": 52,
                     "debtor_weight": 1,
-                    "other_id": "Philipa"
+                    "person_id": "Philipa"
                 },
                 "Renee Elise Goldsberry": {
                     "credor_weight": 3,
                     "debtor_weight": 1,
-                    "other_id": "Renee Elise Goldsberry"
+                    "person_id": "Renee Elise Goldsberry"
                 }
             },
             "belief_id": ",Philosophy"
         },
         ",SHOW ME2": {
-            "_other_mirror": false,
-            "_others": {
+            "_person_mirror": false,
+            "_persons": {
                 "Renee Elise Goldsberry": {
                     "credor_weight": 1,
                     "debtor_weight": 1,
-                    "other_id": "Renee Elise Goldsberry"
+                    "person_id": "Renee Elise Goldsberry"
                 }
             },
             "belief_id": ",SHOW ME2"
@@ -6610,160 +6610,160 @@
         "_weight": 1
     },
     "_owner_id": "Bob",
-    "_others": {
+    "_persons": {
         "A a ron Jones": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "A a ron Jones"
+            "person_id": "A a ron Jones"
         },
         "America": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "America"
+            "person_id": "America"
         },
         "Anna": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Anna"
+            "person_id": "Anna"
         },
         "Benjamin Stoddert": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Benjamin Stoddert"
+            "person_id": "Benjamin Stoddert"
         },
         "Bob302": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Bob302"
+            "person_id": "Bob302"
         },
         "Charles Lee": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Charles Lee"
+            "person_id": "Charles Lee"
         },
         "Ernesto Chavez": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Ernesto Chavez"
+            "person_id": "Ernesto Chavez"
         },
         "Jacque Chirac": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Jacque Chirac"
+            "person_id": "Jacque Chirac"
         },
         "Jane Randolph": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Jane Randolph"
+            "person_id": "Jane Randolph"
         },
         "Maria Reynolds": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Maria Reynolds"
+            "person_id": "Maria Reynolds"
         },
         "Martha Doubs": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Martha Doubs"
+            "person_id": "Martha Doubs"
         },
         "Mikayla": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Mikayla"
+            "person_id": "Mikayla"
         },
         "Norberto": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Norberto"
+            "person_id": "Norberto"
         },
         "Perrison": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Perrison"
+            "person_id": "Perrison"
         },
         "Philipa": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Philipa"
+            "person_id": "Philipa"
         },
         "Prashant": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Prashant"
+            "person_id": "Prashant"
         },
         "Renee Elise Goldsberry": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Renee Elise Goldsberry"
+            "person_id": "Renee Elise Goldsberry"
         },
         "Sam zamora": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Sam zamora"
+            "person_id": "Sam zamora"
         },
         "Shadwell Harris": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Shadwell Harris"
+            "person_id": "Shadwell Harris"
         },
         "Thomas OSU": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Thomas OSU"
+            "person_id": "Thomas OSU"
         },
         "Travis Fox": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "Travis Fox"
+            "person_id": "Travis Fox"
         },
         "WIlliam Wallace": {
             "_credor_operational": null,
             "_debtor_operational": null,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "other_id": "WIlliam Wallace"
+            "person_id": "WIlliam Wallace"
         }
     },
     "_weight": 1,

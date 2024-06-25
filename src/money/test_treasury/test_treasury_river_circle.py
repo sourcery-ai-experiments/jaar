@@ -11,7 +11,7 @@ from src.money.treasury_sqlstr import (
 def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 OtherUnits = 12 ledger rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PersonUnits = 12 ledger rows
     x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
@@ -21,14 +21,14 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     elu_text = "Elu"
 
     sal_world = worldunit_shop(_owner_id=sal_text)
-    sal_world.add_otherunit(other_id=bob_text, credor_weight=2)
-    sal_world.add_otherunit(other_id=tom_text, credor_weight=7)
-    sal_world.add_otherunit(other_id=ava_text, credor_weight=1)
+    sal_world.add_personunit(person_id=bob_text, credor_weight=2)
+    sal_world.add_personunit(person_id=tom_text, credor_weight=7)
+    sal_world.add_personunit(person_id=ava_text, credor_weight=1)
     x_money.userhub.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
-    bob_world.add_otherunit(other_id=sal_text, credor_weight=3)
-    bob_world.add_otherunit(other_id=ava_text, credor_weight=1)
+    bob_world.add_personunit(person_id=sal_text, credor_weight=3)
+    bob_world.add_personunit(person_id=ava_text, credor_weight=1)
     x_money.userhub.save_job_world(bob_world)
 
     x_money.refresh_treasury_job_worlds_data()
@@ -50,7 +50,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
 def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 OtherUnits = 12 ledger rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PersonUnits = 12 ledger rows
     x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
@@ -60,27 +60,27 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     elu_text = "Elu"
 
     sal_world = worldunit_shop(_owner_id=sal_text)
-    sal_world.add_otherunit(other_id=bob_text, credor_weight=2)
-    sal_world.add_otherunit(other_id=tom_text, credor_weight=7)
-    sal_world.add_otherunit(other_id=ava_text, credor_weight=1)
+    sal_world.add_personunit(person_id=bob_text, credor_weight=2)
+    sal_world.add_personunit(person_id=tom_text, credor_weight=7)
+    sal_world.add_personunit(person_id=ava_text, credor_weight=1)
     x_money.userhub.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
-    bob_world.add_otherunit(other_id=sal_text, credor_weight=3)
-    bob_world.add_otherunit(other_id=ava_text, credor_weight=1)
+    bob_world.add_personunit(person_id=sal_text, credor_weight=3)
+    bob_world.add_personunit(person_id=ava_text, credor_weight=1)
     x_money.userhub.save_job_world(bob_world)
 
     tom_world = worldunit_shop(_owner_id=tom_text)
-    tom_world.add_otherunit(other_id=sal_text, credor_weight=2)
+    tom_world.add_personunit(person_id=sal_text, credor_weight=2)
     x_money.userhub.save_job_world(tom_world)
 
     ava_world = worldunit_shop(_owner_id=ava_text)
-    ava_world.add_otherunit(other_id=elu_text, credor_weight=2)
+    ava_world.add_personunit(person_id=elu_text, credor_weight=2)
     x_money.userhub.save_job_world(ava_world)
 
     elu_world = worldunit_shop(_owner_id=elu_text)
-    elu_world.add_otherunit(other_id=ava_text, credor_weight=19)
-    elu_world.add_otherunit(other_id=sal_text, credor_weight=1)
+    elu_world.add_personunit(person_id=ava_text, credor_weight=19)
+    elu_world.add_personunit(person_id=sal_text, credor_weight=1)
     x_money.userhub.save_job_world(elu_world)
 
     x_money.refresh_treasury_job_worlds_data()

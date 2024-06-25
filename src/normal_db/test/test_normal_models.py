@@ -7,9 +7,9 @@ from src.gift.atom_config import (
 )
 from src.normal_db.normal_models import (
     WorldTable,
-    OtherUnitTable,
+    PersonUnitTable,
     BeliefTable,
-    OtherLinkTable,
+    PersonLinkTable,
     IdeaTable,
     BalanceLinkTable,
     ReasonTable,
@@ -73,16 +73,16 @@ def test_normalized_table_WorldTable_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_OtherUnitTable_Exists():
+def test_normalized_table_PersonUnitTable_Exists():
     # GIVEN
-    config_category = get_normalized_world_table_build().get("world_otherunit")
-    mapper = inspect(OtherUnitTable)
+    config_category = get_normalized_world_table_build().get("world_personunit")
+    mapper = inspect(PersonUnitTable)
     # print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "otherunit"
-    assert config_table_name == OtherUnitTable.__tablename__
+    assert config_table_name == "personunit"
+    assert config_table_name == PersonUnitTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 
@@ -99,16 +99,16 @@ def test_normalized_table_BeliefTable_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_OtherLinkTable_otherlink_Exists():
+def test_normalized_table_PersonLinkTable_personlink_Exists():
     # GIVEN
-    config_category = get_normalized_world_table_build().get("world_belief_otherlink")
-    mapper = inspect(OtherLinkTable)
+    config_category = get_normalized_world_table_build().get("world_belief_personlink")
+    mapper = inspect(PersonLinkTable)
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "otherlink"
-    assert config_table_name == OtherLinkTable.__tablename__
+    assert config_table_name == "personlink"
+    assert config_table_name == PersonLinkTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 

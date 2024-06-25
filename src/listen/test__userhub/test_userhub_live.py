@@ -38,7 +38,7 @@ def test_UserHub_save_live_file_CorrectlySavesFile(env_dir_setup_cleanup):
     # WHEN
     sue_world = worldunit_shop(sue_text)
     bob_text = "Bob"
-    sue_world.add_otherunit(bob_text)
+    sue_world.add_personunit(bob_text)
     sue_userhub.save_live_world(sue_world)
 
     # THEN
@@ -47,19 +47,19 @@ def test_UserHub_save_live_file_CorrectlySavesFile(env_dir_setup_cleanup):
     live_file_text = open_file(sue_userhub.live_dir(), sue_userhub.live_file_name())
     print(f"{live_file_text=}")
     live_world = worldunit_get_from_json(live_file_text)
-    assert live_world.other_exists(bob_text)
+    assert live_world.person_exists(bob_text)
 
     # # WHEN
     sue2_world = worldunit_shop(sue_text)
     zia_text = "Zia"
-    sue2_world.add_otherunit(zia_text)
+    sue2_world.add_personunit(zia_text)
     sue_userhub.save_live_world(sue2_world)
 
     # THEN
     live_file_text = open_file(sue_userhub.live_dir(), sue_userhub.live_file_name())
     print(f"{live_file_text=}")
     live_world = worldunit_get_from_json(live_file_text)
-    assert live_world.other_exists(zia_text)
+    assert live_world.person_exists(zia_text)
 
 
 def test_UserHub_save_live_file_RaisesErrorWhenWorld_live_id_IsWrong(
@@ -94,21 +94,21 @@ def test_UserHub_initialize_live_file_CorrectlySavesFile(env_dir_setup_cleanup):
     assert live_world._real_id == root_label()
     assert live_world._owner_id == sue_text
     bob_text = "Bob"
-    assert live_world.other_exists(bob_text) is False
+    assert live_world.person_exists(bob_text) is False
 
     # GIVEN
     sue_world = worldunit_shop(sue_text)
-    sue_world.add_otherunit(bob_text)
+    sue_world.add_personunit(bob_text)
     sue_userhub.save_live_world(sue_world)
     live_world = sue_userhub.get_live_world()
-    assert live_world.get_other(bob_text)
+    assert live_world.get_person(bob_text)
 
     # WHEN
     sue_userhub.initialize_live_file(sue_world)
 
     # THEN
     live_world = sue_userhub.get_live_world()
-    assert live_world.get_other(bob_text)
+    assert live_world.get_person(bob_text)
 
 
 def test_UserHub_initialize_live_file_CorrectlyDoesNotOverwrite(
@@ -127,7 +127,7 @@ def test_UserHub_initialize_live_file_CorrectlyDoesNotOverwrite(
 
     # WHEN
     bob_text = "Bob"
-    sue_world.add_otherunit(bob_text)
+    sue_world.add_personunit(bob_text)
     sue_userhub.initialize_live_file(sue_world)
 
     # THEN

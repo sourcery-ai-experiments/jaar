@@ -200,27 +200,27 @@ def _delete_and_set_ex6(ex6_id: str = None):
     elu_text = "Elu"
 
     sal_world = worldunit_shop(_owner_id=sal_text)
-    sal_world.add_otherunit(other_id=bob_text, credor_weight=2)
-    sal_world.add_otherunit(other_id=tom_text, credor_weight=7)
-    sal_world.add_otherunit(other_id=ava_text, credor_weight=1)
+    sal_world.add_personunit(person_id=bob_text, credor_weight=2)
+    sal_world.add_personunit(person_id=tom_text, credor_weight=7)
+    sal_world.add_personunit(person_id=ava_text, credor_weight=1)
     x_money.userhub.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
-    bob_world.add_otherunit(other_id=sal_text, credor_weight=3)
-    bob_world.add_otherunit(other_id=ava_text, credor_weight=1)
+    bob_world.add_personunit(person_id=sal_text, credor_weight=3)
+    bob_world.add_personunit(person_id=ava_text, credor_weight=1)
     x_money.userhub.save_job_world(bob_world)
 
     tom_world = worldunit_shop(_owner_id=tom_text)
-    tom_world.add_otherunit(other_id=sal_text, credor_weight=2)
+    tom_world.add_personunit(person_id=sal_text, credor_weight=2)
     x_money.userhub.save_job_world(tom_world)
 
     ava_world = worldunit_shop(_owner_id=ava_text)
-    ava_world.add_otherunit(other_id=elu_text, credor_weight=2)
+    ava_world.add_personunit(person_id=elu_text, credor_weight=2)
     x_money.userhub.save_job_world(ava_world)
 
     elu_world = worldunit_shop(_owner_id=elu_text)
-    elu_world.add_otherunit(other_id=ava_text, credor_weight=19)
-    elu_world.add_otherunit(other_id=sal_text, credor_weight=1)
+    elu_world.add_personunit(person_id=ava_text, credor_weight=19)
+    elu_world.add_personunit(person_id=sal_text, credor_weight=1)
     x_money.userhub.save_job_world(elu_world)
 
     x_money.refresh_treasury_job_worlds_data()

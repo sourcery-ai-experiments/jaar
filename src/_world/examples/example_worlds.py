@@ -369,8 +369,8 @@ def get_world_assignment_laundry_example1() -> WorldUnit:
     amos_text = "Amos"
     amos_world = worldunit_shop(_owner_id=amos_text)
     cali_text = "Cali"
-    amos_world.add_otherunit(amos_text)
-    amos_world.add_otherunit(cali_text)
+    amos_world.add_personunit(amos_text)
+    amos_world.add_personunit(cali_text)
 
     casa_text = "casa"
     basket_text = "laundry basket status"

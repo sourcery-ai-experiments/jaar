@@ -37,15 +37,15 @@ def test_listen_to_agendas_same_live_AddsTasksToWorldWhenNo_suffbeliefIsSet(
     zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_same.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_same.set_other_pool(zia_pool)
+    yao_same.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_same.set_person_pool(zia_pool)
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_same_world(yao_same)
 
     zia_live = worldunit_shop(zia_text)
     zia_live.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_live.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_live.add_otherunit(yao_text, debtor_weight=12)
+    zia_live.add_personunit(yao_text, debtor_weight=12)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
     zia_userhub.save_live_world(zia_live)
 
@@ -68,15 +68,15 @@ def test_listen_to_agendas_same_live_AddsTasksToWorld(env_dir_setup_cleanup):
     zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_same.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_same.set_other_pool(zia_pool)
+    yao_same.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_same.set_person_pool(zia_pool)
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_same_world(yao_same)
 
     zia_live = worldunit_shop(zia_text)
     zia_live.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_live.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_live.add_otherunit(yao_text, debtor_weight=12)
+    zia_live.add_personunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_live.get_idea_obj(clean_road())
     cook_ideaunit = zia_live.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
@@ -131,16 +131,16 @@ def test_listen_to_agendas_same_live_AddsTasksToWorldWithDetailsDecidedBy_debtor
     # THEN
     assert new_yao_live1.idea_exists(cook_road())
     new_cook_idea = new_yao_live1.get_idea_obj(cook_road())
-    zia_otherunit = new_yao_live1.get_other(zia_text)
-    bob_otherunit = new_yao_live1.get_other(bob_text)
-    assert zia_otherunit.debtor_weight < bob_otherunit.debtor_weight
+    zia_personunit = new_yao_live1.get_person(zia_text)
+    bob_personunit = new_yao_live1.get_person(bob_text)
+    assert zia_personunit.debtor_weight < bob_personunit.debtor_weight
     assert new_cook_idea.get_reasonunit(eat_road()) is None
 
     yao_zia_debtor_weight = 15
     yao_bob_debtor_weight = 5
-    yao_same.add_otherunit(zia_text, None, yao_zia_debtor_weight)
-    yao_same.add_otherunit(bob_text, None, yao_bob_debtor_weight)
-    yao_same.set_other_pool(100)
+    yao_same.add_personunit(zia_text, None, yao_zia_debtor_weight)
+    yao_same.add_personunit(bob_text, None, yao_bob_debtor_weight)
+    yao_same.set_person_pool(100)
     new_yao_live2 = create_listen_basis(yao_same)
     assert new_yao_live2.idea_exists(cook_road()) is False
 
@@ -150,9 +150,9 @@ def test_listen_to_agendas_same_live_AddsTasksToWorldWithDetailsDecidedBy_debtor
     # THEN
     assert new_yao_live2.idea_exists(cook_road())
     new_cook_idea = new_yao_live2.get_idea_obj(cook_road())
-    zia_otherunit = new_yao_live2.get_other(zia_text)
-    bob_otherunit = new_yao_live2.get_other(bob_text)
-    assert zia_otherunit.debtor_weight > bob_otherunit.debtor_weight
+    zia_personunit = new_yao_live2.get_person(zia_text)
+    bob_personunit = new_yao_live2.get_person(bob_text)
+    assert zia_personunit.debtor_weight > bob_personunit.debtor_weight
     zia_eat_reasonunit = zia_cook_ideaunit.get_reasonunit(eat_road())
     assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit
 
@@ -167,10 +167,10 @@ def test_listen_to_agendas_same_live_ProcessesIrrationalWorld(env_dir_setup_clea
     sue_text = "Sue"
     sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_same.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_same.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_same.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_same.add_personunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_same.set_other_pool(yao_pool)
+    yao_same.set_person_pool(yao_pool)
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_same_world(yao_same)
 
@@ -178,7 +178,7 @@ def test_listen_to_agendas_same_live_ProcessesIrrationalWorld(env_dir_setup_clea
     zia_live = worldunit_shop(zia_text)
     zia_live.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_live.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_live.add_otherunit(yao_text, debtor_weight=12)
+    zia_live.add_personunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_live.get_idea_obj(clean_road())
     cook_ideaunit = zia_live.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
@@ -188,7 +188,7 @@ def test_listen_to_agendas_same_live_ProcessesIrrationalWorld(env_dir_setup_clea
 
     sue_live = worldunit_shop(sue_text)
     sue_live.set_max_tree_traverse(5)
-    zia_live.add_otherunit(yao_text, debtor_weight=12)
+    zia_live.add_personunit(yao_text, debtor_weight=12)
     vacuum_text = "vacuum"
     vacuum_road = sue_live.make_l1_road(vacuum_text)
     sue_live.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
@@ -225,12 +225,12 @@ def test_listen_to_agendas_same_live_ProcessesIrrationalWorld(env_dir_setup_clea
     # THEN irrational world is ignored
     assert len(new_yao_live.get_agenda_dict()) != 3
     assert len(new_yao_live.get_agenda_dict()) == 2
-    zia_otherunit = new_yao_live.get_other(zia_text)
-    sue_otherunit = new_yao_live.get_other(sue_text)
-    print(f"{sue_otherunit.debtor_weight=}")
-    print(f"{sue_otherunit._irrational_debtor_weight=}")
-    assert zia_otherunit._irrational_debtor_weight == 0
-    assert sue_otherunit._irrational_debtor_weight == 51
+    zia_personunit = new_yao_live.get_person(zia_text)
+    sue_personunit = new_yao_live.get_person(sue_text)
+    print(f"{sue_personunit.debtor_weight=}")
+    print(f"{sue_personunit._irrational_debtor_weight=}")
+    assert zia_personunit._irrational_debtor_weight == 0
+    assert sue_personunit._irrational_debtor_weight == 51
 
 
 def test_listen_to_agendas_same_live_ProcessesMissingDebtorWorld(
@@ -248,16 +248,16 @@ def test_listen_to_agendas_same_live_ProcessesMissingDebtorWorld(
     sue_credor_weight = 57
     zia_debtor_weight = 41
     sue_debtor_weight = 51
-    yao_same.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_same.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_same.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_same.add_personunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_same.set_other_pool(yao_pool)
+    yao_same.set_person_pool(yao_pool)
     yao_userhub.save_same_world(yao_same)
 
     zia_live = worldunit_shop(zia_text)
     zia_live.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_live.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_live.add_otherunit(yao_text, debtor_weight=12)
+    zia_live.add_personunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_live.get_idea_obj(clean_road())
     cook_ideaunit = zia_live.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
@@ -272,12 +272,12 @@ def test_listen_to_agendas_same_live_ProcessesMissingDebtorWorld(
     # THEN irrational world is ignored
     assert len(new_yao_live.get_agenda_dict()) != 3
     assert len(new_yao_live.get_agenda_dict()) == 2
-    zia_otherunit = new_yao_live.get_other(zia_text)
-    sue_otherunit = new_yao_live.get_other(sue_text)
-    print(f"{sue_otherunit.debtor_weight=}")
-    print(f"{sue_otherunit._inallocable_debtor_weight=}")
-    assert zia_otherunit._inallocable_debtor_weight == 0
-    assert sue_otherunit._inallocable_debtor_weight == 51
+    zia_personunit = new_yao_live.get_person(zia_text)
+    sue_personunit = new_yao_live.get_person(sue_text)
+    print(f"{sue_personunit.debtor_weight=}")
+    print(f"{sue_personunit._inallocable_debtor_weight=}")
+    assert zia_personunit._inallocable_debtor_weight == 0
+    assert sue_personunit._inallocable_debtor_weight == 51
 
 
 def test_listen_to_agendas_same_live_ListensToOwner_same_AndNotOwner_live(
@@ -289,13 +289,13 @@ def test_listen_to_agendas_same_live_ListensToOwner_same_AndNotOwner_live(
     yao_text = "Yao"
     yao_credor_weight = 57
     yao_debtor_weight = 51
-    yao_same.add_otherunit(yao_text, yao_credor_weight, yao_debtor_weight)
+    yao_same.add_personunit(yao_text, yao_credor_weight, yao_debtor_weight)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
-    yao_same.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_same.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_pool = 87
-    yao_same.set_other_pool(yao_pool)
+    yao_same.set_person_pool(yao_pool)
     # save yao without task to roles
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_same_world(yao_same)
@@ -305,7 +305,7 @@ def test_listen_to_agendas_same_live_ListensToOwner_same_AndNotOwner_live(
     zia_live = worldunit_shop(zia_text)
     zia_live.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     zia_live.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_live.add_otherunit(yao_text, debtor_weight=12)
+    zia_live.add_personunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_live.get_idea_obj(clean_road())
     cook_ideaunit = zia_live.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)

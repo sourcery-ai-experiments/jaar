@@ -63,16 +63,16 @@ def worldunit_text() -> str:
     return "worldunit"
 
 
-def world_otherunit_text() -> str:
-    return "world_otherunit"
+def world_personunit_text() -> str:
+    return "world_personunit"
 
 
 def world_beliefunit_text() -> str:
     return "world_beliefunit"
 
 
-def world_belief_otherlink_text() -> str:
-    return "world_belief_otherlink"
+def world_belief_personlink_text() -> str:
+    return "world_belief_personlink"
 
 
 def world_ideaunit_text() -> str:

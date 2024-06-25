@@ -22,7 +22,7 @@ def test_UserHub_get_econ_roads_RaisesErrorWhen__econs_justified_IsFalse(
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
     sue_userhub.save_same_world(sue_userhub.default_same_world())
     sue_same_world = sue_userhub.get_same_world()
-    sue_same_world.add_otherunit(sue_text)
+    sue_same_world.add_personunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_same_world.make_l1_road(texas_text)
     dallas_text = "dallas"
@@ -52,7 +52,7 @@ def test_UserHub_get_econ_roads_RaisesErrorWhen__econs_buildable_IsFalse(
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
     sue_userhub.save_same_world(sue_userhub.default_same_world())
     sue_same_world = sue_userhub.get_same_world()
-    sue_same_world.add_otherunit(sue_text)
+    sue_same_world.add_personunit(sue_text)
     texas_text = "Tex/as"
     texas_road = sue_same_world.make_l1_road(texas_text)
     sue_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
@@ -77,7 +77,7 @@ def test_UserHub_get_econ_roads_ReturnsObj(env_dir_setup_cleanup):
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
     sue_userhub.save_same_world(sue_userhub.default_same_world())
     sue_same_world = sue_userhub.get_same_world()
-    sue_same_world.add_otherunit(sue_text)
+    sue_same_world.add_personunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_same_world.make_l1_road(texas_text)
     sue_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
@@ -110,9 +110,9 @@ def test_UserHub_save_all_same_roles_CorrectlySetsroles(
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
     sue_userhub.save_same_world(sue_userhub.default_same_world())
     sue_same_world = sue_userhub.get_same_world()
-    sue_same_world.add_otherunit(sue_text)
+    sue_same_world.add_personunit(sue_text)
     bob_text = "Bob"
-    sue_same_world.add_otherunit(bob_text)
+    sue_same_world.add_personunit(bob_text)
     texas_text = "Texas"
     texas_road = sue_same_world.make_l1_road(texas_text)
     sue_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
@@ -249,7 +249,7 @@ def test_UserHub_create_same_treasury_db_files_CreatesDatabases(env_dir_setup_cl
     sue_userhub = userhub_shop(env_dir(), None, sue_text, None)
     sue_userhub.save_same_world(sue_userhub.default_same_world())
     sue_same_world = sue_userhub.get_same_world()
-    sue_same_world.add_otherunit(sue_text)
+    sue_same_world.add_personunit(sue_text)
     texas_text = "Texas"
     texas_road = sue_same_world.make_l1_road(texas_text)
     sue_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))

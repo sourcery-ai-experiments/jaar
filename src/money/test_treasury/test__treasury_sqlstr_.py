@@ -3,10 +3,10 @@ from src.money.treasury_sqlstr import (
     get_worldunit_table_create_sqlstr,
     get_worldunit_update_sqlstr,
     get_worldunits_select_sqlstr,
-    get_world_otherunit_table_create_sqlstr,
-    get_world_otherunit_table_update_treasury_due_paid_sqlstr,
-    get_world_otherunit_table_update_cred_score_sqlstr,
-    get_world_otherunit_table_update_treasury_voice_rank_sqlstr,
+    get_world_personunit_table_create_sqlstr,
+    get_world_personunit_table_update_treasury_due_paid_sqlstr,
+    get_world_personunit_table_update_cred_score_sqlstr,
+    get_world_personunit_table_update_treasury_voice_rank_sqlstr,
     get_river_reach_table_touch_select_sqlstr,
     get_river_reach_table_final_select_sqlstr,
     get_river_reach_table_create_sqlstr,
@@ -68,28 +68,28 @@ FROM worldunit
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_otherunit_select_sqlstr_ReturnsCorrectStr():
+def test_get_personunit_select_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     bob_text = "Bob"
-    generated_sqlstr = get_world_otherunit_table_update_treasury_due_paid_sqlstr(
+    generated_sqlstr = get_world_personunit_table_update_treasury_due_paid_sqlstr(
         bob_text
     )
 
     # THEN
     example_sqlstr = f"""
-UPDATE world_otherunit
+UPDATE world_personunit
 SET _treasury_due_paid = (
     SELECT SUM(block.cash_close-block.cash_start) 
     FROM river_block block
     WHERE block.cash_master='{bob_text}' 
         AND block.dst_owner_id=block.cash_master
-        AND block.src_owner_id = world_otherunit.other_id
+        AND block.src_owner_id = world_personunit.person_id
     )
 WHERE EXISTS (
     SELECT block.cash_close
     FROM river_block block
-    WHERE world_otherunit.owner_id='{bob_text}' 
-        AND world_otherunit.other_id = block.dst_owner_id
+    WHERE world_personunit.owner_id='{bob_text}' 
+        AND world_personunit.person_id = block.dst_owner_id
 )
 ;
 """
@@ -364,15 +364,15 @@ ORDER BY range_sum DESC
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_world_otherunit_table_create_sqlstr_ReturnsCorrectStr():
+def test_get_world_personunit_table_create_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
-    generated_sqlstr = get_world_otherunit_table_create_sqlstr()
+    generated_sqlstr = get_world_personunit_table_create_sqlstr()
 
     # THEN
     example_sqlstr = """
-CREATE TABLE IF NOT EXISTS world_otherunit (
+CREATE TABLE IF NOT EXISTS world_personunit (
   owner_id VARCHAR(255) NOT NULL 
-, other_id VARCHAR(255) NOT NULL
+, person_id VARCHAR(255) NOT NULL
 , _world_cred FLOAT
 , _world_debt FLOAT
 , _world_agenda_cred FLOAT
@@ -387,56 +387,56 @@ CREATE TABLE IF NOT EXISTS world_otherunit (
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
 , FOREIGN KEY(owner_id) REFERENCES worldunit(owner_id)
-, FOREIGN KEY(other_id) REFERENCES worldunit(owner_id)
-, UNIQUE(owner_id, other_id)
+, FOREIGN KEY(person_id) REFERENCES worldunit(owner_id)
+, UNIQUE(owner_id, person_id)
 )
 ;
 """
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_world_otherunit_table_update_cred_score_sqlstr_ReturnsCorrectStr():
+def test_get_world_personunit_table_update_cred_score_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     yao_text = "Yao"
-    generated_sqlstr = get_world_otherunit_table_update_cred_score_sqlstr(yao_text)
+    generated_sqlstr = get_world_personunit_table_update_cred_score_sqlstr(yao_text)
 
     # THEN
     example_sqlstr = f"""
-UPDATE world_otherunit
+UPDATE world_personunit
 SET _treasury_cred_score = (
     SELECT SUM(reach_coin_close - reach_coin_start) range_sum
     FROM river_reach reach
-    WHERE reach.cash_master = world_otherunit.owner_id
-        AND reach.src_owner_id = world_otherunit.other_id
+    WHERE reach.cash_master = world_personunit.owner_id
+        AND reach.src_owner_id = world_personunit.person_id
     )
-WHERE world_otherunit.owner_id = '{yao_text}'
+WHERE world_personunit.owner_id = '{yao_text}'
 ;
 """
     assert generated_sqlstr == example_sqlstr
 
 
-def test_get_world_otherunit_table_update_treasury_voice_rank_sqlstr_ReturnsCorrectStr():
+def test_get_world_personunit_table_update_treasury_voice_rank_sqlstr_ReturnsCorrectStr():
     # GIVEN / WHEN
     yao_text = "Yao"
-    generated_sqlstr = get_world_otherunit_table_update_treasury_voice_rank_sqlstr(
+    generated_sqlstr = get_world_personunit_table_update_treasury_voice_rank_sqlstr(
         yao_text
     )
 
     # THEN
     example_sqlstr = f"""
-UPDATE world_otherunit
+UPDATE world_personunit
 SET _treasury_voice_rank = 
     (
     SELECT rn
     FROM (
-        SELECT p2.other_id
+        SELECT p2.person_id
         , row_number() over (order by p2._treasury_cred_score DESC) rn
-        FROM world_otherunit p2
+        FROM world_personunit p2
         WHERE p2.owner_id = '{yao_text}'
     ) p3
-    WHERE p3.other_id = world_otherunit.other_id AND world_otherunit.owner_id = '{yao_text}'
+    WHERE p3.person_id = world_personunit.person_id AND world_personunit.owner_id = '{yao_text}'
     )
-WHERE world_otherunit.owner_id = '{yao_text}'
+WHERE world_personunit.owner_id = '{yao_text}'
 ;
 """
     assert generated_sqlstr == example_sqlstr

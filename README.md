@@ -22,7 +22,7 @@ positions are aggregated by a listener into a coherant agenda that can include p
 to do and pledges of states of existence. Listening and acting on it.
 
 A agents's agenda in the community is built by the the weighted intreprtation of
-1. Other agents agendas 
+1. Person agents agendas 
 2. Their own independent agenda
 
 Each agenda is saved as a JSON file. 
@@ -64,7 +64,7 @@ base attributes vs reason attributess
 
 WorldUnit objects
 
-WorldUnit OtherUnit objects
+WorldUnit PersonUnit objects
 
 WorldUnit BeliefUnit objects
 

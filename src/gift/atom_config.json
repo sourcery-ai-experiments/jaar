@@ -1,5 +1,5 @@
 {
-    "world_belief_otherlink": {
+    "world_belief_personlink": {
         "calculated_attrs": {},
         "DELETE": {
             "atom_order": 25
@@ -8,7 +8,7 @@
             "atom_order": 1
         },
         "normal_specs": {
-            "normal_table_name": "otherlink"
+            "normal_table_name": "personlink"
         },
         "optional_args": {
             "credor_weight": {
@@ -25,8 +25,8 @@
                 "python_type": "BeliefID",
                 "sqlite_datatype": "TEXT"
             },
-            "other_id": {
-                "python_type": "OtherID",
+            "person_id": {
+                "python_type": "PersonID",
                 "sqlite_datatype": "TEXT"
             }
         },
@@ -334,7 +334,7 @@
             "atom_order": 13
         }
     },
-    "world_otherunit": {
+    "world_personunit": {
         "calculated_attrs": {},
         "DELETE": {
             "atom_order": 26
@@ -343,7 +343,7 @@
             "atom_order": 0
         },
         "normal_specs": {
-            "normal_table_name": "otherunit"
+            "normal_table_name": "personunit"
         },
         "optional_args": {
             "credor_weight": {
@@ -356,8 +356,8 @@
             }
         },
         "required_args": {
-            "other_id": {
-                "python_type": "OtherID",
+            "person_id": {
+                "python_type": "PersonID",
                 "sqlite_datatype": "TEXT"
             }
         },
@@ -384,11 +384,11 @@
                 "python_type": "str",
                 "sqlite_datatype": "TEXT"
             },
-            "_other_credor_pool": {
+            "_person_credor_pool": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },
-            "_other_debtor_pool": {
+            "_person_debtor_pool": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
             },

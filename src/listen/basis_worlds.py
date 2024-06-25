@@ -20,22 +20,22 @@ def create_empty_world(ref_world: WorldUnit, x_owner_id: OwnerID = None) -> Worl
 
 def create_listen_basis(x_role: WorldUnit) -> WorldUnit:
     x_listen = create_empty_world(x_role, x_owner_id=x_role._owner_id)
-    x_listen._others = x_role._others
+    x_listen._persons = x_role._persons
     x_listen._beliefs = x_role._beliefs
     x_listen.set_monetary_desc(x_role._monetary_desc)
     x_listen.set_max_tree_traverse(x_role._max_tree_traverse)
-    if x_role._other_credor_pool != None:
-        x_listen.set_other_credor_pool(x_role._other_credor_pool)
-    if x_role._other_debtor_pool != None:
-        x_listen.set_other_debtor_pool(x_role._other_debtor_pool)
-    for x_otherunit in x_listen._others.values():
-        x_otherunit.reset_listen_calculated_attrs()
+    if x_role._person_credor_pool != None:
+        x_listen.set_person_credor_pool(x_role._person_credor_pool)
+    if x_role._person_debtor_pool != None:
+        x_listen.set_person_debtor_pool(x_role._person_debtor_pool)
+    for x_personunit in x_listen._persons.values():
+        x_personunit.reset_listen_calculated_attrs()
     return x_listen
 
 
 def get_default_live_world(same: WorldUnit) -> WorldUnit:
     default_live_world = create_listen_basis(same)
     default_live_world._last_gift_id = same._last_gift_id
-    default_live_world._other_credor_pool = None
-    default_live_world._other_debtor_pool = None
+    default_live_world._person_credor_pool = None
+    default_live_world._person_debtor_pool = None
     return default_live_world

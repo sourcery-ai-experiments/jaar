@@ -1,5 +1,5 @@
 from src._road.road import create_road, get_default_real_id_roadnode as root_label
-from src._world.other import otherunit_shop
+from src._world.person import personunit_shop
 from src.gift.change import (
     ChangeUnit,
     changeunit_shop,
@@ -125,28 +125,28 @@ def test_ChangeUnit_add_atomunit_CorrectlySets_WorldUnitSimpleAttrs():
     assert x_atomunit.category == worldunit_text
 
 
-def test_ChangeUnit_add_atomunit_CorrectlySets_WorldUnit_otherunits():
+def test_ChangeUnit_add_atomunit_CorrectlySets_WorldUnit_personunits():
     # GIVEN
     ex1_changeunit = changeunit_shop()
     assert ex1_changeunit.atomunits == {}
 
     # WHEN
-    other_id_text = "other_id"
+    person_id_text = "person_id"
     bob_text = "Bob"
     bob_credor_weight = 55
     bob_debtor_weight = 66
-    bob_otherunit = otherunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
-    other_id_text = "other_id"
+    bob_personunit = personunit_shop(bob_text, bob_credor_weight, bob_debtor_weight)
+    person_id_text = "person_id"
     cw_text = "credor_weight"
     dw_text = "debtor_weight"
-    print(f"{bob_otherunit.get_dict()=}")
-    bob_required_dict = {other_id_text: bob_otherunit.get_dict().get(other_id_text)}
-    bob_optional_dict = {cw_text: bob_otherunit.get_dict().get(cw_text)}
-    bob_optional_dict[dw_text] = bob_otherunit.get_dict().get(dw_text)
+    print(f"{bob_personunit.get_dict()=}")
+    bob_required_dict = {person_id_text: bob_personunit.get_dict().get(person_id_text)}
+    bob_optional_dict = {cw_text: bob_personunit.get_dict().get(cw_text)}
+    bob_optional_dict[dw_text] = bob_personunit.get_dict().get(dw_text)
     print(f"{bob_required_dict=}")
-    otherunit_text = "world_otherunit"
+    personunit_text = "world_personunit"
     ex1_changeunit.add_atomunit(
-        category=otherunit_text,
+        category=personunit_text,
         crud_text=atom_insert(),
         required_args=bob_required_dict,
         optional_args=bob_optional_dict,
@@ -154,7 +154,7 @@ def test_ChangeUnit_add_atomunit_CorrectlySets_WorldUnit_otherunits():
     # THEN
     assert len(ex1_changeunit.atomunits) == 1
     assert (
-        ex1_changeunit.atomunits.get(atom_insert()).get(otherunit_text).get(bob_text)
+        ex1_changeunit.atomunits.get(atom_insert()).get(personunit_text).get(bob_text)
         != None
     )
 
@@ -200,9 +200,9 @@ def test_ChangeUnit_get_category_sorted_atomunits_list_ReturnsCorrectObj():
     assert sue_atoms_list[0] == update_dict.get("worldunit")
     z_atom = sue_atoms_list[1]
     print(f"{z_atom=}")
-    print(delete_dict.get("world_otherunit").keys())
-    carmen_otherunit_delete = delete_dict.get("world_otherunit").get("Carmen")
-    assert sue_atoms_list[1] == carmen_otherunit_delete
+    print(delete_dict.get("world_personunit").keys())
+    carmen_personunit_delete = delete_dict.get("world_personunit").get("Carmen")
+    assert sue_atoms_list[1] == carmen_personunit_delete
     # print(f"{sue_atom_order_dict.keys()=}")
     # # print(f"{sue_atom_order_dict.get(atom_update())=}")
     # assert len(sue_atom_order_dict.get(atom_update())) == 1
@@ -247,7 +247,7 @@ def test_ChangeUnit_get_category_sorted_atomunits_list_ReturnsCorrectObj():
 
 #     # WHEN
 #     new3_value = 77
-#     x_attribute = "_other_credor_pool"
+#     x_attribute = "_person_credor_pool"
 #     required_args = {x_attribute: new3_value}
 #     x_atomunit = atomunit_shop(x_attribute, atom_update(), None, required_args)
 #     ex1_changeunit.set_atomunit(x_atomunit)
@@ -257,7 +257,7 @@ def test_ChangeUnit_get_category_sorted_atomunits_list_ReturnsCorrectObj():
 
 #     # WHEN
 #     new4_value = 88
-#     x_attribute = "_other_debtor_pool"
+#     x_attribute = "_person_debtor_pool"
 #     required_args = {x_attribute: new4_value}
 #     x_atomunit = atomunit_shop(x_attribute, atom_update(), None, required_args)
 #     ex1_changeunit.set_atomunit(x_atomunit)
@@ -280,14 +280,14 @@ def test_ChangeUnit_get_sorted_atomunits_ReturnsCorrectObj():
     # GIVEN
     ex1_changeunit = get_changeunit_example1()
     worldunit_text = "worldunit"
-    world_otherunit_text = "world_otherunit"
+    world_personunit_text = "world_personunit"
     update_dict = ex1_changeunit.atomunits.get(atom_update())
     assert len(update_dict.keys()) == 1
     assert update_dict.get(worldunit_text) != None
     print(f"atom_order 28 {ex1_changeunit.atomunits.get(atom_update()).keys()=}")
     delete_dict = ex1_changeunit.atomunits.get(atom_delete())
     assert len(delete_dict.keys()) == 1
-    assert delete_dict.get(world_otherunit_text) != None
+    assert delete_dict.get(world_personunit_text) != None
     print(f"atom_order 26 {ex1_changeunit.atomunits.get(atom_delete()).keys()=}")
 
     # WHEN
@@ -295,11 +295,11 @@ def test_ChangeUnit_get_sorted_atomunits_ReturnsCorrectObj():
 
     # THEN
     assert len(sue_atom_order_list) == 2
-    print(delete_dict.get("world_otherunit").keys())
-    carmen_otherunit_delete = delete_dict.get("world_otherunit").get("Carmen")
+    print(delete_dict.get("world_personunit").keys())
+    carmen_personunit_delete = delete_dict.get("world_personunit").get("Carmen")
     # for atomunit in sue_atom_order_list:
     #     print(f"{atomunit.atom_order=}")
-    assert sue_atom_order_list[0] == carmen_otherunit_delete
+    assert sue_atom_order_list[0] == carmen_personunit_delete
     assert sue_atom_order_list[1] == update_dict.get(worldunit_text)
     # for crud_text, atom_list in sue_atom_order_dict.items():
     #     print(f"{crud_text=}")
@@ -386,14 +386,14 @@ def test_validate_world_build_from_change_ReturnsCorrectObjGivenNoWorld():
 
     worldunit_text = "worldunit"
     x_atomunit = atomunit_shop(worldunit_text, atom_update())
-    x_attribute = "_other_credor_pool"
+    x_attribute = "_person_credor_pool"
     x_atomunit.set_optional_arg(x_attribute, 100)
     sue_changeunit.set_atomunit(x_atomunit)
 
-    category = "world_otherunit"
+    category = "world_personunit"
     carm_text = "Carmen"
     x_atomunit = atomunit_shop(category, atom_insert())
-    x_atomunit.set_arg("other_id", carm_text)
+    x_atomunit.set_arg("person_id", carm_text)
     x_atomunit.set_arg("credor_weight", 70)
     sue_changeunit.set_atomunit(x_atomunit)
 
@@ -403,7 +403,7 @@ def test_validate_world_build_from_change_ReturnsCorrectObjGivenNoWorld():
     # WHEN
     rico_text = "Rico"
     x_atomunit = atomunit_shop(category, atom_insert())
-    x_atomunit.set_arg("other_id", rico_text)
+    x_atomunit.set_arg("person_id", rico_text)
     x_atomunit.set_arg("credor_weight", 30)
     sue_changeunit.set_atomunit(x_atomunit)
 
@@ -413,7 +413,7 @@ def test_validate_world_build_from_change_ReturnsCorrectObjGivenNoWorld():
     # WHEN
     bob_text = "Bob"
     x_atomunit = atomunit_shop(category, atom_insert())
-    x_atomunit.set_arg("other_id", bob_text)
+    x_atomunit.set_arg("person_id", bob_text)
     x_atomunit.set_arg("credor_weight", 35)
     sue_changeunit.set_atomunit(x_atomunit)
 
@@ -424,44 +424,44 @@ def test_validate_world_build_from_change_ReturnsCorrectObjGivenNoWorld():
 def test_validate_world_build_from_change_ReturnsCorrectObjGivenWorld():
     # GIVEN
     sue_world = worldunit_shop("Sue")
-    sue_world.set_other_credor_pool(100)
+    sue_world.set_person_credor_pool(100)
 
     sue_changeunit = changeunit_shop()
 
-    category = "world_otherunit"
+    category = "world_personunit"
     carm_text = "Carmen"
     x_atomunit = atomunit_shop(category, atom_insert())
-    x_atomunit.set_arg("other_id", carm_text)
+    x_atomunit.set_arg("person_id", carm_text)
     x_atomunit.set_arg("credor_weight", 70)
     sue_changeunit.set_atomunit(x_atomunit)
 
     # WHEN/THEN
     sue_world = worldunit_shop("Sue")
-    sue_world.set_other_credor_pool(100)
+    sue_world.set_person_credor_pool(100)
     assert validate_world_build_from_change(sue_changeunit, sue_world) is False
 
     # WHEN
     rico_text = "Rico"
     x_atomunit = atomunit_shop(category, atom_insert())
-    x_atomunit.set_arg("other_id", rico_text)
+    x_atomunit.set_arg("person_id", rico_text)
     x_atomunit.set_arg("credor_weight", 30)
     sue_changeunit.set_atomunit(x_atomunit)
 
     # THEN
     sue_world = worldunit_shop("Sue")
-    sue_world.set_other_credor_pool(100)
+    sue_world.set_person_credor_pool(100)
     assert validate_world_build_from_change(sue_changeunit, sue_world)
 
     # WHEN
     bob_text = "Bob"
     x_atomunit = atomunit_shop(category, atom_insert())
-    x_atomunit.set_arg("other_id", bob_text)
+    x_atomunit.set_arg("person_id", bob_text)
     x_atomunit.set_arg("credor_weight", 35)
     sue_changeunit.set_atomunit(x_atomunit)
 
     # THEN
     sue_world = worldunit_shop("Sue")
-    sue_world.set_other_credor_pool(100)
+    sue_world.set_person_credor_pool(100)
     assert validate_world_build_from_change(sue_changeunit, sue_world) is False
 
 
@@ -470,20 +470,20 @@ def test_ChangeUnit_get_ordered_atomunits_ReturnsCorrectObj_GivenNoStartingNumbe
     sue_changeunit = changeunit_shop()
     worldunit_text = "worldunit"
     pool_atomunit = atomunit_shop(worldunit_text, atom_update())
-    pool_attribute = "_other_credor_pool"
+    pool_attribute = "_person_credor_pool"
     pool_atomunit.set_optional_arg(pool_attribute, 100)
     sue_changeunit.set_atomunit(pool_atomunit)
-    category = "world_otherunit"
+    category = "world_personunit"
     carm_text = "Carmen"
     carm_atomunit = atomunit_shop(category, atom_insert())
-    carm_atomunit.set_arg("other_id", carm_text)
+    carm_atomunit.set_arg("person_id", carm_text)
     carm_atomunit.set_arg("credor_weight", 70)
     sue_changeunit.set_atomunit(carm_atomunit)
     sue_world = worldunit_shop("Sue")
-    sue_world.set_other_credor_pool(100)
+    sue_world.set_person_credor_pool(100)
     rico_text = "Rico"
     rico_atomunit = atomunit_shop(category, atom_insert())
-    rico_atomunit.set_arg("other_id", rico_text)
+    rico_atomunit.set_arg("person_id", rico_text)
     rico_atomunit.set_arg("credor_weight", 30)
     sue_changeunit.set_atomunit(rico_atomunit)
 
@@ -510,20 +510,20 @@ def test_ChangeUnit_get_ordered_atomunits_ReturnsCorrectObj_GivenStartingNumber(
     sue_changeunit = changeunit_shop()
     worldunit_text = "worldunit"
     pool_atomunit = atomunit_shop(worldunit_text, atom_update())
-    pool_attribute = "_other_credor_pool"
+    pool_attribute = "_person_credor_pool"
     pool_atomunit.set_optional_arg(pool_attribute, 100)
     sue_changeunit.set_atomunit(pool_atomunit)
-    category = "world_otherunit"
+    category = "world_personunit"
     carm_text = "Carmen"
     carm_atomunit = atomunit_shop(category, atom_insert())
-    carm_atomunit.set_arg("other_id", carm_text)
+    carm_atomunit.set_arg("person_id", carm_text)
     carm_atomunit.set_arg("credor_weight", 70)
     sue_changeunit.set_atomunit(carm_atomunit)
     sue_world = worldunit_shop("Sue")
-    sue_world.set_other_credor_pool(100)
+    sue_world.set_person_credor_pool(100)
     rico_text = "Rico"
     rico_atomunit = atomunit_shop(category, atom_insert())
-    rico_atomunit.set_arg("other_id", rico_text)
+    rico_atomunit.set_arg("person_id", rico_text)
     rico_atomunit.set_arg("credor_weight", 30)
     sue_changeunit.set_atomunit(rico_atomunit)
 
@@ -550,20 +550,20 @@ def test_ChangeUnit_get_ordered_dict_ReturnsCorrectObj_GivenStartingNumber():
     sue_changeunit = changeunit_shop()
     worldunit_text = "worldunit"
     pool_atomunit = atomunit_shop(worldunit_text, atom_update())
-    pool_attribute = "_other_credor_pool"
+    pool_attribute = "_person_credor_pool"
     pool_atomunit.set_optional_arg(pool_attribute, 100)
     sue_changeunit.set_atomunit(pool_atomunit)
-    category = "world_otherunit"
+    category = "world_personunit"
     carm_text = "Carmen"
     carm_atomunit = atomunit_shop(category, atom_insert())
-    carm_atomunit.set_arg("other_id", carm_text)
+    carm_atomunit.set_arg("person_id", carm_text)
     carm_atomunit.set_arg("credor_weight", 70)
     sue_changeunit.set_atomunit(carm_atomunit)
     sue_world = worldunit_shop("Sue")
-    sue_world.set_other_credor_pool(100)
+    sue_world.set_person_credor_pool(100)
     rico_text = "Rico"
     rico_atomunit = atomunit_shop(category, atom_insert())
-    rico_atomunit.set_arg("other_id", rico_text)
+    rico_atomunit.set_arg("person_id", rico_text)
     rico_atomunit.set_arg("credor_weight", 30)
     sue_changeunit.set_atomunit(rico_atomunit)
 
@@ -590,18 +590,18 @@ def test_ChangeUnit_get_json_ReturnsCorrectObj():
     sue_changeunit = changeunit_shop()
     worldunit_text = "worldunit"
     pool_atomunit = atomunit_shop(worldunit_text, atom_update())
-    pool_attribute = "_other_credor_pool"
+    pool_attribute = "_person_credor_pool"
     pool_atomunit.set_optional_arg(pool_attribute, 100)
     sue_changeunit.set_atomunit(pool_atomunit)
-    category = "world_otherunit"
+    category = "world_personunit"
     carm_text = "Carmen"
     carm_atomunit = atomunit_shop(category, atom_insert())
-    carm_atomunit.set_arg("other_id", carm_text)
+    carm_atomunit.set_arg("person_id", carm_text)
     carm_atomunit.set_arg("credor_weight", 70)
     sue_changeunit.set_atomunit(carm_atomunit)
     rico_text = "Rico"
     rico_atomunit = atomunit_shop(category, atom_insert())
-    rico_atomunit.set_arg("other_id", rico_text)
+    rico_atomunit.set_arg("person_id", rico_text)
     rico_atomunit.set_arg("credor_weight", 30)
     sue_changeunit.set_atomunit(rico_atomunit)
 
@@ -618,10 +618,10 @@ def test_ChangeUnit_atomunit_exists_ReturnsCorrectObj():
     farm_changeunit = changeunit_shop()
 
     # WHEN / THEN
-    category = "world_otherunit"
+    category = "world_personunit"
     carm_text = "Carmen"
     carm_atomunit = atomunit_shop(category, atom_insert())
-    carm_atomunit.set_arg("other_id", carm_text)
+    carm_atomunit.set_arg("person_id", carm_text)
     carm_atomunit.set_arg("credor_weight", 70)
     assert farm_changeunit.atomunit_exists(carm_atomunit) is False
 

@@ -30,7 +30,7 @@ from src._road.road import (
     RoadUnit,
     is_string_in_road,
     OwnerID,
-    OtherID,
+    PersonID,
     HealerID,
     RealID,
     is_roadunit_convertible_to_path,
@@ -41,13 +41,13 @@ from src._world.meld import (
     get_meld_default,
     validate_meld_strategy,
 )
-from src._world.other import (
-    OtherUnit,
-    OtherLink,
-    otherunits_get_from_dict,
-    otherunit_shop,
-    otherlink_shop,
-    OtherUnitExternalMetrics,
+from src._world.person import (
+    PersonUnit,
+    PersonLink,
+    personunits_get_from_dict,
+    personunit_shop,
+    personlink_shop,
+    PersonUnitExternalMetrics,
 )
 from src._world.belief import (
     BalanceLink,
@@ -56,9 +56,9 @@ from src._world.belief import (
     get_beliefunits_from_dict,
     beliefunit_shop,
     balancelink_shop,
-    get_other_relevant_beliefs,
-    get_others_relevant_beliefs,
-    get_intersection_of_others,
+    get_person_relevant_beliefs,
+    get_persons_relevant_beliefs,
+    get_intersection_of_persons,
 )
 from src._world.healer import HealerHold
 from src._world.reason_idea import (
@@ -98,11 +98,11 @@ class NewDelimiterException(Exception):
     pass
 
 
-class OtherUnitsCredorDebtorSumException(Exception):
+class PersonUnitsCredorDebtorSumException(Exception):
     pass
 
 
-class OtherMissingException(Exception):
+class PersonMissingException(Exception):
     pass
 
 
@@ -128,7 +128,7 @@ class WorldUnit:
     _owner_id: OwnerID = None
     _last_gift_id: int = None
     _weight: float = None
-    _others: dict[OtherID:OtherUnit] = None
+    _persons: dict[PersonID:PersonUnit] = None
     _beliefs: dict[BeliefID:BeliefUnit] = None
     _idearoot: IdeaUnit = None
     _max_tree_traverse: int = None
@@ -136,8 +136,8 @@ class WorldUnit:
     _pixel: float = None
     _penny: float = None
     _monetary_desc: str = None
-    _other_credor_pool: int = None
-    _other_debtor_pool: int = None
+    _person_credor_pool: int = None
+    _person_debtor_pool: int = None
     _meld_strategy: MeldStrategy = None
     _originunit: OriginUnit = None  # In job worlds this shows source
     # calc_world_metrics Calculated field begin
@@ -164,97 +164,97 @@ class WorldUnit:
     def set_monetary_desc(self, x_monetary_desc: str):
         self._monetary_desc = x_monetary_desc
 
-    def set_other_pool(self, x_other_pool: int):
-        self.set_other_credor_pool(
-            new_other_credor_pool=x_other_pool,
-            update_others_credor_weight=True,
+    def set_person_pool(self, x_person_pool: int):
+        self.set_person_credor_pool(
+            new_person_credor_pool=x_person_pool,
+            update_persons_credor_weight=True,
             correct_pixel_issues=True,
         )
-        self.set_other_debtor_pool(
-            new_other_debtor_pool=x_other_pool,
-            update_others_debtor_weight=True,
+        self.set_person_debtor_pool(
+            new_person_debtor_pool=x_person_pool,
+            update_persons_debtor_weight=True,
             correct_pixel_issues=True,
         )
 
-    def set_other_credor_pool(
+    def set_person_credor_pool(
         self,
-        new_other_credor_pool: int,
-        update_others_credor_weight: bool = False,
+        new_person_credor_pool: int,
+        update_persons_credor_weight: bool = False,
         correct_pixel_issues: bool = False,
     ):
-        if (new_other_credor_pool / self._pixel).is_integer() is False:
+        if (new_person_credor_pool / self._pixel).is_integer() is False:
             raise _pixel_RatioException(
-                f"World '{self._owner_id}' cannot set _other_credor_pool='{new_other_credor_pool}'. It is not divisible by pixel '{self._pixel}'"
+                f"World '{self._owner_id}' cannot set _person_credor_pool='{new_person_credor_pool}'. It is not divisible by pixel '{self._pixel}'"
             )
 
-        if update_others_credor_weight:
-            old_other_credor_pool = self.get_otherunits_credor_weight_sum()
-            if old_other_credor_pool != 0:
-                x_ratio = new_other_credor_pool / old_other_credor_pool
-                for x_other in self._others.values():
-                    new_other_credor_weight = trim_pixel_excess(
-                        num=x_other.credor_weight * x_ratio, pixel=x_other._pixel
+        if update_persons_credor_weight:
+            old_person_credor_pool = self.get_personunits_credor_weight_sum()
+            if old_person_credor_pool != 0:
+                x_ratio = new_person_credor_pool / old_person_credor_pool
+                for x_person in self._persons.values():
+                    new_person_credor_weight = trim_pixel_excess(
+                        num=x_person.credor_weight * x_ratio, pixel=x_person._pixel
                     )
-                    x_other.set_credor_weight(new_other_credor_weight)
+                    x_person.set_credor_weight(new_person_credor_weight)
 
-        self._other_credor_pool = new_other_credor_pool
+        self._person_credor_pool = new_person_credor_pool
         if correct_pixel_issues:
             self._correct_any_credor_pixel_issues()
 
     def _correct_any_credor_pixel_issues(self):
-        if self.get_otherunits_credor_weight_sum() != self._other_credor_pool:
+        if self.get_personunits_credor_weight_sum() != self._person_credor_pool:
             missing_credor_weight = (
-                self._other_credor_pool - self.get_otherunits_credor_weight_sum()
+                self._person_credor_pool - self.get_personunits_credor_weight_sum()
             )
-            if len(self._others) > 0:
-                otherunits = list(self._others.values())
-                # others_count = len(self._others)
+            if len(self._persons) > 0:
+                personunits = list(self._persons.values())
+                # persons_count = len(self._persons)
                 # pixel_count = missing_credor_weight / self._pixel
-                # if pixel_count <= others_count:
+                # if pixel_count <= persons_count:
                 for _ in range(0, missing_credor_weight, self._pixel):
-                    x_otherunit = otherunits.pop()
-                    x_otherunit.set_credor_weight(
-                        x_otherunit.credor_weight + self._pixel
+                    x_personunit = personunits.pop()
+                    x_personunit.set_credor_weight(
+                        x_personunit.credor_weight + self._pixel
                     )
 
-    def set_other_debtor_pool(
+    def set_person_debtor_pool(
         self,
-        new_other_debtor_pool: int,
-        update_others_debtor_weight: bool = False,
+        new_person_debtor_pool: int,
+        update_persons_debtor_weight: bool = False,
         correct_pixel_issues: bool = False,
     ):
-        if (new_other_debtor_pool / self._pixel).is_integer() is False:
+        if (new_person_debtor_pool / self._pixel).is_integer() is False:
             raise _pixel_RatioException(
-                f"World '{self._owner_id}' cannot set _other_debtor_pool='{new_other_debtor_pool}'. It is not divisible by pixel '{self._pixel}'"
+                f"World '{self._owner_id}' cannot set _person_debtor_pool='{new_person_debtor_pool}'. It is not divisible by pixel '{self._pixel}'"
             )
 
-        if update_others_debtor_weight:
-            old_other_debtor_pool = self.get_otherunits_debtor_weight_sum()
-            if old_other_debtor_pool != 0:
-                x_ratio = new_other_debtor_pool / old_other_debtor_pool
-                for x_other in self._others.values():
-                    new_other_debtor_weight = trim_pixel_excess(
-                        num=x_other.debtor_weight * x_ratio, pixel=x_other._pixel
+        if update_persons_debtor_weight:
+            old_person_debtor_pool = self.get_personunits_debtor_weight_sum()
+            if old_person_debtor_pool != 0:
+                x_ratio = new_person_debtor_pool / old_person_debtor_pool
+                for x_person in self._persons.values():
+                    new_person_debtor_weight = trim_pixel_excess(
+                        num=x_person.debtor_weight * x_ratio, pixel=x_person._pixel
                     )
-                    x_other.set_debtor_weight(new_other_debtor_weight)
-        self._other_debtor_pool = new_other_debtor_pool
+                    x_person.set_debtor_weight(new_person_debtor_weight)
+        self._person_debtor_pool = new_person_debtor_pool
         if correct_pixel_issues:
             self._correct_any_debtor_pixel_issues()
 
     def _correct_any_debtor_pixel_issues(self):
-        if self.get_otherunits_debtor_weight_sum() != self._other_debtor_pool:
+        if self.get_personunits_debtor_weight_sum() != self._person_debtor_pool:
             missing_debtor_weight = (
-                self._other_debtor_pool - self.get_otherunits_debtor_weight_sum()
+                self._person_debtor_pool - self.get_personunits_debtor_weight_sum()
             )
-            if len(self._others) > 0:
-                otherunits = list(self._others.values())
-                # others_count = len(self._others)
+            if len(self._persons) > 0:
+                personunits = list(self._persons.values())
+                # persons_count = len(self._persons)
                 # pixel_count = missing_debtor_weight / self._pixel
-                # if pixel_count <= others_count:
+                # if pixel_count <= persons_count:
                 for _ in range(0, missing_debtor_weight, self._pixel):
-                    x_otherunit = otherunits.pop()
-                    x_otherunit.set_debtor_weight(
-                        x_otherunit.debtor_weight + self._pixel
+                    x_personunit = personunits.pop()
+                    x_personunit.set_debtor_weight(
+                        x_personunit.debtor_weight + self._pixel
                     )
 
     def make_road(
@@ -272,15 +272,15 @@ class WorldUnit:
     def make_l1_road(self, l1_node: RoadNode):
         return self.make_road(self._real_id, l1_node)
 
-    def set_others_output_world_meld_order(self):
-        sort_others_list = list(self._others.values())
-        sort_others_list.sort(key=lambda x: x.other_id.lower(), reverse=False)
-        for count_x, x_otherunit in enumerate(sort_others_list):
-            x_otherunit.set_output_world_meld_order(count_x)
+    def set_persons_output_world_meld_order(self):
+        sort_persons_list = list(self._persons.values())
+        sort_persons_list.sort(key=lambda x: x.person_id.lower(), reverse=False)
+        for count_x, x_personunit in enumerate(sort_persons_list):
+            x_personunit.set_output_world_meld_order(count_x)
 
-    def clear_others_output_world_meld_order(self):
-        for x_otherunit in self._others.values():
-            x_otherunit.clear_output_world_meld_order()
+    def clear_persons_output_world_meld_order(self):
+        for x_personunit in self._persons.values():
+            x_personunit.clear_output_world_meld_order()
 
     def set_road_delimiter(self, new_road_delimiter: str):
         self.calc_world_metrics()
@@ -314,13 +314,13 @@ class WorldUnit:
         self.edit_idea_label(old_road=old_real_id, new_label=self._real_id)
         self.calc_world_metrics()
 
-    def set_otherunit_external_metrics(
-        self, external_metrics: OtherUnitExternalMetrics
+    def set_personunit_external_metrics(
+        self, external_metrics: PersonUnitExternalMetrics
     ):
-        other_x = self.get_other(external_metrics.internal_other_id)
-        other_x._credor_operational = external_metrics.credor_operational
-        other_x._debtor_operational = external_metrics.debtor_operational
-        # self.set_otherunit(otherunit=other_x)
+        person_x = self.get_person(external_metrics.internal_person_id)
+        person_x._credor_operational = external_metrics.credor_operational
+        person_x._debtor_operational = external_metrics.debtor_operational
+        # self.set_personunit(personunit=person_x)
 
     def set_max_tree_traverse(self, int_x: int):
         if int_x < 2:
@@ -344,7 +344,7 @@ class WorldUnit:
             x_world.calc_world_metrics()
 
         # TODO grab beliefs
-        # TODO grab all belief others
+        # TODO grab all belief persons
         # TODO grab facts
         return x_world
 
@@ -426,7 +426,7 @@ class WorldUnit:
         all_ideas_set = set(self.get_idea_tree_ordered_road_list())
         return all_ideas_set == all_ideas_set.intersection(pledge_idea_assoc_set)
 
-    def _are_all_others_beliefs_are_in_idea_kid(self, road: RoadUnit) -> bool:
+    def _are_all_persons_beliefs_are_in_idea_kid(self, road: RoadUnit) -> bool:
         idea_kid = self.get_idea_obj(road)
         # get dict of all idea balanceheirs
         balanceheir_list = idea_kid._balanceheirs.keys()
@@ -436,24 +436,24 @@ class WorldUnit:
         non_single_beliefunits = {
             beliefunit.belief_id: beliefunit
             for beliefunit in self._beliefs.values()
-            if beliefunit._other_mirror != True
+            if beliefunit._person_mirror != True
         }
-        # check all non_other_mirror_beliefunits are in balanceheirs
+        # check all non_person_mirror_beliefunits are in balanceheirs
         for non_single_belief in non_single_beliefunits.values():
             if balanceheir_dict.get(non_single_belief.belief_id) is None:
                 return False
 
-        # get dict of all otherlinks that are in all balanceheirs
-        balanceheir_otherunits = {}
-        for balanceheir_other_id in balanceheir_dict:
-            beliefunit = self.get_beliefunit(balanceheir_other_id)
-            for otherlink in beliefunit._others.values():
-                balanceheir_otherunits[otherlink.other_id] = self.get_other(
-                    otherlink.other_id
+        # get dict of all personlinks that are in all balanceheirs
+        balanceheir_personunits = {}
+        for balanceheir_person_id in balanceheir_dict:
+            beliefunit = self.get_beliefunit(balanceheir_person_id)
+            for personlink in beliefunit._persons.values():
+                balanceheir_personunits[personlink.person_id] = self.get_person(
+                    personlink.person_id
                 )
 
-        # check all world._others are in balanceheir_otherunits
-        return len(self._others) == len(balanceheir_otherunits)
+        # check all world._persons are in balanceheir_personunits
+        return len(self._persons) == len(balanceheir_personunits)
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
         x_hregidea = HregIdea(self._road_delimiter)
@@ -591,7 +591,7 @@ class WorldUnit:
         )
         return f"every {num_with_letter_ending} {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
 
-    def get_others_metrics(self) -> dict[BeliefID:BalanceLink]:
+    def get_persons_metrics(self) -> dict[BeliefID:BalanceLink]:
         tree_metrics = self.get_tree_metrics()
         return tree_metrics.balancelinks_metrics
 
@@ -621,168 +621,171 @@ class WorldUnit:
                 belief._world_agenda_cred += balanceline_world_cred
                 belief._world_agenda_debt += balanceline_world_debt
 
-    def add_to_otherunit_world_cred_debt(
+    def add_to_personunit_world_cred_debt(
         self,
-        otherunit_other_id: OtherID,
+        personunit_person_id: PersonID,
         world_cred,
         world_debt: float,
         world_agenda_cred: float,
         world_agenda_debt: float,
     ):
-        for otherunit in self._others.values():
-            if otherunit.other_id == otherunit_other_id:
-                otherunit.add_world_cred_debt(
+        for personunit in self._persons.values():
+            if personunit.person_id == personunit_person_id:
+                personunit.add_world_cred_debt(
                     world_cred=world_cred,
                     world_debt=world_debt,
                     world_agenda_cred=world_agenda_cred,
                     world_agenda_debt=world_agenda_debt,
                 )
 
-    def del_otherunit(self, other_id: str):
-        self._beliefs.pop(other_id)
-        self._others.pop(other_id)
+    def del_personunit(self, person_id: str):
+        self._beliefs.pop(person_id)
+        self._persons.pop(person_id)
 
-    def add_otherunit(
-        self, other_id: OtherID, credor_weight: int = None, debtor_weight: int = None
+    def add_personunit(
+        self, person_id: PersonID, credor_weight: int = None, debtor_weight: int = None
     ):
-        otherunit = otherunit_shop(
-            other_id=other_id,
+        personunit = personunit_shop(
+            person_id=person_id,
             credor_weight=credor_weight,
             debtor_weight=debtor_weight,
             _road_delimiter=self._road_delimiter,
         )
-        self.set_otherunit(otherunit=otherunit)
+        self.set_personunit(personunit=personunit)
 
-    def set_otherunit(self, otherunit: OtherUnit):
-        if otherunit._road_delimiter != self._road_delimiter:
-            otherunit._road_delimiter = self._road_delimiter
-        if otherunit._pixel != self._pixel:
-            otherunit._pixel = self._pixel
-        self._others[otherunit.other_id] = otherunit
+    def set_personunit(self, personunit: PersonUnit):
+        if personunit._road_delimiter != self._road_delimiter:
+            personunit._road_delimiter = self._road_delimiter
+        if personunit._pixel != self._pixel:
+            personunit._pixel = self._pixel
+        self._persons[personunit.person_id] = personunit
 
         try:
-            self._beliefs[otherunit.other_id]
+            self._beliefs[personunit.person_id]
         except KeyError:
-            otherlink = otherlink_shop(
-                other_id=OtherID(otherunit.other_id), credor_weight=1, debtor_weight=1
+            personlink = personlink_shop(
+                person_id=PersonID(personunit.person_id),
+                credor_weight=1,
+                debtor_weight=1,
             )
-            otherlinks = {otherlink.other_id: otherlink}
+            personlinks = {personlink.person_id: personlink}
             belief_unit = beliefunit_shop(
-                otherunit.other_id,
-                _other_mirror=True,
-                _others=otherlinks,
+                personunit.person_id,
+                _person_mirror=True,
+                _persons=personlinks,
                 _road_delimiter=self._road_delimiter,
             )
             self.set_beliefunit(y_beliefunit=belief_unit)
 
-    def other_exists(self, other_id: OtherID) -> bool:
-        return self.get_other(other_id) != None
+    def person_exists(self, person_id: PersonID) -> bool:
+        return self.get_person(person_id) != None
 
-    def edit_otherunit_other_id(
+    def edit_personunit_person_id(
         self,
-        old_other_id: OtherID,
-        new_other_id: OtherID,
-        allow_other_overwite: bool,
+        old_person_id: PersonID,
+        new_person_id: PersonID,
+        allow_person_overwite: bool,
         allow_nonsingle_belief_overwrite: bool,
     ):
         # Handle scenarios: some are unacceptable
-        old_other_id_credor_weight = self.get_other(old_other_id).credor_weight
-        new_other_id_beliefunit = self.get_beliefunit(new_other_id)
-        new_other_id_otherunit = self.get_other(new_other_id)
-        if not allow_other_overwite and new_other_id_otherunit != None:
+        old_person_id_credor_weight = self.get_person(old_person_id).credor_weight
+        new_person_id_beliefunit = self.get_beliefunit(new_person_id)
+        new_person_id_personunit = self.get_person(new_person_id)
+        if not allow_person_overwite and new_person_id_personunit != None:
             raise InvalidWorldException(
-                f"Other '{old_other_id}' modify to '{new_other_id}' failed since '{new_other_id}' exists."
+                f"Person '{old_person_id}' modify to '{new_person_id}' failed since '{new_person_id}' exists."
             )
         elif (
             not allow_nonsingle_belief_overwrite
-            and new_other_id_beliefunit != None
-            and new_other_id_beliefunit._other_mirror is False
+            and new_person_id_beliefunit != None
+            and new_person_id_beliefunit._person_mirror is False
         ):
             raise InvalidWorldException(
-                f"Other '{old_other_id}' modify to '{new_other_id}' failed since non-single belief '{new_other_id}' exists."
+                f"Person '{old_person_id}' modify to '{new_person_id}' failed since non-single belief '{new_person_id}' exists."
             )
         elif (
             allow_nonsingle_belief_overwrite
-            and new_other_id_beliefunit != None
-            and new_other_id_beliefunit._other_mirror is False
+            and new_person_id_beliefunit != None
+            and new_person_id_beliefunit._person_mirror is False
         ):
-            self.del_beliefunit(belief_id=new_other_id)
-        elif self.other_exists(new_other_id):
-            old_other_id_credor_weight += new_other_id_otherunit.credor_weight
+            self.del_beliefunit(belief_id=new_person_id)
+        elif self.person_exists(new_person_id):
+            old_person_id_credor_weight += new_person_id_personunit.credor_weight
 
-        # upsert new otherunit
-        self.add_otherunit(
-            other_id=new_other_id, credor_weight=old_other_id_credor_weight
+        # upsert new personunit
+        self.add_personunit(
+            person_id=new_person_id, credor_weight=old_person_id_credor_weight
         )
-        # modify all influenced beliefunits otherlinks
-        for old_other_belief_id in self.get_other_belief_ids(old_other_id):
-            old_other_beliefunit = self.get_beliefunit(old_other_belief_id)
-            old_other_beliefunit._shift_otherlink(old_other_id, new_other_id)
-        self.del_otherunit(other_id=old_other_id)
+        # modify all influenced beliefunits personlinks
+        for old_person_belief_id in self.get_person_belief_ids(old_person_id):
+            old_person_beliefunit = self.get_beliefunit(old_person_belief_id)
+            old_person_beliefunit._shift_personlink(old_person_id, new_person_id)
+        self.del_personunit(person_id=old_person_id)
 
-    def edit_otherunit(
-        self, other_id: OtherID, credor_weight: int = None, debtor_weight: int = None
+    def edit_personunit(
+        self, person_id: PersonID, credor_weight: int = None, debtor_weight: int = None
     ):
-        if self._others.get(other_id) is None:
-            raise OtherMissingException(f"OtherUnit '{other_id}' does not exist.")
-        x_otherunit = self.get_other(other_id)
+        if self._persons.get(person_id) is None:
+            raise PersonMissingException(f"PersonUnit '{person_id}' does not exist.")
+        x_personunit = self.get_person(person_id)
         if credor_weight != None:
-            x_otherunit.set_credor_weight(credor_weight)
+            x_personunit.set_credor_weight(credor_weight)
         if debtor_weight != None:
-            x_otherunit.set_debtor_weight(debtor_weight)
-        self.set_otherunit(x_otherunit)
+            x_personunit.set_debtor_weight(debtor_weight)
+        self.set_personunit(x_personunit)
 
-    def get_other(self, other_id: OtherID) -> OtherUnit:
-        return self._others.get(other_id)
+    def get_person(self, person_id: PersonID) -> PersonUnit:
+        return self._persons.get(person_id)
 
-    def get_otherunits_other_id_list(self) -> dict[OtherID]:
-        other_id_list = list(self._others.keys())
-        other_id_list.append("")
-        other_id_dict = {other_id.lower(): other_id for other_id in other_id_list}
-        other_id_lowercase_ordered_list = sorted(list(other_id_dict))
+    def get_personunits_person_id_list(self) -> dict[PersonID]:
+        person_id_list = list(self._persons.keys())
+        person_id_list.append("")
+        person_id_dict = {person_id.lower(): person_id for person_id in person_id_list}
+        person_id_lowercase_ordered_list = sorted(list(person_id_dict))
         return [
-            other_id_dict[other_id_l] for other_id_l in other_id_lowercase_ordered_list
+            person_id_dict[person_id_l]
+            for person_id_l in person_id_lowercase_ordered_list
         ]
 
     def set_beliefunit(
         self,
         y_beliefunit: BeliefUnit,
-        create_missing_others: bool = None,
+        create_missing_persons: bool = None,
         replace: bool = True,
-        add_otherlinks: bool = None,
+        add_personlinks: bool = None,
     ):
         if y_beliefunit._road_delimiter != self._road_delimiter:
             y_beliefunit._road_delimiter = self._road_delimiter
         if replace is None:
             replace = False
-        if add_otherlinks is None:
-            add_otherlinks = False
+        if add_personlinks is None:
+            add_personlinks = False
         if (
             self.get_beliefunit(y_beliefunit.belief_id) is None
             or replace
-            and not add_otherlinks
+            and not add_personlinks
         ):
             self._beliefs[y_beliefunit.belief_id] = y_beliefunit
 
-        if add_otherlinks:
+        if add_personlinks:
             x_beliefunit = self.get_beliefunit(y_beliefunit.belief_id)
-            for x_otherlink in y_beliefunit._others.values():
-                x_beliefunit.set_otherlink(x_otherlink)
+            for x_personlink in y_beliefunit._persons.values():
+                x_beliefunit.set_personlink(x_personlink)
 
-        if create_missing_others:
-            self._create_missing_others(otherlinks=y_beliefunit._others)
+        if create_missing_persons:
+            self._create_missing_persons(personlinks=y_beliefunit._persons)
 
     def get_beliefunit(self, x_belief_id: BeliefID) -> BeliefUnit:
         return self._beliefs.get(x_belief_id)
 
-    def _create_missing_others(self, otherlinks: dict[OtherID:OtherLink]):
-        for otherlink_x in otherlinks.values():
-            if self.get_other(otherlink_x.other_id) is None:
-                self.set_otherunit(
-                    otherunit=otherunit_shop(
-                        other_id=otherlink_x.other_id,
-                        credor_weight=otherlink_x.credor_weight,
-                        debtor_weight=otherlink_x.debtor_weight,
+    def _create_missing_persons(self, personlinks: dict[PersonID:PersonLink]):
+        for personlink_x in personlinks.values():
+            if self.get_person(personlink_x.person_id) is None:
+                self.set_personunit(
+                    personunit=personunit_shop(
+                        person_id=personlink_x.person_id,
+                        credor_weight=personlink_x.credor_weight,
+                        debtor_weight=personlink_x.debtor_weight,
                     )
                 )
 
@@ -807,7 +810,7 @@ class WorldUnit:
         elif self.get_beliefunit(new_belief_id) is None:
             old_beliefunit = self.get_beliefunit(old_belief_id)
             beliefunit_x = beliefunit_shop(
-                new_belief_id, old_beliefunit._other_mirror, old_beliefunit._others
+                new_belief_id, old_beliefunit._person_mirror, old_beliefunit._persons
             )
             self.set_beliefunit(y_beliefunit=beliefunit_x)
             self.del_beliefunit(belief_id=old_belief_id)
@@ -1166,7 +1169,7 @@ class WorldUnit:
         if create_missing_ideas:
             self._create_missing_ideas(road=kid_road)
         if create_missing_beliefs:
-            self._create_missing_beliefs_others(balancelinks=idea_kid._balancelinks)
+            self._create_missing_beliefs_persons(balancelinks=idea_kid._balancelinks)
 
     def _get_filtered_balancelinks_idea(self, x_idea: IdeaUnit) -> IdeaUnit:
         _balancelinks_to_delete = [
@@ -1188,11 +1191,11 @@ class WorldUnit:
 
         return x_idea
 
-    def _create_missing_beliefs_others(self, balancelinks: dict[BeliefID:BalanceLink]):
+    def _create_missing_beliefs_persons(self, balancelinks: dict[BeliefID:BalanceLink]):
         for balancelink_x in balancelinks.values():
             if self.get_beliefunit(balancelink_x.belief_id) is None:
                 beliefunit_x = beliefunit_shop(
-                    belief_id=balancelink_x.belief_id, _others={}
+                    belief_id=balancelink_x.belief_id, _persons={}
                 )
                 self.set_beliefunit(y_beliefunit=beliefunit_x)
 
@@ -1454,8 +1457,8 @@ class WorldUnit:
         pledge: bool = None,
         factunit: FactUnit = None,
         descendant_pledge_count: int = None,
-        all_other_cred: bool = None,
-        all_other_debt: bool = None,
+        all_person_cred: bool = None,
+        all_person_debt: bool = None,
         balancelink: BalanceLink = None,
         balancelink_del: BeliefID = None,
         is_expanded: bool = None,
@@ -1492,8 +1495,8 @@ class WorldUnit:
             numeric_road=numeric_road,
             range_source_road=range_source_road,
             descendant_pledge_count=descendant_pledge_count,
-            all_other_cred=all_other_cred,
-            all_other_debt=all_other_debt,
+            all_person_cred=all_person_cred,
+            all_person_debt=all_person_debt,
             balancelink=balancelink,
             balancelink_del=balancelink_del,
             is_expanded=is_expanded,
@@ -1535,74 +1538,83 @@ class WorldUnit:
         pledge_item = self.get_idea_obj(task_road)
         pledge_item.set_factunit_to_complete(self._idearoot._factunits[base])
 
-    def is_otherunits_credor_weight_sum_correct(self) -> bool:
-        x_sum = self.get_otherunits_credor_weight_sum()
-        return x_sum in (0, self._other_credor_pool) or self._other_credor_pool is None
+    def is_personunits_credor_weight_sum_correct(self) -> bool:
+        x_sum = self.get_personunits_credor_weight_sum()
+        return (
+            x_sum in (0, self._person_credor_pool) or self._person_credor_pool is None
+        )
 
-    def is_otherunits_debtor_weight_sum_correct(self) -> bool:
-        x_sum = self.get_otherunits_debtor_weight_sum()
-        return self._other_debtor_pool is None or x_sum in (self._other_debtor_pool, 0)
+    def is_personunits_debtor_weight_sum_correct(self) -> bool:
+        x_sum = self.get_personunits_debtor_weight_sum()
+        return self._person_debtor_pool is None or x_sum in (
+            self._person_debtor_pool,
+            0,
+        )
 
-    def get_otherunits_credor_weight_sum(self) -> float:
-        return sum(otherunit.get_credor_weight() for otherunit in self._others.values())
+    def get_personunits_credor_weight_sum(self) -> float:
+        return sum(
+            personunit.get_credor_weight() for personunit in self._persons.values()
+        )
 
-    def get_otherunits_debtor_weight_sum(self) -> float:
-        return sum(otherunit.get_debtor_weight() for otherunit in self._others.values())
+    def get_personunits_debtor_weight_sum(self) -> float:
+        return sum(
+            personunit.get_debtor_weight() for personunit in self._persons.values()
+        )
 
-    def _add_to_otherunits_world_cred_debt(self, idea_world_importance: float):
-        sum_otherunit_credor_weight = self.get_otherunits_credor_weight_sum()
-        sum_otherunit_debtor_weight = self.get_otherunits_debtor_weight_sum()
+    def _add_to_personunits_world_cred_debt(self, idea_world_importance: float):
+        sum_personunit_credor_weight = self.get_personunits_credor_weight_sum()
+        sum_personunit_debtor_weight = self.get_personunits_debtor_weight_sum()
 
-        for x_otherunit in self._others.values():
+        for x_personunit in self._persons.values():
             au_world_cred = (
-                idea_world_importance * x_otherunit.get_credor_weight()
-            ) / sum_otherunit_credor_weight
+                idea_world_importance * x_personunit.get_credor_weight()
+            ) / sum_personunit_credor_weight
 
             au_world_debt = (
-                idea_world_importance * x_otherunit.get_debtor_weight()
-            ) / sum_otherunit_debtor_weight
+                idea_world_importance * x_personunit.get_debtor_weight()
+            ) / sum_personunit_debtor_weight
 
-            x_otherunit.add_world_cred_debt(
+            x_personunit.add_world_cred_debt(
                 world_cred=au_world_cred,
                 world_debt=au_world_debt,
                 world_agenda_cred=0,
                 world_agenda_debt=0,
             )
 
-    def _add_to_otherunits_world_agenda_cred_debt(self, idea_world_importance: float):
-        sum_otherunit_credor_weight = self.get_otherunits_credor_weight_sum()
-        sum_otherunit_debtor_weight = self.get_otherunits_debtor_weight_sum()
+    def _add_to_personunits_world_agenda_cred_debt(self, idea_world_importance: float):
+        sum_personunit_credor_weight = self.get_personunits_credor_weight_sum()
+        sum_personunit_debtor_weight = self.get_personunits_debtor_weight_sum()
 
-        for x_otherunit in self._others.values():
+        for x_personunit in self._persons.values():
             au_world_agenda_cred = (
-                idea_world_importance * x_otherunit.get_credor_weight()
-            ) / sum_otherunit_credor_weight
+                idea_world_importance * x_personunit.get_credor_weight()
+            ) / sum_personunit_credor_weight
 
             au_world_agenda_debt = (
-                idea_world_importance * x_otherunit.get_debtor_weight()
-            ) / sum_otherunit_debtor_weight
+                idea_world_importance * x_personunit.get_debtor_weight()
+            ) / sum_personunit_debtor_weight
 
-            x_otherunit.add_world_cred_debt(
+            x_personunit.add_world_cred_debt(
                 world_cred=0,
                 world_debt=0,
                 world_agenda_cred=au_world_agenda_cred,
                 world_agenda_debt=au_world_agenda_debt,
             )
 
-    def _set_otherunits_world_agenda_importance(self, world_agenda_importance: float):
-        sum_otherunit_credor_weight = self.get_otherunits_credor_weight_sum()
-        sum_otherunit_debtor_weight = self.get_otherunits_debtor_weight_sum()
+    def _set_personunits_world_agenda_importance(self, world_agenda_importance: float):
+        sum_personunit_credor_weight = self.get_personunits_credor_weight_sum()
+        sum_personunit_debtor_weight = self.get_personunits_debtor_weight_sum()
 
-        for x_otherunit in self._others.values():
+        for x_personunit in self._persons.values():
             au_world_agenda_cred = (
-                world_agenda_importance * x_otherunit.get_credor_weight()
-            ) / sum_otherunit_credor_weight
+                world_agenda_importance * x_personunit.get_credor_weight()
+            ) / sum_personunit_credor_weight
 
             au_world_agenda_debt = (
-                world_agenda_importance * x_otherunit.get_debtor_weight()
-            ) / sum_otherunit_debtor_weight
+                world_agenda_importance * x_personunit.get_debtor_weight()
+            ) / sum_personunit_debtor_weight
 
-            x_otherunit.add_world_agenda_cred_debt(
+            x_personunit.add_world_agenda_cred_debt(
                 world_agenda_cred=au_world_agenda_cred,
                 world_agenda_debt=au_world_agenda_debt,
             )
@@ -1624,12 +1636,12 @@ class WorldUnit:
     def _allot_world_agenda_importance(self):
         for idea in self._idea_dict.values():
             # If there are no balancelines associated with idea
-            # allot world_importance via general otherunit
+            # allot world_importance via general personunit
             # cred ratio and debt ratio
             # if idea.is_agenda_item() and idea._balancelines == {}:
             if idea.is_agenda_item():
                 if idea._balancelines == {}:
-                    self._add_to_otherunits_world_agenda_cred_debt(
+                    self._add_to_personunits_world_agenda_cred_debt(
                         idea._world_importance
                     )
                 else:
@@ -1642,42 +1654,42 @@ class WorldUnit:
 
     def _allot_beliefs_world_importance(self):
         for belief_obj in self._beliefs.values():
-            belief_obj._set_otherlink_world_cred_debt()
-            for otherlink in belief_obj._others.values():
-                self.add_to_otherunit_world_cred_debt(
-                    otherunit_other_id=otherlink.other_id,
-                    world_cred=otherlink._world_cred,
-                    world_debt=otherlink._world_debt,
-                    world_agenda_cred=otherlink._world_agenda_cred,
-                    world_agenda_debt=otherlink._world_agenda_debt,
+            belief_obj._set_personlink_world_cred_debt()
+            for personlink in belief_obj._persons.values():
+                self.add_to_personunit_world_cred_debt(
+                    personunit_person_id=personlink.person_id,
+                    world_cred=personlink._world_cred,
+                    world_debt=personlink._world_debt,
+                    world_agenda_cred=personlink._world_agenda_cred,
+                    world_agenda_debt=personlink._world_agenda_debt,
                 )
 
     def _set_world_agenda_ratio_cred_debt(self):
         world_agenda_ratio_cred_sum = 0
         world_agenda_ratio_debt_sum = 0
 
-        for x_otherunit in self._others.values():
-            world_agenda_ratio_cred_sum += x_otherunit._world_agenda_cred
-            world_agenda_ratio_debt_sum += x_otherunit._world_agenda_debt
+        for x_personunit in self._persons.values():
+            world_agenda_ratio_cred_sum += x_personunit._world_agenda_cred
+            world_agenda_ratio_debt_sum += x_personunit._world_agenda_debt
 
-        for x_otherunit in self._others.values():
-            x_otherunit.set_world_agenda_ratio_cred_debt(
+        for x_personunit in self._persons.values():
+            x_personunit.set_world_agenda_ratio_cred_debt(
                 world_agenda_ratio_cred_sum=world_agenda_ratio_cred_sum,
                 world_agenda_ratio_debt_sum=world_agenda_ratio_debt_sum,
-                world_otherunit_total_credor_weight=self.get_otherunits_credor_weight_sum(),
-                world_otherunit_total_debtor_weight=self.get_otherunits_debtor_weight_sum(),
+                world_personunit_total_credor_weight=self.get_personunits_credor_weight_sum(),
+                world_personunit_total_debtor_weight=self.get_personunits_debtor_weight_sum(),
             )
 
-    def get_other_belief_ids(self, other_id: OtherID) -> list[BeliefID]:
+    def get_person_belief_ids(self, person_id: PersonID) -> list[BeliefID]:
         return [
             x_beliefunit.belief_id
             for x_beliefunit in self._beliefs.values()
-            if x_beliefunit.otherlink_exists(other_id)
+            if x_beliefunit.personlink_exists(person_id)
         ]
 
-    def _reset_otherunit_world_cred_debt(self):
-        for otherunit in self._others.values():
-            otherunit.reset_world_cred_debt()
+    def _reset_personunit_world_cred_debt(self):
+        for personunit in self._persons.values():
+            personunit.reset_world_cred_debt()
 
     def idea_exists(self, road: RoadUnit) -> bool:
         if road is None:
@@ -1756,19 +1768,19 @@ class WorldUnit:
 
             if (
                 belief_everyone != False
-                and x_idea_obj._all_other_cred != False
-                and x_idea_obj._all_other_debt != False
+                and x_idea_obj._all_person_cred != False
+                and x_idea_obj._all_person_debt != False
                 and x_idea_obj._balanceheirs != {}
             ) or (
                 belief_everyone != False
-                and x_idea_obj._all_other_cred is False
-                and x_idea_obj._all_other_debt is False
+                and x_idea_obj._all_person_cred is False
+                and x_idea_obj._all_person_debt is False
             ):
                 belief_everyone = False
             elif belief_everyone != False:
                 belief_everyone = True
-            x_idea_obj._all_other_cred = belief_everyone
-            x_idea_obj._all_other_debt = belief_everyone
+            x_idea_obj._all_person_cred = belief_everyone
+            x_idea_obj._all_person_debt = belief_everyone
 
             if x_idea_obj._healerhold.any_belief_id_exists():
                 econ_justified_by_problem = False
@@ -1805,7 +1817,7 @@ class WorldUnit:
         x_idearoot.set_balanceheirs_world_cred_debt()
         x_idearoot.set_ancestor_pledge_count(0, False)
         x_idearoot.clear_descendant_pledge_count()
-        x_idearoot.clear_all_other_cred_debt()
+        x_idearoot.clear_all_person_cred_debt()
         x_idearoot.pledge = False
 
         if x_idearoot.is_kidless():
@@ -1842,7 +1854,7 @@ class WorldUnit:
             parent_idea._ancestor_pledge_count, parent_idea.pledge
         )
         idea_kid.clear_descendant_pledge_count()
-        idea_kid.clear_all_other_cred_debt()
+        idea_kid.clear_all_person_cred_debt()
 
         if idea_kid.is_kidless():
             # set idea's ancestor metrics using world root as common reference
@@ -1855,7 +1867,7 @@ class WorldUnit:
         if idea.is_balanceheirless() is False:
             self._set_beliefunits_world_importance(idea._balanceheirs)
         elif idea.is_balanceheirless():
-            self._add_to_otherunits_world_cred_debt(idea._world_importance)
+            self._add_to_personunits_world_cred_debt(idea._world_importance)
 
     def get_world_importance(
         self, parent_world_importance: float, weight: int, sibling_total_weight: int
@@ -1962,11 +1974,11 @@ class WorldUnit:
         for x_econ_road, x_econ_idea in self._econ_dict.items():
             for x_belief_id in x_econ_idea._healerhold._belief_ids:
                 x_beliefunit = self.get_beliefunit(x_belief_id)
-                for x_other_id in x_beliefunit._others.keys():
-                    if _healers_dict.get(x_other_id) is None:
-                        _healers_dict[x_other_id] = {x_econ_road: x_econ_idea}
+                for x_person_id in x_beliefunit._persons.keys():
+                    if _healers_dict.get(x_person_id) is None:
+                        _healers_dict[x_person_id] = {x_econ_road: x_econ_idea}
                     else:
-                        healer_dict = _healers_dict.get(x_other_id)
+                        healer_dict = _healers_dict.get(x_person_id)
                         healer_dict[x_econ_road] = x_econ_idea
         return _healers_dict
 
@@ -1977,17 +1989,17 @@ class WorldUnit:
         )
 
     def _pre_tree_traverse_cred_debt_reset(self):
-        if self.is_otherunits_credor_weight_sum_correct() is False:
-            raise OtherUnitsCredorDebtorSumException(
-                f"'{self._owner_id}' is_otherunits_credor_weight_sum_correct is False. _other_credor_pool={self._other_credor_pool}. otherunits_credor_weight_sum={self.get_otherunits_credor_weight_sum()}"
+        if self.is_personunits_credor_weight_sum_correct() is False:
+            raise PersonUnitsCredorDebtorSumException(
+                f"'{self._owner_id}' is_personunits_credor_weight_sum_correct is False. _person_credor_pool={self._person_credor_pool}. personunits_credor_weight_sum={self.get_personunits_credor_weight_sum()}"
             )
-        if self.is_otherunits_debtor_weight_sum_correct() is False:
-            raise OtherUnitsCredorDebtorSumException(
-                f"'{self._owner_id}' is_otherunits_debtor_weight_sum_correct is False. _other_debtor_pool={self._other_debtor_pool}. otherunits_debtor_weight_sum={self.get_otherunits_debtor_weight_sum()}"
+        if self.is_personunits_debtor_weight_sum_correct() is False:
+            raise PersonUnitsCredorDebtorSumException(
+                f"'{self._owner_id}' is_personunits_debtor_weight_sum_correct is False. _person_debtor_pool={self._person_debtor_pool}. personunits_debtor_weight_sum={self.get_personunits_debtor_weight_sum()}"
             )
         self._reset_beliefunits_world_cred_debt()
         self._reset_beliefunits_world_cred_debt()
-        self._reset_otherunit_world_cred_debt()
+        self._reset_personunit_world_cred_debt()
 
     def get_heir_road_list(self, x_road: RoadUnit) -> list[RoadUnit]:
         road_list = self.get_idea_tree_ordered_road_list()
@@ -2028,23 +2040,23 @@ class WorldUnit:
                 x_dict[fact_road] = fact_obj.get_dict()
         return x_dict
 
-    def get_others_dict(self, all_attrs: bool = False) -> dict[str:str]:
+    def get_persons_dict(self, all_attrs: bool = False) -> dict[str:str]:
         x_dict = {}
-        if self._others != None:
-            for other_id, other_obj in self._others.items():
-                x_dict[other_id] = other_obj.get_dict(all_attrs)
+        if self._persons != None:
+            for person_id, person_obj in self._persons.items():
+                x_dict[person_id] = person_obj.get_dict(all_attrs)
         return x_dict
 
     def get_beliefunits_dict(self) -> dict[str:str]:
         return {
             belief_belief_id: belief_obj.get_dict()
             for belief_belief_id, belief_obj in self._beliefs.items()
-            if belief_obj._other_mirror is False
+            if belief_obj._person_mirror is False
         }
 
     def get_dict(self) -> dict[str:str]:
         x_dict = {
-            "_others": self.get_others_dict(),
+            "_persons": self.get_persons_dict(),
             "_beliefs": self.get_beliefunits_dict(),
             "_originunit": self._originunit.get_dict(),
             "_weight": self._weight,
@@ -2056,10 +2068,10 @@ class WorldUnit:
             "_road_delimiter": self._road_delimiter,
             "_idearoot": self._idearoot.get_dict(),
         }
-        if self._other_credor_pool != None:
-            x_dict["_other_credor_pool"] = self._other_credor_pool
-        if self._other_debtor_pool != None:
-            x_dict["_other_debtor_pool"] = self._other_debtor_pool
+        if self._person_credor_pool != None:
+            x_dict["_person_credor_pool"] = self._person_credor_pool
+        if self._person_debtor_pool != None:
+            x_dict["_person_debtor_pool"] = self._person_debtor_pool
         if self._meld_strategy != get_meld_default():
             x_dict["_meld_strategy"] = self._meld_strategy
         if self._last_gift_id != None:
@@ -2111,22 +2123,22 @@ class WorldUnit:
 
         self.calc_world_metrics()
 
-    def get_world4other(self, other_id: OtherID, facts: dict[RoadUnit:FactCore]):
+    def get_world4person(self, person_id: PersonID, facts: dict[RoadUnit:FactCore]):
         self.calc_world_metrics()
-        world4other = worldunit_shop(_owner_id=other_id)
-        world4other._idearoot._world_importance = self._idearoot._world_importance
-        # get other's others: otherzone
+        world4person = worldunit_shop(_owner_id=person_id)
+        world4person._idearoot._world_importance = self._idearoot._world_importance
+        # get person's persons: personzone
 
-        # get otherzone beliefs
-        other_beliefs = self.get_other_belief_ids(other_id=other_id)
+        # get personzone beliefs
+        person_beliefs = self.get_person_belief_ids(person_id=person_id)
 
-        # set world4other by traversing the idea tree and selecting associated beliefs
+        # set world4person by traversing the idea tree and selecting associated beliefs
         # set root
         not_included_world_importance = 0
-        world4other._idearoot.clear_kids()
+        world4person._idearoot.clear_kids()
         for ykx in self._idearoot._kids.values():
             y4a_included = any(
-                belief_ancestor.belief_id in other_beliefs
+                belief_ancestor.belief_id in person_beliefs
                 for belief_ancestor in ykx._balancelines.values()
             )
 
@@ -2141,18 +2153,18 @@ class WorldUnit:
                     pledge=ykx.pledge,
                     _task=ykx._task,
                 )
-                world4other._idearoot._kids[ykx._label] = y4a_new
+                world4person._idearoot._kids[ykx._label] = y4a_new
             else:
                 not_included_world_importance += ykx._world_importance
 
         if not_included_world_importance > 0:
             y4a_exterior = ideaunit_shop(
-                _label="__world4other__",
+                _label="__world4person__",
                 _world_importance=not_included_world_importance,
             )
-            world4other._idearoot._kids[y4a_exterior._label] = y4a_exterior
+            world4person._idearoot._kids[y4a_exterior._label] = y4a_exterior
 
-        return world4other
+        return world4person
 
     def set_dominate_pledge_idea(self, idea_kid: IdeaUnit):
         idea_kid.pledge = True
@@ -2175,13 +2187,13 @@ class WorldUnit:
     def meld(
         self,
         exterior_world,
-        other_weight: float = None,
-        ignore_otherunits: bool = False,
+        person_weight: float = None,
+        ignore_personunits: bool = False,
     ):
         self._meld_beliefs(exterior_world)
-        if not ignore_otherunits:
-            self._meld_others(exterior_world)
-        self._meld_ideas(exterior_world, other_weight)
+        if not ignore_personunits:
+            self._meld_persons(exterior_world)
+        self._meld_ideas(exterior_world, person_weight)
         self._meld_facts(exterior_world)
         self._weight = get_meld_weight(
             src_weight=self._weight,
@@ -2189,14 +2201,14 @@ class WorldUnit:
             exterior_weight=exterior_world._weight,
             exterior_meld_strategy="default",
         )
-        self._meld_originlinks(exterior_world._owner_id, other_weight)
+        self._meld_originlinks(exterior_world._owner_id, person_weight)
 
-    def _meld_ideas(self, exterior_world, other_weight: float):
+    def _meld_ideas(self, exterior_world, person_weight: float):
         # meld idearoot
         self._idearoot.meld(exterior_idea=exterior_world._idearoot, _idearoot=True)
 
         # meld all exterior ideas
-        other_id = exterior_world._owner_id
+        person_id = exterior_world._owner_id
         o_idea_list = exterior_world.get_idea_list_without_idearoot()
         for o_idea in o_idea_list:
             o_road = road_validate(
@@ -2206,18 +2218,18 @@ class WorldUnit:
             )
             try:
                 main_idea = self.get_idea_obj(o_road)
-                main_idea.meld(o_idea, False, other_id, other_weight)
+                main_idea.meld(o_idea, False, person_id, person_weight)
             except Exception:
                 self.add_idea(idea_kid=o_idea, parent_road=o_idea._parent_road)
                 main_idea = self.get_idea_obj(o_road)
-                main_idea._originunit.set_originlink(other_id, other_weight)
+                main_idea._originunit.set_originlink(person_id, person_weight)
 
-    def _meld_others(self, exterior_world):
-        for otherunit in exterior_world._others.values():
-            if self.get_other(otherunit.other_id) is None:
-                self.set_otherunit(otherunit=otherunit)
+    def _meld_persons(self, exterior_world):
+        for personunit in exterior_world._persons.values():
+            if self.get_person(personunit.person_id) is None:
+                self.set_personunit(personunit=personunit)
             else:
-                self.get_other(otherunit.other_id).meld(otherunit)
+                self.get_person(personunit.person_id).meld(personunit)
 
     def _meld_beliefs(self, exterior_world):
         for brx in exterior_world._beliefs.values():
@@ -2233,20 +2245,20 @@ class WorldUnit:
             else:
                 self._idearoot._factunits.get(hx.base).meld(hx)
 
-    def _meld_originlinks(self, other_id: OtherID, other_weight: float):
-        if other_id != None:
-            self._originunit.set_originlink(other_id, other_weight)
+    def _meld_originlinks(self, person_id: PersonID, person_weight: float):
+        if person_id != None:
+            self._originunit.set_originlink(person_id, person_weight)
 
     def get_assignment(
         self,
         world_x,
-        assignor_others: dict[OtherID:OtherUnit],
-        assignor_other_id: OtherID,
+        assignor_persons: dict[PersonID:PersonUnit],
+        assignor_person_id: PersonID,
     ) -> any:
         self.calc_world_metrics()
-        self._set_assignment_others(world_x, assignor_others, assignor_other_id)
+        self._set_assignment_persons(world_x, assignor_persons, assignor_person_id)
         self._set_assignment_beliefs(world_x)
-        assignor_pledges = self._get_assignor_pledge_ideas(world_x, assignor_other_id)
+        assignor_pledges = self._get_assignor_pledge_ideas(world_x, assignor_person_id)
         relevant_roads = self._get_relevant_roads(assignor_pledges)
         self._set_assignment_ideas(world_x, relevant_roads)
         return world_x
@@ -2275,33 +2287,33 @@ class WorldUnit:
                     nigh=afu.nigh,
                 )
 
-    def _set_assignment_others(
+    def _set_assignment_persons(
         self,
         world_x,
-        assignor_others: dict[OtherID:OtherUnit],
-        assignor_other_id: OtherID,
+        assignor_persons: dict[PersonID:PersonUnit],
+        assignor_person_id: PersonID,
     ):
-        if self.other_exists(assignor_other_id):
-            # get all others that are both in self._others and assignor_known_others
-            others_set = get_intersection_of_others(self._others, assignor_others)
-            for other_id_x in others_set:
-                world_x.set_otherunit(otherunit=self.get_other(other_id_x))
+        if self.person_exists(assignor_person_id):
+            # get all persons that are both in self._persons and assignor_known_persons
+            persons_set = get_intersection_of_persons(self._persons, assignor_persons)
+            for person_id_x in persons_set:
+                world_x.set_personunit(personunit=self.get_person(person_id_x))
         return world_x
 
     def _set_assignment_beliefs(self, world_x):
-        revelant_beliefs = get_others_relevant_beliefs(self._beliefs, world_x._others)
-        for belief_belief_id, belief_others in revelant_beliefs.items():
+        revelant_beliefs = get_persons_relevant_beliefs(self._beliefs, world_x._persons)
+        for belief_belief_id, belief_persons in revelant_beliefs.items():
             if world_x._beliefs.get(belief_belief_id) is None:
                 belief_x = beliefunit_shop(belief_id=belief_belief_id)
-                for other_id in belief_others:
-                    belief_x.set_otherlink(otherlink_shop(other_id=other_id))
+                for person_id in belief_persons:
+                    belief_x.set_personlink(personlink_shop(person_id=person_id))
                 world_x.set_beliefunit(belief_x)
 
     def _get_assignor_pledge_ideas(
-        self, world_x, assignor_other_id: BeliefID
+        self, world_x, assignor_person_id: BeliefID
     ) -> dict[RoadUnit:int]:
-        assignor_beliefs = get_other_relevant_beliefs(
-            world_x._beliefs, assignor_other_id
+        assignor_beliefs = get_person_relevant_beliefs(
+            world_x._beliefs, assignor_person_id
         )
         return {
             idea_road: -1
@@ -2330,7 +2342,7 @@ def worldunit_shop(
         _owner_id=_owner_id,
         _weight=get_1_if_None(_weight),
         _real_id=_real_id,
-        _others=get_empty_dict_if_none(None),
+        _persons=get_empty_dict_if_none(None),
         _beliefs=get_empty_dict_if_none(None),
         _idea_dict=get_empty_dict_if_none(None),
         _econ_dict=get_empty_dict_if_none(None),
@@ -2374,21 +2386,21 @@ def get_from_dict(world_dict: dict) -> WorldUnit:
     x_world._penny = default_penny_if_none(
         get_obj_from_world_dict(world_dict, "_penny")
     )
-    x_world._other_credor_pool = get_obj_from_world_dict(
-        world_dict, "_other_credor_pool"
+    x_world._person_credor_pool = get_obj_from_world_dict(
+        world_dict, "_person_credor_pool"
     )
-    x_world._other_debtor_pool = get_obj_from_world_dict(
-        world_dict, "_other_debtor_pool"
+    x_world._person_debtor_pool = get_obj_from_world_dict(
+        world_dict, "_person_debtor_pool"
     )
     if get_obj_from_world_dict(world_dict, "_meld_strategy") is None:
         x_world._meld_strategy = get_meld_default()
     else:
         x_world._meld_strategy = get_obj_from_world_dict(world_dict, "_meld_strategy")
     x_world._last_gift_id = get_obj_from_world_dict(world_dict, "_last_gift_id")
-    for x_otherunit in get_obj_from_world_dict(
-        world_dict, dict_key="_others", _road_delimiter=x_world._road_delimiter
+    for x_personunit in get_obj_from_world_dict(
+        world_dict, dict_key="_persons", _road_delimiter=x_world._road_delimiter
     ).values():
-        x_world.set_otherunit(x_otherunit)
+        x_world.set_personunit(x_personunit)
     for x_beliefunit in get_obj_from_world_dict(
         world_dict, dict_key="_beliefs", _road_delimiter=x_world._road_delimiter
     ).values():
@@ -2478,11 +2490,11 @@ def get_obj_from_world_dict(
             if x_dict.get(dict_key) != None
             else originunit_shop()
         )
-    elif dict_key == "_others":
+    elif dict_key == "_persons":
         return (
-            otherunits_get_from_dict(x_dict[dict_key], _road_delimiter)
+            personunits_get_from_dict(x_dict[dict_key], _road_delimiter)
             if x_dict.get(dict_key) != None
-            else otherunits_get_from_dict(x_dict[dict_key], _road_delimiter)
+            else personunits_get_from_dict(x_dict[dict_key], _road_delimiter)
         )
     elif dict_key == "_beliefs":
         return (

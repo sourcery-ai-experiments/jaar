@@ -50,7 +50,7 @@ def test_world_ideakid_assignedunit_EmptyCorrectlySets_idea_assignedheir():
     bob_world = worldunit_shop(bob_text)
     run_text = "run"
     run_road = bob_world.make_road(bob_text, run_text)
-    bob_world.add_otherunit(other_id=bob_text)
+    bob_world.add_personunit(person_id=bob_text)
     bob_world.add_l1_idea(ideaunit_shop(run_text))
     bob_world.edit_idea_attr(road=run_road, assignedunit=assignedunit_x)
     run_idea = bob_world.get_idea_obj(run_road)
@@ -120,8 +120,8 @@ def test_WorldUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUn
     noa1_world = worldunit_shop(noa_text)
     xia_text = "Xia"
     zoa_text = "Zoa"
-    noa1_world.add_otherunit(other_id=xia_text)
-    noa1_world.add_otherunit(other_id=zoa_text)
+    noa1_world.add_personunit(person_id=xia_text)
+    noa1_world.add_personunit(person_id=zoa_text)
 
     casa_text = "casa"
     casa_road = noa1_world.make_l1_road(casa_text)
@@ -139,7 +139,7 @@ def test_WorldUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUn
 
     # WHEN
     noa2_world = worldunit_shop(noa_text)
-    noa2_world.add_otherunit(other_id=xia_text)
+    noa2_world.add_personunit(person_id=xia_text)
     filtered_idea = noa2_world._get_filtered_balancelinks_idea(noa1_world_swim_idea)
 
     # THEN
@@ -153,8 +153,8 @@ def test_WorldUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     noa1_world = worldunit_shop("Noa")
     xia_text = "Xia"
     zoa_text = "Zoa"
-    noa1_world.add_otherunit(other_id=xia_text)
-    noa1_world.add_otherunit(other_id=zoa_text)
+    noa1_world.add_personunit(person_id=xia_text)
+    noa1_world.add_personunit(person_id=zoa_text)
 
     casa_text = "casa"
     casa_road = noa1_world.make_l1_road(casa_text)
@@ -172,7 +172,7 @@ def test_WorldUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 
     # WHEN
     noa2_world = worldunit_shop("Noa")
-    noa2_world.add_otherunit(other_id=xia_text)
+    noa2_world.add_personunit(person_id=xia_text)
     noa2_world.add_l1_idea(noa1_world_swim_idea, create_missing_beliefs=False)
 
     # THEN
