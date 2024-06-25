@@ -357,7 +357,6 @@ class PersonLink(PersonCore):
         self.debtor_weight += exterior_personlink.debtor_weight
 
 
-# class PersonLinkshop:
 def personlinks_get_from_json(personlinks_json: str) -> dict[str:PersonLink]:
     personlinks_dict = get_dict_from_json(json_x=personlinks_json)
     return personlinks_get_from_dict(x_dict=personlinks_dict)
