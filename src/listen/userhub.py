@@ -15,12 +15,12 @@ from src._road.jaar_config import (
     grades_folder,
     get_rootpart_of_econ_dir,
     treasury_file_name,
-    get_atoms_folder,
+    get_gifts_folder,
     get_test_real_id,
     get_test_reals_dir,
-    get_init_atom_id_if_None,
+    get_init_gift_id_if_None,
     get_json_filename,
-    init_atom_id,
+    init_gift_id,
 )
 from src._road.finance import (
     default_pixel_if_none,
@@ -42,13 +42,13 @@ from src._world.world import (
     get_from_json as worldunit_get_from_json,
     worldunit_shop,
 )
-from src.atom.quark import (
-    QuarkUnit,
-    get_from_json as quarkunit_get_from_json,
-    modify_world_with_quarkunit,
+from src.gift.atom import (
+    AtomUnit,
+    get_from_json as atomunit_get_from_json,
+    modify_world_with_atomunit,
 )
 from src.listen.basis_worlds import get_default_live_world
-from src.atom.atom import AtomUnit, atomunit_shop, create_atomunit_from_files
+from src.gift.gift import GiftUnit, giftunit_shop, create_giftunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
@@ -63,11 +63,11 @@ class Invalid_live_Exception(Exception):
     pass
 
 
-class SaveAtomFileException(Exception):
+class SaveGiftFileException(Exception):
     pass
 
 
-class AtomFileMissingException(Exception):
+class GiftFileMissingException(Exception):
     pass
 
 
@@ -114,11 +114,11 @@ class UserHub:
     def econs_dir(self):
         return f"{self.person_dir()}/econs"
 
-    def quarks_dir(self):
-        return f"{self.person_dir()}/quarks"
-
     def atoms_dir(self):
-        return f"{self.person_dir()}/{get_atoms_folder()}"
+        return f"{self.person_dir()}/atoms"
+
+    def gifts_dir(self):
+        return f"{self.person_dir()}/{get_gifts_folder()}"
 
     def same_dir(self) -> str:
         return f"{self.person_dir()}/same"
@@ -184,7 +184,7 @@ class UserHub:
             _pixel=self.pixel,
             _penny=self.penny,
         )
-        x_worldunit._last_atom_id = init_atom_id()
+        x_worldunit._last_gift_id = init_gift_id()
         return x_worldunit
 
     def delete_same_file(self):
@@ -193,199 +193,199 @@ class UserHub:
     def open_file_live(self):
         return open_file(self.live_dir(), self.live_file_name())
 
-    def get_max_quark_file_number(self) -> int:
-        if not os_path_exists(self.quarks_dir()):
-            return None
-        quark_files_dict = dir_files(self.quarks_dir(), True, include_files=True)
-        quark_filenames = quark_files_dict.keys()
-        quark_file_numbers = {int(quark_filename) for quark_filename in quark_filenames}
-        return max(quark_file_numbers, default=None)
-
-    def _get_next_quark_file_number(self) -> int:
-        max_file_number = self.get_max_quark_file_number()
-        return 0 if max_file_number is None else max_file_number + 1
-
-    def quark_file_name(self, quark_number: int) -> str:
-        return f"{quark_number}.json"
-
-    def quark_file_path(self, quark_number: int) -> str:
-        return f"{self.quarks_dir()}/{self.quark_file_name(quark_number)}"
-
-    def _save_valid_quark_file(self, x_quark: QuarkUnit, file_number: int):
-        save_file(
-            self.quarks_dir(),
-            self.quark_file_name(file_number),
-            x_quark.get_json(),
-            replace=False,
-        )
-        return file_number
-
-    def save_quark_file(self, x_quark: QuarkUnit):
-        x_quark_filename = self._get_next_quark_file_number()
-        return self._save_valid_quark_file(x_quark, x_quark_filename)
-
-    def quark_file_exists(self, quark_number: int) -> bool:
-        return os_path_exists(self.quark_file_path(quark_number))
-
-    def delete_quark_file(self, quark_number: int):
-        delete_dir(self.quark_file_path(quark_number))
-
-    def _get_world_from_quark_files(self) -> WorldUnit:
-        x_world = worldunit_shop(self.person_id, self.real_id)
-        if self.quark_file_exists(self.get_max_quark_file_number()):
-            x_quark_files = dir_files(self.quarks_dir(), delete_extensions=True)
-            sorted_quark_filenames = sorted(list(x_quark_files.keys()))
-
-            for x_quark_filename in sorted_quark_filenames:
-                x_file_text = x_quark_files.get(x_quark_filename)
-                x_quark = quarkunit_get_from_json(x_file_text)
-                modify_world_with_quarkunit(x_world, x_quark)
-        return x_world
-
     def get_max_atom_file_number(self) -> int:
         if not os_path_exists(self.atoms_dir()):
             return None
-        atoms_dir = self.atoms_dir()
-        atom_filenames = dir_files(atoms_dir, True, include_files=True).keys()
-        atom_file_numbers = {int(filename) for filename in atom_filenames}
+        atom_files_dict = dir_files(self.atoms_dir(), True, include_files=True)
+        atom_filenames = atom_files_dict.keys()
+        atom_file_numbers = {int(atom_filename) for atom_filename in atom_filenames}
         return max(atom_file_numbers, default=None)
 
     def _get_next_atom_file_number(self) -> int:
         max_file_number = self.get_max_atom_file_number()
-        init_atom_id = get_init_atom_id_if_None()
-        return init_atom_id if max_file_number is None else max_file_number + 1
+        return 0 if max_file_number is None else max_file_number + 1
 
-    def atom_file_name(self, atom_id: int) -> str:
-        return get_json_filename(atom_id)
+    def atom_file_name(self, atom_number: int) -> str:
+        return f"{atom_number}.json"
 
-    def atom_file_path(self, atom_id: int) -> bool:
-        atom_filename = self.atom_file_name(atom_id)
-        return f"{self.atoms_dir()}/{atom_filename}"
+    def atom_file_path(self, atom_number: int) -> str:
+        return f"{self.atoms_dir()}/{self.atom_file_name(atom_number)}"
 
-    def atom_file_exists(self, atom_id: int) -> bool:
-        return os_path_exists(self.atom_file_path(atom_id))
+    def _save_valid_atom_file(self, x_atom: AtomUnit, file_number: int):
+        save_file(
+            self.atoms_dir(),
+            self.atom_file_name(file_number),
+            x_atom.get_json(),
+            replace=False,
+        )
+        return file_number
 
-    def validate_atomunit(self, x_atomunit: AtomUnit) -> AtomUnit:
-        if x_atomunit._quarks_dir != self.quarks_dir():
-            x_atomunit._quarks_dir = self.quarks_dir()
-        if x_atomunit._atoms_dir != self.atoms_dir():
-            x_atomunit._atoms_dir = self.atoms_dir()
-        if x_atomunit._atom_id != self._get_next_atom_file_number():
-            x_atomunit._atom_id = self._get_next_atom_file_number()
-        if x_atomunit.person_id != self.person_id:
-            x_atomunit.person_id = self.person_id
-        if x_atomunit._nuc_start != self._get_next_quark_file_number():
-            x_atomunit._nuc_start = self._get_next_quark_file_number()
-        return x_atomunit
+    def save_atom_file(self, x_atom: AtomUnit):
+        x_atom_filename = self._get_next_atom_file_number()
+        return self._save_valid_atom_file(x_atom, x_atom_filename)
 
-    def save_atom_file(
+    def atom_file_exists(self, atom_number: int) -> bool:
+        return os_path_exists(self.atom_file_path(atom_number))
+
+    def delete_atom_file(self, atom_number: int):
+        delete_dir(self.atom_file_path(atom_number))
+
+    def _get_world_from_atom_files(self) -> WorldUnit:
+        x_world = worldunit_shop(self.person_id, self.real_id)
+        if self.atom_file_exists(self.get_max_atom_file_number()):
+            x_atom_files = dir_files(self.atoms_dir(), delete_extensions=True)
+            sorted_atom_filenames = sorted(list(x_atom_files.keys()))
+
+            for x_atom_filename in sorted_atom_filenames:
+                x_file_text = x_atom_files.get(x_atom_filename)
+                x_atom = atomunit_get_from_json(x_file_text)
+                modify_world_with_atomunit(x_world, x_atom)
+        return x_world
+
+    def get_max_gift_file_number(self) -> int:
+        if not os_path_exists(self.gifts_dir()):
+            return None
+        gifts_dir = self.gifts_dir()
+        gift_filenames = dir_files(gifts_dir, True, include_files=True).keys()
+        gift_file_numbers = {int(filename) for filename in gift_filenames}
+        return max(gift_file_numbers, default=None)
+
+    def _get_next_gift_file_number(self) -> int:
+        max_file_number = self.get_max_gift_file_number()
+        init_gift_id = get_init_gift_id_if_None()
+        return init_gift_id if max_file_number is None else max_file_number + 1
+
+    def gift_file_name(self, gift_id: int) -> str:
+        return get_json_filename(gift_id)
+
+    def gift_file_path(self, gift_id: int) -> bool:
+        gift_filename = self.gift_file_name(gift_id)
+        return f"{self.gifts_dir()}/{gift_filename}"
+
+    def gift_file_exists(self, gift_id: int) -> bool:
+        return os_path_exists(self.gift_file_path(gift_id))
+
+    def validate_giftunit(self, x_giftunit: GiftUnit) -> GiftUnit:
+        if x_giftunit._atoms_dir != self.atoms_dir():
+            x_giftunit._atoms_dir = self.atoms_dir()
+        if x_giftunit._gifts_dir != self.gifts_dir():
+            x_giftunit._gifts_dir = self.gifts_dir()
+        if x_giftunit._gift_id != self._get_next_gift_file_number():
+            x_giftunit._gift_id = self._get_next_gift_file_number()
+        if x_giftunit.person_id != self.person_id:
+            x_giftunit.person_id = self.person_id
+        if x_giftunit._change_start != self._get_next_atom_file_number():
+            x_giftunit._change_start = self._get_next_atom_file_number()
+        return x_giftunit
+
+    def save_gift_file(
         self,
-        x_atom: AtomUnit,
+        x_gift: GiftUnit,
         replace: bool = True,
         correct_invalid_attrs: bool = True,
-    ) -> AtomUnit:
+    ) -> GiftUnit:
         if correct_invalid_attrs:
-            x_atom = self.validate_atomunit(x_atom)
+            x_gift = self.validate_giftunit(x_gift)
 
-        if x_atom._quarks_dir != self.quarks_dir():
-            raise SaveAtomFileException(
-                f"AtomUnit file cannot be saved because atomunit._quarks_dir is incorrect: {x_atom._quarks_dir}. It must be {self.quarks_dir()}."
+        if x_gift._atoms_dir != self.atoms_dir():
+            raise SaveGiftFileException(
+                f"GiftUnit file cannot be saved because giftunit._atoms_dir is incorrect: {x_gift._atoms_dir}. It must be {self.atoms_dir()}."
             )
-        if x_atom._atoms_dir != self.atoms_dir():
-            raise SaveAtomFileException(
-                f"AtomUnit file cannot be saved because atomunit._atoms_dir is incorrect: {x_atom._atoms_dir}. It must be {self.atoms_dir()}."
+        if x_gift._gifts_dir != self.gifts_dir():
+            raise SaveGiftFileException(
+                f"GiftUnit file cannot be saved because giftunit._gifts_dir is incorrect: {x_gift._gifts_dir}. It must be {self.gifts_dir()}."
             )
-        if x_atom.person_id != self.person_id:
-            raise SaveAtomFileException(
-                f"AtomUnit file cannot be saved because atomunit.person_id is incorrect: {x_atom.person_id}. It must be {self.person_id}."
+        if x_gift.person_id != self.person_id:
+            raise SaveGiftFileException(
+                f"GiftUnit file cannot be saved because giftunit.person_id is incorrect: {x_gift.person_id}. It must be {self.person_id}."
             )
-        atom_filename = self.atom_file_name(x_atom._atom_id)
-        if not replace and self.atom_file_exists(x_atom._atom_id):
-            raise SaveAtomFileException(
-                f"AtomUnit file {atom_filename} already exists and cannot be saved over."
+        gift_filename = self.gift_file_name(x_gift._gift_id)
+        if not replace and self.gift_file_exists(x_gift._gift_id):
+            raise SaveGiftFileException(
+                f"GiftUnit file {gift_filename} already exists and cannot be saved over."
             )
-        x_atom.save_files()
-        return x_atom
+        x_gift.save_files()
+        return x_gift
 
-    def _del_atom_file(self, atom_id: int):
-        delete_dir(self.atom_file_path(atom_id))
+    def _del_gift_file(self, gift_id: int):
+        delete_dir(self.gift_file_path(gift_id))
 
-    def _default_atomunit(self) -> AtomUnit:
-        return atomunit_shop(
+    def _default_giftunit(self) -> GiftUnit:
+        return giftunit_shop(
             person_id=self.person_id,
-            _atom_id=self._get_next_atom_file_number(),
-            _quarks_dir=self.quarks_dir(),
+            _gift_id=self._get_next_gift_file_number(),
             _atoms_dir=self.atoms_dir(),
+            _gifts_dir=self.gifts_dir(),
         )
 
-    def create_save_atom_file(self, before_world: WorldUnit, after_world: WorldUnit):
-        new_atomunit = self._default_atomunit()
-        new_nucunit = new_atomunit._nucunit
-        new_nucunit.add_all_different_quarkunits(before_world, after_world)
-        self.save_atom_file(new_atomunit)
+    def create_save_gift_file(self, before_world: WorldUnit, after_world: WorldUnit):
+        new_giftunit = self._default_giftunit()
+        new_changeunit = new_giftunit._changeunit
+        new_changeunit.add_all_different_atomunits(before_world, after_world)
+        self.save_gift_file(new_giftunit)
 
-    def get_atomunit(self, atom_id: int) -> AtomUnit:
-        if self.atom_file_exists(atom_id) is False:
-            raise AtomFileMissingException(
-                f"AtomUnit file_number {atom_id} does not exist."
+    def get_giftunit(self, gift_id: int) -> GiftUnit:
+        if self.gift_file_exists(gift_id) is False:
+            raise GiftFileMissingException(
+                f"GiftUnit file_number {gift_id} does not exist."
             )
+        x_gifts_dir = self.gifts_dir()
         x_atoms_dir = self.atoms_dir()
-        x_quarks_dir = self.quarks_dir()
-        return create_atomunit_from_files(x_atoms_dir, atom_id, x_quarks_dir)
+        return create_giftunit_from_files(x_gifts_dir, gift_id, x_atoms_dir)
 
-    def _merge_any_atoms(self, x_world: WorldUnit) -> WorldUnit:
-        atoms_dir = self.atoms_dir()
-        atom_ints = get_integer_filenames(atoms_dir, x_world._last_atom_id)
-        if len(atom_ints) == 0:
+    def _merge_any_gifts(self, x_world: WorldUnit) -> WorldUnit:
+        gifts_dir = self.gifts_dir()
+        gift_ints = get_integer_filenames(gifts_dir, x_world._last_gift_id)
+        if len(gift_ints) == 0:
             return copy_deepcopy(x_world)
 
-        for atom_int in atom_ints:
-            x_atom = self.get_atomunit(atom_int)
-            new_world = x_atom._nucunit.get_edited_world(x_world)
+        for gift_int in gift_ints:
+            x_gift = self.get_giftunit(gift_int)
+            new_world = x_gift._changeunit.get_edited_world(x_world)
         return new_world
 
-    def _create_initial_atom_files_from_default(self):
-        x_atomunit = atomunit_shop(
+    def _create_initial_gift_files_from_default(self):
+        x_giftunit = giftunit_shop(
             person_id=self.person_id,
-            _atom_id=get_init_atom_id_if_None(),
+            _gift_id=get_init_gift_id_if_None(),
+            _gifts_dir=self.gifts_dir(),
             _atoms_dir=self.atoms_dir(),
-            _quarks_dir=self.quarks_dir(),
         )
-        x_atomunit._nucunit.add_all_different_quarkunits(
+        x_giftunit._changeunit.add_all_different_atomunits(
             before_world=self.default_same_world(),
             after_world=self.default_same_world(),
         )
-        x_atomunit.save_files()
+        x_giftunit.save_files()
 
-    def _create_same_from_atoms(self):
-        x_world = self._merge_any_atoms(self.default_same_world())
+    def _create_same_from_gifts(self):
+        x_world = self._merge_any_gifts(self.default_same_world())
         self.save_same_world(x_world)
 
-    def _create_initial_atom_and_same_files(self):
-        self._create_initial_atom_files_from_default()
-        self._create_same_from_atoms()
+    def _create_initial_gift_and_same_files(self):
+        self._create_initial_gift_files_from_default()
+        self._create_same_from_gifts()
 
-    def _create_initial_atom_files_from_same(self):
-        x_atomunit = self._default_atomunit()
-        x_atomunit._nucunit.add_all_different_quarkunits(
+    def _create_initial_gift_files_from_same(self):
+        x_giftunit = self._default_giftunit()
+        x_giftunit._changeunit.add_all_different_atomunits(
             before_world=self.default_same_world(),
             after_world=self.get_same_world(),
         )
-        x_atomunit.save_files()
+        x_giftunit.save_files()
 
-    def initialize_atom_same_files(self):
+    def initialize_gift_same_files(self):
         x_same_file_exists = self.same_file_exists()
-        atom_file_exists = self.atom_file_exists(init_atom_id())
-        if x_same_file_exists is False and atom_file_exists is False:
-            self._create_initial_atom_and_same_files()
-        elif x_same_file_exists is False and atom_file_exists:
-            self._create_same_from_atoms()
-        elif x_same_file_exists and atom_file_exists is False:
-            self._create_initial_atom_files_from_same()
+        gift_file_exists = self.gift_file_exists(init_gift_id())
+        if x_same_file_exists is False and gift_file_exists is False:
+            self._create_initial_gift_and_same_files()
+        elif x_same_file_exists is False and gift_file_exists:
+            self._create_same_from_gifts()
+        elif x_same_file_exists and gift_file_exists is False:
+            self._create_initial_gift_files_from_same()
 
-    def append_atoms_to_same_file(self):
+    def append_gifts_to_same_file(self):
         same_world = self.get_same_world()
-        same_world = self._merge_any_atoms(same_world)
+        same_world = self._merge_any_gifts(same_world)
         self.save_same_world(same_world)
         return self.get_same_world()
 

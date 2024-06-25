@@ -114,7 +114,7 @@ class _pixel_RatioException(Exception):
     pass
 
 
-class _last_atom_idException(Exception):
+class _last_gift_idException(Exception):
     pass
 
 
@@ -126,7 +126,7 @@ class healerhold_belief_id_Exception(Exception):
 class WorldUnit:
     _real_id: RealID = None
     _owner_id: OwnerID = None
-    _last_atom_id: int = None
+    _last_gift_id: int = None
     _weight: float = None
     _others: dict[OtherID:OtherUnit] = None
     _beliefs: dict[BeliefID:BeliefUnit] = None
@@ -151,15 +151,15 @@ class WorldUnit:
     _sum_healerhold_importance: bool = None
     # calc_world_metrics Calculated field end
 
-    def del_last_atom_id(self):
-        self._last_atom_id = None
+    def del_last_gift_id(self):
+        self._last_gift_id = None
 
-    def set_last_atom_id(self, x_last_atom_id: int):
-        if self._last_atom_id != None and x_last_atom_id < self._last_atom_id:
-            raise _last_atom_idException(
-                f"Cannot set _last_atom_id to {x_last_atom_id} because it is less than {self._last_atom_id}."
+    def set_last_gift_id(self, x_last_gift_id: int):
+        if self._last_gift_id != None and x_last_gift_id < self._last_gift_id:
+            raise _last_gift_idException(
+                f"Cannot set _last_gift_id to {x_last_gift_id} because it is less than {self._last_gift_id}."
             )
-        self._last_atom_id = x_last_atom_id
+        self._last_gift_id = x_last_gift_id
 
     def set_monetary_desc(self, x_monetary_desc: str):
         self._monetary_desc = x_monetary_desc
@@ -2062,8 +2062,8 @@ class WorldUnit:
             x_dict["_other_debtor_pool"] = self._other_debtor_pool
         if self._meld_strategy != get_meld_default():
             x_dict["_meld_strategy"] = self._meld_strategy
-        if self._last_atom_id != None:
-            x_dict["_last_atom_id"] = self._last_atom_id
+        if self._last_gift_id != None:
+            x_dict["_last_gift_id"] = self._last_gift_id
 
         return x_dict
 
@@ -2384,7 +2384,7 @@ def get_from_dict(world_dict: dict) -> WorldUnit:
         x_world._meld_strategy = get_meld_default()
     else:
         x_world._meld_strategy = get_obj_from_world_dict(world_dict, "_meld_strategy")
-    x_world._last_atom_id = get_obj_from_world_dict(world_dict, "_last_atom_id")
+    x_world._last_gift_id = get_obj_from_world_dict(world_dict, "_last_gift_id")
     for x_otherunit in get_obj_from_world_dict(
         world_dict, dict_key="_others", _road_delimiter=x_world._road_delimiter
     ).values():

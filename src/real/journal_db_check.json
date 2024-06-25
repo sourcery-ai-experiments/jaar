@@ -1,24 +1,24 @@
 {
     "tables": {
-        "quark_nuc_link": {
-            "columns": {}
-        },
-        "quark_mstr": {
-            "columns": {}
-        },
-        "quark_hx": {
-            "columns": {}
-        },
-        "nuc_atom_link": {
-            "columns": {}
-        },
-        "nuc_mstr": {
+        "atom_change_link": {
             "columns": {}
         },
         "atom_mstr": {
             "columns": {}
         },
-        "atom_person_link": {
+        "atom_hx": {
+            "columns": {}
+        },
+        "change_gift_link": {
+            "columns": {}
+        },
+        "change_mstr": {
+            "columns": {}
+        },
+        "gift_mstr": {
+            "columns": {}
+        },
+        "gift_person_link": {
             "columns": {
                 "person_id": {}
             }

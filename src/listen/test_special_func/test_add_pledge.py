@@ -7,17 +7,17 @@ from src.listen.examples.listen_env import (
 )
 
 
-def test_add_same_pledge_Addspledgeatom(env_dir_setup_cleanup):
+def test_add_same_pledge_Addspledgegift(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), root_label(), sue_text)
-    sue_userhub.initialize_atom_same_files()
+    sue_userhub.initialize_gift_same_files()
     old_sue_same = sue_userhub.get_same_world()
     clean_text = "clean"
     clean_road = old_sue_same.make_l1_road(clean_text)
     one_int = 1
-    print(f"{sue_userhub.atom_file_path(one_int)=}")
-    assert sue_userhub.atom_file_exists(one_int) is False
+    print(f"{sue_userhub.gift_file_path(one_int)=}")
+    assert sue_userhub.gift_file_exists(one_int) is False
     old_sue_same = sue_userhub.get_same_world()
     assert old_sue_same.idea_exists(clean_road) is False
 
@@ -25,7 +25,7 @@ def test_add_same_pledge_Addspledgeatom(env_dir_setup_cleanup):
     add_same_pledge(sue_userhub, clean_road)
 
     # THEN
-    assert sue_userhub.atom_file_exists(one_int)
+    assert sue_userhub.gift_file_exists(one_int)
     new_sue_same = sue_userhub.get_same_world()
     assert new_sue_same.idea_exists(clean_road)
 
@@ -34,7 +34,7 @@ def test_add_same_pledge_SetsSameWorldpledgeIdea_suffbelief(env_dir_setup_cleanu
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), root_label(), sue_text)
-    sue_userhub.initialize_atom_same_files()
+    sue_userhub.initialize_gift_same_files()
     old_sue_same = sue_userhub.get_same_world()
     clean_text = "clean"
     clean_road = old_sue_same.make_l1_road(clean_text)
@@ -56,7 +56,7 @@ def test_add_same_pledge_CanAdd_reasonunit(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), root_label(), sue_text)
-    sue_userhub.initialize_atom_same_files()
+    sue_userhub.initialize_gift_same_files()
     old_sue_same = sue_userhub.get_same_world()
     clean_text = "clean"
     clean_road = old_sue_same.make_l1_road(clean_text)
@@ -82,7 +82,7 @@ def test_add_same_fact_CanAdd_factunit(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), root_label(), sue_text)
-    sue_userhub.initialize_atom_same_files()
+    sue_userhub.initialize_gift_same_files()
     old_sue_same = sue_userhub.get_same_world()
     house_estimation_text = "house_estimation"
     house_estimation_road = old_sue_same.make_l1_road(house_estimation_text)

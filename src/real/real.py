@@ -1,5 +1,5 @@
 from src._instrument.file import set_dir, delete_dir, dir_files
-from src._road.jaar_config import get_atoms_folder
+from src._road.jaar_config import get_gifts_folder
 from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src._road.road import default_road_delimiter_if_none, PersonID, RoadUnit, RealID
 from src._world.world import WorldUnit
@@ -19,13 +19,13 @@ from sqlite3 import connect as sqlite3_connect, Connection
 @dataclass
 class RealUnit:
     """Data pipelines:
-    pipeline1: atoms->same
+    pipeline1: gifts->same
     pipeline2: same->roles
     pipeline3: role->job
     pipeline4: job->live
     pipeline5: same->live (direct)
     pipeline6: same->job->live (through jobs)
-    pipeline7: atoms->live (could be 5 of 6)
+    pipeline7: gifts->live (could be 5 of 6)
     """
 
     real_id: RealID
@@ -33,7 +33,7 @@ class RealUnit:
     _real_dir: str = None
     _persons_dir: str = None
     _journal_db: str = None
-    _atoms_dir: str = None
+    _gifts_dir: str = None
     _road_delimiter: str = None
     _pixel: float = None
     _penny: float = None
@@ -42,10 +42,10 @@ class RealUnit:
     def _set_real_dirs(self, in_memory_journal: bool = None):
         self._real_dir = f"{self.reals_dir}/{self.real_id}"
         self._persons_dir = f"{self._real_dir}/persons"
-        self._atoms_dir = f"{self._real_dir}/{get_atoms_folder()}"
+        self._gifts_dir = f"{self._real_dir}/{get_gifts_folder()}"
         set_dir(x_path=self._real_dir)
         set_dir(x_path=self._persons_dir)
-        set_dir(x_path=self._atoms_dir)
+        set_dir(x_path=self._gifts_dir)
         self._create_journal_db(in_memory=in_memory_journal)
 
     def _get_person_dir(self, person_id):
@@ -116,7 +116,7 @@ class RealUnit:
 
     def init_person_econs(self, person_id: PersonID):
         x_userhub = self._get_userhub(person_id)
-        x_userhub.initialize_atom_same_files()
+        x_userhub.initialize_gift_same_files()
         x_userhub.initialize_live_file(self.get_person_same_from_file(person_id))
 
     def get_person_same_from_file(self, person_id: PersonID) -> WorldUnit:

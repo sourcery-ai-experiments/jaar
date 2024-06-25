@@ -44,8 +44,8 @@ def test_WorldUnit_get_dict_ReturnsDictObject():
     x_world.set_other_debtor_pool(x_other_debtor_pool)
     override_text = "override"
     x_world.set_meld_strategy(override_text)
-    x_last_atom_id = 77
-    x_world.set_last_atom_id(x_last_atom_id)
+    x_last_gift_id = 77
+    x_world.set_last_gift_id(x_last_gift_id)
 
     # WHEN
     world_dict = x_world.get_dict()
@@ -63,7 +63,7 @@ def test_WorldUnit_get_dict_ReturnsDictObject():
     assert world_dict["_other_debtor_pool"] == x_world._other_debtor_pool
     assert world_dict["_other_debtor_pool"] == x_world._other_debtor_pool
     assert world_dict["_meld_strategy"] == x_world._meld_strategy
-    assert world_dict["_last_atom_id"] == x_world._last_atom_id
+    assert world_dict["_last_gift_id"] == x_world._last_gift_id
     assert len(world_dict["_others"]) == len(x_world._others)
     assert len(world_dict["_others"]) != 12
     assert len(world_dict["_beliefs"]) == 12
@@ -219,7 +219,7 @@ def test_WorldUnit_get_json_ReturnsCorrectJSON_SimpleExample():
         world_dict["_other_debtor_pool"]
     assert str(excinfo.value) == "'_other_debtor_pool'"
     with pytest_raises(Exception) as excinfo:
-        world_dict["_last_atom_id"]
+        world_dict["_last_gift_id"]
 
     x_idearoot = zia_world._idearoot
     idearoot_dict = world_dict.get("_idearoot")
@@ -308,8 +308,8 @@ def test_worldunit_get_from_json_ReturnsCorrectObjSimpleExample():
     zia_other_debtor_pool = 2
     zia_world.set_other_credor_pool(zia_other_credor_pool)
     zia_world.set_other_debtor_pool(zia_other_debtor_pool)
-    zia_last_atom_id = 73
-    zia_world.set_last_atom_id(zia_last_atom_id)
+    zia_last_gift_id = 73
+    zia_world.set_last_gift_id(zia_last_gift_id)
 
     shave_text = "shave"
     shave_road = zia_world.make_l1_road(shave_text)
@@ -370,8 +370,8 @@ def test_worldunit_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_world._other_debtor_pool == zia_other_debtor_pool
     assert json_world._meld_strategy == zia_world._meld_strategy
     assert json_world._meld_strategy == override_text
-    assert json_world._last_atom_id == zia_world._last_atom_id
-    assert json_world._last_atom_id == zia_last_atom_id
+    assert json_world._last_gift_id == zia_world._last_gift_id
+    assert json_world._last_gift_id == zia_last_gift_id
     print(f"{json_world._beliefs.keys()=}")
     print(f"{zia_world._beliefs.keys()=}")
     assert json_world._beliefs == zia_world._beliefs

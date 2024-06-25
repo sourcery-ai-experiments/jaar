@@ -6,7 +6,7 @@ from src._road.road import (
 )
 from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src._road.jaar_config import (
-    get_atoms_folder,
+    get_gifts_folder,
     get_test_reals_dir,
     get_test_real_id,
     get_rootpart_of_econ_dir,
@@ -124,10 +124,10 @@ def test_userhub_shop_ReturnsCorrectObj():
     assert x_userhub.persons_dir() == f"{x_userhub.real_dir()}/persons"
     assert x_userhub.person_dir() == f"{x_userhub.persons_dir()}/{sue_text}"
     assert x_userhub.econs_dir() == f"{x_userhub.person_dir()}/econs"
-    assert x_userhub.quarks_dir() == f"{x_userhub.person_dir()}/quarks"
+    assert x_userhub.atoms_dir() == f"{x_userhub.person_dir()}/atoms"
     assert x_userhub.same_dir() == f"{x_userhub.person_dir()}/same"
     assert x_userhub.live_dir() == f"{x_userhub.person_dir()}/live"
-    assert x_userhub.atoms_dir() == f"{x_userhub.person_dir()}/{get_atoms_folder()}"
+    assert x_userhub.gifts_dir() == f"{x_userhub.person_dir()}/{get_gifts_folder()}"
     assert x_userhub.same_file_name() == f"{sue_text}.json"
     x_same_file_path = f"{x_userhub.same_dir()}/{x_userhub.same_file_name()}"
     assert x_userhub.same_file_path() == x_same_file_path

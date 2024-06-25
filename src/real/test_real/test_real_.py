@@ -1,5 +1,5 @@
 from src._road.finance import default_pixel_if_none, default_penny_if_none
-from src._road.jaar_config import get_atoms_folder, get_json_filename
+from src._road.jaar_config import get_gifts_folder, get_json_filename
 from src._road.road import default_road_delimiter_if_none
 from src._world.healer import healerhold_shop
 from src._world.idea import ideaunit_shop
@@ -16,7 +16,7 @@ def test_RealUnit_exists(env_dir_setup_cleanup):
     assert music_real.reals_dir == get_test_reals_dir()
     assert music_real._persons_dir is None
     assert music_real._journal_db is None
-    assert music_real._atoms_dir is None
+    assert music_real._gifts_dir is None
     assert music_real._road_delimiter is None
     assert music_real._pixel is None
     assert music_real._penny is None
@@ -35,7 +35,7 @@ def test_realunit_shop_ReturnsRealUnit(env_dir_setup_cleanup):
     assert music_real.real_id == music_text
     assert music_real.reals_dir == get_test_reals_dir()
     assert music_real._persons_dir != None
-    assert music_real._atoms_dir != None
+    assert music_real._gifts_dir != None
     assert music_real._road_delimiter == default_road_delimiter_if_none()
     assert music_real._pixel == default_pixel_if_none()
     assert music_real._penny == default_penny_if_none()
@@ -70,17 +70,17 @@ def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(env_dir_setup_cleanup):
     music_real = RealUnit(real_id=music_text, reals_dir=get_test_reals_dir())
     x_real_dir = f"{get_test_reals_dir()}/{music_text}"
     x_persons_dir = f"{x_real_dir}/persons"
-    x_atoms_dir = f"{x_real_dir}/{get_atoms_folder()}"
+    x_gifts_dir = f"{x_real_dir}/{get_gifts_folder()}"
     journal_file_name = "journal.db"
     journal_file_path = f"{x_real_dir}/{journal_file_name}"
 
     assert music_real._real_dir is None
     assert music_real._persons_dir is None
-    assert music_real._atoms_dir is None
+    assert music_real._gifts_dir is None
     assert os_path_exists(x_real_dir) is False
     assert os_path_isdir(x_real_dir) is False
     assert os_path_exists(x_persons_dir) is False
-    assert os_path_exists(x_atoms_dir) is False
+    assert os_path_exists(x_gifts_dir) is False
     assert os_path_exists(journal_file_path) is False
 
     # WHEN
@@ -89,11 +89,11 @@ def test_RealUnit_set_real_dirs_SetsCorrectDirsAndFiles(env_dir_setup_cleanup):
     # THEN
     assert music_real._real_dir == x_real_dir
     assert music_real._persons_dir == x_persons_dir
-    assert music_real._atoms_dir == x_atoms_dir
+    assert music_real._gifts_dir == x_gifts_dir
     assert os_path_exists(x_real_dir)
     assert os_path_isdir(x_real_dir)
     assert os_path_exists(x_persons_dir)
-    assert os_path_exists(x_atoms_dir)
+    assert os_path_exists(x_gifts_dir)
     assert os_path_exists(journal_file_path)
 
 

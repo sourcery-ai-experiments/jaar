@@ -31,7 +31,7 @@ def test_WorldUnit_Exists():
     assert x_world._monetary_desc is None
     assert x_world._other_credor_pool is None
     assert x_world._other_debtor_pool is None
-    assert x_world._last_atom_id is None
+    assert x_world._last_gift_id is None
     assert x_world._meld_strategy is None
     assert x_world._originunit is None
 
@@ -78,7 +78,7 @@ def test_WorldUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_world._monetary_desc is None
     assert x_world._other_credor_pool is None
     assert x_world._other_debtor_pool is None
-    assert x_world._last_atom_id is None
+    assert x_world._last_gift_id is None
     assert x_world._meld_strategy == override_meld_strategy
     assert x_world._originunit == originunit_shop()
 
@@ -288,45 +288,45 @@ def test_WorldUnit_set_monetary_desc_SetsAttrCorrectly():
     assert noa_world._monetary_desc == noa_monetary_desc
 
 
-def test_WorldUnit_set_last_atom_id_SetsAttrCorrectly():
+def test_WorldUnit_set_last_gift_id_SetsAttrCorrectly():
     # GIVEN
     noa_world = worldunit_shop("Noa", "Texas")
-    assert noa_world._last_atom_id is None
+    assert noa_world._last_gift_id is None
 
     # WHEN
-    x_last_atom_id = 89
-    noa_world.set_last_atom_id(x_last_atom_id)
+    x_last_gift_id = 89
+    noa_world.set_last_gift_id(x_last_gift_id)
 
     # THEN
-    assert noa_world._last_atom_id == x_last_atom_id
+    assert noa_world._last_gift_id == x_last_gift_id
 
 
-def test_WorldUnit_set_last_atom_id_RaisesError():
+def test_WorldUnit_set_last_gift_id_RaisesError():
     # GIVEN
     noa_world = worldunit_shop("Noa", "Texas")
-    old_last_atom_id = 89
-    noa_world.set_last_atom_id(old_last_atom_id)
+    old_last_gift_id = 89
+    noa_world.set_last_gift_id(old_last_gift_id)
 
     # WHEN / THEN
-    new_last_atom_id = 72
-    assert new_last_atom_id < old_last_atom_id
+    new_last_gift_id = 72
+    assert new_last_gift_id < old_last_gift_id
     with pytest_raises(Exception) as excinfo:
-        noa_world.set_last_atom_id(new_last_atom_id)
+        noa_world.set_last_gift_id(new_last_gift_id)
     assert (
         str(excinfo.value)
-        == f"Cannot set _last_atom_id to {new_last_atom_id} because it is less than {old_last_atom_id}."
+        == f"Cannot set _last_gift_id to {new_last_gift_id} because it is less than {old_last_gift_id}."
     )
 
 
-def test_WorldUnit_del_last_atom_id_SetsAttrCorrectly():
+def test_WorldUnit_del_last_gift_id_SetsAttrCorrectly():
     # GIVEN
     noa_world = worldunit_shop("Noa", "Texas")
-    old_last_atom_id = 89
-    noa_world.set_last_atom_id(old_last_atom_id)
-    assert noa_world._last_atom_id != None
+    old_last_gift_id = 89
+    noa_world.set_last_gift_id(old_last_gift_id)
+    assert noa_world._last_gift_id != None
 
     # WHEN
-    noa_world.del_last_atom_id()
+    noa_world.del_last_gift_id()
 
     # WHEN
-    assert noa_world._last_atom_id is None
+    assert noa_world._last_gift_id is None

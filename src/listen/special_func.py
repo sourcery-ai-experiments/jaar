@@ -35,10 +35,10 @@ def add_same_pledge(
     same_world = x_userhub.get_same_world()
     old_same_world = copy_deepcopy(same_world)
     create_pledge(same_world, pledge_road, x_suffbelief, reason_premise)
-    next_atomunit = x_userhub._default_atomunit()
-    next_atomunit._nucunit.add_all_different_quarkunits(old_same_world, same_world)
-    next_atomunit.save_files()
-    x_userhub.append_atoms_to_same_file()
+    next_giftunit = x_userhub._default_giftunit()
+    next_giftunit._changeunit.add_all_different_atomunits(old_same_world, same_world)
+    next_giftunit.save_files()
+    x_userhub.append_gifts_to_same_file()
 
 
 def create_fact(x_world: WorldUnit, fact_pick: RoadUnit):
@@ -52,7 +52,7 @@ def add_same_fact(x_userhub: UserHub, fact_pick: RoadUnit):
     same_world = x_userhub.get_same_world()
     old_same_world = copy_deepcopy(same_world)
     create_fact(same_world, fact_pick)
-    next_atomunit = x_userhub._default_atomunit()
-    next_atomunit._nucunit.add_all_different_quarkunits(old_same_world, same_world)
-    next_atomunit.save_files()
-    x_userhub.append_atoms_to_same_file()
+    next_giftunit = x_userhub._default_giftunit()
+    next_giftunit._changeunit.add_all_different_atomunits(old_same_world, same_world)
+    next_giftunit.save_files()
+    x_userhub.append_gifts_to_same_file()

@@ -1,4 +1,4 @@
-from src.atom.quark_config import (
+from src.gift.atom_config import (
     get_normalized_world_table_build,
     normal_table_name_text,
     normal_specs_text,

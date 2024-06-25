@@ -40,7 +40,7 @@ def test_create_empty_world_ReturnsCorrectObj():
     assert yao_empty_job._owner_id != yao_same._owner_id
     assert yao_empty_job._owner_id == zia_text
     assert yao_empty_job._real_id == yao_same._real_id
-    assert yao_empty_job._last_atom_id is None
+    assert yao_empty_job._last_gift_id is None
     assert yao_empty_job.get_beliefunits_dict() == {}
     assert yao_empty_job._road_delimiter == yao_same._road_delimiter
     assert yao_empty_job._pixel == yao_same._pixel
@@ -83,7 +83,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     # THEN
     assert yao_basis_job._owner_id == yao_role._owner_id
     assert yao_basis_job._real_id == yao_role._real_id
-    assert yao_basis_job._last_atom_id == yao_role._last_atom_id
+    assert yao_basis_job._last_gift_id == yao_role._last_gift_id
     assert yao_basis_job.get_beliefunits_dict() == yao_role.get_beliefunits_dict()
     assert yao_basis_job._road_delimiter == yao_role._road_delimiter
     assert yao_basis_job._pixel == yao_role._pixel
@@ -108,10 +108,10 @@ def test_get_default_live_world_ReturnsCorrectObj():
     sue_other_pool = 800
     casa_text = "casa"
     bob_text = "Bob"
-    last_atom_id = 7
+    last_gift_id = 7
     sue_max_tree_traverse = 9
     sue_worldunit = worldunit_shop(sue_text, blue_text, slash_text, five_pixel)
-    sue_worldunit.set_last_atom_id(last_atom_id)
+    sue_worldunit.set_last_gift_id(last_gift_id)
     sue_worldunit.add_otherunit(bob_text, 3, 4)
     swim_text = "/swimmers"
     swim_beliefunit = beliefunit_shop(swim_text, _road_delimiter=slash_text)
