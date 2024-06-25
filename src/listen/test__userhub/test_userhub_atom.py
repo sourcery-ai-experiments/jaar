@@ -99,7 +99,7 @@ def test_UserHub_save_atom_file_RaisesErrorIfAtomUnit_quarks_dir_IsWrong(
     sue_atomunit = atomunit_shop(
         person_id=sue_text,
         _atom_id=x_atom_id,
-        _quarks_dir="src/world",
+        _quarks_dir="src/bad_directory",
         _atoms_dir=sue_userhub.atoms_dir(),
     )
 
@@ -125,7 +125,7 @@ def test_UserHub_save_atom_file_RaisesErrorIfAtomUnit_atoms_dir_IsWrong(
         person_id=sue_text,
         _atom_id=x_atom_id,
         _quarks_dir=sue_userhub.quarks_dir(),
-        _atoms_dir="src/world",
+        _atoms_dir="src/bad_directory",
     )
 
     # WHEN / THEN
