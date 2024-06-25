@@ -1,7 +1,7 @@
 from src._road.road import RoadUnit
 from src._world.person import (
     PersonID,
-    belieflink_shop,
+    personlink_shop,
     personunit_shop,
     PersonUnitExternalMetrics,
 )
@@ -127,11 +127,11 @@ def test_WorldUnit_set_person_CorrectlyUpdate_person_mirror_BeliefUnit():
     before_rico_debtor = 17
     yao_world.add_personunit(rico_text, before_rico_credor, before_rico_debtor)
     rico_beliefunit = yao_world.get_beliefunit(rico_text)
-    rico_belieflink = rico_beliefunit.get_belieflink(rico_text)
-    assert rico_belieflink.credor_weight != before_rico_credor
-    assert rico_belieflink.debtor_weight != before_rico_debtor
-    assert rico_belieflink.credor_weight == 1
-    assert rico_belieflink.debtor_weight == 1
+    rico_personlink = rico_beliefunit.get_personlink(rico_text)
+    assert rico_personlink.credor_weight != before_rico_credor
+    assert rico_personlink.debtor_weight != before_rico_debtor
+    assert rico_personlink.credor_weight == 1
+    assert rico_personlink.debtor_weight == 1
 
     # WHEN
     after_rico_credor = 11
@@ -141,10 +141,10 @@ def test_WorldUnit_set_person_CorrectlyUpdate_person_mirror_BeliefUnit():
     )
 
     # THEN
-    assert rico_belieflink.credor_weight != after_rico_credor
-    assert rico_belieflink.debtor_weight != after_rico_debtor
-    assert rico_belieflink.credor_weight == 1
-    assert rico_belieflink.debtor_weight == 1
+    assert rico_personlink.credor_weight != after_rico_credor
+    assert rico_personlink.debtor_weight != after_rico_debtor
+    assert rico_personlink.credor_weight == 1
+    assert rico_personlink.debtor_weight == 1
 
 
 def test_WorldUnit_edit_person_RaiseExceptionWhenPersonDoesNotExist():
@@ -207,7 +207,7 @@ def test_WorldUnit_get_person_ReturnsCorrectObj():
     assert carm_person == yao_world._persons.get(carm_text)
 
 
-def test_WorldUnit_calc_world_metrics_CorrectlySetsBeliefLinkWorldCredAndDebt():
+def test_WorldUnit_calc_world_metrics_CorrectlySetsPersonLinkWorldCredAndDebt():
     # GIVEN
     yao_world = worldunit_shop("Yao")
     rico_text = "rico"
@@ -226,20 +226,20 @@ def test_WorldUnit_calc_world_metrics_CorrectlySetsBeliefLinkWorldCredAndDebt():
     rico_beliefunit = yao_world.get_beliefunit(rico_text)
     carm_beliefunit = yao_world.get_beliefunit(carm_text)
     patr_beliefunit = yao_world.get_beliefunit(patr_text)
-    rico_belieflink = rico_beliefunit._persons.get(rico_text)
-    carm_belieflink = carm_beliefunit._persons.get(carm_text)
-    patr_belieflink = patr_beliefunit._persons.get(patr_text)
-    rico_belieflink._world_cred is None
-    rico_belieflink._world_debt is None
-    carm_belieflink._world_cred is None
-    carm_belieflink._world_debt is None
-    patr_belieflink._world_cred is None
-    patr_belieflink._world_debt is None
+    rico_personlink = rico_beliefunit._persons.get(rico_text)
+    carm_personlink = carm_beliefunit._persons.get(carm_text)
+    patr_personlink = patr_beliefunit._persons.get(patr_text)
+    rico_personlink._world_cred is None
+    rico_personlink._world_debt is None
+    carm_personlink._world_cred is None
+    carm_personlink._world_debt is None
+    patr_personlink._world_cred is None
+    patr_personlink._world_debt is None
 
     # for belief in yao_world._beliefs.values():
-    #     for belieflink in belief._persons.values():
-    #         assert belieflink._world_cred is None
-    #         assert belieflink._world_debt is None
+    #     for personlink in belief._persons.values():
+    #         assert personlink._world_cred is None
+    #         assert personlink._world_debt is None
 
     yao_world.calc_world_metrics()
 
@@ -248,43 +248,43 @@ def test_WorldUnit_calc_world_metrics_CorrectlySetsBeliefLinkWorldCredAndDebt():
     #         f"{yao_world._world_importance=} {balancelink.belief_id=} {balancelink._world_cred=} {balancelink._world_debt=}"
     #     )
 
-    assert rico_belieflink._world_cred == 0.5
-    assert rico_belieflink._world_debt == 0.8
-    assert carm_belieflink._world_cred == 0.25
-    assert carm_belieflink._world_debt == 0.1
-    assert patr_belieflink._world_cred == 0.25
-    assert patr_belieflink._world_debt == 0.1
+    assert rico_personlink._world_cred == 0.5
+    assert rico_personlink._world_debt == 0.8
+    assert carm_personlink._world_cred == 0.25
+    assert carm_personlink._world_debt == 0.1
+    assert patr_personlink._world_cred == 0.25
+    assert patr_personlink._world_debt == 0.1
 
-    # belieflink_world_cred_sum = 0.0
-    # belieflink_world_debt_sum = 0.0
+    # personlink_world_cred_sum = 0.0
+    # personlink_world_debt_sum = 0.0
     # for belief in yao_world._beliefs.values():
     #     # print(f"{belief.belief_id=} {belief._persons=}")
 
-    #     for belieflink in belief._persons.values():
-    #         assert belieflink._world_cred != None
-    #         assert belieflink._world_cred in [0.25, 0.5]
-    #         assert belieflink._world_debt != None
-    #         assert belieflink._world_debt in [0.8, 0.1]
+    #     for personlink in belief._persons.values():
+    #         assert personlink._world_cred != None
+    #         assert personlink._world_cred in [0.25, 0.5]
+    #         assert personlink._world_debt != None
+    #         assert personlink._world_debt in [0.8, 0.1]
     #         # print(
-    #         #     f"{belief.belief_id=} {belieflink._world_importance=} {belief._world_importance=}"
+    #         #     f"{belief.belief_id=} {personlink._world_importance=} {belief._world_importance=}"
     #         # )
-    #         belieflink_world_cred_sum += belieflink._world_cred
-    #         belieflink_world_debt_sum += belieflink._world_debt
+    #         personlink_world_cred_sum += personlink._world_cred
+    #         personlink_world_debt_sum += personlink._world_debt
 
-    #         # print(f"{belieflink_world_importance_sum=}")
-    # assert belieflink_world_cred_sum == 1.0
-    # assert belieflink_world_debt_sum == 1.0
+    #         # print(f"{personlink_world_importance_sum=}")
+    # assert personlink_world_cred_sum == 1.0
+    # assert personlink_world_debt_sum == 1.0
 
     assert (
-        rico_belieflink._world_cred
-        + carm_belieflink._world_cred
-        + patr_belieflink._world_cred
+        rico_personlink._world_cred
+        + carm_personlink._world_cred
+        + patr_personlink._world_cred
         == 1.0
     )
     assert (
-        rico_belieflink._world_debt
-        + carm_belieflink._world_debt
-        + patr_belieflink._world_debt
+        rico_personlink._world_debt
+        + carm_personlink._world_debt
+        + patr_personlink._world_debt
         == 1.0
     )
 
@@ -300,58 +300,58 @@ def test_WorldUnit_calc_world_metrics_CorrectlySetsBeliefLinkWorldCredAndDebt():
 
     # THEN
     selena_beliefunit = yao_world.get_beliefunit(selena_text)
-    selena_belieflink = selena_beliefunit._persons.get(selena_text)
+    selena_personlink = selena_beliefunit._persons.get(selena_text)
 
-    assert rico_belieflink._world_cred != 0.25
-    assert rico_belieflink._world_debt != 0.8
-    assert carm_belieflink._world_cred != 0.25
-    assert carm_belieflink._world_debt != 0.1
-    assert patr_belieflink._world_cred != 0.5
-    assert patr_belieflink._world_debt != 0.1
-    assert selena_belieflink._world_cred != None
-    assert selena_belieflink._world_debt != None
+    assert rico_personlink._world_cred != 0.25
+    assert rico_personlink._world_debt != 0.8
+    assert carm_personlink._world_cred != 0.25
+    assert carm_personlink._world_debt != 0.1
+    assert patr_personlink._world_cred != 0.5
+    assert patr_personlink._world_debt != 0.1
+    assert selena_personlink._world_cred != None
+    assert selena_personlink._world_debt != None
 
-    # belieflink_world_cred_sum = 0.0
-    # belieflink_world_debt_sum = 0.0
+    # personlink_world_cred_sum = 0.0
+    # personlink_world_debt_sum = 0.0
 
     # for belief in yao_world._beliefs.values():
     #     # print(f"{belief.belief_id=} {belief._persons=}")
 
-    #     for belieflink in belief._persons.values():
-    #         assert belieflink._world_cred != None
-    #         assert belieflink._world_cred not in [0.25, 0.5]
-    #         assert belieflink._world_debt != None
-    #         assert belieflink._world_debt not in [0.8, 0.1]
+    #     for personlink in belief._persons.values():
+    #         assert personlink._world_cred != None
+    #         assert personlink._world_cred not in [0.25, 0.5]
+    #         assert personlink._world_debt != None
+    #         assert personlink._world_debt not in [0.8, 0.1]
     #         # print(
-    #         #     f"{belief.belief_id=} {belieflink._world_importance=} {belief._world_importance=}"
+    #         #     f"{belief.belief_id=} {personlink._world_importance=} {belief._world_importance=}"
     #         # )
-    #         belieflink_world_cred_sum += belieflink._world_cred
-    #         belieflink_world_debt_sum += belieflink._world_debt
+    #         personlink_world_cred_sum += personlink._world_cred
+    #         personlink_world_debt_sum += personlink._world_debt
 
-    #         # print(f"{belieflink_world_importance_sum=}")
-    # assert belieflink_world_cred_sum == 1.0
-    # assert belieflink_world_debt_sum > 0.9999999
-    # assert belieflink_world_debt_sum < 1.00000001
+    #         # print(f"{personlink_world_importance_sum=}")
+    # assert personlink_world_cred_sum == 1.0
+    # assert personlink_world_debt_sum > 0.9999999
+    # assert personlink_world_debt_sum < 1.00000001
 
     assert (
-        rico_belieflink._world_cred
-        + carm_belieflink._world_cred
-        + patr_belieflink._world_cred
-        + selena_belieflink._world_cred
+        rico_personlink._world_cred
+        + carm_personlink._world_cred
+        + patr_personlink._world_cred
+        + selena_personlink._world_cred
         == 1.0
     )
     assert (
-        rico_belieflink._world_debt
-        + carm_belieflink._world_debt
-        + patr_belieflink._world_debt
-        + selena_belieflink._world_debt
+        rico_personlink._world_debt
+        + carm_personlink._world_debt
+        + patr_personlink._world_debt
+        + selena_personlink._world_debt
         > 0.9999999
     )
     assert (
-        rico_belieflink._world_debt
-        + carm_belieflink._world_debt
-        + patr_belieflink._world_debt
-        + selena_belieflink._world_debt
+        rico_personlink._world_debt
+        + carm_personlink._world_debt
+        + patr_personlink._world_debt
+        + selena_personlink._world_debt
         < 1.0
     )
 
@@ -771,8 +771,8 @@ def clear_all_personunits_beliefunits_world_agenda_cred_debt(x_world: WorldUnit)
     # DELETE world_agenda_debt and world_agenda_cred
     for beliefunit_x in x_world._beliefs.values():
         beliefunit_x.reset_world_cred_debt()
-        # for belieflink_x in beliefunit_x._persons.values():
-        #     print(f"{beliefunit_x.belief_id=} {belieflink_x.credor_weight=}  {belieflink_x._world_cred:.6f} {belieflink_x.debtor_weight=} {belieflink_x._world_debt:.6f} {belieflink_x.} ")
+        # for personlink_x in beliefunit_x._persons.values():
+        #     print(f"{beliefunit_x.belief_id=} {personlink_x.credor_weight=}  {personlink_x._world_cred:.6f} {personlink_x.debtor_weight=} {personlink_x._world_debt:.6f} {personlink_x.} ")
 
     # DELETE world_agenda_debt and world_agenda_cred
     for x_personunit in x_world._persons.values():
@@ -783,18 +783,18 @@ def clear_all_personunits_beliefunits_world_agenda_cred_debt(x_world: WorldUnit)
 class BeliefAgendaMetrics:
     sum_beliefunit_cred: float = 0
     sum_beliefunit_debt: float = 0
-    sum_belieflink_cred: float = 0
-    sum_belieflink_debt: float = 0
-    belieflink_count: int = 0
+    sum_personlink_cred: float = 0
+    sum_personlink_debt: float = 0
+    personlink_count: int = 0
 
     def set_sums(self, x_world: WorldUnit):
         for beliefunit_x in x_world._beliefs.values():
             self.sum_beliefunit_cred += beliefunit_x._world_agenda_cred
             self.sum_beliefunit_debt += beliefunit_x._world_agenda_debt
-            for belieflink_x in beliefunit_x._persons.values():
-                self.sum_belieflink_cred += belieflink_x._world_agenda_cred
-                self.sum_belieflink_debt += belieflink_x._world_agenda_debt
-                self.belieflink_count += 1
+            for personlink_x in beliefunit_x._persons.values():
+                self.sum_personlink_cred += personlink_x._world_agenda_cred
+                self.sum_personlink_debt += personlink_x._world_agenda_debt
+                self.personlink_count += 1
 
 
 @dataclass
@@ -841,8 +841,8 @@ def test_WorldUnit_agenda_cred_debt_IsCorrectlySet():
     x_beliefagendametrics.set_sums(x_world=x_world)
     assert x_beliefagendametrics.sum_beliefunit_cred == 0
     assert x_beliefagendametrics.sum_beliefunit_debt == 0
-    assert x_beliefagendametrics.sum_belieflink_cred == 0
-    assert x_beliefagendametrics.sum_belieflink_debt == 0
+    assert x_beliefagendametrics.sum_personlink_cred == 0
+    assert x_beliefagendametrics.sum_personlink_debt == 0
 
     # TEST world_agenda_debt and world_agenda_cred are empty
     x_personagendametrics = PersonAgendaMetrics()
@@ -873,12 +873,12 @@ def test_WorldUnit_agenda_cred_debt_IsCorrectlySet():
 
     x_beliefagendametrics = BeliefAgendaMetrics()
     x_beliefagendametrics.set_sums(x_world=x_world)
-    assert x_beliefagendametrics.belieflink_count == 81
+    assert x_beliefagendametrics.personlink_count == 81
     x_sum = 0.0027965049894874455
     assert are_equal(x_beliefagendametrics.sum_beliefunit_cred, x_sum)
     assert are_equal(x_beliefagendametrics.sum_beliefunit_debt, x_sum)
-    assert are_equal(x_beliefagendametrics.sum_belieflink_cred, x_sum)
-    assert are_equal(x_beliefagendametrics.sum_belieflink_debt, x_sum)
+    assert are_equal(x_beliefagendametrics.sum_personlink_cred, x_sum)
+    assert are_equal(x_beliefagendametrics.sum_personlink_debt, x_sum)
     assert are_equal(
         x_balanceagendametrics.agenda_yes_world_i_sum,
         x_beliefagendametrics.sum_beliefunit_cred,
@@ -987,7 +987,7 @@ def test_WorldUnit_get_person_belief_ids_ReturnsCorrectObj():
     # WHEN / THEN
     swimmers = ",swimmers"
     swim_belief = beliefunit_shop(belief_id=swimmers)
-    swim_belief.set_belieflink(belieflink_shop(carm_text))
+    swim_belief.set_personlink(personlink_shop(carm_text))
     yao_world.set_beliefunit(swim_belief)
     assert yao_world.get_person_belief_ids(carm_text) == [carm_text, swimmers]
 
@@ -1055,7 +1055,7 @@ def test_WorldUnit_PersonUnit_raiseErrorNewperson_idPreviouslyExists():
     )
 
 
-def test_WorldUnit_PersonUnit_CorrectlyModifiesBeliefUnitBeliefLinks():
+def test_WorldUnit_PersonUnit_CorrectlyModifiesBeliefUnitPersonLinks():
     # GIVEN
     yao_world = worldunit_shop("Yao")
     rico_text = "rico"
@@ -1066,21 +1066,21 @@ def test_WorldUnit_PersonUnit_CorrectlyModifiesBeliefUnitBeliefLinks():
     yao_world.add_personunit(patr_text, credor_weight=17)
 
     swim_text = ",swimmers"
-    carmen_person_dict = {PersonID(carm_text): belieflink_shop(carm_text)}
+    carmen_person_dict = {PersonID(carm_text): personlink_shop(carm_text)}
     swim_belief = beliefunit_shop(belief_id=swim_text, _persons=carmen_person_dict)
-    swim_belief.set_belieflink(
-        belieflink_shop(carm_text, credor_weight=5, debtor_weight=18)
+    swim_belief.set_personlink(
+        personlink_shop(carm_text, credor_weight=5, debtor_weight=18)
     )
-    swim_belief.set_belieflink(
-        belieflink_shop(rico_text, credor_weight=7, debtor_weight=30)
+    swim_belief.set_personlink(
+        personlink_shop(rico_text, credor_weight=7, debtor_weight=30)
     )
     yao_world.set_beliefunit(y_beliefunit=swim_belief)
 
     swim_belief = yao_world.get_beliefunit(swim_text)
     assert len(swim_belief._persons) == 2
-    assert swim_belief.get_belieflink(rico_text) != None
-    assert swim_belief.get_belieflink(rico_text).credor_weight == 7
-    assert swim_belief.get_belieflink(rico_text).debtor_weight == 30
+    assert swim_belief.get_personlink(rico_text) != None
+    assert swim_belief.get_personlink(rico_text).credor_weight == 7
+    assert swim_belief.get_personlink(rico_text).debtor_weight == 30
 
     # WHEN
     beto_text = "beta"
@@ -1092,10 +1092,10 @@ def test_WorldUnit_PersonUnit_CorrectlyModifiesBeliefUnitBeliefLinks():
     )
 
     # THEN
-    assert swim_belief.get_belieflink(beto_text) != None
-    assert swim_belief.get_belieflink(beto_text).credor_weight == 7
-    assert swim_belief.get_belieflink(beto_text).debtor_weight == 30
-    assert swim_belief.get_belieflink(rico_text) is None
+    assert swim_belief.get_personlink(beto_text) != None
+    assert swim_belief.get_personlink(beto_text).credor_weight == 7
+    assert swim_belief.get_personlink(beto_text).debtor_weight == 30
+    assert swim_belief.get_personlink(rico_text) is None
     assert len(swim_belief._persons) == 2
 
 
@@ -1110,13 +1110,13 @@ def test_WorldUnit_PersonUnit_CorrectlyMergesperson_ids():
     yao_world.add_personunit(patr_text, credor_weight=17)
 
     swim_text = ",swimmers"
-    carmen_person_dict = {PersonID(carm_text): belieflink_shop(carm_text)}
+    carmen_person_dict = {PersonID(carm_text): personlink_shop(carm_text)}
     swim_belief = beliefunit_shop(belief_id=swim_text, _persons=carmen_person_dict)
-    swim_belief.set_belieflink(
-        belieflink=belieflink_shop(carm_text, credor_weight=5, debtor_weight=18)
+    swim_belief.set_personlink(
+        personlink=personlink_shop(carm_text, credor_weight=5, debtor_weight=18)
     )
-    swim_belief.set_belieflink(
-        belieflink=belieflink_shop(rico_text, credor_weight=7, debtor_weight=30)
+    swim_belief.set_personlink(
+        personlink=personlink_shop(rico_text, credor_weight=7, debtor_weight=30)
     )
     yao_world.set_beliefunit(y_beliefunit=swim_belief)
 
@@ -1141,7 +1141,7 @@ def test_WorldUnit_PersonUnit_CorrectlyMergesperson_ids():
     assert len(yao_world._persons) == 2
 
 
-def test_WorldUnit_PersonUnit_CorrectlyMergesBeliefUnitBeliefLinks():
+def test_WorldUnit_PersonUnit_CorrectlyMergesBeliefUnitPersonLinks():
     # GIVEN
     # GIVEN
     yao_world = worldunit_shop("Yao")
@@ -1153,24 +1153,24 @@ def test_WorldUnit_PersonUnit_CorrectlyMergesBeliefUnitBeliefLinks():
     yao_world.add_personunit(patr_text, credor_weight=17)
 
     swim_text = ",swimmers"
-    carmen_person_dict = {PersonID(carm_text): belieflink_shop(carm_text)}
+    carmen_person_dict = {PersonID(carm_text): personlink_shop(carm_text)}
     swim_belief = beliefunit_shop(belief_id=swim_text, _persons=carmen_person_dict)
-    swim_belief.set_belieflink(
-        belieflink=belieflink_shop(carm_text, credor_weight=5, debtor_weight=18)
+    swim_belief.set_personlink(
+        personlink=personlink_shop(carm_text, credor_weight=5, debtor_weight=18)
     )
-    swim_belief.set_belieflink(
-        belieflink=belieflink_shop(rico_text, credor_weight=7, debtor_weight=30)
+    swim_belief.set_personlink(
+        personlink=personlink_shop(rico_text, credor_weight=7, debtor_weight=30)
     )
     yao_world.set_beliefunit(y_beliefunit=swim_belief)
 
     swim_belief = yao_world.get_beliefunit(swim_text)
     assert len(swim_belief._persons) == 2
-    assert swim_belief.get_belieflink(rico_text) != None
-    assert swim_belief.get_belieflink(rico_text).credor_weight == 7
-    assert swim_belief.get_belieflink(rico_text).debtor_weight == 30
-    assert swim_belief.get_belieflink(carm_text) != None
-    assert swim_belief.get_belieflink(carm_text).credor_weight == 5
-    assert swim_belief.get_belieflink(carm_text).debtor_weight == 18
+    assert swim_belief.get_personlink(rico_text) != None
+    assert swim_belief.get_personlink(rico_text).credor_weight == 7
+    assert swim_belief.get_personlink(rico_text).debtor_weight == 30
+    assert swim_belief.get_personlink(carm_text) != None
+    assert swim_belief.get_personlink(carm_text).credor_weight == 5
+    assert swim_belief.get_personlink(carm_text).debtor_weight == 18
 
     # WHEN
     yao_world.edit_personunit_person_id(
@@ -1181,10 +1181,10 @@ def test_WorldUnit_PersonUnit_CorrectlyMergesBeliefUnitBeliefLinks():
     )
 
     # THEN
-    assert swim_belief.get_belieflink(carm_text) != None
-    assert swim_belief.get_belieflink(carm_text).credor_weight == 12
-    assert swim_belief.get_belieflink(carm_text).debtor_weight == 48
-    assert swim_belief.get_belieflink(rico_text) is None
+    assert swim_belief.get_personlink(carm_text) != None
+    assert swim_belief.get_personlink(carm_text).credor_weight == 12
+    assert swim_belief.get_personlink(carm_text).debtor_weight == 48
+    assert swim_belief.get_personlink(rico_text) is None
     assert len(swim_belief._persons) == 1
 
 
@@ -1197,8 +1197,8 @@ def test_WorldUnit_PersonUnit_raiseErrorNewPersonIDBeliefUnitPreviouslyExists():
     yao_world.add_personunit(anna_text, credor_weight=17)
     carmen_text = ",carmen"
     carmen_belief = beliefunit_shop(belief_id=carmen_text)
-    carmen_belief.set_belieflink(belieflink=belieflink_shop(rico_text))
-    carmen_belief.set_belieflink(belieflink=belieflink_shop(anna_text))
+    carmen_belief.set_personlink(personlink=personlink_shop(rico_text))
+    carmen_belief.set_personlink(personlink=personlink_shop(anna_text))
     yao_world.set_beliefunit(y_beliefunit=carmen_belief)
     assert len(yao_world._beliefs) == 3
     assert yao_world._persons.get(carmen_text) is None
@@ -1228,11 +1228,11 @@ def test_WorldUnit_PersonUnit_raiseErrorNewPersonIDBeliefUnitPreviouslyExists():
 #     yao_world.add_personunit(anna_text, credor_weight=17)
 #     carmen_text = ",carmen"
 #     carmen_belief = beliefunit_shop(belief_id=carmen_text)
-#     carmen_belief.set_belieflink(
-#         belieflink=belieflink_shop(rico_text, credor_weight=3)
+#     carmen_belief.set_personlink(
+#         personlink=personlink_shop(rico_text, credor_weight=3)
 #     )
-#     carmen_belief.set_belieflink(
-#         belieflink=belieflink_shop(anna_text, credor_weight=5)
+#     carmen_belief.set_personlink(
+#         personlink=personlink_shop(anna_text, credor_weight=5)
 #     )
 #     yao_world.set_beliefunit(y_beliefunit=carmen_belief)
 #     assert len(yao_world._beliefs) == 3
@@ -1280,7 +1280,7 @@ def test_WorldUnit_get_personunits_person_id_list_ReturnsListOfPersonUnits():
     noa_world.set_personunit(personunit=personunit_shop(fry_text))
     fun_text = ",fun people"
     fun_belief = beliefunit_shop(belief_id=fun_text)
-    fun_belief.set_belieflink(belieflink=belieflink_shop(will_text))
+    fun_belief.set_personlink(personlink=personlink_shop(will_text))
     noa_world.set_beliefunit(y_beliefunit=fun_belief)
     assert len(noa_world._beliefs) == 4
     assert len(noa_world._persons) == 3

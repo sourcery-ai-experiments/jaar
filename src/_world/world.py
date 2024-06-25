@@ -43,10 +43,10 @@ from src._world.meld import (
 )
 from src._world.person import (
     PersonUnit,
-    BeliefLink,
+    PersonLink,
     personunits_get_from_dict,
     personunit_shop,
-    belieflink_shop,
+    personlink_shop,
     PersonUnitExternalMetrics,
 )
 from src._world.belief import (
@@ -443,13 +443,13 @@ class WorldUnit:
             if balanceheir_dict.get(non_single_belief.belief_id) is None:
                 return False
 
-        # get dict of all belieflinks that are in all balanceheirs
+        # get dict of all personlinks that are in all balanceheirs
         balanceheir_personunits = {}
         for balanceheir_person_id in balanceheir_dict:
             beliefunit = self.get_beliefunit(balanceheir_person_id)
-            for belieflink in beliefunit._persons.values():
-                balanceheir_personunits[belieflink.person_id] = self.get_person(
-                    belieflink.person_id
+            for personlink in beliefunit._persons.values():
+                balanceheir_personunits[personlink.person_id] = self.get_person(
+                    personlink.person_id
                 )
 
         # check all world._persons are in balanceheir_personunits
@@ -663,16 +663,16 @@ class WorldUnit:
         try:
             self._beliefs[personunit.person_id]
         except KeyError:
-            belieflink = belieflink_shop(
+            personlink = personlink_shop(
                 person_id=PersonID(personunit.person_id),
                 credor_weight=1,
                 debtor_weight=1,
             )
-            belieflinks = {belieflink.person_id: belieflink}
+            personlinks = {personlink.person_id: personlink}
             belief_unit = beliefunit_shop(
                 personunit.person_id,
                 _person_mirror=True,
-                _persons=belieflinks,
+                _persons=personlinks,
                 _road_delimiter=self._road_delimiter,
             )
             self.set_beliefunit(y_beliefunit=belief_unit)
@@ -716,10 +716,10 @@ class WorldUnit:
         self.add_personunit(
             person_id=new_person_id, credor_weight=old_person_id_credor_weight
         )
-        # modify all influenced beliefunits belieflinks
+        # modify all influenced beliefunits personlinks
         for old_person_belief_id in self.get_person_belief_ids(old_person_id):
             old_person_beliefunit = self.get_beliefunit(old_person_belief_id)
-            old_person_beliefunit._shift_belieflink(old_person_id, new_person_id)
+            old_person_beliefunit._shift_personlink(old_person_id, new_person_id)
         self.del_personunit(person_id=old_person_id)
 
     def edit_personunit(
@@ -752,40 +752,40 @@ class WorldUnit:
         y_beliefunit: BeliefUnit,
         create_missing_persons: bool = None,
         replace: bool = True,
-        add_belieflinks: bool = None,
+        add_personlinks: bool = None,
     ):
         if y_beliefunit._road_delimiter != self._road_delimiter:
             y_beliefunit._road_delimiter = self._road_delimiter
         if replace is None:
             replace = False
-        if add_belieflinks is None:
-            add_belieflinks = False
+        if add_personlinks is None:
+            add_personlinks = False
         if (
             self.get_beliefunit(y_beliefunit.belief_id) is None
             or replace
-            and not add_belieflinks
+            and not add_personlinks
         ):
             self._beliefs[y_beliefunit.belief_id] = y_beliefunit
 
-        if add_belieflinks:
+        if add_personlinks:
             x_beliefunit = self.get_beliefunit(y_beliefunit.belief_id)
-            for x_belieflink in y_beliefunit._persons.values():
-                x_beliefunit.set_belieflink(x_belieflink)
+            for x_personlink in y_beliefunit._persons.values():
+                x_beliefunit.set_personlink(x_personlink)
 
         if create_missing_persons:
-            self._create_missing_persons(belieflinks=y_beliefunit._persons)
+            self._create_missing_persons(personlinks=y_beliefunit._persons)
 
     def get_beliefunit(self, x_belief_id: BeliefID) -> BeliefUnit:
         return self._beliefs.get(x_belief_id)
 
-    def _create_missing_persons(self, belieflinks: dict[PersonID:BeliefLink]):
-        for belieflink_x in belieflinks.values():
-            if self.get_person(belieflink_x.person_id) is None:
+    def _create_missing_persons(self, personlinks: dict[PersonID:PersonLink]):
+        for personlink_x in personlinks.values():
+            if self.get_person(personlink_x.person_id) is None:
                 self.set_personunit(
                     personunit=personunit_shop(
-                        person_id=belieflink_x.person_id,
-                        credor_weight=belieflink_x.credor_weight,
-                        debtor_weight=belieflink_x.debtor_weight,
+                        person_id=personlink_x.person_id,
+                        credor_weight=personlink_x.credor_weight,
+                        debtor_weight=personlink_x.debtor_weight,
                     )
                 )
 
@@ -1654,14 +1654,14 @@ class WorldUnit:
 
     def _allot_beliefs_world_importance(self):
         for belief_obj in self._beliefs.values():
-            belief_obj._set_belieflink_world_cred_debt()
-            for belieflink in belief_obj._persons.values():
+            belief_obj._set_personlink_world_cred_debt()
+            for personlink in belief_obj._persons.values():
                 self.add_to_personunit_world_cred_debt(
-                    personunit_person_id=belieflink.person_id,
-                    world_cred=belieflink._world_cred,
-                    world_debt=belieflink._world_debt,
-                    world_agenda_cred=belieflink._world_agenda_cred,
-                    world_agenda_debt=belieflink._world_agenda_debt,
+                    personunit_person_id=personlink.person_id,
+                    world_cred=personlink._world_cred,
+                    world_debt=personlink._world_debt,
+                    world_agenda_cred=personlink._world_agenda_cred,
+                    world_agenda_debt=personlink._world_agenda_debt,
                 )
 
     def _set_world_agenda_ratio_cred_debt(self):
@@ -1684,7 +1684,7 @@ class WorldUnit:
         return [
             x_beliefunit.belief_id
             for x_beliefunit in self._beliefs.values()
-            if x_beliefunit.belieflink_exists(person_id)
+            if x_beliefunit.personlink_exists(person_id)
         ]
 
     def _reset_personunit_world_cred_debt(self):
@@ -2306,7 +2306,7 @@ class WorldUnit:
             if world_x._beliefs.get(belief_belief_id) is None:
                 belief_x = beliefunit_shop(belief_id=belief_belief_id)
                 for person_id in belief_persons:
-                    belief_x.set_belieflink(belieflink_shop(person_id=person_id))
+                    belief_x.set_personlink(personlink_shop(person_id=person_id))
                 world_x.set_beliefunit(belief_x)
 
     def _get_assignor_pledge_ideas(

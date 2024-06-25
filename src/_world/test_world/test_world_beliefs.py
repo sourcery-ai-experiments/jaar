@@ -6,7 +6,7 @@ from src._world.belief import (
     get_persons_relevant_beliefs,
     get_person_relevant_beliefs,
 )
-from src._world.person import PersonID, personunit_shop, belieflink_shop
+from src._world.person import PersonID, personunit_shop, personlink_shop
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
 from src._world.examples.example_worlds import world_v001 as examples_world_v001
@@ -53,15 +53,15 @@ def test_WorldUnit_beliefs_set_beliefunit_CorrectlyReplacesBelief():
     x_world = worldunit_shop()
     swim1_belief = beliefunit_shop(swim_text)
     bob_text = "Bob"
-    swim1_belief.set_belieflink(belieflink_shop(bob_text))
+    swim1_belief.set_personlink(personlink_shop(bob_text))
     x_world.set_beliefunit(swim1_belief)
     assert len(x_world.get_beliefunit(swim_text)._persons) == 1
 
     # WHEN
     yao_text = "Yao"
     swim2_belief = beliefunit_shop(swim_text)
-    swim2_belief.set_belieflink(belieflink_shop(bob_text))
-    swim2_belief.set_belieflink(belieflink_shop(yao_text))
+    swim2_belief.set_personlink(personlink_shop(bob_text))
+    swim2_belief.set_personlink(personlink_shop(yao_text))
     x_world.set_beliefunit(swim2_belief, replace=False)
 
     # THEN
@@ -88,22 +88,22 @@ def test_WorldUnit_beliefs_set_beliefunit_CorrectlyReplacesBelief():
 #     )
 
 
-def test_WorldUnit_beliefs_set_beliefunit_CorrectlySets_belieflinks():
+def test_WorldUnit_beliefs_set_beliefunit_CorrectlySets_personlinks():
     # GIVEN
     swim_text = ",swimmers"
     x_world = worldunit_shop()
     swim1_belief = beliefunit_shop(swim_text)
     bob_text = "Bob"
-    swim1_belief.set_belieflink(belieflink_shop(bob_text))
+    swim1_belief.set_personlink(personlink_shop(bob_text))
     x_world.set_beliefunit(swim1_belief)
     assert len(x_world.get_beliefunit(swim_text)._persons) == 1
 
     # WHEN
     yao_text = "Yao"
     swim2_belief = beliefunit_shop(swim_text)
-    swim2_belief.set_belieflink(belieflink_shop(bob_text))
-    swim2_belief.set_belieflink(belieflink_shop(yao_text))
-    x_world.set_beliefunit(swim2_belief, add_belieflinks=True)
+    swim2_belief.set_personlink(personlink_shop(bob_text))
+    swim2_belief.set_personlink(personlink_shop(yao_text))
+    x_world.set_beliefunit(swim2_belief, add_personlinks=True)
 
     # THEN
     assert len(x_world.get_beliefunit(swim_text)._persons) == 2
@@ -506,7 +506,7 @@ def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyCreatesNewPersonID():
     world.add_personunit(person_id=rico_text)
     swim_text = ",swimmers"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_belieflink(belieflink=belieflink_shop(person_id=rico_text))
+    swim_belief.set_personlink(personlink=personlink_shop(person_id=rico_text))
     world.set_beliefunit(swim_belief)
     assert len(world._persons) == 1
     assert len(world._beliefs) == 2
@@ -559,16 +559,16 @@ def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyMeldPersonIDs():
     world.add_personunit(person_id=rico_text)
     swim_text = ",swimmers"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_belieflink(
-        belieflink=belieflink_shop(
+    swim_belief.set_personlink(
+        personlink=personlink_shop(
             person_id=rico_text, credor_weight=5, debtor_weight=3
         )
     )
     world.set_beliefunit(swim_belief)
     jog_text = ",jog"
     jog_belief = beliefunit_shop(belief_id=jog_text)
-    jog_belief.set_belieflink(
-        belieflink=belieflink_shop(
+    jog_belief.set_personlink(
+        personlink=personlink_shop(
             person_id=rico_text, credor_weight=7, debtor_weight=10
         )
     )
@@ -784,8 +784,8 @@ def test_WorldUnit_add_idea_DoesNotOverwriteBeliefs():
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
 
     beliefunit_z = beliefunit_shop(belief_id=family_text)
-    beliefunit_z.set_belieflink(belieflink=belieflink_shop(person_id="ann1"))
-    beliefunit_z.set_belieflink(belieflink=belieflink_shop(person_id="bet1"))
+    beliefunit_z.set_personlink(personlink=personlink_shop(person_id="ann1"))
+    beliefunit_z.set_personlink(personlink=personlink_shop(person_id="bet1"))
     bob_world.set_beliefunit(y_beliefunit=beliefunit_z)
 
     # assert len(bob_world._beliefs) == 0
@@ -805,8 +805,8 @@ def test_WorldUnit_add_idea_DoesNotOverwriteBeliefs():
     # assert len(bob_world._beliefs) == 1
     # assert len(bob_world.get_beliefunit(family_text)._persons) == 0
     # beliefunit_z = beliefunit_shop(belief_id=family_text)
-    # beliefunit_z.set_belieflink(belieflink=belieflink_shop(person_id="ann2"))
-    # beliefunit_z.set_belieflink(belieflink=belieflink_shop(person_id="bet2"))
+    # beliefunit_z.set_personlink(personlink=personlink_shop(person_id="ann2"))
+    # beliefunit_z.set_personlink(personlink=personlink_shop(person_id="bet2"))
     # bob_world.set_beliefunit(y_beliefunit=beliefunit_z)
 
     assert len(bob_world._beliefs) == 1
@@ -820,13 +820,13 @@ def test_WorldUnit_set_beliefunit_create_missing_persons_DoesCreateMissingPerson
     anna_text = "anna"
     beto_text = "beto"
     beliefunit_z = beliefunit_shop(belief_id=family_text)
-    beliefunit_z.set_belieflink(
-        belieflink=belieflink_shop(
+    beliefunit_z.set_personlink(
+        personlink=personlink_shop(
             person_id=anna_text, credor_weight=3, debtor_weight=7
         )
     )
-    beliefunit_z.set_belieflink(
-        belieflink=belieflink_shop(
+    beliefunit_z.set_personlink(
+        personlink=personlink_shop(
             person_id=beto_text, credor_weight=5, debtor_weight=11
         )
     )
@@ -866,13 +866,13 @@ def test_WorldUnit_set_beliefunit_create_missing_persons_DoesNotReplacePersons()
         personunit_shop(person_id=beto_text, credor_weight=46, debtor_weight=71)
     )
     beliefunit_z = beliefunit_shop(belief_id=family_text)
-    beliefunit_z.set_belieflink(
-        belieflink=belieflink_shop(
+    beliefunit_z.set_personlink(
+        personlink=personlink_shop(
             person_id=anna_text, credor_weight=3, debtor_weight=7
         )
     )
-    beliefunit_z.set_belieflink(
-        belieflink=belieflink_shop(
+    beliefunit_z.set_personlink(
+        personlink=personlink_shop(
             person_id=beto_text, credor_weight=5, debtor_weight=11
         )
     )
@@ -979,7 +979,7 @@ def test_get_person_relevant_beliefs_ReturnsCorrectDict():
     hike_text = "hikers"
     jes_world.set_beliefunit(beliefunit_shop(belief_id=hike_text))
     hike_belief = jes_world.get_beliefunit(hike_text)
-    hike_belief.set_belieflink(belieflink_shop(bob_text))
+    hike_belief.set_personlink(personlink_shop(bob_text))
 
     # WHEN
     noa_text = "Noa"
@@ -1004,19 +1004,19 @@ def test_get_person_relevant_beliefs_ReturnsCorrectDict():
     swim_text = ",swimmers"
     jes_world.set_beliefunit(beliefunit_shop(belief_id=swim_text))
     swim_belief = jes_world.get_beliefunit(swim_text)
-    swim_belief.set_belieflink(belieflink_shop(bob_text))
+    swim_belief.set_personlink(personlink_shop(bob_text))
 
     hike_text = ",hikers"
     jes_world.set_beliefunit(beliefunit_shop(belief_id=hike_text))
     hike_belief = jes_world.get_beliefunit(hike_text)
-    hike_belief.set_belieflink(belieflink_shop(bob_text))
-    hike_belief.set_belieflink(belieflink_shop(noa_text))
+    hike_belief.set_personlink(personlink_shop(bob_text))
+    hike_belief.set_personlink(personlink_shop(noa_text))
 
     hunt_text = ",hunters"
     jes_world.set_beliefunit(beliefunit_shop(belief_id=hunt_text))
     hike_belief = jes_world.get_beliefunit(hunt_text)
-    hike_belief.set_belieflink(belieflink_shop(noa_text))
-    hike_belief.set_belieflink(belieflink_shop(eli_text))
+    hike_belief.set_personlink(personlink_shop(noa_text))
+    hike_belief.set_personlink(personlink_shop(eli_text))
 
     # WHEN
     print(f"{len(jes_world._persons)=} {len(jes_world._beliefs)=}")

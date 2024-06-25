@@ -1,7 +1,7 @@
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
 from src._world.belief import beliefunit_shop
-from src._world.person import personunit_shop, belieflink_shop
+from src._world.person import personunit_shop, personlink_shop
 from src._world.origin import originunit_shop
 from pytest import raises as pytest_raises
 from src._world.examples.example_worlds import world_v001
@@ -133,15 +133,15 @@ def test_WorldUnit_meld_BeliefUnits_WhereBeliefUnitMembershipIsDifferent():
 
     run_text = ",runners"
     bob1_world.set_beliefunit(beliefunit_shop(run_text))
-    bob1_world.get_beliefunit(run_text).set_belieflink(belieflink_shop(sue_text))
+    bob1_world.get_beliefunit(run_text).set_personlink(personlink_shop(sue_text))
 
     bob2_world = worldunit_shop(bob_text)
     yao_text = "Yao"
     bob2_world.set_personunit(personunit_shop(yao_text))
     bob2_world.set_personunit(personunit_shop(sue_text))
     bob2_world.set_beliefunit(beliefunit_shop(run_text))
-    bob2_world.get_beliefunit(run_text).set_belieflink(belieflink_shop(yao_text))
-    bob2_world.get_beliefunit(run_text).set_belieflink(belieflink_shop(sue_text))
+    bob2_world.get_beliefunit(run_text).set_personlink(personlink_shop(yao_text))
+    bob2_world.get_beliefunit(run_text).set_personlink(personlink_shop(sue_text))
     assert len(bob1_world._beliefs) == 2
     assert len(bob1_world.get_beliefunit(run_text)._persons) == 1
 

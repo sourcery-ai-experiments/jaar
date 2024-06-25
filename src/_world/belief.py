@@ -12,9 +12,9 @@ from src._road.road import (
     validate_roadnode,
 )
 from src._world.person import (
-    BeliefLink,
-    belieflinks_get_from_dict,
-    belieflink_shop,
+    PersonLink,
+    personlinks_get_from_dict,
+    personlink_shop,
     PersonUnit,
 )
 from src._world.meld import get_meld_weight
@@ -36,7 +36,7 @@ class BeliefCore:
 @dataclass
 class BeliefUnit(BeliefCore):
     _person_mirror: bool = None  # set by WorldUnit.set_personunit()
-    _persons: dict[PersonID:BeliefLink] = None  # set by WorldUnit.set_personunit()
+    _persons: dict[PersonID:PersonLink] = None  # set by WorldUnit.set_personunit()
     _road_delimiter: str = None  # calculated by WorldUnit.set_beliefunit
     # calculated by WorldUnit.calc_world_metrics()
     _world_cred: float = None
@@ -67,28 +67,28 @@ class BeliefUnit(BeliefCore):
         self._world_debt = 0
         self._world_agenda_cred = 0
         self._world_agenda_debt = 0
-        for belieflink in self._persons.values():
-            belieflink.reset_world_cred_debt()
+        for personlink in self._persons.values():
+            personlink.reset_world_cred_debt()
 
-    def _set_belieflink_world_cred_debt(self):
-        belieflinks_credor_weight_sum = sum(
-            belieflink.credor_weight for belieflink in self._persons.values()
+    def _set_personlink_world_cred_debt(self):
+        personlinks_credor_weight_sum = sum(
+            personlink.credor_weight for personlink in self._persons.values()
         )
-        belieflinks_debtor_weight_sum = sum(
-            belieflink.debtor_weight for belieflink in self._persons.values()
+        personlinks_debtor_weight_sum = sum(
+            personlink.debtor_weight for personlink in self._persons.values()
         )
 
-        for belieflink in self._persons.values():
-            belieflink.set_world_cred_debt(
-                belieflinks_credor_weight_sum=belieflinks_credor_weight_sum,
-                belieflinks_debtor_weight_sum=belieflinks_debtor_weight_sum,
+        for personlink in self._persons.values():
+            personlink.set_world_cred_debt(
+                personlinks_credor_weight_sum=personlinks_credor_weight_sum,
+                personlinks_debtor_weight_sum=personlinks_debtor_weight_sum,
                 belief_world_cred=self._world_cred,
                 belief_world_debt=self._world_debt,
                 belief_world_agenda_cred=self._world_agenda_cred,
                 belief_world_agenda_debt=self._world_agenda_debt,
             )
 
-    def clear_belieflinks(self):
+    def clear_personlinks(self):
         self._persons = {}
 
     def get_persons_dict(self) -> dict[str:str]:
@@ -98,53 +98,53 @@ class BeliefUnit(BeliefCore):
             persons_x_dict[person_dict["person_id"]] = person_dict
         return persons_x_dict
 
-    def set_belieflink(self, belieflink: BeliefLink):
-        self._persons[belieflink.person_id] = belieflink
+    def set_personlink(self, personlink: PersonLink):
+        self._persons[personlink.person_id] = personlink
 
-    def edit_belieflink(
+    def edit_personlink(
         self, person_id: PersonID, credor_weight: int = None, debtor_weight: int = None
     ):
-        x_belieflink = self.get_belieflink(person_id)
+        x_personlink = self.get_personlink(person_id)
         if credor_weight != None:
-            x_belieflink.credor_weight = credor_weight
+            x_personlink.credor_weight = credor_weight
         if debtor_weight != None:
-            x_belieflink.debtor_weight = debtor_weight
+            x_personlink.debtor_weight = debtor_weight
 
-    def get_belieflink(self, person_id: PersonID) -> BeliefLink:
+    def get_personlink(self, person_id: PersonID) -> PersonLink:
         return self._persons.get(person_id)
 
-    def belieflink_exists(self, belieflink_person_id: PersonID) -> bool:
-        return self.get_belieflink(belieflink_person_id) != None
+    def personlink_exists(self, personlink_person_id: PersonID) -> bool:
+        return self.get_personlink(personlink_person_id) != None
 
-    def del_belieflink(self, person_id):
+    def del_personlink(self, person_id):
         self._persons.pop(person_id)
 
-    def _shift_belieflink(
+    def _shift_personlink(
         self, to_delete_person_id: PersonID, to_absorb_person_id: PersonID
     ):
-        old_belief_belieflink = self.get_belieflink(to_delete_person_id)
-        new_belieflink_credor_weight = old_belief_belieflink.credor_weight
-        new_belieflink_debtor_weight = old_belief_belieflink.debtor_weight
+        old_belief_personlink = self.get_personlink(to_delete_person_id)
+        new_personlink_credor_weight = old_belief_personlink.credor_weight
+        new_personlink_debtor_weight = old_belief_personlink.debtor_weight
 
-        new_belieflink = self.get_belieflink(to_absorb_person_id)
-        if new_belieflink != None:
-            new_belieflink_credor_weight += new_belieflink.credor_weight
-            new_belieflink_debtor_weight += new_belieflink.debtor_weight
+        new_personlink = self.get_personlink(to_absorb_person_id)
+        if new_personlink != None:
+            new_personlink_credor_weight += new_personlink.credor_weight
+            new_personlink_debtor_weight += new_personlink.debtor_weight
 
-        self.set_belieflink(
-            belieflink=belieflink_shop(
+        self.set_personlink(
+            personlink=personlink_shop(
                 person_id=to_absorb_person_id,
-                credor_weight=new_belieflink_credor_weight,
-                debtor_weight=new_belieflink_debtor_weight,
+                credor_weight=new_personlink_credor_weight,
+                debtor_weight=new_personlink_debtor_weight,
             )
         )
-        self.del_belieflink(person_id=to_delete_person_id)
+        self.del_personlink(person_id=to_delete_person_id)
 
     def meld(self, exterior_belief):
         self._meld_attributes_that_must_be_equal(exterior_belief=exterior_belief)
-        self.meld_belieflinks(exterior_belief=exterior_belief)
+        self.meld_personlinks(exterior_belief=exterior_belief)
 
-    def meld_belieflinks(self, exterior_belief):
+    def meld_personlinks(self, exterior_belief):
         for oba in exterior_belief._persons.values():
             if self._persons.get(oba.person_id) is None:
                 self._persons[oba.person_id] = oba
@@ -195,7 +195,7 @@ def get_beliefunit_from_dict(
 
 def get_obj_from_beliefunit_dict(x_dict: dict[str:], dict_key: str) -> any:
     if dict_key == "_persons":
-        return belieflinks_get_from_dict(x_dict.get(dict_key))
+        return personlinks_get_from_dict(x_dict.get(dict_key))
     elif dict_key in {"_person_mirror"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else False
     else:
@@ -205,7 +205,7 @@ def get_obj_from_beliefunit_dict(x_dict: dict[str:], dict_key: str) -> any:
 def beliefunit_shop(
     belief_id: BeliefID,
     _person_mirror: bool = None,
-    _persons: dict[PersonID:BeliefLink] = None,
+    _persons: dict[PersonID:PersonLink] = None,
     _road_delimiter: str = None,
 ) -> BeliefUnit:
     if _person_mirror is None:

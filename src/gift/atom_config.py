@@ -71,8 +71,8 @@ def world_beliefunit_text() -> str:
     return "world_beliefunit"
 
 
-def world_belief_belieflink_text() -> str:
-    return "world_belief_belieflink"
+def world_belief_personlink_text() -> str:
+    return "world_belief_personlink"
 
 
 def world_ideaunit_text() -> str:

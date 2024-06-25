@@ -1,5 +1,5 @@
 from src._world.belief import beliefunit_shop
-from src._world.person import belieflink_shop
+from src._world.person import personlink_shop
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
 from src.listen.basis_worlds import (
@@ -28,7 +28,7 @@ def test_create_empty_world_ReturnsCorrectObj():
     role_zia_personunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
     role_zia_personunit.add_inallocable_debtor_weight(zia_inallocable_debtor_weight)
     swim_belief = beliefunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
-    swim_belief.set_belieflink(belieflink_shop(zia_text))
+    swim_belief.set_personlink(personlink_shop(zia_text))
     yao_same.set_beliefunit(swim_belief)
     yao_same.set_person_credor_pool(zia_credor_pool, True)
     yao_same.set_person_debtor_pool(zia_debtor_pool, True)
@@ -72,7 +72,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     role_zia_personunit.add_irrational_debtor_weight(zia_irrational_debtor_weight)
     role_zia_personunit.add_inallocable_debtor_weight(zia_inallocable_debtor_weight)
     swim_belief = beliefunit_shop(f"{slash_text}swimmers", _road_delimiter=slash_text)
-    swim_belief.set_belieflink(belieflink_shop(zia_text))
+    swim_belief.set_personlink(personlink_shop(zia_text))
     yao_role.set_beliefunit(swim_belief)
     yao_role.set_person_credor_pool(zia_credor_pool, True)
     yao_role.set_person_debtor_pool(zia_debtor_pool, True)
@@ -115,7 +115,7 @@ def test_get_default_live_world_ReturnsCorrectObj():
     sue_worldunit.add_personunit(bob_text, 3, 4)
     swim_text = "/swimmers"
     swim_beliefunit = beliefunit_shop(swim_text, _road_delimiter=slash_text)
-    swim_beliefunit.edit_belieflink(bob_text)
+    swim_beliefunit.edit_personlink(bob_text)
     sue_worldunit.set_beliefunit(swim_beliefunit)
     sue_worldunit.set_person_pool(sue_person_pool)
     sue_worldunit.add_l1_idea(ideaunit_shop(casa_text))

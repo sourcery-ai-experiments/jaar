@@ -18,7 +18,7 @@ from src.gift.atom_config import (
     worldunit_text,
     world_personunit_text,
     world_beliefunit_text,
-    world_belief_belieflink_text,
+    world_belief_personlink_text,
     world_ideaunit_text,
     world_idea_balancelink_text,
     world_idea_reasonunit_text,
@@ -41,8 +41,8 @@ def test_world_beliefunit_text_ReturnsObj():
     assert world_beliefunit_text() == "world_beliefunit"
 
 
-def test_world_belief_belieflink_text_ReturnsObj():
-    assert world_belief_belieflink_text() == "world_belief_belieflink"
+def test_world_belief_personlink_text_ReturnsObj():
+    assert world_belief_personlink_text() == "world_belief_personlink"
 
 
 def test_world_ideaunit_text_ReturnsObj():
@@ -78,7 +78,7 @@ def test_atom_config_HasCorrect_category():
         worldunit_text(),
         world_personunit_text(),
         world_beliefunit_text(),
-        world_belief_belieflink_text(),
+        world_belief_personlink_text(),
         world_ideaunit_text(),
         world_idea_balancelink_text(),
         world_idea_reasonunit_text(),
@@ -153,7 +153,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     mog = atom_order_text
     # # Simple script for editing atom_config.json
     # set_mog("world_personunit", atom_insert(), mog, 0)
-    # set_mog("world_belief_belieflink", atom_insert(), mog, 1)
+    # set_mog("world_belief_personlink", atom_insert(), mog, 1)
     # set_mog("beliefunit", atom_insert(), mog, 2)
     # set_mog("world_ideaunit", atom_insert(), mog, 3)
     # set_mog("world_idea_balancelink", atom_insert(), mog, 4)
@@ -164,7 +164,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     # set_mog("world_idea_reason_premiseunit", atom_insert(), mog, 9)
     # set_mog("world_personunit", atom_update(), mog, 10)
     # set_mog("beliefunit", atom_update(), mog, 11)
-    # set_mog("world_belief_belieflink", atom_update(), mog, 12)
+    # set_mog("world_belief_personlink", atom_update(), mog, 12)
     # set_mog("world_ideaunit", atom_update(), mog, 13)
     # set_mog("world_idea_balancelink", atom_update(), mog, 14)
     # set_mog("world_idea_factunit", atom_update(), mog, 15)
@@ -177,13 +177,13 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     # set_mog("world_idea_healerhold", atom_delete(), mog, 22)
     # set_mog("world_idea_balancelink", atom_delete(), mog, 23)
     # set_mog("world_ideaunit", atom_delete(), mog, 24)
-    # set_mog("world_belief_belieflink", atom_delete(), mog, 25)
+    # set_mog("world_belief_personlink", atom_delete(), mog, 25)
     # set_mog("world_personunit", atom_delete(), mog, 26)
     # set_mog("beliefunit", atom_delete(), mog, 27)
     # set_mog("worldunit", atom_update(), mog, 28)
 
     assert 0 == q_order("world_personunit", atom_insert(), mog, 0)
-    assert 1 == q_order("world_belief_belieflink", atom_insert(), mog, 1)
+    assert 1 == q_order("world_belief_personlink", atom_insert(), mog, 1)
     assert 2 == q_order("world_beliefunit", atom_insert(), mog, 2)
     assert 3 == q_order("world_ideaunit", atom_insert(), mog, 3)
     assert 4 == q_order("world_idea_balancelink", atom_insert(), mog, 4)
@@ -194,7 +194,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     assert 9 == q_order("world_idea_reason_premiseunit", atom_insert(), mog, 9)
     assert 10 == q_order("world_personunit", atom_update(), mog, 10)
     assert 11 == q_order("world_beliefunit", atom_update(), mog, 11)
-    assert 12 == q_order("world_belief_belieflink", atom_update(), mog, 12)
+    assert 12 == q_order("world_belief_personlink", atom_update(), mog, 12)
     assert 13 == q_order("world_ideaunit", atom_update(), mog, 13)
     assert 14 == q_order("world_idea_balancelink", atom_update(), mog, 14)
     assert 15 == q_order("world_idea_factunit", atom_update(), mog, 15)
@@ -207,7 +207,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     assert 22 == q_order("world_idea_healerhold", atom_delete(), mog, 22)
     assert 23 == q_order("world_idea_balancelink", atom_delete(), mog, 23)
     assert 24 == q_order("world_ideaunit", atom_delete(), mog, 24)
-    assert 25 == q_order("world_belief_belieflink", atom_delete(), mog, 25)
+    assert 25 == q_order("world_belief_personlink", atom_delete(), mog, 25)
     assert 26 == q_order("world_personunit", atom_delete(), mog, 26)
     assert 27 == q_order("world_beliefunit", atom_delete(), mog, 27)
     assert 28 == q_order("worldunit", atom_update(), mog, 28)
@@ -264,7 +264,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     cat_worldunit = nx.get(worldunit_text())
     cat_personunit = nx.get(world_personunit_text())
     cat_belief = nx.get(world_beliefunit_text())
-    cat_belieflink = nx.get(world_belief_belieflink_text())
+    cat_personlink = nx.get(world_belief_personlink_text())
     cat_idea = nx.get(world_ideaunit_text())
     cat_balancelink = nx.get(world_idea_balancelink_text())
     cat_reason = nx.get(world_idea_reasonunit_text())
@@ -276,7 +276,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     assert cat_worldunit != None
     assert cat_personunit != None
     assert cat_belief != None
-    assert cat_belieflink != None
+    assert cat_personlink != None
     assert cat_idea != None
     assert cat_balancelink != None
     assert cat_reason != None
@@ -288,7 +288,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     normal_specs_worldunit = cat_worldunit.get(normal_specs_text())
     normal_specs_personunit = cat_personunit.get(normal_specs_text())
     normal_specs_belief = cat_belief.get(normal_specs_text())
-    normal_specs_belieflink = cat_belieflink.get(normal_specs_text())
+    normal_specs_personlink = cat_personlink.get(normal_specs_text())
     normal_specs_idea = cat_idea.get(normal_specs_text())
     normal_specs_balancelink = cat_balancelink.get(normal_specs_text())
     normal_specs_reason = cat_reason.get(normal_specs_text())
@@ -303,7 +303,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     assert normal_specs_worldunit != None
     assert normal_specs_personunit != None
     assert normal_specs_belief != None
-    assert normal_specs_belieflink != None
+    assert normal_specs_personlink != None
     assert normal_specs_idea != None
     assert normal_specs_balancelink != None
     assert normal_specs_reason != None
@@ -315,7 +315,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     table_name_worldunit = normal_specs_worldunit.get(normal_table_name_text())
     table_name_personunit = normal_specs_personunit.get(normal_table_name_text())
     table_name_belief = normal_specs_belief.get(normal_table_name_text())
-    table_name_belieflink = normal_specs_belieflink.get(normal_table_name_text())
+    table_name_personlink = normal_specs_personlink.get(normal_table_name_text())
     table_name_idea = normal_specs_idea.get(normal_table_name_text())
     table_name_balancelink = normal_specs_balancelink.get(normal_table_name_text())
     table_name_reason = normal_specs_reason.get(normal_table_name_text())
@@ -327,7 +327,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     assert table_name_worldunit == "world"
     assert table_name_personunit == "personunit"
     assert table_name_belief == "beliefunit"
-    assert table_name_belieflink == "belieflink"
+    assert table_name_personlink == "personlink"
     assert table_name_idea == "idea"
     assert table_name_balancelink == "balancelink"
     assert table_name_reason == "reason"

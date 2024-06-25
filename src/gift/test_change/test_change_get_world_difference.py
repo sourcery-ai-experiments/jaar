@@ -1,5 +1,5 @@
 from src._world.belief import balancelink_shop
-from src._world.person import belieflink_shop
+from src._world.person import personlink_shop
 from src._world.reason_idea import factunit_shop
 from src._world.idea import ideaunit_shop
 from src._world.belief import beliefunit_shop
@@ -179,7 +179,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_WorldUnit_simpl
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_belieflink_insert():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_personlink_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_worldunit = worldunit_shop(sue_text)
@@ -192,9 +192,9 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_beliefli
     run_beliefunit = beliefunit_shop(run_text)
     rico_credor_weight = 77
     rico_debtor_weight = 88
-    rico_belieflink = belieflink_shop(rico_text, rico_credor_weight, rico_debtor_weight)
-    run_beliefunit.set_belieflink(rico_belieflink)
-    run_beliefunit.set_belieflink(belieflink_shop(carm_text))
+    rico_personlink = personlink_shop(rico_text, rico_credor_weight, rico_debtor_weight)
+    run_beliefunit.set_personlink(rico_personlink)
+    run_beliefunit.set_personlink(personlink_shop(carm_text))
     after_sue_worldunit.set_beliefunit(run_beliefunit)
     # print(f"{after_sue_worldunit.get_beliefunit(run_text)=}")
 
@@ -211,7 +211,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_beliefli
     # print(f"\n{sue_changeunit.atomunits=}")
     print(f"\n{rico_atomunit=}")
 
-    x_keylist = [atom_insert(), "world_belief_belieflink", run_text, rico_text]
+    x_keylist = [atom_insert(), "world_belief_personlink", run_text, rico_text]
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("belief_id") == run_text
     assert rico_atomunit.get_value("person_id") == rico_text
@@ -226,7 +226,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_beliefli
     assert get_atomunit_total_count(sue_changeunit) == 5
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_belieflink_update():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_personlink_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_worldunit = worldunit_shop(sue_text)
@@ -238,16 +238,16 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_beliefli
     run_beliefunit = beliefunit_shop(run_text)
     before_rico_credor_weight = 77
     before_rico_debtor_weight = 88
-    run_beliefunit.set_belieflink(
-        belieflink_shop(rico_text, before_rico_credor_weight, before_rico_debtor_weight)
+    run_beliefunit.set_personlink(
+        personlink_shop(rico_text, before_rico_credor_weight, before_rico_debtor_weight)
     )
-    run_beliefunit.set_belieflink(belieflink_shop(carm_text))
+    run_beliefunit.set_personlink(personlink_shop(carm_text))
     before_sue_worldunit.set_beliefunit(run_beliefunit)
     after_sue_worldunit = copy_deepcopy(before_sue_worldunit)
     after_run_beliefunit = after_sue_worldunit.get_beliefunit(run_text)
     after_rico_credor_weight = 55
     after_rico_debtor_weight = 66
-    after_run_beliefunit.edit_belieflink(
+    after_run_beliefunit.edit_personlink(
         rico_text, after_rico_credor_weight, after_rico_debtor_weight
     )
 
@@ -264,7 +264,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_beliefli
     # print(f"\n{sue_changeunit.atomunits=}")
     # print(f"\n{rico_atomunit=}")
 
-    x_keylist = [atom_update(), "world_belief_belieflink", run_text, rico_text]
+    x_keylist = [atom_update(), "world_belief_personlink", run_text, rico_text]
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("belief_id") == run_text
     assert rico_atomunit.get_value("person_id") == rico_text
@@ -275,7 +275,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_beliefli
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_belieflink_delete():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_personlink_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_worldunit = worldunit_shop(sue_text)
@@ -287,19 +287,19 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_beliefli
     before_sue_worldunit.add_personunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_belieflink(belieflink_shop(rico_text))
-    run_beliefunit.set_belieflink(belieflink_shop(carm_text))
+    run_beliefunit.set_personlink(personlink_shop(rico_text))
+    run_beliefunit.set_personlink(personlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_belieflink(belieflink_shop(rico_text))
-    fly_beliefunit.set_belieflink(belieflink_shop(carm_text))
-    fly_beliefunit.set_belieflink(belieflink_shop(dizz_text))
+    fly_beliefunit.set_personlink(personlink_shop(rico_text))
+    fly_beliefunit.set_personlink(personlink_shop(carm_text))
+    fly_beliefunit.set_personlink(personlink_shop(dizz_text))
     before_sue_worldunit.set_beliefunit(run_beliefunit)
     before_sue_worldunit.set_beliefunit(fly_beliefunit)
     after_sue_worldunit = copy_deepcopy(before_sue_worldunit)
     after_sue_worldunit.del_beliefunit(run_text)
     after_fly_beliefunit = after_sue_worldunit.get_beliefunit(fly_text)
-    after_fly_beliefunit.del_belieflink(dizz_text)
+    after_fly_beliefunit.del_personlink(dizz_text)
     assert len(before_sue_worldunit.get_beliefunit(fly_text)._persons) == 3
     assert len(before_sue_worldunit.get_beliefunit(run_text)._persons) == 2
     assert len(after_sue_worldunit.get_beliefunit(fly_text)._persons) == 2
@@ -316,7 +316,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_belief_beliefli
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("belief_id") == run_text
 
-    x_keylist = [atom_delete(), "world_belief_belieflink", fly_text, dizz_text]
+    x_keylist = [atom_delete(), "world_belief_personlink", fly_text, dizz_text]
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("belief_id") == fly_text
     assert rico_atomunit.get_value("person_id") == dizz_text
@@ -519,13 +519,13 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     before_sue_au.add_personunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_belieflink(belieflink_shop(rico_text))
-    run_beliefunit.set_belieflink(belieflink_shop(carm_text))
+    run_beliefunit.set_personlink(personlink_shop(rico_text))
+    run_beliefunit.set_personlink(personlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_belieflink(belieflink_shop(rico_text))
-    fly_beliefunit.set_belieflink(belieflink_shop(carm_text))
-    fly_beliefunit.set_belieflink(belieflink_shop(dizz_text))
+    fly_beliefunit.set_personlink(personlink_shop(rico_text))
+    fly_beliefunit.set_personlink(personlink_shop(carm_text))
+    fly_beliefunit.set_personlink(personlink_shop(dizz_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     before_sue_au.set_beliefunit(fly_beliefunit)
     sports_text = "sports"
@@ -571,13 +571,13 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     before_sue_au.add_personunit(dizz_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_belieflink(belieflink_shop(rico_text))
-    run_beliefunit.set_belieflink(belieflink_shop(carm_text))
+    run_beliefunit.set_personlink(personlink_shop(rico_text))
+    run_beliefunit.set_personlink(personlink_shop(carm_text))
     fly_text = ",flyers"
     fly_beliefunit = beliefunit_shop(fly_text)
-    fly_beliefunit.set_belieflink(belieflink_shop(rico_text))
-    fly_beliefunit.set_belieflink(belieflink_shop(carm_text))
-    fly_beliefunit.set_belieflink(belieflink_shop(dizz_text))
+    fly_beliefunit.set_personlink(personlink_shop(rico_text))
+    fly_beliefunit.set_personlink(personlink_shop(carm_text))
+    fly_beliefunit.set_personlink(personlink_shop(dizz_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     before_sue_au.set_beliefunit(fly_beliefunit)
     sports_text = "sports"
@@ -632,7 +632,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     before_sue_au.add_personunit(carm_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_belieflink(belieflink_shop(rico_text))
+    run_beliefunit.set_personlink(personlink_shop(rico_text))
     before_sue_au.set_beliefunit(run_beliefunit)
     sports_text = "sports"
     sports_road = before_sue_au.make_l1_road(sports_text)

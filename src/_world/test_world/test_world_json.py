@@ -1,7 +1,7 @@
 from src._instrument.python import x_is_json, get_dict_from_json
 from src._road.road import default_road_delimiter_if_none
 from src._world.belief import beliefunit_shop, balancelink_shop
-from src._world.person import belieflink_shop
+from src._world.person import personlink_shop
 from src._world.healer import healerhold_shop
 from src._world.reason_assign import assignedunit_shop
 from src._world.reason_idea import factunit_shop
@@ -135,7 +135,7 @@ def test_WorldUnit_get_dict_ReturnsDictWith_idearoot_healerhold():
     tom_world.add_personunit(yao_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_belieflink(belieflink_shop(yao_text))
+    run_beliefunit.set_personlink(personlink_shop(yao_text))
     tom_world.set_beliefunit(run_beliefunit)
     run_healerhold = healerhold_shop()
     run_healerhold.set_belief_id(x_belief_id=run_text)
@@ -190,7 +190,7 @@ def test_WorldUnit_get_json_ReturnsCorrectJSON_SimpleExample():
     zia_world.add_personunit(yao_text)
     run_text = ",runners"
     run_beliefunit = beliefunit_shop(run_text)
-    run_beliefunit.set_belieflink(belieflink_shop(yao_text))
+    run_beliefunit.set_personlink(personlink_shop(yao_text))
     zia_world.set_beliefunit(run_beliefunit)
     run_healerhold = healerhold_shop({run_text})
     zia_world.edit_idea_attr(road=zia_world._real_id, healerhold=run_healerhold)
@@ -325,8 +325,8 @@ def test_worldunit_get_from_json_ReturnsCorrectObjSimpleExample():
     zia_world.add_personunit(person_id=tim_text)
     run_text = ",runners"
     run_belief = beliefunit_shop(belief_id=run_text)
-    run_belief.set_belieflink(belieflink=belieflink_shop(person_id=sue_text))
-    run_belief.set_belieflink(belieflink=belieflink_shop(person_id=tim_text))
+    run_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    run_belief.set_personlink(personlink=personlink_shop(person_id=tim_text))
     zia_world.set_beliefunit(y_beliefunit=run_belief)
 
     run_assignedunit = assignedunit_shop()

@@ -1,5 +1,5 @@
 {
-    "world_belief_belieflink": {
+    "world_belief_personlink": {
         "calculated_attrs": {},
         "DELETE": {
             "atom_order": 25
@@ -8,7 +8,7 @@
             "atom_order": 1
         },
         "normal_specs": {
-            "normal_table_name": "belieflink"
+            "normal_table_name": "personlink"
         },
         "optional_args": {
             "credor_weight": {
