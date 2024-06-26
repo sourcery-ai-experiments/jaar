@@ -1,3 +1,4 @@
+from src._world.belieflink import belieflink_shop
 from src._world.person import (
     personunit_shop,
     personunits_get_from_json,
@@ -6,6 +7,40 @@ from src._world.person import (
 )
 from src._instrument.python import x_is_json, get_json_from_dict
 from pytest import raises as pytest_raises
+
+
+def test_PersonUnit_get_belieflinks_dict_ReturnObj():
+    # GIVEN
+    sue_text = "Sue"
+    sue_credor_weight = 11
+    sue_debtor_weight = 13
+    run_text = ",Run"
+    run_credor_weight = 17
+    run_debtor_weight = 23
+    sue_belieflink = belieflink_shop(sue_text, sue_credor_weight, sue_debtor_weight)
+    run_belieflink = belieflink_shop(run_text, run_credor_weight, run_debtor_weight)
+    sue_personunit = personunit_shop(sue_text)
+    sue_personunit.set_belieflink(sue_belieflink)
+    sue_personunit.set_belieflink(run_belieflink)
+
+    # WHEN
+    sue_belieflinks_dict = sue_personunit.get_belieflinks_dict()
+
+    # THEN
+    assert sue_belieflinks_dict.get(sue_text) != None
+    assert sue_belieflinks_dict.get(run_text) != None
+    sue_belieflink_dict = sue_belieflinks_dict.get(sue_text)
+    run_belieflink_dict = sue_belieflinks_dict.get(run_text)
+    assert sue_belieflink_dict == {
+        "belief_id": sue_text,
+        "credor_weight": sue_credor_weight,
+        "debtor_weight": sue_debtor_weight,
+    }
+    assert run_belieflink_dict == {
+        "belief_id": run_text,
+        "credor_weight": run_credor_weight,
+        "debtor_weight": run_debtor_weight,
+    }
 
 
 def test_PersonUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
@@ -34,16 +69,25 @@ def test_PersonUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     bob_personunit._treasury_voice_hx_lowest_rank = bob_treasury_voice_hx_lowest_rank
     print(f"{bob_text}")
 
+    bob_personunit.set_belieflink(belieflink_shop(bob_text))
+    run_text = "Run"
+    bob_personunit.set_belieflink(belieflink_shop(run_text))
+
     # WHEN
     x_dict = bob_personunit.get_dict()
 
     # THEN
-    print(f"{x_dict=}")
+    bl_dict = x_dict.get("_belieflinks")
+    print(f"{bl_dict=}")
     assert x_dict != None
     assert x_dict == {
         "person_id": bob_text,
         "credor_weight": bob_credor_weight,
         "debtor_weight": bob_debtor_weight,
+        "_belieflinks": {
+            bob_text: {"belief_id": bob_text, "credor_weight": 1, "debtor_weight": 1},
+            run_text: {"belief_id": run_text, "credor_weight": 1, "debtor_weight": 1},
+        },
         "_credor_operational": bob_credor_operational,
         "_debtor_operational": bob_debtor_operational,
         "_treasury_due_paid": bob_treasury_due_paid,
@@ -99,6 +143,10 @@ def test_PersonUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
     bob_personunit._world_agenda_ratio_debt = bob_world_agenda_ratio_debt
     bob_personunit._output_world_meld_order = bob_output_world_meld_order
 
+    bob_personunit.set_belieflink(belieflink_shop(bob_text))
+    run_text = "Run"
+    bob_personunit.set_belieflink(belieflink_shop(run_text))
+
     print(f"{bob_text}")
 
     # WHEN
@@ -111,6 +159,7 @@ def test_PersonUnit_get_dict_ReturnsDictWithAllAttrDataForJSON():
         "person_id": bob_text,
         "credor_weight": bob_credor_weight,
         "debtor_weight": bob_debtor_weight,
+        "_belieflinks": bob_personunit.get_belieflinks_dict(),
         "_irrational_debtor_weight": bob_irrational_debtor_weight,
         "_inallocable_debtor_weight": bob_inallocable_debtor_weight,
         "_world_cred": bob_world_cred,
@@ -145,7 +194,7 @@ def test_PersonUnit_get_dict_ReturnsDictWith_irrational_missing_job_ValuesIsZerp
     x_inallocable_debtor_weight = "_inallocable_debtor_weight"
     assert x_dict.get(x_irrational_debtor_weight) is None
     assert x_dict.get(x_inallocable_debtor_weight) is None
-    assert len(x_dict.keys()) == 17
+    assert len(x_dict.keys()) == 18
 
 
 def test_PersonUnit_get_dict_ReturnsDictWith_irrational_missing_job_ValuesIsNumber():
@@ -165,7 +214,7 @@ def test_PersonUnit_get_dict_ReturnsDictWith_irrational_missing_job_ValuesIsNumb
     x_inallocable_debtor_weight = "_inallocable_debtor_weight"
     assert x_dict.get(x_irrational_debtor_weight) == bob_irrational_debtor_weight
     assert x_dict.get(x_inallocable_debtor_weight) == bob_inallocable_debtor_weight
-    assert len(x_dict.keys()) == 19
+    assert len(x_dict.keys()) == 20
 
 
 def test_PersonUnit_get_dict_ReturnsDictWith_irrational_missing_job_ValuesIsNone():
@@ -183,7 +232,7 @@ def test_PersonUnit_get_dict_ReturnsDictWith_irrational_missing_job_ValuesIsNone
     x_inallocable_debtor_weight = "_inallocable_debtor_weight"
     assert x_dict.get(x_irrational_debtor_weight) is None
     assert x_dict.get(x_inallocable_debtor_weight) is None
-    assert len(x_dict.keys()) == 17
+    assert len(x_dict.keys()) == 18
 
 
 def test_personunit_get_from_dict_ReturnsCorrectObjWith_road_delimiter():
@@ -191,6 +240,25 @@ def test_personunit_get_from_dict_ReturnsCorrectObjWith_road_delimiter():
     yao_text = ",Yao"
     slash_text = "/"
     before_yao_personunit = personunit_shop(yao_text, _road_delimiter=slash_text)
+    yao_dict = before_yao_personunit.get_dict()
+
+    # WHEN
+    after_yao_personunit = personunit_get_from_dict(yao_dict, slash_text)
+
+    # THEN
+    assert before_yao_personunit == after_yao_personunit
+    assert after_yao_personunit._road_delimiter == slash_text
+
+
+def test_personunit_get_from_dict_Returns_belieflinks():
+    # GIVEN
+    yao_text = ",Yao"
+    slash_text = "/"
+    before_yao_personunit = personunit_shop(yao_text, _road_delimiter=slash_text)
+    bob_text = "Bob"
+    zia_text = "Zia"
+    before_yao_personunit.set_belieflink(belieflink_shop(bob_text))
+    before_yao_personunit.set_belieflink(belieflink_shop(zia_text))
     yao_dict = before_yao_personunit.get_dict()
 
     # WHEN
@@ -236,6 +304,7 @@ def test_personunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncomplete
             "person_id": yao_text,
             "credor_weight": yao_credor_weight,
             "debtor_weight": yao_debtor_weight,
+            "_belieflinks": {},
             "_irrational_debtor_weight": yao_irrational_debtor_weight,
             "_inallocable_debtor_weight": yao_inallocable_debtor_weight,
             "_credor_operational": yao_credor_operational,

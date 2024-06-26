@@ -32,3 +32,18 @@ def belieflink_shop(
     return BeliefLink(
         belief_id=belief_id, credor_weight=credor_weight, debtor_weight=debtor_weight
     )
+
+
+def belieflink_get_from_dict(x_dict: dict) -> BeliefLink:
+    return belieflink_shop(
+        belief_id=x_dict.get("belief_id"),
+        credor_weight=x_dict.get("credor_weight"),
+        debtor_weight=x_dict.get("debtor_weight"),
+    )
+
+
+def belieflinks_get_from_dict(x_dict: dict) -> dict[BeliefID:BeliefLink]:
+    return {
+        x_belief_id: belieflink_get_from_dict(x_belieflink_dict)
+        for x_belief_id, x_belieflink_dict in x_dict.items()
+    }

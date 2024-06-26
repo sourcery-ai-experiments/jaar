@@ -19,6 +19,46 @@ from src._world.examples.example_worlds import (
 from pytest import raises as pytest_raises
 
 
+def test_WorldUnit_get_dict_SetsPersonUnit_belieflinks():
+    # GIVEN
+    yao_text = "Yao"
+    sue_text = "Sue"
+    sue_credor_weight = 11
+    sue_debtor_weight = 13
+    zia_text = "Zia"
+    zia_credor_weight = 17
+    zia_debtor_weight = 23
+    bob_world = worldunit_shop("Bob")
+    bob_world.add_personunit(yao_text)
+    bob_world.add_personunit(sue_text)
+    bob_world.add_personunit(zia_text)
+    run_text = ",Run"
+    bob_world.set_beliefunit(beliefunit_shop(run_text))
+    run_beliefunit = bob_world.get_beliefunit(run_text)
+    sue_run_personlink = personlink_shop(sue_text, sue_credor_weight, sue_debtor_weight)
+    zia_run_personlink = personlink_shop(zia_text, zia_credor_weight, zia_debtor_weight)
+    run_beliefunit.set_personlink(sue_run_personlink)
+    run_beliefunit.set_personlink(zia_run_personlink)
+    assert len(bob_world.get_beliefunit(run_text)._persons) == 2
+    assert len(bob_world.get_person(yao_text)._belieflinks) == 0
+    assert len(bob_world.get_person(sue_text)._belieflinks) == 0
+
+    # WHEN
+    bob_world.get_dict()
+
+    # THEN
+    assert len(bob_world.get_person(sue_text)._belieflinks) == 2
+    assert len(bob_world.get_person(zia_text)._belieflinks) == 2
+    sue_personunit = bob_world.get_person(sue_text)
+    zia_personunit = bob_world.get_person(zia_text)
+    sue_belieflink = sue_personunit.get_belieflink(run_text)
+    zia_belieflink = zia_personunit.get_belieflink(run_text)
+    assert sue_belieflink.credor_weight == sue_credor_weight
+    assert sue_belieflink.debtor_weight == sue_debtor_weight
+    assert zia_belieflink.credor_weight == zia_credor_weight
+    assert zia_belieflink.debtor_weight == zia_debtor_weight
+
+
 def test_WorldUnit_get_dict_ReturnsDictObject():
     # GIVEN
     x_world = example_worlds_world_v001()
@@ -451,18 +491,20 @@ def test_worldunit_get_from_json_ReturnsCorrectObj_road_delimiter_BeliefExample(
     # GIVEN
     slash_delimiter = "/"
     before_bob_world = worldunit_shop("Bob", _road_delimiter=slash_delimiter)
-    swimmers_text = f"{slash_delimiter}Swimmers"
-    before_bob_world.set_beliefunit(
-        beliefunit_shop(swimmers_text, _road_delimiter=slash_delimiter)
-    )
-    assert before_bob_world.get_beliefunit(swimmers_text) != None
+    yao_text = "Yao"
+    swim_text = f"{slash_delimiter}Swimmers"
+    swim_beliefunit = beliefunit_shop(swim_text, _road_delimiter=slash_delimiter)
+    swim_beliefunit.set_personlink(personlink_shop(yao_text))
+    before_bob_world.add_personunit(yao_text)
+    before_bob_world.set_beliefunit(swim_beliefunit)
+    assert before_bob_world.get_beliefunit(swim_text) != None
 
     # WHEN
     bob_json = before_bob_world.get_json()
     after_bob_world = worldunit_get_from_json(bob_json)
 
     # THEN
-    after_bob_beliefunit = after_bob_world.get_beliefunit(swimmers_text)
+    after_bob_beliefunit = after_bob_world.get_beliefunit(swim_text)
     assert after_bob_beliefunit._road_delimiter == slash_delimiter
 
 
@@ -499,6 +541,9 @@ def test_get_dict_of_world_from_dict_ReturnsDictOfWorldUnits():
         x2_world._owner_id: x2_world.get_dict(),
         x3_world._owner_id: x3_world.get_dict(),
     }
+    x1_world.clear_personunits_belieflinks()
+    x2_world.clear_personunits_belieflinks()
+    x3_world.clear_personunits_belieflinks()
 
     # WHEN
     ccn_dict_of_obj = get_dict_of_world_from_dict(cn_dict_of_dicts)

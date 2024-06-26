@@ -776,6 +776,9 @@ class WorldUnit:
         if create_missing_persons:
             self._create_missing_persons(personlinks=y_beliefunit._persons)
 
+    def beliefunit_exists(self, belief_id: BeliefID) -> bool:
+        return self._beliefs.get(belief_id) != None
+
     def get_beliefunit(self, x_belief_id: BeliefID) -> BeliefUnit:
         return self._beliefs.get(x_belief_id)
 
@@ -855,19 +858,42 @@ class WorldUnit:
                 x_idea.set_balancelink(balancelink=new_balancelink)
                 x_idea.del_balancelink(belief_id=old_belief_id)
 
-    def _migrate_beliefunits_to_belieflinks(self):
+    def clear_personunits_belieflinks(self):
         for x_personunit in self._persons.values():
             x_personunit.clear_belieflinks()
+
+    def _migrate_beliefunits_to_belieflinks(self):
+        self.clear_personunits_belieflinks()
 
         for x_beliefunit in self._beliefs.values():
             for x_personlink in x_beliefunit._persons.values():
                 x_personunit = self.get_person(x_personlink.person_id)
-                x_belieflink = belieflink_shop(
-                    x_beliefunit.belief_id,
-                    credor_weight=x_personlink.credor_weight,
-                    debtor_weight=x_personlink.debtor_weight,
+                if x_personunit != None:
+                    x_belieflink = belieflink_shop(
+                        x_beliefunit.belief_id,
+                        credor_weight=x_personlink.credor_weight,
+                        debtor_weight=x_personlink.debtor_weight,
+                    )
+                    x_personunit.set_belieflink(x_belieflink)
+
+    def _migrate_belieflinks_to_beliefunits(self):
+        for x_personunit in self._persons.values():
+            for x_belieflink in x_personunit._belieflinks.values():
+                x_belief_id = x_belieflink.belief_id
+                if self.beliefunit_exists(x_belief_id) == False:
+                    new_beliefunit = beliefunit_shop(
+                        x_belief_id, _road_delimiter=self._road_delimiter
+                    )
+                    self.set_beliefunit(new_beliefunit)
+                x_beliefunit = self.get_beliefunit(x_belief_id)
+                x_personlink = personlink_shop(
+                    x_personunit.person_id,
+                    credor_weight=x_belieflink.credor_weight,
+                    debtor_weight=x_belieflink.debtor_weight,
                 )
-                x_personunit.set_belieflink(x_belieflink)
+                x_beliefunit.set_personlink(x_personlink)
+
+        self.clear_personunits_belieflinks()
 
     def set_time_facts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
@@ -2070,6 +2096,7 @@ class WorldUnit:
         }
 
     def get_dict(self) -> dict[str:str]:
+        self._migrate_beliefunits_to_belieflinks()
         x_dict = {
             "_persons": self.get_persons_dict(),
             "_beliefs": self.get_beliefunits_dict(),
@@ -2386,41 +2413,27 @@ def get_from_json(x_world_json: str) -> WorldUnit:
 
 def get_from_dict(world_dict: dict) -> WorldUnit:
     x_world = worldunit_shop()
-    x_world.set_owner_id(get_obj_from_world_dict(world_dict, "_owner_id"))
-    x_world._weight = get_obj_from_world_dict(world_dict, "_weight")
-    x_world.set_max_tree_traverse(
-        get_obj_from_world_dict(world_dict, "_max_tree_traverse")
-    )
-    x_world.set_real_id(get_obj_from_world_dict(world_dict, "_real_id"))
-    x_world._road_delimiter = default_road_delimiter_if_none(
-        get_obj_from_world_dict(world_dict, "_road_delimiter")
-    )
-    x_world._pixel = default_pixel_if_none(
-        get_obj_from_world_dict(world_dict, "_pixel")
-    )
-    x_world._penny = default_penny_if_none(
-        get_obj_from_world_dict(world_dict, "_penny")
-    )
-    x_world._person_credor_pool = get_obj_from_world_dict(
-        world_dict, "_person_credor_pool"
-    )
-    x_world._person_debtor_pool = get_obj_from_world_dict(
-        world_dict, "_person_debtor_pool"
-    )
-    if get_obj_from_world_dict(world_dict, "_meld_strategy") is None:
+    x_world.set_owner_id(obj_from_world_dict(world_dict, "_owner_id"))
+    x_world._weight = obj_from_world_dict(world_dict, "_weight")
+    x_world.set_max_tree_traverse(obj_from_world_dict(world_dict, "_max_tree_traverse"))
+    x_world.set_real_id(obj_from_world_dict(world_dict, "_real_id"))
+    world_road_delimiter = obj_from_world_dict(world_dict, "_road_delimiter")
+    x_world._road_delimiter = default_road_delimiter_if_none(world_road_delimiter)
+    x_world._pixel = default_pixel_if_none(obj_from_world_dict(world_dict, "_pixel"))
+    x_world._penny = default_penny_if_none(obj_from_world_dict(world_dict, "_penny"))
+    x_world._person_credor_pool = obj_from_world_dict(world_dict, "_person_credor_pool")
+    x_world._person_debtor_pool = obj_from_world_dict(world_dict, "_person_debtor_pool")
+    if obj_from_world_dict(world_dict, "_meld_strategy") is None:
         x_world._meld_strategy = get_meld_default()
     else:
-        x_world._meld_strategy = get_obj_from_world_dict(world_dict, "_meld_strategy")
-    x_world._last_gift_id = get_obj_from_world_dict(world_dict, "_last_gift_id")
-    for x_personunit in get_obj_from_world_dict(
-        world_dict, dict_key="_persons", _road_delimiter=x_world._road_delimiter
-    ).values():
+        x_world._meld_strategy = obj_from_world_dict(world_dict, "_meld_strategy")
+    x_world._last_gift_id = obj_from_world_dict(world_dict, "_last_gift_id")
+    x_road_delimiter = x_world._road_delimiter
+    x_persons = obj_from_world_dict(world_dict, "_persons", x_road_delimiter).values()
+    for x_personunit in x_persons:
         x_world.set_personunit(x_personunit)
-    for x_beliefunit in get_obj_from_world_dict(
-        world_dict, dict_key="_beliefs", _road_delimiter=x_world._road_delimiter
-    ).values():
-        x_world.set_beliefunit(x_beliefunit)
-    x_world._originunit = get_obj_from_world_dict(world_dict, "_originunit")
+    x_world._migrate_belieflinks_to_beliefunits()
+    x_world._originunit = obj_from_world_dict(world_dict, "_originunit")
 
     set_idearoot_from_world_dict(x_world, world_dict)
     x_world.calc_world_metrics()  # clean up tree traverse defined fields
@@ -2496,7 +2509,7 @@ def set_idearoot_kids_from_dict(x_world: WorldUnit, idearoot_dict: dict):
         x_world.add_idea(x_ideakid, parent_road=idea_dict[parent_road_text])
 
 
-def get_obj_from_world_dict(
+def obj_from_world_dict(
     x_dict: dict[str:], dict_key: str, _road_delimiter: str = None
 ) -> any:
     if dict_key == "_originunit":

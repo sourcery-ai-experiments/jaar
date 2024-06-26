@@ -72,6 +72,22 @@ def test_WorldUnit_beliefs_set_beliefunit_CorrectlyReplacesBelief():
     assert len(x_world.get_beliefunit(swim_text)._persons) == 2
 
 
+def test_WorldUnit_beliefs_beliefunit_exists_ReturnsCorrectObj():
+    # GIVEN
+    swim_text = ",swimmers"
+    sue_world = worldunit_shop("Sue")
+    swim1_belief = beliefunit_shop(swim_text)
+    bob_text = "Bob"
+    swim1_belief.set_personlink(personlink_shop(bob_text))
+    assert sue_world.beliefunit_exists(swim_text) == False
+
+    # WHEN
+    sue_world.set_beliefunit(swim1_belief)
+
+    # THEN
+    assert sue_world.beliefunit_exists(swim_text)
+
+
 # def test_WorldUnit_beliefs_set_beliefunit_RaisesErrorWhen_person_mirrorSubmitted():
 #     # GIVEN
 #     yao_world = worldunit_shop("Yao")

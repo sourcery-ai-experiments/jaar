@@ -1,4 +1,11 @@
-from src._world.belieflink import BeliefCore, BeliefID, belieflink_shop, BeliefLink
+from src._world.belieflink import (
+    BeliefCore,
+    BeliefID,
+    belieflink_shop,
+    BeliefLink,
+    belieflink_get_from_dict,
+    belieflinks_get_from_dict,
+)
 
 
 def test_BeliefID_exists():
@@ -53,21 +60,62 @@ def test_BeliefLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     swim_text = "swim"
     swim_credor_weight = 3.0
     swim_debtor_weight = 5.0
-    swimlink = belieflink_shop(
+    swim_belieflink = belieflink_shop(
         belief_id=swim_text,
         credor_weight=swim_credor_weight,
         debtor_weight=swim_debtor_weight,
     )
 
-    print(f"{swimlink}")
+    print(f"{swim_belieflink}")
 
     # WHEN
-    biker_dict = swimlink.get_dict()
+    swim_dict = swim_belieflink.get_dict()
 
     # THEN
-    assert biker_dict != None
-    assert biker_dict == {
-        "belief_id": swimlink.belief_id,
-        "credor_weight": swimlink.credor_weight,
-        "debtor_weight": swimlink.debtor_weight,
+    assert swim_dict != None
+    assert swim_dict == {
+        "belief_id": swim_belieflink.belief_id,
+        "credor_weight": swim_belieflink.credor_weight,
+        "debtor_weight": swim_belieflink.debtor_weight,
     }
+
+
+def test_belieflink_get_from_dict_ReturnsObj():
+    # GIVEN
+    swim_text = "swim"
+    swim_credor_weight = 3.0
+    swim_debtor_weight = 5.0
+    before_swim_belieflink = belieflink_shop(
+        belief_id=swim_text,
+        credor_weight=swim_credor_weight,
+        debtor_weight=swim_debtor_weight,
+    )
+    swim_belieflink_dict = before_swim_belieflink.get_dict()
+
+    # WHEN
+    after_swim_belieflink = belieflink_get_from_dict(swim_belieflink_dict)
+
+    # THEN
+    assert before_swim_belieflink == after_swim_belieflink
+    assert after_swim_belieflink.belief_id == swim_text
+
+
+def test_belieflinks_get_from_dict_ReturnsObj():
+    # GIVEN
+    swim_text = "swim"
+    swim_credor_weight = 3.0
+    swim_debtor_weight = 5.0
+    before_swim_belieflink = belieflink_shop(
+        belief_id=swim_text,
+        credor_weight=swim_credor_weight,
+        debtor_weight=swim_debtor_weight,
+    )
+    before_swim_belieflinks_objs = {swim_text: before_swim_belieflink}
+    swim_belieflinks_dict = {swim_text: before_swim_belieflink.get_dict()}
+
+    # WHEN
+    after_swim_belieflinks_objs = belieflinks_get_from_dict(swim_belieflinks_dict)
+
+    # THEN
+    assert before_swim_belieflinks_objs == after_swim_belieflinks_objs
+    assert after_swim_belieflinks_objs.get(swim_text) == before_swim_belieflink

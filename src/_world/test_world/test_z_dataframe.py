@@ -28,6 +28,7 @@ def test_get_world_personunits_dataframe_ReturnsCorrectDataFrame():
         "person_id",
         "credor_weight",
         "debtor_weight",
+        "_belieflinks",
         "_world_cred",
         "_world_debt",
         "_world_agenda_cred",
