@@ -1,7 +1,7 @@
 from src._instrument.python import get_1_if_None, get_dict_from_json, get_0_if_None
 from src._road.road import PersonID, default_road_delimiter_if_none, validate_roadnode
 from src._road.finance import default_pixel_if_none
-from src._world.belieflink import BeliefLink
+from src._world.belieflink import BeliefID, BeliefLink
 from dataclasses import dataclass
 
 
@@ -226,6 +226,21 @@ class PersonUnit(PersonCore):
         self._inallocable_debtor_weight += (
             exterior_personunit._inallocable_debtor_weight
         )
+
+    def set_belieflink(self, belieflink: BeliefLink):
+        self._belieflinks[belieflink.belief_id] = belieflink
+
+    def get_belieflink(self, belief_id: BeliefID) -> BeliefLink:
+        return self._belieflinks.get(belief_id)
+
+    def belieflink_exists(self, belief_id: BeliefID) -> bool:
+        return self._belieflinks.get(belief_id) != None
+
+    def delete_belieflink(self, belief_id: BeliefID):
+        return self._belieflinks.pop(belief_id)
+
+    def clear_belieflinks(self):
+        self._belieflinks = {}
 
 
 # class PersonUnitsshop:
