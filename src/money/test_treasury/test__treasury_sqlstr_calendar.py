@@ -3,7 +3,7 @@ from src.money.treasury_sqlstr import (
     get_calendar_table_create_sqlstr,
     get_calendar_table_insert_sqlstr,
     get_calendar_table_delete_sqlstr,
-    CalendarIntentUnit,
+    CalendarAgendaUnit,
     CalendarReport,
 )
 from src._instrument.sqlite import sqlite_bool
@@ -21,14 +21,14 @@ CREATE TABLE IF NOT EXISTS calendar (
 , report_date_range_start INT NOT NULL
 , report_date_range_cease INT NOT NULL
 , report_interval_length INT NOT NULL
-, report_interval_intent_task_max_count INT NOT NULL
-, report_interval_intent_state_max_count INT NOT NULL
+, report_interval_agenda_task_max_count INT NOT NULL
+, report_interval_agenda_state_max_count INT NOT NULL
 , time_begin INT NOT NULL
 , time_close INT NOT NULL
-, intent_idea_road VARCHAR(255) NOT NULL
-, intent_weight INT NOT NULL
+, agenda_idea_road VARCHAR(255) NOT NULL
+, agenda_weight INT NOT NULL
 , task INT NOT NULL
-, FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(owner_id) REFERENCES worldunit(owner_id)
 )
 ;
 """
@@ -43,14 +43,14 @@ def test_get_calendar_table_insert_sqlstr_ReturnsCorrectStr():
     x_date_range_start = 1000000600
     x_interval_count = 20
     x_interval_length = 15
-    x_intent_max_count_task = 11
-    x_intent_max_count_state = 7
+    x_agenda_max_count_task = 11
+    x_agenda_max_count_state = 7
     x_time_begin = 1000000615
     x_time_close = 1000000630
     casa_road = create_road(root_label(), "casa")
     clean_road = create_road(casa_road, "cleaning")
     fridge_road = create_road(clean_road, "clean fridge")
-    x_intent_weight = 0.5
+    x_agenda_weight = 0.5
     x_task = True
     x_calendarreport = CalendarReport(
         owner_id=bob_text,
@@ -58,22 +58,22 @@ def test_get_calendar_table_insert_sqlstr_ReturnsCorrectStr():
         date_range_start=x_date_range_start,
         interval_count=x_interval_count,
         interval_length=x_interval_length,
-        intent_max_count_task=x_intent_max_count_task,
-        intent_max_count_state=x_intent_max_count_state,
+        agenda_max_count_task=x_agenda_max_count_task,
+        agenda_max_count_state=x_agenda_max_count_state,
     )
 
     # WHEN
-    bob_calendarintentunit = CalendarIntentUnit(
+    bob_calendaragendaunit = CalendarAgendaUnit(
         calendarreport=x_calendarreport,
         time_begin=x_time_begin,
         time_close=x_time_close,
-        intent_idea_road=fridge_road,
-        intent_weight=x_intent_weight,
+        agenda_idea_road=fridge_road,
+        agenda_weight=x_agenda_weight,
         task=x_task,
     )
 
     # WHEN
-    generated_sqlstr = get_calendar_table_insert_sqlstr(bob_calendarintentunit)
+    generated_sqlstr = get_calendar_table_insert_sqlstr(bob_calendaragendaunit)
 
     # THEN
     example_sqlstr = f"""
@@ -83,12 +83,12 @@ INSERT INTO calendar (
 , report_date_range_start
 , report_date_range_cease
 , report_interval_length
-, report_interval_intent_task_max_count
-, report_interval_intent_state_max_count
+, report_interval_agenda_task_max_count
+, report_interval_agenda_state_max_count
 , time_begin
 , time_close
-, intent_idea_road
-, intent_weight
+, agenda_idea_road
+, agenda_weight
 , task)
 VALUES (
   '{bob_text}'
@@ -96,12 +96,12 @@ VALUES (
 , {x_date_range_start}
 , {x_calendarreport.get_date_range_cease()}
 , {x_interval_length}
-, {x_intent_max_count_task}
-, {x_intent_max_count_state}
+, {x_agenda_max_count_task}
+, {x_agenda_max_count_state}
 , {x_time_begin}
 , {x_time_close}
 , '{fridge_road}'
-, {x_intent_weight}
+, {x_agenda_weight}
 , {sqlite_bool(x_task)}
 )
 ;

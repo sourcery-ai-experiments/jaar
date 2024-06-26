@@ -1,5 +1,5 @@
 from src._road.road import OwnerID
-from src.agenda.agenda import AgendaUnit, get_from_json as agenda_get_from_json
+from src._world.world import WorldUnit, get_from_json as world_get_from_json
 from src._instrument.file import dir_files, open_file
 from dataclasses import dataclass
 
@@ -13,20 +13,20 @@ class MeldeeOrderUnit:
 
 
 def get_meldeeorderunit(
-    primary_agenda: AgendaUnit, meldee_file_name: str
+    primary_world: WorldUnit, meldee_file_name: str
 ) -> MeldeeOrderUnit:
     file_src_owner_id = meldee_file_name.replace(".json", "")
-    primary_meldee_otherunit = primary_agenda.get_other(file_src_owner_id)
+    primary_meldee_personunit = primary_world.get_person(file_src_owner_id)
 
     default_voice_rank = 0
     default_voice_hx_lowest_rank = 0
-    if primary_meldee_otherunit is None:
+    if primary_meldee_personunit is None:
         primary_voice_rank_for_meldee = default_voice_rank
         primary_voice_hx_lowest_rank_for_meldee = default_voice_hx_lowest_rank
     else:
-        primary_voice_rank_for_meldee = primary_meldee_otherunit._treasury_voice_rank
+        primary_voice_rank_for_meldee = primary_meldee_personunit._treasury_voice_rank
         primary_voice_hx_lowest_rank_for_meldee = (
-            primary_meldee_otherunit._treasury_voice_hx_lowest_rank
+            primary_meldee_personunit._treasury_voice_hx_lowest_rank
         )
         if primary_voice_rank_for_meldee is None:
             primary_voice_rank_for_meldee = default_voice_rank
@@ -40,25 +40,23 @@ def get_meldeeorderunit(
     )
 
 
-def get_file_names_in_voice_rank_order(primary_agenda, meldees_dir) -> list[str]:
-    agenda_voice_ranks = {}
+def get_file_names_in_voice_rank_order(primary_world, meldees_dir) -> list[str]:
+    world_voice_ranks = {}
     for meldee_file_name in dir_files(dir_path=meldees_dir):
-        meldee_orderunit = get_meldeeorderunit(primary_agenda, meldee_file_name)
-        agenda_voice_ranks[meldee_orderunit.owner_id] = meldee_orderunit
-    agendas_voice_rank_ordered_list = list(agenda_voice_ranks.values())
-    agendas_voice_rank_ordered_list.sort(
+        meldee_orderunit = get_meldeeorderunit(primary_world, meldee_file_name)
+        world_voice_ranks[meldee_orderunit.owner_id] = meldee_orderunit
+    worlds_voice_rank_ordered_list = list(world_voice_ranks.values())
+    worlds_voice_rank_ordered_list.sort(
         key=lambda x: (x.voice_rank * -1, x.voice_hx_lowest_rank * -1, x.owner_id)
     )
     return [
         x_meldeeorderunit.file_name
-        for x_meldeeorderunit in agendas_voice_rank_ordered_list
+        for x_meldeeorderunit in worlds_voice_rank_ordered_list
     ]
 
 
-def get_meld_of_agenda_files(
-    primary_agenda: AgendaUnit, meldees_dir: str
-) -> AgendaUnit:
-    for x_filename in get_file_names_in_voice_rank_order(primary_agenda, meldees_dir):
-        primary_agenda.meld(agenda_get_from_json(open_file(meldees_dir, x_filename)))
-    primary_agenda.calc_agenda_metrics()
-    return primary_agenda
+def get_meld_of_world_files(primary_world: WorldUnit, meldees_dir: str) -> WorldUnit:
+    for x_filename in get_file_names_in_voice_rank_order(primary_world, meldees_dir):
+        primary_world.meld(world_get_from_json(open_file(meldees_dir, x_filename)))
+    primary_world.calc_world_metrics()
+    return primary_world

@@ -1,5 +1,5 @@
-from src.agenda.idea import ideaunit_shop
-from src.agenda.agenda import agendaunit_shop
+from src._world.idea import ideaunit_shop
+from src._world.world import worldunit_shop
 from src.listen.listen import (
     migrate_all_facts,
     get_debtors_roll,
@@ -11,116 +11,116 @@ from src.listen.listen import (
 def test_get_debtors_roll_ReturnsObj():
     # GIVEN
     yao_text = "Yao"
-    yao_role = agendaunit_shop(yao_text)
+    yao_role = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
-    yao_role.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.calc_agenda_metrics()
+    yao_role.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.calc_world_metrics()
 
     # WHEN
     yao_roll = get_debtors_roll(yao_role)
 
     # THEN
-    zia_otherunit = yao_role.get_other(zia_text)
-    assert yao_roll == [zia_otherunit]
+    zia_personunit = yao_role.get_person(zia_text)
+    assert yao_roll == [zia_personunit]
 
 
 def test_get_debtors_roll_ReturnsObjIgnoresZero_debtor_weight():
     # GIVEN
     yao_text = "Yao"
-    yao_role = agendaunit_shop(yao_text)
+    yao_role = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     wei_text = "Wei"
     wei_credor_weight = 67
     wei_debtor_weight = 0
-    yao_role.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_otherunit(wei_text, wei_credor_weight, wei_debtor_weight)
-    yao_role.calc_agenda_metrics()
+    yao_role.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_role.add_personunit(wei_text, wei_credor_weight, wei_debtor_weight)
+    yao_role.calc_world_metrics()
 
     # WHEN
     yao_roll = get_debtors_roll(yao_role)
 
     # THEN
-    zia_otherunit = yao_role.get_other(zia_text)
-    assert yao_roll == [zia_otherunit]
+    zia_personunit = yao_role.get_person(zia_text)
+    assert yao_roll == [zia_personunit]
 
 
 def test_get_ordered_debtors_roll_ReturnsObjsInOrder():
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(yao_text)
+    yao_world = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     sue_text = "Sue"
     sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_agenda.add_otherunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_agenda.add_otherunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_world.add_personunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_world.add_personunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_agenda.set_other_pool(yao_pool)
+    yao_world.set_person_pool(yao_pool)
 
     # WHEN
-    ordered_others1 = get_ordered_debtors_roll(yao_agenda)
+    ordered_persons1 = get_ordered_debtors_roll(yao_world)
 
     # THEN
-    zia_other = yao_agenda.get_other(zia_text)
-    sue_other = yao_agenda.get_other(sue_text)
-    assert ordered_others1[0].get_dict() == sue_other.get_dict()
-    assert ordered_others1 == [sue_other, zia_other]
+    zia_person = yao_world.get_person(zia_text)
+    sue_person = yao_world.get_person(sue_text)
+    assert ordered_persons1[0].get_dict() == sue_person.get_dict()
+    assert ordered_persons1 == [sue_person, zia_person]
 
     # GIVEN
     bob_text = "Bob"
     bob_debtor_weight = 75
-    yao_agenda.add_otherunit(bob_text, 0, bob_debtor_weight)
-    bob_other = yao_agenda.get_other(bob_text)
+    yao_world.add_personunit(bob_text, 0, bob_debtor_weight)
+    bob_person = yao_world.get_person(bob_text)
 
     # WHEN
-    ordered_others2 = get_ordered_debtors_roll(yao_agenda)
+    ordered_persons2 = get_ordered_debtors_roll(yao_world)
 
     # THEN
-    assert ordered_others2[0].get_dict() == bob_other.get_dict()
-    assert ordered_others2 == [bob_other, sue_other, zia_other]
+    assert ordered_persons2[0].get_dict() == bob_person.get_dict()
+    assert ordered_persons2 == [bob_person, sue_person, zia_person]
 
 
 def test_get_ordered_debtors_roll_DoesNotReturnZero_debtor_weight():
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(yao_text)
+    yao_world = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_debtor_weight = 41
     sue_text = "Sue"
     sue_debtor_weight = 51
     yao_pool = 92
-    yao_agenda.set_other_pool(yao_pool)
+    yao_world.set_person_pool(yao_pool)
     bob_text = "Bob"
     bob_debtor_weight = 75
     xio_text = "Xio"
-    yao_agenda.add_otherunit(zia_text, 0, zia_debtor_weight)
-    yao_agenda.add_otherunit(sue_text, 0, sue_debtor_weight)
-    yao_agenda.add_otherunit(bob_text, 0, bob_debtor_weight)
-    yao_agenda.add_otherunit(yao_text, 0, 0)
-    yao_agenda.add_otherunit(xio_text, 0, 0)
+    yao_world.add_personunit(zia_text, 0, zia_debtor_weight)
+    yao_world.add_personunit(sue_text, 0, sue_debtor_weight)
+    yao_world.add_personunit(bob_text, 0, bob_debtor_weight)
+    yao_world.add_personunit(yao_text, 0, 0)
+    yao_world.add_personunit(xio_text, 0, 0)
 
     # WHEN
-    ordered_others2 = get_ordered_debtors_roll(yao_agenda)
+    ordered_persons2 = get_ordered_debtors_roll(yao_world)
 
     # THEN
-    assert len(ordered_others2) == 3
-    zia_other = yao_agenda.get_other(zia_text)
-    sue_other = yao_agenda.get_other(sue_text)
-    bob_other = yao_agenda.get_other(bob_text)
-    assert ordered_others2[0].get_dict() == bob_other.get_dict()
-    assert ordered_others2 == [bob_other, sue_other, zia_other]
+    assert len(ordered_persons2) == 3
+    zia_person = yao_world.get_person(zia_text)
+    sue_person = yao_world.get_person(sue_text)
+    bob_person = yao_world.get_person(bob_text)
+    assert ordered_persons2[0].get_dict() == bob_person.get_dict()
+    assert ordered_persons2 == [bob_person, sue_person, zia_person]
 
 
 def test_set_listen_to_speaker_fact_SetsFact():
     # GIVEN
     yao_text = "Yao"
-    yao_listener = agendaunit_shop(yao_text)
+    yao_listener = worldunit_shop(yao_text)
     casa_text = "casa"
     casa_road = yao_listener.make_l1_road(casa_text)
     status_text = "status"
@@ -132,8 +132,8 @@ def test_set_listen_to_speaker_fact_SetsFact():
     sweep_text = "sweep"
     sweep_road = yao_listener.make_road(casa_road, sweep_text)
 
-    yao_listener.add_otherunit(yao_text)
-    yao_listener.set_other_pool(20)
+    yao_listener.add_personunit(yao_text)
+    yao_listener.set_person_pool(20)
     yao_listener.add_idea(ideaunit_shop(clean_text), status_road)
     yao_listener.add_idea(ideaunit_shop(dirty_text), status_road)
     yao_listener.add_idea(ideaunit_shop(sweep_text, pledge=True), casa_road)
@@ -142,7 +142,7 @@ def test_set_listen_to_speaker_fact_SetsFact():
     )
     missing_fact_bases = list(yao_listener.get_missing_fact_bases().keys())
 
-    yao_speaker = agendaunit_shop(yao_text)
+    yao_speaker = worldunit_shop(yao_text)
     yao_speaker.set_fact(status_road, clean_road, create_missing_ideas=True)
     assert yao_listener.get_missing_fact_bases().keys() == {status_road}
 
@@ -156,9 +156,9 @@ def test_set_listen_to_speaker_fact_SetsFact():
 def test_set_listen_to_speaker_fact_DoesNotOverrideFact():
     # GIVEN
     yao_text = "Yao"
-    yao_listener = agendaunit_shop(yao_text)
-    yao_listener.add_otherunit(yao_text)
-    yao_listener.set_other_pool(20)
+    yao_listener = worldunit_shop(yao_text)
+    yao_listener.add_personunit(yao_text)
+    yao_listener.set_person_pool(20)
     casa_text = "casa"
     casa_road = yao_listener.make_l1_road(casa_text)
     status_text = "status"
@@ -190,7 +190,7 @@ def test_set_listen_to_speaker_fact_DoesNotOverrideFact():
     assert yao_listener.get_fact(status_road).pick == dirty_road
 
     # WHEN
-    yao_speaker = agendaunit_shop(yao_text)
+    yao_speaker = worldunit_shop(yao_text)
     yao_speaker.set_fact(status_road, clean_road, create_missing_ideas=True)
     yao_speaker.set_fact(fridge_road, running_road, create_missing_ideas=True)
     missing_fact_bases = list(yao_listener.get_missing_fact_bases().keys())
@@ -207,7 +207,7 @@ def test_set_listen_to_speaker_fact_DoesNotOverrideFact():
 def test_migrate_all_facts_CorrectlyAddsIdeaUnitsAndSetsFactUnits():
     # GIVEN
     yao_text = "Yao"
-    yao_src = agendaunit_shop(yao_text)
+    yao_src = worldunit_shop(yao_text)
     casa_text = "casa"
     casa_road = yao_src.make_l1_road(casa_text)
     status_text = "status"
@@ -225,8 +225,8 @@ def test_migrate_all_facts_CorrectlyAddsIdeaUnitsAndSetsFactUnits():
     snow_text = "snow"
     snow_road = yao_src.make_road(weather_road, snow_text)
 
-    yao_src.add_otherunit(yao_text)
-    yao_src.set_other_pool(20)
+    yao_src.add_personunit(yao_text)
+    yao_src.set_person_pool(20)
     yao_src.add_idea(ideaunit_shop(clean_text), status_road)
     yao_src.add_idea(ideaunit_shop(dirty_text), status_road)
     yao_src.add_idea(ideaunit_shop(sweep_text, pledge=True), casa_road)
@@ -237,7 +237,7 @@ def test_migrate_all_facts_CorrectlyAddsIdeaUnitsAndSetsFactUnits():
     yao_src.set_fact(weather_road, rain_road)
     yao_src.set_fact(status_road, clean_road)
 
-    yao_dst = agendaunit_shop(yao_text)
+    yao_dst = worldunit_shop(yao_text)
     assert yao_dst.idea_exists(clean_road) is False
     assert yao_dst.idea_exists(dirty_road) is False
     assert yao_dst.idea_exists(rain_road) is False

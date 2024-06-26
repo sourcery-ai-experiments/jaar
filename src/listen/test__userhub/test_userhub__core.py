@@ -4,16 +4,16 @@ from src._road.road import (
     create_road,
     get_default_real_id_roadnode as root_label,
 )
-from src._road.finance import default_planck_if_none, default_penny_if_none
+from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src._road.jaar_config import (
-    get_atoms_folder,
+    get_gifts_folder,
     get_test_reals_dir,
     get_test_real_id,
     get_rootpart_of_econ_dir,
 )
-from src.agenda.agenda import agendaunit_shop
+from src._world.world import worldunit_shop
 from src.listen.userhub import UserHub, userhub_shop, get_econ_path
-from src.listen.examples.example_listen_agendas import get_agenda_with_4_levels
+from src.listen.examples.example_listen_worlds import get_world_with_4_levels
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as env_dir,
     env_dir_setup_cleanup,
@@ -26,7 +26,7 @@ def test_get_econ_path_ReturnsCorrectObj():
     # GIVEN
     sue_text = "Sue"
     peru_text = "peru"
-    sue_userhub = userhub_shop(None, real_id=peru_text, person_id=sue_text)
+    sue_userhub = userhub_shop(None, real_id=peru_text, owner_id=sue_text)
     texas_text = "texas"
     dallas_text = "dallas"
     elpaso_text = "el paso"
@@ -68,12 +68,26 @@ def test_UserHub_Exists():
     # THEN
     assert x_userhub.reals_dir is None
     assert x_userhub.real_id is None
-    assert x_userhub.person_id is None
+    assert x_userhub.owner_id is None
     assert x_userhub.econ_road is None
     assert x_userhub.road_delimiter is None
-    assert x_userhub.planck is None
+    assert x_userhub.pixel is None
     assert x_userhub.penny is None
     assert x_userhub.econ_money_magnitude is None
+
+
+def test_UserHub_RaisesError_econ_road_DoesNotExist():
+    # GIVEN
+    bob_text = "Bob"
+    bob_userhub = UserHub(bob_text)
+
+    # WHEN / THEN
+    with pytest_raises(Exception) as excinfo:
+        bob_userhub.econ_dir()
+    assert (
+        str(excinfo.value)
+        == f"UserHub '{bob_text}' cannot save to econ_dir because it does not have econ_road."
+    )
 
 
 def test_userhub_shop_ReturnsCorrectObj():
@@ -82,7 +96,7 @@ def test_userhub_shop_ReturnsCorrectObj():
     x_real_id = "music"
     sue_text = "Sue"
     x_road_delimiter = "/"
-    x_planck = 9
+    x_pixel = 9
     x_penny = 3
     x_money_magnitude = 900
 
@@ -90,10 +104,10 @@ def test_userhub_shop_ReturnsCorrectObj():
     x_userhub = userhub_shop(
         reals_dir=x_reals_dir,
         real_id=x_real_id,
-        person_id=sue_text,
+        owner_id=sue_text,
         econ_road=None,
         road_delimiter=x_road_delimiter,
-        planck=x_planck,
+        pixel=x_pixel,
         penny=x_penny,
         econ_money_magnitude=x_money_magnitude,
     )
@@ -101,25 +115,25 @@ def test_userhub_shop_ReturnsCorrectObj():
     # THEN
     assert x_userhub.reals_dir == x_reals_dir
     assert x_userhub.real_id == x_real_id
-    assert x_userhub.person_id == sue_text
+    assert x_userhub.owner_id == sue_text
     assert x_userhub.road_delimiter == x_road_delimiter
-    assert x_userhub.planck == x_planck
+    assert x_userhub.pixel == x_pixel
     assert x_userhub.penny == x_penny
     assert x_userhub.econ_money_magnitude == x_money_magnitude
     assert x_userhub.real_dir() == f"{x_reals_dir}/{x_real_id}"
-    assert x_userhub.persons_dir() == f"{x_userhub.real_dir()}/persons"
-    assert x_userhub.person_dir() == f"{x_userhub.persons_dir()}/{sue_text}"
-    assert x_userhub.econs_dir() == f"{x_userhub.person_dir()}/econs"
-    assert x_userhub.quarks_dir() == f"{x_userhub.person_dir()}/quarks"
-    assert x_userhub.duty_dir() == f"{x_userhub.person_dir()}/duty"
-    assert x_userhub.work_dir() == f"{x_userhub.person_dir()}/work"
-    assert x_userhub.atoms_dir() == f"{x_userhub.person_dir()}/{get_atoms_folder()}"
-    assert x_userhub.duty_file_name() == f"{sue_text}.json"
-    x_duty_file_path = f"{x_userhub.duty_dir()}/{x_userhub.duty_file_name()}"
-    assert x_userhub.duty_file_path() == x_duty_file_path
-    assert x_userhub.work_file_name() == f"{sue_text}.json"
-    x_workpath = f"{x_userhub.work_dir()}/{x_userhub.work_file_name()}"
-    assert x_userhub.work_path() == x_workpath
+    assert x_userhub.owners_dir() == f"{x_userhub.real_dir()}/owners"
+    assert x_userhub.owner_dir() == f"{x_userhub.owners_dir()}/{sue_text}"
+    assert x_userhub.econs_dir() == f"{x_userhub.owner_dir()}/econs"
+    assert x_userhub.atoms_dir() == f"{x_userhub.owner_dir()}/atoms"
+    assert x_userhub.same_dir() == f"{x_userhub.owner_dir()}/same"
+    assert x_userhub.live_dir() == f"{x_userhub.owner_dir()}/live"
+    assert x_userhub.gifts_dir() == f"{x_userhub.owner_dir()}/{get_gifts_folder()}"
+    assert x_userhub.same_file_name() == f"{sue_text}.json"
+    x_same_file_path = f"{x_userhub.same_dir()}/{x_userhub.same_file_name()}"
+    assert x_userhub.same_file_path() == x_same_file_path
+    assert x_userhub.live_file_name() == f"{sue_text}.json"
+    x_livepath = f"{x_userhub.live_dir()}/{x_userhub.live_file_name()}"
+    assert x_userhub.live_path() == x_livepath
 
 
 def test_userhub_shop_ReturnsCorrectObjWhenEmpty():
@@ -139,133 +153,136 @@ def test_userhub_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_userhub.reals_dir == get_test_reals_dir()
     assert sue_userhub.real_id == get_test_real_id()
     assert sue_userhub.real_dir() == f"{get_test_reals_dir()}/{get_test_real_id()}"
-    assert sue_userhub.person_id == sue_text
+    assert sue_userhub.owner_id == sue_text
     assert sue_userhub.road_delimiter == default_road_delimiter_if_none()
-    assert sue_userhub.planck == default_planck_if_none()
+    assert sue_userhub.pixel == default_pixel_if_none()
     assert sue_userhub.penny == default_penny_if_none()
-    assert sue_userhub.persons_dir() == f"{sue_userhub.real_dir()}/persons"
+    assert sue_userhub.owners_dir() == f"{sue_userhub.real_dir()}/owners"
     x_userhub = userhub_shop(None, None, sue_text)
     assert sue_userhub.econ_road == texas_road
     assert sue_userhub.econ_dir() == get_econ_path(x_userhub, texas_road)
     bob_text = "Bob"
     assert sue_userhub.roles_dir() == f"{sue_userhub.econ_dir()}/roles"
     assert sue_userhub.jobs_dir() == f"{sue_userhub.econ_dir()}/jobs"
+    assert sue_userhub.grades_dir() == f"{sue_userhub.econ_dir()}/grades"
     sue_roles_dir = sue_userhub.roles_dir()
-    assert sue_userhub.role_path(bob_text) == f"{sue_roles_dir}/{bob_text}.json"
     sue_jobs_dir = sue_userhub.jobs_dir()
+    sue_grades_dir = sue_userhub.grades_dir()
+    assert sue_userhub.role_path(bob_text) == f"{sue_roles_dir}/{bob_text}.json"
     assert sue_userhub.job_path(bob_text) == f"{sue_jobs_dir}/{bob_text}.json"
+    assert sue_userhub.grade_path(bob_text) == f"{sue_grades_dir}/{bob_text}.json"
     treasury_file_name = "treasury.db"
     treasury_file_path = f"{sue_userhub.econ_dir()}/{treasury_file_name}"
     assert sue_userhub.treasury_file_name() == treasury_file_name
     assert sue_userhub.treasury_db_path() == treasury_file_path
 
 
-def test_userhub_shop_RaisesErrorIf_person_id_Contains_road_delimiter():
+def test_userhub_shop_RaisesErrorIf_owner_id_Contains_road_delimiter():
     # GIVEN
     slash_text = "/"
     bob_text = f"Bob{slash_text}Sue"
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        userhub_shop(None, None, person_id=bob_text, road_delimiter=slash_text)
+        userhub_shop(None, None, owner_id=bob_text, road_delimiter=slash_text)
     assert (
         str(excinfo.value)
         == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
     )
 
 
-def test_UserHub_save_file_duty_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_file_same_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert os_path_exists(sue_userhub.duty_file_path()) is False
+    assert os_path_exists(sue_userhub.same_file_path()) is False
 
     # WHEN
-    sue_userhub.save_file_duty(file_text="fooboo", replace=True)
+    sue_userhub.save_file_same(file_text="fooboo", replace=True)
 
     # THEN
-    assert os_path_exists(sue_userhub.duty_file_path())
+    assert os_path_exists(sue_userhub.same_file_path())
 
 
-def test_UserHub_duty_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+def test_UserHub_same_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert sue_userhub.duty_file_exists() is False
+    assert sue_userhub.same_file_exists() is False
 
     # WHEN
-    sue_userhub.save_file_duty(file_text="fooboo", replace=True)
+    sue_userhub.save_file_same(file_text="fooboo", replace=True)
 
     # THEN
-    assert sue_userhub.duty_file_exists()
+    assert sue_userhub.same_file_exists()
 
 
-def test_UserHub_open_file_duty_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_open_file_same_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
     example_text = "fooboo"
-    sue_userhub.save_file_duty(example_text, replace=True)
+    sue_userhub.save_file_same(example_text, replace=True)
 
     # WHEN / THEN
-    assert sue_userhub.open_file_duty() == example_text
+    assert sue_userhub.open_file_same() == example_text
 
 
-def test_UserHub_save_file_work_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_file_live_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert os_path_exists(sue_userhub.work_path()) is False
+    assert os_path_exists(sue_userhub.live_path()) is False
 
     # WHEN
-    sue_userhub.save_file_work(file_text="fooboo", replace=True)
+    sue_userhub.save_file_live(file_text="fooboo", replace=True)
 
     # THEN
-    assert os_path_exists(sue_userhub.work_path())
+    assert os_path_exists(sue_userhub.live_path())
 
 
-def test_UserHub_work_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+def test_UserHub_live_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert sue_userhub.work_file_exists() is False
+    assert sue_userhub.live_file_exists() is False
 
     # WHEN
-    sue_userhub.save_file_work(file_text="fooboo", replace=True)
+    sue_userhub.save_file_live(file_text="fooboo", replace=True)
 
     # THEN
-    assert sue_userhub.work_file_exists()
+    assert sue_userhub.live_file_exists()
 
 
-def test_UserHub_open_file_work_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_open_file_live_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
     example_text = "fooboo"
-    sue_userhub.save_file_work(example_text, replace=True)
+    sue_userhub.save_file_live(example_text, replace=True)
 
     # WHEN / THEN
-    assert sue_userhub.open_file_work() == example_text
+    assert sue_userhub.open_file_live() == example_text
 
 
-def test_UserHub_save_duty_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_same_world_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
-    sue_agendaunit = get_agenda_with_4_levels()
-    sue_text = sue_agendaunit._owner_id
+    sue_worldunit = get_world_with_4_levels()
+    sue_text = sue_worldunit._owner_id
     real_id = root_label()
     sue_userhub = userhub_shop(env_dir(), real_id, sue_text, None)
 
-    print(f"{sue_userhub.duty_file_path()=}")
-    assert sue_userhub.duty_file_exists() is False
+    print(f"{sue_userhub.same_file_path()=}")
+    assert sue_userhub.same_file_exists() is False
 
     # WHEN
-    sue_userhub.save_duty_agenda(sue_agendaunit)
+    sue_userhub.save_same_world(sue_worldunit)
 
     # THEN
-    assert sue_userhub.duty_file_exists()
+    assert sue_userhub.same_file_exists()
 
 
-def test_UserHub_save_duty_agenda_RaisesErrorWhenAgenda_work_id_IsWrong(
+def test_UserHub_save_same_world_RaisesErrorWhenWorld_live_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -277,17 +294,17 @@ def test_UserHub_save_duty_agenda_RaisesErrorWhenAgenda_work_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_userhub.save_duty_agenda(agendaunit_shop(yao_text))
+        sue_userhub.save_same_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s duty agenda."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s same world."
     )
 
 
-def test_UserHub_get_duty_agenda_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_get_same_world_OpensFile(env_dir_setup_cleanup):
     # GIVEN
-    sue_agendaunit = get_agenda_with_4_levels()
-    sue_text = sue_agendaunit._owner_id
+    sue_worldunit = get_world_with_4_levels()
+    sue_text = sue_worldunit._owner_id
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
     usa_text = "USA"
@@ -295,34 +312,34 @@ def test_UserHub_get_duty_agenda_OpensFile(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
-    sue_userhub.save_duty_agenda(sue_agendaunit)
+    sue_userhub.save_same_world(sue_worldunit)
 
     # WHEN / THEN
-    assert sue_userhub.get_duty_agenda().get_dict() == sue_agendaunit.get_dict()
+    assert sue_userhub.get_same_world().get_dict() == sue_worldunit.get_dict()
 
 
-def test_UserHub_save_work_agenda_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_live_world_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
-    sue_agendaunit = get_agenda_with_4_levels()
-    sue_text = sue_agendaunit._owner_id
+    sue_worldunit = get_world_with_4_levels()
+    sue_text = sue_worldunit._owner_id
 
     real_id = root_label()
     sue_userhub = userhub_shop(env_dir(), real_id, sue_text, None)
 
-    print(f"{sue_userhub.work_path()=}")
-    assert sue_userhub.work_file_exists() is False
+    print(f"{sue_userhub.live_path()=}")
+    assert sue_userhub.live_file_exists() is False
 
     # WHEN
-    sue_userhub.save_work_agenda(sue_agendaunit)
+    sue_userhub.save_live_world(sue_worldunit)
 
     # THEN
-    assert sue_userhub.work_file_exists()
+    assert sue_userhub.live_file_exists()
 
 
-def test_UserHub_get_work_agenda_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_get_live_world_OpensFile(env_dir_setup_cleanup):
     # GIVEN
-    sue_agendaunit = get_agenda_with_4_levels()
-    sue_text = sue_agendaunit._owner_id
+    sue_worldunit = get_world_with_4_levels()
+    sue_text = sue_worldunit._owner_id
     nation_text = "nation-state"
     nation_road = create_road(root_label(), nation_text)
     usa_text = "USA"
@@ -330,23 +347,23 @@ def test_UserHub_get_work_agenda_OpensFile(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
-    sue_userhub.save_work_agenda(sue_agendaunit)
+    sue_userhub.save_live_world(sue_worldunit)
 
     # WHEN / THEN
-    assert sue_userhub.get_work_agenda().get_dict() == sue_agendaunit.get_dict()
+    assert sue_userhub.get_live_world().get_dict() == sue_worldunit.get_dict()
 
 
-def test_UserHub_get_work_agenda_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
+def test_UserHub_get_live_world_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
     # GIVEN
-    sue_agendaunit = get_agenda_with_4_levels()
-    sue_text = sue_agendaunit._owner_id
+    sue_worldunit = get_world_with_4_levels()
+    sue_text = sue_worldunit._owner_id
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
 
     # WHEN / THEN
-    assert sue_userhub.get_work_agenda() is None
+    assert sue_userhub.get_live_world() is None
 
 
-def test_UserHub_save_work_agenda_RaisesErrorWhenAgenda_work_id_IsWrong(
+def test_UserHub_save_live_world_RaisesErrorWhenWorld_live_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -358,8 +375,8 @@ def test_UserHub_save_work_agenda_RaisesErrorWhenAgenda_work_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_userhub.save_work_agenda(agendaunit_shop(yao_text))
+        sue_userhub.save_live_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"AgendaUnit with owner_id '{yao_text}' cannot be saved as person_id '{sue_text}''s work agenda."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s live world."
     )

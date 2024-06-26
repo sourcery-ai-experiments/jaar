@@ -7,24 +7,24 @@ class Base(DeclarativeBase):
     pass
 
 
-class AgendaTable(Base):
-    __tablename__ = "agenda"
+class WorldTable(Base):
+    __tablename__ = "world"
     uid = Column(Integer, primary_key=True)
     _max_tree_traverse = Column(Integer)
     _meld_strategy = Column(String)
     _monetary_desc = Column(String)
-    _other_credor_pool = Column(Integer)
-    _other_debtor_pool = Column(Integer)
+    _person_credor_pool = Column(Integer)
+    _person_debtor_pool = Column(Integer)
     _penny = Column(Float)
-    _planck = Column(Float)
+    _pixel = Column(Float)
     _weight = Column(Integer)
 
 
-class OtherUnitTable(Base):
-    __tablename__ = "otherunit"
+class PersonUnitTable(Base):
+    __tablename__ = "personunit"
 
     uid = Column(Integer, primary_key=True)
-    other_id = Column(String)
+    person_id = Column(String)
     credor_weight = Column(Integer)
     debtor_weight = Column(Integer)
 
@@ -36,11 +36,11 @@ class BeliefTable(Base):
     belief_id = Column(String)
 
 
-class OtherLinkTable(Base):
-    __tablename__ = "otherlink"
+class PersonLinkTable(Base):
+    __tablename__ = "personlink"
     uid = Column(Integer, primary_key=True)
     belief_id = Column(String)
-    other_id = Column(String)
+    person_id = Column(String)
     credor_weight = Column(Integer)
     debtor_weight = Column(Integer)
 

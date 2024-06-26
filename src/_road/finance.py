@@ -4,12 +4,12 @@ class FinanceUnit(float):
     pass
 
 
-def default_planck_if_none(planck: float = None) -> float:
-    return planck if planck != None else 1
+def default_pixel_if_none(pixel: float = None) -> float:
+    return pixel if pixel != None else 1
 
 
-def trim_planck_excess(num: float, planck: float) -> float:
-    return planck * int(num / planck)
+def trim_pixel_excess(num: float, pixel: float) -> float:
+    return pixel * int(num / pixel)
 
 
 def default_penny_if_none(penny: float = None) -> float:
@@ -17,8 +17,8 @@ def default_penny_if_none(penny: float = None) -> float:
     return max(x_penny, 1)
 
 
-def trim_penny_excess(num: float, planck: float) -> float:
-    return planck * int(num / planck)
+def trim_penny_excess(num: float, pixel: float) -> float:
+    return pixel * int(num / pixel)
 
 
 def default_money_magnitude() -> float:

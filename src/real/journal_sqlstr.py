@@ -1,9 +1,9 @@
-from src.atom.quark_config import (
-    get_flattened_quark_table_build,
-    quark_hx_table_name,
-    quark_mstr_table_name,
+from src.gift.atom_config import (
+    get_flattened_atom_table_build,
+    atom_hx_table_name,
+    atom_mstr_table_name,
 )
-from src.atom.quark import QuarkUnit
+from src.gift.atom import AtomUnit
 from src._road.road import RoadUnit
 
 # from src._instrument.sqlite import (
@@ -16,13 +16,13 @@ from src._road.road import RoadUnit
 # from sqlite3 import Connection
 
 
-def get_quark_hx_table_create_sqlstr() -> str:
-    """Create table that hold quark_hx."""
+def get_atom_hx_table_create_sqlstr() -> str:
+    """Create table that hold atom_hx."""
     x_str = f"""
-CREATE TABLE IF NOT EXISTS {quark_hx_table_name()} (
-  person_id VARCHAR(255) NOT NULL"""
+CREATE TABLE IF NOT EXISTS {atom_hx_table_name()} (
+  owner_id VARCHAR(255) NOT NULL"""
 
-    for x_key, x_value in get_flattened_quark_table_build().items():
+    for x_key, x_value in get_flattened_atom_table_build().items():
         if x_value == "TEXT":
             x_value = "VARCHAR(255)"
         x_str = f"""{x_str}\n, {x_key} {x_value} NULL"""
@@ -33,18 +33,18 @@ CREATE TABLE IF NOT EXISTS {quark_hx_table_name()} (
     return x_str
 
 
-def get_quark_hx_table_insert_sqlstr(x_quark: QuarkUnit) -> str:
-    return x_quark.get_insert_sqlstr()
+def get_atom_hx_table_insert_sqlstr(x_atom: AtomUnit) -> str:
+    return x_atom.get_insert_sqlstr()
 
 
-def get_quark_mstr_table_create_sqlstr() -> str:
-    """Create table that holds quarkunits."""
+def get_atom_mstr_table_create_sqlstr() -> str:
+    """Create table that holds atomunits."""
     x_str = f"""
-CREATE TABLE IF NOT EXISTS {quark_mstr_table_name()} (
-  person_id VARCHAR(255) NOT NULL
-, {quark_hx_table_name()}_row_id INT NOT NULL"""
+CREATE TABLE IF NOT EXISTS {atom_mstr_table_name()} (
+  owner_id VARCHAR(255) NOT NULL
+, {atom_hx_table_name()}_row_id INT NOT NULL"""
 
-    for x_key, x_value in get_flattened_quark_table_build().items():
+    for x_key, x_value in get_flattened_atom_table_build().items():
         if x_value == "TEXT":
             x_value = "VARCHAR(255)"
         x_str = f"""{x_str}\n, {x_key} {x_value} NULL"""
@@ -55,71 +55,71 @@ CREATE TABLE IF NOT EXISTS {quark_mstr_table_name()} (
     return x_str
 
 
-def get_quark_nuc_link_table_create_sqlstr() -> str:
+def get_atom_change_link_table_create_sqlstr() -> str:
     return """
-CREATE TABLE quark_nuc_link
-(
-  quark_rowid INT NOT NULL
-, nuc_rowid INT NOT NULL
-, UNIQUE(quark_rowid, nuc_rowid)
-, CONSTRAINT quark_fk FOREIGN KEY (quark_rowid) REFERENCES quark_mstr (rowid)
-, CONSTRAINT nuc_fk FOREIGN KEY (nuc_rowid) REFERENCES nuc_mstr (rowid)
-)
-;"""
-
-
-def get_nuc_table_create_sqlstr() -> str:
-    return """
-CREATE TABLE IF NOT EXISTS nuc_mstr (
-  author_person_id VARCHAR(255) NOT NULL
-, author_nuc_number INT NOT NULL
-, UNIQUE(author_person_id, author_nuc_number)
-)
-;"""
-
-
-def get_nuc_atom_link_table_create_sqlstr() -> str:
-    return """
-CREATE TABLE nuc_atom_link
-(
-  nuc_rowid INT NOT NULL
-, atom_rowid INT NOT NULL
-, UNIQUE(nuc_rowid, atom_rowid)
-, CONSTRAINT quark_fk FOREIGN KEY (nuc_rowid) REFERENCES nuc_mstr (rowid)
-, CONSTRAINT nuc_fk FOREIGN KEY (atom_rowid) REFERENCES atom_mstr (rowid)
-)
-;"""
-
-
-def get_atom_table_create_sqlstr() -> str:
-    return """
-CREATE TABLE IF NOT EXISTS atom_mstr (
-  author_person_id VARCHAR(255) NOT NULL
-, author_atom_number INT NOT NULL
-, UNIQUE(author_person_id, author_atom_number)
-)
-;"""
-
-
-def get_atom_person_link_table_create_sqlstr() -> str:
-    return """
-CREATE TABLE atom_person_link
+CREATE TABLE atom_change_link
 (
   atom_rowid INT NOT NULL
-, person_rowid INT NOT NULL
-, UNIQUE(atom_rowid, person_rowid)
-, CONSTRAINT nuc_fk FOREIGN KEY (atom_rowid) REFERENCES atom_mstr (rowid)
-, CONSTRAINT person_fk FOREIGN KEY (person_rowid) REFERENCES person (rowid)
+, change_rowid INT NOT NULL
+, UNIQUE(atom_rowid, change_rowid)
+, CONSTRAINT atom_fk FOREIGN KEY (atom_rowid) REFERENCES atom_mstr (rowid)
+, CONSTRAINT change_fk FOREIGN KEY (change_rowid) REFERENCES change_mstr (rowid)
 )
 ;"""
 
 
-def get_person_mstr_table_create_sqlstr() -> str:
+def get_change_table_create_sqlstr() -> str:
     return """
-CREATE TABLE person_mstr
+CREATE TABLE IF NOT EXISTS change_mstr (
+  author_owner_id VARCHAR(255) NOT NULL
+, author_change_number INT NOT NULL
+, UNIQUE(author_owner_id, author_change_number)
+)
+;"""
+
+
+def get_change_gift_link_table_create_sqlstr() -> str:
+    return """
+CREATE TABLE change_gift_link
 (
-  person_id VARCHAR(255) NOT NULL
-, UNIQUE(person_id)
+  change_rowid INT NOT NULL
+, gift_rowid INT NOT NULL
+, UNIQUE(change_rowid, gift_rowid)
+, CONSTRAINT atom_fk FOREIGN KEY (change_rowid) REFERENCES change_mstr (rowid)
+, CONSTRAINT change_fk FOREIGN KEY (gift_rowid) REFERENCES gift_mstr (rowid)
+)
+;"""
+
+
+def get_gift_table_create_sqlstr() -> str:
+    return """
+CREATE TABLE IF NOT EXISTS gift_mstr (
+  author_owner_id VARCHAR(255) NOT NULL
+, author_gift_number INT NOT NULL
+, UNIQUE(author_owner_id, author_gift_number)
+)
+;"""
+
+
+def get_gift_owner_link_table_create_sqlstr() -> str:
+    return """
+CREATE TABLE gift_owner_link
+(
+  gift_rowid INT NOT NULL
+, owner_rowid INT NOT NULL
+, UNIQUE(gift_rowid, owner_rowid)
+, CONSTRAINT change_fk FOREIGN KEY (gift_rowid) REFERENCES gift_mstr (rowid)
+, CONSTRAINT owner_fk FOREIGN KEY (owner_rowid) REFERENCES owner (rowid)
+)
+;"""
+
+
+def get_owner_mstr_table_create_sqlstr() -> str:
+    return """
+CREATE TABLE owner_mstr
+(
+  owner_id VARCHAR(255) NOT NULL
+, UNIQUE(owner_id)
 )
 ;"""
 
@@ -154,14 +154,14 @@ WHERE road = '{road}'
 
 
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
-    list_x = [get_quark_hx_table_create_sqlstr()]
-    list_x.append(get_quark_mstr_table_create_sqlstr())
-    list_x.append(get_quark_nuc_link_table_create_sqlstr())
-    list_x.append(get_nuc_table_create_sqlstr())
-    list_x.append(get_nuc_atom_link_table_create_sqlstr())
-    list_x.append(get_atom_table_create_sqlstr())
-    list_x.append(get_atom_person_link_table_create_sqlstr())
-    list_x.append(get_person_mstr_table_create_sqlstr())
+    list_x = [get_atom_hx_table_create_sqlstr()]
+    list_x.append(get_atom_mstr_table_create_sqlstr())
+    list_x.append(get_atom_change_link_table_create_sqlstr())
+    list_x.append(get_change_table_create_sqlstr())
+    list_x.append(get_change_gift_link_table_create_sqlstr())
+    list_x.append(get_gift_table_create_sqlstr())
+    list_x.append(get_gift_owner_link_table_create_sqlstr())
+    list_x.append(get_owner_mstr_table_create_sqlstr())
     list_x.append(get_road_ref_table_create_sqlstr())
     return list_x
 

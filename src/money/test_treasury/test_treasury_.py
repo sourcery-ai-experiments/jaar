@@ -23,7 +23,7 @@ def test_moneyunit_shop_ReturnsObj(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_texas_userhub = get_texas_userhub()
-    sue_texas_userhub.person_id = sue_text
+    sue_texas_userhub.owner_id = sue_text
 
     # WHEN
     texas_money = moneyunit_shop(sue_texas_userhub)
@@ -32,7 +32,7 @@ def test_moneyunit_shop_ReturnsObj(env_dir_setup_cleanup):
     assert texas_money != None
     assert texas_money.userhub.real_id != None
     assert texas_money._treasury_db != None
-    assert texas_money.userhub.person_id == sue_text
+    assert texas_money.userhub.owner_id == sue_text
     assert texas_money.userhub.road_delimiter == default_road_delimiter_if_none()
     assert texas_money.userhub == sue_texas_userhub
 
@@ -103,7 +103,7 @@ def test_MoneyUnitcreate_treasury_db_CanCreateTreasuryInMemory(env_dir_setup_cle
     assert os_path_exists(x_money.userhub.treasury_db_path()) is False
 
 
-def test_MoneyUnit_refresh_treasury_job_agendas_data_CanConnectToTreasuryInMemory(
+def test_MoneyUnit_refresh_treasury_job_worlds_data_CanConnectToTreasuryInMemory(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
@@ -113,7 +113,7 @@ def test_MoneyUnit_refresh_treasury_job_agendas_data_CanConnectToTreasuryInMemor
     assert os_path_exists(x_money.userhub.treasury_db_path()) is False
 
     # WHEN
-    x_money.refresh_treasury_job_agendas_data()
+    x_money.refresh_treasury_job_worlds_data()
 
     # THEN
     assert os_path_exists(x_money.userhub.treasury_db_path()) is False

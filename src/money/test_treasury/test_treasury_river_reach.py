@@ -1,5 +1,5 @@
 from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
-from src.agenda.agenda import agendaunit_shop, otherunit_shop
+from src._world.world import worldunit_shop, personunit_shop
 from src.money.treasury_sqlstr import (
     get_river_reach_table_touch_select_sqlstr,
     get_river_circle_table_create_sqlstr,
@@ -7,10 +7,10 @@ from src.money.treasury_sqlstr import (
     get_river_reach_table_create_sqlstr,
     get_river_reach_table_insert_sqlstr,
     get_river_reach_table_final_insert_sqlstr,
-    get_agenda_otherunit_table_create_sqlstr,
-    get_agenda_otherunit_table_insert_sqlstr as other_insert_sqlstr,
-    get_agenda_otherunit_table_update_cred_score_sqlstr,
-    get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr,
+    get_world_personunit_table_create_sqlstr,
+    get_world_personunit_table_insert_sqlstr as person_insert_sqlstr,
+    get_world_personunit_table_update_cred_score_sqlstr,
+    get_world_personunit_table_update_treasury_voice_rank_sqlstr,
 )
 from sqlite3 import connect as sqlite3_connect
 
@@ -42,26 +42,26 @@ SELECT
         assert 1 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))
 
 
-def test_get_agenda_otherunit_table_update_cred_score_sqlstr_UpdatesWithoutError():
+def test_get_world_personunit_table_update_cred_score_sqlstr_UpdatesWithoutError():
     # GIVEN
     x_db = sqlite3_connect(":memory:")
-    otherunit_text = "agenda_otherunit"
+    personunit_text = "world_personunit"
     reach_text = "river_reach"
     with x_db as x_conn:
-        x_conn.execute(get_agenda_otherunit_table_create_sqlstr())
+        x_conn.execute(get_world_personunit_table_create_sqlstr())
         x_conn.execute(get_river_reach_table_create_sqlstr())
-        assert 0 == get_single_result(x_conn, get_row_count_sqlstr(otherunit_text))
+        assert 0 == get_single_result(x_conn, get_row_count_sqlstr(personunit_text))
         assert 0 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))
 
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(yao_text)
+    yao_world = worldunit_shop(yao_text)
 
     bob_text = "Bob"
     cal_text = "Cal"
     dee_text = "Dee"
-    bob_otherunit = otherunit_shop(bob_text)
-    cal_otherunit = otherunit_shop(cal_text)
-    dee_otherunit = otherunit_shop(dee_text)
+    bob_personunit = personunit_shop(bob_text)
+    cal_personunit = personunit_shop(cal_text)
+    dee_personunit = personunit_shop(dee_text)
     bob_s = 0.78
     cal_s = 0.1
     dee_s1 = 0.2
@@ -77,26 +77,26 @@ def test_get_agenda_otherunit_table_update_cred_score_sqlstr_UpdatesWithoutError
     dee_select_sqlstr2 = f"SELECT '{yao_text}', '{dee_text}', 7, {dee_s2}, {dee_close2}"
 
     with x_db as x_conn:
-        x_conn.execute(other_insert_sqlstr(yao_agenda, bob_otherunit))
-        x_conn.execute(other_insert_sqlstr(yao_agenda, cal_otherunit))
-        x_conn.execute(other_insert_sqlstr(yao_agenda, dee_otherunit))
+        x_conn.execute(person_insert_sqlstr(yao_world, bob_personunit))
+        x_conn.execute(person_insert_sqlstr(yao_world, cal_personunit))
+        x_conn.execute(person_insert_sqlstr(yao_world, dee_personunit))
         x_conn.execute(get_river_reach_table_insert_sqlstr(bob_select_sqlstr))
         x_conn.execute(get_river_reach_table_insert_sqlstr(cal_select_sqlstr))
         x_conn.execute(get_river_reach_table_insert_sqlstr(dee_select_sqlstr1))
         x_conn.execute(get_river_reach_table_insert_sqlstr(dee_select_sqlstr2))
-        assert 3 == get_single_result(x_conn, get_row_count_sqlstr(otherunit_text))
+        assert 3 == get_single_result(x_conn, get_row_count_sqlstr(personunit_text))
         assert 4 == get_single_result(x_conn, get_row_count_sqlstr(reach_text))
 
-    otherunit_select_str = f"""
+    personunit_select_str = f"""
 SELECT 
   owner_id
-, other_id
+, person_id
 , _treasury_cred_score
-FROM agenda_otherunit
+FROM world_personunit
 WHERE owner_id = '{yao_text}'
 """
     with x_db as x_conn:
-        results = x_conn.execute(otherunit_select_str)
+        results = x_conn.execute(personunit_select_str)
 
     x_rows = results.fetchall()
     print(f"{x_rows=}")
@@ -113,11 +113,11 @@ WHERE owner_id = '{yao_text}'
 
     # WHEN
     with x_db as x_conn:
-        x_conn.execute(get_agenda_otherunit_table_update_cred_score_sqlstr(yao_text))
+        x_conn.execute(get_world_personunit_table_update_cred_score_sqlstr(yao_text))
 
     # THEN
     with x_db as x_conn:
-        results = x_conn.execute(otherunit_select_str)
+        results = x_conn.execute(personunit_select_str)
 
     y_rows = results.fetchall()
     assert y_rows[0][1] == bob_text
@@ -131,10 +131,10 @@ WHERE owner_id = '{yao_text}'
     assert y_rows[2][2] == (dee_close1 - dee_s1) + (dee_close2 - dee_s2)
 
 
-def test_get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr_UpdatesWithoutError():
+def test_get_world_personunit_table_update_treasury_voice_rank_sqlstr_UpdatesWithoutError():
     # GIVEN
     yao_text = "Yao"
-    yao_agenda = agendaunit_shop(yao_text)
+    yao_world = worldunit_shop(yao_text)
     bob_text = "Bob"
     cal_text = "Cal"
     dee_text = "Dee"
@@ -152,36 +152,36 @@ def test_get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr_UpdatesWit
     print(f"{bob_cred_score=}")
     print(f"{cal_cred_score=}")
     print(f"{dee_cred_score=}")
-    bob_otherunit = otherunit_shop(bob_text)
-    cal_otherunit = otherunit_shop(cal_text)
-    dee_otherunit = otherunit_shop(dee_text)
-    bob_otherunit.set_treasury_attr(None, None, bob_cred_score, None)
-    cal_otherunit.set_treasury_attr(None, None, cal_cred_score, None)
-    dee_otherunit.set_treasury_attr(None, None, dee_cred_score, None)
-    print(f"{bob_otherunit._treasury_cred_score=}")
-    print(f"{cal_otherunit._treasury_cred_score=}")
-    print(f"{dee_otherunit._treasury_cred_score=}")
+    bob_personunit = personunit_shop(bob_text)
+    cal_personunit = personunit_shop(cal_text)
+    dee_personunit = personunit_shop(dee_text)
+    bob_personunit.set_treasury_attr(None, None, bob_cred_score, None)
+    cal_personunit.set_treasury_attr(None, None, cal_cred_score, None)
+    dee_personunit.set_treasury_attr(None, None, dee_cred_score, None)
+    print(f"{bob_personunit._treasury_cred_score=}")
+    print(f"{cal_personunit._treasury_cred_score=}")
+    print(f"{dee_personunit._treasury_cred_score=}")
 
-    otherunit_text = "agenda_otherunit"
+    personunit_text = "world_personunit"
     x_db = sqlite3_connect(":memory:")
     with x_db as x_conn:
-        x_conn.execute(get_agenda_otherunit_table_create_sqlstr())
-        x_conn.execute(other_insert_sqlstr(yao_agenda, bob_otherunit))
-        x_conn.execute(other_insert_sqlstr(yao_agenda, cal_otherunit))
-        x_conn.execute(other_insert_sqlstr(yao_agenda, dee_otherunit))
-        assert 3 == get_single_result(x_conn, get_row_count_sqlstr(otherunit_text))
+        x_conn.execute(get_world_personunit_table_create_sqlstr())
+        x_conn.execute(person_insert_sqlstr(yao_world, bob_personunit))
+        x_conn.execute(person_insert_sqlstr(yao_world, cal_personunit))
+        x_conn.execute(person_insert_sqlstr(yao_world, dee_personunit))
+        assert 3 == get_single_result(x_conn, get_row_count_sqlstr(personunit_text))
 
-    otherunit_select_str = f"""
+    personunit_select_str = f"""
 SELECT 
   owner_id
-, other_id
+, person_id
 , _treasury_cred_score
 , _treasury_voice_rank
-FROM agenda_otherunit
+FROM world_personunit
 WHERE owner_id = '{yao_text}'
 """
     with x_db as x_conn:
-        results = x_conn.execute(otherunit_select_str)
+        results = x_conn.execute(personunit_select_str)
 
     x_rows = results.fetchall()
     print(f"{x_rows=}")
@@ -192,9 +192,9 @@ WHERE owner_id = '{yao_text}'
     assert x_rows[0][1] == bob_text
     assert x_rows[1][1] == cal_text
     assert x_rows[2][1] == dee_text
-    assert x_rows[0][2] - bob_otherunit._treasury_cred_score < 0.000001
-    assert x_rows[1][2] == cal_otherunit._treasury_cred_score
-    assert x_rows[2][2] == dee_otherunit._treasury_cred_score
+    assert x_rows[0][2] - bob_personunit._treasury_cred_score < 0.000001
+    assert x_rows[1][2] == cal_personunit._treasury_cred_score
+    assert x_rows[2][2] == dee_personunit._treasury_cred_score
     assert x_rows[0][3] is None
     assert x_rows[1][3] is None
     assert x_rows[2][3] is None
@@ -202,12 +202,12 @@ WHERE owner_id = '{yao_text}'
     # WHEN
     with x_db as x_conn:
         x_conn.execute(
-            get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr(yao_text)
+            get_world_personunit_table_update_treasury_voice_rank_sqlstr(yao_text)
         )
 
     # THEN
     with x_db as x_conn:
-        results = x_conn.execute(otherunit_select_str)
+        results = x_conn.execute(personunit_select_str)
 
     y_rows = results.fetchall()
     assert y_rows[0][1] == bob_text
@@ -250,7 +250,7 @@ def test_get_river_reach_table_touch_select_sqlstr_QuerySelectsCorrectResults():
     #     # ex6_text = "ex6"
     #     # x_money = moneyunit_shop(real_id=ex6_text, econ_dir=temp_reals_dir())
     #     # x_money.set_road_nodes(sal_text)
-    #     # x_money.set_cred_flow_for_agenda(sal_text, max_blocks_count=100)
+    #     # x_money.set_cred_flow_for_world(sal_text, max_blocks_count=100)
 
     #     # WHEN
     #     reach_sqlstr = get_river_reach_table_touch_select_sqlstr(sal_text)

@@ -1,9 +1,8 @@
 from src._road.road import (
     RoadNode,
-    PersonID,
     HealerID,
     OwnerID,
-    OtherID,
+    PersonID,
     RoadUnit,
     rebuild_road,
     is_sub_road,
@@ -534,20 +533,20 @@ def test_OwnerID_exists():
     assert bob_owner_id == bob_text
     assert (
         inspect_getdoc(bob_owner_id)
-        == "A RoadNode used to identify a AgendaUnit's owner_id"
+        == "A RoadNode used to identify a WorldUnit's owner_id"
     )
 
 
-def test_OtherID_exists():
+def test_PersonID_exists():
     # GIVEN
     bob_text = "Bob"
     # WHEN
-    bob_other_id = OtherID(bob_text)
+    bob_person_id = PersonID(bob_text)
     # THEN
-    assert bob_other_id == bob_text
+    assert bob_person_id == bob_text
     assert (
-        inspect_getdoc(bob_other_id)
-        == "Every OtherID object is OwnerID, must follow OwnerID format."
+        inspect_getdoc(bob_person_id)
+        == "Every PersonID object is OwnerID, must follow OwnerID format."
     )
 
 

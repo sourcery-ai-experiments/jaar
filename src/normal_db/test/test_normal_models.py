@@ -1,15 +1,15 @@
-from src.atom.quark_config import (
-    get_normalized_agenda_table_build,
+from src.gift.atom_config import (
+    get_normalized_world_table_build,
     normal_table_name_text,
     normal_specs_text,
     columns_text,
     sqlite_datatype_text,
 )
 from src.normal_db.normal_models import (
-    AgendaTable,
-    OtherUnitTable,
+    WorldTable,
+    PersonUnitTable,
     BeliefTable,
-    OtherLinkTable,
+    PersonLinkTable,
     IdeaTable,
     BalanceLinkTable,
     ReasonTable,
@@ -61,34 +61,34 @@ def print_out_expected_class_attribute_declarations(config_category):
         print(f"    {config_column} = Column({declare_type})")
 
 
-def test_normalized_table_AgendaTable_Exists():
+def test_normalized_table_WorldTable_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agendaunit")
-    mapper = inspect(AgendaTable)
+    config_category = get_normalized_world_table_build().get("worldunit")
+    mapper = inspect(WorldTable)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "agenda"
-    assert config_table_name == AgendaTable.__tablename__
+    assert config_table_name == "world"
+    assert config_table_name == WorldTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_OtherUnitTable_Exists():
+def test_normalized_table_PersonUnitTable_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_otherunit")
-    mapper = inspect(OtherUnitTable)
+    config_category = get_normalized_world_table_build().get("world_personunit")
+    mapper = inspect(PersonUnitTable)
     # print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "otherunit"
-    assert config_table_name == OtherUnitTable.__tablename__
+    assert config_table_name == "personunit"
+    assert config_table_name == PersonUnitTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 
 def test_normalized_table_BeliefTable_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_beliefunit")
+    config_category = get_normalized_world_table_build().get("world_beliefunit")
     mapper = inspect(BeliefTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -99,22 +99,22 @@ def test_normalized_table_BeliefTable_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_OtherLinkTable_otherlink_Exists():
+def test_normalized_table_PersonLinkTable_personlink_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_belief_otherlink")
-    mapper = inspect(OtherLinkTable)
+    config_category = get_normalized_world_table_build().get("world_belief_personlink")
+    mapper = inspect(PersonLinkTable)
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "otherlink"
-    assert config_table_name == OtherLinkTable.__tablename__
+    assert config_table_name == "personlink"
+    assert config_table_name == PersonLinkTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 
 def test_normalized_table_IdeaTable_idea_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_ideaunit")
+    config_category = get_normalized_world_table_build().get("world_ideaunit")
     mapper = inspect(IdeaTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -127,7 +127,7 @@ def test_normalized_table_IdeaTable_idea_Exists():
 
 def test_normalized_table_BalanceLinkTable_balancelink_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_idea_balancelink")
+    config_category = get_normalized_world_table_build().get("world_idea_balancelink")
     mapper = inspect(BalanceLinkTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -140,7 +140,7 @@ def test_normalized_table_BalanceLinkTable_balancelink_Exists():
 
 def test_normalized_table_ReasonTable_reason_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_idea_reasonunit")
+    config_category = get_normalized_world_table_build().get("world_idea_reasonunit")
     mapper = inspect(ReasonTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -153,8 +153,8 @@ def test_normalized_table_ReasonTable_reason_Exists():
 
 def test_normalized_table_PremiseTable_premise_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get(
-        "agenda_idea_reason_premiseunit"
+    config_category = get_normalized_world_table_build().get(
+        "world_idea_reason_premiseunit"
     )
     mapper = inspect(PremiseTable)
     print_out_expected_class_attribute_declarations(config_category)
@@ -168,7 +168,7 @@ def test_normalized_table_PremiseTable_premise_Exists():
 
 def test_normalized_table_SuffBeliefTable_suffbelief_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_idea_suffbelief")
+    config_category = get_normalized_world_table_build().get("world_idea_suffbelief")
     mapper = inspect(SuffBeliefTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -181,7 +181,7 @@ def test_normalized_table_SuffBeliefTable_suffbelief_Exists():
 
 def test_normalized_table_HealerHoldTable_healerhold_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_idea_healerhold")
+    config_category = get_normalized_world_table_build().get("world_idea_healerhold")
     mapper = inspect(HealerHoldTable)
     print_out_expected_class_attribute_declarations(config_category)
 
@@ -194,7 +194,7 @@ def test_normalized_table_HealerHoldTable_healerhold_Exists():
 
 def test_normalized_table_FactTable_fact_Exists():
     # GIVEN
-    config_category = get_normalized_agenda_table_build().get("agenda_idea_factunit")
+    config_category = get_normalized_world_table_build().get("world_idea_factunit")
     mapper = inspect(FactTable)
     print_out_expected_class_attribute_declarations(config_category)
 

@@ -18,14 +18,14 @@
 ## 0.0 About jaar
 
 `jaar` is a python library for listening to the climate of a community. Individual 
-positions are aggregated by a listener into a coherant intent that can include pledges 
+positions are aggregated by a listener into a coherant agenda that can include pledges 
 to do and pledges of states of existence. Listening and acting on it.
 
-A persons's intent in the community is built by the the weighted intreprtation of
-1. Other persons intents 
-2. Their own independent intent
+A agents's agenda in the community is built by the the weighted intreprtation of
+1. Person agents agendas 
+2. Their own independent agenda
 
-Each intent is saved as a JSON file. 
+Each agenda is saved as a JSON file. 
 
 This is mostly a one man projeect. Femi has significantly helped. 
 
@@ -62,31 +62,31 @@ screenshots and elucidatory text.
 <!-- TODO: Add elucidations -->
 base attributes vs reason attributess
 
-AgendaUnit objects
+WorldUnit objects
 
-AgendaUnit OtherUnit objects
+WorldUnit PersonUnit objects
 
-AgendaUnit BeliefUnit objects
+WorldUnit BeliefUnit objects
 
-AgendaUnit IdeaUnit objects
+WorldUnit IdeaUnit objects
 
-AgendaUnit IdeaUnit hierarchical structure
+WorldUnit IdeaUnit hierarchical structure
 
-AgendaUnit IdeaUnit BalanceLink objects
+WorldUnit IdeaUnit BalanceLink objects
 
-AgendaUnit IdeaUnit BalanceLine objects
+WorldUnit IdeaUnit BalanceLine objects
 
-AgendaUnit IdeaUnit BalanceHeir objects
+WorldUnit IdeaUnit BalanceHeir objects
 
-AgendaUnit IdeaUnit BalanceHeir objects
+WorldUnit IdeaUnit BalanceHeir objects
 
-AgendaUnit IdeaUnit Reason PremiseUnit objects
+WorldUnit IdeaUnit Reason PremiseUnit objects
 
-AgendaUnit IdeaUnit Reason PremiseHeir objects
+WorldUnit IdeaUnit Reason PremiseHeir objects
 
-AgendaUnit IdeaUnit FactUnit objects
+WorldUnit IdeaUnit FactUnit objects
 
-AgendaUnit IdeaUnit FactHeir objects
+WorldUnit IdeaUnit FactHeir objects
 
 
 ## 1.3 Test-Driven-Development

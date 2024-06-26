@@ -1,4 +1,4 @@
-from src.agenda.agenda import agendaunit_shop
+from src._world.world import worldunit_shop
 from src.money.money import moneyunit_shop
 from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
 from src.money.treasury_sqlstr import (
@@ -11,7 +11,7 @@ from src.money.treasury_sqlstr import (
 def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 OtherUnits = 12 ledger rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PersonUnits = 12 ledger rows
     x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
@@ -20,19 +20,19 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     ava_text = "Ava"
     elu_text = "Elu"
 
-    sal_agenda = agendaunit_shop(_owner_id=sal_text)
-    sal_agenda.add_otherunit(other_id=bob_text, credor_weight=2)
-    sal_agenda.add_otherunit(other_id=tom_text, credor_weight=7)
-    sal_agenda.add_otherunit(other_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_agenda(sal_agenda)
+    sal_world = worldunit_shop(_owner_id=sal_text)
+    sal_world.add_personunit(person_id=bob_text, credor_weight=2)
+    sal_world.add_personunit(person_id=tom_text, credor_weight=7)
+    sal_world.add_personunit(person_id=ava_text, credor_weight=1)
+    x_money.userhub.save_job_world(sal_world)
 
-    bob_agenda = agendaunit_shop(_owner_id=bob_text)
-    bob_agenda.add_otherunit(other_id=sal_text, credor_weight=3)
-    bob_agenda.add_otherunit(other_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_agenda(bob_agenda)
+    bob_world = worldunit_shop(_owner_id=bob_text)
+    bob_world.add_personunit(person_id=sal_text, credor_weight=3)
+    bob_world.add_personunit(person_id=ava_text, credor_weight=1)
+    x_money.userhub.save_job_world(bob_world)
 
-    x_money.refresh_treasury_job_agendas_data()
-    x_money.set_cred_flow_for_agenda(owner_id=sal_text)
+    x_money.refresh_treasury_job_worlds_data()
+    x_money.set_cred_flow_for_world(owner_id=sal_text)
 
     with x_money.get_treasury_conn() as treasury_conn:
         assert len(get_river_circle_dict(treasury_conn, sal_text)) > 0
@@ -50,7 +50,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
 def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
-    # GIVEN Create example econ with 4 Healers, each with 3 OtherUnits = 12 ledger rows
+    # GIVEN Create example econ with 4 Healers, each with 3 PersonUnits = 12 ledger rows
     x_money = moneyunit_shop(get_texas_userhub())
 
     sal_text = "Sal"
@@ -59,32 +59,32 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     ava_text = "Ava"
     elu_text = "Elu"
 
-    sal_agenda = agendaunit_shop(_owner_id=sal_text)
-    sal_agenda.add_otherunit(other_id=bob_text, credor_weight=2)
-    sal_agenda.add_otherunit(other_id=tom_text, credor_weight=7)
-    sal_agenda.add_otherunit(other_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_agenda(sal_agenda)
+    sal_world = worldunit_shop(_owner_id=sal_text)
+    sal_world.add_personunit(person_id=bob_text, credor_weight=2)
+    sal_world.add_personunit(person_id=tom_text, credor_weight=7)
+    sal_world.add_personunit(person_id=ava_text, credor_weight=1)
+    x_money.userhub.save_job_world(sal_world)
 
-    bob_agenda = agendaunit_shop(_owner_id=bob_text)
-    bob_agenda.add_otherunit(other_id=sal_text, credor_weight=3)
-    bob_agenda.add_otherunit(other_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_agenda(bob_agenda)
+    bob_world = worldunit_shop(_owner_id=bob_text)
+    bob_world.add_personunit(person_id=sal_text, credor_weight=3)
+    bob_world.add_personunit(person_id=ava_text, credor_weight=1)
+    x_money.userhub.save_job_world(bob_world)
 
-    tom_agenda = agendaunit_shop(_owner_id=tom_text)
-    tom_agenda.add_otherunit(other_id=sal_text, credor_weight=2)
-    x_money.userhub.save_job_agenda(tom_agenda)
+    tom_world = worldunit_shop(_owner_id=tom_text)
+    tom_world.add_personunit(person_id=sal_text, credor_weight=2)
+    x_money.userhub.save_job_world(tom_world)
 
-    ava_agenda = agendaunit_shop(_owner_id=ava_text)
-    ava_agenda.add_otherunit(other_id=elu_text, credor_weight=2)
-    x_money.userhub.save_job_agenda(ava_agenda)
+    ava_world = worldunit_shop(_owner_id=ava_text)
+    ava_world.add_personunit(person_id=elu_text, credor_weight=2)
+    x_money.userhub.save_job_world(ava_world)
 
-    elu_agenda = agendaunit_shop(_owner_id=elu_text)
-    elu_agenda.add_otherunit(other_id=ava_text, credor_weight=19)
-    elu_agenda.add_otherunit(other_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_agenda(elu_agenda)
+    elu_world = worldunit_shop(_owner_id=elu_text)
+    elu_world.add_personunit(person_id=ava_text, credor_weight=19)
+    elu_world.add_personunit(person_id=sal_text, credor_weight=1)
+    x_money.userhub.save_job_world(elu_world)
 
-    x_money.refresh_treasury_job_agendas_data()
-    x_money.set_cred_flow_for_agenda(owner_id=sal_text, max_blocks_count=100)
+    x_money.refresh_treasury_job_worlds_data()
+    x_money.set_cred_flow_for_world(owner_id=sal_text, max_blocks_count=100)
     with x_money.get_treasury_conn() as treasury_conn:
         treasury_conn.execute(get_river_circle_table_delete_sqlstr(sal_text))
         assert len(get_river_circle_dict(treasury_conn, cash_owner_id=sal_text)) == 0

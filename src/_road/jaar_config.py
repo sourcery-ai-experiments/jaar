@@ -6,28 +6,28 @@ def get_test_reals_dir():
     return "src/real/examples/reals"
 
 
-def get_atoms_folder() -> str:
-    return "atoms"
+def get_gifts_folder() -> str:
+    return "gifts"
 
 
-def init_atom_id() -> int:
+def init_gift_id() -> int:
     return 0
 
 
-def get_init_atom_id_if_None(x_atom_id: int = None) -> int:
-    return init_atom_id() if x_atom_id is None else x_atom_id
+def get_init_gift_id_if_None(x_gift_id: int = None) -> int:
+    return init_gift_id() if x_gift_id is None else x_gift_id
 
 
 def get_json_filename(filename_without_extention) -> str:
     return f"{filename_without_extention}.json"
 
 
-def duty_str() -> str:
-    return "duty"
+def same_str() -> str:
+    return "same"
 
 
-def work_str() -> str:
-    return "work"
+def live_str() -> str:
+    return "live"
 
 
 def jobs_str() -> str:
@@ -36,6 +36,10 @@ def jobs_str() -> str:
 
 def roles_str() -> str:
     return "roles"
+
+
+def grades_folder() -> str:
+    return "grades"
 
 
 def get_rootpart_of_econ_dir() -> str:

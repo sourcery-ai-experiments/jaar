@@ -1,4 +1,4 @@
-from src._road.road import create_road_without_root_node, RoadUnit, PersonID, OtherID
+from src._road.road import create_road_without_root_node, RoadUnit, OwnerID, PersonID
 from src._instrument.sqlite import (
     sqlite_bool,
     sqlite_null,
@@ -7,7 +7,7 @@ from src._instrument.sqlite import (
     get_row_count_sqlstr,
     get_single_result,
 )
-from src.agenda.agenda import AgendaUnit, OtherUnit
+from src._world.world import WorldUnit, PersonUnit
 from dataclasses import dataclass
 from sqlite3 import Connection
 
@@ -26,7 +26,7 @@ ORDER BY range_sum DESC
 """
 
 
-def get_river_reach_table_final_insert_sqlstr(cash_master: PersonID) -> str:
+def get_river_reach_table_final_insert_sqlstr(cash_master: OwnerID) -> str:
     reach_final_sqlstr = get_river_reach_table_final_select_sqlstr(cash_master)
     return get_river_reach_table_insert_sqlstr(reach_final_sqlstr)
 
@@ -47,14 +47,14 @@ CREATE TABLE IF NOT EXISTS river_reach (
 , set_num INT NOT NULL
 , reach_coin_start FLOAT NOT NULL
 , reach_coin_close FLOAT NOT NULL
-, FOREIGN KEY(cash_master) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(src_owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(cash_master) REFERENCES worldunit(owner_id)
+, FOREIGN KEY(src_owner_id) REFERENCES worldunit(owner_id)
 )
 ;
 """
 
 
-def get_river_reach_table_touch_select_sqlstr(cash_master: PersonID) -> str:
+def get_river_reach_table_touch_select_sqlstr(cash_master: OwnerID) -> str:
     return f"""
     SELECT 
     block.cash_master
@@ -114,7 +114,7 @@ def get_river_reach_table_touch_select_sqlstr(cash_master: PersonID) -> str:
 """
 
 
-def get_river_reach_table_final_select_sqlstr(cash_master: PersonID) -> str:
+def get_river_reach_table_final_select_sqlstr(cash_master: OwnerID) -> str:
     return f"""
 WITH reach_inter(coin_mstr, src, dst, reach_start, reach_close) AS (
 {get_river_reach_table_touch_select_sqlstr(cash_master)}
@@ -265,7 +265,7 @@ def get_river_block_table_create_sqlstr() -> str:
     dst_owner_id: owner_id that is destination of cred.
     cash_start: range of cash influenced start
     cash_close: range of cash influenced close
-    block_num: the sequence number of transactions before this one
+    block_num: the sequence number of rewards before this one
     parent_block_num: river blocks can have multiple children but only one parent
     river_tree_level: how many ancestors between cash_master first cred outblock
         and this river block
@@ -281,9 +281,9 @@ CREATE TABLE IF NOT EXISTS river_block (
 , block_num INT NOT NULL
 , parent_block_num INT NULL
 , river_tree_level INT NOT NULL
-, FOREIGN KEY(cash_master) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(src_owner_id) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(dst_owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(cash_master) REFERENCES worldunit(owner_id)
+, FOREIGN KEY(src_owner_id) REFERENCES worldunit(owner_id)
+, FOREIGN KEY(dst_owner_id) REFERENCES worldunit(owner_id)
 )
 ;
 """
@@ -385,8 +385,8 @@ CREATE TABLE IF NOT EXISTS river_circle (
 , circle_num INT NOT NULL
 , coin_start FLOAT NOT NULL
 , coin_close FLOAT NOT NULL
-, FOREIGN KEY(cash_master) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(dst_owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(cash_master) REFERENCES worldunit(owner_id)
+, FOREIGN KEY(dst_owner_id) REFERENCES worldunit(owner_id)
 )
 ;
 """
@@ -477,9 +477,9 @@ WHERE cash_master = '{cash_owner_id}'
     return dict_x
 
 
-# OtherTreasuryUnit
+# PersonTreasuryUnit
 @dataclass
-class OtherTreasuryUnit:
+class PersonTreasuryUnit:
     cash_master: str
     due_owner_id: str
     due_total: float
@@ -489,17 +489,17 @@ class OtherTreasuryUnit:
     voice_rank: int
 
 
-def get_othertreasuryunit_dict(
+def get_persontreasuryunit_dict(
     db_conn: Connection, cash_owner_id: str
-) -> dict[str:OtherTreasuryUnit]:
+) -> dict[str:PersonTreasuryUnit]:
     sqlstr = f"""
 SELECT
   owner_id cash_master
-, other_id due_owner_id
+, person_id due_owner_id
 , _treasury_due_paid due_total
-, _agenda_intent_ratio_debt debt
-, (_agenda_intent_ratio_debt - _treasury_due_paid) due_diff
-FROM agenda_otherunit
+, _world_agenda_ratio_debt debt
+, (_world_agenda_ratio_debt - _treasury_due_paid) due_diff
+FROM world_personunit
 WHERE cash_master = '{cash_owner_id}'
     AND _treasury_due_paid IS NOT NULL
 ;
@@ -508,7 +508,7 @@ WHERE cash_master = '{cash_owner_id}'
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        othertreasuryunit_x = OtherTreasuryUnit(
+        persontreasuryunit_x = PersonTreasuryUnit(
             cash_master=row[0],
             due_owner_id=row[1],
             due_total=row[2],
@@ -517,15 +517,15 @@ WHERE cash_master = '{cash_owner_id}'
             cred_score=None,
             voice_rank=None,
         )
-        dict_x[othertreasuryunit_x.due_owner_id] = othertreasuryunit_x
+        dict_x[persontreasuryunit_x.due_owner_id] = persontreasuryunit_x
     return dict_x
 
 
-# agenda
-def get_agendaunit_table_create_sqlstr() -> str:
-    """Create table that references the owner_id of every agenda."""
+# world
+def get_worldunit_table_create_sqlstr() -> str:
+    """Create table that references the owner_id of every world."""
     return """
-CREATE TABLE IF NOT EXISTS agendaunit (
+CREATE TABLE IF NOT EXISTS worldunit (
   owner_id VARCHAR(255) PRIMARY KEY ASC
 , real_id VARCHAR(255) NOT NULL
 , rational INT NULL
@@ -535,73 +535,73 @@ CREATE TABLE IF NOT EXISTS agendaunit (
 """
 
 
-def get_agendaunit_table_insert_sqlstr(x_agenda: AgendaUnit) -> str:
+def get_worldunit_table_insert_sqlstr(x_world: WorldUnit) -> str:
     return f"""
-INSERT INTO agendaunit (
+INSERT INTO worldunit (
   real_id
 , owner_id
 , rational
 )
 VALUES (
-  '{x_agenda._real_id}' 
-, '{x_agenda._owner_id}' 
+  '{x_world._real_id}' 
+, '{x_world._owner_id}' 
 , NULL
 )
 ;
 """
 
 
-def get_agendaunits_select_sqlstr():
+def get_worldunits_select_sqlstr():
     return """
 SELECT 
   owner_id
 , rational
-FROM agendaunit
+FROM worldunit
 ;
 """
 
 
 @dataclass
-class AgendaTreasuryUnit:
-    owner_id: PersonID
+class WorldTreasuryUnit:
+    owner_id: OwnerID
     rational: bool
 
 
-def get_agendatreasuryunits_dict(
+def get_worldtreasuryunits_dict(
     db_conn: Connection,
-) -> dict[PersonID:AgendaTreasuryUnit]:
-    results = db_conn.execute(get_agendaunits_select_sqlstr())
+) -> dict[OwnerID:WorldTreasuryUnit]:
+    results = db_conn.execute(get_worldunits_select_sqlstr())
     dict_x = {}
     for row in results.fetchall():
-        x_agendatreasuryunit = AgendaTreasuryUnit(
+        x_worldtreasuryunit = WorldTreasuryUnit(
             owner_id=row[0], rational=sqlite_to_python(row[1])
         )
-        dict_x[x_agendatreasuryunit.owner_id] = x_agendatreasuryunit
+        dict_x[x_worldtreasuryunit.owner_id] = x_worldtreasuryunit
     return dict_x
 
 
-def get_agendaunit_update_sqlstr(agenda: AgendaUnit) -> str:
+def get_worldunit_update_sqlstr(world: WorldUnit) -> str:
     return f"""
-UPDATE agendaunit
-SET rational = {sqlite_text(agenda._rational)}
-WHERE owner_id = '{agenda._owner_id}'
+UPDATE worldunit
+SET rational = {sqlite_text(world._rational)}
+WHERE owner_id = '{world._owner_id}'
 ;
 """
 
 
-# otherunit
-def get_agenda_otherunit_table_create_sqlstr() -> str:
-    """Create table that holds the starting river metrics for every agenda's other. All the metrics."""
+# personunit
+def get_world_personunit_table_create_sqlstr() -> str:
+    """Create table that holds the starting river metrics for every world's person. All the metrics."""
     return """
-CREATE TABLE IF NOT EXISTS agenda_otherunit (
+CREATE TABLE IF NOT EXISTS world_personunit (
   owner_id VARCHAR(255) NOT NULL 
-, other_id VARCHAR(255) NOT NULL
-, _agenda_cred FLOAT
-, _agenda_debt FLOAT
-, _agenda_intent_cred FLOAT
-, _agenda_intent_debt FLOAT
-, _agenda_intent_ratio_cred FLOAT
-, _agenda_intent_ratio_debt FLOAT
+, person_id VARCHAR(255) NOT NULL
+, _world_cred FLOAT
+, _world_debt FLOAT
+, _world_agenda_cred FLOAT
+, _world_agenda_debt FLOAT
+, _world_agenda_ratio_cred FLOAT
+, _world_agenda_ratio_debt FLOAT
 , _credor_operational INT
 , _debtor_operational INT
 , _treasury_due_paid FLOAT
@@ -609,87 +609,87 @@ CREATE TABLE IF NOT EXISTS agenda_otherunit (
 , _treasury_cred_score FLOAT
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
-, FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
-, FOREIGN KEY(other_id) REFERENCES agendaunit(owner_id)
-, UNIQUE(owner_id, other_id)
+, FOREIGN KEY(owner_id) REFERENCES worldunit(owner_id)
+, FOREIGN KEY(person_id) REFERENCES worldunit(owner_id)
+, UNIQUE(owner_id, person_id)
 )
 ;
 """
 
 
-def get_agenda_otherunit_table_update_treasury_due_paid_sqlstr(
-    cash_owner_id: PersonID,
+def get_world_personunit_table_update_treasury_due_paid_sqlstr(
+    cash_owner_id: OwnerID,
 ) -> str:
     return f"""
-UPDATE agenda_otherunit
+UPDATE world_personunit
 SET _treasury_due_paid = (
     SELECT SUM(block.cash_close-block.cash_start) 
     FROM river_block block
     WHERE block.cash_master='{cash_owner_id}' 
         AND block.dst_owner_id=block.cash_master
-        AND block.src_owner_id = agenda_otherunit.other_id
+        AND block.src_owner_id = world_personunit.person_id
     )
 WHERE EXISTS (
     SELECT block.cash_close
     FROM river_block block
-    WHERE agenda_otherunit.owner_id='{cash_owner_id}' 
-        AND agenda_otherunit.other_id = block.dst_owner_id
+    WHERE world_personunit.owner_id='{cash_owner_id}' 
+        AND world_personunit.person_id = block.dst_owner_id
 )
 ;
 """
 
 
-def get_agenda_otherunit_table_update_cred_score_sqlstr(
-    cash_owner_id: PersonID,
+def get_world_personunit_table_update_cred_score_sqlstr(
+    cash_owner_id: OwnerID,
 ) -> str:
     return f"""
-UPDATE agenda_otherunit
+UPDATE world_personunit
 SET _treasury_cred_score = (
     SELECT SUM(reach_coin_close - reach_coin_start) range_sum
     FROM river_reach reach
-    WHERE reach.cash_master = agenda_otherunit.owner_id
-        AND reach.src_owner_id = agenda_otherunit.other_id
+    WHERE reach.cash_master = world_personunit.owner_id
+        AND reach.src_owner_id = world_personunit.person_id
     )
-WHERE agenda_otherunit.owner_id = '{cash_owner_id}'
+WHERE world_personunit.owner_id = '{cash_owner_id}'
 ;
 """
 
 
-def get_agenda_otherunit_table_update_treasury_voice_rank_sqlstr(
-    owner_id: PersonID,
+def get_world_personunit_table_update_treasury_voice_rank_sqlstr(
+    owner_id: OwnerID,
 ) -> str:
     return f"""
-UPDATE agenda_otherunit
+UPDATE world_personunit
 SET _treasury_voice_rank = 
     (
     SELECT rn
     FROM (
-        SELECT p2.other_id
+        SELECT p2.person_id
         , row_number() over (order by p2._treasury_cred_score DESC) rn
-        FROM agenda_otherunit p2
+        FROM world_personunit p2
         WHERE p2.owner_id = '{owner_id}'
     ) p3
-    WHERE p3.other_id = agenda_otherunit.other_id AND agenda_otherunit.owner_id = '{owner_id}'
+    WHERE p3.person_id = world_personunit.person_id AND world_personunit.owner_id = '{owner_id}'
     )
-WHERE agenda_otherunit.owner_id = '{owner_id}'
+WHERE world_personunit.owner_id = '{owner_id}'
 ;
 """
 
 
-def get_agenda_otherunit_table_insert_sqlstr(
-    x_agenda: AgendaUnit, x_otherunit: OtherUnit
+def get_world_personunit_table_insert_sqlstr(
+    x_world: WorldUnit, x_personunit: PersonUnit
 ) -> str:
     """Create table that holds a the output cred metrics."""
     return f"""
-INSERT INTO agenda_otherunit (
+INSERT INTO world_personunit (
   owner_id
-, other_id
-, _agenda_cred
-, _agenda_debt
-, _agenda_intent_cred
-, _agenda_intent_debt
-, _agenda_intent_ratio_cred
-, _agenda_intent_ratio_debt
+, person_id
+, _world_cred
+, _world_debt
+, _world_agenda_cred
+, _world_agenda_debt
+, _world_agenda_ratio_cred
+, _world_agenda_ratio_debt
 , _credor_operational
 , _debtor_operational
 , _treasury_due_paid
@@ -699,44 +699,44 @@ INSERT INTO agenda_otherunit (
 , _treasury_voice_hx_lowest_rank
 )
 VALUES (
-  '{x_agenda._owner_id}' 
-, '{x_otherunit.other_id}'
-, {sqlite_null(x_otherunit._agenda_cred)} 
-, {sqlite_null(x_otherunit._agenda_debt)}
-, {sqlite_null(x_otherunit._agenda_intent_cred)}
-, {sqlite_null(x_otherunit._agenda_intent_debt)}
-, {sqlite_null(x_otherunit._agenda_intent_ratio_cred)}
-, {sqlite_null(x_otherunit._agenda_intent_ratio_debt)}
-, {sqlite_bool(x_otherunit._credor_operational)}
-, {sqlite_bool(x_otherunit._debtor_operational)}
-, {sqlite_null(x_otherunit._treasury_due_paid)}
-, {sqlite_null(x_otherunit._treasury_due_diff)}
-, {sqlite_null(x_otherunit._treasury_cred_score)}
-, {sqlite_null(x_otherunit._treasury_voice_rank)}
-, {sqlite_null(x_otherunit._treasury_voice_hx_lowest_rank)}
+  '{x_world._owner_id}' 
+, '{x_personunit.person_id}'
+, {sqlite_null(x_personunit._world_cred)} 
+, {sqlite_null(x_personunit._world_debt)}
+, {sqlite_null(x_personunit._world_agenda_cred)}
+, {sqlite_null(x_personunit._world_agenda_debt)}
+, {sqlite_null(x_personunit._world_agenda_ratio_cred)}
+, {sqlite_null(x_personunit._world_agenda_ratio_debt)}
+, {sqlite_bool(x_personunit._credor_operational)}
+, {sqlite_bool(x_personunit._debtor_operational)}
+, {sqlite_null(x_personunit._treasury_due_paid)}
+, {sqlite_null(x_personunit._treasury_due_diff)}
+, {sqlite_null(x_personunit._treasury_cred_score)}
+, {sqlite_null(x_personunit._treasury_voice_rank)}
+, {sqlite_null(x_personunit._treasury_voice_hx_lowest_rank)}
 )
 ;
 """
 
 
 @dataclass
-class OtherDBUnit(OtherUnit):
+class PersonDBUnit(PersonUnit):
     owner_id: str = None
 
 
-def get_otherview_dict(
-    db_conn: Connection, payer_owner_id: PersonID
-) -> dict[OtherID:OtherDBUnit]:
+def get_personview_dict(
+    db_conn: Connection, payer_owner_id: OwnerID
+) -> dict[PersonID:PersonDBUnit]:
     sqlstr = f"""
 SELECT 
   owner_id
-, other_id
-, _agenda_cred
-, _agenda_debt
-, _agenda_intent_cred
-, _agenda_intent_debt
-, _agenda_intent_ratio_cred
-, _agenda_intent_ratio_debt
+, person_id
+, _world_cred
+, _world_debt
+, _world_agenda_cred
+, _world_agenda_debt
+, _world_agenda_ratio_cred
+, _world_agenda_ratio_debt
 , _credor_operational
 , _debtor_operational
 , _treasury_due_paid
@@ -744,7 +744,7 @@ SELECT
 , _treasury_cred_score
 , _treasury_voice_rank
 , _treasury_voice_hx_lowest_rank
-FROM agenda_otherunit
+FROM world_personunit
 WHERE owner_id = '{payer_owner_id}' 
 ;
 """
@@ -752,15 +752,15 @@ WHERE owner_id = '{payer_owner_id}'
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        otherview_x = OtherDBUnit(
+        personview_x = PersonDBUnit(
             owner_id=row[0],
-            other_id=row[1],
-            _agenda_cred=row[2],
-            _agenda_debt=row[3],
-            _agenda_intent_cred=row[4],
-            _agenda_intent_debt=row[5],
-            _agenda_intent_ratio_cred=row[6],
-            _agenda_intent_ratio_debt=row[7],
+            person_id=row[1],
+            _world_cred=row[2],
+            _world_debt=row[3],
+            _world_agenda_cred=row[4],
+            _world_agenda_debt=row[5],
+            _world_agenda_ratio_cred=row[6],
+            _world_agenda_ratio_debt=row[7],
             _credor_operational=row[8],
             _debtor_operational=row[9],
             _treasury_due_paid=row[10],
@@ -769,7 +769,7 @@ WHERE owner_id = '{payer_owner_id}'
             _treasury_voice_rank=row[13],
             _treasury_voice_hx_lowest_rank=row[14],
         )
-        dict_x[otherview_x.other_id] = otherview_x
+        dict_x[personview_x.person_id] = personview_x
     return dict_x
 
 
@@ -778,7 +778,7 @@ class RiverLedgerUnit:
     owner_id: str
     cash_onset: float
     cash_cease: float
-    _otherviews: dict[str:OtherDBUnit]
+    _personviews: dict[str:PersonDBUnit]
     river_tree_level: int
     block_num: int
 
@@ -789,22 +789,22 @@ class RiverLedgerUnit:
 def get_river_ledger_unit(
     db_conn: Connection, river_block_x: RiverBlockUnit = None
 ) -> RiverLedgerUnit:
-    otherview_x = get_otherview_dict(db_conn, river_block_x.dst_owner_id)
+    personview_x = get_personview_dict(db_conn, river_block_x.dst_owner_id)
     return RiverLedgerUnit(
         owner_id=river_block_x.dst_owner_id,
         cash_onset=river_block_x.cash_start,
         cash_cease=river_block_x.cash_close,
-        _otherviews=otherview_x,
+        _personviews=personview_x,
         river_tree_level=river_block_x.river_tree_level,
         block_num=river_block_x.block_num,
     )
 
 
-# agenda_ideaunit
-def get_agenda_ideaunit_table_create_sqlstr() -> str:
+# world_ideaunit
+def get_world_ideaunit_table_create_sqlstr() -> str:
     """table that holds every road and its owner_id"""
     return """
-CREATE TABLE IF NOT EXISTS agenda_ideaunit (
+CREATE TABLE IF NOT EXISTS world_ideaunit (
   owner_id VARCHAR(255) NOT NULL
 , idea_road VARCHAR(1000) NOT NULL
 )
@@ -812,9 +812,9 @@ CREATE TABLE IF NOT EXISTS agenda_ideaunit (
 """
 
 
-def get_agenda_ideaunit_row_count(db_conn: Connection, owner_id: str) -> str:
+def get_world_ideaunit_row_count(db_conn: Connection, owner_id: str) -> str:
     sqlstr = f"""
-{get_row_count_sqlstr("agenda_ideaunit")} 
+{get_row_count_sqlstr("world_ideaunit")} 
 WHERE owner_id = '{owner_id}'
 ;
 """
@@ -827,24 +827,24 @@ class IdeaCatalog:
     idea_road: str
 
 
-def get_agenda_ideaunit_table_insert_sqlstr(
-    agenda_ideaunit: IdeaCatalog,
+def get_world_ideaunit_table_insert_sqlstr(
+    world_ideaunit: IdeaCatalog,
 ) -> str:
-    # return f"""INSERT INTO agenda_ideaunit (owner_id, idea_road) VALUES ('{agenda_ideaunit.owner_id}', '{agenda_ideaunit.idea_road}');"""
+    # return f"""INSERT INTO world_ideaunit (owner_id, idea_road) VALUES ('{world_ideaunit.owner_id}', '{world_ideaunit.idea_road}');"""
     return f"""
-INSERT INTO agenda_ideaunit (
+INSERT INTO world_ideaunit (
   owner_id
 , idea_road
 )
 VALUES (
-  '{agenda_ideaunit.owner_id}'
-, '{create_road_without_root_node(agenda_ideaunit.idea_road)}'
+  '{world_ideaunit.owner_id}'
+, '{create_road_without_root_node(world_ideaunit.idea_road)}'
 )
 ;
 """
 
 
-def get_agenda_ideaunit_dict(db_conn: Connection, search_road: RoadUnit = None):
+def get_world_ideaunit_dict(db_conn: Connection, search_road: RoadUnit = None):
     if search_road is None:
         where_clause = ""
     else:
@@ -854,7 +854,7 @@ def get_agenda_ideaunit_dict(db_conn: Connection, search_road: RoadUnit = None):
 SELECT 
   owner_id
 , idea_road
-FROM agenda_ideaunit
+FROM world_ideaunit
 {where_clause}
 ;
 """
@@ -862,17 +862,17 @@ FROM agenda_ideaunit
 
     dict_x = {}
     for row in results.fetchall():
-        agenda_ideaunit_x = IdeaCatalog(owner_id=row[0], idea_road=row[1])
-        dict_key = f"{agenda_ideaunit_x.owner_id} {agenda_ideaunit_x.idea_road}"
-        dict_x[dict_key] = agenda_ideaunit_x
+        world_ideaunit_x = IdeaCatalog(owner_id=row[0], idea_road=row[1])
+        dict_key = f"{world_ideaunit_x.owner_id} {world_ideaunit_x.idea_road}"
+        dict_x[dict_key] = world_ideaunit_x
     return dict_x
 
 
-# agenda_idea_factunit
-def get_agenda_idea_factunit_table_create_sqlstr() -> str:
-    """table that holds every fact base and pick of every agenda. missing open/nigh. (clearly not used, maybe add in the future)"""
+# world_idea_factunit
+def get_world_idea_factunit_table_create_sqlstr() -> str:
+    """table that holds every fact base and pick of every world. missing open/nigh. (clearly not used, maybe add in the future)"""
     return """
-CREATE TABLE IF NOT EXISTS agenda_idea_factunit (
+CREATE TABLE IF NOT EXISTS world_idea_factunit (
   owner_id VARCHAR(255) NOT NULL
 , base VARCHAR(1000) NOT NULL
 , pick VARCHAR(1000) NOT NULL
@@ -881,9 +881,9 @@ CREATE TABLE IF NOT EXISTS agenda_idea_factunit (
 """
 
 
-def get_agenda_idea_factunit_row_count(db_conn: Connection, owner_id: str) -> str:
+def get_world_idea_factunit_row_count(db_conn: Connection, owner_id: str) -> str:
     sqlstr = f"""
-{get_row_count_sqlstr("agenda_idea_factunit")} WHERE owner_id = '{owner_id}'
+{get_row_count_sqlstr("world_idea_factunit")} WHERE owner_id = '{owner_id}'
 ;
 """
     return get_single_result(db_conn, sqlstr)
@@ -896,28 +896,28 @@ class FactCatalog:
     pick: str
 
 
-def get_agenda_idea_factunit_table_insert_sqlstr(
-    agenda_idea_factunit: FactCatalog,
+def get_world_idea_factunit_table_insert_sqlstr(
+    world_idea_factunit: FactCatalog,
 ) -> str:
     return f"""
-INSERT INTO agenda_idea_factunit (
+INSERT INTO world_idea_factunit (
   owner_id
 , base
 , pick
 )
 VALUES (
-  '{agenda_idea_factunit.owner_id}'
-, '{agenda_idea_factunit.base}'
-, '{agenda_idea_factunit.pick}'
+  '{world_idea_factunit.owner_id}'
+, '{world_idea_factunit.base}'
+, '{world_idea_factunit.pick}'
 )
 ;
 """
 
 
-# agenda_beliefunit
-def get_agenda_beliefunit_table_create_sqlstr() -> str:
+# world_beliefunit
+def get_world_beliefunit_table_create_sqlstr() -> str:
     return """
-CREATE TABLE IF NOT EXISTS agenda_beliefunit (
+CREATE TABLE IF NOT EXISTS world_beliefunit (
   owner_id VARCHAR(255) NOT NULL
 , beliefunit_belief_id VARCHAR(1000) NOT NULL
 )
@@ -925,9 +925,9 @@ CREATE TABLE IF NOT EXISTS agenda_beliefunit (
 """
 
 
-def get_agenda_beliefunit_row_count(db_conn: Connection, owner_id: str) -> str:
+def get_world_beliefunit_row_count(db_conn: Connection, owner_id: str) -> str:
     sqlstr = f"""
-{get_row_count_sqlstr("agenda_beliefunit")} WHERE owner_id = '{owner_id}'
+{get_row_count_sqlstr("world_beliefunit")} WHERE owner_id = '{owner_id}'
 ;
 """
     return get_single_result(db_conn, sqlstr)
@@ -939,41 +939,41 @@ class BeliefUnitCatalog:
     beliefunit_belief_id: str
 
 
-def get_agenda_beliefunit_table_insert_sqlstr(
-    agenda_beliefunit: BeliefUnitCatalog,
+def get_world_beliefunit_table_insert_sqlstr(
+    world_beliefunit: BeliefUnitCatalog,
 ) -> str:
     return f"""
-INSERT INTO agenda_beliefunit (
+INSERT INTO world_beliefunit (
   owner_id
 , beliefunit_belief_id
 )
 VALUES (
-  '{agenda_beliefunit.owner_id}'
-, '{agenda_beliefunit.beliefunit_belief_id}'
+  '{world_beliefunit.owner_id}'
+, '{world_beliefunit.beliefunit_belief_id}'
 )
 ;
 """
 
 
-def get_agenda_beliefunit_dict(db_conn: Connection) -> dict[str:BeliefUnitCatalog]:
+def get_world_beliefunit_dict(db_conn: Connection) -> dict[str:BeliefUnitCatalog]:
     sqlstr = """
 SELECT 
   owner_id
 , beliefunit_belief_id
-FROM agenda_beliefunit
+FROM world_beliefunit
 ;
 """
     results = db_conn.execute(sqlstr)
 
     dict_x = {}
     for row in results.fetchall():
-        agenda_beliefunit_x = BeliefUnitCatalog(
+        world_beliefunit_x = BeliefUnitCatalog(
             owner_id=row[0], beliefunit_belief_id=row[1]
         )
         dict_key = (
-            f"{agenda_beliefunit_x.owner_id} {agenda_beliefunit_x.beliefunit_belief_id}"
+            f"{world_beliefunit_x.owner_id} {world_beliefunit_x.beliefunit_belief_id}"
         )
-        dict_x[dict_key] = agenda_beliefunit_x
+        dict_x[dict_key] = world_beliefunit_x
     return dict_x
 
 
@@ -985,14 +985,14 @@ CREATE TABLE IF NOT EXISTS calendar (
 , report_date_range_start INT NOT NULL
 , report_date_range_cease INT NOT NULL
 , report_interval_length INT NOT NULL
-, report_interval_intent_task_max_count INT NOT NULL
-, report_interval_intent_state_max_count INT NOT NULL
+, report_interval_agenda_task_max_count INT NOT NULL
+, report_interval_agenda_state_max_count INT NOT NULL
 , time_begin INT NOT NULL
 , time_close INT NOT NULL
-, intent_idea_road VARCHAR(255) NOT NULL
-, intent_weight INT NOT NULL
+, agenda_idea_road VARCHAR(255) NOT NULL
+, agenda_weight INT NOT NULL
 , task INT NOT NULL
-, FOREIGN KEY(owner_id) REFERENCES agendaunit(owner_id)
+, FOREIGN KEY(owner_id) REFERENCES worldunit(owner_id)
 )
 ;
 """
@@ -1000,13 +1000,13 @@ CREATE TABLE IF NOT EXISTS calendar (
 
 @dataclass
 class CalendarReport:
-    owner_id: PersonID = (None,)
+    owner_id: OwnerID = (None,)
     time_road: RoadUnit = None
     date_range_start: int = None
     interval_count: int = None
     interval_length: int = None
-    intent_max_count_task: int = None
-    intent_max_count_state: int = None
+    agenda_max_count_task: int = None
+    agenda_max_count_state: int = None
 
     def get_date_range_length(self) -> int:
         return self.interval_length * self.interval_count
@@ -1023,16 +1023,16 @@ class CalendarReport:
 
 
 @dataclass
-class CalendarIntentUnit:
+class CalendarAgendaUnit:
     calendarreport: CalendarReport
     time_begin: int
     time_close: int
-    intent_idea_road: RoadUnit
-    intent_weight: float
+    agenda_idea_road: RoadUnit
+    agenda_weight: float
     task: bool
 
 
-def get_calendar_table_insert_sqlstr(x_obj: CalendarIntentUnit):
+def get_calendar_table_insert_sqlstr(x_obj: CalendarAgendaUnit):
     return f"""
 INSERT INTO calendar (
   owner_id
@@ -1040,12 +1040,12 @@ INSERT INTO calendar (
 , report_date_range_start
 , report_date_range_cease
 , report_interval_length
-, report_interval_intent_task_max_count
-, report_interval_intent_state_max_count
+, report_interval_agenda_task_max_count
+, report_interval_agenda_state_max_count
 , time_begin
 , time_close
-, intent_idea_road
-, intent_weight
+, agenda_idea_road
+, agenda_weight
 , task)
 VALUES (
   '{x_obj.calendarreport.owner_id}'
@@ -1053,32 +1053,32 @@ VALUES (
 , {sqlite_null(x_obj.calendarreport.date_range_start)}
 , {sqlite_null(x_obj.calendarreport.get_date_range_cease())}
 , {sqlite_null(x_obj.calendarreport.interval_length)}
-, {sqlite_null(x_obj.calendarreport.intent_max_count_task)}
-, {sqlite_null(x_obj.calendarreport.intent_max_count_state)}
+, {sqlite_null(x_obj.calendarreport.agenda_max_count_task)}
+, {sqlite_null(x_obj.calendarreport.agenda_max_count_state)}
 , {sqlite_null(x_obj.time_begin)}
 , {sqlite_null(x_obj.time_close)}
-, '{x_obj.intent_idea_road}'
-, {sqlite_null(x_obj.intent_weight)}
+, '{x_obj.agenda_idea_road}'
+, {sqlite_null(x_obj.agenda_weight)}
 , {sqlite_bool(x_obj.task)}
 )
 ;
 """
 
 
-def get_agenda_otherunit_table_insert_sqlstr(
-    x_agenda: AgendaUnit, x_otherunit: OtherUnit
+def get_world_personunit_table_insert_sqlstr(
+    x_world: WorldUnit, x_personunit: PersonUnit
 ) -> str:
     """Create table that holds a the output cred metrics."""
     return f"""
-INSERT INTO agenda_otherunit (
+INSERT INTO world_personunit (
   owner_id
-, other_id
-, _agenda_cred
-, _agenda_debt
-, _agenda_intent_cred
-, _agenda_intent_debt
-, _agenda_intent_ratio_cred
-, _agenda_intent_ratio_debt
+, person_id
+, _world_cred
+, _world_debt
+, _world_agenda_cred
+, _world_agenda_debt
+, _world_agenda_ratio_cred
+, _world_agenda_ratio_debt
 , _credor_operational
 , _debtor_operational
 , _treasury_due_paid
@@ -1088,21 +1088,21 @@ INSERT INTO agenda_otherunit (
 , _treasury_voice_hx_lowest_rank
 )
 VALUES (
-  '{x_agenda._owner_id}' 
-, '{x_otherunit.other_id}'
-, {sqlite_null(x_otherunit._agenda_cred)} 
-, {sqlite_null(x_otherunit._agenda_debt)}
-, {sqlite_null(x_otherunit._agenda_intent_cred)}
-, {sqlite_null(x_otherunit._agenda_intent_debt)}
-, {sqlite_null(x_otherunit._agenda_intent_ratio_cred)}
-, {sqlite_null(x_otherunit._agenda_intent_ratio_debt)}
-, {sqlite_bool(x_otherunit._credor_operational)}
-, {sqlite_bool(x_otherunit._debtor_operational)}
-, {sqlite_null(x_otherunit._treasury_due_paid)}
-, {sqlite_null(x_otherunit._treasury_due_diff)}
-, {sqlite_null(x_otherunit._treasury_cred_score)}
-, {sqlite_null(x_otherunit._treasury_voice_rank)}
-, {sqlite_null(x_otherunit._treasury_voice_hx_lowest_rank)}
+  '{x_world._owner_id}' 
+, '{x_personunit.person_id}'
+, {sqlite_null(x_personunit._world_cred)} 
+, {sqlite_null(x_personunit._world_debt)}
+, {sqlite_null(x_personunit._world_agenda_cred)}
+, {sqlite_null(x_personunit._world_agenda_debt)}
+, {sqlite_null(x_personunit._world_agenda_ratio_cred)}
+, {sqlite_null(x_personunit._world_agenda_ratio_debt)}
+, {sqlite_bool(x_personunit._credor_operational)}
+, {sqlite_bool(x_personunit._debtor_operational)}
+, {sqlite_null(x_personunit._treasury_due_paid)}
+, {sqlite_null(x_personunit._treasury_due_diff)}
+, {sqlite_null(x_personunit._treasury_cred_score)}
+, {sqlite_null(x_personunit._treasury_voice_rank)}
+, {sqlite_null(x_personunit._treasury_voice_hx_lowest_rank)}
 )
 ;
 """
@@ -1117,13 +1117,13 @@ WHERE owner_id = '{calendar_owner_id}'
 
 
 def get_create_table_if_not_exist_sqlstrs() -> list[str]:
-    list_x = [get_agendaunit_table_create_sqlstr()]
-    list_x.append(get_agenda_idea_factunit_table_create_sqlstr())
-    list_x.append(get_agenda_ideaunit_table_create_sqlstr())
-    list_x.append(get_agenda_otherunit_table_create_sqlstr())
+    list_x = [get_worldunit_table_create_sqlstr()]
+    list_x.append(get_world_idea_factunit_table_create_sqlstr())
+    list_x.append(get_world_ideaunit_table_create_sqlstr())
+    list_x.append(get_world_personunit_table_create_sqlstr())
     list_x.append(get_river_block_table_create_sqlstr())
     list_x.append(get_river_circle_table_create_sqlstr())
     list_x.append(get_river_reach_table_create_sqlstr())
-    list_x.append(get_agenda_beliefunit_table_create_sqlstr())
+    list_x.append(get_world_beliefunit_table_create_sqlstr())
     list_x.append(get_calendar_table_create_sqlstr())
     return list_x

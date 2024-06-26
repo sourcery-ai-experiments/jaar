@@ -1,32 +1,32 @@
 {
     "tables": {
-        "agenda_beliefunit": {
+        "world_beliefunit": {
             "columns": {
                 "beliefunit_belief_id": {},
                 "owner_id": {}
             }
         },
-        "agenda_idea_factunit": {
+        "world_idea_factunit": {
             "columns": {
                 "base": {},
                 "owner_id": {},
                 "pick": {}
             }
         },
-        "agenda_ideaunit": {
+        "world_ideaunit": {
             "columns": {
                 "idea_road": {},
                 "owner_id": {}
             }
         },
-        "agenda_otherunit": {
+        "world_personunit": {
             "columns": {
-                "_agenda_cred": {},
-                "_agenda_debt": {},
-                "_agenda_intent_cred": {},
-                "_agenda_intent_debt": {},
-                "_agenda_intent_ratio_cred": {},
-                "_agenda_intent_ratio_debt": {},
+                "_world_cred": {},
+                "_world_debt": {},
+                "_world_agenda_cred": {},
+                "_world_agenda_debt": {},
+                "_world_agenda_ratio_cred": {},
+                "_world_agenda_ratio_debt": {},
                 "_credor_operational": {},
                 "_debtor_operational": {},
                 "_treasury_cred_score": {},
@@ -35,10 +35,10 @@
                 "_treasury_voice_hx_lowest_rank": {},
                 "_treasury_voice_rank": {},
                 "owner_id": {},
-                "other_id": {}
+                "person_id": {}
             }
         },
-        "agendaunit": {
+        "worldunit": {
             "columns": {
                 "owner_id": {},
                 "rational": {},
@@ -47,13 +47,13 @@
         },
         "calendar": {
             "columns": {
-                "intent_idea_road": {},
-                "intent_weight": {},
+                "agenda_idea_road": {},
+                "agenda_weight": {},
                 "owner_id": {},
                 "report_date_range_cease": {},
                 "report_date_range_start": {},
-                "report_interval_intent_state_max_count": {},
-                "report_interval_intent_task_max_count": {},
+                "report_interval_agenda_state_max_count": {},
+                "report_interval_agenda_task_max_count": {},
                 "report_interval_length": {},
                 "report_time_road": {},
                 "task": {},

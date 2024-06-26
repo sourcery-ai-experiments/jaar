@@ -17,26 +17,26 @@ class RealID(RoadNode):  # Created to help track the concept
     pass
 
 
-class PersonID(RoadNode):  # Created to help track the concept
+class OwnerID(RoadNode):  # Created to help track the concept
     """Must be node thus not include road delimiter"""
 
     pass
 
 
-class HealerID(PersonID):
+class HealerID(OwnerID):
     """A RoadNode used to identify a Problem's Healer"""
 
     pass
 
 
 class OwnerID(HealerID):
-    """A RoadNode used to identify a AgendaUnit's owner_id"""
+    """A RoadNode used to identify a WorldUnit's owner_id"""
 
     pass
 
 
-class OtherID(OwnerID):  # Created to help track the concept
-    """Every OtherID object is OwnerID, must follow OwnerID format."""
+class PersonID(OwnerID):  # Created to help track the concept
+    """Every PersonID object is OwnerID, must follow OwnerID format."""
 
     pass
 

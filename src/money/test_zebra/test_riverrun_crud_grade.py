@@ -23,7 +23,6 @@ def test_RiverRun_set_initial_rivergrade_SetsAttr():
         yao_userhub, bob_text, yao_number, x_debtor_count, x_credor_count
     )
     bob_rivergrade.grant_amount = 0
-    bob_rivergrade.set_tax_paid_amount(0)
     assert yao_riverrun._rivergrades.get(bob_text) != None
     gen_rivergrade = yao_riverrun._rivergrades.get(bob_text)
     assert gen_rivergrade.debtor_count == x_debtor_count
@@ -66,7 +65,7 @@ def test_RiverRun_rivergrade_exists_ReturnsObj():
     assert yao_riverrun._rivergrades_is_empty() == False
 
 
-def test_RiverRun_reset_initial_rivergrades_CorrectlySetsAttr():
+def test_RiverRun_set_all_initial_rivergrades_CorrectlySetsAttr():
     # GIVEN
     yao_userhub = example_yao_userhub()
     yao_text = "Yao"
@@ -79,15 +78,15 @@ def test_RiverRun_reset_initial_rivergrades_CorrectlySetsAttr():
     x_riverrun.set_econ_credorledger(yao_text, bob_text, 1)
     x_riverrun.set_econ_credorledger(zia_text, bob_text, 1)
     x_riverrun.set_econ_credorledger(xio_text, sue_text, 1)
-    all_others_ids = x_riverrun.get_all_econ_credorledger_other_ids()
-    assert all_others_ids == {yao_text, bob_text, zia_text, xio_text, sue_text}
+    all_persons_ids = x_riverrun.get_all_econ_credorledger_person_ids()
+    assert all_persons_ids == {yao_text, bob_text, zia_text, xio_text, sue_text}
     assert x_riverrun._rivergrades_is_empty()
     assert x_riverrun.rivergrade_exists(yao_text) == False
     assert x_riverrun.rivergrade_exists(bob_text) == False
     assert x_riverrun.rivergrade_exists(zia_text) == False
 
     # WHEN
-    x_riverrun.reset_initial_rivergrades()
+    x_riverrun.set_all_initial_rivergrades()
 
     # THEN
     assert x_riverrun._rivergrades_is_empty() == False
@@ -96,7 +95,7 @@ def test_RiverRun_reset_initial_rivergrades_CorrectlySetsAttr():
     assert x_riverrun.rivergrade_exists(zia_text)
 
 
-def test_RiverRun_reset_initial_rivergrades_CorrectlyOverWritesPrevious():
+def test_RiverRun_set_all_initial_rivergrades_CorrectlyOverWritesPrevious():
     # GIVEN
     yao_userhub = example_yao_userhub()
     yao_text = "Yao"
@@ -109,7 +108,7 @@ def test_RiverRun_reset_initial_rivergrades_CorrectlyOverWritesPrevious():
     x_riverrun.set_econ_credorledger(yao_text, bob_text, 1)
     x_riverrun.set_econ_credorledger(zia_text, bob_text, 1)
     x_riverrun.set_econ_credorledger(xio_text, sue_text, 1)
-    x_riverrun.reset_initial_rivergrades()
+    x_riverrun.set_all_initial_rivergrades()
     assert x_riverrun.rivergrade_exists(yao_text)
     assert x_riverrun.rivergrade_exists(bob_text)
     assert x_riverrun.rivergrade_exists(zia_text)
@@ -118,7 +117,7 @@ def test_RiverRun_reset_initial_rivergrades_CorrectlyOverWritesPrevious():
 
     # WHEN
     x_riverrun.delete_econ_credorledgers_owner(xio_text)
-    x_riverrun.reset_initial_rivergrades()
+    x_riverrun.set_all_initial_rivergrades()
 
     # THEN
     assert x_riverrun.rivergrade_exists(yao_text)
