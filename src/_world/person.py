@@ -226,6 +226,7 @@ class PersonUnit(PersonCore):
             "person_id": self.person_id,
             "credor_weight": self.credor_weight,
             "debtor_weight": self.debtor_weight,
+            "_belieflinks": self.get_belieflinks_dict(),
             "_credor_operational": self._credor_operational,
             "_debtor_operational": self._debtor_operational,
             "_treasury_due_paid": self._treasury_due_paid,

@@ -865,12 +865,13 @@ class WorldUnit:
         for x_beliefunit in self._beliefs.values():
             for x_personlink in x_beliefunit._persons.values():
                 x_personunit = self.get_person(x_personlink.person_id)
-                x_belieflink = belieflink_shop(
-                    x_beliefunit.belief_id,
-                    credor_weight=x_personlink.credor_weight,
-                    debtor_weight=x_personlink.debtor_weight,
-                )
-                x_personunit.set_belieflink(x_belieflink)
+                if x_personunit != None:
+                    x_belieflink = belieflink_shop(
+                        x_beliefunit.belief_id,
+                        credor_weight=x_personlink.credor_weight,
+                        debtor_weight=x_personlink.debtor_weight,
+                    )
+                    x_personunit.set_belieflink(x_belieflink)
 
     def set_time_facts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None
