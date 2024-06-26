@@ -1,3 +1,4 @@
+from src._world.belieflink import belieflink_shop
 from src._world.person import (
     personunit_shop,
     personunits_get_from_json,
@@ -6,6 +7,40 @@ from src._world.person import (
 )
 from src._instrument.python import x_is_json, get_json_from_dict
 from pytest import raises as pytest_raises
+
+
+def test_PersonUnit_get_belieflinks_dict_ReturnObj():
+    # GIVEN
+    sue_text = "Sue"
+    sue_credor_weight = 11
+    sue_debtor_weight = 13
+    run_text = ",Run"
+    run_credor_weight = 17
+    run_debtor_weight = 23
+    sue_belieflink = belieflink_shop(sue_text, sue_credor_weight, sue_debtor_weight)
+    run_belieflink = belieflink_shop(run_text, run_credor_weight, run_debtor_weight)
+    sue_personunit = personunit_shop(sue_text)
+    sue_personunit.set_belieflink(sue_belieflink)
+    sue_personunit.set_belieflink(run_belieflink)
+
+    # WHEN
+    sue_belieflinks_dict = sue_personunit.get_belieflinks_dict()
+
+    # THEN
+    assert sue_belieflinks_dict.get(sue_text) != None
+    assert sue_belieflinks_dict.get(run_text) != None
+    sue_belieflink_dict = sue_belieflinks_dict.get(sue_text)
+    run_belieflink_dict = sue_belieflinks_dict.get(run_text)
+    assert sue_belieflink_dict == {
+        "belief_id": sue_text,
+        "credor_weight": sue_credor_weight,
+        "debtor_weight": sue_debtor_weight,
+    }
+    assert run_belieflink_dict == {
+        "belief_id": run_text,
+        "credor_weight": run_credor_weight,
+        "debtor_weight": run_debtor_weight,
+    }
 
 
 def test_PersonUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():

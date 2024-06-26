@@ -108,37 +108,6 @@ class PersonUnit(PersonCore):
         ):
             self._treasury_voice_hx_lowest_rank = self._treasury_voice_rank
 
-    def get_dict(self, all_attrs: bool = False) -> dict[str:str]:
-        x_dict = {
-            "person_id": self.person_id,
-            "credor_weight": self.credor_weight,
-            "debtor_weight": self.debtor_weight,
-            "_credor_operational": self._credor_operational,
-            "_debtor_operational": self._debtor_operational,
-            "_treasury_due_paid": self._treasury_due_paid,
-            "_treasury_due_diff": self._treasury_due_diff,
-            "_treasury_cred_score": self._treasury_cred_score,
-            "_treasury_voice_rank": self._treasury_voice_rank,
-            "_treasury_voice_hx_lowest_rank": self._treasury_voice_hx_lowest_rank,
-        }
-        if self._irrational_debtor_weight not in [None, 0]:
-            x_dict["_irrational_debtor_weight"] = self._irrational_debtor_weight
-        if self._inallocable_debtor_weight not in [None, 0]:
-            x_dict["_inallocable_debtor_weight"] = self._inallocable_debtor_weight
-
-        if all_attrs:
-            self._all_attrs_necessary_in_dict(x_dict)
-        return x_dict
-
-    def _all_attrs_necessary_in_dict(self, x_dict):
-        x_dict["_world_cred"] = self._world_cred
-        x_dict["_world_debt"] = self._world_debt
-        x_dict["_world_agenda_cred"] = self._world_agenda_cred
-        x_dict["_world_agenda_debt"] = self._world_agenda_debt
-        x_dict["_world_agenda_ratio_cred"] = self._world_agenda_ratio_cred
-        x_dict["_world_agenda_ratio_debt"] = self._world_agenda_ratio_debt
-        x_dict["_output_world_meld_order"] = self._output_world_meld_order
-
     def set_credor_weight(self, credor_weight: int):
         if (credor_weight / self._pixel).is_integer() is False:
             raise _pixel_RatioException(
@@ -241,6 +210,47 @@ class PersonUnit(PersonCore):
 
     def clear_belieflinks(self):
         self._belieflinks = {}
+
+    def get_belieflinks_dict(self) -> dict:
+        return {
+            x_belieflink.belief_id: {
+                "belief_id": x_belieflink.belief_id,
+                "credor_weight": x_belieflink.credor_weight,
+                "debtor_weight": x_belieflink.debtor_weight,
+            }
+            for x_belieflink in self._belieflinks.values()
+        }
+
+    def get_dict(self, all_attrs: bool = False) -> dict[str:str]:
+        x_dict = {
+            "person_id": self.person_id,
+            "credor_weight": self.credor_weight,
+            "debtor_weight": self.debtor_weight,
+            "_credor_operational": self._credor_operational,
+            "_debtor_operational": self._debtor_operational,
+            "_treasury_due_paid": self._treasury_due_paid,
+            "_treasury_due_diff": self._treasury_due_diff,
+            "_treasury_cred_score": self._treasury_cred_score,
+            "_treasury_voice_rank": self._treasury_voice_rank,
+            "_treasury_voice_hx_lowest_rank": self._treasury_voice_hx_lowest_rank,
+        }
+        if self._irrational_debtor_weight not in [None, 0]:
+            x_dict["_irrational_debtor_weight"] = self._irrational_debtor_weight
+        if self._inallocable_debtor_weight not in [None, 0]:
+            x_dict["_inallocable_debtor_weight"] = self._inallocable_debtor_weight
+
+        if all_attrs:
+            self._all_attrs_necessary_in_dict(x_dict)
+        return x_dict
+
+    def _all_attrs_necessary_in_dict(self, x_dict):
+        x_dict["_world_cred"] = self._world_cred
+        x_dict["_world_debt"] = self._world_debt
+        x_dict["_world_agenda_cred"] = self._world_agenda_cred
+        x_dict["_world_agenda_debt"] = self._world_agenda_debt
+        x_dict["_world_agenda_ratio_cred"] = self._world_agenda_ratio_cred
+        x_dict["_world_agenda_ratio_debt"] = self._world_agenda_ratio_debt
+        x_dict["_output_world_meld_order"] = self._output_world_meld_order
 
 
 # class PersonUnitsshop:
