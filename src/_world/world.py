@@ -855,9 +855,12 @@ class WorldUnit:
                 x_idea.set_balancelink(balancelink=new_balancelink)
                 x_idea.del_balancelink(belief_id=old_belief_id)
 
-    def _migrate_beliefunits_to_belieflinks(self):
+    def clear_personunits_belieflinks(self):
         for x_personunit in self._persons.values():
             x_personunit.clear_belieflinks()
+
+    def _migrate_beliefunits_to_belieflinks(self):
+        self.clear_personunits_belieflinks()
 
         for x_beliefunit in self._beliefs.values():
             for x_personlink in x_beliefunit._persons.values():
@@ -2070,6 +2073,7 @@ class WorldUnit:
         }
 
     def get_dict(self) -> dict[str:str]:
+        self._migrate_beliefunits_to_belieflinks()
         x_dict = {
             "_persons": self.get_persons_dict(),
             "_beliefs": self.get_beliefunits_dict(),
