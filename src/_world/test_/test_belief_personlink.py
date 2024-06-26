@@ -1,181 +1,246 @@
-from src._world.person import (
-    PersonID,
-    personlink_shop,
-    personlinks_get_from_json,
+from src._world.person import personlink_shop
+from src._world.beliefunit import (
+    BalanceLine,
+    balanceline_shop,
+    BeliefUnit,
+    beliefunit_shop,
+    BeliefID,
+    BalanceLink,
+    balancelink_shop,
+    balancelinks_get_from_json,
+    balanceheir_shop,
+    get_from_json as beliefunits_get_from_json,
+    get_beliefunit_from_dict,
+    get_beliefunits_from_dict,
+)
+from src._road.road import (
+    get_default_real_id_roadnode as root_label,
+    create_road,
+    default_road_delimiter_if_none,
 )
 from src._instrument.python import x_is_json, get_json_from_dict
 from pytest import raises as pytest_raises
 
 
-def test_PersonLink_exists():
-    # GIVEN
-    bikers_person_id = PersonID("Yao")
-
-    # WHEN
-    x_personlink = personlink_shop(person_id=bikers_person_id)
-
-    # THEN
-    assert x_personlink.person_id == bikers_person_id
-    assert x_personlink.credor_weight == 1.0
-    assert x_personlink.debtor_weight == 1.0
-
-    # WHEN
-    bikers_credor_weight = 3.0
-    bikers_debtor_weight = 5.0
-    x_personlink = personlink_shop(
-        person_id=bikers_person_id,
-        credor_weight=bikers_credor_weight,
-        debtor_weight=bikers_debtor_weight,
-        _world_cred=0.7,
-        _world_debt=0.51,
-        _world_agenda_cred=0.66,
-        _world_agenda_debt=0.55,
-    )
-
-    # THEN
-    assert x_personlink.credor_weight == bikers_credor_weight
-    assert x_personlink.debtor_weight == bikers_debtor_weight
-    assert x_personlink._world_cred != None
-    assert x_personlink._world_cred == 0.7
-    assert x_personlink._world_debt == 0.51
-    assert x_personlink._world_agenda_cred == 0.66
-    assert x_personlink._world_agenda_debt == 0.55
-
-
-def test_personlink_shop_set_world_cred_debt_SetsAttrCorrectly():
-    # GIVEN
-    bikers_person_id = PersonID("Yao")
-    bikers_credor_weight = 3.0
-    personlinks_sum_credor_weight = 60
-    belief_world_cred = 0.5
-    belief_world_agenda_cred = 0.98
-
-    bikers_debtor_weight = 13.0
-    personlinks_sum_debtor_weight = 26.0
-    belief_world_debt = 0.9
-    belief_world_agenda_debt = 0.5151
-
-    x_personlink = personlink_shop(
-        person_id=bikers_person_id,
-        credor_weight=bikers_credor_weight,
-        debtor_weight=bikers_debtor_weight,
-    )
-    assert x_personlink._world_cred is None
-    assert x_personlink._world_debt is None
-    assert x_personlink._world_agenda_cred is None
-    assert x_personlink._world_agenda_debt is None
-
-    # WHEN
-    x_personlink.set_world_cred_debt(
-        personlinks_credor_weight_sum=personlinks_sum_credor_weight,
-        personlinks_debtor_weight_sum=personlinks_sum_debtor_weight,
-        belief_world_cred=belief_world_cred,
-        belief_world_debt=belief_world_debt,
-        belief_world_agenda_cred=belief_world_agenda_cred,
-        belief_world_agenda_debt=belief_world_agenda_debt,
-    )
-
-    # THEN
-    assert x_personlink._world_cred == 0.025
-    assert x_personlink._world_debt == 0.45
-    assert x_personlink._world_agenda_cred == 0.049
-    assert x_personlink._world_agenda_debt == 0.25755
-
-
-def test_personlink_shop_reset_world_cred_debt():
-    # GIVEN
-    biker_person_id = "maria"
-    biker_person = personlink_shop(
-        person_id=biker_person_id, _world_cred=0.04, _world_debt=0.7
-    )
-    print(f"{biker_person}")
-
-    assert biker_person._world_cred != None
-    assert biker_person._world_debt != None
-
-    # WHEN
-    biker_person.reset_world_cred_debt()
-
-    # THEN
-    assert biker_person._world_cred == 0
-    assert biker_person._world_debt == 0
-
-
-def test_personlink_shop_get_dict_ReturnsDictWithNecessaryDataForJSON():
-    # GIVEN
-    str_person_id = "Yao"
-    biker_person_id = PersonID(str_person_id)
-    biker_person_link = personlink_shop(
-        person_id=biker_person_id, credor_weight=12, debtor_weight=19
-    )
-    print(f"{biker_person_link}")
-
-    # WHEN
-    biker_dict = biker_person_link.get_dict()
-
-    # THEN
-    assert biker_dict != None
-    assert biker_dict == {
-        "person_id": biker_person_id,
-        "credor_weight": 12,
-        "debtor_weight": 19,
-    }
-
-
-def test_personlink_get_from_JSON_ReturnsCorrectObj_SimpleExample():
-    # GIVEN
-    yao_text = "Yao"
-    yao_json_dict = {
-        yao_text: {"person_id": yao_text, "credor_weight": 12, "debtor_weight": 19}
-    }
-    yao_json_text = get_json_from_dict(dict_x=yao_json_dict)
-    assert x_is_json(json_x=yao_json_text)
-
-    # WHEN
-    yao_obj_dict = personlinks_get_from_json(personlinks_json=yao_json_text)
-
-    # THEN
-    assert yao_obj_dict != None
-
-    yao_person_id = PersonID(yao_text)
-    yao_personlink = personlink_shop(
-        person_id=yao_person_id, credor_weight=12, debtor_weight=19
-    )
-    personlinks_dict = {yao_personlink.person_id: yao_personlink}
-    assert yao_obj_dict == personlinks_dict
-
-
-def test_personlink_meld_RaiseEqualperson_idException():
+def test_BeliefUnit_set_personlink_CorrectlySetsAttr():
     # GIVEN
     todd_text = "Todd"
-    todd_person = personlink_shop(person_id=todd_text)
     mery_text = "Merry"
-    mery_person = personlink_shop(person_id=mery_text)
+    todd_person = personlink_shop(
+        person_id=todd_text, credor_weight=13, debtor_weight=7
+    )
+    mery_person = personlink_shop(
+        person_id=mery_text, credor_weight=23, debtor_weight=5
+    )
+
+    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _persons={})
+
+    # WHEN
+    swimmers_belief.set_personlink(todd_person)
+    swimmers_belief.set_personlink(mery_person)
+
+    # THEN
+    swimmers_persons = {
+        todd_person.person_id: todd_person,
+        mery_person.person_id: mery_person,
+    }
+    assert swimmers_belief._persons == swimmers_persons
+
+
+def test_BeliefUnit_get_personlink_ReturnsCorrectObj():
+    # GIVEN
+    todd_text = "Todd"
+    mery_text = "Merry"
+    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _persons={})
+    swimmers_belief.set_personlink(personlink_shop(todd_text, 13, 7))
+    swimmers_belief.set_personlink(personlink_shop(mery_text, 23, 5))
 
     # WHEN / THEN
-    with pytest_raises(Exception) as excinfo:
-        todd_person.meld(mery_person)
-    assert (
-        str(excinfo.value)
-        == f"Meld fail PersonLink='{todd_person.person_id}' not the equal as PersonLink='{mery_person.person_id}"
-    )
+    assert swimmers_belief.get_personlink(todd_text) != None
+    assert swimmers_belief.get_personlink(mery_text) != None
+    assert swimmers_belief.get_personlink("todd") is None
 
 
-def test_personlink_meld_CorrectlySumsWeights():
+def test_BeliefUnit_edit_personlink_CorrectlySetsAttr():
     # GIVEN
     todd_text = "Todd"
-    todd_person1 = personlink_shop(
-        person_id=todd_text, credor_weight=12, debtor_weight=19
+    old_todd_credor_weight = 13
+    todd_debtor_weight = 7
+    swimmers_belief = beliefunit_shop(belief_id=",swimmers")
+    swimmers_belief.set_personlink(
+        personlink_shop(todd_text, old_todd_credor_weight, todd_debtor_weight)
     )
-    todd_person2 = personlink_shop(
-        person_id=todd_text, credor_weight=33, debtor_weight=3
-    )
-    assert todd_person1.credor_weight == 12
-    assert todd_person1.debtor_weight == 19
+    todd_personlink = swimmers_belief.get_personlink(todd_text)
+    assert todd_personlink.credor_weight == old_todd_credor_weight
 
     # WHEN
-    todd_person1.meld(todd_person2)
+    new_todd_credor_weight = 17
+    swimmers_belief.edit_personlink(
+        person_id=todd_text, credor_weight=new_todd_credor_weight
+    )
 
     # THEN
-    assert todd_person1.credor_weight == 45
-    assert todd_person1.debtor_weight == 22
+    assert todd_personlink.credor_weight == new_todd_credor_weight
+
+
+def test_personlink_exists_ReturnsCorrectObj():
+    # GIVEN
+    todd_text = "Todd"
+    mery_text = "Merry"
+    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _persons={})
+    swimmers_belief.set_personlink(personlink_shop(todd_text, 13, 7))
+    swimmers_belief.set_personlink(personlink_shop(mery_text, 23, 5))
+
+    # WHEN / THEN
+    assert swimmers_belief.personlink_exists(todd_text)
+    assert swimmers_belief.personlink_exists(mery_text)
+    assert swimmers_belief.personlink_exists("todd") is False
+
+
+def test_BeliefUnit_del_personlink_SetsAttrCorrectly():
+    # GIVEN
+    todd_text = "Todd"
+    mery_text = "Merry"
+    todd_person = personlink_shop(person_id=todd_text)
+    mery_person = personlink_shop(person_id=mery_text)
+    swimmers_persons = {
+        todd_person.person_id: todd_person,
+        mery_person.person_id: mery_person,
+    }
+    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _persons={})
+    swimmers_belief.set_personlink(todd_person)
+    swimmers_belief.set_personlink(mery_person)
+    assert len(swimmers_belief._persons) == 2
+    assert swimmers_belief._persons == swimmers_persons
+
+    # WHEN
+    swimmers_belief.del_personlink(person_id=todd_text)
+
+    # THEN
+    assert len(swimmers_belief._persons) == 1
+    assert swimmers_belief._persons.get(todd_text) is None
+
+
+def test_BeliefUnit_clear_personlinks_SetsAttrCorrectly():
+    # GIVEN
+    todd_text = "Todd"
+    mery_text = "Merry"
+    todd_person = personlink_shop(person_id=todd_text)
+    mery_person = personlink_shop(person_id=mery_text)
+    swimmers_persons = {
+        todd_person.person_id: todd_person,
+        mery_person.person_id: mery_person,
+    }
+    swimmers_belief = beliefunit_shop(belief_id=",swimmers", _persons={})
+    swimmers_belief.set_personlink(todd_person)
+    swimmers_belief.set_personlink(mery_person)
+    assert len(swimmers_belief._persons) == 2
+    assert swimmers_belief._persons == swimmers_persons
+
+    # WHEN
+    swimmers_belief.clear_personlinks()
+
+    # THEN
+    assert len(swimmers_belief._persons) == 0
+    assert swimmers_belief._persons.get(todd_text) is None
+
+
+def test_BeliefUnit_reset_world_importance_reset_personlinks():
+    # GIVEN
+    todd_text = "Todd"
+    mery_text = "Merry"
+    todd_person = personlink_shop(
+        person_id=todd_text,
+        _world_cred=0.13,
+        _world_debt=0.7,
+        _world_agenda_cred=0.53,
+        _world_agenda_debt=0.77,
+    )
+    mery_person = personlink_shop(
+        person_id=mery_text,
+        _world_cred=0.23,
+        _world_debt=0.5,
+        _world_agenda_cred=0.54,
+        _world_agenda_debt=0.57,
+    )
+    bikers_persons = {
+        todd_person.person_id: todd_person,
+        mery_person.person_id: mery_person,
+    }
+    bikers_belief_id = ",bikers"
+    bikers_beliefunit = beliefunit_shop(belief_id=bikers_belief_id)
+    bikers_beliefunit._world_cred = (0.33,)
+    bikers_beliefunit._world_debt = (0.44,)
+    bikers_beliefunit._world_agenda_cred = (0.1,)
+    bikers_beliefunit._world_agenda_debt = (0.2,)
+    bikers_beliefunit.set_personlink(personlink=todd_person)
+    bikers_beliefunit.set_personlink(personlink=mery_person)
+    print(f"{bikers_beliefunit}")
+    biker_personlink_todd = bikers_beliefunit._persons.get(todd_text)
+    assert biker_personlink_todd._world_cred == 0.13
+    assert biker_personlink_todd._world_debt == 0.7
+    assert biker_personlink_todd._world_agenda_cred == 0.53
+    assert biker_personlink_todd._world_agenda_debt == 0.77
+
+    biker_personlink_mery = bikers_beliefunit._persons.get(mery_text)
+    assert biker_personlink_mery._world_cred == 0.23
+    assert biker_personlink_mery._world_debt == 0.5
+    assert biker_personlink_mery._world_agenda_cred == 0.54
+    assert biker_personlink_mery._world_agenda_debt == 0.57
+
+    # WHEN
+    bikers_beliefunit.reset_world_cred_debt()
+
+    # THEN
+    assert biker_personlink_todd._world_cred == 0
+    assert biker_personlink_todd._world_debt == 0
+    assert biker_personlink_todd._world_agenda_cred == 0
+    assert biker_personlink_todd._world_agenda_debt == 0
+    assert biker_personlink_mery._world_cred == 0
+    assert biker_personlink_mery._world_debt == 0
+    assert biker_personlink_mery._world_agenda_cred == 0
+    assert biker_personlink_mery._world_agenda_debt == 0
+
+
+def test_personlink_meld_ReturnsCorrectObj_BaseScenario():
+    # GIVEN
+    todd_person = personlink_shop(person_id="Todd")
+    merry_person = personlink_shop(person_id="Merry")
+    bikers_belief_id = ",bikers"
+    bikers_belief = beliefunit_shop(belief_id=bikers_belief_id, _persons={})
+    bikers_belief.set_personlink(personlink=todd_person)
+    bikers_belief.set_personlink(personlink=merry_person)
+
+    x2_belief = beliefunit_shop(belief_id=bikers_belief_id, _persons={})
+
+    # WHEN
+    bikers_belief.meld(exterior_belief=x2_belief)
+    print(f"{bikers_belief.belief_id=} {x2_belief.belief_id=}")
+
+    # THEN
+    assert len(bikers_belief._persons) == 2
+
+
+def test_personlink_meld_ReturnsCorrectObj_GainScenario():
+    # GIVEN
+    todd_text = "Todd"
+    mery_text = "Merry"
+    todd_person = personlink_shop(
+        person_id=todd_text, credor_weight=13, debtor_weight=7
+    )
+    mery_person = personlink_shop(
+        person_id=mery_text, credor_weight=23, debtor_weight=5
+    )
+    bikers_belief_id = ",bikers"
+    bikers_belief = beliefunit_shop(belief_id=bikers_belief_id, _persons={})
+
+    x2_belief = beliefunit_shop(belief_id=bikers_belief_id, _persons={})
+    x2_belief.set_personlink(personlink=todd_person)
+    x2_belief.set_personlink(personlink=mery_person)
+
+    # WHEN
+    bikers_belief.meld(exterior_belief=x2_belief)
+
+    # THEN
+    assert len(bikers_belief._persons) == 2
+    assert bikers_belief._persons.get(todd_text) != None
