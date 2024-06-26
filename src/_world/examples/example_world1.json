@@ -3169,7 +3169,7 @@
                         "_uid": 161,
                         "_weight": 1
                     },
-                    "charles friends be desperate for of housing support": {
+                    "Aarons friends are desperate for of housing support": {
                         "_balancelinks": {
                             "Renee Elise Goldsberry": {
                                 "belief_id": "Renee Elise Goldsberry",
@@ -3179,7 +3179,7 @@
                         },
                         "_is_expanded": false,
                         "_kids": {
-                            "Ask Charles monthly what I can do": {
+                            "Ask Chuck monthly what I can do": {
                                 "_balancelinks": {
                                     "Renee Elise Goldsberry": {
                                         "belief_id": "Renee Elise Goldsberry",
@@ -3187,7 +3187,7 @@
                                         "debtor_weight": 1.0
                                     }
                                 },
-                                "_label": "Ask Charles monthly what I can do",
+                                "_label": "Ask Chuck monthly what I can do",
                                 "_reasonunits": {
                                     "music,Aaron Donald things effected by him": {
                                         "base": "music,Aaron Donald things effected by him",
@@ -3202,7 +3202,7 @@
                                 "_weight": 1
                             }
                         },
-                        "_label": "charles friends be desperate for of housing support",
+                        "_label": "Aarons friends are desperate for of housing support",
                         "_reasonunits": {
                             "music,Aaron Donald things effected by him": {
                                 "base": "music,Aaron Donald things effected by him",
@@ -4233,7 +4233,7 @@
             "debtor_weight": 1,
             "person_id": "Bob302"
         },
-        "Charles Lee": {
+        "Chuck Lee": {
             "_belieflinks": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
@@ -4250,8 +4250,8 @@
                     "credor_weight": 1,
                     "debtor_weight": 1
                 },
-                "Charles Lee": {
-                    "belief_id": "Charles Lee",
+                "Chuck Lee": {
+                    "belief_id": "Chuck Lee",
                     "credor_weight": 1,
                     "debtor_weight": 1
                 }
@@ -4265,7 +4265,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Charles Lee"
+            "person_id": "Chuck Lee"
         },
         "Ernesto Chavez": {
             "_belieflinks": {

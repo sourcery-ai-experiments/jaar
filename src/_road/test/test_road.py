@@ -489,7 +489,7 @@ def test_replace_road_delimiter_CorrectlyRaisesError():
     )
 
 
-def test_replace_road_delimiter_WhenNewdelimiterIsFirstCharacterInRoadUnitRaisesError():
+def test_replace_road_delimiter_WhenNewdelimiterIsFirstInRoadUnitRaisesError():
     # GIVEN
     cooker_text = "/cooker"
     cleaner_text = "cleaner"

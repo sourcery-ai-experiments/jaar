@@ -5132,7 +5132,7 @@
             "debtor_weight": 1,
             "person_id": "Bob302"
         },
-        "Charles Lee": {
+        "Chuck Lee": {
             "_belieflinks": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
@@ -5149,8 +5149,8 @@
                     "credor_weight": 1,
                     "debtor_weight": 1
                 },
-                "Charles Lee": {
-                    "belief_id": "Charles Lee",
+                "Chuck Lee": {
+                    "belief_id": "Chuck Lee",
                     "credor_weight": 1,
                     "debtor_weight": 1
                 }
@@ -5164,7 +5164,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Charles Lee"
+            "person_id": "Chuck Lee"
         },
         "Ernesto Chavez": {
             "_belieflinks": {
