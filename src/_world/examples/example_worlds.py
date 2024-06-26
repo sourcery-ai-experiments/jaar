@@ -1,3 +1,4 @@
+from src._instrument.file import open_file
 from src._road.road import RoadUnit
 from src._world.idea import ideaunit_shop
 from src._world.reason_idea import (
@@ -13,7 +14,6 @@ from src._world.world import (
 )
 from src._world.reason_assign import assignedunit_shop
 from src._world.examples.world_env import get_world_examples_dir as env_dir
-from src._instrument.file import open_file
 
 
 def world_v001() -> WorldUnit:

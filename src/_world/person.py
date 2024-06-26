@@ -1,7 +1,7 @@
 from src._instrument.python import get_1_if_None, get_dict_from_json, get_0_if_None
 from src._road.road import PersonID, default_road_delimiter_if_none, validate_roadnode
 from src._road.finance import default_pixel_if_none
-from src._world.belieflink import BeliefID, BeliefLink
+from src._world.belieflink import BeliefID, BeliefLink, belieflinks_get_from_dict
 from dataclasses import dataclass
 
 
@@ -280,7 +280,6 @@ def personunit_get_from_dict(personunit_dict: dict, _road_delimiter: str) -> Per
     _treasury_voice_hx_lowest_rank = personunit_dict.get(
         "_treasury_voice_hx_lowest_rank", 0
     )
-
     x_personunit = personunit_shop(
         person_id=personunit_dict["person_id"],
         credor_weight=personunit_dict["credor_weight"],
@@ -288,6 +287,9 @@ def personunit_get_from_dict(personunit_dict: dict, _road_delimiter: str) -> Per
         _credor_operational=personunit_dict["_credor_operational"],
         _debtor_operational=personunit_dict["_debtor_operational"],
         _road_delimiter=_road_delimiter,
+    )
+    x_personunit._belieflinks = belieflinks_get_from_dict(
+        personunit_dict["_belieflinks"]
     )
     x_personunit.set_treasury_attr(
         _treasury_due_paid=_treasury_due_paid,

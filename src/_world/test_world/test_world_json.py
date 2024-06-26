@@ -491,18 +491,20 @@ def test_worldunit_get_from_json_ReturnsCorrectObj_road_delimiter_BeliefExample(
     # GIVEN
     slash_delimiter = "/"
     before_bob_world = worldunit_shop("Bob", _road_delimiter=slash_delimiter)
-    swimmers_text = f"{slash_delimiter}Swimmers"
-    before_bob_world.set_beliefunit(
-        beliefunit_shop(swimmers_text, _road_delimiter=slash_delimiter)
-    )
-    assert before_bob_world.get_beliefunit(swimmers_text) != None
+    yao_text = "Yao"
+    swim_text = f"{slash_delimiter}Swimmers"
+    swim_beliefunit = beliefunit_shop(swim_text, _road_delimiter=slash_delimiter)
+    swim_beliefunit.set_personlink(personlink_shop(yao_text))
+    before_bob_world.add_personunit(yao_text)
+    before_bob_world.set_beliefunit(swim_beliefunit)
+    assert before_bob_world.get_beliefunit(swim_text) != None
 
     # WHEN
     bob_json = before_bob_world.get_json()
     after_bob_world = worldunit_get_from_json(bob_json)
 
     # THEN
-    after_bob_beliefunit = after_bob_world.get_beliefunit(swimmers_text)
+    after_bob_beliefunit = after_bob_world.get_beliefunit(swim_text)
     assert after_bob_beliefunit._road_delimiter == slash_delimiter
 
 

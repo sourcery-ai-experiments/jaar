@@ -250,6 +250,25 @@ def test_personunit_get_from_dict_ReturnsCorrectObjWith_road_delimiter():
     assert after_yao_personunit._road_delimiter == slash_text
 
 
+def test_personunit_get_from_dict_Returns_belieflinks():
+    # GIVEN
+    yao_text = ",Yao"
+    slash_text = "/"
+    before_yao_personunit = personunit_shop(yao_text, _road_delimiter=slash_text)
+    bob_text = "Bob"
+    zia_text = "Zia"
+    before_yao_personunit.set_belieflink(belieflink_shop(bob_text))
+    before_yao_personunit.set_belieflink(belieflink_shop(zia_text))
+    yao_dict = before_yao_personunit.get_dict()
+
+    # WHEN
+    after_yao_personunit = personunit_get_from_dict(yao_dict, slash_text)
+
+    # THEN
+    assert before_yao_personunit == after_yao_personunit
+    assert after_yao_personunit._road_delimiter == slash_text
+
+
 def test_personunits_get_from_dict_ReturnsCorrectObjWith_road_delimiter():
     # GIVEN
     yao_text = ",Yao"
@@ -285,6 +304,7 @@ def test_personunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncomplete
             "person_id": yao_text,
             "credor_weight": yao_credor_weight,
             "debtor_weight": yao_debtor_weight,
+            "_belieflinks": {},
             "_irrational_debtor_weight": yao_irrational_debtor_weight,
             "_inallocable_debtor_weight": yao_inallocable_debtor_weight,
             "_credor_operational": yao_credor_operational,
