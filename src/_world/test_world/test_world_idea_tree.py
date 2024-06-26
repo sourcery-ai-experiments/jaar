@@ -6,7 +6,7 @@ from src._world.healer import healerhold_shop
 from src._world.person import PersonID
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
-from src._world.belief import balanceline_shop, balancelink_shop
+from src._world.beliefunit import balanceline_shop, balancelink_shop
 from src._world.graphic import display_ideatree
 from pytest import raises as pytest_raises
 

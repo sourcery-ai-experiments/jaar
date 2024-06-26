@@ -3,7 +3,7 @@ from src._road.road import RoadUnit
 from src._world.world import worldunit_shop, get_from_json as worldunit_get_from_json
 from src._world.idea import IdeaUnit, ideaunit_shop
 from src._world.reason_idea import reasonunit_shop
-from src._world.belief import beliefunit_shop, balancelink_shop
+from src._world.beliefunit import beliefunit_shop, balancelink_shop
 from src._world.person import personlink_shop
 from src._world.reason_assign import assignedunit_shop
 from src._world.examples.example_worlds import (

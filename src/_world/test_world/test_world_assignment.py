@@ -2,7 +2,7 @@ from src._world.world import worldunit_shop
 from src._world.idea import ideaunit_shop
 from src._world.reason_idea import reasonunit_shop
 from src._world.person import personunit_shop, personlink_shop
-from src._world.belief import beliefunit_shop
+from src._world.beliefunit import beliefunit_shop
 from src._world.examples.example_worlds import (
     get_world_with_4_levels as example_worlds_get_world_with_4_levels,
     get_world_with7amCleanTableReason as example_worlds_get_world_with7amCleanTableReason,

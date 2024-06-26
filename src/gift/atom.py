@@ -7,7 +7,7 @@ from src._instrument.sqlite import create_insert_sqlstr, RowData
 from src._road.road import create_road
 from src._world.reason_idea import factunit_shop
 from src._world.person import personunit_shop, personlink_shop
-from src._world.belief import beliefunit_shop, balancelink_shop
+from src._world.beliefunit import beliefunit_shop, balancelink_shop
 from src._world.idea import ideaunit_shop
 from src._world.world import WorldUnit
 from src.gift.atom_config import (

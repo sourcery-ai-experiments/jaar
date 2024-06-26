@@ -42,7 +42,7 @@ from src._world.reason_idea import (
     reasons_get_from_dict,
     factunits_get_from_dict,
 )
-from src._world.belief import (
+from src._world.beliefunit import (
     BalanceHeir,
     BalanceLink,
     balancelinks_get_from_dict,

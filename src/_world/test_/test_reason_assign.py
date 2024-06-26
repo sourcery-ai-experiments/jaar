@@ -5,7 +5,7 @@ from src._world.reason_assign import (
     assigned_heir_shop,
     create_assignedunit,
 )
-from src._world.belief import BeliefID, beliefunit_shop
+from src._world.beliefunit import BeliefID, beliefunit_shop
 from src._world.person import personlink_shop
 from src._world.world import worldunit_shop
 from pytest import raises as pytest_raises

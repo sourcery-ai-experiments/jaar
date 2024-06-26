@@ -5,7 +5,7 @@ from src._world.person import (
     personunit_shop,
     PersonUnitExternalMetrics,
 )
-from src._world.belief import (
+from src._world.beliefunit import (
     BeliefID,
     beliefunit_shop,
     balancelink_shop,

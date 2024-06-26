@@ -1,4 +1,3 @@
-from dataclasses import dataclass
 from src._instrument.python import (
     get_empty_dict_if_none,
     get_1_if_None,
@@ -7,10 +6,10 @@ from src._instrument.python import (
 )
 from src._road.road import (
     PersonID,
-    RoadUnit,
     default_road_delimiter_if_none,
     validate_roadnode,
 )
+from src._world.belieflink import BeliefID, BeliefCore
 from src._world.person import (
     PersonLink,
     personlinks_get_from_dict,
@@ -18,19 +17,11 @@ from src._world.person import (
     PersonUnit,
 )
 from src._world.meld import get_meld_weight
+from dataclasses import dataclass
 
 
 class InvalidBeliefException(Exception):
     pass
-
-
-class BeliefID(str):  # Created to help track the concept
-    pass
-
-
-@dataclass
-class BeliefCore:
-    belief_id: BeliefID = None
 
 
 @dataclass
@@ -221,29 +212,6 @@ def beliefunit_shop(
     )
     x_beliefunit.set_belief_id(belief_id=belief_id)
     return x_beliefunit
-
-
-@dataclass
-class BeliefLink(BeliefCore):
-    credor_weight: float = 1.0
-    debtor_weight: float = 1.0
-
-    def get_dict(self) -> dict[str:str]:
-        return {
-            "belief_id": self.belief_id,
-            "credor_weight": self.credor_weight,
-            "debtor_weight": self.debtor_weight,
-        }
-
-
-def belieflink_shop(
-    belief_id: BeliefID, credor_weight: float = None, debtor_weight: float = None
-) -> BeliefLink:
-    credor_weight = get_1_if_None(credor_weight)
-    debtor_weight = get_1_if_None(debtor_weight)
-    return BeliefLink(
-        belief_id=belief_id, credor_weight=credor_weight, debtor_weight=debtor_weight
-    )
 
 
 @dataclass

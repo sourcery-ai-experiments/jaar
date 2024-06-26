@@ -1,6 +1,6 @@
 from src._world.graphic import display_ideatree
 from src._world.person import personunit_shop
-from src._world.belief import BeliefID, balancelink_shop
+from src._world.beliefunit import BeliefID, balancelink_shop
 from src._world.world import worldunit_shop
 from src._world.healer import healerhold_shop
 from src._world.examples.example_worlds import (

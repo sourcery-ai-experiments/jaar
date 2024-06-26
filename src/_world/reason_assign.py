@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from src._world.belief import BeliefUnit, BeliefID
+from src._world.beliefunit import BeliefUnit, BeliefID
 from src._world.person import PersonID
 
 

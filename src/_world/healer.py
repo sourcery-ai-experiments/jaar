@@ -1,5 +1,5 @@
 from src._instrument.python import get_empty_set_if_none
-from src._world.belief import BeliefID
+from src._world.beliefunit import BeliefID
 from dataclasses import dataclass
 
 

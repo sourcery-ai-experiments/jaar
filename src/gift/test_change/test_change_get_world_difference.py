@@ -1,8 +1,8 @@
-from src._world.belief import balancelink_shop
+from src._world.beliefunit import balancelink_shop
 from src._world.person import personlink_shop
 from src._world.reason_idea import factunit_shop
 from src._world.idea import ideaunit_shop
-from src._world.belief import beliefunit_shop
+from src._world.beliefunit import beliefunit_shop
 from src._world.world import worldunit_shop
 from src.gift.atom import atom_insert, atom_update, atom_delete
 from src.gift.change import ChangeUnit, changeunit_shop

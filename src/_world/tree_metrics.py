@@ -1,6 +1,6 @@
 from src._instrument.python import get_empty_dict_if_none, get_0_if_None
 from src._world.reason_idea import ReasonUnit, RoadUnit
-from src._world.belief import BalanceLink, BeliefID
+from src._world.beliefunit import BalanceLink, BeliefID
 from dataclasses import dataclass
 
 

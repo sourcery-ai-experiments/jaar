@@ -1,12 +1,10 @@
-from src._world.person import PersonID, personlink_shop
-from src._world.belief import (
+from src._world.person import personlink_shop
+from src._world.beliefunit import (
     BalanceLine,
     balanceline_shop,
     BeliefUnit,
     beliefunit_shop,
     BeliefID,
-    BeliefLink,
-    belieflink_shop,
     BalanceLink,
     balancelink_shop,
     balancelinks_get_from_json,
@@ -18,17 +16,10 @@ from src._world.belief import (
 from src._road.road import (
     get_default_real_id_roadnode as root_label,
     create_road,
-    validate_roadnode,
     default_road_delimiter_if_none,
 )
 from src._instrument.python import x_is_json, get_json_from_dict
 from pytest import raises as pytest_raises
-
-
-def test_BeliefID_exists():
-    bikers_belief_id = BeliefID("bikers")
-    assert bikers_belief_id != None
-    assert str(type(bikers_belief_id)).find(".belief.BeliefID") > 0
 
 
 def test_BeliefUnit_exists():
@@ -564,62 +555,6 @@ def test_balancelink_shop_ReturnsCorrectObj():
     # THEN
     assert bikers_balancelink.credor_weight == bikers_credor_weight
     assert bikers_balancelink.debtor_weight == bikers_debtor_weight
-
-
-def test_BeliefLink_exists():
-    # GIVEN
-    bikers_belief_id = BeliefID("bikers")
-
-    # WHEN
-    bikers_belieflink = BeliefLink(belief_id=bikers_belief_id)
-
-    # THEN
-    assert bikers_belieflink.belief_id == bikers_belief_id
-    assert bikers_belieflink.credor_weight == 1.0
-    assert bikers_belieflink.debtor_weight == 1.0
-
-
-def test_belieflink_shop_ReturnsCorrectObj():
-    # GIVEN
-    bikers_belief_id = BeliefID("bikers")
-    bikers_credor_weight = 3.0
-    bikers_debtor_weight = 5.0
-
-    # WHEN
-    bikers_belieflink = belieflink_shop(
-        belief_id=bikers_belief_id,
-        credor_weight=bikers_credor_weight,
-        debtor_weight=bikers_debtor_weight,
-    )
-
-    # THEN
-    assert bikers_belieflink.credor_weight == bikers_credor_weight
-    assert bikers_belieflink.debtor_weight == bikers_debtor_weight
-
-
-def test_BeliefLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
-    # GIVEN
-    bikers_belief_id = BeliefID("bikers")
-    bikers_credor_weight = 3.0
-    bikers_debtor_weight = 5.0
-    bikers_link = belieflink_shop(
-        belief_id=bikers_belief_id,
-        credor_weight=bikers_credor_weight,
-        debtor_weight=bikers_debtor_weight,
-    )
-
-    print(f"{bikers_link}")
-
-    # WHEN
-    biker_dict = bikers_link.get_dict()
-
-    # THEN
-    assert biker_dict != None
-    assert biker_dict == {
-        "belief_id": bikers_link.belief_id,
-        "credor_weight": bikers_link.credor_weight,
-        "debtor_weight": bikers_link.debtor_weight,
-    }
 
 
 def test_BalanceHeir_set_world_importance_CorrectlySetsAttr():

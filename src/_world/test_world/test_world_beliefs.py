@@ -1,5 +1,5 @@
 from src._road.road import get_default_real_id_roadnode
-from src._world.belief import (
+from src._world.beliefunit import (
     BeliefID,
     balancelink_shop,
     beliefunit_shop,

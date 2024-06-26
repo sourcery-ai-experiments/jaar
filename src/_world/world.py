@@ -49,7 +49,7 @@ from src._world.person import (
     personlink_shop,
     PersonUnitExternalMetrics,
 )
-from src._world.belief import (
+from src._world.beliefunit import (
     BalanceLink,
     BeliefID,
     BeliefUnit,

@@ -1,6 +1,6 @@
 from src._instrument.python import x_is_json, get_dict_from_json
 from src._road.road import default_road_delimiter_if_none
-from src._world.belief import beliefunit_shop, balancelink_shop
+from src._world.beliefunit import beliefunit_shop, balancelink_shop
 from src._world.person import personlink_shop
 from src._world.healer import healerhold_shop
 from src._world.reason_assign import assignedunit_shop

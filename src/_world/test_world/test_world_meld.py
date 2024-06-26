@@ -1,6 +1,6 @@
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
-from src._world.belief import beliefunit_shop
+from src._world.beliefunit import beliefunit_shop
 from src._world.person import personunit_shop, personlink_shop
 from src._world.origin import originunit_shop
 from pytest import raises as pytest_raises

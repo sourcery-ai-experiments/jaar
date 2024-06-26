@@ -1,7 +1,8 @@
+from src._instrument.python import get_1_if_None, get_dict_from_json, get_0_if_None
 from src._road.road import PersonID, default_road_delimiter_if_none, validate_roadnode
 from src._road.finance import default_pixel_if_none
+from src._world.belieflink import BeliefLink
 from dataclasses import dataclass
-from src._instrument.python import get_1_if_None, get_dict_from_json, get_0_if_None
 
 
 class InvalidPersonException(Exception):
@@ -32,6 +33,7 @@ class PersonUnit(PersonCore):
     credor_weight: int = None
     debtor_weight: int = None
     # calculated fields
+    _belieflinks: dict[PersonID:BeliefLink] = None
     _irrational_debtor_weight: int = None  # set by listening process
     _inallocable_debtor_weight: int = None  # set by listening process
     # set by World.calc_world_metrics()
@@ -288,6 +290,7 @@ def personunit_shop(
     x_personunit = PersonUnit(
         credor_weight=get_1_if_None(credor_weight),
         debtor_weight=get_1_if_None(debtor_weight),
+        _belieflinks={},
         _irrational_debtor_weight=get_0_if_None(),
         _inallocable_debtor_weight=get_0_if_None(),
         _credor_operational=_credor_operational,

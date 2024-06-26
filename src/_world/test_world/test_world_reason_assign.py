@@ -1,7 +1,7 @@
 from src._world.reason_assign import assigned_heir_shop, assignedunit_shop
 from src._world.world import worldunit_shop
 from src._world.idea import ideaunit_shop
-from src._world.belief import beliefunit_shop
+from src._world.beliefunit import beliefunit_shop
 
 
 def test_world_edit_idea_attr_CorrectlySetsAssignedUnit():

@@ -1,5 +1,5 @@
 from src._road.road import RoadUnit, get_terminus_node, get_parent_road
-from src._world.belief import BeliefID
+from src._world.beliefunit import BeliefID
 from src._world.world import WorldUnit
 from src.listen.userhub import UserHub
 from copy import deepcopy as copy_deepcopy
