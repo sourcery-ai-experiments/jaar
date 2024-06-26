@@ -19,55 +19,55 @@ def test_BeliefUnit_exists():
 
 def test_BeliefLink_exists():
     # GIVEN
-    bikers_belief_id = BeliefID("bikers")
+    swim_text = "swim"
 
     # WHEN
-    bikers_belieflink = BeliefLink(belief_id=bikers_belief_id)
+    swim_belieflink = BeliefLink(belief_id=swim_text)
 
     # THEN
-    assert bikers_belieflink.belief_id == bikers_belief_id
-    assert bikers_belieflink.credor_weight == 1.0
-    assert bikers_belieflink.debtor_weight == 1.0
+    assert swim_belieflink.belief_id == swim_text
+    assert swim_belieflink.credor_weight == 1.0
+    assert swim_belieflink.debtor_weight == 1.0
 
 
 def test_belieflink_shop_ReturnsCorrectObj():
     # GIVEN
-    bikers_belief_id = BeliefID("bikers")
-    bikers_credor_weight = 3.0
-    bikers_debtor_weight = 5.0
+    swim_text = "swim"
+    swim_credor_weight = 3.0
+    swim_debtor_weight = 5.0
 
     # WHEN
-    bikers_belieflink = belieflink_shop(
-        belief_id=bikers_belief_id,
-        credor_weight=bikers_credor_weight,
-        debtor_weight=bikers_debtor_weight,
+    swim_belieflink = belieflink_shop(
+        belief_id=swim_text,
+        credor_weight=swim_credor_weight,
+        debtor_weight=swim_debtor_weight,
     )
 
     # THEN
-    assert bikers_belieflink.credor_weight == bikers_credor_weight
-    assert bikers_belieflink.debtor_weight == bikers_debtor_weight
+    assert swim_belieflink.credor_weight == swim_credor_weight
+    assert swim_belieflink.debtor_weight == swim_debtor_weight
 
 
 def test_BeliefLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
-    bikers_belief_id = BeliefID("bikers")
-    bikers_credor_weight = 3.0
-    bikers_debtor_weight = 5.0
-    bikers_link = belieflink_shop(
-        belief_id=bikers_belief_id,
-        credor_weight=bikers_credor_weight,
-        debtor_weight=bikers_debtor_weight,
+    swim_text = "swim"
+    swim_credor_weight = 3.0
+    swim_debtor_weight = 5.0
+    swimlink = belieflink_shop(
+        belief_id=swim_text,
+        credor_weight=swim_credor_weight,
+        debtor_weight=swim_debtor_weight,
     )
 
-    print(f"{bikers_link}")
+    print(f"{swimlink}")
 
     # WHEN
-    biker_dict = bikers_link.get_dict()
+    biker_dict = swimlink.get_dict()
 
     # THEN
     assert biker_dict != None
     assert biker_dict == {
-        "belief_id": bikers_link.belief_id,
-        "credor_weight": bikers_link.credor_weight,
-        "debtor_weight": bikers_link.debtor_weight,
+        "belief_id": swimlink.belief_id,
+        "credor_weight": swimlink.credor_weight,
+        "debtor_weight": swimlink.debtor_weight,
     }
