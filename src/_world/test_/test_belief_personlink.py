@@ -1,6 +1,5 @@
-from src._world.belieflink import belieflink_shop
 from src._world.beliefunit import beliefunit_shop
-from src._world.person import personlink_shop, personunit_shop
+from src._world.person import personlink_shop
 
 
 def test_BeliefUnit_set_personlink_CorrectlySetsAttr():
@@ -214,18 +213,3 @@ def test_personlink_meld_ReturnsCorrectObj_GainScenario():
     # THEN
     assert len(bikers_beliefunit._persons) == 2
     assert bikers_beliefunit._persons.get(yao_text) != None
-
-
-# def test_migrate_beliefunits_to_belieflinks_MigratesEmptySet():
-#     # GIVEN
-#     run_text = "Run"
-#     fly_text = "Fly"
-#     run_belieflink = belieflink_shop(run_text)
-#     fly_belieflink = belieflink_shop(fly_text)
-
-#     # WHEN
-
-
-#     # THEN
-
-#     assert 1 == 2
