@@ -50,17 +50,17 @@ def test_create_legible_list_ReturnsObjGivenWorldUpdate_monetary_desc():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObjGivenWorldUpdate_person_credor_pool():
+def test_create_legible_list_ReturnsObjGivenWorldUpdate_char_credor_pool():
     # GIVEN
     category = "worldunit"
-    person_credor_pool_text = "_person_credor_pool"
-    person_credor_pool_int = 71
-    person_credor_pool_atomunit = atomunit_shop(category, atom_update())
-    person_credor_pool_atomunit.set_arg(person_credor_pool_text, person_credor_pool_int)
+    char_credor_pool_text = "_char_credor_pool"
+    char_credor_pool_int = 71
+    char_credor_pool_atomunit = atomunit_shop(category, atom_update())
+    char_credor_pool_atomunit.set_arg(char_credor_pool_text, char_credor_pool_int)
 
-    print(f"{person_credor_pool_atomunit=}")
+    print(f"{char_credor_pool_atomunit=}")
     x_changeunit = changeunit_shop()
-    x_changeunit.set_atomunit(person_credor_pool_atomunit)
+    x_changeunit.set_atomunit(char_credor_pool_atomunit)
     sue_world = worldunit_shop("Sue")
     sue_monetary_desc = "dragon funds"
     sue_world.set_monetary_desc(sue_monetary_desc)
@@ -69,42 +69,42 @@ def test_create_legible_list_ReturnsObjGivenWorldUpdate_person_credor_pool():
     legible_list = create_legible_list(x_changeunit, sue_world)
 
     # THEN
-    x_str = f"{sue_monetary_desc} credor pool is now {person_credor_pool_int}"
+    x_str = f"{sue_monetary_desc} credor pool is now {char_credor_pool_int}"
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObjGivenWorldUpdate_person_credor_pool_With_monetary_desc_None():
+def test_create_legible_list_ReturnsObjGivenWorldUpdate_char_credor_pool_With_monetary_desc_None():
     # GIVEN
     category = "worldunit"
-    person_credor_pool_text = "_person_credor_pool"
-    person_credor_pool_int = 71
-    person_credor_pool_atomunit = atomunit_shop(category, atom_update())
-    person_credor_pool_atomunit.set_arg(person_credor_pool_text, person_credor_pool_int)
+    char_credor_pool_text = "_char_credor_pool"
+    char_credor_pool_int = 71
+    char_credor_pool_atomunit = atomunit_shop(category, atom_update())
+    char_credor_pool_atomunit.set_arg(char_credor_pool_text, char_credor_pool_int)
 
-    print(f"{person_credor_pool_atomunit=}")
+    print(f"{char_credor_pool_atomunit=}")
     x_changeunit = changeunit_shop()
-    x_changeunit.set_atomunit(person_credor_pool_atomunit)
+    x_changeunit.set_atomunit(char_credor_pool_atomunit)
     sue_world = worldunit_shop("Sue")
 
     # WHEN
     legible_list = create_legible_list(x_changeunit, sue_world)
 
     # THEN
-    x_str = f"{sue_world._owner_id}'s monetary_desc credor pool is now {person_credor_pool_int}"
+    x_str = f"{sue_world._owner_id}'s monetary_desc credor pool is now {char_credor_pool_int}"
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObjGivenWorldUpdate_person_debtor_pool():
+def test_create_legible_list_ReturnsObjGivenWorldUpdate_char_debtor_pool():
     # GIVEN
     category = "worldunit"
-    person_debtor_pool_text = "_person_debtor_pool"
-    person_debtor_pool_int = 78
-    person_debtor_pool_atomunit = atomunit_shop(category, atom_update())
-    person_debtor_pool_atomunit.set_arg(person_debtor_pool_text, person_debtor_pool_int)
+    char_debtor_pool_text = "_char_debtor_pool"
+    char_debtor_pool_int = 78
+    char_debtor_pool_atomunit = atomunit_shop(category, atom_update())
+    char_debtor_pool_atomunit.set_arg(char_debtor_pool_text, char_debtor_pool_int)
 
-    print(f"{person_debtor_pool_atomunit=}")
+    print(f"{char_debtor_pool_atomunit=}")
     x_changeunit = changeunit_shop()
-    x_changeunit.set_atomunit(person_debtor_pool_atomunit)
+    x_changeunit.set_atomunit(char_debtor_pool_atomunit)
     sue_world = worldunit_shop("Sue")
     sue_monetary_desc = "dragon funds"
     sue_world.set_monetary_desc(sue_monetary_desc)
@@ -113,20 +113,20 @@ def test_create_legible_list_ReturnsObjGivenWorldUpdate_person_debtor_pool():
     legible_list = create_legible_list(x_changeunit, sue_world)
 
     # THEN
-    x_str = f"{sue_monetary_desc} debtor pool is now {person_debtor_pool_int}"
+    x_str = f"{sue_monetary_desc} debtor pool is now {char_debtor_pool_int}"
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObjGivenWorldUpdate_person_credor_pool_Equal_person_debtor_pool():
+def test_create_legible_list_ReturnsObjGivenWorldUpdate_char_credor_pool_Equal_char_debtor_pool():
     # GIVEN
     x_changeunit = changeunit_shop()
     category = "worldunit"
-    person_credor_pool_text = "_person_credor_pool"
-    person_debtor_pool_text = "_person_debtor_pool"
-    person_pool_int = 83
+    char_credor_pool_text = "_char_credor_pool"
+    char_debtor_pool_text = "_char_debtor_pool"
+    char_pool_int = 83
     worldunit_atomunit = atomunit_shop(category, atom_update())
-    worldunit_atomunit.set_arg(person_credor_pool_text, person_pool_int)
-    worldunit_atomunit.set_arg(person_debtor_pool_text, person_pool_int)
+    worldunit_atomunit.set_arg(char_credor_pool_text, char_pool_int)
+    worldunit_atomunit.set_arg(char_debtor_pool_text, char_pool_int)
     x_changeunit.set_atomunit(worldunit_atomunit)
     sue_world = worldunit_shop("Sue")
     sue_monetary_desc = "dragon funds"
@@ -136,7 +136,7 @@ def test_create_legible_list_ReturnsObjGivenWorldUpdate_person_credor_pool_Equal
     legible_list = create_legible_list(x_changeunit, sue_world)
 
     # THEN
-    x_str = f"{sue_monetary_desc} total pool is now {person_pool_int}"
+    x_str = f"{sue_monetary_desc} total pool is now {char_pool_int}"
     assert len(legible_list) == 1
     assert legible_list[0] == x_str
 

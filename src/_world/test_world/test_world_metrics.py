@@ -1,5 +1,5 @@
 from src._world.graphic import display_ideatree
-from src._world.person import personunit_shop
+from src._world.char import charunit_shop
 from src._world.beliefunit import BeliefID, balancelink_shop
 from src._world.world import worldunit_shop
 from src._world.healer import healerhold_shop
@@ -56,13 +56,13 @@ def test_WorldUnit_3AdvocatesNoideaunit_shop():
     patr_text = "patrick"
 
     zia_world = worldunit_shop("Zia")
-    au_rico = personunit_shop(person_id=rico_text)
-    au_carm = personunit_shop(person_id=carm_text)
-    au_patr = personunit_shop(person_id=patr_text)
+    au_rico = charunit_shop(char_id=rico_text)
+    au_carm = charunit_shop(char_id=carm_text)
+    au_patr = charunit_shop(char_id=patr_text)
     # print(f"{rico=}")
-    zia_world.set_personunit(personunit=au_rico)
-    zia_world.set_personunit(personunit=au_carm)
-    zia_world.set_personunit(personunit=au_patr)
+    zia_world.set_charunit(charunit=au_rico)
+    zia_world.set_charunit(charunit=au_carm)
+    zia_world.set_charunit(charunit=au_patr)
     zia_world._idearoot.set_balancelink(
         balancelink=balancelink_shop(belief_id=BeliefID(rico_text), credor_weight=10)
     )
@@ -74,13 +74,13 @@ def test_WorldUnit_3AdvocatesNoideaunit_shop():
     )
 
     # WHEN
-    assert zia_world.get_persons_metrics() != None
-    persons_metrics = zia_world.get_persons_metrics()
+    assert zia_world.get_chars_metrics() != None
+    chars_metrics = zia_world.get_chars_metrics()
 
     # THEN
-    balancelink_rico = persons_metrics[rico_text]
-    balancelink_carm = persons_metrics[carm_text]
-    balancelink_patr = persons_metrics[patr_text]
+    balancelink_rico = chars_metrics[rico_text]
+    balancelink_carm = chars_metrics[carm_text]
+    balancelink_patr = chars_metrics[patr_text]
     assert balancelink_rico.belief_id != None
     assert balancelink_carm.belief_id != None
     assert balancelink_patr.belief_id != None
@@ -91,9 +91,9 @@ def test_WorldUnit_3AdvocatesNoideaunit_shop():
     beliefunit_rico = all_beliefs[rico_text]
     beliefunit_carm = all_beliefs[carm_text]
     beliefunit_patr = all_beliefs[patr_text]
-    assert beliefunit_rico._person_mirror == True
-    assert beliefunit_carm._person_mirror == True
-    assert beliefunit_patr._person_mirror == True
+    assert beliefunit_rico._char_mirror == True
+    assert beliefunit_carm._char_mirror == True
+    assert beliefunit_patr._char_mirror == True
 
 
 def _check_all_objects_in_dict_are_correct_type(x_dict: dict, type_str: str) -> bool:
@@ -844,7 +844,7 @@ def test_WorldUnit_calc_world_metrics_CorrectlySetsEmpty_sum_healerhold_importan
 def test_WorldUnit_calc_world_metrics_CorrectlySets_sum_healerhold_importance():
     # GIVEN
     sue_world = get_world_with_4_levels_and_2reasons()
-    sue_world.add_personunit("Sue")
+    sue_world.add_charunit("Sue")
     sue_world.calc_world_metrics()
     nation_road = sue_world.make_l1_road("nation-state")
     usa_road = sue_world.make_road(nation_road, "USA")
@@ -911,7 +911,7 @@ def test_WorldUnit_calc_world_metrics_CorrectlySets_sum_healerhold_importance():
 def test_WorldUnit_calc_world_metrics_CorrectlySets_econ_dict_v1():
     # GIVEN
     sue_world = get_world_with_4_levels_and_2reasons()
-    sue_world.add_personunit("Sue")
+    sue_world.add_charunit("Sue")
     sue_world.calc_world_metrics()
     nation_road = sue_world.make_l1_road("nation-state")
     usa_road = sue_world.make_road(nation_road, "USA")
@@ -974,8 +974,8 @@ def test_WorldUnit_calc_world_metrics_CorrectlySets_econ_dict_v1():
 #     sue_text = "Sue"
 #     bob_text = "Bob"
 #     sue_world = get_world_with_4_levels_and_2reasons()
-#     sue_world.add_personunit(sue_text)
-#     sue_world.add_personunit(bob_text)
+#     sue_world.add_charunit(sue_text)
+#     sue_world.add_charunit(bob_text)
 #     assert sue_world._healers_dict == {}
 
 #     # WHEN
@@ -1011,8 +1011,8 @@ def test_WorldUnit_calc_world_metrics_CorrectlySets_healers_dict():
     sue_text = "Sue"
     bob_text = "Bob"
     sue_world = get_world_with_4_levels_and_2reasons()
-    sue_world.add_personunit(sue_text)
-    sue_world.add_personunit(bob_text)
+    sue_world.add_charunit(sue_text)
+    sue_world.add_charunit(bob_text)
     assert sue_world._healers_dict == {}
 
     # WHEN
@@ -1048,8 +1048,8 @@ def test_WorldUnit_calc_world_metrics_CorrectlySets_econs_buildable_True():
     sue_text = "Sue"
     bob_text = "Bob"
     sue_world = get_world_with_4_levels_and_2reasons()
-    sue_world.add_personunit(sue_text)
-    sue_world.add_personunit(bob_text)
+    sue_world.add_charunit(sue_text)
+    sue_world.add_charunit(bob_text)
     assert sue_world._econs_buildable is False
 
     # WHEN
@@ -1079,8 +1079,8 @@ def test_WorldUnit_calc_world_metrics_CorrectlySets_econs_buildable_False():
     sue_text = "Sue"
     bob_text = "Bob"
     sue_world = get_world_with_4_levels_and_2reasons()
-    sue_world.add_personunit(sue_text)
-    sue_world.add_personunit(bob_text)
+    sue_world.add_charunit(sue_text)
+    sue_world.add_charunit(bob_text)
     assert sue_world._econs_buildable is False
 
     # WHEN

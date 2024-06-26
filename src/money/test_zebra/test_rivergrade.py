@@ -7,37 +7,37 @@ def test_RiverGrade_Exists():
     x_rivergrade = RiverGrade()
 
     # THEN
-    #: Leader Same get_person._debtor_weight (SELECT tax_due_amount FROM person WHERE person_id = bob_text)
+    #: Leader Same get_char._debtor_weight (SELECT tax_due_amount FROM char WHERE char_id = bob_text)
     assert x_rivergrade.userhub is None
-    assert x_rivergrade.person_id is None
+    assert x_rivergrade.char_id is None
     assert x_rivergrade.number is None
-    #: Leader Same get_person._debtor_weight (SELECT tax_due_amount FROM person WHERE person_id = bob_text)
+    #: Leader Same get_char._debtor_weight (SELECT tax_due_amount FROM char WHERE char_id = bob_text)
     assert x_rivergrade.tax_bill_amount is None
-    #: Leader Same get_person._credor_weight (SELECT grant_amount FROM person WHERE person_id = bob_text)
+    #: Leader Same get_char._credor_weight (SELECT grant_amount FROM char WHERE char_id = bob_text)
     assert x_rivergrade.grant_amount is None
-    #: SELECT COUNT(*) FROM person WHERE tax_due_amount > (SELECT tax_due_amount FROM person WHERE person_id = bob_text)
+    #: SELECT COUNT(*) FROM char WHERE tax_due_amount > (SELECT tax_due_amount FROM char WHERE char_id = bob_text)
     assert x_rivergrade.debtor_rank_num is None
-    #: SELECT COUNT(*) FROM person WHERE grant_amount > (SELECT tax_due_amount FROM person WHERE person_id = bob_text)
+    #: SELECT COUNT(*) FROM char WHERE grant_amount > (SELECT tax_due_amount FROM char WHERE char_id = bob_text)
     assert x_rivergrade.credor_rank_num is None
-    #: SELECT amount_paid FROM tax_ledger WHERE person_id = bob_text
+    #: SELECT amount_paid FROM tax_ledger WHERE char_id = bob_text
     assert x_rivergrade.tax_paid_amount is None
     #: bool (if tax_due_amount == tax_paid_amount)
     assert x_rivergrade.tax_paid_bool is None
-    #: SELECT COUNT(*) FROM person WHERE tax_paid_amount > (SELECT tax_paid_amount FROM person WHERE person_id = bob_text)
+    #: SELECT COUNT(*) FROM char WHERE tax_paid_amount > (SELECT tax_paid_amount FROM char WHERE char_id = bob_text)
     assert x_rivergrade.tax_paid_rank_num is None
-    #: tax_paid_rank_num / (SELECT COUNT(*) FROM person WHERE tax_paid_amount>0)
+    #: tax_paid_rank_num / (SELECT COUNT(*) FROM char WHERE tax_paid_amount>0)
     assert x_rivergrade.tax_paid_rank_percent is None
-    #: SELECT COUNT(*) FROM person WHERE tax_due_amount > 0
+    #: SELECT COUNT(*) FROM char WHERE tax_due_amount > 0
     assert x_rivergrade.debtor_count is None
-    #: SELECT COUNT(*) FROM person WHERE grant_amount > 0
+    #: SELECT COUNT(*) FROM char WHERE grant_amount > 0
     assert x_rivergrade.credor_count is None
-    #: debtor_rank_num / SELECT COUNT(*) FROM person WHERE tax_due_amount > 0
+    #: debtor_rank_num / SELECT COUNT(*) FROM char WHERE tax_due_amount > 0
     assert x_rivergrade.debtor_rank_percent is None
-    #: credor_rank_num / SELECT COUNT(*) FROM person WHERE grant_amount > 0
+    #: credor_rank_num / SELECT COUNT(*) FROM char WHERE grant_amount > 0
     assert x_rivergrade.credor_rank_percent is None
-    # SELECT COUNT(*) FROM rewards WHERE dst_person_id = bob_text
+    # SELECT COUNT(*) FROM rewards WHERE dst_char_id = bob_text
     assert x_rivergrade.rewards_count is None
-    # SELECT SUM(money_amount) FROM rewards WHERE dst_person_id = bob_text
+    # SELECT SUM(money_amount) FROM rewards WHERE dst_char_id = bob_text
     assert x_rivergrade.rewards_magnitude is None
 
 
@@ -56,7 +56,7 @@ def test_rivergrade_shop_ReturnsCorrectObjWithArg():
 
     # THEN
     assert x_rivergrade.userhub == yao_userhub
-    assert x_rivergrade.person_id == bob_text
+    assert x_rivergrade.char_id == bob_text
     assert x_rivergrade.number == ten_int
     assert x_rivergrade.tax_bill_amount is None
     assert x_rivergrade.grant_amount is None

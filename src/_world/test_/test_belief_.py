@@ -1,4 +1,4 @@
-from src._world.person import personlink_shop
+from src._world.char import charlink_shop
 from src._world.beliefunit import (
     BalanceLine,
     balanceline_shop,
@@ -30,8 +30,8 @@ def test_BeliefUnit_exists():
     # THEN
     assert swim_beliefunit != None
     assert swim_beliefunit.belief_id == swim_text
-    assert swim_beliefunit._person_mirror is None
-    assert swim_beliefunit._persons is None
+    assert swim_beliefunit._char_mirror is None
+    assert swim_beliefunit._chars is None
     assert swim_beliefunit._world_cred is None
     assert swim_beliefunit._world_debt is None
     assert swim_beliefunit._world_agenda_cred is None
@@ -72,21 +72,21 @@ def test_beliefunit_shop_ReturnsCorrectObj_road_delimiter():
     assert swim_beliefunit._road_delimiter == slash_text
 
 
-def test_BeliefUnit_set_belief_id_RaisesErrorIfParameterContains_road_delimiter_And_person_mirror_True():
+def test_BeliefUnit_set_belief_id_RaisesErrorIfParameterContains_road_delimiter_And_char_mirror_True():
     # GIVEN
     slash_text = "/"
     bob_text = f"Bob{slash_text}Texas"
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        beliefunit_shop(bob_text, _person_mirror=True, _road_delimiter=slash_text)
+        beliefunit_shop(bob_text, _char_mirror=True, _road_delimiter=slash_text)
     assert (
         str(excinfo.value)
         == f"'{bob_text}' needs to be a RoadNode. Cannot contain delimiter: '{slash_text}'"
     )
 
 
-def test_BeliefUnit_set_belief_id_RaisesErrorIfParameterDoesNotContain_road_delimiter_person_mirror_False():
+def test_BeliefUnit_set_belief_id_RaisesErrorIfParameterDoesNotContain_road_delimiter_char_mirror_False():
     # GIVEN
     comma_text = ","
     texas_text = f"Texas{comma_text}Arkansas"
@@ -118,7 +118,7 @@ def test_BeliefUnit_set_belief_id_SetsAttrCorrectly():
 def test_BeliefUnit_reset_world_importance_SetsAttrCorrectly():
     # GIVEN
     maria_belief_id = "maria"
-    maria_beliefunit = beliefunit_shop(belief_id=maria_belief_id, _person_mirror=True)
+    maria_beliefunit = beliefunit_shop(belief_id=maria_belief_id, _char_mirror=True)
     maria_beliefunit._world_cred = 0.33
     maria_beliefunit._world_debt = 0.44
     maria_beliefunit._world_agenda_cred = 0.13
@@ -139,12 +139,12 @@ def test_BeliefUnit_reset_world_importance_SetsAttrCorrectly():
     assert maria_beliefunit._world_agenda_debt == 0
 
 
-def test_BeliefUnit_meld_RaiseEqualperson_idException():
+def test_BeliefUnit_meld_RaiseEqualchar_idException():
     # GIVEN
     todd_text = "Todd"
-    todd_belief = beliefunit_shop(belief_id=todd_text, _person_mirror=True)
+    todd_belief = beliefunit_shop(belief_id=todd_text, _char_mirror=True)
     mery_text = "Merry"
-    mery_belief = beliefunit_shop(belief_id=mery_text, _person_mirror=True)
+    mery_belief = beliefunit_shop(belief_id=mery_text, _char_mirror=True)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
@@ -158,36 +158,36 @@ def test_BeliefUnit_meld_RaiseEqualperson_idException():
 def test_BeliefUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     # GIVEN
     todd_text = "Todd"
-    todd_belief = beliefunit_shop(belief_id=todd_text, _person_mirror=True)
+    todd_belief = beliefunit_shop(belief_id=todd_text, _char_mirror=True)
     sue_text = "Sue"
-    todd_belief.set_personlink(personlink_shop(person_id=sue_text))
+    todd_belief.set_charlink(charlink_shop(char_id=sue_text))
 
     assert todd_belief.belief_id == todd_text
-    assert todd_belief._person_mirror
-    assert len(todd_belief._persons) == 1
+    assert todd_belief._char_mirror
+    assert len(todd_belief._chars) == 1
 
     # WHEN
     todd_dict = todd_belief.get_dict()
 
     # THEN
     assert todd_dict["belief_id"] == todd_text
-    assert todd_dict["_person_mirror"]
-    assert len(todd_dict["_persons"]) == 1
+    assert todd_dict["_char_mirror"]
+    assert len(todd_dict["_chars"]) == 1
 
 
 def test_BeliefUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     # GIVEN
     swim_text = ",Swimmers"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    assert swim_belief._person_mirror is False
-    assert swim_belief._persons == {}
+    assert swim_belief._char_mirror is False
+    assert swim_belief._chars == {}
 
     # WHEN
     swim_dict = swim_belief.get_dict()
 
     # THEN
-    assert swim_dict.get("_person_mirror") is None
-    assert swim_dict.get("_persons") is None
+    assert swim_dict.get("_char_mirror") is None
+    assert swim_dict.get("_chars") is None
 
 
 def test_BeliefUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
@@ -206,13 +206,11 @@ def test_BeliefUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
 
     # GIVEN
     sue_text = "Marie"
-    marie_personlink = personlink_shop(
-        person_id=sue_text, credor_weight=29, debtor_weight=3
-    )
-    personlinks_dict = {marie_personlink.person_id: marie_personlink}
+    marie_charlink = charlink_shop(char_id=sue_text, credor_weight=29, debtor_weight=3)
+    charlinks_dict = {marie_charlink.char_id: marie_charlink}
     marie_json_dict = {
         sue_text: {
-            "person_id": sue_text,
+            "char_id": sue_text,
             "credor_weight": 29,
             "debtor_weight": 3,
         }
@@ -222,7 +220,7 @@ def test_BeliefUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     swim_road = "swim"
     teachers_belief = beliefunit_shop(
         belief_id=teacher_text,
-        _persons=personlinks_dict,
+        _chars=charlinks_dict,
     )
 
     # WHEN
@@ -232,7 +230,7 @@ def test_BeliefUnit_get_dict_ReturnsDictWithNecessaryDataForJSON():
     print(f"{marie_json_dict=}")
     assert teachers_dict == {
         "belief_id": teacher_text,
-        "_persons": marie_json_dict,
+        "_chars": marie_json_dict,
     }
 
 
@@ -256,14 +254,12 @@ def test_beliefunit_get_from_dict_CorrectlyReturnsBeliefUnitWith_road_delimiter(
 def test_BeliefUnit_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     # GIVEN
     sue_text = "Sue"
-    marie_personlink = personlink_shop(
-        person_id=sue_text, credor_weight=29, debtor_weight=3
-    )
-    personlinks_dict = {marie_personlink.person_id: marie_personlink}
+    marie_charlink = charlink_shop(char_id=sue_text, credor_weight=29, debtor_weight=3)
+    charlinks_dict = {marie_charlink.char_id: marie_charlink}
 
     teacher_text = ",teachers"
     swim_road = "swim"
-    teacher_belief = beliefunit_shop(belief_id=teacher_text, _persons=personlinks_dict)
+    teacher_belief = beliefunit_shop(belief_id=teacher_text, _chars=charlinks_dict)
     teacher_dict = teacher_belief.get_dict()
     beliefs_dict = {teacher_text: teacher_dict}
 

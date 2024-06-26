@@ -1,6 +1,6 @@
 from src._instrument.file import save_file, delete_dir
 from src._road.jaar_config import get_descending_text
-from src._world.person import personunit_shop
+from src._world.char import charunit_shop
 from src._world.world import worldunit_shop
 from src.listen.meld_files import get_file_names_in_voice_rank_order
 from src.listen.listen import create_job_file_from_role_file
@@ -30,23 +30,23 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     save_file(temp_dir, cal_filename, empty_str)
     save_file(temp_dir, dom_filename, empty_str)
     save_file(temp_dir, elu_filename, empty_str)
-    ava_personunit = personunit_shop(person_id=ava_text)
-    bob_personunit = personunit_shop(person_id=bob_text)
-    cal_personunit = personunit_shop(person_id=cal_text)
-    dom_personunit = personunit_shop(person_id=dom_text)
-    elu_personunit = personunit_shop(person_id=elu_text)
+    ava_charunit = charunit_shop(char_id=ava_text)
+    bob_charunit = charunit_shop(char_id=bob_text)
+    cal_charunit = charunit_shop(char_id=cal_text)
+    dom_charunit = charunit_shop(char_id=dom_text)
+    elu_charunit = charunit_shop(char_id=elu_text)
 
     yao_world = worldunit_shop(_owner_id=yao_text)
-    ava_personunit.set_treasury_attr(None, None, None, voice_rank=33)
-    bob_personunit.set_treasury_attr(None, None, None, voice_rank=33)
-    cal_personunit.set_treasury_attr(None, None, None, voice_rank=77)
-    dom_personunit.set_treasury_attr(None, None, None, voice_rank=55)
-    elu_personunit.set_treasury_attr(None, None, None, voice_rank=99)
-    yao_world.set_personunit(ava_personunit)
-    yao_world.set_personunit(bob_personunit)
-    yao_world.set_personunit(cal_personunit)
-    yao_world.set_personunit(dom_personunit)
-    yao_world.set_personunit(elu_personunit)
+    ava_charunit.set_treasury_attr(None, None, None, voice_rank=33)
+    bob_charunit.set_treasury_attr(None, None, None, voice_rank=33)
+    cal_charunit.set_treasury_attr(None, None, None, voice_rank=77)
+    dom_charunit.set_treasury_attr(None, None, None, voice_rank=55)
+    elu_charunit.set_treasury_attr(None, None, None, voice_rank=99)
+    yao_world.set_charunit(ava_charunit)
+    yao_world.set_charunit(bob_charunit)
+    yao_world.set_charunit(cal_charunit)
+    yao_world.set_charunit(dom_charunit)
+    yao_world.set_charunit(elu_charunit)
 
     x1 = get_file_names_in_voice_rank_order(yao_world, meldees_dir=temp_dir)
     assert x1 != None
@@ -63,12 +63,12 @@ def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_c
     assert bob_filename == x1[4]
 
     # WHEN
-    ava_personunit._set_treasury_voice_hx_lowest_rank(11)
+    ava_charunit._set_treasury_voice_hx_lowest_rank(11)
 
     # THEN
-    assert ava_personunit._treasury_voice_rank == bob_personunit._treasury_voice_rank
-    assert ava_personunit._treasury_voice_hx_lowest_rank == 11
-    assert bob_personunit._treasury_voice_hx_lowest_rank == 33
+    assert ava_charunit._treasury_voice_rank == bob_charunit._treasury_voice_rank
+    assert ava_charunit._treasury_voice_hx_lowest_rank == 11
+    assert bob_charunit._treasury_voice_hx_lowest_rank == 33
     x2 = get_file_names_in_voice_rank_order(yao_world, meldees_dir=temp_dir)
     assert ava_filename == x2[4]
     assert bob_filename == x2[3]
@@ -90,32 +90,32 @@ def test_MoneyUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type
 
     yao_text = "Yao"
     yao_role0_world = worldunit_shop(_owner_id=yao_text)
-    yao_role0_world.set_personunit(personunit_shop(ava_text))
-    yao_role0_world.set_personunit(personunit_shop(bob_text))
-    yao_role0_world.set_personunit(personunit_shop(cal_text))
-    yao_role0_world.set_personunit(personunit_shop(dom_text))
-    yao_role0_world.set_personunit(personunit_shop(elu_text))
+    yao_role0_world.set_charunit(charunit_shop(ava_text))
+    yao_role0_world.set_charunit(charunit_shop(bob_text))
+    yao_role0_world.set_charunit(charunit_shop(cal_text))
+    yao_role0_world.set_charunit(charunit_shop(dom_text))
+    yao_role0_world.set_charunit(charunit_shop(elu_text))
     texas_userhub.save_role_world(yao_role0_world)
     create_job_file_from_role_file(texas_userhub, yao_text)
     yao_role1_world = texas_userhub.get_role_world(yao_text)
-    assert yao_role1_world.get_person(ava_text)._treasury_voice_rank is None
-    assert yao_role1_world.get_person(bob_text)._treasury_voice_rank is None
-    assert yao_role1_world.get_person(cal_text)._treasury_voice_rank is None
-    assert yao_role1_world.get_person(dom_text)._treasury_voice_rank is None
-    assert yao_role1_world.get_person(elu_text)._treasury_voice_rank is None
+    assert yao_role1_world.get_char(ava_text)._treasury_voice_rank is None
+    assert yao_role1_world.get_char(bob_text)._treasury_voice_rank is None
+    assert yao_role1_world.get_char(cal_text)._treasury_voice_rank is None
+    assert yao_role1_world.get_char(dom_text)._treasury_voice_rank is None
+    assert yao_role1_world.get_char(elu_text)._treasury_voice_rank is None
 
     # WHEN
     x_money.set_role_voice_ranks(yao_text, sort_order=get_descending_text())
 
     # THEN
     yao_role2_world = texas_userhub.get_role_world(yao_text)
-    assert yao_role2_world.get_person(ava_text)._treasury_voice_rank != None
-    assert yao_role2_world.get_person(bob_text)._treasury_voice_rank != None
-    assert yao_role2_world.get_person(cal_text)._treasury_voice_rank != None
-    assert yao_role2_world.get_person(dom_text)._treasury_voice_rank != None
-    assert yao_role2_world.get_person(elu_text)._treasury_voice_rank != None
-    assert yao_role2_world.get_person(ava_text)._treasury_voice_rank == 0
-    assert yao_role2_world.get_person(bob_text)._treasury_voice_rank == 1
-    assert yao_role2_world.get_person(cal_text)._treasury_voice_rank == 2
-    assert yao_role2_world.get_person(dom_text)._treasury_voice_rank == 3
-    assert yao_role2_world.get_person(elu_text)._treasury_voice_rank == 4
+    assert yao_role2_world.get_char(ava_text)._treasury_voice_rank != None
+    assert yao_role2_world.get_char(bob_text)._treasury_voice_rank != None
+    assert yao_role2_world.get_char(cal_text)._treasury_voice_rank != None
+    assert yao_role2_world.get_char(dom_text)._treasury_voice_rank != None
+    assert yao_role2_world.get_char(elu_text)._treasury_voice_rank != None
+    assert yao_role2_world.get_char(ava_text)._treasury_voice_rank == 0
+    assert yao_role2_world.get_char(bob_text)._treasury_voice_rank == 1
+    assert yao_role2_world.get_char(cal_text)._treasury_voice_rank == 2
+    assert yao_role2_world.get_char(dom_text)._treasury_voice_rank == 3
+    assert yao_role2_world.get_char(elu_text)._treasury_voice_rank == 4

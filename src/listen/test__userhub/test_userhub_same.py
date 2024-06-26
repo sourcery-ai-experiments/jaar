@@ -123,7 +123,7 @@ def test_UserHub_create_initial_gift_files_from_same_SavesOnlyGiftFiles(
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text, pixel=seven_int)
     sue_same_world = sue_userhub.default_same_world()
     bob_text = "Bob"
-    sue_same_world.add_personunit(bob_text)
+    sue_same_world.add_charunit(bob_text)
     assert sue_userhub.same_file_exists() is False
     sue_userhub.save_same_world(sue_same_world)
     assert sue_userhub.same_file_exists()
@@ -195,7 +195,7 @@ def test_UserHub_initialize_gift_same_files_CorrectlySavesOnlygiftFile(
     sue_userhub.initialize_gift_same_files()
     sue_same_world = sue_userhub.get_same_world()
     bob_text = "Bob"
-    sue_same_world.add_personunit(bob_text)
+    sue_same_world.add_charunit(bob_text)
     sue_userhub.save_same_world(sue_same_world)
     assert sue_userhub.same_file_exists()
     init_gift_file_path = f"{sue_userhub.gifts_dir()}/{init_gift_id()}.json"
@@ -209,7 +209,7 @@ def test_UserHub_initialize_gift_same_files_CorrectlySavesOnlygiftFile(
     assert sue_same_world._real_id == real_id()
     assert sue_same_world._owner_id == sue_text
     assert sue_same_world._pixel == seven_int
-    assert sue_same_world.person_exists(bob_text)
+    assert sue_same_world.char_exists(bob_text)
     assert os_path_exists(init_gift_file_path)
 
 

@@ -8,7 +8,7 @@ from src._world.examples.example_worlds import (
 from src._world.world import worldunit_shop
 from src._world.graphic import (
     display_ideatree,
-    get_world_persons_plotly_fig,
+    get_world_chars_plotly_fig,
     get_world_agenda_plotly_fig,
 )
 
@@ -53,22 +53,22 @@ def test_display_ideatree_GivenWorld_shows_Tasks():
     #     x_fig.show()
 
 
-def test_get_world_persons_plotly_fig_DisplaysCorrectInfo():
+def test_get_world_chars_plotly_fig_DisplaysCorrectInfo():
     # GIVEN
     luca_world = worldunit_shop()
-    luca_world.set_person_credor_pool(500)
-    luca_world.set_person_debtor_pool(400)
+    luca_world.set_char_credor_pool(500)
+    luca_world.set_char_debtor_pool(400)
     todd_text = "Todd"
     todd_credor_weight = 66
     todd_debtor_weight = 77
-    luca_world.add_personunit(todd_text, todd_credor_weight, todd_debtor_weight)
+    luca_world.add_charunit(todd_text, todd_credor_weight, todd_debtor_weight)
     sue_text = "Sue"
     sue_credor_weight = 434
     sue_debtor_weight = 323
-    luca_world.add_personunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    luca_world.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
 
     # WHEN
-    x_fig = get_world_persons_plotly_fig(luca_world)
+    x_fig = get_world_chars_plotly_fig(luca_world)
 
     # THEN
     # show_figure = True

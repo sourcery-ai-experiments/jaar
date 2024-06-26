@@ -450,7 +450,7 @@ def test_UserHub_create_save_gift_file_SaveCorrectObj(env_dir_setup_cleanup):
     before_world = sue_userhub.default_same_world()
     bob_text = "Bob"
     after_world = copy_deepcopy(before_world)
-    after_world.add_personunit(bob_text)
+    after_world.add_charunit(bob_text)
     sue_userhub.create_save_gift_file(before_world, after_world)
 
     # THEN

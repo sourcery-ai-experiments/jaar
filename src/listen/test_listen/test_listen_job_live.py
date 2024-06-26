@@ -96,10 +96,10 @@ def get_example_yao_world() -> WorldUnit:
     bob_text = "Bob"
     yao_speaker = worldunit_shop(yao_text, get_default_real_id_roadnode())
     yao_speaker.add_idea(ideaunit_shop(run_text()), casa_road())
-    yao_speaker.add_personunit(yao_text, debtor_weight=10)
-    yao_speaker.add_personunit(zia_text, debtor_weight=30)
-    yao_speaker.add_personunit(bob_text, debtor_weight=40)
-    yao_speaker.set_person_pool(80)
+    yao_speaker.add_charunit(yao_text, debtor_weight=10)
+    yao_speaker.add_charunit(zia_text, debtor_weight=30)
+    yao_speaker.add_charunit(bob_text, debtor_weight=40)
+    yao_speaker.set_char_pool(80)
     return yao_speaker
 
 
@@ -107,7 +107,7 @@ def get_example_yao_job1_speaker() -> WorldUnit:
     yao_text = "Yao"
     yao_speaker = get_example_yao_world()
     yao_speaker.del_idea_obj(run_road())
-    yao_speaker.set_person_pool(40)
+    yao_speaker.set_char_pool(40)
     yao_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     yao_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
     yao_speaker.add_idea(ideaunit_shop(full_text()), eat_road())
@@ -122,7 +122,7 @@ def get_example_yao_job2_speaker() -> WorldUnit:
     yao_text = "Yao"
     yao_speaker = get_example_yao_world()
     yao_speaker.del_idea_obj(run_road())
-    yao_speaker.set_person_pool(30)
+    yao_speaker.set_char_pool(30)
     yao_speaker.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
     yao_speaker.add_idea(ideaunit_shop(hungry_text()), eat_road())
     yao_speaker.add_idea(ideaunit_shop(full_text()), eat_road())
@@ -142,7 +142,7 @@ def get_example_yao_job2_speaker() -> WorldUnit:
 def get_example_yao_job3_speaker() -> WorldUnit:
     yao_speaker = get_example_yao_world()
     yao_speaker.del_idea_obj(run_road())
-    yao_speaker.set_person_pool(10)
+    yao_speaker.set_char_pool(10)
     yao_speaker.add_idea(ideaunit_shop(sweep_text(), pledge=True), casa_road())
     yao_speaker.add_idea(ideaunit_shop(dirty_text()), sanitation_road())
     yao_speaker.add_idea(ideaunit_shop(clean_text()), sanitation_road())
@@ -246,9 +246,9 @@ def get_zia_utah_userhub() -> UserHub:
 
 def get_example_yao_same_with_3_healers():
     yao_same = get_example_yao_world()
-    yao_text = yao_same.get_person("Yao").person_id
-    bob_text = yao_same.get_person("Bob").person_id
-    zia_text = yao_same.get_person("Zia").person_id
+    yao_text = yao_same.get_char("Yao").char_id
+    bob_text = yao_same.get_char("Bob").char_id
+    zia_text = yao_same.get_char("Zia").char_id
     iowa_idea = ideaunit_shop(get_iowa_text(), _problem_bool=True)
     ohio_idea = ideaunit_shop(get_ohio_text(), _problem_bool=True)
     utah_idea = ideaunit_shop(get_utah_text(), _problem_bool=True)
@@ -312,8 +312,8 @@ def test_listen_to_owner_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
 
     yao_live = yao_iowa_userhub.get_live_world()
     yao_live.calc_world_metrics()
-    assert yao_live._persons.keys() == yao_same0._persons.keys()
-    assert yao_live.get_person(yao_text)._irrational_debtor_weight == 0
+    assert yao_live._chars.keys() == yao_same0._chars.keys()
+    assert yao_live.get_char(yao_text)._irrational_debtor_weight == 0
     assert yao_live.get_beliefunits_dict() == yao_same0.get_beliefunits_dict()
     assert len(yao_live._idea_dict) == 10
     print(f"{yao_live._idea_dict.keys()=}")
@@ -380,8 +380,8 @@ def test_listen_to_owner_jobs_Pipeline_Scenario1_yao_same_CanOnlyReferenceItself
 
     yao_live = yao_iowa_userhub.get_live_world()
     yao_live.calc_world_metrics()
-    assert yao_live._persons.keys() == yao_same0._persons.keys()
-    assert yao_live.get_person(yao_text)._irrational_debtor_weight == 0
+    assert yao_live._chars.keys() == yao_same0._chars.keys()
+    assert yao_live.get_char(yao_text)._irrational_debtor_weight == 0
     assert yao_live.get_beliefunits_dict() == yao_same0.get_beliefunits_dict()
     assert len(yao_live._idea_dict) == 4
     print(f"{yao_live._idea_dict.keys()=}")

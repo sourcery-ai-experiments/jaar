@@ -1,31 +1,31 @@
 from src._world.examples.example_worlds import world_v001_with_large_agenda
 from src._world.world import worldunit_shop
 from src._world.report import (
-    get_world_personunits_dataframe,
+    get_world_charunits_dataframe,
     get_world_agenda_dataframe,
 )
 
 
-def test_get_world_personunits_dataframe_ReturnsCorrectDataFrame():
+def test_get_world_charunits_dataframe_ReturnsCorrectDataFrame():
     # GIVEN
     luca_world = worldunit_shop()
-    luca_world.set_person_credor_pool(500)
-    luca_world.set_person_debtor_pool(400)
+    luca_world.set_char_credor_pool(500)
+    luca_world.set_char_debtor_pool(400)
     todd_text = "Todd"
     todd_credor_weight = 66
     todd_debtor_weight = 77
-    luca_world.add_personunit(todd_text, todd_credor_weight, todd_debtor_weight)
+    luca_world.add_charunit(todd_text, todd_credor_weight, todd_debtor_weight)
     sue_text = "Sue"
     sue_credor_weight = 434
     sue_debtor_weight = 323
-    luca_world.add_personunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    luca_world.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
 
     # WHEN
-    x_df = get_world_personunits_dataframe(luca_world)
+    x_df = get_world_charunits_dataframe(luca_world)
 
     # THEN
-    personunit_colums = {
-        "person_id",
+    charunit_colums = {
+        "char_id",
         "credor_weight",
         "debtor_weight",
         "_belieflinks",
@@ -46,20 +46,20 @@ def test_get_world_personunits_dataframe_ReturnsCorrectDataFrame():
     }
     print(f"{set(x_df.columns)=}")
 
-    assert set(x_df.columns) == personunit_colums
+    assert set(x_df.columns) == charunit_colums
     assert x_df.shape[0] == 2
 
 
-def test_get_world_personunits_dataframe_ReturnsCorrectEmptyDataFrame():
+def test_get_world_charunits_dataframe_ReturnsCorrectEmptyDataFrame():
     # GIVEN
     luca_world = worldunit_shop()
 
     # WHEN
-    x_df = get_world_personunits_dataframe(luca_world)
+    x_df = get_world_charunits_dataframe(luca_world)
 
     # THEN
-    personunit_colums = {
-        "person_id",
+    charunit_colums = {
+        "char_id",
         "credor_weight",
         "debtor_weight",
         "_world_cred",
@@ -79,7 +79,7 @@ def test_get_world_personunits_dataframe_ReturnsCorrectEmptyDataFrame():
     }
     print(f"{set(x_df.columns)=}")
 
-    assert set(x_df.columns) == personunit_colums
+    assert set(x_df.columns) == charunit_colums
     assert x_df.shape[0] == 0
 
 
@@ -95,7 +95,7 @@ def test_get_world_agenda_dataframe_ReturnsCorrectDataFrame():
     print(x_df)
 
     # THEN
-    personunit_colums = {
+    charunit_colums = {
         "owner_id",
         "world_importance",
         "_label",
@@ -109,7 +109,7 @@ def test_get_world_agenda_dataframe_ReturnsCorrectDataFrame():
     }
     print(f"{set(x_df.columns)=}")
 
-    assert set(x_df.columns) == personunit_colums
+    assert set(x_df.columns) == charunit_colums
     assert x_df.shape[0] == 63
 
 
@@ -123,7 +123,7 @@ def test_get_world_agenda_dataframe_ReturnsCorrectEmptyDataFrame():
     print(x_df)
 
     # THEN
-    personunit_colums = {
+    charunit_colums = {
         "owner_id",
         "world_importance",
         "_label",
@@ -137,4 +137,4 @@ def test_get_world_agenda_dataframe_ReturnsCorrectEmptyDataFrame():
     }
     print(f"{set(x_df.columns)=}")
 
-    assert set(x_df.columns) == personunit_colums
+    assert set(x_df.columns) == charunit_colums

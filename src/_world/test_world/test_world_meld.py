@@ -1,7 +1,7 @@
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
 from src._world.beliefunit import beliefunit_shop
-from src._world.person import personunit_shop, personlink_shop
+from src._world.char import charunit_shop, charlink_shop
 from src._world.origin import originunit_shop
 from pytest import raises as pytest_raises
 from src._world.examples.example_worlds import world_v001
@@ -39,58 +39,58 @@ def test_WorldUnit_meld_WeightDoesNotCombine():
     assert bob1_world._weight == 3
 
 
-def test_WorldUnit_meld_PersonUnits():
+def test_WorldUnit_meld_CharUnits():
     # GIVEN
     yao_text = "Yao"
-    yao_personunit = personunit_shop(person_id=yao_text)
+    yao_charunit = charunit_shop(char_id=yao_text)
 
     bob_text = "Bob"
     bob1_world = worldunit_shop(bob_text)
-    bob1_world.set_personunit(yao_personunit)
+    bob1_world.set_charunit(yao_charunit)
 
     bob2_world = worldunit_shop(bob_text)
-    bob2_world.set_personunit(yao_personunit)
+    bob2_world.set_charunit(yao_charunit)
     zia_text = "Zia"
-    zia_personunit = personunit_shop(person_id=zia_text)
-    bob2_world.set_personunit(zia_personunit)
-    assert len(bob1_world._persons) == 1
-    assert bob1_world.person_exists(yao_text)
-    assert bob1_world.person_exists(zia_text) is False
+    zia_charunit = charunit_shop(char_id=zia_text)
+    bob2_world.set_charunit(zia_charunit)
+    assert len(bob1_world._chars) == 1
+    assert bob1_world.char_exists(yao_text)
+    assert bob1_world.char_exists(zia_text) is False
 
     # WHEN
     bob1_world.meld(exterior_world=bob2_world)
 
     # THEN
-    assert len(bob1_world._persons) == 2
-    assert bob1_world.person_exists(yao_text)
-    assert bob1_world.person_exists(zia_text)
+    assert len(bob1_world._chars) == 2
+    assert bob1_world.char_exists(yao_text)
+    assert bob1_world.char_exists(zia_text)
 
 
-def test_WorldUnit_meld_PersonUnits_ignore_personunits_ReturnsCorrectObj():
+def test_WorldUnit_meld_CharUnits_ignore_charunits_ReturnsCorrectObj():
     # GIVEN
     yao_text = "Yao"
-    yao_personunit = personunit_shop(person_id=yao_text)
+    yao_charunit = charunit_shop(char_id=yao_text)
 
     bob_text = "Bob"
     bob1_world = worldunit_shop(bob_text)
-    bob1_world.set_personunit(yao_personunit)
+    bob1_world.set_charunit(yao_charunit)
 
     bob2_world = worldunit_shop(bob_text)
-    bob2_world.set_personunit(yao_personunit)
+    bob2_world.set_charunit(yao_charunit)
     zia_text = "Zia"
-    zia_personunit = personunit_shop(person_id=zia_text)
-    bob2_world.set_personunit(zia_personunit)
-    assert len(bob1_world._persons) == 1
-    assert bob1_world.person_exists(yao_text)
-    assert bob1_world.person_exists(zia_text) is False
+    zia_charunit = charunit_shop(char_id=zia_text)
+    bob2_world.set_charunit(zia_charunit)
+    assert len(bob1_world._chars) == 1
+    assert bob1_world.char_exists(yao_text)
+    assert bob1_world.char_exists(zia_text) is False
 
     # WHEN
-    bob1_world.meld(exterior_world=bob2_world, ignore_personunits=True)
+    bob1_world.meld(exterior_world=bob2_world, ignore_charunits=True)
 
     # THEN
-    assert len(bob1_world._persons) == 1
-    assert bob1_world.person_exists(yao_text)
-    assert bob1_world.person_exists(zia_text) is False
+    assert len(bob1_world._chars) == 1
+    assert bob1_world.char_exists(yao_text)
+    assert bob1_world.char_exists(zia_text) is False
 
 
 def test_WorldUnit_meld_BeliefUnits_WhereBeliefUnitIsMissing():
@@ -116,7 +116,7 @@ def test_WorldUnit_meld_BeliefUnits_WhereBeliefUnitIsMissing():
 
     # THEN
     # for x_belief_id in bob1_world._beliefs.values():
-    #     print(f"bob1_world {x_belief_id.person_id=}")
+    #     print(f"bob1_world {x_belief_id.char_id=}")
 
     assert len(bob1_world._beliefs) == 2
     assert bob1_world.get_beliefunit(run_text) != None
@@ -129,28 +129,28 @@ def test_WorldUnit_meld_BeliefUnits_WhereBeliefUnitMembershipIsDifferent():
     bob_text = "Bob"
     bob1_world = worldunit_shop(bob_text)
     sue_text = "Sue"
-    bob1_world.set_personunit(personunit_shop(sue_text))
+    bob1_world.set_charunit(charunit_shop(sue_text))
 
     run_text = ",runners"
     bob1_world.set_beliefunit(beliefunit_shop(run_text))
-    bob1_world.get_beliefunit(run_text).set_personlink(personlink_shop(sue_text))
+    bob1_world.get_beliefunit(run_text).set_charlink(charlink_shop(sue_text))
 
     bob2_world = worldunit_shop(bob_text)
     yao_text = "Yao"
-    bob2_world.set_personunit(personunit_shop(yao_text))
-    bob2_world.set_personunit(personunit_shop(sue_text))
+    bob2_world.set_charunit(charunit_shop(yao_text))
+    bob2_world.set_charunit(charunit_shop(sue_text))
     bob2_world.set_beliefunit(beliefunit_shop(run_text))
-    bob2_world.get_beliefunit(run_text).set_personlink(personlink_shop(yao_text))
-    bob2_world.get_beliefunit(run_text).set_personlink(personlink_shop(sue_text))
+    bob2_world.get_beliefunit(run_text).set_charlink(charlink_shop(yao_text))
+    bob2_world.get_beliefunit(run_text).set_charlink(charlink_shop(sue_text))
     assert len(bob1_world._beliefs) == 2
-    assert len(bob1_world.get_beliefunit(run_text)._persons) == 1
+    assert len(bob1_world.get_beliefunit(run_text)._chars) == 1
 
     # WHEN
     bob1_world.meld(exterior_world=bob2_world)
 
     # THEN
     assert len(bob1_world._beliefs) == 3
-    assert len(bob1_world.get_beliefunit(run_text)._persons) == 2
+    assert len(bob1_world.get_beliefunit(run_text)._chars) == 2
 
 
 def test_WorldUnit_idearoot_meld_idearoot_AttrCorrectlyMelded():
@@ -335,15 +335,15 @@ def test_WorldUnit_factunits_meld_IdeasMeldedBeforeFacts():
     assert bob1_idearoot._factunits == bob2_world._idearoot._factunits
 
 
-def test_WorldUnit_meld_BeliefsMeldedBefore_Persons():
+def test_WorldUnit_meld_BeliefsMeldedBefore_Chars():
     # GIVEN
     yao_text = "Yao"
     yao1_world = worldunit_shop(yao_text)
     yao2_world = worldunit_shop(yao_text)
     bob_text = "Bob"
-    yao2_world.set_personunit(personunit_shop(bob_text))
+    yao2_world.set_charunit(charunit_shop(bob_text))
     assert yao2_world.get_beliefunit(bob_text) != None
-    yao2_world.set_beliefunit(beliefunit_shop(bob_text, _person_mirror=True))
+    yao2_world.set_beliefunit(beliefunit_shop(bob_text, _char_mirror=True))
 
     # WHEN/THEN
     assert yao1_world.meld(yao2_world) is None  # No error raised
@@ -405,7 +405,7 @@ def test_WorldUnit_meld_ReturnsCorrectObj_LargeExample():
     assert bob_idearoot._uid == yao_idearoot._uid
     assert bob_idearoot._factunits == yao_idearoot._factunits
     assert bob_world._beliefs == yao_world._beliefs
-    assert bob_world._persons == yao_world._persons
+    assert bob_world._chars == yao_world._chars
 
     assert len(bob_idearoot._factunits) == 2
     assert len(bob_idearoot._factunits) == len(yao_idearoot._factunits)
@@ -433,8 +433,8 @@ def test_WorldUnit_meld_ReturnsCorrectObj_LargeExample():
     assert abs(bob_family_bl._world_debt - yao_family_bl._world_debt) < 0.0001
 
     # for balanceline in bob_worldr_bl.values():
-    #     if balanceline.person_id != fam_text:
-    #         assert balanceline == yao_worldr_bl.get(balanceline.person_id)
+    #     if balanceline.char_id != fam_text:
+    #         assert balanceline == yao_worldr_bl.get(balanceline.char_id)
     assert bob_worldr_bl == yao_worldr_bl
     # assert x_world1._idearoot._balancelines == bob2_world._idearoot._balancelines
     # assert x_world1._idearoot == bob2_world._idearoot
@@ -449,12 +449,12 @@ def test_WorldUnit__meld_originlinks_CorrectlySetsOriginLinks():
     assert len(bob_world._originunit._links) == 0
 
     # WHEN
-    bob_world._meld_originlinks(person_id=sue_text, person_weight=sue_weight)
+    bob_world._meld_originlinks(char_id=sue_text, char_weight=sue_weight)
 
     # THEN
     assert len(bob_world._originunit._links) == 1
     bob_sue_originunit = originunit_shop()
-    bob_sue_originunit.set_originlink(person_id=sue_text, weight=sue_weight)
+    bob_sue_originunit.set_originlink(char_id=sue_text, weight=sue_weight)
     assert bob_world._originunit == bob_sue_originunit
 
 
@@ -480,11 +480,11 @@ def test_WorldUnit_meld_OriginUnitsCorrectlySet():
     assert len(bob_world._originunit._links) == 0
 
     # WHEN
-    bob_world.meld(sue_x_world, person_weight=sue_weight)
+    bob_world.meld(sue_x_world, char_weight=sue_weight)
 
     # THEN
     sue_originunit = originunit_shop()
-    sue_originunit.set_originlink(person_id=sue_text, weight=sue_weight)
+    sue_originunit.set_originlink(char_id=sue_text, weight=sue_weight)
     assert len(bob_world._originunit._links) == 1
     assert bob_world._originunit == sue_originunit
     bob_free_idea = bob_world.get_idea_obj(free_road)

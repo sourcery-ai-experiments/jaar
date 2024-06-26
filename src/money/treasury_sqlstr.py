@@ -1,4 +1,4 @@
-from src._road.road import create_road_without_root_node, RoadUnit, OwnerID, PersonID
+from src._road.road import create_road_without_root_node, RoadUnit, OwnerID, CharID
 from src._instrument.sqlite import (
     sqlite_bool,
     sqlite_null,
@@ -7,7 +7,7 @@ from src._instrument.sqlite import (
     get_row_count_sqlstr,
     get_single_result,
 )
-from src._world.world import WorldUnit, PersonUnit
+from src._world.world import WorldUnit, CharUnit
 from dataclasses import dataclass
 from sqlite3 import Connection
 
@@ -477,9 +477,9 @@ WHERE cash_master = '{cash_owner_id}'
     return dict_x
 
 
-# PersonTreasuryUnit
+# CharTreasuryUnit
 @dataclass
-class PersonTreasuryUnit:
+class CharTreasuryUnit:
     cash_master: str
     due_owner_id: str
     due_total: float
@@ -489,17 +489,17 @@ class PersonTreasuryUnit:
     voice_rank: int
 
 
-def get_persontreasuryunit_dict(
+def get_chartreasuryunit_dict(
     db_conn: Connection, cash_owner_id: str
-) -> dict[str:PersonTreasuryUnit]:
+) -> dict[str:CharTreasuryUnit]:
     sqlstr = f"""
 SELECT
   owner_id cash_master
-, person_id due_owner_id
+, char_id due_owner_id
 , _treasury_due_paid due_total
 , _world_agenda_ratio_debt debt
 , (_world_agenda_ratio_debt - _treasury_due_paid) due_diff
-FROM world_personunit
+FROM world_charunit
 WHERE cash_master = '{cash_owner_id}'
     AND _treasury_due_paid IS NOT NULL
 ;
@@ -508,7 +508,7 @@ WHERE cash_master = '{cash_owner_id}'
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        persontreasuryunit_x = PersonTreasuryUnit(
+        chartreasuryunit_x = CharTreasuryUnit(
             cash_master=row[0],
             due_owner_id=row[1],
             due_total=row[2],
@@ -517,7 +517,7 @@ WHERE cash_master = '{cash_owner_id}'
             cred_score=None,
             voice_rank=None,
         )
-        dict_x[persontreasuryunit_x.due_owner_id] = persontreasuryunit_x
+        dict_x[chartreasuryunit_x.due_owner_id] = chartreasuryunit_x
     return dict_x
 
 
@@ -589,13 +589,13 @@ WHERE owner_id = '{world._owner_id}'
 """
 
 
-# personunit
-def get_world_personunit_table_create_sqlstr() -> str:
-    """Create table that holds the starting river metrics for every world's person. All the metrics."""
+# charunit
+def get_world_charunit_table_create_sqlstr() -> str:
+    """Create table that holds the starting river metrics for every world's char. All the metrics."""
     return """
-CREATE TABLE IF NOT EXISTS world_personunit (
+CREATE TABLE IF NOT EXISTS world_charunit (
   owner_id VARCHAR(255) NOT NULL 
-, person_id VARCHAR(255) NOT NULL
+, char_id VARCHAR(255) NOT NULL
 , _world_cred FLOAT
 , _world_debt FLOAT
 , _world_agenda_cred FLOAT
@@ -610,80 +610,80 @@ CREATE TABLE IF NOT EXISTS world_personunit (
 , _treasury_voice_rank INT
 , _treasury_voice_hx_lowest_rank INT
 , FOREIGN KEY(owner_id) REFERENCES worldunit(owner_id)
-, FOREIGN KEY(person_id) REFERENCES worldunit(owner_id)
-, UNIQUE(owner_id, person_id)
+, FOREIGN KEY(char_id) REFERENCES worldunit(owner_id)
+, UNIQUE(owner_id, char_id)
 )
 ;
 """
 
 
-def get_world_personunit_table_update_treasury_due_paid_sqlstr(
+def get_world_charunit_table_update_treasury_due_paid_sqlstr(
     cash_owner_id: OwnerID,
 ) -> str:
     return f"""
-UPDATE world_personunit
+UPDATE world_charunit
 SET _treasury_due_paid = (
     SELECT SUM(block.cash_close-block.cash_start) 
     FROM river_block block
     WHERE block.cash_master='{cash_owner_id}' 
         AND block.dst_owner_id=block.cash_master
-        AND block.src_owner_id = world_personunit.person_id
+        AND block.src_owner_id = world_charunit.char_id
     )
 WHERE EXISTS (
     SELECT block.cash_close
     FROM river_block block
-    WHERE world_personunit.owner_id='{cash_owner_id}' 
-        AND world_personunit.person_id = block.dst_owner_id
+    WHERE world_charunit.owner_id='{cash_owner_id}' 
+        AND world_charunit.char_id = block.dst_owner_id
 )
 ;
 """
 
 
-def get_world_personunit_table_update_cred_score_sqlstr(
+def get_world_charunit_table_update_cred_score_sqlstr(
     cash_owner_id: OwnerID,
 ) -> str:
     return f"""
-UPDATE world_personunit
+UPDATE world_charunit
 SET _treasury_cred_score = (
     SELECT SUM(reach_coin_close - reach_coin_start) range_sum
     FROM river_reach reach
-    WHERE reach.cash_master = world_personunit.owner_id
-        AND reach.src_owner_id = world_personunit.person_id
+    WHERE reach.cash_master = world_charunit.owner_id
+        AND reach.src_owner_id = world_charunit.char_id
     )
-WHERE world_personunit.owner_id = '{cash_owner_id}'
+WHERE world_charunit.owner_id = '{cash_owner_id}'
 ;
 """
 
 
-def get_world_personunit_table_update_treasury_voice_rank_sqlstr(
+def get_world_charunit_table_update_treasury_voice_rank_sqlstr(
     owner_id: OwnerID,
 ) -> str:
     return f"""
-UPDATE world_personunit
+UPDATE world_charunit
 SET _treasury_voice_rank = 
     (
     SELECT rn
     FROM (
-        SELECT p2.person_id
+        SELECT p2.char_id
         , row_number() over (order by p2._treasury_cred_score DESC) rn
-        FROM world_personunit p2
+        FROM world_charunit p2
         WHERE p2.owner_id = '{owner_id}'
     ) p3
-    WHERE p3.person_id = world_personunit.person_id AND world_personunit.owner_id = '{owner_id}'
+    WHERE p3.char_id = world_charunit.char_id AND world_charunit.owner_id = '{owner_id}'
     )
-WHERE world_personunit.owner_id = '{owner_id}'
+WHERE world_charunit.owner_id = '{owner_id}'
 ;
 """
 
 
-def get_world_personunit_table_insert_sqlstr(
-    x_world: WorldUnit, x_personunit: PersonUnit
+def get_world_charunit_table_insert_sqlstr(
+    x_world: WorldUnit, x_charunit: CharUnit
 ) -> str:
     """Create table that holds a the output cred metrics."""
     return f"""
-INSERT INTO world_personunit (
+INSERT INTO world_charunit (
   owner_id
-, person_id
+, char_id
 , _world_cred
 , _world_debt
 , _world_agenda_cred
@@ -700,37 +700,37 @@ INSERT INTO world_personunit (
 )
 VALUES (
   '{x_world._owner_id}' 
-, '{x_personunit.person_id}'
-, {sqlite_null(x_personunit._world_cred)} 
-, {sqlite_null(x_personunit._world_debt)}
-, {sqlite_null(x_personunit._world_agenda_cred)}
-, {sqlite_null(x_personunit._world_agenda_debt)}
-, {sqlite_null(x_personunit._world_agenda_ratio_cred)}
-, {sqlite_null(x_personunit._world_agenda_ratio_debt)}
-, {sqlite_bool(x_personunit._credor_operational)}
-, {sqlite_bool(x_personunit._debtor_operational)}
-, {sqlite_null(x_personunit._treasury_due_paid)}
-, {sqlite_null(x_personunit._treasury_due_diff)}
-, {sqlite_null(x_personunit._treasury_cred_score)}
-, {sqlite_null(x_personunit._treasury_voice_rank)}
-, {sqlite_null(x_personunit._treasury_voice_hx_lowest_rank)}
+, '{x_charunit.char_id}'
+, {sqlite_null(x_charunit._world_cred)} 
+, {sqlite_null(x_charunit._world_debt)}
+, {sqlite_null(x_charunit._world_agenda_cred)}
+, {sqlite_null(x_charunit._world_agenda_debt)}
+, {sqlite_null(x_charunit._world_agenda_ratio_cred)}
+, {sqlite_null(x_charunit._world_agenda_ratio_debt)}
+, {sqlite_bool(x_charunit._credor_operational)}
+, {sqlite_bool(x_charunit._debtor_operational)}
+, {sqlite_null(x_charunit._treasury_due_paid)}
+, {sqlite_null(x_charunit._treasury_due_diff)}
+, {sqlite_null(x_charunit._treasury_cred_score)}
+, {sqlite_null(x_charunit._treasury_voice_rank)}
+, {sqlite_null(x_charunit._treasury_voice_hx_lowest_rank)}
 )
 ;
 """
 
 
 @dataclass
-class PersonDBUnit(PersonUnit):
+class CharDBUnit(CharUnit):
     owner_id: str = None
 
 
-def get_personview_dict(
+def get_charview_dict(
     db_conn: Connection, payer_owner_id: OwnerID
-) -> dict[PersonID:PersonDBUnit]:
+) -> dict[CharID:CharDBUnit]:
     sqlstr = f"""
 SELECT 
   owner_id
-, person_id
+, char_id
 , _world_cred
 , _world_debt
 , _world_agenda_cred
@@ -744,7 +744,7 @@ SELECT
 , _treasury_cred_score
 , _treasury_voice_rank
 , _treasury_voice_hx_lowest_rank
-FROM world_personunit
+FROM world_charunit
 WHERE owner_id = '{payer_owner_id}' 
 ;
 """
@@ -752,9 +752,9 @@ WHERE owner_id = '{payer_owner_id}'
     results = db_conn.execute(sqlstr)
 
     for row in results.fetchall():
-        personview_x = PersonDBUnit(
+        charview_x = CharDBUnit(
             owner_id=row[0],
-            person_id=row[1],
+            char_id=row[1],
             _world_cred=row[2],
             _world_debt=row[3],
             _world_agenda_cred=row[4],
@@ -769,7 +769,7 @@ WHERE owner_id = '{payer_owner_id}'
             _treasury_voice_rank=row[13],
             _treasury_voice_hx_lowest_rank=row[14],
         )
-        dict_x[personview_x.person_id] = personview_x
+        dict_x[charview_x.char_id] = charview_x
     return dict_x
 
 
@@ -778,7 +778,7 @@ class RiverLedgerUnit:
     owner_id: str
     cash_onset: float
     cash_cease: float
-    _personviews: dict[str:PersonDBUnit]
+    _charviews: dict[str:CharDBUnit]
     river_tree_level: int
     block_num: int
 
@@ -789,12 +789,12 @@ class RiverLedgerUnit:
 def get_river_ledger_unit(
     db_conn: Connection, river_block_x: RiverBlockUnit = None
 ) -> RiverLedgerUnit:
-    personview_x = get_personview_dict(db_conn, river_block_x.dst_owner_id)
+    charview_x = get_charview_dict(db_conn, river_block_x.dst_owner_id)
     return RiverLedgerUnit(
         owner_id=river_block_x.dst_owner_id,
         cash_onset=river_block_x.cash_start,
         cash_cease=river_block_x.cash_close,
-        _personviews=personview_x,
+        _charviews=charview_x,
         river_tree_level=river_block_x.river_tree_level,
         block_num=river_block_x.block_num,
     )
@@ -1065,14 +1065,14 @@ VALUES (
 """
 
 
-def get_world_personunit_table_insert_sqlstr(
-    x_world: WorldUnit, x_personunit: PersonUnit
+def get_world_charunit_table_insert_sqlstr(
+    x_world: WorldUnit, x_charunit: CharUnit
 ) -> str:
     """Create table that holds a the output cred metrics."""
     return f"""
-INSERT INTO world_personunit (
+INSERT INTO world_charunit (
   owner_id
-, person_id
+, char_id
 , _world_cred
 , _world_debt
 , _world_agenda_cred
@@ -1089,20 +1089,20 @@ INSERT INTO world_personunit (
 )
 VALUES (
   '{x_world._owner_id}' 
-, '{x_personunit.person_id}'
-, {sqlite_null(x_personunit._world_cred)} 
-, {sqlite_null(x_personunit._world_debt)}
-, {sqlite_null(x_personunit._world_agenda_cred)}
-, {sqlite_null(x_personunit._world_agenda_debt)}
-, {sqlite_null(x_personunit._world_agenda_ratio_cred)}
-, {sqlite_null(x_personunit._world_agenda_ratio_debt)}
-, {sqlite_bool(x_personunit._credor_operational)}
-, {sqlite_bool(x_personunit._debtor_operational)}
-, {sqlite_null(x_personunit._treasury_due_paid)}
-, {sqlite_null(x_personunit._treasury_due_diff)}
-, {sqlite_null(x_personunit._treasury_cred_score)}
-, {sqlite_null(x_personunit._treasury_voice_rank)}
-, {sqlite_null(x_personunit._treasury_voice_hx_lowest_rank)}
+, '{x_charunit.char_id}'
+, {sqlite_null(x_charunit._world_cred)} 
+, {sqlite_null(x_charunit._world_debt)}
+, {sqlite_null(x_charunit._world_agenda_cred)}
+, {sqlite_null(x_charunit._world_agenda_debt)}
+, {sqlite_null(x_charunit._world_agenda_ratio_cred)}
+, {sqlite_null(x_charunit._world_agenda_ratio_debt)}
+, {sqlite_bool(x_charunit._credor_operational)}
+, {sqlite_bool(x_charunit._debtor_operational)}
+, {sqlite_null(x_charunit._treasury_due_paid)}
+, {sqlite_null(x_charunit._treasury_due_diff)}
+, {sqlite_null(x_charunit._treasury_cred_score)}
+, {sqlite_null(x_charunit._treasury_voice_rank)}
+, {sqlite_null(x_charunit._treasury_voice_hx_lowest_rank)}
 )
 ;
 """
@@ -1120,7 +1120,7 @@ def get_create_table_if_not_exist_sqlstrs() -> list[str]:
     list_x = [get_worldunit_table_create_sqlstr()]
     list_x.append(get_world_idea_factunit_table_create_sqlstr())
     list_x.append(get_world_ideaunit_table_create_sqlstr())
-    list_x.append(get_world_personunit_table_create_sqlstr())
+    list_x.append(get_world_charunit_table_create_sqlstr())
     list_x.append(get_river_block_table_create_sqlstr())
     list_x.append(get_river_circle_table_create_sqlstr())
     list_x.append(get_river_reach_table_create_sqlstr())

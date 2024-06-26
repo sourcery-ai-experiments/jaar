@@ -3,7 +3,7 @@ from src._world.examples.example_worlds import (
     get_world_with_4_levels as example_worlds_get_world_with_4_levels,
 )
 from src._world.healer import healerhold_shop
-from src._world.person import PersonID
+from src._world.char import CharID
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
 from src._world.beliefunit import balanceline_shop, balancelink_shop
@@ -73,34 +73,34 @@ def test_WorldUnit_calc_world_metrics_ClearsDescendantAttributes():
     mon_text = "Monday"
     yrx = x_world._idearoot
     assert yrx._descendant_pledge_count is None
-    assert yrx._all_person_cred is None
-    assert yrx._all_person_debt is None
+    assert yrx._all_char_cred is None
+    assert yrx._all_char_debt is None
     assert yrx._kids[casa_text]._descendant_pledge_count is None
-    assert yrx._kids[casa_text]._all_person_cred is None
-    assert yrx._kids[casa_text]._all_person_debt is None
+    assert yrx._kids[casa_text]._all_char_cred is None
+    assert yrx._kids[casa_text]._all_char_debt is None
     assert yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count is None
-    assert yrx._kids[week_text]._kids[mon_text]._all_person_cred is None
-    assert yrx._kids[week_text]._kids[mon_text]._all_person_debt is None
+    assert yrx._kids[week_text]._kids[mon_text]._all_char_cred is None
+    assert yrx._kids[week_text]._kids[mon_text]._all_char_debt is None
 
     yrx._descendant_pledge_count = -2
-    yrx._all_person_cred = -2
-    yrx._all_person_debt = -2
+    yrx._all_char_cred = -2
+    yrx._all_char_debt = -2
     yrx._kids[casa_text]._descendant_pledge_count = -2
-    yrx._kids[casa_text]._all_person_cred = -2
-    yrx._kids[casa_text]._all_person_debt = -2
+    yrx._kids[casa_text]._all_char_cred = -2
+    yrx._kids[casa_text]._all_char_debt = -2
     yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count = -2
-    yrx._kids[week_text]._kids[mon_text]._all_person_cred = -2
-    yrx._kids[week_text]._kids[mon_text]._all_person_debt = -2
+    yrx._kids[week_text]._kids[mon_text]._all_char_cred = -2
+    yrx._kids[week_text]._kids[mon_text]._all_char_debt = -2
 
     assert yrx._descendant_pledge_count == -2
-    assert yrx._all_person_cred == -2
-    assert yrx._all_person_debt == -2
+    assert yrx._all_char_cred == -2
+    assert yrx._all_char_debt == -2
     assert yrx._kids[casa_text]._descendant_pledge_count == -2
-    assert yrx._kids[casa_text]._all_person_cred == -2
-    assert yrx._kids[casa_text]._all_person_debt == -2
+    assert yrx._kids[casa_text]._all_char_cred == -2
+    assert yrx._kids[casa_text]._all_char_debt == -2
     assert yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count == -2
-    assert yrx._kids[week_text]._kids[mon_text]._all_person_cred == -2
-    assert yrx._kids[week_text]._kids[mon_text]._all_person_debt == -2
+    assert yrx._kids[week_text]._kids[mon_text]._all_char_cred == -2
+    assert yrx._kids[week_text]._kids[mon_text]._all_char_debt == -2
 
     # WHEN
     x_world.calc_world_metrics()
@@ -110,12 +110,12 @@ def test_WorldUnit_calc_world_metrics_ClearsDescendantAttributes():
     assert yrx._kids[casa_text]._descendant_pledge_count == 0
     assert yrx._kids[week_text]._kids[mon_text]._descendant_pledge_count == 0
 
-    assert yrx._kids[week_text]._kids[mon_text]._all_person_cred == True
-    assert yrx._kids[week_text]._kids[mon_text]._all_person_debt == True
-    assert yrx._kids[casa_text]._all_person_cred == True
-    assert yrx._kids[casa_text]._all_person_debt == True
-    assert yrx._all_person_cred == True
-    assert yrx._all_person_debt == True
+    assert yrx._kids[week_text]._kids[mon_text]._all_char_cred == True
+    assert yrx._kids[week_text]._kids[mon_text]._all_char_debt == True
+    assert yrx._kids[casa_text]._all_char_cred == True
+    assert yrx._kids[casa_text]._all_char_debt == True
+    assert yrx._all_char_cred == True
+    assert yrx._all_char_debt == True
 
 
 def test_WorldUnit_get_idea_obj_ReturnsIdea():
@@ -161,16 +161,16 @@ def test_WorldUnit_calc_world_metrics_RootOnlyCorrectlySetsDescendantAttributes(
     # GIVEN
     tim_world = worldunit_shop(_owner_id="Tim")
     assert tim_world._idearoot._descendant_pledge_count is None
-    assert tim_world._idearoot._all_person_cred is None
-    assert tim_world._idearoot._all_person_debt is None
+    assert tim_world._idearoot._all_char_cred is None
+    assert tim_world._idearoot._all_char_debt is None
 
     # WHEN
     tim_world.calc_world_metrics()
 
     # THEN
     assert tim_world._idearoot._descendant_pledge_count == 0
-    assert tim_world._idearoot._all_person_cred == True
-    assert tim_world._idearoot._all_person_debt == True
+    assert tim_world._idearoot._all_char_cred == True
+    assert tim_world._idearoot._all_char_debt == True
 
 
 def test_WorldUnit_calc_world_metrics_NLevelCorrectlySetsDescendantAttributes_1():
@@ -206,14 +206,14 @@ def test_WorldUnit_calc_world_metrics_NLevelCorrectlySetsDescendantAttributes_1(
     # test root status:
     x_idearoot = x_world.get_idea_obj(x_world._real_id)
     assert x_idearoot._descendant_pledge_count is None
-    assert x_idearoot._all_person_cred is None
-    assert x_idearoot._all_person_debt is None
+    assert x_idearoot._all_char_cred is None
+    assert x_idearoot._all_char_debt is None
     assert x_idearoot._kids[casa_text]._descendant_pledge_count is None
-    assert x_idearoot._kids[casa_text]._all_person_cred is None
-    assert x_idearoot._kids[casa_text]._all_person_debt is None
+    assert x_idearoot._kids[casa_text]._all_char_cred is None
+    assert x_idearoot._kids[casa_text]._all_char_debt is None
     assert x_idearoot._kids[week_text]._kids[mon_text]._descendant_pledge_count is None
-    assert x_idearoot._kids[week_text]._kids[mon_text]._all_person_cred is None
-    assert x_idearoot._kids[week_text]._kids[mon_text]._all_person_debt is None
+    assert x_idearoot._kids[week_text]._kids[mon_text]._all_char_cred is None
+    assert x_idearoot._kids[week_text]._kids[mon_text]._all_char_debt is None
 
     # WHEN
     x_world.calc_world_metrics()
@@ -223,12 +223,12 @@ def test_WorldUnit_calc_world_metrics_NLevelCorrectlySetsDescendantAttributes_1(
     assert x_idearoot._kids[casa_text]._descendant_pledge_count == 1
     assert x_idearoot._kids[casa_text]._kids[email_text]._descendant_pledge_count == 0
     assert x_idearoot._kids[week_text]._kids[mon_text]._descendant_pledge_count == 0
-    assert x_idearoot._all_person_cred == True
-    assert x_idearoot._all_person_debt == True
-    assert x_idearoot._kids[casa_text]._all_person_cred == True
-    assert x_idearoot._kids[casa_text]._all_person_debt == True
-    assert x_idearoot._kids[week_text]._kids[mon_text]._all_person_cred == True
-    assert x_idearoot._kids[week_text]._kids[mon_text]._all_person_debt == True
+    assert x_idearoot._all_char_cred == True
+    assert x_idearoot._all_char_debt == True
+    assert x_idearoot._kids[casa_text]._all_char_cred == True
+    assert x_idearoot._kids[casa_text]._all_char_debt == True
+    assert x_idearoot._kids[week_text]._kids[mon_text]._all_char_cred == True
+    assert x_idearoot._kids[week_text]._kids[mon_text]._all_char_debt == True
 
 
 def test_WorldUnit_calc_world_metrics_NLevelCorrectlySetsDescendantAttributes_2():
@@ -248,7 +248,7 @@ def test_WorldUnit_calc_world_metrics_NLevelCorrectlySetsDescendantAttributes_2(
     vacuum_idea = ideaunit_shop(_label=vacuum_text, pledge=True)
     x_world.add_idea(vacuum_idea, parent_road=casa_road)
 
-    x_world.add_personunit(person_id=sue_text)
+    x_world.add_charunit(char_id=sue_text)
     x_balancelink = balancelink_shop(belief_id=sue_text)
 
     x_world._idearoot._kids[casa_text]._kids[email_text].set_balancelink(
@@ -263,22 +263,22 @@ def test_WorldUnit_calc_world_metrics_NLevelCorrectlySetsDescendantAttributes_2(
     # print(x_world._kids[casa_text]._kids[email_text]._balancelink)
 
     # THEN
-    assert x_world._idearoot._all_person_cred is False
-    assert x_world._idearoot._all_person_debt is False
+    assert x_world._idearoot._all_char_cred is False
+    assert x_world._idearoot._all_char_debt is False
     casa_idea = x_world._idearoot._kids[casa_text]
-    assert casa_idea._all_person_cred is False
-    assert casa_idea._all_person_debt is False
-    assert casa_idea._kids[email_text]._all_person_cred is False
-    assert casa_idea._kids[email_text]._all_person_debt is False
-    assert casa_idea._kids[vacuum_text]._all_person_cred == True
-    assert casa_idea._kids[vacuum_text]._all_person_debt == True
+    assert casa_idea._all_char_cred is False
+    assert casa_idea._all_char_debt is False
+    assert casa_idea._kids[email_text]._all_char_cred is False
+    assert casa_idea._kids[email_text]._all_char_debt is False
+    assert casa_idea._kids[vacuum_text]._all_char_cred == True
+    assert casa_idea._kids[vacuum_text]._all_char_debt == True
     week_idea = x_world._idearoot._kids[week_text]
-    assert week_idea._all_person_cred == True
-    assert week_idea._all_person_debt == True
-    assert week_idea._kids[mon_text]._all_person_cred == True
-    assert week_idea._kids[mon_text]._all_person_debt == True
-    assert week_idea._kids[tue_text]._all_person_cred == True
-    assert week_idea._kids[tue_text]._all_person_debt == True
+    assert week_idea._all_char_cred == True
+    assert week_idea._all_char_debt == True
+    assert week_idea._kids[mon_text]._all_char_cred == True
+    assert week_idea._kids[mon_text]._all_char_debt == True
+    assert week_idea._kids[tue_text]._all_char_cred == True
+    assert week_idea._kids[tue_text]._all_char_debt == True
 
 
 def test_WorldUnit_TreeTraverseSetsClearsBalanceLineestorsCorrectly():
@@ -318,7 +318,7 @@ def test_WorldUnit_calc_world_metrics_TreeTraverseSetsBalanceLineestorFromRootCo
     week_text = "weekdays"
     nation_text = "nation-state"
     sue_balancelink = balancelink_shop(belief_id=sue_text)
-    x_world.add_personunit(person_id=sue_text)
+    x_world.add_charunit(char_id=sue_text)
     x_world._idearoot.set_balancelink(balancelink=sue_balancelink)
     # idea tree has balancelines
     assert x_world._idearoot._balanceheirs.get(sue_text) is None
@@ -375,7 +375,7 @@ def test_WorldUnit_calc_world_metrics_TreeTraverseSetsBalanceLineestorFromNonRoo
     # idea tree has no balancelinks
     sue_text = "sue"
     assert x_world._idearoot._balancelines == {}
-    x_world.add_personunit(person_id=sue_text)
+    x_world.add_charunit(char_id=sue_text)
     x_balancelink = balancelink_shop(belief_id=sue_text)
     casa_text = "casa"
     email_text = "email"
@@ -399,7 +399,7 @@ def test_WorldUnit_calc_world_metrics_TreeTraverseSetsBalanceLineestorFromNonRoo
     }
 
 
-def test_world4person_Exists():
+def test_world4char_Exists():
     # GIVEN
     x_world = example_worlds_get_world_with_4_levels()
     email_text = "email"
@@ -412,22 +412,22 @@ def test_world4person_Exists():
     vacuum_idea = ideaunit_shop(_label=vacuum_text, pledge=True)
     x_world.add_idea(vacuum_idea, parent_road=casa_road)
 
-    sue_person_id = PersonID(sue_text)
-    x_world.add_personunit(person_id=sue_person_id)
-    x_balancelink = balancelink_shop(belief_id=sue_person_id)
+    sue_char_id = CharID(sue_text)
+    x_world.add_charunit(char_id=sue_char_id)
+    x_balancelink = balancelink_shop(belief_id=sue_char_id)
     yrx = x_world._idearoot
     yrx._kids[casa_text]._kids[email_text].set_balancelink(balancelink=x_balancelink)
 
     # WHEN
-    sue_world4person = x_world.get_world4person(facts=None, person_id=sue_person_id)
+    sue_world4char = x_world.get_world4char(facts=None, char_id=sue_char_id)
 
     # THEN
-    assert sue_world4person
-    assert str(type(sue_world4person)).find(".world.WorldUnit'>")
-    assert sue_world4person._owner_id == sue_person_id
+    assert sue_world4char
+    assert str(type(sue_world4char)).find(".world.WorldUnit'>")
+    assert sue_world4char._owner_id == sue_char_id
 
 
-def test_world4person_hasCorrectLevel1StructureNoBelieflessAncestors():
+def test_world4char_hasCorrectLevel1StructureNoBelieflessAncestors():
     # GIVEN
     x_world = example_worlds_get_world_with_4_levels()
     email_text = "email"
@@ -442,41 +442,41 @@ def test_world4person_hasCorrectLevel1StructureNoBelieflessAncestors():
     vacuum_idea = ideaunit_shop(_label=vacuum_text, pledge=True)
     x_world.add_idea(vacuum_idea, parent_road=casa_road)
 
-    yao_person_id = PersonID("Yao")
-    x_world.add_personunit(person_id=yao_person_id)
-    yao_bl = balancelink_shop(belief_id=yao_person_id)
+    yao_char_id = CharID("Yao")
+    x_world.add_charunit(char_id=yao_char_id)
+    yao_bl = balancelink_shop(belief_id=yao_char_id)
     yrx = x_world._idearoot
     yrx._kids[week_text].set_balancelink(balancelink=yao_bl)
     yrx._kids[feed_text].set_balancelink(balancelink=yao_bl)
     nation_text = "nation-state"
     yrx._kids[nation_text].set_balancelink(balancelink=yao_bl)
 
-    sue_person_id = PersonID(sue_text)
-    x_world.add_personunit(person_id=sue_person_id)
-    sue_bl = balancelink_shop(belief_id=sue_person_id)
+    sue_char_id = CharID(sue_text)
+    x_world.add_charunit(char_id=sue_char_id)
+    sue_bl = balancelink_shop(belief_id=sue_char_id)
     yrx._kids[casa_text]._kids[email_text].set_balancelink(balancelink=sue_bl)
 
     # WHEN
-    sue_world4person = x_world.get_world4person(sue_person_id, facts=None)
+    sue_world4char = x_world.get_world4char(sue_char_id, facts=None)
 
     # THEN
-    assert len(sue_world4person._idearoot._kids) > 0
-    print(f"{len(sue_world4person._idearoot._kids)=}")
+    assert len(sue_world4char._idearoot._kids) > 0
+    print(f"{len(sue_world4char._idearoot._kids)=}")
 
-    casa_idea = sue_world4person.get_idea_obj(casa_road)
+    casa_idea = sue_world4char.get_idea_obj(casa_road)
     type_check_IdeaUnit = str(type(casa_idea)).find(".idea.IdeaUnit'>")
     print(f"{type_check_IdeaUnit=}")
     type_check_IdeaUnit = str(type(casa_idea)).find(".idea.IdeaUnit'>")
     print(f"{type_check_IdeaUnit=}")
     assert str(type(casa_idea)).find(".idea.IdeaUnit'>") > 0
 
-    assert sue_world4person._idearoot._kids.get(feed_text) is None
-    assert sue_world4person._idearoot._world_importance == 1
+    assert sue_world4char._idearoot._kids.get(feed_text) is None
+    assert sue_world4char._idearoot._world_importance == 1
     assert casa_idea._world_importance == yrx._kids[casa_text]._world_importance
-    world4person_road = sue_world4person.make_l1_road("__world4person__")
-    assert sue_world4person.get_idea_obj(world4person_road) != None
+    world4char_road = sue_world4char.make_l1_road("__world4char__")
+    assert sue_world4char.get_idea_obj(world4char_road) != None
 
-    y4a_exteriors = sue_world4person.get_idea_obj(world4person_road)
+    y4a_exteriors = sue_world4char.get_idea_obj(world4char_road)
     exteriors_world_importance = yrx._kids[week_text]._world_importance
     exteriors_world_importance += yrx._kids[feed_text]._world_importance
     exteriors_world_importance += yrx._kids[nation_text]._world_importance
@@ -646,7 +646,7 @@ def test_WorldUnit_calc_world_metrics_CorrectlySets_econs_justified_WhenSinglePr
     # GIVEN
     sue_world = worldunit_shop("Sue")
     yao_text = "Yao"
-    sue_world.add_personunit(yao_text)
+    sue_world.add_charunit(yao_text)
     yao_healerhold = healerhold_shop({yao_text})
     sue_world.add_l1_idea(
         ideaunit_shop("Texas", _healerhold=yao_healerhold, _problem_bool=True)
@@ -664,7 +664,7 @@ def test_WorldUnit_calc_world_metrics_CorrectlySets_econs_justified_WhenEconIsLe
     # GIVEN
     sue_world = worldunit_shop("Sue")
     yao_text = "Yao"
-    sue_world.add_personunit(yao_text)
+    sue_world.add_charunit(yao_text)
     yao_healerhold = healerhold_shop({yao_text})
 
     texas_text = "Texas"

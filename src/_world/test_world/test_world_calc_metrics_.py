@@ -4,7 +4,7 @@ from src._world.world import worldunit_shop, get_from_json as worldunit_get_from
 from src._world.idea import IdeaUnit, ideaunit_shop
 from src._world.reason_idea import reasonunit_shop
 from src._world.beliefunit import beliefunit_shop, balancelink_shop
-from src._world.person import personlink_shop
+from src._world.char import charlink_shop
 from src._world.reason_assign import assignedunit_shop
 from src._world.examples.example_worlds import (
     get_world_with_4_levels as example_worlds_get_world_with_4_levels,
@@ -176,7 +176,7 @@ def test_WorldUnit_get_all_pledges_ReturnsCorrectObj():
     zia_world.add_idea(ideaunit_shop(sweep_text, pledge=True), clean_road)
     sweep_idea = zia_world.get_idea_obj(sweep_road)
     bob_text = "Bob"
-    zia_world.add_personunit(bob_text)
+    zia_world.add_charunit(bob_text)
     sweep_idea._assignedunit.set_suffbelief(bob_text)
     print(f"{sweep_idea}")
     agenda_dict = zia_world.get_agenda_dict()
@@ -588,7 +588,7 @@ def test_WorldUnit_create_agenda_item_CorrectlyCreatesAllWorldAttributes():
     zia_world = worldunit_shop("Zia")
 
     zia_world.calc_world_metrics()
-    assert len(zia_world._persons) == 0
+    assert len(zia_world._chars) == 0
     assert len(zia_world._beliefs) == 0
     assert len(zia_world._idearoot._kids) == 0
 
@@ -624,20 +624,20 @@ def test_WorldUnit_create_agenda_item_CorrectlyCreatesAllWorldAttributes():
     clean_cookery_idea.set_reasonunit(reason=daytime_reason)
 
     # anna_text = "anna"
-    # anna_personunit = personunit_shop(person_id=anna_text)
-    # anna_personlink = personlink_shop(person_id=anna_text)
+    # anna_charunit = charunit_shop(char_id=anna_text)
+    # anna_charlink = charlink_shop(char_id=anna_text)
     # beto_text = "beto"
-    # beto_personunit = personunit_shop(person_id=beto_text)
-    # beto_personlink = personlink_shop(person_id=beto_text)
+    # beto_charunit = charunit_shop(char_id=beto_text)
+    # beto_charlink = charlink_shop(char_id=beto_text)
 
     family_text = ",family"
     # beliefunit_z = beliefunit_shop(belief_id=family_text)
-    # beliefunit_z.set_personlink(personlink=anna_personlink)
-    # beliefunit_z.set_personlink(personlink=beto_personlink)
+    # beliefunit_z.set_charlink(charlink=anna_charlink)
+    # beliefunit_z.set_charlink(charlink=beto_charlink)
     balancelink_z = balancelink_shop(belief_id=family_text)
     clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
 
-    assert len(zia_world._persons) == 0
+    assert len(zia_world._chars) == 0
     assert len(zia_world._beliefs) == 0
     assert len(zia_world._idearoot._kids) == 1
     assert zia_world.get_idea_obj(daytime_road)._begin == 0
@@ -663,7 +663,7 @@ def test_WorldUnit_create_agenda_item_CorrectlyCreatesAllWorldAttributes():
     assert zia_world.get_idea_obj(daytime_road)._close == 1440
     assert len(zia_world._beliefs) == 1
     assert zia_world._beliefs.get(family_text) != None
-    assert zia_world._beliefs.get(family_text)._persons in (None, {})
+    assert zia_world._beliefs.get(family_text)._chars in (None, {})
 
     assert len(zia_world._idearoot._kids) == 3
 
@@ -737,7 +737,7 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
     assert get_tasks_count(pledge_idea_list) == 64
 
 
-def test_agenda_IsSetByAssignedUnit_1PersonBelief():
+def test_agenda_IsSetByAssignedUnit_1CharBelief():
     # GIVEN
     bob_text = "Bob"
     bob_world = worldunit_shop(bob_text)
@@ -747,7 +747,7 @@ def test_agenda_IsSetByAssignedUnit_1PersonBelief():
     assert len(bob_world.get_agenda_dict()) == 1
 
     sue_text = "Sue"
-    bob_world.add_personunit(person_id=sue_text)
+    bob_world.add_charunit(char_id=sue_text)
     assignedunit_sue = assignedunit_shop()
     assignedunit_sue.set_suffbelief(belief_id=sue_text)
     assert len(bob_world.get_agenda_dict()) == 1
@@ -759,7 +759,7 @@ def test_agenda_IsSetByAssignedUnit_1PersonBelief():
     assert len(bob_world.get_agenda_dict()) == 0
 
     # WHEN
-    bob_world.add_personunit(person_id=bob_text)
+    bob_world.add_charunit(char_id=bob_text)
     assignedunit_bob = assignedunit_shop()
     assignedunit_bob.set_suffbelief(belief_id=bob_text)
 
@@ -773,21 +773,21 @@ def test_agenda_IsSetByAssignedUnit_1PersonBelief():
     # print(f"{agenda_dict[0]._label=}")
 
 
-def test_agenda_IsSetByAssignedUnit_2PersonBelief():
+def test_agenda_IsSetByAssignedUnit_2CharBelief():
     # GIVEN
     bob_text = "Bob"
     bob_world = worldunit_shop(bob_text)
-    bob_world.add_personunit(person_id=bob_text)
+    bob_world.add_charunit(char_id=bob_text)
     casa_text = "casa"
     casa_road = bob_world.make_road(bob_text, casa_text)
     bob_world.add_l1_idea(ideaunit_shop(casa_text, pledge=True))
 
     sue_text = "Sue"
-    bob_world.add_personunit(person_id=sue_text)
+    bob_world.add_charunit(char_id=sue_text)
 
     run_text = ",runners"
     run_belief = beliefunit_shop(belief_id=run_text)
-    run_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    run_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
     bob_world.set_beliefunit(y_beliefunit=run_belief)
 
     run_assignedunit = assignedunit_shop()
@@ -801,7 +801,7 @@ def test_agenda_IsSetByAssignedUnit_2PersonBelief():
     assert len(bob_world.get_agenda_dict()) == 0
 
     # WHEN
-    run_belief.set_personlink(personlink=personlink_shop(person_id=bob_text))
+    run_belief.set_charlink(charlink=charlink_shop(char_id=bob_text))
     bob_world.set_beliefunit(y_beliefunit=run_belief)
 
     # THEN

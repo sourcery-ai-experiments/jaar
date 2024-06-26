@@ -5,14 +5,14 @@ from src._road.road import (
     OwnerID,
 )
 from src._world.idea import IdeaUnit
-from src._world.world import WorldUnit, PersonUnit
+from src._world.world import WorldUnit, CharUnit
 from src.listen.basis_worlds import create_empty_world, create_listen_basis
 from src.listen.userhub import UserHub, userhub_shop
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
 
 
-class Missing_person_debtor_poolException(Exception):
+class Missing_char_debtor_poolException(Exception):
     pass
 
 
@@ -25,7 +25,7 @@ def generate_perspective_agenda(perspective_world: WorldUnit) -> list[IdeaUnit]:
 def _ingest_perspective_agenda(
     listener: WorldUnit, agenda: list[IdeaUnit]
 ) -> WorldUnit:
-    debtor_amount = listener._person_debtor_pool
+    debtor_amount = listener._char_debtor_pool
     ingest_list = generate_ingest_list(agenda, debtor_amount, listener._pixel)
     for ingest_ideaunit in ingest_list:
         _ingest_single_ideaunit(listener, ingest_ideaunit)
@@ -33,15 +33,15 @@ def _ingest_perspective_agenda(
 
 
 def _allocate_irrational_debtor_weight(listener: WorldUnit, speaker_owner_id: OwnerID):
-    speaker_personunit = listener.get_person(speaker_owner_id)
-    speaker_debtor_weight = speaker_personunit.debtor_weight
-    speaker_personunit.add_irrational_debtor_weight(speaker_debtor_weight)
+    speaker_charunit = listener.get_char(speaker_owner_id)
+    speaker_debtor_weight = speaker_charunit.debtor_weight
+    speaker_charunit.add_irrational_debtor_weight(speaker_debtor_weight)
     return listener
 
 
 def _allocate_inallocable_debtor_weight(listener: WorldUnit, speaker_owner_id: OwnerID):
-    speaker_personunit = listener.get_person(speaker_owner_id)
-    speaker_personunit.add_inallocable_debtor_weight(speaker_personunit.debtor_weight)
+    speaker_charunit = listener.get_char(speaker_owner_id)
+    speaker_charunit.add_inallocable_debtor_weight(speaker_charunit.debtor_weight)
     return listener
 
 
@@ -142,20 +142,18 @@ def _add_and_replace_ideaunit_weights(
         x_ideaunit._weight += x_weight
 
 
-def get_debtors_roll(x_role: WorldUnit) -> list[PersonUnit]:
+def get_debtors_roll(x_role: WorldUnit) -> list[CharUnit]:
     return [
-        x_personunit
-        for x_personunit in x_role._persons.values()
-        if x_personunit.debtor_weight != 0
+        x_charunit
+        for x_charunit in x_role._chars.values()
+        if x_charunit.debtor_weight != 0
     ]
 
 
-def get_ordered_debtors_roll(x_world: WorldUnit) -> list[PersonUnit]:
-    persons_ordered_list = get_debtors_roll(x_world)
-    persons_ordered_list.sort(
-        key=lambda x: (x.debtor_weight, x.person_id), reverse=True
-    )
-    return persons_ordered_list
+def get_ordered_debtors_roll(x_world: WorldUnit) -> list[CharUnit]:
+    chars_ordered_list = get_debtors_roll(x_world)
+    chars_ordered_list.sort(key=lambda x: (x.debtor_weight, x.char_id), reverse=True)
+    return chars_ordered_list
 
 
 def migrate_all_facts(src_listener: WorldUnit, dst_listener: WorldUnit):
@@ -191,14 +189,14 @@ def listen_to_speaker_fact(
 
 
 def listen_to_speaker_agenda(listener: WorldUnit, speaker: WorldUnit) -> WorldUnit:
-    if listener.person_exists(speaker._owner_id) is False:
-        raise Missing_person_debtor_poolException(
-            f"listener '{listener._owner_id}' world is assumed to have {speaker._owner_id} personunit."
+    if listener.char_exists(speaker._owner_id) is False:
+        raise Missing_char_debtor_poolException(
+            f"listener '{listener._owner_id}' world is assumed to have {speaker._owner_id} charunit."
         )
     perspective_world = get_speaker_perspective(speaker, listener._owner_id)
     if perspective_world._rational is False:
         return _allocate_irrational_debtor_weight(listener, speaker._owner_id)
-    if listener._person_debtor_pool is None:
+    if listener._char_debtor_pool is None:
         return _allocate_inallocable_debtor_weight(listener, speaker._owner_id)
     if listener._owner_id != speaker._owner_id:
         agenda = generate_perspective_agenda(perspective_world)
@@ -210,11 +208,11 @@ def listen_to_speaker_agenda(listener: WorldUnit, speaker: WorldUnit) -> WorldUn
 
 
 def listen_to_agendas_same_live(listener_live: WorldUnit, listener_userhub: UserHub):
-    for x_personunit in get_ordered_debtors_roll(listener_live):
-        if x_personunit.person_id == listener_live._owner_id:
+    for x_charunit in get_ordered_debtors_roll(listener_live):
+        if x_charunit.char_id == listener_live._owner_id:
             listen_to_speaker_agenda(listener_live, listener_userhub.get_same_world())
         else:
-            speaker_id = x_personunit.person_id
+            speaker_id = x_charunit.char_id
             speaker_live = listener_userhub.dw_speaker_world(speaker_id)
             if speaker_live is None:
                 speaker_live = create_empty_world(listener_live, speaker_id)
@@ -223,12 +221,12 @@ def listen_to_agendas_same_live(listener_live: WorldUnit, listener_userhub: User
 
 def listen_to_agendas_role_job(listener_job: WorldUnit, healer_userhub: UserHub):
     listener_id = listener_job._owner_id
-    for x_personunit in get_ordered_debtors_roll(listener_job):
-        if x_personunit.person_id == listener_id:
+    for x_charunit in get_ordered_debtors_roll(listener_job):
+        if x_charunit.char_id == listener_id:
             listener_role = healer_userhub.get_role_world(listener_id)
             listen_to_speaker_agenda(listener_job, listener_role)
         else:
-            speaker_id = x_personunit.person_id
+            speaker_id = x_charunit.char_id
             healer_id = healer_userhub.owner_id
             speaker_job = healer_userhub.rj_speaker_world(healer_id, speaker_id)
             if speaker_job is None:
@@ -239,17 +237,17 @@ def listen_to_agendas_role_job(listener_job: WorldUnit, healer_userhub: UserHub)
 def listen_to_facts_role_job(new_job: WorldUnit, healer_userhub: UserHub):
     role = healer_userhub.get_role_world(new_job._owner_id)
     migrate_all_facts(role, new_job)
-    for x_personunit in get_ordered_debtors_roll(new_job):
-        if x_personunit.person_id != new_job._owner_id:
-            speaker_job = healer_userhub.get_job_world(x_personunit.person_id)
+    for x_charunit in get_ordered_debtors_roll(new_job):
+        if x_charunit.char_id != new_job._owner_id:
+            speaker_job = healer_userhub.get_job_world(x_charunit.char_id)
             if speaker_job != None:
                 listen_to_speaker_fact(new_job, speaker_job)
 
 
 def listen_to_facts_same_live(new_live: WorldUnit, listener_userhub: UserHub):
     migrate_all_facts(listener_userhub.get_same_world(), new_live)
-    for x_personunit in get_ordered_debtors_roll(new_live):
-        speaker_id = x_personunit.person_id
+    for x_charunit in get_ordered_debtors_roll(new_live):
+        speaker_id = x_charunit.char_id
         if speaker_id != new_live._owner_id:
             speaker_live = listener_userhub.dw_speaker_world(speaker_id)
             if speaker_live != None:
@@ -259,7 +257,7 @@ def listen_to_facts_same_live(new_live: WorldUnit, listener_userhub: UserHub):
 def listen_to_debtors_roll_same_live(listener_userhub: UserHub) -> WorldUnit:
     same = listener_userhub.get_same_world()
     new_world = create_listen_basis(same)
-    if same._person_debtor_pool is None:
+    if same._char_debtor_pool is None:
         return new_world
     listen_to_agendas_same_live(new_world, listener_userhub)
     listen_to_facts_same_live(new_world, listener_userhub)
@@ -271,7 +269,7 @@ def listen_to_debtors_roll_role_job(
 ) -> WorldUnit:
     role = healer_userhub.get_role_world(listener_id)
     new_role = create_listen_basis(role)
-    if role._person_debtor_pool is None:
+    if role._char_debtor_pool is None:
         return new_role
     listen_to_agendas_role_job(new_role, healer_userhub)
     listen_to_facts_role_job(new_role, healer_userhub)

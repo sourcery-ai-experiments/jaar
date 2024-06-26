@@ -1,8 +1,8 @@
 from src.real.real_report import (
-    get_real_sames_persons_dataframe,
-    get_real_sames_persons_plotly_fig,
-    get_real_lives_persons_dataframe,
-    get_real_lives_persons_plotly_fig,
+    get_real_sames_chars_dataframe,
+    get_real_sames_chars_plotly_fig,
+    get_real_lives_chars_dataframe,
+    get_real_lives_chars_plotly_fig,
     get_real_sames_agenda_dataframe,
     get_real_sames_agenda_plotly_fig,
     get_real_lives_agenda_dataframe,
@@ -16,17 +16,17 @@ from src.real.examples.example_reals import (
 from src.real.examples.real_env import env_dir_setup_cleanup
 
 
-def test_get_real_sames_persons_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_get_real_sames_chars_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real2()
 
     # WHEN
-    x_df = get_real_sames_persons_dataframe(music_real)
+    x_df = get_real_sames_chars_dataframe(music_real)
 
     # THEN
-    personunit_colums = {
+    charunit_colums = {
         "owner_id",
-        "person_id",
+        "char_id",
         "credor_weight",
         "debtor_weight",
         "_belieflinks",
@@ -48,16 +48,16 @@ def test_get_real_sames_persons_dataframe_ReturnsCorrectObj(env_dir_setup_cleanu
     print(f"{set(x_df.columns)=}")
     print(x_df)
 
-    assert set(x_df.columns) == personunit_colums
+    assert set(x_df.columns) == charunit_colums
     assert x_df.shape[0] == 8
 
 
-def test_get_real_sames_persons_plotly_fig_DisplaysCorrectInfo(env_dir_setup_cleanup):
+def test_get_real_sames_chars_plotly_fig_DisplaysCorrectInfo(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real2()
 
     # WHEN
-    x_fig = get_real_sames_persons_plotly_fig(music_real)
+    x_fig = get_real_sames_chars_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True
@@ -66,7 +66,7 @@ def test_get_real_sames_persons_plotly_fig_DisplaysCorrectInfo(env_dir_setup_cle
     # assert 1 == 2
 
 
-def test_get_real_lives_persons_dataframe_ReturnsCorrectObj(
+def test_get_real_lives_chars_dataframe_ReturnsCorrectObj(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -74,12 +74,12 @@ def test_get_real_lives_persons_dataframe_ReturnsCorrectObj(
     music_real.generate_all_live_worlds()
 
     # WHEN
-    x_df = get_real_lives_persons_dataframe(music_real)
+    x_df = get_real_lives_chars_dataframe(music_real)
 
     # THEN
-    personunit_colums = {
+    charunit_colums = {
         "owner_id",
-        "person_id",
+        "char_id",
         "credor_weight",
         "debtor_weight",
         "_belieflinks",
@@ -103,10 +103,10 @@ def test_get_real_lives_persons_dataframe_ReturnsCorrectObj(
     print(x_df)
 
     assert x_df.shape[0] == 8
-    assert set(x_df.columns) == personunit_colums
+    assert set(x_df.columns) == charunit_colums
 
 
-def test_get_real_lives_persons_plotly_fig_DisplaysCorrectInfo(
+def test_get_real_lives_chars_plotly_fig_DisplaysCorrectInfo(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -114,7 +114,7 @@ def test_get_real_lives_persons_plotly_fig_DisplaysCorrectInfo(
     music_real.generate_all_live_worlds()
 
     # WHEN
-    x_fig = get_real_lives_persons_plotly_fig(music_real)
+    x_fig = get_real_lives_chars_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True

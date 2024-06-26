@@ -1,11 +1,11 @@
 from src._instrument.python import get_1_if_None, get_dict_from_json, get_0_if_None
-from src._road.road import PersonID, default_road_delimiter_if_none, validate_roadnode
+from src._road.road import CharID, default_road_delimiter_if_none, validate_roadnode
 from src._road.finance import default_pixel_if_none
 from src._world.belieflink import BeliefID, BeliefLink, belieflinks_get_from_dict
 from dataclasses import dataclass
 
 
-class InvalidPersonException(Exception):
+class InvalidCharException(Exception):
     pass
 
 
@@ -14,26 +14,26 @@ class _pixel_RatioException(Exception):
 
 
 @dataclass
-class PersonCore:
-    person_id: PersonID = None
+class CharCore:
+    char_id: CharID = None
     _road_delimiter: str = None
     _pixel: float = None
 
-    def set_person_id(self, x_person_id: PersonID):
-        self.person_id = validate_roadnode(x_person_id, self._road_delimiter)
+    def set_char_id(self, x_char_id: CharID):
+        self.char_id = validate_roadnode(x_char_id, self._road_delimiter)
 
 
 @dataclass
-class PersonUnit(PersonCore):
-    """This represents the relationship from the WorldUnit._owner_id to the PersonUnit.person_id
-    PersonUnit.credor_weight represents how much credor_weight the _owner_id gives the person_id
-    PersonUnit.debtor_weight represents how much debtor_weight the _owner_id gives the person_id
+class CharUnit(CharCore):
+    """This represents the relationship from the WorldUnit._owner_id to the CharUnit.char_id
+    CharUnit.credor_weight represents how much credor_weight the _owner_id gives the char_id
+    CharUnit.debtor_weight represents how much debtor_weight the _owner_id gives the char_id
     """
 
     credor_weight: int = None
     debtor_weight: int = None
     # calculated fields
-    _belieflinks: dict[PersonID:BeliefLink] = None
+    _belieflinks: dict[CharID:BeliefLink] = None
     _irrational_debtor_weight: int = None  # set by listening process
     _inallocable_debtor_weight: int = None  # set by listening process
     # set by World.calc_world_metrics()
@@ -162,12 +162,12 @@ class PersonUnit(PersonCore):
         self,
         world_agenda_ratio_cred_sum: float,
         world_agenda_ratio_debt_sum: float,
-        world_personunit_total_credor_weight: float,
-        world_personunit_total_debtor_weight: float,
+        world_charunit_total_credor_weight: float,
+        world_charunit_total_debtor_weight: float,
     ):
         if world_agenda_ratio_cred_sum == 0:
             self._world_agenda_ratio_cred = (
-                self.get_credor_weight() / world_personunit_total_credor_weight
+                self.get_credor_weight() / world_charunit_total_credor_weight
             )
         else:
             self._world_agenda_ratio_cred = (
@@ -176,25 +176,23 @@ class PersonUnit(PersonCore):
 
         if world_agenda_ratio_debt_sum == 0:
             self._world_agenda_ratio_debt = (
-                self.get_debtor_weight() / world_personunit_total_debtor_weight
+                self.get_debtor_weight() / world_charunit_total_debtor_weight
             )
         else:
             self._world_agenda_ratio_debt = (
                 self._world_agenda_debt / world_agenda_ratio_debt_sum
             )
 
-    def meld(self, exterior_personunit):
-        if self.person_id != exterior_personunit.person_id:
-            raise InvalidPersonException(
-                f"Meld fail PersonUnit='{self.person_id}' not the equal as PersonUnit='{exterior_personunit.person_id}"
+    def meld(self, exterior_charunit):
+        if self.char_id != exterior_charunit.char_id:
+            raise InvalidCharException(
+                f"Meld fail CharUnit='{self.char_id}' not the equal as CharUnit='{exterior_charunit.char_id}"
             )
 
-        self.credor_weight += exterior_personunit.credor_weight
-        self.debtor_weight += exterior_personunit.debtor_weight
-        self._irrational_debtor_weight += exterior_personunit._irrational_debtor_weight
-        self._inallocable_debtor_weight += (
-            exterior_personunit._inallocable_debtor_weight
-        )
+        self.credor_weight += exterior_charunit.credor_weight
+        self.debtor_weight += exterior_charunit.debtor_weight
+        self._irrational_debtor_weight += exterior_charunit._irrational_debtor_weight
+        self._inallocable_debtor_weight += exterior_charunit._inallocable_debtor_weight
 
     def set_belieflink(self, belieflink: BeliefLink):
         self._belieflinks[belieflink.belief_id] = belieflink
@@ -223,7 +221,7 @@ class PersonUnit(PersonCore):
 
     def get_dict(self, all_attrs: bool = False) -> dict[str:str]:
         x_dict = {
-            "person_id": self.person_id,
+            "char_id": self.char_id,
             "credor_weight": self.credor_weight,
             "debtor_weight": self.debtor_weight,
             "_belieflinks": self.get_belieflinks_dict(),
@@ -254,68 +252,64 @@ class PersonUnit(PersonCore):
         x_dict["_output_world_meld_order"] = self._output_world_meld_order
 
 
-# class PersonUnitsshop:
-def personunits_get_from_json(personunits_json: str) -> dict[str:PersonUnit]:
-    personunits_dict = get_dict_from_json(json_x=personunits_json)
-    return personunits_get_from_dict(x_dict=personunits_dict)
+# class CharUnitsshop:
+def charunits_get_from_json(charunits_json: str) -> dict[str:CharUnit]:
+    charunits_dict = get_dict_from_json(json_x=charunits_json)
+    return charunits_get_from_dict(x_dict=charunits_dict)
 
 
-def personunits_get_from_dict(
+def charunits_get_from_dict(
     x_dict: dict, _road_delimiter: str = None
-) -> dict[str:PersonUnit]:
-    personunits = {}
-    for personunit_dict in x_dict.values():
-        x_personunit = personunit_get_from_dict(personunit_dict, _road_delimiter)
-        personunits[x_personunit.person_id] = x_personunit
-    return personunits
+) -> dict[str:CharUnit]:
+    charunits = {}
+    for charunit_dict in x_dict.values():
+        x_charunit = charunit_get_from_dict(charunit_dict, _road_delimiter)
+        charunits[x_charunit.char_id] = x_charunit
+    return charunits
 
 
-def personunit_get_from_dict(personunit_dict: dict, _road_delimiter: str) -> PersonUnit:
-    _irrational_debtor_weight = personunit_dict.get("_irrational_debtor_weight", 0)
-    _inallocable_debtor_weight = personunit_dict.get("_inallocable_debtor_weight", 0)
-    _treasury_due_paid = personunit_dict.get("_treasury_due_paid", 0)
-    _treasury_due_diff = personunit_dict.get("_treasury_due_diff", 0)
-    _treasury_cred_score = personunit_dict.get("_treasury_cred_score", 0)
-    _treasury_voice_rank = personunit_dict.get("_treasury_voice_rank", 0)
-    _treasury_voice_hx_lowest_rank = personunit_dict.get(
+def charunit_get_from_dict(charunit_dict: dict, _road_delimiter: str) -> CharUnit:
+    _irrational_debtor_weight = charunit_dict.get("_irrational_debtor_weight", 0)
+    _inallocable_debtor_weight = charunit_dict.get("_inallocable_debtor_weight", 0)
+    _treasury_due_paid = charunit_dict.get("_treasury_due_paid", 0)
+    _treasury_due_diff = charunit_dict.get("_treasury_due_diff", 0)
+    _treasury_cred_score = charunit_dict.get("_treasury_cred_score", 0)
+    _treasury_voice_rank = charunit_dict.get("_treasury_voice_rank", 0)
+    _treasury_voice_hx_lowest_rank = charunit_dict.get(
         "_treasury_voice_hx_lowest_rank", 0
     )
-    x_personunit = personunit_shop(
-        person_id=personunit_dict["person_id"],
-        credor_weight=personunit_dict["credor_weight"],
-        debtor_weight=personunit_dict["debtor_weight"],
-        _credor_operational=personunit_dict["_credor_operational"],
-        _debtor_operational=personunit_dict["_debtor_operational"],
+    x_charunit = charunit_shop(
+        char_id=charunit_dict["char_id"],
+        credor_weight=charunit_dict["credor_weight"],
+        debtor_weight=charunit_dict["debtor_weight"],
+        _credor_operational=charunit_dict["_credor_operational"],
+        _debtor_operational=charunit_dict["_debtor_operational"],
         _road_delimiter=_road_delimiter,
     )
-    x_personunit._belieflinks = belieflinks_get_from_dict(
-        personunit_dict["_belieflinks"]
-    )
-    x_personunit.set_treasury_attr(
+    x_charunit._belieflinks = belieflinks_get_from_dict(charunit_dict["_belieflinks"])
+    x_charunit.set_treasury_attr(
         _treasury_due_paid=_treasury_due_paid,
         _treasury_due_diff=_treasury_due_diff,
         cred_score=_treasury_cred_score,
         voice_rank=_treasury_voice_rank,
     )
-    x_personunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
-    x_personunit.add_irrational_debtor_weight(get_0_if_None(_irrational_debtor_weight))
-    x_personunit.add_inallocable_debtor_weight(
-        get_0_if_None(_inallocable_debtor_weight)
-    )
+    x_charunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
+    x_charunit.add_irrational_debtor_weight(get_0_if_None(_irrational_debtor_weight))
+    x_charunit.add_inallocable_debtor_weight(get_0_if_None(_inallocable_debtor_weight))
 
-    return x_personunit
+    return x_charunit
 
 
-def personunit_shop(
-    person_id: PersonID,
+def charunit_shop(
+    char_id: CharID,
     credor_weight: int = None,
     debtor_weight: int = None,
     _credor_operational: bool = None,
     _debtor_operational: bool = None,
     _road_delimiter: str = None,
     _pixel: float = None,
-) -> PersonUnit:
-    x_personunit = PersonUnit(
+) -> CharUnit:
+    x_charunit = CharUnit(
         credor_weight=get_1_if_None(credor_weight),
         debtor_weight=get_1_if_None(debtor_weight),
         _belieflinks={},
@@ -334,12 +328,12 @@ def personunit_shop(
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _pixel=default_pixel_if_none(_pixel),
     )
-    x_personunit.set_person_id(x_person_id=person_id)
-    return x_personunit
+    x_charunit.set_char_id(x_char_id=char_id)
+    return x_charunit
 
 
 @dataclass
-class PersonLink(PersonCore):
+class CharLink(CharCore):
     credor_weight: float = 1.0
     debtor_weight: float = 1.0
     _world_cred: float = None
@@ -349,15 +343,15 @@ class PersonLink(PersonCore):
 
     def get_dict(self) -> dict[str:str]:
         return {
-            "person_id": self.person_id,
+            "char_id": self.char_id,
             "credor_weight": self.credor_weight,
             "debtor_weight": self.debtor_weight,
         }
 
     def set_world_cred_debt(
         self,
-        personlinks_credor_weight_sum: float,
-        personlinks_debtor_weight_sum: float,
+        charlinks_credor_weight_sum: float,
+        charlinks_debtor_weight_sum: float,
         belief_world_cred: float,
         belief_world_debt: float,
         belief_world_agenda_cred: float,
@@ -365,8 +359,8 @@ class PersonLink(PersonCore):
     ):
         belief_world_cred = get_1_if_None(belief_world_cred)
         belief_world_debt = get_1_if_None(belief_world_debt)
-        credor_ratio = self.credor_weight / personlinks_credor_weight_sum
-        debtor_ratio = self.debtor_weight / personlinks_debtor_weight_sum
+        credor_ratio = self.credor_weight / charlinks_credor_weight_sum
+        debtor_ratio = self.debtor_weight / charlinks_debtor_weight_sum
 
         self._world_cred = belief_world_cred * credor_ratio
         self._world_debt = belief_world_debt * debtor_ratio
@@ -379,47 +373,47 @@ class PersonLink(PersonCore):
         self._world_agenda_cred = 0
         self._world_agenda_debt = 0
 
-    def meld(self, exterior_personlink):
-        if self.person_id != exterior_personlink.person_id:
-            raise InvalidPersonException(
-                f"Meld fail PersonLink='{self.person_id}' not the equal as PersonLink='{exterior_personlink.person_id}"
+    def meld(self, exterior_charlink):
+        if self.char_id != exterior_charlink.char_id:
+            raise InvalidCharException(
+                f"Meld fail CharLink='{self.char_id}' not the equal as CharLink='{exterior_charlink.char_id}"
             )
-        self.credor_weight += exterior_personlink.credor_weight
-        self.debtor_weight += exterior_personlink.debtor_weight
+        self.credor_weight += exterior_charlink.credor_weight
+        self.debtor_weight += exterior_charlink.debtor_weight
 
 
-def personlinks_get_from_json(personlinks_json: str) -> dict[str:PersonLink]:
-    personlinks_dict = get_dict_from_json(json_x=personlinks_json)
-    return personlinks_get_from_dict(x_dict=personlinks_dict)
+def charlinks_get_from_json(charlinks_json: str) -> dict[str:CharLink]:
+    charlinks_dict = get_dict_from_json(json_x=charlinks_json)
+    return charlinks_get_from_dict(x_dict=charlinks_dict)
 
 
-def personlinks_get_from_dict(x_dict: dict) -> dict[str:PersonLink]:
+def charlinks_get_from_dict(x_dict: dict) -> dict[str:CharLink]:
     if x_dict is None:
         x_dict = {}
-    personlinks = {}
-    for personlinks_dict in x_dict.values():
-        x_person = personlink_shop(
-            person_id=personlinks_dict["person_id"],
-            credor_weight=personlinks_dict["credor_weight"],
-            debtor_weight=personlinks_dict["debtor_weight"],
+    charlinks = {}
+    for charlinks_dict in x_dict.values():
+        x_char = charlink_shop(
+            char_id=charlinks_dict["char_id"],
+            credor_weight=charlinks_dict["credor_weight"],
+            debtor_weight=charlinks_dict["debtor_weight"],
         )
-        personlinks[x_person.person_id] = x_person
-    return personlinks
+        charlinks[x_char.char_id] = x_char
+    return charlinks
 
 
-def personlink_shop(
-    person_id: PersonID,
+def charlink_shop(
+    char_id: CharID,
     credor_weight: float = None,
     debtor_weight: float = None,
     _world_cred: float = None,
     _world_debt: float = None,
     _world_agenda_cred: float = None,
     _world_agenda_debt: float = None,
-) -> PersonLink:
+) -> CharLink:
     credor_weight = get_1_if_None(credor_weight)
     debtor_weight = get_1_if_None(debtor_weight)
-    return PersonLink(
-        person_id=person_id,
+    return CharLink(
+        char_id=char_id,
         credor_weight=credor_weight,
         debtor_weight=debtor_weight,
         _world_cred=_world_cred,
@@ -430,7 +424,7 @@ def personlink_shop(
 
 
 @dataclass
-class PersonUnitExternalMetrics:
-    internal_person_id: PersonID = None
+class CharUnitExternalMetrics:
+    internal_char_id: CharID = None
     credor_operational: bool = None
     debtor_operational: bool = None

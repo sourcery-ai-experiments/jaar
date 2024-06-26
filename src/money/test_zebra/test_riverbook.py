@@ -38,8 +38,8 @@ def test_create_riverbook_ReturnsCorrectObj():
     yao_text = "Yao"
     sue_text = "Sue"
     yao_world = worldunit_shop(yao_text)
-    yao_world.add_personunit(yao_text)
-    yao_world.add_personunit(sue_text)
+    yao_world.add_charunit(yao_text)
+    yao_world.add_charunit(sue_text)
     yao_userhub = userhub_shop(None, None, yao_text)
     yao_book_money_amount = 500
 
