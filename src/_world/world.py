@@ -49,6 +49,7 @@ from src._world.person import (
     personlink_shop,
     PersonUnitExternalMetrics,
 )
+from src._world.belieflink import belieflink_shop
 from src._world.beliefunit import (
     BalanceLink,
     BeliefID,
@@ -853,6 +854,20 @@ class WorldUnit:
                 )
                 x_idea.set_balancelink(balancelink=new_balancelink)
                 x_idea.del_balancelink(belief_id=old_belief_id)
+
+    def _migrate_beliefunits_to_belieflinks(self):
+        for x_personunit in self._persons.values():
+            x_personunit.clear_belieflinks()
+
+        for x_beliefunit in self._beliefs.values():
+            for x_personlink in x_beliefunit._persons.values():
+                x_personunit = self.get_person(x_personlink.person_id)
+                x_belieflink = belieflink_shop(
+                    x_beliefunit.belief_id,
+                    credor_weight=x_personlink.credor_weight,
+                    debtor_weight=x_personlink.debtor_weight,
+                )
+                x_personunit.set_belieflink(x_belieflink)
 
     def set_time_facts(self, open: datetime = None, nigh: datetime = None) -> None:
         open_minutes = self.get_time_min_from_dt(dt=open) if open != None else None

@@ -4,11 +4,7 @@ from src._instrument.python import (
     get_dict_from_json,
     get_0_if_None,
 )
-from src._road.road import (
-    PersonID,
-    default_road_delimiter_if_none,
-    validate_roadnode,
-)
+from src._road.road import PersonID, default_road_delimiter_if_none, validate_roadnode
 from src._world.belieflink import BeliefID, BeliefCore
 from src._world.person import (
     PersonLink,
