@@ -3,7 +3,7 @@ from src.gift.change import changeunit_shop, create_legible_list
 from src._world.world import worldunit_shop
 
 
-def test_create_legible_list_ReturnsObj_personunit_INSERT():
+def test_create_legible_list_ReturnsObj_charunit_INSERT():
     # GIVEN
     sue_world = worldunit_shop("Sue")
     category = "world_ideaunit"
@@ -63,7 +63,7 @@ def test_create_legible_list_ReturnsObj_personunit_INSERT():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_personunit_UPDATE():
+def test_create_legible_list_ReturnsObj_charunit_UPDATE():
     # GIVEN
     sue_world = worldunit_shop("Sue")
     category = "world_ideaunit"
@@ -123,7 +123,7 @@ def test_create_legible_list_ReturnsObj_personunit_UPDATE():
     assert legible_list[0] == x_str
 
 
-def test_create_legible_list_ReturnsObj_personunit_DELETE():
+def test_create_legible_list_ReturnsObj_charunit_DELETE():
     # GIVEN
     sue_world = worldunit_shop("Sue")
     category = "world_ideaunit"

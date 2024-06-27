@@ -19,7 +19,7 @@
                 "owner_id": {}
             }
         },
-        "world_personunit": {
+        "world_charunit": {
             "columns": {
                 "_world_cred": {},
                 "_world_debt": {},
@@ -35,7 +35,7 @@
                 "_treasury_voice_hx_lowest_rank": {},
                 "_treasury_voice_rank": {},
                 "owner_id": {},
-                "person_id": {}
+                "char_id": {}
             }
         },
         "worldunit": {

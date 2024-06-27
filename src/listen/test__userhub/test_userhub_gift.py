@@ -99,7 +99,7 @@ def test_UserHub_save_gift_file_RaisesErrorIfGiftUnit_atoms_dir_IsWrong(
     sue_giftunit = giftunit_shop(
         owner_id=sue_text,
         _gift_id=x_gift_id,
-        _atoms_dir="src/bad_directory",
+        _atoms_dir="src/incorrect_directory",
         _gifts_dir=sue_userhub.gifts_dir(),
     )
 
@@ -125,7 +125,7 @@ def test_UserHub_save_gift_file_RaisesErrorIfGiftUnit_gifts_dir_IsWrong(
         owner_id=sue_text,
         _gift_id=x_gift_id,
         _atoms_dir=sue_userhub.atoms_dir(),
-        _gifts_dir="src/bad_directory",
+        _gifts_dir="src/incorrect_directory",
     )
 
     # WHEN / THEN
@@ -267,7 +267,7 @@ def test_UserHub_default_giftunit_ReturnsObjWithCorrect_gift_id_WhenNogiftFilesE
     assert sue_giftunit._gift_id == init_gift_id()
     assert sue_giftunit._gift_id == 0
     assert sue_giftunit._gift_id == sue_userhub._get_next_gift_file_number()
-    assert sue_giftunit._faces == set()
+    assert sue_giftunit._face_id is None
     assert sue_giftunit._atoms_dir == sue_userhub.atoms_dir()
     assert sue_giftunit._gifts_dir == sue_userhub.gifts_dir()
 
@@ -294,7 +294,7 @@ def test_UserHub_default_giftunit_ReturnsObjWithCorrect_gift_id_WhengiftFilesExi
     assert sue_giftunit._gift_id == init_gift_id() + 1
     assert sue_giftunit._gift_id == 1
     assert sue_giftunit._gift_id == sue_userhub._get_next_gift_file_number()
-    assert sue_giftunit._faces == set()
+    assert sue_giftunit._face_id is None
     assert sue_giftunit._atoms_dir == sue_userhub.atoms_dir()
     assert sue_giftunit._gifts_dir == sue_userhub.gifts_dir()
 
@@ -321,9 +321,9 @@ def test_UserHub_get_giftunit_ReturnsCorrectObjWhenFilesDoesExist(
     # THEN
     assert y0_giftunit != None
     assert y1_giftunit != None
-    assert yao_text in y0_giftunit._faces
-    assert bob_text not in y0_giftunit._faces
-    assert bob_text in y1_giftunit._faces
+    assert yao_text in y0_giftunit._face_id
+    assert bob_text not in y0_giftunit._face_id
+    assert bob_text in y1_giftunit._face_id
 
 
 def test_UserHub_get_giftunit_RaisesExceptionWhenFileDoesNotExist(
@@ -450,7 +450,7 @@ def test_UserHub_create_save_gift_file_SaveCorrectObj(env_dir_setup_cleanup):
     before_world = sue_userhub.default_same_world()
     bob_text = "Bob"
     after_world = copy_deepcopy(before_world)
-    after_world.add_personunit(bob_text)
+    after_world.add_charunit(bob_text)
     sue_userhub.create_save_gift_file(before_world, after_world)
 
     # THEN

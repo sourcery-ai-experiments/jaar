@@ -469,21 +469,21 @@ def test_WorldUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     ]._descendant_pledge_count
     assert _descendant_pledge_count_new == 67
 
-    # _all_person_cred: bool = None,
-    sue_world._idearoot._kids[casa_text]._all_person_cred = 74
-    x_all_person_cred = sue_world._idearoot._kids[casa_text]._all_person_cred
-    assert x_all_person_cred == 74
-    sue_world.edit_idea_attr(road=casa_road, all_person_cred=59)
-    _all_person_cred_new = sue_world._idearoot._kids[casa_text]._all_person_cred
-    assert _all_person_cred_new == 59
+    # _all_char_cred: bool = None,
+    sue_world._idearoot._kids[casa_text]._all_char_cred = 74
+    x_all_char_cred = sue_world._idearoot._kids[casa_text]._all_char_cred
+    assert x_all_char_cred == 74
+    sue_world.edit_idea_attr(road=casa_road, all_char_cred=59)
+    _all_char_cred_new = sue_world._idearoot._kids[casa_text]._all_char_cred
+    assert _all_char_cred_new == 59
 
-    # _all_person_debt: bool = None,
-    sue_world._idearoot._kids[casa_text]._all_person_debt = 74
-    x_all_person_debt = sue_world._idearoot._kids[casa_text]._all_person_debt
-    assert x_all_person_debt == 74
-    sue_world.edit_idea_attr(road=casa_road, all_person_debt=59)
-    _all_person_debt_new = sue_world._idearoot._kids[casa_text]._all_person_debt
-    assert _all_person_debt_new == 59
+    # _all_char_debt: bool = None,
+    sue_world._idearoot._kids[casa_text]._all_char_debt = 74
+    x_all_char_debt = sue_world._idearoot._kids[casa_text]._all_char_debt
+    assert x_all_char_debt == 74
+    sue_world.edit_idea_attr(road=casa_road, all_char_debt=59)
+    _all_char_debt_new = sue_world._idearoot._kids[casa_text]._all_char_debt
+    assert _all_char_debt_new == 59
 
     # _balancelink: dict = None,
     sue_world._idearoot._kids[casa_text]._balancelinks = {
@@ -530,8 +530,8 @@ def test_WorldUnit_edit_idea_attr_IsAbleToEditAnyAncestor_Idea():
     sue_text = "Sue"
     yao_text = "Yao"
     x_healerhold = healerhold_shop({sue_text, yao_text})
-    sue_world.add_personunit(sue_text)
-    sue_world.add_personunit(yao_text)
+    sue_world.add_charunit(sue_text)
+    sue_world.add_charunit(yao_text)
     sue_world.edit_idea_attr(road=casa_road, healerhold=x_healerhold)
     assert sue_world._idearoot._kids[casa_text]._healerhold == x_healerhold
 

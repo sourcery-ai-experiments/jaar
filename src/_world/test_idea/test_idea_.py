@@ -24,8 +24,8 @@ def test_IdeaUnit_exists():
     assert x_ideaunit._weight is None
     assert x_ideaunit._label is None
     assert x_ideaunit._uid is None
-    assert x_ideaunit._all_person_cred is None
-    assert x_ideaunit._all_person_debt is None
+    assert x_ideaunit._all_char_cred is None
+    assert x_ideaunit._all_char_debt is None
     assert x_ideaunit._begin is None
     assert x_ideaunit._close is None
     assert x_ideaunit._addin is None
@@ -71,8 +71,8 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit._weight >= 1
     assert x_ideaunit._label is None
     assert x_ideaunit._uid is None
-    assert x_ideaunit._all_person_cred is None
-    assert x_ideaunit._all_person_debt is None
+    assert x_ideaunit._all_char_cred is None
+    assert x_ideaunit._all_char_debt is None
     assert x_ideaunit._begin is None
     assert x_ideaunit._close is None
     assert x_ideaunit._addin is None
@@ -350,21 +350,19 @@ def test_IdeaUnit_add_to_descendant_pledge_count_CorrectlyAdds():
     assert ball_idea._descendant_pledge_count == 77
 
 
-def test_IdeaUnit_clear_all_person_cred_debt_ClearsCorrectly():
+def test_IdeaUnit_clear_all_char_cred_debt_ClearsCorrectly():
     # GIVEN
     ball_text = "ball"
-    ball_idea = ideaunit_shop(
-        _label=ball_text, _all_person_cred=55, _all_person_debt=33
-    )
-    assert ball_idea._all_person_cred == 55
-    assert ball_idea._all_person_debt == 33
+    ball_idea = ideaunit_shop(_label=ball_text, _all_char_cred=55, _all_char_debt=33)
+    assert ball_idea._all_char_cred == 55
+    assert ball_idea._all_char_debt == 33
 
     # WHEN
-    ball_idea.clear_all_person_cred_debt()
+    ball_idea.clear_all_char_cred_debt()
 
     # THEN
-    assert ball_idea._all_person_cred is None
-    assert ball_idea._all_person_debt is None
+    assert ball_idea._all_char_cred is None
+    assert ball_idea._all_char_debt is None
 
 
 def test_get_kids_in_range_GetsCorrectIdeas():
@@ -521,8 +519,8 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     )
     factunit_x = factunit_shop(base=week_road, pick=week_road, open=5, nigh=59)
     casa_idea.set_factunit(factunit=factunit_x)
-    casa_idea._originunit.set_originlink(person_id="Ray", weight=None)
-    casa_idea._originunit.set_originlink(person_id="Lei", weight=4)
+    casa_idea._originunit.set_originlink(char_id="Ray", weight=None)
+    casa_idea._originunit.set_originlink(char_id="Lei", weight=4)
     x_begin = 11
     x_close = 12
     x_addin = 13

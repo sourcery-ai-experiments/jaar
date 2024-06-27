@@ -1,7 +1,7 @@
 from src._world.world import worldunit_shop
 from src._world.idea import ideaunit_shop
 from src._world.reason_idea import reasonunit_shop
-from src._world.person import personunit_shop, personlink_shop
+from src._world.char import charunit_shop, charlink_shop
 from src._world.beliefunit import beliefunit_shop
 from src._world.examples.example_worlds import (
     get_world_with_4_levels as example_worlds_get_world_with_4_levels,
@@ -19,11 +19,11 @@ def test_worldunit_get_assignment_ReturnsWorld():
     # WHEN
     bob_text = "Bob"
     world_x = worldunit_shop(_owner_id=jes_text)
-    assignor_known_persons_x = {}
+    assignor_known_chars_x = {}
     x_assignment_world = jes1_world.get_assignment(
         world_x=world_x,
-        assignor_persons=assignor_known_persons_x,
-        assignor_person_id=bob_text,
+        assignor_chars=assignor_known_chars_x,
+        assignor_char_id=bob_text,
     )
 
     # THEN
@@ -31,101 +31,99 @@ def test_worldunit_get_assignment_ReturnsWorld():
     assert x_assignment_world == world_x
 
 
-def test_worldunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInPersons():
+def test_worldunit_get_assignment_ReturnsEmptyBecauseAssignorIsNotInChars():
     # GIVEN
     noa_text = "Noa"
     noa_world = example_worlds_get_world_with_4_levels()
-    noa_world.set_personunit(personunit_shop(person_id=noa_text))
+    noa_world.set_charunit(charunit_shop(char_id=noa_text))
     zia_text = "Zia"
     yao_text = "Yao"
-    noa_world.set_personunit(personunit_shop(person_id=zia_text))
-    noa_world.set_personunit(personunit_shop(person_id=yao_text))
+    noa_world.set_charunit(charunit_shop(char_id=zia_text))
+    noa_world.set_charunit(charunit_shop(char_id=yao_text))
 
     # WHEN
     bob_text = "Bob"
     y_world = worldunit_shop(_owner_id=noa_text)
     x_world = worldunit_shop()
-    x_world.set_personunit(personunit=personunit_shop(person_id=zia_text))
-    x_world.set_personunit(personunit=personunit_shop(person_id=noa_text))
+    x_world.set_charunit(charunit=charunit_shop(char_id=zia_text))
+    x_world.set_charunit(charunit=charunit_shop(char_id=noa_text))
 
-    x_assignment_world = noa_world.get_assignment(y_world, x_world._persons, bob_text)
+    x_assignment_world = noa_world.get_assignment(y_world, x_world._chars, bob_text)
 
     # THEN
-    assert len(noa_world._persons) == 3
-    assert len(x_assignment_world._persons) == 0
+    assert len(noa_world._chars) == 3
+    assert len(x_assignment_world._chars) == 0
 
 
-def test_worldunit_get_assignment_ReturnsCorrectPersons():
+def test_worldunit_get_assignment_ReturnsCorrectChars():
     # GIVEN
     jes_text = "Jessi"
     jes_world = worldunit_shop(_owner_id=jes_text)
-    jes_world.set_personunit(personunit_shop(person_id=jes_text))
+    jes_world.set_charunit(charunit_shop(char_id=jes_text))
     bob_text = "Bob"
     zia_text = "Zia"
     noa_text = "Noa"
     yao_text = "Yao"
-    jes_world.set_personunit(personunit_shop(person_id=bob_text))
-    jes_world.set_personunit(personunit_shop(person_id=zia_text))
-    jes_world.set_personunit(personunit_shop(person_id=noa_text))
-    jes_world.set_personunit(personunit_shop(person_id=yao_text))
+    jes_world.set_charunit(charunit_shop(char_id=bob_text))
+    jes_world.set_charunit(charunit_shop(char_id=zia_text))
+    jes_world.set_charunit(charunit_shop(char_id=noa_text))
+    jes_world.set_charunit(charunit_shop(char_id=yao_text))
 
     # WHEN
     tx = worldunit_shop()
-    tx.set_personunit(personunit=personunit_shop(person_id=bob_text))
-    tx.set_personunit(personunit=personunit_shop(person_id=zia_text))
-    tx.set_personunit(personunit=personunit_shop(person_id=noa_text))
+    tx.set_charunit(charunit=charunit_shop(char_id=bob_text))
+    tx.set_charunit(charunit=charunit_shop(char_id=zia_text))
+    tx.set_charunit(charunit=charunit_shop(char_id=noa_text))
 
     x_world = worldunit_shop(jes_text)
-    x_assignment_world = jes_world.get_assignment(x_world, tx._persons, bob_text)
+    x_assignment_world = jes_world.get_assignment(x_world, tx._chars, bob_text)
 
     # THEN
-    assert len(x_assignment_world._persons) == 3
-    assert x_assignment_world._persons.get(bob_text) != None
-    assert x_assignment_world._persons.get(zia_text) != None
-    assert x_assignment_world._persons.get(noa_text) != None
-    assert x_assignment_world._persons.get(yao_text) is None
+    assert len(x_assignment_world._chars) == 3
+    assert x_assignment_world._chars.get(bob_text) != None
+    assert x_assignment_world._chars.get(zia_text) != None
+    assert x_assignment_world._chars.get(noa_text) != None
+    assert x_assignment_world._chars.get(yao_text) is None
 
 
 def test_worldunit_get_assignment_ReturnsCorrectBeliefs_Scenario1():
     # GIVEN
     jes_text = "Jessi"
     jes_world = worldunit_shop(_owner_id=jes_text)
-    jes_world.set_personunit(personunit_shop(person_id=jes_text))
+    jes_world.set_charunit(charunit_shop(char_id=jes_text))
     bob_text = "Bob"
     noa_text = "Noa"
     eli_text = "Eli"
-    jes_world.set_personunit(personunit_shop(person_id=bob_text))
-    jes_world.set_personunit(personunit_shop(person_id=noa_text))
-    jes_world.set_personunit(personunit_shop(person_id=eli_text))
+    jes_world.set_charunit(charunit_shop(char_id=bob_text))
+    jes_world.set_charunit(charunit_shop(char_id=noa_text))
+    jes_world.set_charunit(charunit_shop(char_id=eli_text))
     swim_text = ",swimmers"
     jes_world.set_beliefunit(beliefunit_shop(belief_id=swim_text))
     swim_belief = jes_world._beliefs.get(swim_text)
-    swim_belief.set_personlink(personlink_shop(bob_text))
+    swim_belief.set_charlink(charlink_shop(bob_text))
 
     hike_text = ",hikers"
     jes_world.set_beliefunit(beliefunit_shop(belief_id=hike_text))
     hike_belief = jes_world._beliefs.get(hike_text)
-    hike_belief.set_personlink(personlink_shop(bob_text))
-    hike_belief.set_personlink(personlink_shop(noa_text))
+    hike_belief.set_charlink(charlink_shop(bob_text))
+    hike_belief.set_charlink(charlink_shop(noa_text))
 
     hunt_text = ",hunters"
     jes_world.set_beliefunit(beliefunit_shop(belief_id=hunt_text))
     hike_belief = jes_world._beliefs.get(hunt_text)
-    hike_belief.set_personlink(personlink_shop(noa_text))
-    hike_belief.set_personlink(personlink_shop(eli_text))
+    hike_belief.set_charlink(charlink_shop(noa_text))
+    hike_belief.set_charlink(charlink_shop(eli_text))
 
     # WHEN
     tx = worldunit_shop()
     zia_text = "Zia"
     yao_text = "Yao"
-    tx.set_personunit(personunit=personunit_shop(person_id=bob_text))
-    tx.set_personunit(personunit=personunit_shop(person_id=zia_text))
-    tx.set_personunit(personunit=personunit_shop(person_id=noa_text))
+    tx.set_charunit(charunit=charunit_shop(char_id=bob_text))
+    tx.set_charunit(charunit=charunit_shop(char_id=zia_text))
+    tx.set_charunit(charunit=charunit_shop(char_id=noa_text))
 
     valueless_world = worldunit_shop(_owner_id=jes_text)
-    x_assignment_world = jes_world.get_assignment(
-        valueless_world, tx._persons, bob_text
-    )
+    x_assignment_world = jes_world.get_assignment(valueless_world, tx._chars, bob_text)
 
     # THEN
     assert len(x_assignment_world._beliefs) == 5
@@ -137,8 +135,8 @@ def test_worldunit_get_assignment_ReturnsCorrectBeliefs_Scenario1():
     assert x_assignment_world._beliefs.get(hike_text) != None
     assert x_assignment_world._beliefs.get(hunt_text) != None
     hunt_belief = x_assignment_world._beliefs.get(hunt_text)
-    assert hunt_belief._persons.get(noa_text) != None
-    assert len(hunt_belief._persons) == 1
+    assert hunt_belief._chars.get(noa_text) != None
+    assert len(hunt_belief._chars) == 1
 
 
 def test_WorldUnit_get_assignor_pledge_ideas_ReturnsCorrectIdeaRoadUnits():
@@ -471,13 +469,13 @@ def test_WorldUnit_get_assignment_getsCorrectIdeas_scenario1():
     dirty_text = "dirty"
     dirty_road = x_world.make_road(status_road, dirty_text)
     bob_text = "Bob"
-    x_world.add_personunit(person_id=bob_text)
+    x_world.add_charunit(char_id=bob_text)
 
     # WHEN
     assignment_x = x_world.get_assignment(
         world_x=worldunit_shop(_owner_id=bob_text),
-        assignor_persons={bob_text: -1},
-        assignor_person_id=bob_text,
+        assignor_chars={bob_text: -1},
+        assignor_char_id=bob_text,
     )
 
     # THEN
@@ -512,8 +510,8 @@ def test_WorldUnit_get_assignment_CorrectlyCreatesAssignmentWorldUnit_v1():
     print(f"{cali_world._real_id=} {cali_world._idea_dict.keys()=}")
     cali_assignment = amer_world.get_assignment(
         world_x=cali_world,
-        assignor_persons={cali_text: -1, amer_world._owner_id: -1},
-        assignor_person_id=cali_text,
+        assignor_chars={cali_text: -1, amer_world._owner_id: -1},
+        assignor_char_id=cali_text,
     )
 
     # THEN

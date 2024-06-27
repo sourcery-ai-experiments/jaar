@@ -13,18 +13,18 @@ class WorldTable(Base):
     _max_tree_traverse = Column(Integer)
     _meld_strategy = Column(String)
     _monetary_desc = Column(String)
-    _person_credor_pool = Column(Integer)
-    _person_debtor_pool = Column(Integer)
+    _char_credor_pool = Column(Integer)
+    _char_debtor_pool = Column(Integer)
     _penny = Column(Float)
     _pixel = Column(Float)
     _weight = Column(Integer)
 
 
-class PersonUnitTable(Base):
-    __tablename__ = "personunit"
+class CharUnitTable(Base):
+    __tablename__ = "charunit"
 
     uid = Column(Integer, primary_key=True)
-    person_id = Column(String)
+    char_id = Column(String)
     credor_weight = Column(Integer)
     debtor_weight = Column(Integer)
 
@@ -36,11 +36,11 @@ class BeliefTable(Base):
     belief_id = Column(String)
 
 
-class PersonLinkTable(Base):
-    __tablename__ = "personlink"
+class CharLinkTable(Base):
+    __tablename__ = "charlink"
     uid = Column(Integer, primary_key=True)
     belief_id = Column(String)
-    person_id = Column(String)
+    char_id = Column(String)
     credor_weight = Column(Integer)
     debtor_weight = Column(Integer)
 

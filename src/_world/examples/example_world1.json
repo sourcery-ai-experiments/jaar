@@ -3169,7 +3169,7 @@
                         "_uid": 161,
                         "_weight": 1
                     },
-                    "charles friends be desperate for of housing support": {
+                    "Aarons friends are desperate for of housing support": {
                         "_balancelinks": {
                             "Renee Elise Goldsberry": {
                                 "belief_id": "Renee Elise Goldsberry",
@@ -3179,7 +3179,7 @@
                         },
                         "_is_expanded": false,
                         "_kids": {
-                            "Ask Charles monthly what I can do": {
+                            "Ask Chuck monthly what I can do": {
                                 "_balancelinks": {
                                     "Renee Elise Goldsberry": {
                                         "belief_id": "Renee Elise Goldsberry",
@@ -3187,7 +3187,7 @@
                                         "debtor_weight": 1.0
                                     }
                                 },
-                                "_label": "Ask Charles monthly what I can do",
+                                "_label": "Ask Chuck monthly what I can do",
                                 "_reasonunits": {
                                     "music,Aaron Donald things effected by him": {
                                         "base": "music,Aaron Donald things effected by him",
@@ -3202,7 +3202,7 @@
                                 "_weight": 1
                             }
                         },
-                        "_label": "charles friends be desperate for of housing support",
+                        "_label": "Aarons friends are desperate for of housing support",
                         "_reasonunits": {
                             "music,Aaron Donald things effected by him": {
                                 "base": "music,Aaron Donald things effected by him",
@@ -4072,7 +4072,7 @@
     },
     "_owner_id": "Yao",
     "_penny": 1,
-    "_persons": {
+    "_chars": {
         "A a ron Jones": {
             "_belieflinks": {
                 ",Everyone": {
@@ -4100,7 +4100,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "A a ron Jones"
+            "char_id": "A a ron Jones"
         },
         "America": {
             "_belieflinks": {
@@ -4134,7 +4134,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "America"
+            "char_id": "America"
         },
         "Anna": {
             "_belieflinks": {
@@ -4163,7 +4163,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Anna"
+            "char_id": "Anna"
         },
         "Benjamin Stoddert": {
             "_belieflinks": {
@@ -4197,7 +4197,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Benjamin Stoddert"
+            "char_id": "Benjamin Stoddert"
         },
         "Bob302": {
             "_belieflinks": {
@@ -4231,9 +4231,9 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Bob302"
+            "char_id": "Bob302"
         },
-        "Charles Lee": {
+        "Chuck Lee": {
             "_belieflinks": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
@@ -4250,8 +4250,8 @@
                     "credor_weight": 1,
                     "debtor_weight": 1
                 },
-                "Charles Lee": {
-                    "belief_id": "Charles Lee",
+                "Chuck Lee": {
+                    "belief_id": "Chuck Lee",
                     "credor_weight": 1,
                     "debtor_weight": 1
                 }
@@ -4265,7 +4265,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Charles Lee"
+            "char_id": "Chuck Lee"
         },
         "Ernesto Chavez": {
             "_belieflinks": {
@@ -4294,7 +4294,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Ernesto Chavez"
+            "char_id": "Ernesto Chavez"
         },
         "Jacque Chirac": {
             "_belieflinks": {
@@ -4323,7 +4323,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Jacque Chirac"
+            "char_id": "Jacque Chirac"
         },
         "Jane Randolph": {
             "_belieflinks": {
@@ -4352,7 +4352,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Jane Randolph"
+            "char_id": "Jane Randolph"
         },
         "Maria Reynolds": {
             "_belieflinks": {
@@ -4381,7 +4381,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Maria Reynolds"
+            "char_id": "Maria Reynolds"
         },
         "Martha Doubs": {
             "_belieflinks": {
@@ -4415,7 +4415,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Martha Doubs"
+            "char_id": "Martha Doubs"
         },
         "Mikayla": {
             "_belieflinks": {
@@ -4449,7 +4449,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Mikayla"
+            "char_id": "Mikayla"
         },
         "Norberto": {
             "_belieflinks": {
@@ -4478,7 +4478,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Norberto"
+            "char_id": "Norberto"
         },
         "Perrison": {
             "_belieflinks": {
@@ -4512,7 +4512,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Perrison"
+            "char_id": "Perrison"
         },
         "Philipa": {
             "_belieflinks": {
@@ -4546,7 +4546,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Philipa"
+            "char_id": "Philipa"
         },
         "Prashant": {
             "_belieflinks": {
@@ -4575,7 +4575,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Prashant"
+            "char_id": "Prashant"
         },
         "Renee Elise Goldsberry": {
             "_belieflinks": {
@@ -4634,7 +4634,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Renee Elise Goldsberry"
+            "char_id": "Renee Elise Goldsberry"
         },
         "Sam zamora": {
             "_belieflinks": {
@@ -4668,7 +4668,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Sam zamora"
+            "char_id": "Sam zamora"
         },
         "Shadwell Harris": {
             "_belieflinks": {
@@ -4697,7 +4697,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Shadwell Harris"
+            "char_id": "Shadwell Harris"
         },
         "Thomas OSU": {
             "_belieflinks": {
@@ -4726,7 +4726,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Thomas OSU"
+            "char_id": "Thomas OSU"
         },
         "Travis Fox": {
             "_belieflinks": {
@@ -4755,7 +4755,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "Travis Fox"
+            "char_id": "Travis Fox"
         },
         "WIlliam Wallace": {
             "_belieflinks": {
@@ -4784,7 +4784,7 @@
             "_treasury_voice_rank": 0,
             "credor_weight": 1,
             "debtor_weight": 1,
-            "person_id": "WIlliam Wallace"
+            "char_id": "WIlliam Wallace"
         }
     },
     "_pixel": 1,

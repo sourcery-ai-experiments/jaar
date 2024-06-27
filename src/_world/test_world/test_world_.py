@@ -21,7 +21,7 @@ def test_WorldUnit_Exists():
     assert x_world._real_id is None
     assert x_world._owner_id is None
     assert x_world._weight is None
-    assert x_world._persons is None
+    assert x_world._chars is None
     assert x_world._beliefs is None
     assert x_world._idearoot is None
     assert x_world._max_tree_traverse is None
@@ -29,8 +29,8 @@ def test_WorldUnit_Exists():
     assert x_world._pixel is None
     assert x_world._penny is None
     assert x_world._monetary_desc is None
-    assert x_world._person_credor_pool is None
-    assert x_world._person_debtor_pool is None
+    assert x_world._char_credor_pool is None
+    assert x_world._char_debtor_pool is None
     assert x_world._last_gift_id is None
     assert x_world._meld_strategy is None
     assert x_world._originunit is None
@@ -68,7 +68,7 @@ def test_WorldUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_world._owner_id == noa_text
     assert x_world._real_id == iowa_real_id
     assert x_world._weight == 1
-    assert x_world._persons == {}
+    assert x_world._chars == {}
     assert x_world._beliefs == {}
     assert x_world._idearoot != None
     assert x_world._max_tree_traverse == 3
@@ -76,8 +76,8 @@ def test_WorldUnit_shop_ReturnsCorrectObjectWithFilledFields():
     assert x_world._pixel == five_pixel
     assert x_world._penny == penny_float
     assert x_world._monetary_desc is None
-    assert x_world._person_credor_pool is None
-    assert x_world._person_debtor_pool is None
+    assert x_world._char_credor_pool is None
+    assert x_world._char_debtor_pool is None
     assert x_world._last_gift_id is None
     assert x_world._meld_strategy == override_meld_strategy
     assert x_world._originunit == originunit_shop()
@@ -266,13 +266,16 @@ def test_WorldUnit_set_meld_strategy_CorrectlySetsAttr():
 def test_WorldUnit_set_meld_strategy_RaisesErrorWithIneligible_meld_strategy():
     # GIVEN
     noa_world = worldunit_shop("Noa", "Texas")
-    bad_override_text = "oVerride"
-    assert noa_world._meld_strategy != bad_override_text
+    incorrect_override_text = "oVerride"
+    assert noa_world._meld_strategy != incorrect_override_text
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        noa_world.set_meld_strategy(bad_override_text)
-    assert str(excinfo.value) == f"'{bad_override_text}' is ineligible meld_strategy."
+        noa_world.set_meld_strategy(incorrect_override_text)
+    assert (
+        str(excinfo.value)
+        == f"'{incorrect_override_text}' is ineligible meld_strategy."
+    )
 
 
 def test_WorldUnit_set_monetary_desc_SetsAttrCorrectly():

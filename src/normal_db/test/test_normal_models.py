@@ -7,9 +7,9 @@ from src.gift.atom_config import (
 )
 from src.normal_db.normal_models import (
     WorldTable,
-    PersonUnitTable,
+    CharUnitTable,
     BeliefTable,
-    PersonLinkTable,
+    CharLinkTable,
     IdeaTable,
     BalanceLinkTable,
     ReasonTable,
@@ -73,16 +73,16 @@ def test_normalized_table_WorldTable_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_PersonUnitTable_Exists():
+def test_normalized_table_CharUnitTable_Exists():
     # GIVEN
-    config_category = get_normalized_world_table_build().get("world_personunit")
-    mapper = inspect(PersonUnitTable)
+    config_category = get_normalized_world_table_build().get("world_charunit")
+    mapper = inspect(CharUnitTable)
     # print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "personunit"
-    assert config_table_name == PersonUnitTable.__tablename__
+    assert config_table_name == "charunit"
+    assert config_table_name == CharUnitTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 
@@ -99,16 +99,16 @@ def test_normalized_table_BeliefTable_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_PersonLinkTable_personlink_Exists():
+def test_normalized_table_CharLinkTable_charlink_Exists():
     # GIVEN
-    config_category = get_normalized_world_table_build().get("world_belief_personlink")
-    mapper = inspect(PersonLinkTable)
+    config_category = get_normalized_world_table_build().get("world_belief_charlink")
+    mapper = inspect(CharLinkTable)
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "personlink"
-    assert config_table_name == PersonLinkTable.__tablename__
+    assert config_table_name == "charlink"
+    assert config_table_name == CharLinkTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 

@@ -2,7 +2,7 @@ from src._road.road import get_parent_road, RoadUnit, is_sub_road
 from src._world.idea import IdeaUnit
 from src._world.world import WorldUnit
 from src._world.report import (
-    get_world_personunits_dataframe,
+    get_world_charunits_dataframe,
     get_world_agenda_dataframe,
 )
 from plotly.graph_objects import (
@@ -139,21 +139,21 @@ def display_ideatree(x_world: WorldUnit, mode: str = None) -> plotly_Figure:
     return x_fig
 
 
-def get_world_persons_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
+def get_world_chars_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
     column_header_list = [
-        "person_id",
-        "_person_credor_pool",
+        "char_id",
+        "_char_credor_pool",
         "credor_weight",
-        "_person_debtor_pool",
+        "_char_debtor_pool",
         "debtor_weight",
         "_world_cred",
         "_world_debt",
         "_world_agenda_cred",
         "_world_agenda_debt",
     ]
-    df = get_world_personunits_dataframe(x_world)
-    df.insert(1, "_person_credor_pool", x_world._person_credor_pool)
-    df.insert(4, "_person_debtor_pool", x_world._person_debtor_pool)
+    df = get_world_charunits_dataframe(x_world)
+    df.insert(1, "_char_credor_pool", x_world._char_credor_pool)
+    df.insert(4, "_char_debtor_pool", x_world._char_debtor_pool)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -161,10 +161,10 @@ def get_world_persons_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
         header=header_dict,
         cells=dict(
             values=[
-                df.person_id,
-                df._person_credor_pool,
+                df.char_id,
+                df._char_credor_pool,
                 df.credor_weight,
-                df._person_debtor_pool,
+                df._char_debtor_pool,
                 df.debtor_weight,
                 df._world_cred,
                 df._world_debt,
@@ -177,7 +177,7 @@ def get_world_persons_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"OwnerID '{x_world._owner_id}' world persons metrics"
+    fig_title = f"OwnerID '{x_world._owner_id}' world chars metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

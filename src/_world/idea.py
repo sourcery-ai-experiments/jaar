@@ -13,7 +13,7 @@ from src._road.road import (
     default_road_delimiter_if_none,
     replace_road_delimiter,
     RealID,
-    PersonID,
+    CharID,
 )
 from src._world.meld import get_meld_default
 from src._world.healer import HealerHold, healerhold_shop, healerhold_get_from_dict
@@ -93,8 +93,8 @@ class IdeaAttrFilter:
     pledge: bool = None
     factunit: FactUnit = None
     descendant_pledge_count: int = None
-    all_person_cred: bool = None
-    all_person_debt: bool = None
+    all_char_cred: bool = None
+    all_char_debt: bool = None
     balancelink: BalanceLink = None
     balancelink_del: BeliefID = None
     is_expanded: bool = None
@@ -177,8 +177,8 @@ def ideaattrfilter_shop(
     pledge: bool = None,
     factunit: FactUnit = None,
     descendant_pledge_count: int = None,
-    all_person_cred: bool = None,
-    all_person_debt: bool = None,
+    all_char_cred: bool = None,
+    all_char_debt: bool = None,
     balancelink: BalanceLink = None,
     balancelink_del: BeliefID = None,
     is_expanded: bool = None,
@@ -210,8 +210,8 @@ def ideaattrfilter_shop(
         pledge=pledge,
         factunit=factunit,
         descendant_pledge_count=descendant_pledge_count,
-        all_person_cred=all_person_cred,
-        all_person_debt=all_person_debt,
+        all_char_cred=all_char_cred,
+        all_char_debt=all_char_debt,
         balancelink=balancelink,
         balancelink_del=balancelink_del,
         is_expanded=is_expanded,
@@ -264,8 +264,8 @@ class IdeaUnit:
     _active: bool = None
     _ancestor_pledge_count: int = None
     _descendant_pledge_count: int = None
-    _all_person_cred: bool = None
-    _all_person_debt: bool = None
+    _all_char_cred: bool = None
+    _all_char_debt: bool = None
     _is_expanded: bool = None
     _sibling_total_weight: int = None
     _active_hx: dict[int:bool] = None
@@ -428,9 +428,9 @@ class IdeaUnit:
 
         return descendant_roads
 
-    def clear_all_person_cred_debt(self):
-        self._all_person_cred = None
-        self._all_person_debt = None
+    def clear_all_char_cred_debt(self):
+        self._all_char_cred = None
+        self._all_char_debt = None
 
     def set_ancestor_pledge_count(
         self, parent_ancestor_pledge_count: int, parent_pledge: bool
@@ -626,8 +626,8 @@ class IdeaUnit:
         self,
         exterior_idea,
         _idearoot: bool = None,
-        person_id: PersonID = None,
-        person_weight: float = None,
+        char_id: CharID = None,
+        char_weight: float = None,
     ):
         if _idearoot and self._label != exterior_idea._label:
             raise InvalidIdeaException(
@@ -649,11 +649,11 @@ class IdeaUnit:
             self._meld_attributes_that_must_be_equal(exterior_idea=exterior_idea)
         else:
             self._meld_attributes_overide(exterior_idea=exterior_idea)
-        self._meld_originlinks(person_id, person_weight)
+        self._meld_originlinks(char_id, char_weight)
 
-    def _meld_originlinks(self, person_id: PersonID, person_weight: float):
-        if person_id != None:
-            self._originunit.set_originlink(person_id=person_id, weight=person_weight)
+    def _meld_originlinks(self, char_id: CharID, char_weight: float):
+        if char_id != None:
+            self._originunit.set_originlink(char_id=char_id, weight=char_weight)
 
     def set_originunit_empty_if_null(self):
         if self._originunit is None:
@@ -742,10 +742,10 @@ class IdeaUnit:
             self._range_source_road = idea_attr.range_source_road
         if idea_attr.descendant_pledge_count != None:
             self._descendant_pledge_count = idea_attr.descendant_pledge_count
-        if idea_attr.all_person_cred != None:
-            self._all_person_cred = idea_attr.all_person_cred
-        if idea_attr.all_person_debt != None:
-            self._all_person_debt = idea_attr.all_person_debt
+        if idea_attr.all_char_cred != None:
+            self._all_char_cred = idea_attr.all_char_cred
+        if idea_attr.all_char_debt != None:
+            self._all_char_debt = idea_attr.all_char_debt
         if idea_attr.balancelink != None:
             self.set_balancelink(balancelink=idea_attr.balancelink)
         if idea_attr.balancelink_del != None:
@@ -878,12 +878,10 @@ class IdeaUnit:
         self,
         tree_traverse_count: int,
         world_beliefunits: dict[BeliefID:BeliefUnit] = None,
-        world_owner_id: PersonID = None,
+        world_owner_id: CharID = None,
     ):
         prev_to_now_active = deepcopy(self._active)
-        self._active = self._create_active(
-            world_beliefunits=world_beliefunits, world_owner_id=world_owner_id
-        )
+        self._active = self._create_active(world_beliefunits, world_owner_id)
         self._set_idea_task()
         self.record_active_hx(
             tree_traverse_count=tree_traverse_count,
@@ -893,18 +891,17 @@ class IdeaUnit:
 
     def _set_idea_task(self):
         self._task = False
-        if (
-            self.pledge
-            and self._active
-            and (self._reasonheirs == {} or self._is_any_reasonheir_task_true())
-        ):
+        if self.pledge and self._active and self._reasonheirs_satisfied():
             self._task = True
 
-    def _is_any_reasonheir_task_true(self) -> bool:
+    def _reasonheirs_satisfied(self) -> bool:
+        return self._reasonheirs == {} or self._any_reasonheir_task_true()
+
+    def _any_reasonheir_task_true(self) -> bool:
         return any(x_reasonheir._task for x_reasonheir in self._reasonheirs.values())
 
     def _create_active(
-        self, world_beliefunits: dict[BeliefID:BeliefUnit], world_owner_id: PersonID
+        self, world_beliefunits: dict[BeliefID:BeliefUnit], world_owner_id: CharID
     ) -> bool:
         self.set_reasonheirs_status()
         x_bool = self._are_all_reasonheir_active_true()
@@ -1122,8 +1119,8 @@ def ideaunit_shop(
     _active: bool = None,
     _ancestor_pledge_count: int = None,
     _descendant_pledge_count: int = None,
-    _all_person_cred: bool = None,
-    _all_person_debt: bool = None,
+    _all_char_cred: bool = None,
+    _all_char_debt: bool = None,
     _is_expanded: bool = True,
     _sibling_total_weight: int = None,
     _active_hx: dict[int:bool] = None,
@@ -1177,8 +1174,8 @@ def ideaunit_shop(
         _active=_active,
         _ancestor_pledge_count=_ancestor_pledge_count,
         _descendant_pledge_count=_descendant_pledge_count,
-        _all_person_cred=_all_person_cred,
-        _all_person_debt=_all_person_debt,
+        _all_char_cred=_all_char_cred,
+        _all_char_debt=_all_char_debt,
         _is_expanded=_is_expanded,
         _sibling_total_weight=_sibling_total_weight,
         _active_hx=get_empty_dict_if_none(_active_hx),

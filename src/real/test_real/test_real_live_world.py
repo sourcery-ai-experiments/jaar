@@ -36,15 +36,15 @@ def test_RealUnit_generate_live_world_ReturnsRegeneratedObj(env_dir_setup_cleanu
     sue_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, sue_text, None)
     before_sue_world = sue_userhub.get_live_world()
     bob_text = "Bob"
-    before_sue_world.add_personunit(bob_text)
+    before_sue_world.add_charunit(bob_text)
     sue_userhub.save_live_world(before_sue_world)
-    assert sue_userhub.get_live_world().person_exists(bob_text)
+    assert sue_userhub.get_live_world().char_exists(bob_text)
 
     # WHEN
     after_sue_world = music_real.generate_live_world(sue_text)
 
     # THEN method should wipe over live world
-    assert after_sue_world.person_exists(bob_text) is False
+    assert after_sue_world.char_exists(bob_text) is False
 
 
 def test_RealUnit_generate_live_world_SetsCorrectFileWithout_healerhold(
@@ -57,18 +57,18 @@ def test_RealUnit_generate_live_world_SetsCorrectFileWithout_healerhold(
     bob_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     before_bob_live_world = music_real.generate_live_world(bob_text)
     sue_text = "Sue"
-    assert before_bob_live_world.person_exists(sue_text) is False
+    assert before_bob_live_world.char_exists(sue_text) is False
 
     # WHEN
     bob_same_world = bob_userhub.get_same_world()
-    bob_same_world.add_personunit(sue_text)
+    bob_same_world.add_charunit(sue_text)
     bob_userhub.save_same_world(bob_same_world)
 
     # WHEN
     after_bob_live_world = music_real.generate_live_world(bob_text)
 
     # THEN
-    assert after_bob_live_world.person_exists(sue_text)
+    assert after_bob_live_world.char_exists(sue_text)
 
 
 def test_RealUnit_generate_live_world_SetsFileWith_healerhold(env_dir_setup_cleanup):
@@ -79,12 +79,12 @@ def test_RealUnit_generate_live_world_SetsFileWith_healerhold(env_dir_setup_clea
     music_real.init_owner_econs(bob_text)
     bob_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     after_bob_live_world = music_real.generate_live_world(bob_text)
-    assert after_bob_live_world.person_exists(bob_text) is False
+    assert after_bob_live_world.char_exists(bob_text) is False
 
     # WHEN
     bob_same_world = bob_userhub.get_same_world()
-    bob_same_world.add_personunit(bob_text)
-    bob_same_world.set_person_pool(100)
+    bob_same_world.add_charunit(bob_text)
+    bob_same_world.set_char_pool(100)
     texas_text = "Texas"
     texas_road = bob_same_world.make_l1_road(texas_text)
     elpaso_text = "el paso"
@@ -96,7 +96,7 @@ def test_RealUnit_generate_live_world_SetsFileWith_healerhold(env_dir_setup_clea
     after_bob_live_world = music_real.generate_live_world(bob_text)
 
     # THEN
-    assert after_bob_live_world.person_exists(bob_text)
+    assert after_bob_live_world.char_exists(bob_text)
 
 
 def test_RealUnit_generate_all_live_worlds_SetsCorrectFiles(
@@ -122,22 +122,22 @@ def test_RealUnit_generate_all_live_worlds_SetsCorrectFiles(
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
 
     bob_same_world = bob_userhub.get_same_world()
-    bob_same_world.add_personunit(bob_text)
+    bob_same_world.add_charunit(bob_text)
     bob_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_same_world.add_idea(elpaso_idea, texas_road)
     bob_userhub.save_same_world(bob_same_world)
 
     sue_same_world = sue_userhub.get_same_world()
-    sue_same_world.add_personunit(sue_text)
-    sue_same_world.add_personunit(bob_text)
+    sue_same_world.add_charunit(sue_text)
+    sue_same_world.add_charunit(bob_text)
     sue_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     sue_same_world.add_idea(elpaso_idea, texas_road)
     sue_userhub.save_same_world(sue_same_world)
 
     before_bob_live_world = music_real.get_live_file_world(bob_text)
     before_sue_live_world = music_real.get_live_file_world(sue_text)
-    assert before_bob_live_world.person_exists(bob_text) is False
-    assert before_sue_live_world.person_exists(sue_text) is False
+    assert before_bob_live_world.char_exists(bob_text) is False
+    assert before_sue_live_world.char_exists(sue_text) is False
 
     # WHEN
     music_real.generate_all_live_worlds()
@@ -145,5 +145,5 @@ def test_RealUnit_generate_all_live_worlds_SetsCorrectFiles(
     # THEN
     after_bob_live_world = music_real.get_live_file_world(bob_text)
     after_sue_live_world = music_real.get_live_file_world(sue_text)
-    assert after_bob_live_world.person_exists(bob_text)
-    assert after_sue_live_world.person_exists(sue_text)
+    assert after_bob_live_world.char_exists(bob_text)
+    assert after_sue_live_world.char_exists(sue_text)

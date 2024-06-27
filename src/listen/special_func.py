@@ -17,7 +17,7 @@ def create_pledge(
         x_idea._assignedunit.set_suffbelief(x_suffbelief)
 
         if x_world.get_beliefunit(x_suffbelief) is None:
-            x_world.add_personunit(x_suffbelief)
+            x_world.add_charunit(x_suffbelief)
 
         if reason_premise != None:
             if x_world.idea_exists(reason_premise) is False:

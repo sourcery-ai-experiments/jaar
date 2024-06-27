@@ -6,7 +6,7 @@ from src._world.reason_assign import (
     create_assignedunit,
 )
 from src._world.beliefunit import BeliefID, beliefunit_shop
-from src._world.person import personlink_shop
+from src._world.char import charlink_shop
 from src._world.world import worldunit_shop
 from pytest import raises as pytest_raises
 
@@ -146,48 +146,48 @@ def test_assigned_heir_shop_ReturnsCorrectWithCorrectAttributes_v1():
     assert assigned_heir_x._owner_id_assigned == _owner_id_assigned_x
 
 
-def test_AssignedHeir_get_all_suff_persons_ReturnsSingleDictWithAllPersons_v1():
+def test_AssignedHeir_get_all_suff_chars_ReturnsSingleDictWithAllChars_v1():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
     x_world = worldunit_shop(_owner_id=jim_text)
-    x_world.add_personunit(person_id=jim_text)
-    x_world.add_personunit(person_id=sue_text)
+    x_world.add_charunit(char_id=jim_text)
+    x_world.add_charunit(char_id=sue_text)
 
     _suffbeliefs_x = {jim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffbeliefs=_suffbeliefs_x)
 
     # WHEN
-    all_persons = assigned_heir_x._get_all_suff_persons(world_beliefs=x_world._beliefs)
+    all_chars = assigned_heir_x._get_all_suff_chars(world_beliefs=x_world._beliefs)
 
     # THEN
-    assert len(all_persons) == 1
+    assert len(all_chars) == 1
 
 
-def test_AssignedHeir_get_all_suff_persons_ReturnsSingleDictWithAllPersons_v2():
+def test_AssignedHeir_get_all_suff_chars_ReturnsSingleDictWithAllChars_v2():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
     bob_text = "Bob"
     x_world = worldunit_shop(_owner_id=jim_text)
-    x_world.add_personunit(person_id=jim_text)
-    x_world.add_personunit(person_id=sue_text)
-    x_world.add_personunit(person_id=bob_text)
+    x_world.add_charunit(char_id=jim_text)
+    x_world.add_charunit(char_id=sue_text)
+    x_world.add_charunit(char_id=bob_text)
 
     swim_text = ",swim"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    swim_belief.set_charlink(charlink=charlink_shop(char_id=jim_text))
+    swim_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim_belief)
 
     _suffbeliefs_x = {swim_text: -1}
     assigned_heir_x = assigned_heir_shop(_suffbeliefs=_suffbeliefs_x)
 
     # WHEN
-    all_persons = assigned_heir_x._get_all_suff_persons(world_beliefs=x_world._beliefs)
+    all_chars = assigned_heir_x._get_all_suff_chars(world_beliefs=x_world._beliefs)
 
     # THEN
-    assert len(all_persons) == 2
+    assert len(all_chars) == 2
 
 
 def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_Empty_suffbeliefs_x():
@@ -212,8 +212,8 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     sue_text = "Sue"
 
     x_world = worldunit_shop(_owner_id=jim_text)
-    x_world.add_personunit(person_id=jim_text)
-    x_world.add_personunit(person_id=sue_text)
+    x_world.add_charunit(char_id=jim_text)
+    x_world.add_charunit(char_id=sue_text)
     world_owner_id = x_world._owner_id
     world_beliefs = x_world._beliefs
     print(f"{len(world_beliefs)=}")
@@ -237,8 +237,8 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     sue_text = "Sue"
 
     x_world = worldunit_shop(_owner_id=jim_text)
-    x_world.add_personunit(person_id=jim_text)
-    x_world.add_personunit(person_id=sue_text)
+    x_world.add_charunit(char_id=jim_text)
+    x_world.add_charunit(char_id=sue_text)
     world_owner_id = x_world._owner_id
     world_beliefs = x_world._beliefs
     print(f"{len(world_beliefs)=}")
@@ -262,14 +262,14 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     sue_text = "Sue"
     bob_text = "Bob"
     x_world = worldunit_shop(_owner_id=jim_text)
-    x_world.add_personunit(person_id=jim_text)
-    x_world.add_personunit(person_id=sue_text)
-    x_world.add_personunit(person_id=bob_text)
+    x_world.add_charunit(char_id=jim_text)
+    x_world.add_charunit(char_id=sue_text)
+    x_world.add_charunit(char_id=bob_text)
 
     swim_text = ",swim"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    swim_belief.set_charlink(charlink=charlink_shop(char_id=jim_text))
+    swim_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim_belief)
 
     _suffbeliefs_x = {swim_text: -1}
@@ -279,7 +279,7 @@ def test_AssignedHeir_set_owner_id_assigned_CorrectlySetsAttribute_NonEmpty_suff
     assert assigned_heir_x._owner_id_assigned
 
     # WHEN
-    swim_belief.del_personlink(person_id=jim_text)
+    swim_belief.del_charlink(char_id=jim_text)
     x_world.set_beliefunit(y_beliefunit=swim_belief)
     assigned_heir_x.set_owner_id_assigned(x_world._beliefs, x_world._owner_id)
 
@@ -293,14 +293,14 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffbeliefs_x_v3():
     sue_text = "Sue"
     bob_text = "Bob"
     x_world = worldunit_shop(_owner_id=jim_text)
-    x_world.add_personunit(person_id=jim_text)
-    x_world.add_personunit(person_id=sue_text)
-    x_world.add_personunit(person_id=bob_text)
+    x_world.add_charunit(char_id=jim_text)
+    x_world.add_charunit(char_id=sue_text)
+    x_world.add_charunit(char_id=bob_text)
 
     swim_text = ",swim"
     swim_belief = beliefunit_shop(belief_id=swim_text)
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    swim_belief.set_charlink(charlink=charlink_shop(char_id=jim_text))
+    swim_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim_belief)
 
     _suffbeliefs_x = {swim_text: -1}
@@ -310,7 +310,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_suffbeliefs_x_v3():
     assert assigned_heir_x._owner_id_assigned
 
     # WHEN
-    swim_belief.del_personlink(person_id=jim_text)
+    swim_belief.del_charlink(char_id=jim_text)
     x_world.set_beliefunit(y_beliefunit=swim_belief)
     assigned_heir_x.set_owner_id_assigned(x_world._beliefs, x_world._owner_id)
 
@@ -436,22 +436,22 @@ def test_AssignedHeir_set_suffbelief_AssignedUnit_NotEqual_ParentAssignedHeir_No
     bob_text = "Bob"
     tom_text = "Tom"
     x_world = worldunit_shop(_owner_id=jim_text)
-    x_world.add_personunit(person_id=jim_text)
-    x_world.add_personunit(person_id=sue_text)
-    x_world.add_personunit(person_id=bob_text)
-    x_world.add_personunit(person_id=tom_text)
+    x_world.add_charunit(char_id=jim_text)
+    x_world.add_charunit(char_id=sue_text)
+    x_world.add_charunit(char_id=bob_text)
+    x_world.add_charunit(char_id=tom_text)
 
     swim2_text = ",swim2"
     swim2_belief = beliefunit_shop(belief_id=swim2_text)
-    swim2_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim2_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    swim2_belief.set_charlink(charlink=charlink_shop(char_id=jim_text))
+    swim2_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim2_belief)
 
     swim3_text = ",swim3"
     swim3_belief = beliefunit_shop(belief_id=swim3_text)
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=tom_text))
+    swim3_belief.set_charlink(charlink=charlink_shop(char_id=jim_text))
+    swim3_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
+    swim3_belief.set_charlink(charlink=charlink_shop(char_id=tom_text))
     x_world.set_beliefunit(y_beliefunit=swim3_belief)
 
     parent_assignedunit = assignedunit_shop()
@@ -483,22 +483,22 @@ def test_AssignedHeir_set_suffbelief_AssignedUnit_NotEqualParentAssignedHeir_Rai
     bob_text = "Bob"
     tom_text = "Tom"
     x_world = worldunit_shop(_owner_id=jim_text)
-    x_world.add_personunit(person_id=jim_text)
-    x_world.add_personunit(person_id=sue_text)
-    x_world.add_personunit(person_id=bob_text)
-    x_world.add_personunit(person_id=tom_text)
+    x_world.add_charunit(char_id=jim_text)
+    x_world.add_charunit(char_id=sue_text)
+    x_world.add_charunit(char_id=bob_text)
+    x_world.add_charunit(char_id=tom_text)
 
     swim2_text = ",swim2"
     swim2_belief = beliefunit_shop(belief_id=swim2_text)
-    swim2_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim2_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
+    swim2_belief.set_charlink(charlink=charlink_shop(char_id=jim_text))
+    swim2_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim2_belief)
 
     swim3_text = ",swim3"
     swim3_belief = beliefunit_shop(belief_id=swim3_text)
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=jim_text))
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=sue_text))
-    swim3_belief.set_personlink(personlink=personlink_shop(person_id=tom_text))
+    swim3_belief.set_charlink(charlink=charlink_shop(char_id=jim_text))
+    swim3_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
+    swim3_belief.set_charlink(charlink=charlink_shop(char_id=tom_text))
     x_world.set_beliefunit(y_beliefunit=swim3_belief)
 
     parent_assignedunit = assignedunit_shop()
@@ -513,15 +513,15 @@ def test_AssignedHeir_set_suffbelief_AssignedUnit_NotEqualParentAssignedHeir_Rai
 
     # WHEN / THEN
     assigned_heir_x = assigned_heir_shop()
-    all_parent_assignedheir_persons = {jim_text, sue_text}
-    all_assignedunit_persons = {jim_text, sue_text, tom_text}
+    all_parent_assignedheir_chars = {jim_text, sue_text}
+    all_assignedunit_chars = {jim_text, sue_text, tom_text}
     with pytest_raises(Exception) as excinfo:
         assigned_heir_x.set_suffbeliefs(
             parent_assigned_heir, assignedunit_swim3, world_beliefs=x_world._beliefs
         )
     assert (
         str(excinfo.value)
-        == f"parent_assigned_heir does not contain all persons of the idea's assignedunit\n{set(all_parent_assignedheir_persons)=}\n\n{set(all_assignedunit_persons)=}"
+        == f"parent_assigned_heir does not contain all chars of the idea's assignedunit\n{set(all_parent_assignedheir_chars)=}\n\n{set(all_assignedunit_chars)=}"
     )
 
 

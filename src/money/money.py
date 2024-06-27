@@ -1,15 +1,15 @@
 from src._instrument.file import delete_dir
 from src._road.jaar_config import default_river_blocks_count
 from src._road.road import OwnerID
-from src._world.person import personlink_shop
+from src._world.char import charlink_shop
 from src._world.world import WorldUnit
 from src.listen.userhub import UserHub
 from src.money.treasury_sqlstr import (
-    get_persontreasuryunit_dict,
-    get_world_personunit_table_insert_sqlstr,
-    get_world_personunit_table_update_treasury_due_paid_sqlstr as update_treasury_due_paid_sqlstr,
-    get_world_personunit_table_update_cred_score_sqlstr as update_cred_score_sqlstr,
-    get_world_personunit_table_update_treasury_voice_rank_sqlstr as update_treasury_voice_rank_sqlstr,
+    get_chartreasuryunit_dict,
+    get_world_charunit_table_insert_sqlstr,
+    get_world_charunit_table_update_treasury_due_paid_sqlstr as update_treasury_due_paid_sqlstr,
+    get_world_charunit_table_update_cred_score_sqlstr as update_cred_score_sqlstr,
+    get_world_charunit_table_update_treasury_voice_rank_sqlstr as update_treasury_voice_rank_sqlstr,
     get_river_block_table_delete_sqlstr,
     get_river_block_table_insert_sqlstr,
     get_river_circle_table_insert_sqlstr,
@@ -17,10 +17,10 @@ from src.money.treasury_sqlstr import (
     get_create_table_if_not_exist_sqlstrs,
     get_worldunit_table_insert_sqlstr,
     get_river_ledger_unit,
-    PersonDBUnit,
+    CharDBUnit,
     RiverLedgerUnit,
     RiverBlockUnit,
-    PersonTreasuryUnit,
+    CharTreasuryUnit,
     IdeaCatalog,
     get_world_ideaunit_table_insert_sqlstr,
     get_world_ideaunit_dict,
@@ -55,7 +55,7 @@ class MoneyUnit:
         if max_blocks_count is None:
             max_blocks_count = default_river_blocks_count()
         self._set_river_blocks(owner_id, max_blocks_count)
-        self._set_persontreasuryunits_circles(owner_id)
+        self._set_chartreasuryunits_circles(owner_id)
 
     def _clear_all_source_river_data(self, owner_id: str):
         with self.get_treasury_conn() as treasury_conn:
@@ -68,14 +68,14 @@ class MoneyUnit:
         blocks_count = 0  # Transformations in river_block loop
         while blocks_count < max_blocks_count and general_circle != []:
             parent_world_ledger = general_circle.pop(0)
-            ledgers_len = len(parent_world_ledger._personviews.values())
+            ledgers_len = len(parent_world_ledger._charviews.values())
             parent_range = parent_world_ledger.get_range()
             parent_close = parent_world_ledger.cash_cease
 
             # Transformations in river_block loop
             coin_onset = parent_world_ledger.cash_onset
             ledgers_count = 0
-            for x_child_ledger in parent_world_ledger._personviews.values():
+            for x_child_ledger in parent_world_ledger._charviews.values():
                 ledgers_count += 1
 
                 coin_range = parent_range * x_child_ledger._world_agenda_ratio_cred
@@ -88,7 +88,7 @@ class MoneyUnit:
                 river_block_x = RiverBlockUnit(
                     cash_owner_id=x_owner_id,
                     src_owner_id=x_child_ledger.owner_id,
-                    dst_owner_id=x_child_ledger.person_id,
+                    dst_owner_id=x_child_ledger.char_id,
                     cash_start=coin_onset,
                     cash_close=coin_close,
                     block_num=blocks_count,
@@ -141,7 +141,7 @@ class MoneyUnit:
             source_river_ledger = get_river_ledger_unit(treasury_conn, root_river_block)
         return source_river_ledger
 
-    def _set_persontreasuryunits_circles(self, owner_id: str):
+    def _set_chartreasuryunits_circles(self, owner_id: str):
         with self.get_treasury_conn() as treasury_conn:
             treasury_conn.execute(get_river_circle_table_insert_sqlstr(owner_id))
             treasury_conn.execute(get_river_reach_table_final_insert_sqlstr(owner_id))
@@ -149,19 +149,17 @@ class MoneyUnit:
             treasury_conn.execute(update_cred_score_sqlstr(owner_id))
             treasury_conn.execute(update_treasury_voice_rank_sqlstr(owner_id))
 
-            sal_persontreasuryunits = get_persontreasuryunit_dict(
-                treasury_conn, owner_id
-            )
+            sal_chartreasuryunits = get_chartreasuryunit_dict(treasury_conn, owner_id)
             x_world = self.userhub.get_job_world(owner_id=owner_id)
-            set_treasury_persontreasuryunits_to_world_personunits(
-                x_world, sal_persontreasuryunits
+            set_treasury_chartreasuryunits_to_world_charunits(
+                x_world, sal_chartreasuryunits
             )
             self.userhub.save_job_world(x_world)
 
-    def get_persontreasuryunits(self, owner_id: str) -> dict[str:PersonTreasuryUnit]:
+    def get_chartreasuryunits(self, owner_id: str) -> dict[str:CharTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
-            persontreasuryunits = get_persontreasuryunit_dict(treasury_conn, owner_id)
-        return persontreasuryunits
+            chartreasuryunits = get_chartreasuryunit_dict(treasury_conn, owner_id)
+        return chartreasuryunits
 
     def refresh_treasury_job_worlds_data(self, in_memory: bool = None):
         if in_memory is None and self._treasury_db != None:
@@ -175,7 +173,7 @@ class MoneyUnit:
             worldunit_x.calc_world_metrics()
 
             self._treasury_insert_worldunit(worldunit_x)
-            self._treasury_insert_personunit(worldunit_x)
+            self._treasury_insert_charunit(worldunit_x)
             self._treasury_insert_beliefunit(worldunit_x)
             self._treasury_insert_ideaunit(worldunit_x)
             self._treasury_insert_fact(worldunit_x)
@@ -189,13 +187,11 @@ class MoneyUnit:
         with self.get_treasury_conn() as treasury_conn:
             treasury_conn.execute(get_worldunit_update_sqlstr(world))
 
-    def _treasury_insert_personunit(self, worldunit_x: WorldUnit):
+    def _treasury_insert_charunit(self, worldunit_x: WorldUnit):
         with self.get_treasury_conn() as treasury_conn:
             cur = treasury_conn.cursor()
-            for x_personunit in worldunit_x._persons.values():
-                sqlstr = get_world_personunit_table_insert_sqlstr(
-                    worldunit_x, x_personunit
-                )
+            for x_charunit in worldunit_x._chars.values():
+                sqlstr = get_world_charunit_table_insert_sqlstr(worldunit_x, x_charunit)
                 cur.execute(sqlstr)
 
     def _treasury_insert_beliefunit(self, worldunit_x: WorldUnit):
@@ -294,8 +290,8 @@ class MoneyUnit:
     def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
             owner_role = self.userhub.get_role_world(owner_id)
-            for count_x, x_personunit in enumerate(owner_role._persons.values()):
-                x_personunit.set_treasury_voice_rank(count_x)
+            for count_x, x_charunit in enumerate(owner_role._chars.values()):
+                x_charunit.set_treasury_voice_rank(count_x)
             self.userhub.save_role_world(owner_role)
 
 
@@ -308,16 +304,16 @@ def moneyunit_shop(x_userhub: UserHub, in_memory_treasury: bool = None) -> Money
     return x_moneyunit
 
 
-def set_treasury_persontreasuryunits_to_world_personunits(
-    x_world: WorldUnit, persontreasuryunits: dict[str:PersonTreasuryUnit]
+def set_treasury_chartreasuryunits_to_world_charunits(
+    x_world: WorldUnit, chartreasuryunits: dict[str:CharTreasuryUnit]
 ):
-    for x_personunit in x_world._persons.values():
-        x_personunit.clear_treasurying_data()
-        persontreasuryunit = persontreasuryunits.get(x_personunit.person_id)
-        if persontreasuryunit != None:
-            x_personunit.set_treasury_attr(
-                _treasury_due_paid=persontreasuryunit.due_total,
-                _treasury_due_diff=persontreasuryunit.due_diff,
-                cred_score=persontreasuryunit.cred_score,
-                voice_rank=persontreasuryunit.voice_rank,
+    for x_charunit in x_world._chars.values():
+        x_charunit.clear_treasurying_data()
+        chartreasuryunit = chartreasuryunits.get(x_charunit.char_id)
+        if chartreasuryunit != None:
+            x_charunit.set_treasury_attr(
+                _treasury_due_paid=chartreasuryunit.due_total,
+                _treasury_due_diff=chartreasuryunit.due_diff,
+                cred_score=chartreasuryunit.cred_score,
+                voice_rank=chartreasuryunit.voice_rank,
             )
