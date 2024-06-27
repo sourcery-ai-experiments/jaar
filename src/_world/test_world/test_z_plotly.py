@@ -58,10 +58,10 @@ def test_get_world_chars_plotly_fig_DisplaysCorrectInfo():
     luca_world = worldunit_shop()
     luca_world.set_char_credor_pool(500)
     luca_world.set_char_debtor_pool(400)
-    todd_text = "Todd"
-    todd_credor_weight = 66
-    todd_debtor_weight = 77
-    luca_world.add_charunit(todd_text, todd_credor_weight, todd_debtor_weight)
+    yao_text = "Yao"
+    yao_credor_weight = 66
+    yao_debtor_weight = 77
+    luca_world.add_charunit(yao_text, yao_credor_weight, yao_debtor_weight)
     sue_text = "Sue"
     sue_credor_weight = 434
     sue_debtor_weight = 323

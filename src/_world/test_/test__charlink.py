@@ -135,31 +135,31 @@ def test_CharLink_get_from_JSON_ReturnsCorrectObj_SimpleExample():
 
 def test_CharLink_meld_RaiseEqualchar_idException():
     # GIVEN
-    todd_text = "Todd"
-    todd_charlink = charlink_shop(todd_text)
-    mery_text = "Merry"
-    mery_charlink = charlink_shop(mery_text)
+    sue_text = "Sue"
+    sue_charlink = charlink_shop(sue_text)
+    yao_text = "Yao"
+    yao_charlink = charlink_shop(yao_text)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        todd_charlink.meld(mery_charlink)
+        sue_charlink.meld(yao_charlink)
     assert (
         str(excinfo.value)
-        == f"Meld fail CharLink='{todd_charlink.char_id}' not the equal as CharLink='{mery_charlink.char_id}"
+        == f"Meld fail CharLink='{sue_charlink.char_id}' not the equal as CharLink='{yao_charlink.char_id}"
     )
 
 
 def test_CharLink_meld_CorrectlySumsWeights():
     # GIVEN
-    todd_text = "Todd"
-    todd_charlink1 = charlink_shop(todd_text, credor_weight=12, debtor_weight=19)
-    todd_charlink2 = charlink_shop(todd_text, credor_weight=33, debtor_weight=3)
-    assert todd_charlink1.credor_weight == 12
-    assert todd_charlink1.debtor_weight == 19
+    yao_text = "Yao"
+    yao_charlink1 = charlink_shop(yao_text, credor_weight=12, debtor_weight=19)
+    yao_charlink2 = charlink_shop(yao_text, credor_weight=33, debtor_weight=3)
+    assert yao_charlink1.credor_weight == 12
+    assert yao_charlink1.debtor_weight == 19
 
     # WHEN
-    todd_charlink1.meld(todd_charlink2)
+    yao_charlink1.meld(yao_charlink2)
 
     # THEN
-    assert todd_charlink1.credor_weight == 45
-    assert todd_charlink1.debtor_weight == 22
+    assert yao_charlink1.credor_weight == 45
+    assert yao_charlink1.debtor_weight == 22

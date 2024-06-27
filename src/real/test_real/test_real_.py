@@ -122,36 +122,36 @@ def test_RealUnit_init_owner_econs_CorrectlySetsDirAndFiles(env_dir_setup_cleanu
         _pixel=x_pixel,
         in_memory_journal=True,
     )
-    luca_text = "Luca"
-    luca_userhub = userhub_shop(None, music_text, luca_text, None, pixel=x_pixel)
-    assert os_path_exists(luca_userhub.live_path()) is False
+    sue_text = "Sue"
+    sue_userhub = userhub_shop(None, music_text, sue_text, None, pixel=x_pixel)
+    assert os_path_exists(sue_userhub.live_path()) is False
 
     # WHEN
-    music_real.init_owner_econs(luca_text)
+    music_real.init_owner_econs(sue_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
-    assert os_path_exists(luca_userhub.live_path())
+    assert os_path_exists(sue_userhub.live_path())
 
 
 def test_RealUnit_get_owner_same_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
-    luca_text = "Luca"
-    music_real.init_owner_econs(luca_text)
-    luca_userhub = userhub_shop(None, music_text, luca_text, None)
+    sue_text = "Sue"
+    music_real.init_owner_econs(sue_text)
+    sue_userhub = userhub_shop(None, music_text, sue_text, None)
     bob_text = "Bob"
-    luca_same = luca_userhub.get_same_world()
-    luca_same.add_charunit(bob_text)
-    luca_userhub.save_same_world(luca_same)
+    sue_same = sue_userhub.get_same_world()
+    sue_same.add_charunit(bob_text)
+    sue_userhub.save_same_world(sue_same)
 
     # WHEN
-    gen_luca_same = music_real.get_owner_same_from_file(luca_text)
+    gen_sue_same = music_real.get_owner_same_from_file(sue_text)
 
     # THEN
-    assert gen_luca_same != None
-    assert gen_luca_same.char_exists(bob_text)
+    assert gen_sue_same != None
+    assert gen_sue_same.char_exists(bob_text)
 
 
 def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
@@ -160,104 +160,104 @@ def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     # GIVEN
     music_text = "music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
-    luca_text = "Luca"
-    todd_text = "Todd"
-    music_real.init_owner_econs(luca_text)
-    music_real.init_owner_econs(todd_text)
-    luca_userhub = userhub_shop(None, music_text, luca_text, None)
-    todd_userhub = userhub_shop(None, music_text, todd_text, None)
-    luca_same_world = luca_userhub.get_same_world()
-    todd_same_world = todd_userhub.get_same_world()
+    sue_text = "Sue"
+    yao_text = "Yao"
+    music_real.init_owner_econs(sue_text)
+    music_real.init_owner_econs(yao_text)
+    sue_userhub = userhub_shop(None, music_text, sue_text, None)
+    yao_userhub = userhub_shop(None, music_text, yao_text, None)
+    sue_same_world = sue_userhub.get_same_world()
+    yao_same_world = yao_userhub.get_same_world()
 
-    luca_same_world.add_charunit(luca_text)
-    luca_same_world.add_charunit(todd_text)
-    todd_same_world.add_charunit(luca_text)
-    todd_same_world.add_charunit(todd_text)
+    sue_same_world.add_charunit(sue_text)
+    sue_same_world.add_charunit(yao_text)
+    yao_same_world.add_charunit(sue_text)
+    yao_same_world.add_charunit(yao_text)
     texas_text = "Texas"
-    texas_road = luca_same_world.make_l1_road(texas_text)
-    luca_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    todd_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    texas_road = sue_same_world.make_l1_road(texas_text)
+    sue_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    yao_same_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
-    dallas_road = luca_same_world.make_road(texas_road, dallas_text)
-    dallas_healerhold = healerhold_shop({luca_text, todd_text})
+    dallas_road = sue_same_world.make_road(texas_road, dallas_text)
+    dallas_healerhold = healerhold_shop({sue_text, yao_text})
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
     elpaso_text = "el paso"
-    elpaso_road = luca_same_world.make_road(texas_road, elpaso_text)
-    elpaso_healerhold = healerhold_shop({luca_text})
+    elpaso_road = sue_same_world.make_road(texas_road, elpaso_text)
+    elpaso_healerhold = healerhold_shop({sue_text})
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
 
-    luca_same_world.add_idea(dallas_idea, texas_road)
-    luca_same_world.add_idea(elpaso_idea, texas_road)
-    todd_same_world.add_idea(dallas_idea, texas_road)
-    todd_same_world.add_idea(elpaso_idea, texas_road)
-    # display_ideatree(luca_same_world.calc_world_metrics(), mode="Econ").show()
-    luca_userhub.save_same_world(luca_same_world)
-    todd_userhub.save_same_world(todd_same_world)
-    luca_file_name = get_json_filename(luca_text)
-    todd_file_name = get_json_filename(todd_text)
-    luca_dallas_userhub = userhub_shop(None, music_text, luca_text, dallas_road)
-    todd_dallas_userhub = userhub_shop(None, music_text, todd_text, dallas_road)
-    luca_roles_dir = luca_dallas_userhub.roles_dir()
-    todd_roles_dir = todd_dallas_userhub.roles_dir()
-    luca_dallas_luca_role_file_path = f"{luca_roles_dir}/{luca_file_name}"
-    luca_dallas_todd_role_file_path = f"{luca_roles_dir}/{todd_file_name}"
-    todd_dallas_luca_role_file_path = f"{todd_roles_dir}/{luca_file_name}"
-    todd_dallas_todd_role_file_path = f"{todd_roles_dir}/{todd_file_name}"
-    assert os_path_exists(luca_dallas_luca_role_file_path) is False
-    assert os_path_exists(luca_dallas_todd_role_file_path) is False
-    assert os_path_exists(todd_dallas_luca_role_file_path) is False
-    assert os_path_exists(todd_dallas_todd_role_file_path) is False
+    sue_same_world.add_idea(dallas_idea, texas_road)
+    sue_same_world.add_idea(elpaso_idea, texas_road)
+    yao_same_world.add_idea(dallas_idea, texas_road)
+    yao_same_world.add_idea(elpaso_idea, texas_road)
+    # display_ideatree(sue_same_world.calc_world_metrics(), mode="Econ").show()
+    sue_userhub.save_same_world(sue_same_world)
+    yao_userhub.save_same_world(yao_same_world)
+    sue_file_name = get_json_filename(sue_text)
+    yao_file_name = get_json_filename(yao_text)
+    sue_dallas_userhub = userhub_shop(None, music_text, sue_text, dallas_road)
+    yao_dallas_userhub = userhub_shop(None, music_text, yao_text, dallas_road)
+    sue_roles_dir = sue_dallas_userhub.roles_dir()
+    yao_roles_dir = yao_dallas_userhub.roles_dir()
+    sue_dallas_sue_role_file_path = f"{sue_roles_dir}/{sue_file_name}"
+    sue_dallas_yao_role_file_path = f"{sue_roles_dir}/{yao_file_name}"
+    yao_dallas_sue_role_file_path = f"{yao_roles_dir}/{sue_file_name}"
+    yao_dallas_yao_role_file_path = f"{yao_roles_dir}/{yao_file_name}"
+    assert os_path_exists(sue_dallas_sue_role_file_path) is False
+    assert os_path_exists(sue_dallas_yao_role_file_path) is False
+    assert os_path_exists(yao_dallas_sue_role_file_path) is False
+    assert os_path_exists(yao_dallas_yao_role_file_path) is False
 
     # WHEN
-    music_real._set_all_healer_roles(luca_text)
+    music_real._set_all_healer_roles(sue_text)
 
     # THEN
-    assert os_path_exists(luca_dallas_luca_role_file_path)
-    assert os_path_exists(luca_dallas_todd_role_file_path) is False
-    assert os_path_exists(todd_dallas_luca_role_file_path)
-    assert os_path_exists(todd_dallas_todd_role_file_path) is False
+    assert os_path_exists(sue_dallas_sue_role_file_path)
+    assert os_path_exists(sue_dallas_yao_role_file_path) is False
+    assert os_path_exists(yao_dallas_sue_role_file_path)
+    assert os_path_exists(yao_dallas_yao_role_file_path) is False
 
     # WHEN
-    music_real._set_all_healer_roles(todd_text)
+    music_real._set_all_healer_roles(yao_text)
 
     # THEN
-    assert os_path_exists(luca_dallas_luca_role_file_path)
-    assert os_path_exists(luca_dallas_todd_role_file_path)
-    assert os_path_exists(todd_dallas_luca_role_file_path)
-    assert os_path_exists(todd_dallas_todd_role_file_path)
+    assert os_path_exists(sue_dallas_sue_role_file_path)
+    assert os_path_exists(sue_dallas_yao_role_file_path)
+    assert os_path_exists(yao_dallas_sue_role_file_path)
+    assert os_path_exists(yao_dallas_yao_role_file_path)
 
 
 def test_RealUnit_get_owner_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), in_memory_journal=True)
-    luca_text = "Luca"
-    todd_text = "Todd"
+    sue_text = "Sue"
+    yao_text = "Yao"
 
     # WHEN / THEN
     assert len(music_real.get_owner_userhubs()) == 0
 
     # WHEN
-    music_real.init_owner_econs(luca_text)
-    music_real.init_owner_econs(todd_text)
+    music_real.init_owner_econs(sue_text)
+    music_real.init_owner_econs(yao_text)
     music_all_owners = music_real.get_owner_userhubs()
 
     # THEN
-    luca_userhub = userhub_shop(
+    sue_userhub = userhub_shop(
         reals_dir=music_real.reals_dir,
         real_id=music_real.real_id,
-        owner_id=luca_text,
+        owner_id=sue_text,
         econ_road=None,
         road_delimiter=music_real._road_delimiter,
         pixel=music_real._pixel,
     )
-    todd_userhub = userhub_shop(
+    yao_userhub = userhub_shop(
         reals_dir=music_real.reals_dir,
         real_id=music_real.real_id,
-        owner_id=todd_text,
+        owner_id=yao_text,
         econ_road=None,
         road_delimiter=music_real._road_delimiter,
         pixel=music_real._pixel,
     )
-    assert music_all_owners.get(luca_text) == luca_userhub
-    assert music_all_owners.get(todd_text) == todd_userhub
+    assert music_all_owners.get(sue_text) == sue_userhub
+    assert music_all_owners.get(yao_text) == yao_userhub
     assert len(music_real.get_owner_userhubs()) == 2

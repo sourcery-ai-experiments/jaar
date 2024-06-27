@@ -73,27 +73,27 @@ def test_CharUnit_set_char_id_RaisesErrorIfParameterContains_road_delimiter():
 
 def test_charunit_shop_CorrectlySetsAttributes():
     # WHEN
-    todd_text = "Todd"
+    yao_text = "Yao"
 
     # WHEN
-    todd_charunit = charunit_shop(char_id=todd_text)
+    yao_charunit = charunit_shop(char_id=yao_text)
 
     # THEN
-    assert todd_charunit.char_id == todd_text
-    assert todd_charunit.credor_weight == 1
-    assert todd_charunit.debtor_weight == 1
+    assert yao_charunit.char_id == yao_text
+    assert yao_charunit.credor_weight == 1
+    assert yao_charunit.debtor_weight == 1
     # calculated fields
-    assert todd_charunit._belieflinks == {}
-    assert todd_charunit._irrational_debtor_weight == 0
-    assert todd_charunit._inallocable_debtor_weight == 0
-    assert todd_charunit._world_cred == 0
-    assert todd_charunit._world_debt == 0
-    assert todd_charunit._world_agenda_cred == 0
-    assert todd_charunit._world_agenda_debt == 0
-    assert todd_charunit._world_agenda_ratio_cred == 0
-    assert todd_charunit._world_agenda_ratio_debt == 0
-    assert todd_charunit._road_delimiter == default_road_delimiter_if_none()
-    assert todd_charunit._pixel == default_pixel_if_none()
+    assert yao_charunit._belieflinks == {}
+    assert yao_charunit._irrational_debtor_weight == 0
+    assert yao_charunit._inallocable_debtor_weight == 0
+    assert yao_charunit._world_cred == 0
+    assert yao_charunit._world_debt == 0
+    assert yao_charunit._world_agenda_cred == 0
+    assert yao_charunit._world_agenda_debt == 0
+    assert yao_charunit._world_agenda_ratio_cred == 0
+    assert yao_charunit._world_agenda_ratio_debt == 0
+    assert yao_charunit._road_delimiter == default_road_delimiter_if_none()
+    assert yao_charunit._pixel == default_pixel_if_none()
 
 
 def test_charunit_shop_CorrectlySetsAttributes_road_delimiter():
@@ -101,10 +101,10 @@ def test_charunit_shop_CorrectlySetsAttributes_road_delimiter():
     slash_text = "/"
 
     # WHEN
-    todd_charunit = charunit_shop("Todd", _road_delimiter=slash_text)
+    yao_charunit = charunit_shop("Yao", _road_delimiter=slash_text)
 
     # THEN
-    assert todd_charunit._road_delimiter == slash_text
+    assert yao_charunit._road_delimiter == slash_text
 
 
 def test_charunit_shop_CorrectlySetsAttributes_pixel():
@@ -112,10 +112,10 @@ def test_charunit_shop_CorrectlySetsAttributes_pixel():
     pixel_float = 00.45
 
     # WHEN
-    todd_charunit = charunit_shop("Todd", _pixel=pixel_float)
+    yao_charunit = charunit_shop("Yao", _pixel=pixel_float)
 
     # THEN
-    assert todd_charunit._pixel == pixel_float
+    assert yao_charunit._pixel == pixel_float
 
 
 def test_CharUnit_set_pixel_CorrectlySetsAttribute():

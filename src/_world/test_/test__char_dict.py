@@ -344,51 +344,51 @@ def test_charunits_get_from_json_ReturnsCorrectObj_SimpleExampleWithIncompleteDa
 
 def test_CharUnit_meld_RaiseEqualchar_idException():
     # GIVEN
-    todd_text = "Todd"
-    todd_char = charunit_shop(char_id=todd_text)
-    mery_text = "Merry"
-    mery_char = charunit_shop(char_id=mery_text)
+    sue_text = "Sue"
+    sue_char = charunit_shop(sue_text)
+    yao_text = "Yao"
+    yao_char = charunit_shop(yao_text)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        todd_char.meld(mery_char)
+        sue_char.meld(yao_char)
     assert (
         str(excinfo.value)
-        == f"Meld fail CharUnit='{todd_char.char_id}' not the equal as CharUnit='{mery_char.char_id}"
+        == f"Meld fail CharUnit='{sue_char.char_id}' not the equal as CharUnit='{yao_char.char_id}"
     )
 
 
 def test_CharUnit_meld_CorrectlySumsWeights():
     # GIVEN
-    todd_text = "Todd"
-    todd_char1 = charunit_shop(todd_text, credor_weight=7, debtor_weight=19)
-    todd_char2 = charunit_shop(todd_text, credor_weight=5, debtor_weight=3)
+    yao_text = "Yao"
+    yao_char1 = charunit_shop(yao_text, credor_weight=7, debtor_weight=19)
+    yao_char2 = charunit_shop(yao_text, credor_weight=5, debtor_weight=3)
 
-    todd1_irrational_debtor_weight = 44
-    todd2_irrational_debtor_weight = 33
-    todd_char1.add_irrational_debtor_weight(todd1_irrational_debtor_weight)
-    todd_char2.add_irrational_debtor_weight(todd2_irrational_debtor_weight)
-    todd1_inallocable_debtor_weight = 11
-    todd2_inallocable_debtor_weight = 22
-    todd_char1.add_inallocable_debtor_weight(todd1_inallocable_debtor_weight)
-    todd_char2.add_inallocable_debtor_weight(todd2_inallocable_debtor_weight)
+    yao1_irrational_debtor_weight = 44
+    yao2_irrational_debtor_weight = 33
+    yao_char1.add_irrational_debtor_weight(yao1_irrational_debtor_weight)
+    yao_char2.add_irrational_debtor_weight(yao2_irrational_debtor_weight)
+    yao1_inallocable_debtor_weight = 11
+    yao2_inallocable_debtor_weight = 22
+    yao_char1.add_inallocable_debtor_weight(yao1_inallocable_debtor_weight)
+    yao_char2.add_inallocable_debtor_weight(yao2_inallocable_debtor_weight)
 
-    todd_char2
-    assert todd_char1.credor_weight == 7
-    assert todd_char1.debtor_weight == 19
-    assert todd_char1._irrational_debtor_weight == todd1_irrational_debtor_weight
-    assert todd_char1._inallocable_debtor_weight == todd1_inallocable_debtor_weight
+    yao_char2
+    assert yao_char1.credor_weight == 7
+    assert yao_char1.debtor_weight == 19
+    assert yao_char1._irrational_debtor_weight == yao1_irrational_debtor_weight
+    assert yao_char1._inallocable_debtor_weight == yao1_inallocable_debtor_weight
 
     # WHEN
-    todd_char1.meld(todd_char2)
+    yao_char1.meld(yao_char2)
 
     # THEN
-    assert todd_char1.credor_weight == 12
-    assert todd_char1.debtor_weight == 22
-    assert todd_char1._irrational_debtor_weight != todd1_irrational_debtor_weight
-    assert todd_char1._inallocable_debtor_weight != todd1_inallocable_debtor_weight
+    assert yao_char1.credor_weight == 12
+    assert yao_char1.debtor_weight == 22
+    assert yao_char1._irrational_debtor_weight != yao1_irrational_debtor_weight
+    assert yao_char1._inallocable_debtor_weight != yao1_inallocable_debtor_weight
 
-    irrational_sum = todd1_irrational_debtor_weight + todd2_irrational_debtor_weight
-    missing_job_sum = todd1_inallocable_debtor_weight + todd2_inallocable_debtor_weight
-    assert todd_char1._irrational_debtor_weight == irrational_sum
-    assert todd_char1._inallocable_debtor_weight == missing_job_sum
+    irrational_sum = yao1_irrational_debtor_weight + yao2_irrational_debtor_weight
+    missing_job_sum = yao1_inallocable_debtor_weight + yao2_inallocable_debtor_weight
+    assert yao_char1._irrational_debtor_weight == irrational_sum
+    assert yao_char1._inallocable_debtor_weight == missing_job_sum

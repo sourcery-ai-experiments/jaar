@@ -141,38 +141,38 @@ def test_BeliefUnit_reset_world_importance_SetsAttrCorrectly():
 
 def test_BeliefUnit_meld_RaiseEqualchar_idException():
     # GIVEN
-    todd_text = "Todd"
-    todd_belief = beliefunit_shop(belief_id=todd_text, _char_mirror=True)
-    mery_text = "Merry"
-    mery_belief = beliefunit_shop(belief_id=mery_text, _char_mirror=True)
+    sue_text = "Sue"
+    sue_belief = beliefunit_shop(belief_id=sue_text, _char_mirror=True)
+    yao_text = "Yao"
+    yao_belief = beliefunit_shop(belief_id=yao_text, _char_mirror=True)
 
     # WHEN / THEN
     with pytest_raises(Exception) as excinfo:
-        todd_belief.meld(mery_belief)
+        sue_belief.meld(yao_belief)
     assert (
         str(excinfo.value)
-        == f"Meld fail BeliefUnit {todd_belief.belief_id} .belief_id='{todd_belief.belief_id}' not the equal as .belief_id='{mery_belief.belief_id}"
+        == f"Meld fail BeliefUnit {sue_belief.belief_id} .belief_id='{sue_belief.belief_id}' not the equal as .belief_id='{yao_belief.belief_id}"
     )
 
 
 def test_BeliefUnit_get_dict_ReturnsDictWithAttrsCorrectlySet():
     # GIVEN
-    todd_text = "Todd"
-    todd_belief = beliefunit_shop(belief_id=todd_text, _char_mirror=True)
+    yao_text = "Yao"
+    yao_belief = beliefunit_shop(belief_id=yao_text, _char_mirror=True)
     sue_text = "Sue"
-    todd_belief.set_charlink(charlink_shop(char_id=sue_text))
+    yao_belief.set_charlink(charlink_shop(char_id=sue_text))
 
-    assert todd_belief.belief_id == todd_text
-    assert todd_belief._char_mirror
-    assert len(todd_belief._chars) == 1
+    assert yao_belief.belief_id == yao_text
+    assert yao_belief._char_mirror
+    assert len(yao_belief._chars) == 1
 
     # WHEN
-    todd_dict = todd_belief.get_dict()
+    yao_dict = yao_belief.get_dict()
 
     # THEN
-    assert todd_dict["belief_id"] == todd_text
-    assert todd_dict["_char_mirror"]
-    assert len(todd_dict["_chars"]) == 1
+    assert yao_dict["belief_id"] == yao_text
+    assert yao_dict["_char_mirror"]
+    assert len(yao_dict["_chars"]) == 1
 
 
 def test_BeliefUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
