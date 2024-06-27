@@ -130,7 +130,8 @@ def test_GiftUnit_save_gift_file_SavesCorrectFile(env_dir_setup_cleanup):
     print(f"{gift_file_dict=}")
     assert gift_file_dict.get("change_atom_numbers") == []
     assert gift_file_dict.get("owner_id") == sue_text
-    assert gift_file_dict.get("faces") == {}
+    assert gift_file_dict.get("face_id") is None
+    print(f"{gift_file_dict.keys()=}")
 
 
 def test_GiftUnit_gift_file_exists_ReturnsCorrectObj(env_dir_setup_cleanup):
@@ -168,14 +169,14 @@ def test_GiftUnit_save_files_CorrectlySavesFiles(env_dir_setup_cleanup):
     sue_atoms_dir = f"{sue_owner_dir}/atoms"
     sue_gifts_dir = f"{sue_owner_dir}/{get_gifts_folder()}"
 
-    tim_text = "Tim"
+    zia_text = "Zia"
     yao_text = "Yao"
     farm_change_start = 4
     farm_giftunit = giftunit_shop(
         sue_text, _atoms_dir=sue_atoms_dir, _gifts_dir=sue_gifts_dir
     )
     farm_giftunit.set_change_start(farm_change_start)
-    farm_giftunit.set_face(tim_text)
+    farm_giftunit.set_face(zia_text)
     farm_giftunit.set_face(yao_text)
     four_int = 4
     five_int = 5
@@ -238,14 +239,12 @@ def test_create_giftunit_from_files_ReturnsCorrectObj(env_dir_setup_cleanup):
     sue_atoms_dir = f"{sue_owner_dir}/atoms"
     sue_gifts_dir = f"{sue_owner_dir}/{get_gifts_folder()}"
 
-    tim_text = "Tim"
     yao_text = "Yao"
     sue_change_start = 4
     src_sue_giftunit = giftunit_shop(
         sue_text, _atoms_dir=sue_atoms_dir, _gifts_dir=sue_gifts_dir
     )
     src_sue_giftunit.set_change_start(sue_change_start)
-    src_sue_giftunit.set_face(tim_text)
     src_sue_giftunit.set_face(yao_text)
     sports_atom = get_atom_example_ideaunit_sports()
     knee_atom = get_atom_example_ideaunit_knee()
@@ -264,5 +263,5 @@ def test_create_giftunit_from_files_ReturnsCorrectObj(env_dir_setup_cleanup):
 
     # THEN
     assert src_sue_giftunit.owner_id == new_sue_giftunit.owner_id
-    assert src_sue_giftunit._faces == new_sue_giftunit._faces
+    assert src_sue_giftunit._face_id == new_sue_giftunit._face_id
     assert src_sue_giftunit._changeunit == new_sue_giftunit._changeunit

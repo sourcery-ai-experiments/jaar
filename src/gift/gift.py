@@ -17,20 +17,17 @@ class GiftUnit:
     real_id: RealID = None
     owner_id: OwnerID = None
     _gift_id: int = None
-    _faces: set[OwnerID] = None
+    _face_id: OwnerID = None
     _changeunit: ChangeUnit = None
     _change_start: int = None
     _gifts_dir: str = None
     _atoms_dir: str = None
 
-    def set_face(self, x_face: OwnerID):
-        self._faces.add(x_face)
+    def set_face(self, x_face_id: OwnerID):
+        self._face_id = x_face_id
 
-    def face_exists(self, x_face: OwnerID) -> bool:
-        return x_face in self._faces
-
-    def del_face(self, x_face: OwnerID):
-        self._faces.remove(x_face)
+    def del_face(self):
+        self._face_id = None
 
     def set_changeunit(self, x_changeunit: ChangeUnit):
         self._changeunit = x_changeunit
@@ -48,7 +45,7 @@ class GiftUnit:
         return {
             "real_id": self.real_id,
             "owner_id": self.owner_id,
-            "faces": {x_face: 1 for x_face in self._faces},
+            "face_id": self._face_id,
             "change": self._changeunit.get_ordered_atomunits(self._change_start),
         }
 
@@ -60,7 +57,7 @@ class GiftUnit:
         x_dict = self.get_step_dict()
         return {
             "owner_id": x_dict.get("owner_id"),
-            "faces": x_dict.get("faces"),
+            "face_id": x_dict.get("face_id"),
             "change_atom_numbers": self.get_change_atom_numbers(x_dict),
         }
 
@@ -112,7 +109,7 @@ def giftunit_shop(
     owner_id: OwnerID,
     real_id: RealID = None,
     _gift_id: int = None,
-    _faces: set[OwnerID] = None,
+    _face_id: OwnerID = None,
     _changeunit: ChangeUnit = None,
     _change_start: int = None,
     _gifts_dir: str = None,
@@ -126,7 +123,7 @@ def giftunit_shop(
         real_id=real_id,
         owner_id=owner_id,
         _gift_id=get_init_gift_id_if_None(_gift_id),
-        _faces=get_empty_set_if_none(_faces),
+        _face_id=_face_id,
         _changeunit=_changeunit,
         _gifts_dir=_gifts_dir,
         _atoms_dir=_atoms_dir,
@@ -144,13 +141,13 @@ def create_giftunit_from_files(
     gift_dict = get_dict_from_json(open_file(gifts_dir, gift_filename))
     x_owner_id = gift_dict.get("owner_id")
     x_real_id = gift_dict.get("real_id")
-    x_faces = set(gift_dict.get("faces").keys())
+    x_face_id = gift_dict.get("face_id")
     change_atom_numbers_list = gift_dict.get("change_atom_numbers")
     x_giftunit = giftunit_shop(
         owner_id=x_owner_id,
         real_id=x_real_id,
         _gift_id=gift_id,
-        _faces=x_faces,
+        _face_id=x_face_id,
         _atoms_dir=atoms_dir,
     )
     x_giftunit._create_changeunit_from_atom_files(change_atom_numbers_list)
