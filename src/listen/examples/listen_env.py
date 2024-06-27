@@ -43,7 +43,7 @@ def get_texas_userhub() -> UserHub:
         real_id,
         owner_id="Sue",
         econ_road=get_texas_road(),
-        # pipeline_role_job_text(),
+        # pipeline_duty_job_text(),
     )
 
 
@@ -62,5 +62,5 @@ def get_dakota_userhub() -> UserHub:
         real_id,
         owner_id="Sue",
         econ_road=get_dakota_road(),
-        # pipeline_role_job_text(),
+        # pipeline_duty_job_text(),
     )

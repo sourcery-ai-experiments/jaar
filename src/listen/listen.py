@@ -142,10 +142,10 @@ def _add_and_replace_ideaunit_weights(
         x_ideaunit._weight += x_weight
 
 
-def get_debtors_roll(x_role: WorldUnit) -> list[CharUnit]:
+def get_debtors_roll(x_duty: WorldUnit) -> list[CharUnit]:
     return [
         x_charunit
-        for x_charunit in x_role._chars.values()
+        for x_charunit in x_duty._chars.values()
         if x_charunit.debtor_weight != 0
     ]
 
@@ -219,12 +219,12 @@ def listen_to_agendas_soul_home(listener_home: WorldUnit, listener_userhub: User
             listen_to_speaker_agenda(listener_home, speaker_home)
 
 
-def listen_to_agendas_role_job(listener_job: WorldUnit, healer_userhub: UserHub):
+def listen_to_agendas_duty_job(listener_job: WorldUnit, healer_userhub: UserHub):
     listener_id = listener_job._owner_id
     for x_charunit in get_ordered_debtors_roll(listener_job):
         if x_charunit.char_id == listener_id:
-            listener_role = healer_userhub.get_role_world(listener_id)
-            listen_to_speaker_agenda(listener_job, listener_role)
+            listener_duty = healer_userhub.get_duty_world(listener_id)
+            listen_to_speaker_agenda(listener_job, listener_duty)
         else:
             speaker_id = x_charunit.char_id
             healer_id = healer_userhub.owner_id
@@ -234,9 +234,9 @@ def listen_to_agendas_role_job(listener_job: WorldUnit, healer_userhub: UserHub)
             listen_to_speaker_agenda(listener_job, speaker_job)
 
 
-def listen_to_facts_role_job(new_job: WorldUnit, healer_userhub: UserHub):
-    role = healer_userhub.get_role_world(new_job._owner_id)
-    migrate_all_facts(role, new_job)
+def listen_to_facts_duty_job(new_job: WorldUnit, healer_userhub: UserHub):
+    duty = healer_userhub.get_duty_world(new_job._owner_id)
+    migrate_all_facts(duty, new_job)
     for x_charunit in get_ordered_debtors_roll(new_job):
         if x_charunit.char_id != new_job._owner_id:
             speaker_job = healer_userhub.get_job_world(x_charunit.char_id)
@@ -264,16 +264,16 @@ def listen_to_debtors_roll_soul_home(listener_userhub: UserHub) -> WorldUnit:
     return new_world
 
 
-def listen_to_debtors_roll_role_job(
+def listen_to_debtors_roll_duty_job(
     healer_userhub: UserHub, listener_id: OwnerID
 ) -> WorldUnit:
-    role = healer_userhub.get_role_world(listener_id)
-    new_role = create_listen_basis(role)
-    if role._char_debtor_pool is None:
-        return new_role
-    listen_to_agendas_role_job(new_role, healer_userhub)
-    listen_to_facts_role_job(new_role, healer_userhub)
-    return new_role
+    duty = healer_userhub.get_duty_world(listener_id)
+    new_duty = create_listen_basis(duty)
+    if duty._char_debtor_pool is None:
+        return new_duty
+    listen_to_agendas_duty_job(new_duty, healer_userhub)
+    listen_to_facts_duty_job(new_duty, healer_userhub)
+    return new_duty
 
 
 def listen_to_owner_jobs(listener_userhub: UserHub) -> None:
@@ -330,8 +330,8 @@ def listen_to_job_agenda(listener: WorldUnit, job: WorldUnit):
     listener.calc_world_metrics()
 
 
-def create_job_file_from_role_file(healer_userhub: UserHub, owner_id: OwnerID):
-    x_job = listen_to_debtors_roll_role_job(healer_userhub, listener_id=owner_id)
+def create_job_file_from_duty_file(healer_userhub: UserHub, owner_id: OwnerID):
+    x_job = listen_to_debtors_roll_duty_job(healer_userhub, listener_id=owner_id)
     healer_userhub.save_job_world(x_job)
 
 

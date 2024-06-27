@@ -34,8 +34,8 @@ def jobs_str() -> str:
     return "jobs"
 
 
-def roles_str() -> str:
-    return "roles"
+def dutys_str() -> str:
+    return "dutys"
 
 
 def grades_folder() -> str:

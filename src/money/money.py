@@ -287,12 +287,12 @@ class MoneyUnit:
                     cur.execute(sqlstr)
 
     # exporting metrics to world files
-    def set_role_voice_ranks(self, owner_id: OwnerID, sort_order: str):
+    def set_duty_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
-            owner_role = self.userhub.get_role_world(owner_id)
-            for count_x, x_charunit in enumerate(owner_role._chars.values()):
+            owner_duty = self.userhub.get_duty_world(owner_id)
+            for count_x, x_charunit in enumerate(owner_duty._chars.values()):
                 x_charunit.set_treasury_voice_rank(count_x)
-            self.userhub.save_role_world(owner_role)
+            self.userhub.save_duty_world(owner_duty)
 
 
 def moneyunit_shop(x_userhub: UserHub, in_memory_treasury: bool = None) -> MoneyUnit:

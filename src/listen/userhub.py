@@ -10,7 +10,7 @@ from src._instrument.file import (
 from src._instrument.python import get_empty_set_if_none
 from src._instrument.sqlite import sqlite_connection
 from src._road.jaar_config import (
-    roles_str,
+    dutys_str,
     jobs_str,
     grades_folder,
     get_rootpart_of_econ_dir,
@@ -79,8 +79,8 @@ class _econ_roadMissingException(Exception):
     pass
 
 
-def get_econ_roles_dir(x_econ_dir: str) -> str:
-    return f"{x_econ_dir}/{roles_str()}"
+def get_econ_dutys_dir(x_econ_dir: str) -> str:
+    return f"{x_econ_dir}/{dutys_str()}"
 
 
 def get_econ_jobs_dir(x_econ_dir: str) -> str:
@@ -408,8 +408,8 @@ class UserHub:
     def treasury_db_path(self) -> str:
         return f"{self.econ_dir()}/{treasury_file_name()}"
 
-    def role_path(self, owner_id: OwnerID) -> str:
-        return f"{self.roles_dir()}/{self.owner_file_name(owner_id)}"
+    def duty_path(self, owner_id: OwnerID) -> str:
+        return f"{self.dutys_dir()}/{self.owner_file_name(owner_id)}"
 
     def job_path(self, owner_id: OwnerID) -> str:
         return f"{self.jobs_dir()}/{self.owner_file_name(owner_id)}"
@@ -417,8 +417,8 @@ class UserHub:
     def grade_path(self, owner_id: OwnerID) -> str:
         return f"{self.grades_dir()}/{self.owner_file_name(owner_id)}"
 
-    def roles_dir(self) -> str:
-        return get_econ_roles_dir(self.econ_dir())
+    def dutys_dir(self) -> str:
+        return get_econ_dutys_dir(self.econ_dir())
 
     def jobs_dir(self) -> str:
         return get_econ_jobs_dir(self.econ_dir())
@@ -432,9 +432,9 @@ class UserHub:
         except Exception:
             return []
 
-    def save_role_world(self, x_world: WorldUnit):
+    def save_duty_world(self, x_world: WorldUnit):
         x_file_name = self.owner_file_name(x_world._owner_id)
-        save_file(self.roles_dir(), x_file_name, x_world.get_json())
+        save_file(self.dutys_dir(), x_file_name, x_world.get_json())
 
     def save_job_world(self, x_world: WorldUnit):
         x_file_name = self.owner_file_name(x_world._owner_id)
@@ -451,16 +451,16 @@ class UserHub:
         if self.home_file_exists() is False:
             self.save_home_world(get_default_home_world(soul))
 
-    def role_file_exists(self, owner_id: OwnerID) -> bool:
-        return os_path_exists(self.role_path(owner_id))
+    def duty_file_exists(self, owner_id: OwnerID) -> bool:
+        return os_path_exists(self.duty_path(owner_id))
 
     def job_file_exists(self, owner_id: OwnerID) -> bool:
         return os_path_exists(self.job_path(owner_id))
 
-    def get_role_world(self, owner_id: OwnerID) -> WorldUnit:
-        if self.role_file_exists(owner_id) is False:
+    def get_duty_world(self, owner_id: OwnerID) -> WorldUnit:
+        if self.duty_file_exists(owner_id) is False:
             return None
-        file_content = open_file(self.roles_dir(), self.owner_file_name(owner_id))
+        file_content = open_file(self.dutys_dir(), self.owner_file_name(owner_id))
         return worldunit_get_from_json(file_content)
 
     def get_job_world(self, owner_id: OwnerID) -> WorldUnit:
@@ -475,8 +475,8 @@ class UserHub:
         file_content = self.open_file_home()
         return worldunit_get_from_json(file_content)
 
-    def delete_role_file(self, owner_id: OwnerID):
-        delete_dir(self.role_path(owner_id))
+    def delete_duty_file(self, owner_id: OwnerID):
+        delete_dir(self.duty_path(owner_id))
 
     def delete_job_file(self, owner_id: OwnerID):
         delete_dir(self.job_path(owner_id))
@@ -535,11 +535,11 @@ class UserHub:
         econ_roads = x_soul_world._healers_dict.get(self.owner_id).keys()
         return get_empty_set_if_none(econ_roads)
 
-    def save_all_soul_roles(self):
+    def save_all_soul_dutys(self):
         soul = self.get_soul_world()
         for x_econ_road in self.get_econ_roads():
             self.econ_road = x_econ_road
-            self.save_role_world(soul)
+            self.save_duty_world(soul)
         self.econ_road = None
 
     def create_treasury_db_file(self):

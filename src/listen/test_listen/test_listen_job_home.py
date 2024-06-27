@@ -2,7 +2,7 @@ from src._road.road import RoadUnit, create_road, get_default_real_id_roadnode, 
 from src._world.idea import ideaunit_shop
 from src._world.world import WorldUnit, worldunit_shop
 from src.listen.userhub import userhub_shop, UserHub
-from src.listen.listen import listen_to_owner_jobs, create_job_file_from_role_file
+from src.listen.listen import listen_to_owner_jobs, create_job_file_from_duty_file
 from src.listen.examples.listen_env import (
     env_dir_setup_cleanup,
     get_listen_temp_env_dir as env_dir,
@@ -399,20 +399,20 @@ def test_listen_to_owner_jobs_Pipeline_Scenario1_yao_soul_CanOnlyReferenceItself
     assert yao_home != yao_soul0
 
 
-def test_create_job_file_from_role_file_CreatesEmptyJob(env_dir_setup_cleanup):
+def test_create_job_file_from_duty_file_CreatesEmptyJob(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     sue_texas_userhub = get_texas_userhub()
-    sue_texas_userhub.save_role_world(yao_role)
+    sue_texas_userhub.save_duty_world(yao_duty)
     assert sue_texas_userhub.job_file_exists(yao_text) is False
 
     # WHEN
-    create_job_file_from_role_file(sue_texas_userhub, yao_text)
+    create_job_file_from_duty_file(sue_texas_userhub, yao_text)
 
     # GIVEN
     assert sue_texas_userhub.job_file_exists(yao_text)
     yao_job = sue_texas_userhub.get_job_world(yao_text)
     assert yao_job._owner_id != None
     assert yao_job._owner_id == yao_text
-    assert yao_job.get_dict() == yao_role.get_dict()
+    assert yao_job.get_dict() == yao_duty.get_dict()

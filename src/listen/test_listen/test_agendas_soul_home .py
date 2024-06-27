@@ -296,7 +296,7 @@ def test_listen_to_agendas_soul_home_ListensToOwner_soul_AndNotOwner_home(
     yao_soul.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_pool = 87
     yao_soul.set_char_pool(yao_pool)
-    # save yao without task to roles
+    # save yao without task to dutys
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_soul_world(yao_soul)
 
@@ -313,7 +313,7 @@ def test_listen_to_agendas_soul_home_ListensToOwner_soul_AndNotOwner_home(
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
     zia_userhub.save_home_world(zia_home)
 
-    # save yao with task to roles
+    # save yao with task to dutys
     yao_old_home = worldunit_shop(yao_text)
     vacuum_text = "vacuum"
     vacuum_road = yao_old_home.make_l1_road(vacuum_text)

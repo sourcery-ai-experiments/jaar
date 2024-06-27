@@ -11,40 +11,40 @@ from src.listen.listen import (
 def test_get_debtors_roll_ReturnsObj():
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
-    yao_role.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.calc_world_metrics()
+    yao_duty.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.calc_world_metrics()
 
     # WHEN
-    yao_roll = get_debtors_roll(yao_role)
+    yao_roll = get_debtors_roll(yao_duty)
 
     # THEN
-    zia_charunit = yao_role.get_char(zia_text)
+    zia_charunit = yao_duty.get_char(zia_text)
     assert yao_roll == [zia_charunit]
 
 
 def test_get_debtors_roll_ReturnsObjIgnoresZero_debtor_weight():
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     wei_text = "Wei"
     wei_credor_weight = 67
     wei_debtor_weight = 0
-    yao_role.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_charunit(wei_text, wei_credor_weight, wei_debtor_weight)
-    yao_role.calc_world_metrics()
+    yao_duty.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.add_charunit(wei_text, wei_credor_weight, wei_debtor_weight)
+    yao_duty.calc_world_metrics()
 
     # WHEN
-    yao_roll = get_debtors_roll(yao_role)
+    yao_roll = get_debtors_roll(yao_duty)
 
     # THEN
-    zia_charunit = yao_role.get_char(zia_text)
+    zia_charunit = yao_duty.get_char(zia_text)
     assert yao_roll == [zia_charunit]
 
 

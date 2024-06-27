@@ -48,7 +48,7 @@ def create_example_real1() -> RealUnit:
     yao_userhub.create_soul_treasury_db_files()
 
     # WHEN
-    music_real._set_all_healer_roles(yao_text)
+    music_real._set_all_healer_dutys(yao_text)
 
     return music_real
 
@@ -112,9 +112,9 @@ def create_example_real2() -> RealUnit:
     yao_userhub.create_soul_treasury_db_files()
     wei_userhub.create_soul_treasury_db_files()
     zia_userhub.create_soul_treasury_db_files()
-    music_real._set_all_healer_roles(yao_text)
-    music_real._set_all_healer_roles(wei_text)
-    music_real._set_all_healer_roles(zia_text)
+    music_real._set_all_healer_dutys(yao_text)
+    music_real._set_all_healer_dutys(wei_text)
+    music_real._set_all_healer_dutys(zia_text)
 
     return music_real
 

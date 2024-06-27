@@ -162,13 +162,13 @@ def test_userhub_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_userhub.econ_road == texas_road
     assert sue_userhub.econ_dir() == get_econ_path(x_userhub, texas_road)
     bob_text = "Bob"
-    assert sue_userhub.roles_dir() == f"{sue_userhub.econ_dir()}/roles"
+    assert sue_userhub.dutys_dir() == f"{sue_userhub.econ_dir()}/dutys"
     assert sue_userhub.jobs_dir() == f"{sue_userhub.econ_dir()}/jobs"
     assert sue_userhub.grades_dir() == f"{sue_userhub.econ_dir()}/grades"
-    sue_roles_dir = sue_userhub.roles_dir()
+    sue_dutys_dir = sue_userhub.dutys_dir()
     sue_jobs_dir = sue_userhub.jobs_dir()
     sue_grades_dir = sue_userhub.grades_dir()
-    assert sue_userhub.role_path(bob_text) == f"{sue_roles_dir}/{bob_text}.json"
+    assert sue_userhub.duty_path(bob_text) == f"{sue_dutys_dir}/{bob_text}.json"
     assert sue_userhub.job_path(bob_text) == f"{sue_jobs_dir}/{bob_text}.json"
     assert sue_userhub.grade_path(bob_text) == f"{sue_grades_dir}/{bob_text}.json"
     treasury_file_name = "treasury.db"

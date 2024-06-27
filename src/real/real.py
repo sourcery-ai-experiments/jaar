@@ -8,8 +8,8 @@ from src.listen.userhub import userhub_shop, UserHub
 from src.listen.listen import (
     listen_to_speaker_agenda,
     listen_to_debtors_roll_soul_home,
-    listen_to_debtors_roll_role_job,
-    create_job_file_from_role_file,
+    listen_to_debtors_roll_duty_job,
+    create_job_file_from_duty_file,
 )
 from src.real.journal_sqlstr import get_create_table_if_not_exist_sqlstrs
 from dataclasses import dataclass
@@ -20,8 +20,8 @@ from sqlite3 import connect as sqlite3_connect, Connection
 class RealUnit:
     """Data pipelines:
     pipeline1: gifts->soul
-    pipeline2: soul->roles
-    pipeline3: role->job
+    pipeline2: soul->dutys
+    pipeline3: duty->job
     pipeline4: job->home
     pipeline5: soul->home (direct)
     pipeline6: soul->job->home (through jobs)
@@ -122,7 +122,7 @@ class RealUnit:
     def get_owner_soul_from_file(self, owner_id: OwnerID) -> WorldUnit:
         return self._get_userhub(owner_id).get_soul_world()
 
-    def _set_all_healer_roles(self, owner_id: OwnerID):
+    def _set_all_healer_dutys(self, owner_id: OwnerID):
         x_soul = self.get_owner_soul_from_file(owner_id)
         x_soul.calc_world_metrics()
         for healer_id, healer_dict in x_soul._healers_dict.items():
@@ -131,14 +131,14 @@ class RealUnit:
                 self.real_id,
                 healer_id,
                 econ_road=None,
-                # "role_job",
+                # "duty_job",
                 road_delimiter=self._road_delimiter,
                 pixel=self._pixel,
             )
             for econ_road in healer_dict.keys():
-                self._set_owner_role(healer_userhub, econ_road, x_soul)
+                self._set_owner_duty(healer_userhub, econ_road, x_soul)
 
-    def _set_owner_role(
+    def _set_owner_duty(
         self,
         healer_userhub: UserHub,
         econ_road: RoadUnit,
@@ -146,7 +146,7 @@ class RealUnit:
     ):
         healer_userhub.econ_road = econ_road
         healer_userhub.create_treasury_db_file()
-        healer_userhub.save_role_world(soul_world)
+        healer_userhub.save_duty_world(soul_world)
 
     # home world management
     def generate_home_world(self, owner_id: OwnerID) -> WorldUnit:
@@ -160,7 +160,7 @@ class RealUnit:
                 real_id=self.real_id,
                 owner_id=healer_id,
                 econ_road=None,
-                # "role_job",
+                # "duty_job",
                 road_delimiter=self._road_delimiter,
                 pixel=self._pixel,
             )
@@ -171,16 +171,16 @@ class RealUnit:
                     real_id=self.real_id,
                     owner_id=healer_id,
                     econ_road=econ_road,
-                    # "role_job",
+                    # "duty_job",
                     road_delimiter=self._road_delimiter,
                     pixel=self._pixel,
                 )
-                econ_userhub.save_role_world(x_soul)
-                create_job_file_from_role_file(econ_userhub, owner_id)
+                econ_userhub.save_duty_world(x_soul)
+                create_job_file_from_duty_file(econ_userhub, owner_id)
                 x_job = econ_userhub.get_job_world(owner_id)
                 listen_to_speaker_agenda(x_home, x_job)
 
-        # if nothing has come from soul->role->job->home pipeline use soul->home pipeline
+        # if nothing has come from soul->duty->job->home pipeline use soul->home pipeline
         x_home.calc_world_metrics()
         if len(x_home._idea_dict) == 1:
             # pipeline_soul_home_text()
