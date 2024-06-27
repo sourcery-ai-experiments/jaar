@@ -190,11 +190,11 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_charlink
     assert len(before_sue_worldunit.get_beliefunit(fly_text)._chars) == 3
 
     # WHEN
-    rico_atomunit = atomunit_shop("world_belief_charlink", atom_delete())
+    rico_atomunit = atomunit_shop("world_char_belieflink", atom_delete())
     rico_atomunit.set_required_arg("belief_id", run_text)
     rico_atomunit.set_required_arg("char_id", rico_text)
     # print(f"{rico_atomunit=}")
-    carm_atomunit = atomunit_shop("world_belief_charlink", atom_delete())
+    carm_atomunit = atomunit_shop("world_char_belieflink", atom_delete())
     carm_atomunit.set_required_arg("belief_id", fly_text)
     carm_atomunit.set_required_arg("char_id", carm_text)
     # print(f"{carm_atomunit=}")
@@ -225,7 +225,7 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_charlink
     assert len(before_sue_worldunit.get_beliefunit(run_text)._chars) == 1
 
     # WHEN
-    rico_atomunit = atomunit_shop("world_belief_charlink", atom_insert())
+    rico_atomunit = atomunit_shop("world_char_belieflink", atom_insert())
     rico_atomunit.set_required_arg("belief_id", run_text)
     rico_atomunit.set_required_arg("char_id", rico_text)
     rico_run_credor_weight = 17
@@ -260,7 +260,7 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_update_charlink
     assert before_run_rico_charlink.debtor_weight == 1
 
     # WHEN
-    rico_atomunit = atomunit_shop("world_belief_charlink", atom_update())
+    rico_atomunit = atomunit_shop("world_char_belieflink", atom_update())
     rico_atomunit.set_required_arg("belief_id", run_text)
     rico_atomunit.set_required_arg("char_id", rico_text)
     new_rico_run_credor_weight = 7
@@ -277,97 +277,6 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_update_charlink
     after_run_rico_charlink = after_run_beliefunit.get_charlink(rico_text)
     assert after_run_rico_charlink.credor_weight == new_rico_run_credor_weight
     assert after_run_rico_charlink.debtor_weight == new_rico_run_debtor_weight
-
-
-def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_beliefunit():
-    # GIVEN
-    sue_text = "Sue"
-    before_sue_worldunit = worldunit_shop(sue_text)
-    run_text = ",runners"
-    fly_text = ",flyers"
-    before_sue_worldunit.set_beliefunit(beliefunit_shop(fly_text))
-    before_sue_worldunit.set_beliefunit(beliefunit_shop(run_text))
-    assert before_sue_worldunit.get_beliefunit(run_text) != None
-    assert before_sue_worldunit.get_beliefunit(fly_text) != None
-
-    # WHEN
-    x_atomunit = atomunit_shop("world_beliefunit", atom_delete())
-    print(f"{x_atomunit=}")
-    x_atomunit.set_required_arg("belief_id", run_text)
-    sue_changeunit = changeunit_shop()
-    sue_changeunit.set_atomunit(x_atomunit)
-    after_sue_worldunit = sue_changeunit.get_edited_world(before_sue_worldunit)
-
-    # THEN
-    assert after_sue_worldunit.get_beliefunit(run_text) is None
-    assert after_sue_worldunit.get_beliefunit(fly_text) != None
-
-
-def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_beliefunit():
-    # GIVEN
-    sue_text = "Sue"
-    before_sue_worldunit = worldunit_shop(sue_text)
-    run_text = ",runners"
-    before_sue_worldunit.set_beliefunit(beliefunit_shop(run_text))
-    fly_text = ",flyers"
-    assert before_sue_worldunit.get_beliefunit(run_text) != None
-    assert before_sue_worldunit.get_beliefunit(fly_text) is None
-
-    # WHEN
-    x_atomunit = atomunit_shop("world_beliefunit", atom_insert())
-    x_atomunit.set_required_arg("belief_id", fly_text)
-    print(f"{x_atomunit=}")
-    sue_changeunit = changeunit_shop()
-    sue_changeunit.set_atomunit(x_atomunit)
-    after_sue_worldunit = sue_changeunit.get_edited_world(before_sue_worldunit)
-
-    # THEN
-    assert after_sue_worldunit.get_beliefunit(run_text) != None
-    assert after_sue_worldunit.get_beliefunit(fly_text) != None
-
-
-def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_update_beliefunit():
-    # GIVEN
-    sue_text = "Sue"
-    before_sue_worldunit = worldunit_shop(sue_text)
-    run_text = ",runners"
-    before_sue_worldunit.set_beliefunit(beliefunit_shop(run_text))
-
-    # WHEN
-    yao_text = "Yao"
-    x_atomunit = atomunit_shop("world_beliefunit", atom_update())
-    x_atomunit.set_required_arg("belief_id", run_text)
-    print(f"{x_atomunit=}")
-    sue_changeunit = changeunit_shop()
-    sue_changeunit.set_atomunit(x_atomunit)
-    after_sue_worldunit = sue_changeunit.get_edited_world(before_sue_worldunit)
-
-    # THEN # keep as proof functions do not fail with arguments above
-    assert after_sue_worldunit != None
-
-
-def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_beliefunit():
-    # GIVEN
-    sue_text = "Sue"
-    before_sue_worldunit = worldunit_shop(sue_text)
-    run_text = ",runners"
-    fly_text = ",flyers"
-    before_sue_worldunit.set_beliefunit(beliefunit_shop(fly_text))
-    before_sue_worldunit.set_beliefunit(beliefunit_shop(run_text))
-    assert before_sue_worldunit.get_beliefunit(run_text) != None
-    assert before_sue_worldunit.get_beliefunit(fly_text) != None
-
-    # WHEN
-    x_atomunit = atomunit_shop("world_beliefunit", atom_delete())
-    print(f"{x_atomunit=}")
-    x_atomunit.set_required_arg("belief_id", run_text)
-    sue_changeunit = changeunit_shop()
-    sue_changeunit.set_atomunit(x_atomunit)
-    after_sue_worldunit = sue_changeunit.get_edited_world(before_sue_worldunit)
-
-    # THEN
-    assert after_sue_worldunit.get_beliefunit(run_text) is None
-    assert after_sue_worldunit.get_beliefunit(fly_text) != None
 
 
 def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_ideaunit():

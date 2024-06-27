@@ -8,8 +8,8 @@ from src._instrument.python import (
 )
 from src._road.road import RoadUnit, get_terminus_node, get_parent_road
 from src._world.reason_idea import FactUnit, ReasonUnit
-from src._world.char import CharLink, CharID
-from src._world.beliefunit import BeliefUnit, BeliefID
+from src._world.char import BeliefLink, CharID, CharUnit
+from src._world.belieflink import BeliefLink, BeliefID
 from src._world.idea import IdeaUnit
 from src._world.world import WorldUnit, worldunit_shop
 from src.gift.atom_config import CRUD_command
@@ -130,10 +130,11 @@ class ChangeUnit:
         self, before_world: WorldUnit, after_world: WorldUnit
     ):
         before_world.calc_world_metrics()
+        before_world._migrate_beliefunits_to_belieflinks()
         after_world.calc_world_metrics()
+        after_world._migrate_beliefunits_to_belieflinks()
         self.add_atomunits_worldunit_simple_attrs(before_world, after_world)
-        self.add_atomunit_charunits(before_world, after_world)
-        self.add_atomunit_beliefunits(before_world, after_world)
+        self.add_atomunits_chars(before_world, after_world)
         self.add_atomunits_ideas(before_world, after_world)
 
     def add_atomunits_worldunit_simple_attrs(
@@ -164,7 +165,7 @@ class ChangeUnit:
             x_atomunit.set_optional_arg("_pixel", after_world._pixel)
         self.set_atomunit(x_atomunit)
 
-    def add_atomunit_charunits(self, before_world: WorldUnit, after_world: WorldUnit):
+    def add_atomunits_chars(self, before_world: WorldUnit, after_world: WorldUnit):
         before_char_ids = set(before_world._chars.keys())
         after_char_ids = set(after_world._chars.keys())
 
@@ -173,7 +174,8 @@ class ChangeUnit:
             insert_char_ids=after_char_ids.difference(before_char_ids),
         )
         self.add_atomunit_charunit_deletes(
-            delete_char_ids=before_char_ids.difference(after_char_ids)
+            before_world=before_world,
+            delete_char_ids=before_char_ids.difference(after_char_ids),
         )
         self.add_atomunit_charunit_updates(
             before_world=before_world,
@@ -185,14 +187,27 @@ class ChangeUnit:
         self, after_world: WorldUnit, insert_char_ids: set
     ):
         for insert_char_id in insert_char_ids:
-            x_charunit = after_world.get_char(insert_char_id)
+            insert_charunit = after_world.get_char(insert_char_id)
             x_atomunit = atomunit_shop("world_charunit", atom_insert())
-            x_atomunit.set_required_arg("char_id", x_charunit.char_id)
-            if x_charunit.credor_weight != None:
-                x_atomunit.set_optional_arg("credor_weight", x_charunit.credor_weight)
-            if x_charunit.debtor_weight != None:
-                x_atomunit.set_optional_arg("debtor_weight", x_charunit.debtor_weight)
+            x_atomunit.set_required_arg("char_id", insert_charunit.char_id)
+            if insert_charunit.credor_weight != None:
+                x_atomunit.set_optional_arg(
+                    "credor_weight", insert_charunit.credor_weight
+                )
+            if insert_charunit.debtor_weight != None:
+                x_atomunit.set_optional_arg(
+                    "debtor_weight", insert_charunit.debtor_weight
+                )
             self.set_atomunit(x_atomunit)
+            non_mirror_belief_ids = {
+                x_belief_id
+                for x_belief_id in insert_charunit._belieflinks.keys()
+                if x_belief_id != insert_char_id
+            }
+            self.add_atomunit_belieflinks_inserts(
+                after_charunit=insert_charunit,
+                insert_belieflink_belief_ids=non_mirror_belief_ids,
+            )
 
     def add_atomunit_charunit_updates(
         self, before_world: WorldUnit, after_world: WorldUnit, update_char_ids: set
@@ -214,159 +229,107 @@ class ChangeUnit:
                         "debtor_weight", after_charunit.debtor_weight
                     )
                 self.set_atomunit(x_atomunit)
+            self.add_atomunit_beliefunit_update_belieflinks(
+                after_charunit=after_charunit, before_charunit=before_charunit
+            )
 
-    def add_atomunit_charunit_deletes(self, delete_char_ids: set):
+    def add_atomunit_charunit_deletes(
+        self, before_world: WorldUnit, delete_char_ids: set
+    ):
         for delete_char_id in delete_char_ids:
             x_atomunit = atomunit_shop("world_charunit", atom_delete())
             x_atomunit.set_required_arg("char_id", delete_char_id)
             self.set_atomunit(x_atomunit)
+            delete_charunit = before_world.get_char(delete_char_id)
+            non_mirror_belief_ids = {
+                x_belief_id
+                for x_belief_id in delete_charunit._belieflinks.keys()
+                if x_belief_id != delete_char_id
+            }
+            self.add_atomunit_belieflinks_delete(delete_char_id, non_mirror_belief_ids)
 
-    def add_atomunit_beliefunits(self, before_world: WorldUnit, after_world: WorldUnit):
+    def add_atomunit_beliefunit_update_belieflinks(
+        self, after_charunit: CharUnit, before_charunit: CharUnit
+    ):
+        # before_non_mirror_belief_ids
         before_belief_ids = {
-            before_belief_id
-            for before_belief_id in before_world._beliefs.keys()
-            if before_world.get_beliefunit(before_belief_id)._char_mirror is False
+            x_belief_id
+            for x_belief_id in before_charunit._belieflinks.keys()
+            if x_belief_id != before_charunit.char_id
         }
+        # after_non_mirror_belief_ids
         after_belief_ids = {
-            after_belief_id
-            for after_belief_id in after_world._beliefs.keys()
-            if after_world.get_beliefunit(after_belief_id)._char_mirror is False
+            x_belief_id
+            for x_belief_id in after_charunit._belieflinks.keys()
+            if x_belief_id != after_charunit.char_id
         }
 
-        self.add_atomunit_beliefunit_inserts(
-            after_world=after_world,
-            insert_belief_ids=after_belief_ids.difference(before_belief_ids),
+        self.add_atomunit_belieflinks_inserts(
+            after_charunit=after_charunit,
+            insert_belieflink_belief_ids=after_belief_ids.difference(before_belief_ids),
         )
 
-        self.add_atomunit_beliefunit_deletes(
-            before_world=before_world,
-            delete_belief_ids=before_belief_ids.difference(after_belief_ids),
+        self.add_atomunit_belieflinks_delete(
+            before_char_id=after_charunit.char_id,
+            before_belief_ids=before_belief_ids.difference(after_belief_ids),
         )
 
-        self.add_atomunit_beliefunit_updates(
-            before_world=before_world,
-            after_world=after_world,
-            update_belief_ids=before_belief_ids.intersection(after_belief_ids),
-        )
-
-    def add_atomunit_beliefunit_inserts(
-        self, after_world: WorldUnit, insert_belief_ids: set
-    ):
-        for insert_belief_id in insert_belief_ids:
-            insert_beliefunit = after_world.get_beliefunit(insert_belief_id)
-            x_atomunit = atomunit_shop("world_beliefunit", atom_insert())
-            x_atomunit.set_required_arg("belief_id", insert_beliefunit.belief_id)
-            self.set_atomunit(x_atomunit)
-            self.add_atomunit_charlinks_inserts(
-                after_beliefunit=insert_beliefunit,
-                insert_charlink_char_ids=set(insert_beliefunit._chars.keys()),
-            )
-
-    def add_atomunit_beliefunit_updates(
-        self,
-        before_world: WorldUnit,
-        after_world: WorldUnit,
-        update_belief_ids: set,
-    ):
-        for belief_id in update_belief_ids:
-            after_beliefunit = after_world.get_beliefunit(belief_id)
-            before_beliefunit = before_world.get_beliefunit(belief_id)
+        update_belief_ids = before_belief_ids.intersection(after_belief_ids)
+        for update_char_id in update_belief_ids:
+            before_belieflink = before_charunit.get_belieflink(update_char_id)
+            after_belieflink = after_charunit.get_belieflink(update_char_id)
             if optional_args_different(
-                "world_beliefunit", before_beliefunit, after_beliefunit
+                "world_char_belieflink", before_belieflink, after_belieflink
             ):
-                x_atomunit = atomunit_shop("world_beliefunit", atom_update())
-                x_atomunit.set_required_arg("belief_id", after_beliefunit.belief_id)
-                self.set_atomunit(x_atomunit)
-
-            self.add_atomunit_beliefunit_update_charlinks(
-                after_beliefunit=after_beliefunit, before_beliefunit=before_beliefunit
-            )
-
-    def add_atomunit_beliefunit_update_charlinks(
-        self, after_beliefunit: BeliefUnit, before_beliefunit: BeliefUnit
-    ):
-        after_char_ids = set(after_beliefunit._chars.keys())
-        before_char_ids = set(before_beliefunit._chars.keys())
-
-        self.add_atomunit_charlinks_inserts(
-            after_beliefunit=after_beliefunit,
-            insert_charlink_char_ids=after_char_ids.difference(before_char_ids),
-        )
-
-        self.add_atomunit_charlinks_delete(
-            before_belief_id=before_beliefunit.belief_id,
-            before_char_ids=before_char_ids.difference(after_char_ids),
-        )
-
-        update_char_ids = before_char_ids.intersection(after_char_ids)
-        for update_char_id in update_char_ids:
-            before_charlink = before_beliefunit.get_charlink(update_char_id)
-            after_charlink = after_beliefunit.get_charlink(update_char_id)
-            if optional_args_different(
-                "world_belief_charlink", before_charlink, after_charlink
-            ):
-                self.add_atomunit_charlink_update(
-                    belief_id=after_beliefunit.belief_id,
-                    before_charlink=before_charlink,
-                    after_charlink=after_charlink,
+                self.add_atomunit_belieflink_update(
+                    char_id=after_charunit.char_id,
+                    before_belieflink=before_belieflink,
+                    after_belieflink=after_belieflink,
                 )
 
-    def add_atomunit_beliefunit_deletes(
-        self, before_world: WorldUnit, delete_belief_ids: set
-    ):
-        for delete_belief_id in delete_belief_ids:
-            x_atomunit = atomunit_shop("world_beliefunit", atom_delete())
-            x_atomunit.set_required_arg("belief_id", delete_belief_id)
-            self.set_atomunit(x_atomunit)
-
-            delete_beliefunit = before_world.get_beliefunit(delete_belief_id)
-            self.add_atomunit_charlinks_delete(
-                delete_belief_id, set(delete_beliefunit._chars.keys())
-            )
-
-    def add_atomunit_charlinks_inserts(
+    def add_atomunit_belieflinks_inserts(
         self,
-        after_beliefunit: BeliefUnit,
-        insert_charlink_char_ids: list[CharID],
+        after_charunit: CharUnit,
+        insert_belieflink_belief_ids: list[BeliefID],
     ):
-        after_belief_id = after_beliefunit.belief_id
-        for insert_char_id in insert_charlink_char_ids:
-            after_charlink = after_beliefunit.get_charlink(insert_char_id)
-            x_atomunit = atomunit_shop("world_belief_charlink", atom_insert())
-            x_atomunit.set_required_arg("belief_id", after_belief_id)
-            x_atomunit.set_required_arg("char_id", after_charlink.char_id)
-            if after_charlink.credor_weight != None:
+        after_char_id = after_charunit.char_id
+        for insert_belief_id in insert_belieflink_belief_ids:
+            after_belieflink = after_charunit.get_belieflink(insert_belief_id)
+            x_atomunit = atomunit_shop("world_char_belieflink", atom_insert())
+            x_atomunit.set_required_arg("char_id", after_char_id)
+            x_atomunit.set_required_arg("belief_id", after_belieflink.belief_id)
+            if after_belieflink.credor_weight != None:
                 x_atomunit.set_optional_arg(
-                    "credor_weight", after_charlink.credor_weight
+                    "credor_weight", after_belieflink.credor_weight
                 )
-            if after_charlink.debtor_weight != None:
+            if after_belieflink.debtor_weight != None:
                 x_atomunit.set_optional_arg(
-                    "debtor_weight", after_charlink.debtor_weight
+                    "debtor_weight", after_belieflink.debtor_weight
                 )
             self.set_atomunit(x_atomunit)
 
-    def add_atomunit_charlink_update(
+    def add_atomunit_belieflink_update(
         self,
-        belief_id: BeliefID,
-        before_charlink: CharLink,
-        after_charlink: CharLink,
+        char_id: CharID,
+        before_belieflink: BeliefLink,
+        after_belieflink: BeliefLink,
     ):
-        x_atomunit = atomunit_shop("world_belief_charlink", atom_update())
-        x_atomunit.set_required_arg("belief_id", belief_id)
-        x_atomunit.set_required_arg("char_id", after_charlink.char_id)
-        if after_charlink.credor_weight != before_charlink.credor_weight:
-            x_atomunit.set_optional_arg("credor_weight", after_charlink.credor_weight)
-        if after_charlink.debtor_weight != before_charlink.debtor_weight:
-            x_atomunit.set_optional_arg("debtor_weight", after_charlink.debtor_weight)
+        x_atomunit = atomunit_shop("world_char_belieflink", atom_update())
+        x_atomunit.set_required_arg("char_id", char_id)
+        x_atomunit.set_required_arg("belief_id", after_belieflink.belief_id)
+        if after_belieflink.credor_weight != before_belieflink.credor_weight:
+            x_atomunit.set_optional_arg("credor_weight", after_belieflink.credor_weight)
+        if after_belieflink.debtor_weight != before_belieflink.debtor_weight:
+            x_atomunit.set_optional_arg("debtor_weight", after_belieflink.debtor_weight)
         self.set_atomunit(x_atomunit)
 
-    def add_atomunit_charlinks_delete(
-        self, before_belief_id: BeliefID, before_char_ids: CharID
+    def add_atomunit_belieflinks_delete(
+        self, before_char_id: CharID, before_belief_ids: BeliefID
     ):
-        for delete_char_id in before_char_ids:
-            x_atomunit = atomunit_shop("world_belief_charlink", atom_delete())
-            x_atomunit.set_required_arg("belief_id", before_belief_id)
-            x_atomunit.set_required_arg("char_id", delete_char_id)
+        for delete_belief_id in before_belief_ids:
+            x_atomunit = atomunit_shop("world_char_belieflink", atom_delete())
+            x_atomunit.set_required_arg("char_id", before_char_id)
+            x_atomunit.set_required_arg("belief_id", delete_belief_id)
             self.set_atomunit(x_atomunit)
 
     def add_atomunits_ideas(self, before_world: WorldUnit, after_world: WorldUnit):
@@ -919,22 +882,19 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
     charunit_update_dict = get_leg_obj(atoms_dict, [atom_update(), "world_charunit"])
     charunit_delete_dict = get_leg_obj(atoms_dict, [atom_delete(), "world_charunit"])
 
-    beliefunit_insert_dict = get_leg_obj(
-        atoms_dict, [atom_insert(), "world_beliefunit"]
-    )
-    beliefunit_update_dict = get_leg_obj(
-        atoms_dict, [atom_update(), "world_beliefunit"]
-    )
-    beliefunit_delete_dict = get_leg_obj(
-        atoms_dict, [atom_delete(), "world_beliefunit"]
-    )
+    # x_list = atoms_dict, [atom_insert(), "world_beliefunit"]
+    # beliefunit_insert_dict = get_leg_obj(x_list)
+    # x_list = atoms_dict, [atom_update(), "world_beliefunit"]
+    # beliefunit_update_dict = get_leg_obj(x_list)
+    # x_list = atoms_dict, [atom_delete(), "world_beliefunit"]
+    # beliefunit_delete_dict = get_leg_obj(x_list)
 
-    x_list = [atom_insert(), "world_belief_charlink"]
-    belief_charlink_insert_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_update(), "world_belief_charlink"]
-    belief_charlink_update_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_delete(), "world_belief_charlink"]
-    belief_charlink_delete_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_insert(), "world_char_belieflink"]
+    char_belieflink_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "world_char_belieflink"]
+    char_belieflink_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "world_char_belieflink"]
+    char_belieflink_delete_dict = get_leg_obj(atoms_dict, x_list)
 
     x_list = [atom_insert(), "world_ideaunit"]
     world_ideaunit_insert_dict = get_leg_obj(atoms_dict, x_list)
@@ -997,30 +957,30 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
             leg_list, charunit_delete_dict, x_world
         )
 
-    if beliefunit_insert_dict != None:
-        add_world_beliefunit_insert_to_legible_list(
-            leg_list, beliefunit_insert_dict, x_world
-        )
-    if beliefunit_update_dict != None:
-        add_world_beliefunit_update_to_legible_list(
-            leg_list, beliefunit_update_dict, x_world
-        )
-    if beliefunit_delete_dict != None:
-        add_world_beliefunit_delete_to_legible_list(
-            leg_list, beliefunit_delete_dict, x_world
-        )
+    # if beliefunit_insert_dict != None:
+    #     add_world_beliefunit_insert_to_legible_list(
+    #         leg_list, beliefunit_insert_dict, x_world
+    #     )
+    # if beliefunit_update_dict != None:
+    #     add_world_beliefunit_update_to_legible_list(
+    #         leg_list, beliefunit_update_dict, x_world
+    #     )
+    # if beliefunit_delete_dict != None:
+    #     add_world_beliefunit_delete_to_legible_list(
+    #         leg_list, beliefunit_delete_dict, x_world
+    #     )
 
-    if belief_charlink_insert_dict != None:
-        add_world_belief_charlink_insert_to_legible_list(
-            leg_list, belief_charlink_insert_dict, x_world
+    if char_belieflink_insert_dict != None:
+        add_world_char_belieflink_insert_to_legible_list(
+            leg_list, char_belieflink_insert_dict, x_world
         )
-    if belief_charlink_update_dict != None:
-        add_world_belief_charlink_update_to_legible_list(
-            leg_list, belief_charlink_update_dict, x_world
+    if char_belieflink_update_dict != None:
+        add_world_char_belieflink_update_to_legible_list(
+            leg_list, char_belieflink_update_dict, x_world
         )
-    if belief_charlink_delete_dict != None:
-        add_world_belief_charlink_delete_to_legible_list(
-            leg_list, belief_charlink_delete_dict, x_world
+    if char_belieflink_delete_dict != None:
+        add_world_char_belieflink_delete_to_legible_list(
+            leg_list, char_belieflink_delete_dict, x_world
         )
 
     if world_ideaunit_insert_dict != None:
@@ -1242,28 +1202,28 @@ def add_world_beliefunit_delete_to_legible_list(
         legible_list.append(x_str)
 
 
-def add_world_belief_charlink_insert_to_legible_list(
-    legible_list: list[str], belief_charlink_insert_dict: dict, x_world: WorldUnit
+def add_world_char_belieflink_insert_to_legible_list(
+    legible_list: list[str], char_belieflink_insert_dict: dict, x_world: WorldUnit
 ):
-    for belief_charlink_dict in belief_charlink_insert_dict.values():
-        for belief_charlink_atom in belief_charlink_dict.values():
-            belief_id = belief_charlink_atom.get_value("belief_id")
-            char_id = belief_charlink_atom.get_value("char_id")
-            credor_weight_value = belief_charlink_atom.get_value("credor_weight")
-            debtor_weight_value = belief_charlink_atom.get_value("debtor_weight")
+    for char_belieflink_dict in char_belieflink_insert_dict.values():
+        for char_belieflink_atom in char_belieflink_dict.values():
+            belief_id = char_belieflink_atom.get_value("belief_id")
+            char_id = char_belieflink_atom.get_value("char_id")
+            credor_weight_value = char_belieflink_atom.get_value("credor_weight")
+            debtor_weight_value = char_belieflink_atom.get_value("debtor_weight")
             x_str = f"Belief '{belief_id}' has new member {char_id} with belief_cred={credor_weight_value} and belief_debt={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_world_belief_charlink_update_to_legible_list(
-    legible_list: list[str], belief_charlink_update_dict: dict, x_world: WorldUnit
+def add_world_char_belieflink_update_to_legible_list(
+    legible_list: list[str], char_belieflink_update_dict: dict, x_world: WorldUnit
 ):
-    for belief_charlink_dict in belief_charlink_update_dict.values():
-        for belief_charlink_atom in belief_charlink_dict.values():
-            belief_id = belief_charlink_atom.get_value("belief_id")
-            char_id = belief_charlink_atom.get_value("char_id")
-            credor_weight_value = belief_charlink_atom.get_value("credor_weight")
-            debtor_weight_value = belief_charlink_atom.get_value("debtor_weight")
+    for char_belieflink_dict in char_belieflink_update_dict.values():
+        for char_belieflink_atom in char_belieflink_dict.values():
+            belief_id = char_belieflink_atom.get_value("belief_id")
+            char_id = char_belieflink_atom.get_value("char_id")
+            credor_weight_value = char_belieflink_atom.get_value("credor_weight")
+            debtor_weight_value = char_belieflink_atom.get_value("debtor_weight")
             if credor_weight_value != None and debtor_weight_value != None:
                 x_str = f"Belief '{belief_id}' member {char_id} has new belief_cred={credor_weight_value} and belief_debt={debtor_weight_value}."
             elif credor_weight_value != None and debtor_weight_value is None:
@@ -1273,13 +1233,13 @@ def add_world_belief_charlink_update_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_world_belief_charlink_delete_to_legible_list(
-    legible_list: list[str], belief_charlink_delete_dict: dict, x_world: WorldUnit
+def add_world_char_belieflink_delete_to_legible_list(
+    legible_list: list[str], char_belieflink_delete_dict: dict, x_world: WorldUnit
 ):
-    for belief_charlink_dict in belief_charlink_delete_dict.values():
-        for belief_charlink_atom in belief_charlink_dict.values():
-            belief_id = belief_charlink_atom.get_value("belief_id")
-            char_id = belief_charlink_atom.get_value("char_id")
+    for char_belieflink_dict in char_belieflink_delete_dict.values():
+        for char_belieflink_atom in char_belieflink_dict.values():
+            belief_id = char_belieflink_atom.get_value("belief_id")
+            char_id = char_belieflink_atom.get_value("char_id")
             x_str = f"Belief '{belief_id}' no longer has member {char_id}."
             legible_list.append(x_str)
 

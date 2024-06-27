@@ -67,12 +67,8 @@ def world_charunit_text() -> str:
     return "world_charunit"
 
 
-def world_beliefunit_text() -> str:
-    return "world_beliefunit"
-
-
-def world_belief_charlink_text() -> str:
-    return "world_belief_charlink"
+def world_char_belieflink_text() -> str:
+    return "world_char_belieflink"
 
 
 def world_ideaunit_text() -> str:

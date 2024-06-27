@@ -9,7 +9,7 @@ from src.normal_db.normal_models import (
     WorldTable,
     CharUnitTable,
     BeliefTable,
-    CharLinkTable,
+    BeliefLinkTable,
     IdeaTable,
     BalanceLinkTable,
     ReasonTable,
@@ -86,29 +86,29 @@ def test_normalized_table_CharUnitTable_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_BeliefTable_Exists():
+# def test_normalized_table_BeliefTable_Exists():
+#     # GIVEN
+#     config_category = get_normalized_world_table_build().get("world_beliefunit")
+#     mapper = inspect(BeliefTable)
+#     print_out_expected_class_attribute_declarations(config_category)
+
+#     # WHEN / THEN
+#     config_table_name = get_config_table_name(config_category)
+#     assert config_table_name == "beliefunit"
+#     assert config_table_name == BeliefTable.__tablename__
+#     all_columns_are_as_config_requires(mapper, config_category)
+
+
+def test_normalized_table_BeliefLinkTable_charlink_Exists():
     # GIVEN
-    config_category = get_normalized_world_table_build().get("world_beliefunit")
-    mapper = inspect(BeliefTable)
+    config_category = get_normalized_world_table_build().get("world_char_belieflink")
+    mapper = inspect(BeliefLinkTable)
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "beliefunit"
-    assert config_table_name == BeliefTable.__tablename__
-    all_columns_are_as_config_requires(mapper, config_category)
-
-
-def test_normalized_table_CharLinkTable_charlink_Exists():
-    # GIVEN
-    config_category = get_normalized_world_table_build().get("world_belief_charlink")
-    mapper = inspect(CharLinkTable)
-    print_out_expected_class_attribute_declarations(config_category)
-
-    # WHEN / THEN
-    config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "charlink"
-    assert config_table_name == CharLinkTable.__tablename__
+    assert config_table_name == "belieflink"
+    assert config_table_name == BeliefLinkTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 

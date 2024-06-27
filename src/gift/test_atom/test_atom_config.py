@@ -17,8 +17,7 @@ from src.gift.atom_config import (
     python_type_text,
     worldunit_text,
     world_charunit_text,
-    world_beliefunit_text,
-    world_belief_charlink_text,
+    world_char_belieflink_text,
     world_ideaunit_text,
     world_idea_balancelink_text,
     world_idea_reasonunit_text,
@@ -37,12 +36,8 @@ def test_world_charunit_text_ReturnsObj():
     assert world_charunit_text() == "world_charunit"
 
 
-def test_world_beliefunit_text_ReturnsObj():
-    assert world_beliefunit_text() == "world_beliefunit"
-
-
-def test_world_belief_charlink_text_ReturnsObj():
-    assert world_belief_charlink_text() == "world_belief_charlink"
+def test_world_char_belieflink_text_ReturnsObj():
+    assert world_char_belieflink_text() == "world_char_belieflink"
 
 
 def test_world_ideaunit_text_ReturnsObj():
@@ -77,8 +72,7 @@ def test_atom_config_HasCorrect_category():
     assert category_ref() == {
         worldunit_text(),
         world_charunit_text(),
-        world_beliefunit_text(),
-        world_belief_charlink_text(),
+        world_char_belieflink_text(),
         world_ideaunit_text(),
         world_idea_balancelink_text(),
         world_idea_reasonunit_text(),
@@ -153,7 +147,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     mog = atom_order_text
     # # Simple script for editing atom_config.json
     # set_mog("world_charunit", atom_insert(), mog, 0)
-    # set_mog("world_belief_charlink", atom_insert(), mog, 1)
+    # set_mog("world_char_belieflink", atom_insert(), mog, 1)
     # set_mog("beliefunit", atom_insert(), mog, 2)
     # set_mog("world_ideaunit", atom_insert(), mog, 3)
     # set_mog("world_idea_balancelink", atom_insert(), mog, 4)
@@ -164,7 +158,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     # set_mog("world_idea_reason_premiseunit", atom_insert(), mog, 9)
     # set_mog("world_charunit", atom_update(), mog, 10)
     # set_mog("beliefunit", atom_update(), mog, 11)
-    # set_mog("world_belief_charlink", atom_update(), mog, 12)
+    # set_mog("world_char_belieflink", atom_update(), mog, 12)
     # set_mog("world_ideaunit", atom_update(), mog, 13)
     # set_mog("world_idea_balancelink", atom_update(), mog, 14)
     # set_mog("world_idea_factunit", atom_update(), mog, 15)
@@ -177,14 +171,13 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     # set_mog("world_idea_healerhold", atom_delete(), mog, 22)
     # set_mog("world_idea_balancelink", atom_delete(), mog, 23)
     # set_mog("world_ideaunit", atom_delete(), mog, 24)
-    # set_mog("world_belief_charlink", atom_delete(), mog, 25)
+    # set_mog("world_char_belieflink", atom_delete(), mog, 25)
     # set_mog("world_charunit", atom_delete(), mog, 26)
     # set_mog("beliefunit", atom_delete(), mog, 27)
     # set_mog("worldunit", atom_update(), mog, 28)
 
     assert 0 == q_order("world_charunit", atom_insert(), mog, 0)
-    assert 1 == q_order("world_belief_charlink", atom_insert(), mog, 1)
-    assert 2 == q_order("world_beliefunit", atom_insert(), mog, 2)
+    assert 1 == q_order("world_char_belieflink", atom_insert(), mog, 1)
     assert 3 == q_order("world_ideaunit", atom_insert(), mog, 3)
     assert 4 == q_order("world_idea_balancelink", atom_insert(), mog, 4)
     assert 5 == q_order("world_idea_suffbelief", atom_insert(), mog, 5)
@@ -193,8 +186,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     assert 8 == q_order("world_idea_reasonunit", atom_insert(), mog, 8)
     assert 9 == q_order("world_idea_reason_premiseunit", atom_insert(), mog, 9)
     assert 10 == q_order("world_charunit", atom_update(), mog, 10)
-    assert 11 == q_order("world_beliefunit", atom_update(), mog, 11)
-    assert 12 == q_order("world_belief_charlink", atom_update(), mog, 12)
+    assert 12 == q_order("world_char_belieflink", atom_update(), mog, 12)
     assert 13 == q_order("world_ideaunit", atom_update(), mog, 13)
     assert 14 == q_order("world_idea_balancelink", atom_update(), mog, 14)
     assert 15 == q_order("world_idea_factunit", atom_update(), mog, 15)
@@ -207,9 +199,8 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     assert 22 == q_order("world_idea_healerhold", atom_delete(), mog, 22)
     assert 23 == q_order("world_idea_balancelink", atom_delete(), mog, 23)
     assert 24 == q_order("world_ideaunit", atom_delete(), mog, 24)
-    assert 25 == q_order("world_belief_charlink", atom_delete(), mog, 25)
+    assert 25 == q_order("world_char_belieflink", atom_delete(), mog, 25)
     assert 26 == q_order("world_charunit", atom_delete(), mog, 26)
-    assert 27 == q_order("world_beliefunit", atom_delete(), mog, 27)
     assert 28 == q_order("worldunit", atom_update(), mog, 28)
 
 
@@ -249,7 +240,7 @@ def test_get_flattened_atom_table_build_ReturnsCorrectObj():
     atom_columns = get_flattened_atom_table_build()
 
     # THEN
-    assert len(atom_columns) == 111
+    assert len(atom_columns) == 108
     assert atom_columns.get("worldunit_UPDATE__char_credor_pool") == "INTEGER"
     # print(f"{atom_columns.keys()=}")
 
@@ -260,11 +251,10 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     nx = normalized_world_table_build
 
     # THEN
-    assert len(nx) == 11
+    assert len(nx) == 10
     cat_worldunit = nx.get(worldunit_text())
     cat_charunit = nx.get(world_charunit_text())
-    cat_belief = nx.get(world_beliefunit_text())
-    cat_charlink = nx.get(world_belief_charlink_text())
+    cat_belieflink = nx.get(world_char_belieflink_text())
     cat_idea = nx.get(world_ideaunit_text())
     cat_balancelink = nx.get(world_idea_balancelink_text())
     cat_reason = nx.get(world_idea_reasonunit_text())
@@ -275,8 +265,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
 
     assert cat_worldunit != None
     assert cat_charunit != None
-    assert cat_belief != None
-    assert cat_charlink != None
+    assert cat_belieflink != None
     assert cat_idea != None
     assert cat_balancelink != None
     assert cat_reason != None
@@ -287,8 +276,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
 
     normal_specs_worldunit = cat_worldunit.get(normal_specs_text())
     normal_specs_charunit = cat_charunit.get(normal_specs_text())
-    normal_specs_belief = cat_belief.get(normal_specs_text())
-    normal_specs_charlink = cat_charlink.get(normal_specs_text())
+    normal_specs_belieflink = cat_belieflink.get(normal_specs_text())
     normal_specs_idea = cat_idea.get(normal_specs_text())
     normal_specs_balancelink = cat_balancelink.get(normal_specs_text())
     normal_specs_reason = cat_reason.get(normal_specs_text())
@@ -302,8 +290,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     print(f"{normal_specs_text()=}")
     assert normal_specs_worldunit != None
     assert normal_specs_charunit != None
-    assert normal_specs_belief != None
-    assert normal_specs_charlink != None
+    assert normal_specs_belieflink != None
     assert normal_specs_idea != None
     assert normal_specs_balancelink != None
     assert normal_specs_reason != None
@@ -314,8 +301,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
 
     table_name_worldunit = normal_specs_worldunit.get(normal_table_name_text())
     table_name_charunit = normal_specs_charunit.get(normal_table_name_text())
-    table_name_belief = normal_specs_belief.get(normal_table_name_text())
-    table_name_charlink = normal_specs_charlink.get(normal_table_name_text())
+    table_name_belieflink = normal_specs_belieflink.get(normal_table_name_text())
     table_name_idea = normal_specs_idea.get(normal_table_name_text())
     table_name_balancelink = normal_specs_balancelink.get(normal_table_name_text())
     table_name_reason = normal_specs_reason.get(normal_table_name_text())
@@ -326,8 +312,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
 
     assert table_name_worldunit == "world"
     assert table_name_charunit == "charunit"
-    assert table_name_belief == "beliefunit"
-    assert table_name_charlink == "charlink"
+    assert table_name_belieflink == "belieflink"
     assert table_name_idea == "idea"
     assert table_name_balancelink == "balancelink"
     assert table_name_reason == "reason"

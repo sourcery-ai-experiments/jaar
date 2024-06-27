@@ -36,8 +36,8 @@ class BeliefTable(Base):
     belief_id = Column(String)
 
 
-class CharLinkTable(Base):
-    __tablename__ = "charlink"
+class BeliefLinkTable(Base):
+    __tablename__ = "belieflink"
     uid = Column(Integer, primary_key=True)
     belief_id = Column(String)
     char_id = Column(String)
