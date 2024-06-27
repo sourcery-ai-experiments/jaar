@@ -117,17 +117,17 @@ def test_listen_to_agenda_role_job_agenda_AddsTasksToJobWorldWithDetailsDecidedB
 
     yao_role = get_example_yao_speaker()
     sue_dakota_userhub.save_role_world(yao_role)
-    new_yao_live1 = create_listen_basis(yao_role)
-    assert new_yao_live1.idea_exists(cook_road()) is False
+    new_yao_home1 = create_listen_basis(yao_role)
+    assert new_yao_home1.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_agendas_role_job(new_yao_live1, sue_dakota_userhub)
+    listen_to_agendas_role_job(new_yao_home1, sue_dakota_userhub)
 
     # THEN
-    assert new_yao_live1.idea_exists(cook_road())
-    new_cook_idea = new_yao_live1.get_idea_obj(cook_road())
-    zia_charunit = new_yao_live1.get_char(zia_text)
-    bob_charunit = new_yao_live1.get_char(bob_text)
+    assert new_yao_home1.idea_exists(cook_road())
+    new_cook_idea = new_yao_home1.get_idea_obj(cook_road())
+    zia_charunit = new_yao_home1.get_char(zia_text)
+    bob_charunit = new_yao_home1.get_char(bob_text)
     assert zia_charunit.debtor_weight < bob_charunit.debtor_weight
     assert new_cook_idea.get_reasonunit(eat_road()) is None
 
@@ -136,17 +136,17 @@ def test_listen_to_agenda_role_job_agenda_AddsTasksToJobWorldWithDetailsDecidedB
     yao_role.add_charunit(zia_text, None, yao_zia_debtor_weight)
     yao_role.add_charunit(bob_text, None, yao_bob_debtor_weight)
     yao_role.set_char_pool(100)
-    new_yao_live2 = create_listen_basis(yao_role)
-    assert new_yao_live2.idea_exists(cook_road()) is False
+    new_yao_home2 = create_listen_basis(yao_role)
+    assert new_yao_home2.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_agendas_role_job(new_yao_live2, sue_dakota_userhub)
+    listen_to_agendas_role_job(new_yao_home2, sue_dakota_userhub)
 
     # THEN
-    assert new_yao_live2.idea_exists(cook_road())
-    new_cook_idea = new_yao_live2.get_idea_obj(cook_road())
-    zia_charunit = new_yao_live2.get_char(zia_text)
-    bob_charunit = new_yao_live2.get_char(bob_text)
+    assert new_yao_home2.idea_exists(cook_road())
+    new_cook_idea = new_yao_home2.get_idea_obj(cook_road())
+    zia_charunit = new_yao_home2.get_char(zia_text)
+    bob_charunit = new_yao_home2.get_char(bob_text)
     assert zia_charunit.debtor_weight > bob_charunit.debtor_weight
     zia_eat_reasonunit = zia_cook_ideaunit.get_reasonunit(eat_road())
     assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit

@@ -35,7 +35,7 @@ def test_UserHub_get_dw_perspective_world_ReturnsWorldWith_owner_idSetToUserHub_
     bob_worldunit = get_world_with_4_levels()
     bob_worldunit.set_owner_id(bob_text)
     bob_userhub = userhub_shop(env_dir(), real_id(), bob_text)
-    bob_userhub.save_live_world(bob_worldunit)
+    bob_userhub.save_home_world(bob_worldunit)
 
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)

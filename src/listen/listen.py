@@ -207,16 +207,16 @@ def listen_to_speaker_agenda(listener: WorldUnit, speaker: WorldUnit) -> WorldUn
     return _ingest_perspective_agenda(listener, agenda)
 
 
-def listen_to_agendas_same_live(listener_live: WorldUnit, listener_userhub: UserHub):
-    for x_charunit in get_ordered_debtors_roll(listener_live):
-        if x_charunit.char_id == listener_live._owner_id:
-            listen_to_speaker_agenda(listener_live, listener_userhub.get_same_world())
+def listen_to_agendas_soul_home(listener_home: WorldUnit, listener_userhub: UserHub):
+    for x_charunit in get_ordered_debtors_roll(listener_home):
+        if x_charunit.char_id == listener_home._owner_id:
+            listen_to_speaker_agenda(listener_home, listener_userhub.get_soul_world())
         else:
             speaker_id = x_charunit.char_id
-            speaker_live = listener_userhub.dw_speaker_world(speaker_id)
-            if speaker_live is None:
-                speaker_live = create_empty_world(listener_live, speaker_id)
-            listen_to_speaker_agenda(listener_live, speaker_live)
+            speaker_home = listener_userhub.dw_speaker_world(speaker_id)
+            if speaker_home is None:
+                speaker_home = create_empty_world(listener_home, speaker_id)
+            listen_to_speaker_agenda(listener_home, speaker_home)
 
 
 def listen_to_agendas_role_job(listener_job: WorldUnit, healer_userhub: UserHub):
@@ -244,23 +244,23 @@ def listen_to_facts_role_job(new_job: WorldUnit, healer_userhub: UserHub):
                 listen_to_speaker_fact(new_job, speaker_job)
 
 
-def listen_to_facts_same_live(new_live: WorldUnit, listener_userhub: UserHub):
-    migrate_all_facts(listener_userhub.get_same_world(), new_live)
-    for x_charunit in get_ordered_debtors_roll(new_live):
+def listen_to_facts_soul_home(new_home: WorldUnit, listener_userhub: UserHub):
+    migrate_all_facts(listener_userhub.get_soul_world(), new_home)
+    for x_charunit in get_ordered_debtors_roll(new_home):
         speaker_id = x_charunit.char_id
-        if speaker_id != new_live._owner_id:
-            speaker_live = listener_userhub.dw_speaker_world(speaker_id)
-            if speaker_live != None:
-                listen_to_speaker_fact(new_live, speaker_live)
+        if speaker_id != new_home._owner_id:
+            speaker_home = listener_userhub.dw_speaker_world(speaker_id)
+            if speaker_home != None:
+                listen_to_speaker_fact(new_home, speaker_home)
 
 
-def listen_to_debtors_roll_same_live(listener_userhub: UserHub) -> WorldUnit:
-    same = listener_userhub.get_same_world()
-    new_world = create_listen_basis(same)
-    if same._char_debtor_pool is None:
+def listen_to_debtors_roll_soul_home(listener_userhub: UserHub) -> WorldUnit:
+    soul = listener_userhub.get_soul_world()
+    new_world = create_listen_basis(soul)
+    if soul._char_debtor_pool is None:
         return new_world
-    listen_to_agendas_same_live(new_world, listener_userhub)
-    listen_to_facts_same_live(new_world, listener_userhub)
+    listen_to_agendas_soul_home(new_world, listener_userhub)
+    listen_to_facts_soul_home(new_world, listener_userhub)
     return new_world
 
 
@@ -277,46 +277,46 @@ def listen_to_debtors_roll_role_job(
 
 
 def listen_to_owner_jobs(listener_userhub: UserHub) -> None:
-    same = listener_userhub.get_same_world()
-    new_live = create_listen_basis(same)
-    pre_live_dict = new_live.get_dict()
-    same.calc_world_metrics()
-    new_live.calc_world_metrics()
+    soul = listener_userhub.get_soul_world()
+    new_home = create_listen_basis(soul)
+    pre_home_dict = new_home.get_dict()
+    soul.calc_world_metrics()
+    new_home.calc_world_metrics()
 
-    for x_healer_id, econ_dict in same._healers_dict.items():
+    for x_healer_id, econ_dict in soul._healers_dict.items():
         listener_id = listener_userhub.owner_id
         healer_userhub = copy_deepcopy(listener_userhub)
         healer_userhub.owner_id = x_healer_id
-        _pick_econ_jobs_and_listen(listener_id, econ_dict, healer_userhub, new_live)
+        _pick_econ_jobs_and_listen(listener_id, econ_dict, healer_userhub, new_home)
 
-    if new_live.get_dict() == pre_live_dict:
-        agenda = list(same.get_agenda_dict().values())
-        _ingest_perspective_agenda(new_live, agenda)
-        listen_to_speaker_fact(new_live, same)
+    if new_home.get_dict() == pre_home_dict:
+        agenda = list(soul.get_agenda_dict().values())
+        _ingest_perspective_agenda(new_home, agenda)
+        listen_to_speaker_fact(new_home, soul)
 
-    listener_userhub.save_live_world(new_live)
+    listener_userhub.save_home_world(new_home)
 
 
 def _pick_econ_jobs_and_listen(
     listener_id: OwnerID,
     econ_dict: dict[RoadUnit],
     healer_userhub: UserHub,
-    new_live: WorldUnit,
+    new_home: WorldUnit,
 ):
     for econ_path in econ_dict:
         healer_userhub.econ_road = econ_path
-        pick_econ_job_and_listen(listener_id, healer_userhub, new_live)
+        pick_econ_job_and_listen(listener_id, healer_userhub, new_home)
 
 
 def pick_econ_job_and_listen(
-    listener_owner_id: OwnerID, healer_userhub: UserHub, new_live: WorldUnit
+    listener_owner_id: OwnerID, healer_userhub: UserHub, new_home: WorldUnit
 ):
     listener_id = listener_owner_id
     if healer_userhub.job_file_exists(listener_id):
         econ_job = healer_userhub.get_job_world(listener_id)
     else:
-        econ_job = create_empty_world(new_live, new_live._owner_id)
-    listen_to_job_agenda(new_live, econ_job)
+        econ_job = create_empty_world(new_home, new_home._owner_id)
+    listen_to_job_agenda(new_home, econ_job)
 
 
 def listen_to_job_agenda(listener: WorldUnit, job: WorldUnit):
@@ -335,6 +335,6 @@ def create_job_file_from_role_file(healer_userhub: UserHub, owner_id: OwnerID):
     healer_userhub.save_job_world(x_job)
 
 
-def create_live_file_from_same_file(userhub: UserHub):
-    x_live = listen_to_debtors_roll_same_live(userhub)
-    userhub.save_live_world(x_live)
+def create_home_file_from_soul_file(userhub: UserHub):
+    x_home = listen_to_debtors_roll_soul_home(userhub)
+    userhub.save_home_world(x_home)

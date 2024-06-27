@@ -125,15 +125,15 @@ def test_userhub_shop_ReturnsCorrectObj():
     assert x_userhub.owner_dir() == f"{x_userhub.owners_dir()}/{sue_text}"
     assert x_userhub.econs_dir() == f"{x_userhub.owner_dir()}/econs"
     assert x_userhub.atoms_dir() == f"{x_userhub.owner_dir()}/atoms"
-    assert x_userhub.same_dir() == f"{x_userhub.owner_dir()}/same"
-    assert x_userhub.live_dir() == f"{x_userhub.owner_dir()}/live"
+    assert x_userhub.soul_dir() == f"{x_userhub.owner_dir()}/soul"
+    assert x_userhub.home_dir() == f"{x_userhub.owner_dir()}/home"
     assert x_userhub.gifts_dir() == f"{x_userhub.owner_dir()}/{get_gifts_folder()}"
-    assert x_userhub.same_file_name() == f"{sue_text}.json"
-    x_same_file_path = f"{x_userhub.same_dir()}/{x_userhub.same_file_name()}"
-    assert x_userhub.same_file_path() == x_same_file_path
-    assert x_userhub.live_file_name() == f"{sue_text}.json"
-    x_livepath = f"{x_userhub.live_dir()}/{x_userhub.live_file_name()}"
-    assert x_userhub.live_path() == x_livepath
+    assert x_userhub.soul_file_name() == f"{sue_text}.json"
+    x_soul_file_path = f"{x_userhub.soul_dir()}/{x_userhub.soul_file_name()}"
+    assert x_userhub.soul_file_path() == x_soul_file_path
+    assert x_userhub.home_file_name() == f"{sue_text}.json"
+    x_homepath = f"{x_userhub.home_dir()}/{x_userhub.home_file_name()}"
+    assert x_userhub.home_path() == x_homepath
 
 
 def test_userhub_shop_ReturnsCorrectObjWhenEmpty():
@@ -191,98 +191,98 @@ def test_userhub_shop_RaisesErrorIf_owner_id_Contains_road_delimiter():
     )
 
 
-def test_UserHub_save_file_same_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_file_soul_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert os_path_exists(sue_userhub.same_file_path()) is False
+    assert os_path_exists(sue_userhub.soul_file_path()) is False
 
     # WHEN
-    sue_userhub.save_file_same(file_text="fooboo", replace=True)
+    sue_userhub.save_file_soul(file_text="fooboo", replace=True)
 
     # THEN
-    assert os_path_exists(sue_userhub.same_file_path())
+    assert os_path_exists(sue_userhub.soul_file_path())
 
 
-def test_UserHub_same_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+def test_UserHub_soul_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert sue_userhub.same_file_exists() is False
+    assert sue_userhub.soul_file_exists() is False
 
     # WHEN
-    sue_userhub.save_file_same(file_text="fooboo", replace=True)
+    sue_userhub.save_file_soul(file_text="fooboo", replace=True)
 
     # THEN
-    assert sue_userhub.same_file_exists()
+    assert sue_userhub.soul_file_exists()
 
 
-def test_UserHub_open_file_same_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_open_file_soul_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
     example_text = "fooboo"
-    sue_userhub.save_file_same(example_text, replace=True)
+    sue_userhub.save_file_soul(example_text, replace=True)
 
     # WHEN / THEN
-    assert sue_userhub.open_file_same() == example_text
+    assert sue_userhub.open_file_soul() == example_text
 
 
-def test_UserHub_save_file_live_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_file_home_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert os_path_exists(sue_userhub.live_path()) is False
+    assert os_path_exists(sue_userhub.home_path()) is False
 
     # WHEN
-    sue_userhub.save_file_live(file_text="fooboo", replace=True)
+    sue_userhub.save_file_home(file_text="fooboo", replace=True)
 
     # THEN
-    assert os_path_exists(sue_userhub.live_path())
+    assert os_path_exists(sue_userhub.home_path())
 
 
-def test_UserHub_live_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+def test_UserHub_home_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert sue_userhub.live_file_exists() is False
+    assert sue_userhub.home_file_exists() is False
 
     # WHEN
-    sue_userhub.save_file_live(file_text="fooboo", replace=True)
+    sue_userhub.save_file_home(file_text="fooboo", replace=True)
 
     # THEN
-    assert sue_userhub.live_file_exists()
+    assert sue_userhub.home_file_exists()
 
 
-def test_UserHub_open_file_live_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_open_file_home_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
     example_text = "fooboo"
-    sue_userhub.save_file_live(example_text, replace=True)
+    sue_userhub.save_file_home(example_text, replace=True)
 
     # WHEN / THEN
-    assert sue_userhub.open_file_live() == example_text
+    assert sue_userhub.open_file_home() == example_text
 
 
-def test_UserHub_save_same_world_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_soul_world_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
     real_id = root_label()
     sue_userhub = userhub_shop(env_dir(), real_id, sue_text, None)
 
-    print(f"{sue_userhub.same_file_path()=}")
-    assert sue_userhub.same_file_exists() is False
+    print(f"{sue_userhub.soul_file_path()=}")
+    assert sue_userhub.soul_file_exists() is False
 
     # WHEN
-    sue_userhub.save_same_world(sue_worldunit)
+    sue_userhub.save_soul_world(sue_worldunit)
 
     # THEN
-    assert sue_userhub.same_file_exists()
+    assert sue_userhub.soul_file_exists()
 
 
-def test_UserHub_save_same_world_RaisesErrorWhenWorld_live_id_IsWrong(
+def test_UserHub_save_soul_world_RaisesErrorWhenWorld_home_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -294,14 +294,14 @@ def test_UserHub_save_same_world_RaisesErrorWhenWorld_live_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_userhub.save_same_world(worldunit_shop(yao_text))
+        sue_userhub.save_soul_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s same world."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s soul world."
     )
 
 
-def test_UserHub_get_same_world_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_get_soul_world_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
@@ -312,13 +312,13 @@ def test_UserHub_get_same_world_OpensFile(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
-    sue_userhub.save_same_world(sue_worldunit)
+    sue_userhub.save_soul_world(sue_worldunit)
 
     # WHEN / THEN
-    assert sue_userhub.get_same_world().get_dict() == sue_worldunit.get_dict()
+    assert sue_userhub.get_soul_world().get_dict() == sue_worldunit.get_dict()
 
 
-def test_UserHub_save_live_world_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_home_world_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
@@ -326,17 +326,17 @@ def test_UserHub_save_live_world_CorrectlySavesFile(env_dir_setup_cleanup):
     real_id = root_label()
     sue_userhub = userhub_shop(env_dir(), real_id, sue_text, None)
 
-    print(f"{sue_userhub.live_path()=}")
-    assert sue_userhub.live_file_exists() is False
+    print(f"{sue_userhub.home_path()=}")
+    assert sue_userhub.home_file_exists() is False
 
     # WHEN
-    sue_userhub.save_live_world(sue_worldunit)
+    sue_userhub.save_home_world(sue_worldunit)
 
     # THEN
-    assert sue_userhub.live_file_exists()
+    assert sue_userhub.home_file_exists()
 
 
-def test_UserHub_get_live_world_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_get_home_world_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
@@ -347,23 +347,23 @@ def test_UserHub_get_live_world_OpensFile(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
-    sue_userhub.save_live_world(sue_worldunit)
+    sue_userhub.save_home_world(sue_worldunit)
 
     # WHEN / THEN
-    assert sue_userhub.get_live_world().get_dict() == sue_worldunit.get_dict()
+    assert sue_userhub.get_home_world().get_dict() == sue_worldunit.get_dict()
 
 
-def test_UserHub_get_live_world_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
+def test_UserHub_get_home_world_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
 
     # WHEN / THEN
-    assert sue_userhub.get_live_world() is None
+    assert sue_userhub.get_home_world() is None
 
 
-def test_UserHub_save_live_world_RaisesErrorWhenWorld_live_id_IsWrong(
+def test_UserHub_save_home_world_RaisesErrorWhenWorld_home_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -375,8 +375,8 @@ def test_UserHub_save_live_world_RaisesErrorWhenWorld_live_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_userhub.save_live_world(worldunit_shop(yao_text))
+        sue_userhub.save_home_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s live world."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s home world."
     )

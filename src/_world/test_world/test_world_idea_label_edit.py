@@ -370,17 +370,17 @@ def test_world_set_road_delimiter_RaisesErrorIfNew_delimiter_IsAnIdea_label():
     casa_road = luca_world.make_l1_road(casa_text)
     luca_world.add_l1_idea(ideaunit_shop(casa_text))
     slash_text = "/"
-    home_text = f"home cook{slash_text}clean"
-    luca_world.add_idea(ideaunit_shop(home_text), parent_road=casa_road)
+    casa_text = f"casa cook{slash_text}clean"
+    luca_world.add_idea(ideaunit_shop(casa_text), parent_road=casa_road)
 
     # WHEN / THEN
-    home_road = luca_world.make_road(casa_road, home_text)
-    print(f"{home_road=}")
+    casa_road = luca_world.make_road(casa_road, casa_text)
+    print(f"{casa_road=}")
     with pytest_raises(Exception) as excinfo:
         luca_world.set_road_delimiter(slash_text)
     assert (
         str(excinfo.value)
-        == f"Cannot modify delimiter to '{slash_text}' because it already exists an idea label '{home_road}'"
+        == f"Cannot modify delimiter to '{slash_text}' because it already exists an idea label '{casa_road}'"
     )
 
 

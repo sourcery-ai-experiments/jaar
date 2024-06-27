@@ -447,7 +447,7 @@ def test_UserHub_create_save_gift_file_SaveCorrectObj(env_dir_setup_cleanup):
     assert sue_userhub.gift_file_exists(three_int) is False
 
     # WHEN
-    before_world = sue_userhub.default_same_world()
+    before_world = sue_userhub.default_soul_world()
     bob_text = "Bob"
     after_world = copy_deepcopy(before_world)
     after_world.add_charunit(bob_text)
@@ -461,15 +461,15 @@ def test_UserHub_merge_any_gifts_ReturnsEqualObj(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
-    sue_userhub.save_same_world(sue_userhub.default_same_world())
-    same_world = sue_userhub.get_same_world()
-    same_world._last_gift_id is None
+    sue_userhub.save_soul_world(sue_userhub.default_soul_world())
+    soul_world = sue_userhub.get_soul_world()
+    soul_world._last_gift_id is None
 
     # WHEN
-    new_world = sue_userhub._merge_any_gifts(same_world)
+    new_world = sue_userhub._merge_any_gifts(soul_world)
 
     # THEN
-    assert new_world == same_world
+    assert new_world == soul_world
 
 
 def test_UserHub_merge_any_gifts_ReturnsObj_WithSinglegiftModifies_1atom(
@@ -479,21 +479,21 @@ def test_UserHub_merge_any_gifts_ReturnsObj_WithSinglegiftModifies_1atom(
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
     sue_userhub.save_gift_file(sue_1atomunits_giftunit())
-    sue_userhub.save_same_world(sue_userhub.default_same_world())
-    same_world = sue_userhub.get_same_world()
-    print(f"{same_world._real_id=}")
+    sue_userhub.save_soul_world(sue_userhub.default_soul_world())
+    soul_world = sue_userhub.get_soul_world()
+    print(f"{soul_world._real_id=}")
     print(f"{sue_userhub.real_id=}")
     sports_text = "sports"
-    sports_road = same_world.make_l1_road(sports_text)
+    sports_road = soul_world.make_l1_road(sports_text)
     knee_text = "knee"
-    knee_road = same_world.make_road(sports_road, knee_text)
-    assert same_world.idea_exists(sports_road) is False
+    knee_road = soul_world.make_road(sports_road, knee_text)
+    assert soul_world.idea_exists(sports_road) is False
 
     # WHEN
-    new_world = sue_userhub._merge_any_gifts(same_world)
+    new_world = sue_userhub._merge_any_gifts(soul_world)
 
     # THEN
-    assert new_world != same_world
+    assert new_world != soul_world
     assert new_world.idea_exists(sports_road)
 
 
@@ -504,20 +504,20 @@ def test_UserHub_merge_any_gifts_ReturnsObj_WithSinglegiftModifies_2atoms(
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), real_id(), sue_text)
     sue_userhub.save_gift_file(sue_2atomunits_giftunit())
-    sue_userhub.save_same_world(sue_userhub.default_same_world())
-    same_world = sue_userhub.get_same_world()
-    print(f"{same_world._real_id=}")
+    sue_userhub.save_soul_world(sue_userhub.default_soul_world())
+    soul_world = sue_userhub.get_soul_world()
+    print(f"{soul_world._real_id=}")
     sports_text = "sports"
-    sports_road = same_world.make_l1_road(sports_text)
+    sports_road = soul_world.make_l1_road(sports_text)
     knee_text = "knee"
-    knee_road = same_world.make_road(sports_road, knee_text)
-    assert same_world.idea_exists(sports_road) is False
-    assert same_world.idea_exists(knee_road) is False
+    knee_road = soul_world.make_road(sports_road, knee_text)
+    assert soul_world.idea_exists(sports_road) is False
+    assert soul_world.idea_exists(knee_road) is False
 
     # WHEN
-    new_world = sue_userhub._merge_any_gifts(same_world)
+    new_world = sue_userhub._merge_any_gifts(soul_world)
 
     # THEN
-    assert new_world != same_world
+    assert new_world != soul_world
     assert new_world.idea_exists(sports_road)
     assert new_world.idea_exists(knee_road)
