@@ -881,9 +881,7 @@ class IdeaUnit:
         world_owner_id: CharID = None,
     ):
         prev_to_now_active = deepcopy(self._active)
-        self._active = self._create_active(
-            world_beliefunits=world_beliefunits, world_owner_id=world_owner_id
-        )
+        self._active = self._create_active(world_beliefunits, world_owner_id)
         self._set_idea_task()
         self.record_active_hx(
             tree_traverse_count=tree_traverse_count,
@@ -893,14 +891,13 @@ class IdeaUnit:
 
     def _set_idea_task(self):
         self._task = False
-        if (
-            self.pledge
-            and self._active
-            and (self._reasonheirs == {} or self._is_any_reasonheir_task_true())
-        ):
+        if self.pledge and self._active and self._reasonheirs_satisfied():
             self._task = True
 
-    def _is_any_reasonheir_task_true(self) -> bool:
+    def _reasonheirs_satisfied(self) -> bool:
+        return self._reasonheirs == {} or self._any_reasonheir_task_true()
+
+    def _any_reasonheir_task_true(self) -> bool:
         return any(x_reasonheir._task for x_reasonheir in self._reasonheirs.values())
 
     def _create_active(
