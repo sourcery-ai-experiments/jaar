@@ -66,7 +66,7 @@ def test_ChangeUnit_set_atomunit_CorrectlySets_WorldUnitSimpleAttrs():
 def test_ChangeUnit_set_atomunit_RaisesErrorWhen_is_valid_IsFalse():
     # GIVEN
     ex1_changeunit = changeunit_shop()
-    x_category = "world_beliefunit"
+    x_category = "world_charunit"
     world_weight_atomunit = atomunit_shop(x_category, atom_update())
 
     # WHEN
