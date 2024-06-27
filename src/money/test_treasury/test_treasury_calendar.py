@@ -208,15 +208,15 @@ def test_MoneyUnit_treasury_insert_agenda_into_treasury_RaisesBaseDoesNotExistEr
 
     # WHEN
     bob_text = "Bob"
-    bad_road = amos_world.make_l1_road("jajatime")
-    x_calendarreport = CalendarReport(bob_text, bad_road, 10, 19, 15, 11, 7)
+    incorrect_road = amos_world.make_l1_road("jajatime")
+    x_calendarreport = CalendarReport(bob_text, incorrect_road, 10, 19, 15, 11, 7)
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
         x_money.insert_agenda_into_treasury(amos_world, x_calendarreport)
     assert (
         str(excinfo.value)
-        == f"Agenda base cannot be '{bad_road}' because it does not exist in world '{amos_world._owner_id}'."
+        == f"Agenda base cannot be '{incorrect_road}' because it does not exist in world '{amos_world._owner_id}'."
     )
 
 

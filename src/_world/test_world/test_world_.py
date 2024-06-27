@@ -266,13 +266,16 @@ def test_WorldUnit_set_meld_strategy_CorrectlySetsAttr():
 def test_WorldUnit_set_meld_strategy_RaisesErrorWithIneligible_meld_strategy():
     # GIVEN
     noa_world = worldunit_shop("Noa", "Texas")
-    bad_override_text = "oVerride"
-    assert noa_world._meld_strategy != bad_override_text
+    incorrect_override_text = "oVerride"
+    assert noa_world._meld_strategy != incorrect_override_text
 
     # WHEN
     with pytest_raises(Exception) as excinfo:
-        noa_world.set_meld_strategy(bad_override_text)
-    assert str(excinfo.value) == f"'{bad_override_text}' is ineligible meld_strategy."
+        noa_world.set_meld_strategy(incorrect_override_text)
+    assert (
+        str(excinfo.value)
+        == f"'{incorrect_override_text}' is ineligible meld_strategy."
+    )
 
 
 def test_WorldUnit_set_monetary_desc_SetsAttrCorrectly():
