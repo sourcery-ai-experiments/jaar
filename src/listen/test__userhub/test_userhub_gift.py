@@ -99,7 +99,7 @@ def test_UserHub_save_gift_file_RaisesErrorIfGiftUnit_atoms_dir_IsWrong(
     sue_giftunit = giftunit_shop(
         owner_id=sue_text,
         _gift_id=x_gift_id,
-        _atoms_dir="src/bad_directory",
+        _atoms_dir="src/incorrect_directory",
         _gifts_dir=sue_userhub.gifts_dir(),
     )
 
@@ -125,7 +125,7 @@ def test_UserHub_save_gift_file_RaisesErrorIfGiftUnit_gifts_dir_IsWrong(
         owner_id=sue_text,
         _gift_id=x_gift_id,
         _atoms_dir=sue_userhub.atoms_dir(),
-        _gifts_dir="src/bad_directory",
+        _gifts_dir="src/incorrect_directory",
     )
 
     # WHEN / THEN
