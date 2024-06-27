@@ -47,7 +47,7 @@ from src.gift.atom import (
     get_from_json as atomunit_get_from_json,
     modify_world_with_atomunit,
 )
-from src.listen.basis_worlds import get_default_live_world
+from src.listen.basis_worlds import get_default_home_world
 from src.gift.gift import GiftUnit, giftunit_shop, create_giftunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -55,11 +55,11 @@ from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 
 
-class Invalid_same_Exception(Exception):
+class Invalid_soul_Exception(Exception):
     pass
 
 
-class Invalid_live_Exception(Exception):
+class Invalid_home_Exception(Exception):
     pass
 
 
@@ -120,63 +120,63 @@ class UserHub:
     def gifts_dir(self):
         return f"{self.owner_dir()}/{get_gifts_folder()}"
 
-    def same_dir(self) -> str:
-        return f"{self.owner_dir()}/same"
+    def soul_dir(self) -> str:
+        return f"{self.owner_dir()}/soul"
 
-    def live_dir(self) -> str:
-        return f"{self.owner_dir()}/live"
+    def home_dir(self) -> str:
+        return f"{self.owner_dir()}/home"
 
-    def same_file_name(self):
+    def soul_file_name(self):
         return get_json_filename(self.owner_id)
 
-    def same_file_path(self):
-        return f"{self.same_dir()}/{self.same_file_name()}"
+    def soul_file_path(self):
+        return f"{self.soul_dir()}/{self.soul_file_name()}"
 
-    def live_file_name(self):
+    def home_file_name(self):
         return get_json_filename(self.owner_id)
 
-    def live_path(self):
-        return f"{self.live_dir()}/{self.live_file_name()}"
+    def home_path(self):
+        return f"{self.home_dir()}/{self.home_file_name()}"
 
-    def save_file_same(self, file_text: str, replace: bool):
+    def save_file_soul(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.same_dir(),
-            file_name=self.same_file_name(),
+            dest_dir=self.soul_dir(),
+            file_name=self.soul_file_name(),
             file_text=file_text,
             replace=replace,
         )
 
-    def save_file_live(self, file_text: str, replace: bool):
+    def save_file_home(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.live_dir(),
-            file_name=self.live_file_name(),
+            dest_dir=self.home_dir(),
+            file_name=self.home_file_name(),
             file_text=file_text,
             replace=replace,
         )
 
-    def same_file_exists(self) -> bool:
-        return os_path_exists(self.same_file_path())
+    def soul_file_exists(self) -> bool:
+        return os_path_exists(self.soul_file_path())
 
-    def live_file_exists(self) -> bool:
-        return os_path_exists(self.live_path())
+    def home_file_exists(self) -> bool:
+        return os_path_exists(self.home_path())
 
-    def open_file_same(self):
-        return open_file(self.same_dir(), self.same_file_name())
+    def open_file_soul(self):
+        return open_file(self.soul_dir(), self.soul_file_name())
 
-    def save_same_world(self, x_world: WorldUnit):
+    def save_soul_world(self, x_world: WorldUnit):
         if x_world._owner_id != self.owner_id:
-            raise Invalid_same_Exception(
-                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s same world."
+            raise Invalid_soul_Exception(
+                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s soul world."
             )
-        self.save_file_same(x_world.get_json(), True)
+        self.save_file_soul(x_world.get_json(), True)
 
-    def get_same_world(self) -> WorldUnit:
-        if self.same_file_exists() is False:
+    def get_soul_world(self) -> WorldUnit:
+        if self.soul_file_exists() is False:
             return None
-        file_content = self.open_file_same()
+        file_content = self.open_file_soul()
         return worldunit_get_from_json(file_content)
 
-    def default_same_world(self) -> WorldUnit:
+    def default_soul_world(self) -> WorldUnit:
         x_worldunit = worldunit_shop(
             _owner_id=self.owner_id,
             _real_id=self.real_id,
@@ -187,11 +187,11 @@ class UserHub:
         x_worldunit._last_gift_id = init_gift_id()
         return x_worldunit
 
-    def delete_same_file(self):
-        delete_dir(self.same_file_path())
+    def delete_soul_file(self):
+        delete_dir(self.soul_file_path())
 
-    def open_file_live(self):
-        return open_file(self.live_dir(), self.live_file_name())
+    def open_file_home(self):
+        return open_file(self.home_dir(), self.home_file_name())
 
     def get_max_atom_file_number(self) -> int:
         if not os_path_exists(self.atoms_dir()):
@@ -352,42 +352,42 @@ class UserHub:
             _atoms_dir=self.atoms_dir(),
         )
         x_giftunit._changeunit.add_all_different_atomunits(
-            before_world=self.default_same_world(),
-            after_world=self.default_same_world(),
+            before_world=self.default_soul_world(),
+            after_world=self.default_soul_world(),
         )
         x_giftunit.save_files()
 
-    def _create_same_from_gifts(self):
-        x_world = self._merge_any_gifts(self.default_same_world())
-        self.save_same_world(x_world)
+    def _create_soul_from_gifts(self):
+        x_world = self._merge_any_gifts(self.default_soul_world())
+        self.save_soul_world(x_world)
 
-    def _create_initial_gift_and_same_files(self):
+    def _create_initial_gift_and_soul_files(self):
         self._create_initial_gift_files_from_default()
-        self._create_same_from_gifts()
+        self._create_soul_from_gifts()
 
-    def _create_initial_gift_files_from_same(self):
+    def _create_initial_gift_files_from_soul(self):
         x_giftunit = self._default_giftunit()
         x_giftunit._changeunit.add_all_different_atomunits(
-            before_world=self.default_same_world(),
-            after_world=self.get_same_world(),
+            before_world=self.default_soul_world(),
+            after_world=self.get_soul_world(),
         )
         x_giftunit.save_files()
 
-    def initialize_gift_same_files(self):
-        x_same_file_exists = self.same_file_exists()
+    def initialize_gift_soul_files(self):
+        x_soul_file_exists = self.soul_file_exists()
         gift_file_exists = self.gift_file_exists(init_gift_id())
-        if x_same_file_exists is False and gift_file_exists is False:
-            self._create_initial_gift_and_same_files()
-        elif x_same_file_exists is False and gift_file_exists:
-            self._create_same_from_gifts()
-        elif x_same_file_exists and gift_file_exists is False:
-            self._create_initial_gift_files_from_same()
+        if x_soul_file_exists is False and gift_file_exists is False:
+            self._create_initial_gift_and_soul_files()
+        elif x_soul_file_exists is False and gift_file_exists:
+            self._create_soul_from_gifts()
+        elif x_soul_file_exists and gift_file_exists is False:
+            self._create_initial_gift_files_from_soul()
 
-    def append_gifts_to_same_file(self):
-        same_world = self.get_same_world()
-        same_world = self._merge_any_gifts(same_world)
-        self.save_same_world(same_world)
-        return self.get_same_world()
+    def append_gifts_to_soul_file(self):
+        soul_world = self.get_soul_world()
+        soul_world = self._merge_any_gifts(soul_world)
+        self.save_soul_world(soul_world)
+        return self.get_soul_world()
 
     def econ_dir(self) -> str:
         if self.econ_road is None:
@@ -440,16 +440,16 @@ class UserHub:
         x_file_name = self.owner_file_name(x_world._owner_id)
         save_file(self.jobs_dir(), x_file_name, x_world.get_json())
 
-    def save_live_world(self, x_world: WorldUnit):
+    def save_home_world(self, x_world: WorldUnit):
         if x_world._owner_id != self.owner_id:
-            raise Invalid_live_Exception(
-                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s live world."
+            raise Invalid_home_Exception(
+                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s home world."
             )
-        self.save_file_live(x_world.get_json(), True)
+        self.save_file_home(x_world.get_json(), True)
 
-    def initialize_live_file(self, same: WorldUnit):
-        if self.live_file_exists() is False:
-            self.save_live_world(get_default_live_world(same))
+    def initialize_home_file(self, soul: WorldUnit):
+        if self.home_file_exists() is False:
+            self.save_home_world(get_default_home_world(soul))
 
     def role_file_exists(self, owner_id: OwnerID) -> bool:
         return os_path_exists(self.role_path(owner_id))
@@ -469,10 +469,10 @@ class UserHub:
         file_content = open_file(self.jobs_dir(), self.owner_file_name(owner_id))
         return worldunit_get_from_json(file_content)
 
-    def get_live_world(self) -> WorldUnit:
-        if self.live_file_exists() is False:
+    def get_home_world(self) -> WorldUnit:
+        if self.home_file_exists() is False:
             return None
-        file_content = self.open_file_live()
+        file_content = self.open_file_home()
         return worldunit_get_from_json(file_content)
 
     def delete_role_file(self, owner_id: OwnerID):
@@ -492,7 +492,7 @@ class UserHub:
             road_delimiter=self.road_delimiter,
             pixel=self.pixel,
         )
-        return speaker_userhub.get_live_world()
+        return speaker_userhub.get_home_world()
 
     def get_perspective_world(self, speaker: WorldUnit) -> WorldUnit:
         # get copy of world without any metrics
@@ -521,25 +521,25 @@ class UserHub:
         return self.get_perspective_world(speaker_job)
 
     def get_econ_roads(self):
-        x_same_world = self.get_same_world()
-        x_same_world.calc_world_metrics()
-        if x_same_world._econs_justified is False:
-            x_str = f"Cannot get_econ_roads from '{self.owner_id}' same world because 'WorldUnit._econs_justified' is False."
+        x_soul_world = self.get_soul_world()
+        x_soul_world.calc_world_metrics()
+        if x_soul_world._econs_justified is False:
+            x_str = f"Cannot get_econ_roads from '{self.owner_id}' soul world because 'WorldUnit._econs_justified' is False."
             raise get_econ_roadsException(x_str)
-        if x_same_world._econs_buildable is False:
-            x_str = f"Cannot get_econ_roads from '{self.owner_id}' same world because 'WorldUnit._econs_buildable' is False."
+        if x_soul_world._econs_buildable is False:
+            x_str = f"Cannot get_econ_roads from '{self.owner_id}' soul world because 'WorldUnit._econs_buildable' is False."
             raise get_econ_roadsException(x_str)
-        owner_healer_dict = x_same_world._healers_dict.get(self.owner_id)
+        owner_healer_dict = x_soul_world._healers_dict.get(self.owner_id)
         if owner_healer_dict is None:
             return get_empty_set_if_none(None)
-        econ_roads = x_same_world._healers_dict.get(self.owner_id).keys()
+        econ_roads = x_soul_world._healers_dict.get(self.owner_id).keys()
         return get_empty_set_if_none(econ_roads)
 
-    def save_all_same_roles(self):
-        same = self.get_same_world()
+    def save_all_soul_roles(self):
+        soul = self.get_soul_world()
         for x_econ_road in self.get_econ_roads():
             self.econ_road = x_econ_road
-            self.save_role_world(same)
+            self.save_role_world(soul)
         self.econ_road = None
 
     def create_treasury_db_file(self):
@@ -559,7 +559,7 @@ class UserHub:
             self.create_treasury_db_file()
         return sqlite_connection(self.treasury_db_path())
 
-    def create_same_treasury_db_files(self):
+    def create_soul_treasury_db_files(self):
         for x_econ_road in self.get_econ_roads():
             self.econ_road = x_econ_road
             self.create_treasury_db_file()

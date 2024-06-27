@@ -33,9 +33,9 @@ def create_listen_basis(x_role: WorldUnit) -> WorldUnit:
     return x_listen
 
 
-def get_default_live_world(same: WorldUnit) -> WorldUnit:
-    default_live_world = create_listen_basis(same)
-    default_live_world._last_gift_id = same._last_gift_id
-    default_live_world._char_credor_pool = None
-    default_live_world._char_debtor_pool = None
-    return default_live_world
+def get_default_home_world(soul: WorldUnit) -> WorldUnit:
+    default_home_world = create_listen_basis(soul)
+    default_home_world._last_gift_id = soul._last_gift_id
+    default_home_world._char_credor_pool = None
+    default_home_world._char_debtor_pool = None
+    return default_home_world

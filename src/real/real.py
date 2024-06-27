@@ -3,11 +3,11 @@ from src._road.jaar_config import get_gifts_folder
 from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src._road.road import default_road_delimiter_if_none, OwnerID, RoadUnit, RealID
 from src._world.world import WorldUnit
-from src.listen.basis_worlds import get_default_live_world
+from src.listen.basis_worlds import get_default_home_world
 from src.listen.userhub import userhub_shop, UserHub
 from src.listen.listen import (
     listen_to_speaker_agenda,
-    listen_to_debtors_roll_same_live,
+    listen_to_debtors_roll_soul_home,
     listen_to_debtors_roll_role_job,
     create_job_file_from_role_file,
 )
@@ -19,13 +19,13 @@ from sqlite3 import connect as sqlite3_connect, Connection
 @dataclass
 class RealUnit:
     """Data pipelines:
-    pipeline1: gifts->same
-    pipeline2: same->roles
+    pipeline1: gifts->soul
+    pipeline2: soul->roles
     pipeline3: role->job
-    pipeline4: job->live
-    pipeline5: same->live (direct)
-    pipeline6: same->job->live (through jobs)
-    pipeline7: gifts->live (could be 5 of 6)
+    pipeline4: job->home
+    pipeline5: soul->home (direct)
+    pipeline6: soul->job->home (through jobs)
+    pipeline7: gifts->home (could be 5 of 6)
     """
 
     real_id: RealID
@@ -116,16 +116,16 @@ class RealUnit:
 
     def init_owner_econs(self, owner_id: OwnerID):
         x_userhub = self._get_userhub(owner_id)
-        x_userhub.initialize_gift_same_files()
-        x_userhub.initialize_live_file(self.get_owner_same_from_file(owner_id))
+        x_userhub.initialize_gift_soul_files()
+        x_userhub.initialize_home_file(self.get_owner_soul_from_file(owner_id))
 
-    def get_owner_same_from_file(self, owner_id: OwnerID) -> WorldUnit:
-        return self._get_userhub(owner_id).get_same_world()
+    def get_owner_soul_from_file(self, owner_id: OwnerID) -> WorldUnit:
+        return self._get_userhub(owner_id).get_soul_world()
 
     def _set_all_healer_roles(self, owner_id: OwnerID):
-        x_same = self.get_owner_same_from_file(owner_id)
-        x_same.calc_world_metrics()
-        for healer_id, healer_dict in x_same._healers_dict.items():
+        x_soul = self.get_owner_soul_from_file(owner_id)
+        x_soul.calc_world_metrics()
+        for healer_id, healer_dict in x_soul._healers_dict.items():
             healer_userhub = userhub_shop(
                 self.reals_dir,
                 self.real_id,
@@ -136,25 +136,25 @@ class RealUnit:
                 pixel=self._pixel,
             )
             for econ_road in healer_dict.keys():
-                self._set_owner_role(healer_userhub, econ_road, x_same)
+                self._set_owner_role(healer_userhub, econ_road, x_soul)
 
     def _set_owner_role(
         self,
         healer_userhub: UserHub,
         econ_road: RoadUnit,
-        same_world: WorldUnit,
+        soul_world: WorldUnit,
     ):
         healer_userhub.econ_road = econ_road
         healer_userhub.create_treasury_db_file()
-        healer_userhub.save_role_world(same_world)
+        healer_userhub.save_role_world(soul_world)
 
-    # live world management
-    def generate_live_world(self, owner_id: OwnerID) -> WorldUnit:
+    # home world management
+    def generate_home_world(self, owner_id: OwnerID) -> WorldUnit:
         listener_userhub = self._get_userhub(owner_id)
-        x_same = listener_userhub.get_same_world()
-        x_same.calc_world_metrics()
-        x_live = get_default_live_world(x_same)
-        for healer_id, healer_dict in x_same._healers_dict.items():
+        x_soul = listener_userhub.get_soul_world()
+        x_soul.calc_world_metrics()
+        x_home = get_default_home_world(x_soul)
+        for healer_id, healer_dict in x_soul._healers_dict.items():
             healer_userhub = userhub_shop(
                 reals_dir=self.reals_dir,
                 real_id=self.real_id,
@@ -164,7 +164,7 @@ class RealUnit:
                 road_delimiter=self._road_delimiter,
                 pixel=self._pixel,
             )
-            healer_userhub.create_same_treasury_db_files()
+            healer_userhub.create_soul_treasury_db_files()
             for econ_road in healer_dict.keys():
                 econ_userhub = userhub_shop(
                     reals_dir=self.reals_dir,
@@ -175,30 +175,30 @@ class RealUnit:
                     road_delimiter=self._road_delimiter,
                     pixel=self._pixel,
                 )
-                econ_userhub.save_role_world(x_same)
+                econ_userhub.save_role_world(x_soul)
                 create_job_file_from_role_file(econ_userhub, owner_id)
                 x_job = econ_userhub.get_job_world(owner_id)
-                listen_to_speaker_agenda(x_live, x_job)
+                listen_to_speaker_agenda(x_home, x_job)
 
-        # if nothing has come from same->role->job->live pipeline use same->live pipeline
-        x_live.calc_world_metrics()
-        if len(x_live._idea_dict) == 1:
-            # pipeline_same_live_text()
-            listen_to_debtors_roll_same_live(listener_userhub)
-            listener_userhub.open_file_live()
-            x_live.calc_world_metrics()
-        if len(x_live._idea_dict) == 1:
-            x_live = x_same
-        listener_userhub.save_live_world(x_live)
+        # if nothing has come from soul->role->job->home pipeline use soul->home pipeline
+        x_home.calc_world_metrics()
+        if len(x_home._idea_dict) == 1:
+            # pipeline_soul_home_text()
+            listen_to_debtors_roll_soul_home(listener_userhub)
+            listener_userhub.open_file_home()
+            x_home.calc_world_metrics()
+        if len(x_home._idea_dict) == 1:
+            x_home = x_soul
+        listener_userhub.save_home_world(x_home)
 
-        return self.get_live_file_world(owner_id)
+        return self.get_home_file_world(owner_id)
 
-    def generate_all_live_worlds(self):
+    def generate_all_home_worlds(self):
         for x_owner_id in self._get_owner_folder_names():
-            self.generate_live_world(x_owner_id)
+            self.generate_home_world(x_owner_id)
 
-    def get_live_file_world(self, owner_id: OwnerID) -> WorldUnit:
-        return self._get_userhub(owner_id).get_live_world()
+    def get_home_file_world(self, owner_id: OwnerID) -> WorldUnit:
+        return self._get_userhub(owner_id).get_home_world()
 
 
 def realunit_shop(

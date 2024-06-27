@@ -601,8 +601,8 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     x_originunit = casa_idea._originunit
     x_originunit.set_originlink(yao_text, 1)
 
-    rock_text = "Rock"
-    casa_idea.add_kid(ideaunit_shop(rock_text))
+    clean_text = "clean"
+    casa_idea.add_kid(ideaunit_shop(clean_text))
 
     assert not casa_idea._is_expanded
     assert casa_idea.pledge
