@@ -124,14 +124,14 @@ def test_RealUnit_init_owner_econs_CorrectlySetsDirAndFiles(env_dir_setup_cleanu
     )
     sue_text = "Sue"
     sue_userhub = userhub_shop(None, music_text, sue_text, None, pixel=x_pixel)
-    assert os_path_exists(sue_userhub.home_path()) is False
+    assert os_path_exists(sue_userhub.being_path()) is False
 
     # WHEN
     music_real.init_owner_econs(sue_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
-    assert os_path_exists(sue_userhub.home_path())
+    assert os_path_exists(sue_userhub.being_path())
 
 
 def test_RealUnit_get_owner_soul_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
@@ -154,7 +154,7 @@ def test_RealUnit_get_owner_soul_from_file_ReturnsCorrectObj(env_dir_setup_clean
     assert gen_sue_soul.char_exists(bob_text)
 
 
-def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
+def test_RealUnit__set_all_healer_dutys_CorrectlySetsdutys(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -197,34 +197,34 @@ def test_RealUnit__set_all_healer_roles_CorrectlySetsroles(
     yao_file_name = get_json_filename(yao_text)
     sue_dallas_userhub = userhub_shop(None, music_text, sue_text, dallas_road)
     yao_dallas_userhub = userhub_shop(None, music_text, yao_text, dallas_road)
-    sue_roles_dir = sue_dallas_userhub.roles_dir()
-    yao_roles_dir = yao_dallas_userhub.roles_dir()
-    sue_dallas_sue_role_file_path = f"{sue_roles_dir}/{sue_file_name}"
-    sue_dallas_yao_role_file_path = f"{sue_roles_dir}/{yao_file_name}"
-    yao_dallas_sue_role_file_path = f"{yao_roles_dir}/{sue_file_name}"
-    yao_dallas_yao_role_file_path = f"{yao_roles_dir}/{yao_file_name}"
-    assert os_path_exists(sue_dallas_sue_role_file_path) is False
-    assert os_path_exists(sue_dallas_yao_role_file_path) is False
-    assert os_path_exists(yao_dallas_sue_role_file_path) is False
-    assert os_path_exists(yao_dallas_yao_role_file_path) is False
+    sue_dutys_dir = sue_dallas_userhub.dutys_dir()
+    yao_dutys_dir = yao_dallas_userhub.dutys_dir()
+    sue_dallas_sue_duty_file_path = f"{sue_dutys_dir}/{sue_file_name}"
+    sue_dallas_yao_duty_file_path = f"{sue_dutys_dir}/{yao_file_name}"
+    yao_dallas_sue_duty_file_path = f"{yao_dutys_dir}/{sue_file_name}"
+    yao_dallas_yao_duty_file_path = f"{yao_dutys_dir}/{yao_file_name}"
+    assert os_path_exists(sue_dallas_sue_duty_file_path) is False
+    assert os_path_exists(sue_dallas_yao_duty_file_path) is False
+    assert os_path_exists(yao_dallas_sue_duty_file_path) is False
+    assert os_path_exists(yao_dallas_yao_duty_file_path) is False
 
     # WHEN
-    music_real._set_all_healer_roles(sue_text)
+    music_real._set_all_healer_dutys(sue_text)
 
     # THEN
-    assert os_path_exists(sue_dallas_sue_role_file_path)
-    assert os_path_exists(sue_dallas_yao_role_file_path) is False
-    assert os_path_exists(yao_dallas_sue_role_file_path)
-    assert os_path_exists(yao_dallas_yao_role_file_path) is False
+    assert os_path_exists(sue_dallas_sue_duty_file_path)
+    assert os_path_exists(sue_dallas_yao_duty_file_path) is False
+    assert os_path_exists(yao_dallas_sue_duty_file_path)
+    assert os_path_exists(yao_dallas_yao_duty_file_path) is False
 
     # WHEN
-    music_real._set_all_healer_roles(yao_text)
+    music_real._set_all_healer_dutys(yao_text)
 
     # THEN
-    assert os_path_exists(sue_dallas_sue_role_file_path)
-    assert os_path_exists(sue_dallas_yao_role_file_path)
-    assert os_path_exists(yao_dallas_sue_role_file_path)
-    assert os_path_exists(yao_dallas_yao_role_file_path)
+    assert os_path_exists(sue_dallas_sue_duty_file_path)
+    assert os_path_exists(sue_dallas_yao_duty_file_path)
+    assert os_path_exists(yao_dallas_sue_duty_file_path)
+    assert os_path_exists(yao_dallas_yao_duty_file_path)
 
 
 def test_RealUnit_get_owner_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):

@@ -126,14 +126,14 @@ def test_userhub_shop_ReturnsCorrectObj():
     assert x_userhub.econs_dir() == f"{x_userhub.owner_dir()}/econs"
     assert x_userhub.atoms_dir() == f"{x_userhub.owner_dir()}/atoms"
     assert x_userhub.soul_dir() == f"{x_userhub.owner_dir()}/soul"
-    assert x_userhub.home_dir() == f"{x_userhub.owner_dir()}/home"
+    assert x_userhub.being_dir() == f"{x_userhub.owner_dir()}/being"
     assert x_userhub.gifts_dir() == f"{x_userhub.owner_dir()}/{get_gifts_folder()}"
     assert x_userhub.soul_file_name() == f"{sue_text}.json"
     x_soul_file_path = f"{x_userhub.soul_dir()}/{x_userhub.soul_file_name()}"
     assert x_userhub.soul_file_path() == x_soul_file_path
-    assert x_userhub.home_file_name() == f"{sue_text}.json"
-    x_homepath = f"{x_userhub.home_dir()}/{x_userhub.home_file_name()}"
-    assert x_userhub.home_path() == x_homepath
+    assert x_userhub.being_file_name() == f"{sue_text}.json"
+    x_beingpath = f"{x_userhub.being_dir()}/{x_userhub.being_file_name()}"
+    assert x_userhub.being_path() == x_beingpath
 
 
 def test_userhub_shop_ReturnsCorrectObjWhenEmpty():
@@ -162,13 +162,13 @@ def test_userhub_shop_ReturnsCorrectObjWhenEmpty():
     assert sue_userhub.econ_road == texas_road
     assert sue_userhub.econ_dir() == get_econ_path(x_userhub, texas_road)
     bob_text = "Bob"
-    assert sue_userhub.roles_dir() == f"{sue_userhub.econ_dir()}/roles"
+    assert sue_userhub.dutys_dir() == f"{sue_userhub.econ_dir()}/dutys"
     assert sue_userhub.jobs_dir() == f"{sue_userhub.econ_dir()}/jobs"
     assert sue_userhub.grades_dir() == f"{sue_userhub.econ_dir()}/grades"
-    sue_roles_dir = sue_userhub.roles_dir()
+    sue_dutys_dir = sue_userhub.dutys_dir()
     sue_jobs_dir = sue_userhub.jobs_dir()
     sue_grades_dir = sue_userhub.grades_dir()
-    assert sue_userhub.role_path(bob_text) == f"{sue_roles_dir}/{bob_text}.json"
+    assert sue_userhub.duty_path(bob_text) == f"{sue_dutys_dir}/{bob_text}.json"
     assert sue_userhub.job_path(bob_text) == f"{sue_jobs_dir}/{bob_text}.json"
     assert sue_userhub.grade_path(bob_text) == f"{sue_grades_dir}/{bob_text}.json"
     treasury_file_name = "treasury.db"
@@ -228,41 +228,41 @@ def test_UserHub_open_file_soul_OpensFile(env_dir_setup_cleanup):
     assert sue_userhub.open_file_soul() == example_text
 
 
-def test_UserHub_save_file_home_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_file_being_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert os_path_exists(sue_userhub.home_path()) is False
+    assert os_path_exists(sue_userhub.being_path()) is False
 
     # WHEN
-    sue_userhub.save_file_home(file_text="fooboo", replace=True)
+    sue_userhub.save_file_being(file_text="fooboo", replace=True)
 
     # THEN
-    assert os_path_exists(sue_userhub.home_path())
+    assert os_path_exists(sue_userhub.being_path())
 
 
-def test_UserHub_home_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+def test_UserHub_being_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    assert sue_userhub.home_file_exists() is False
+    assert sue_userhub.being_file_exists() is False
 
     # WHEN
-    sue_userhub.save_file_home(file_text="fooboo", replace=True)
+    sue_userhub.save_file_being(file_text="fooboo", replace=True)
 
     # THEN
-    assert sue_userhub.home_file_exists()
+    assert sue_userhub.being_file_exists()
 
 
-def test_UserHub_open_file_home_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_open_file_being_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
     example_text = "fooboo"
-    sue_userhub.save_file_home(example_text, replace=True)
+    sue_userhub.save_file_being(example_text, replace=True)
 
     # WHEN / THEN
-    assert sue_userhub.open_file_home() == example_text
+    assert sue_userhub.open_file_being() == example_text
 
 
 def test_UserHub_save_soul_world_CorrectlySavesFile(env_dir_setup_cleanup):
@@ -282,7 +282,7 @@ def test_UserHub_save_soul_world_CorrectlySavesFile(env_dir_setup_cleanup):
     assert sue_userhub.soul_file_exists()
 
 
-def test_UserHub_save_soul_world_RaisesErrorWhenWorld_home_id_IsWrong(
+def test_UserHub_save_soul_world_RaisesErrorWhenWorld_being_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -318,7 +318,7 @@ def test_UserHub_get_soul_world_OpensFile(env_dir_setup_cleanup):
     assert sue_userhub.get_soul_world().get_dict() == sue_worldunit.get_dict()
 
 
-def test_UserHub_save_home_world_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_being_world_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
@@ -326,17 +326,17 @@ def test_UserHub_save_home_world_CorrectlySavesFile(env_dir_setup_cleanup):
     real_id = root_label()
     sue_userhub = userhub_shop(env_dir(), real_id, sue_text, None)
 
-    print(f"{sue_userhub.home_path()=}")
-    assert sue_userhub.home_file_exists() is False
+    print(f"{sue_userhub.being_path()=}")
+    assert sue_userhub.being_file_exists() is False
 
     # WHEN
-    sue_userhub.save_home_world(sue_worldunit)
+    sue_userhub.save_being_world(sue_worldunit)
 
     # THEN
-    assert sue_userhub.home_file_exists()
+    assert sue_userhub.being_file_exists()
 
 
-def test_UserHub_get_home_world_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_get_being_world_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
@@ -347,23 +347,23 @@ def test_UserHub_get_home_world_OpensFile(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_userhub = userhub_shop(env_dir(), None, sue_text, texas_road)
-    sue_userhub.save_home_world(sue_worldunit)
+    sue_userhub.save_being_world(sue_worldunit)
 
     # WHEN / THEN
-    assert sue_userhub.get_home_world().get_dict() == sue_worldunit.get_dict()
+    assert sue_userhub.get_being_world().get_dict() == sue_worldunit.get_dict()
 
 
-def test_UserHub_get_home_world_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
+def test_UserHub_get_being_world_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
 
     # WHEN / THEN
-    assert sue_userhub.get_home_world() is None
+    assert sue_userhub.get_being_world() is None
 
 
-def test_UserHub_save_home_world_RaisesErrorWhenWorld_home_id_IsWrong(
+def test_UserHub_save_being_world_RaisesErrorWhenWorld_being_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -375,8 +375,8 @@ def test_UserHub_save_home_world_RaisesErrorWhenWorld_home_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_userhub.save_home_world(worldunit_shop(yao_text))
+        sue_userhub.save_being_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s home world."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s being world."
     )

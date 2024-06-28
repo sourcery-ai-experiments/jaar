@@ -18,24 +18,24 @@ def create_empty_world(ref_world: WorldUnit, x_owner_id: OwnerID = None) -> Worl
     )
 
 
-def create_listen_basis(x_role: WorldUnit) -> WorldUnit:
-    x_listen = create_empty_world(x_role, x_owner_id=x_role._owner_id)
-    x_listen._chars = x_role._chars
-    x_listen._beliefs = x_role._beliefs
-    x_listen.set_monetary_desc(x_role._monetary_desc)
-    x_listen.set_max_tree_traverse(x_role._max_tree_traverse)
-    if x_role._char_credor_pool != None:
-        x_listen.set_char_credor_pool(x_role._char_credor_pool)
-    if x_role._char_debtor_pool != None:
-        x_listen.set_char_debtor_pool(x_role._char_debtor_pool)
+def create_listen_basis(x_duty: WorldUnit) -> WorldUnit:
+    x_listen = create_empty_world(x_duty, x_owner_id=x_duty._owner_id)
+    x_listen._chars = x_duty._chars
+    x_listen._beliefs = x_duty._beliefs
+    x_listen.set_monetary_desc(x_duty._monetary_desc)
+    x_listen.set_max_tree_traverse(x_duty._max_tree_traverse)
+    if x_duty._char_credor_pool != None:
+        x_listen.set_char_credor_pool(x_duty._char_credor_pool)
+    if x_duty._char_debtor_pool != None:
+        x_listen.set_char_debtor_pool(x_duty._char_debtor_pool)
     for x_charunit in x_listen._chars.values():
         x_charunit.reset_listen_calculated_attrs()
     return x_listen
 
 
-def get_default_home_world(soul: WorldUnit) -> WorldUnit:
-    default_home_world = create_listen_basis(soul)
-    default_home_world._last_gift_id = soul._last_gift_id
-    default_home_world._char_credor_pool = None
-    default_home_world._char_debtor_pool = None
-    return default_home_world
+def get_default_being_world(soul: WorldUnit) -> WorldUnit:
+    default_being_world = create_listen_basis(soul)
+    default_being_world._last_gift_id = soul._last_gift_id
+    default_being_world._char_credor_pool = None
+    default_being_world._char_debtor_pool = None
+    return default_being_world

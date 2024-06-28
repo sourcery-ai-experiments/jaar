@@ -3,7 +3,7 @@ from src._road.jaar_config import get_json_filename
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
 from src.listen.userhub import userhub_shop
-from src.listen.listen import create_listen_basis, listen_to_agendas_role_job
+from src.listen.listen import create_listen_basis, listen_to_agendas_duty_job
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as env_dir,
     env_dir_setup_cleanup,
@@ -28,18 +28,18 @@ from src.listen.examples.example_listen import (
 from os.path import exists as os_path_exists
 
 
-def test_listen_to_agenda_role_job_agenda_AddsTasksToJob_WorldWhenNo_suffbeliefIsSet(
+def test_listen_to_agenda_duty_job_agenda_AddsTasksToJob_WorldWhenNo_suffbeliefIsSet(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_role.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.set_char_pool(zia_pool)
+    yao_duty.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.set_char_pool(zia_pool)
 
     zia_job = worldunit_shop(zia_text)
     zia_job.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
@@ -47,27 +47,27 @@ def test_listen_to_agenda_role_job_agenda_AddsTasksToJob_WorldWhenNo_suffbeliefI
     zia_job.add_charunit(yao_text, debtor_weight=12)
     yao_dakota_userhub = userhub_shop(env_dir(), None, yao_text, get_dakota_road())
     yao_dakota_userhub.save_job_world(zia_job)
-    new_yao_job = create_listen_basis(yao_role)
+    new_yao_job = create_listen_basis(yao_duty)
     assert len(new_yao_job.get_agenda_dict()) == 0
 
     # WHEN
     print(f"{len(new_yao_job.get_idea_dict())=}")
-    listen_to_agendas_role_job(new_yao_job, yao_dakota_userhub)
+    listen_to_agendas_duty_job(new_yao_job, yao_dakota_userhub)
 
     # THEN
     assert len(new_yao_job.get_agenda_dict()) == 2
 
 
-def test_listen_to_agenda_role_job_agenda_AddsTasksToJob_World(env_dir_setup_cleanup):
+def test_listen_to_agenda_duty_job_agenda_AddsTasksToJob_World(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_role.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.set_char_pool(zia_pool)
+    yao_duty.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.set_char_pool(zia_pool)
 
     zia_job = worldunit_shop(zia_text)
     zia_job.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
@@ -82,18 +82,18 @@ def test_listen_to_agenda_role_job_agenda_AddsTasksToJob_World(env_dir_setup_cle
 
     # zia_file_path = f"{jobs_dir}/{zia_text}.json"
     # print(f"{os_path_exists(zia_file_path)=}")
-    new_yao_job = create_listen_basis(yao_role)
+    new_yao_job = create_listen_basis(yao_duty)
     assert len(new_yao_job.get_agenda_dict()) == 0
 
     # WHEN
     print(f"{len(new_yao_job.get_idea_dict())=}")
-    listen_to_agendas_role_job(new_yao_job, yao_dakota_userhub)
+    listen_to_agendas_duty_job(new_yao_job, yao_dakota_userhub)
 
     # THEN
     assert len(new_yao_job.get_agenda_dict()) == 2
 
 
-def test_listen_to_agenda_role_job_agenda_AddsTasksToJobWorldWithDetailsDecidedBy_debtor_weight(
+def test_listen_to_agenda_duty_job_agenda_AddsTasksToJobWorldWithDetailsDecidedBy_debtor_weight(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -115,61 +115,61 @@ def test_listen_to_agenda_role_job_agenda_AddsTasksToJobWorldWithDetailsDecidedB
     sue_dakota_userhub.save_job_world(zia_job)
     sue_dakota_userhub.save_job_world(bob_job)
 
-    yao_role = get_example_yao_speaker()
-    sue_dakota_userhub.save_role_world(yao_role)
-    new_yao_home1 = create_listen_basis(yao_role)
-    assert new_yao_home1.idea_exists(cook_road()) is False
+    yao_duty = get_example_yao_speaker()
+    sue_dakota_userhub.save_duty_world(yao_duty)
+    new_yao_being1 = create_listen_basis(yao_duty)
+    assert new_yao_being1.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_agendas_role_job(new_yao_home1, sue_dakota_userhub)
+    listen_to_agendas_duty_job(new_yao_being1, sue_dakota_userhub)
 
     # THEN
-    assert new_yao_home1.idea_exists(cook_road())
-    new_cook_idea = new_yao_home1.get_idea_obj(cook_road())
-    zia_charunit = new_yao_home1.get_char(zia_text)
-    bob_charunit = new_yao_home1.get_char(bob_text)
+    assert new_yao_being1.idea_exists(cook_road())
+    new_cook_idea = new_yao_being1.get_idea_obj(cook_road())
+    zia_charunit = new_yao_being1.get_char(zia_text)
+    bob_charunit = new_yao_being1.get_char(bob_text)
     assert zia_charunit.debtor_weight < bob_charunit.debtor_weight
     assert new_cook_idea.get_reasonunit(eat_road()) is None
 
     yao_zia_debtor_weight = 15
     yao_bob_debtor_weight = 5
-    yao_role.add_charunit(zia_text, None, yao_zia_debtor_weight)
-    yao_role.add_charunit(bob_text, None, yao_bob_debtor_weight)
-    yao_role.set_char_pool(100)
-    new_yao_home2 = create_listen_basis(yao_role)
-    assert new_yao_home2.idea_exists(cook_road()) is False
+    yao_duty.add_charunit(zia_text, None, yao_zia_debtor_weight)
+    yao_duty.add_charunit(bob_text, None, yao_bob_debtor_weight)
+    yao_duty.set_char_pool(100)
+    new_yao_being2 = create_listen_basis(yao_duty)
+    assert new_yao_being2.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_agendas_role_job(new_yao_home2, sue_dakota_userhub)
+    listen_to_agendas_duty_job(new_yao_being2, sue_dakota_userhub)
 
     # THEN
-    assert new_yao_home2.idea_exists(cook_road())
-    new_cook_idea = new_yao_home2.get_idea_obj(cook_road())
-    zia_charunit = new_yao_home2.get_char(zia_text)
-    bob_charunit = new_yao_home2.get_char(bob_text)
+    assert new_yao_being2.idea_exists(cook_road())
+    new_cook_idea = new_yao_being2.get_idea_obj(cook_road())
+    zia_charunit = new_yao_being2.get_char(zia_text)
+    bob_charunit = new_yao_being2.get_char(bob_text)
     assert zia_charunit.debtor_weight > bob_charunit.debtor_weight
     zia_eat_reasonunit = zia_cook_ideaunit.get_reasonunit(eat_road())
     assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit
 
 
-def test_listen_to_agenda_role_job_agenda_ProcessesIrrationalWorld(
+def test_listen_to_agenda_duty_job_agenda_ProcessesIrrationalWorld(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     sue_text = "Sue"
     sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_role.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_duty.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_role.set_char_pool(yao_pool)
+    yao_duty.set_char_pool(yao_pool)
     yao_dakota_userhub = userhub_shop(env_dir(), None, yao_text, get_dakota_road())
-    yao_dakota_userhub.save_role_world(yao_role)
+    yao_dakota_userhub.save_duty_world(yao_duty)
 
     zia_text = "Zia"
     zia_job = worldunit_shop(zia_text)
@@ -214,8 +214,8 @@ def test_listen_to_agenda_role_job_agenda_ProcessesIrrationalWorld(
     yao_dakota_userhub.save_job_world(sue_job)
 
     # WHEN
-    new_yao_job = create_listen_basis(yao_role)
-    listen_to_agendas_role_job(new_yao_job, yao_dakota_userhub)
+    new_yao_job = create_listen_basis(yao_duty)
+    listen_to_agendas_duty_job(new_yao_job, yao_dakota_userhub)
 
     # THEN irrational world is ignored
     assert len(new_yao_job.get_agenda_dict()) != 3
@@ -228,24 +228,24 @@ def test_listen_to_agenda_role_job_agenda_ProcessesIrrationalWorld(
     assert sue_charunit._irrational_debtor_weight == 51
 
 
-def test_listen_to_agenda_role_job_agenda_ProcessesMissingDebtorJobWorld(
+def test_listen_to_agenda_duty_job_agenda_ProcessesMissingDebtorJobWorld(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     zia_text = "Zia"
     sue_text = "Sue"
     zia_credor_weight = 47
     sue_credor_weight = 57
     zia_debtor_weight = 41
     sue_debtor_weight = 51
-    yao_role.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_duty.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_role.set_char_pool(yao_pool)
+    yao_duty.set_char_pool(yao_pool)
     yao_dakota_userhub = userhub_shop(env_dir(), None, yao_text, get_dakota_road())
-    yao_dakota_userhub.save_role_world(yao_role)
+    yao_dakota_userhub.save_duty_world(yao_duty)
 
     zia_job = worldunit_shop(zia_text)
     zia_job.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
@@ -259,8 +259,8 @@ def test_listen_to_agenda_role_job_agenda_ProcessesMissingDebtorJobWorld(
     yao_dakota_userhub.save_job_world(zia_job)
 
     # WHEN
-    new_yao_job = create_listen_basis(yao_role)
-    listen_to_agendas_role_job(new_yao_job, yao_dakota_userhub)
+    new_yao_job = create_listen_basis(yao_duty)
+    listen_to_agendas_duty_job(new_yao_job, yao_dakota_userhub)
 
     # THEN irrational world is ignored
     assert len(new_yao_job.get_agenda_dict()) != 3
@@ -273,25 +273,25 @@ def test_listen_to_agenda_role_job_agenda_ProcessesMissingDebtorJobWorld(
     assert sue_charunit._inallocable_debtor_weight == 51
 
 
-def test_listen_to_agenda_role_job_agenda_ListensToOwner_role_AndNotOwner_job(
+def test_listen_to_agenda_duty_job_agenda_ListensToOwner_duty_AndNotOwner_job(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     yao_text = "Yao"
     yao_credor_weight = 57
     yao_debtor_weight = 51
-    yao_role.add_charunit(yao_text, yao_credor_weight, yao_debtor_weight)
+    yao_duty.add_charunit(yao_text, yao_credor_weight, yao_debtor_weight)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
-    yao_role.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_pool = 87
-    yao_role.set_char_pool(yao_pool)
-    # save yao without task to roles
+    yao_duty.set_char_pool(yao_pool)
+    # save yao without task to dutys
     yao_dakota_userhub = userhub_shop(env_dir(), None, yao_text, get_dakota_road())
-    yao_dakota_userhub.save_role_world(yao_role)
+    yao_dakota_userhub.save_duty_world(yao_duty)
 
     # Save Zia to jobs
     zia_text = "Zia"
@@ -315,27 +315,27 @@ def test_listen_to_agenda_role_job_agenda_ListensToOwner_role_AndNotOwner_job(
     yao_dakota_userhub.save_job_world(yao_old_job)
 
     # WHEN
-    new_yao_job = create_listen_basis(yao_role)
-    listen_to_agendas_role_job(new_yao_job, yao_dakota_userhub)
+    new_yao_job = create_listen_basis(yao_duty)
+    listen_to_agendas_duty_job(new_yao_job, yao_dakota_userhub)
 
     # THEN irrational world is ignored
     assert len(new_yao_job.get_agenda_dict()) != 3
     assert len(new_yao_job.get_agenda_dict()) == 2
 
 
-def test_listen_to_agenda_role_job_agenda_GetsAgendaFromSrcWorldNotSpeakerSelf(
+def test_listen_to_agenda_duty_job_agenda_GetsAgendaFromSrcWorldNotSpeakerSelf(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    # yao_role has task run_road
+    # yao_duty has task run_road
     # yao_job has task clean_road
-    # yao_new_job picks yao_role task run_road and not clean_road
-    yao_role = get_example_yao_speaker()
-    assert yao_role.idea_exists(run_road()) is False
-    assert yao_role.idea_exists(clean_road()) is False
-    yao_role.add_idea(ideaunit_shop(run_text(), pledge=True), casa_road())
+    # yao_new_job picks yao_duty task run_road and not clean_road
+    yao_duty = get_example_yao_speaker()
+    assert yao_duty.idea_exists(run_road()) is False
+    assert yao_duty.idea_exists(clean_road()) is False
+    yao_duty.add_idea(ideaunit_shop(run_text(), pledge=True), casa_road())
     sue_dakota_userhub = get_dakota_userhub()
-    sue_dakota_userhub.save_role_world(yao_role)
+    sue_dakota_userhub.save_duty_world(yao_duty)
 
     yao_old_job = get_example_yao_speaker()
     assert yao_old_job.idea_exists(run_road()) is False
@@ -343,12 +343,12 @@ def test_listen_to_agenda_role_job_agenda_GetsAgendaFromSrcWorldNotSpeakerSelf(
     yao_old_job.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
     sue_dakota_userhub.save_job_world(yao_old_job)
 
-    yao_new_job = create_listen_basis(yao_role)
+    yao_new_job = create_listen_basis(yao_duty)
     assert yao_new_job.idea_exists(run_road()) is False
     assert yao_new_job.idea_exists(clean_road()) is False
 
     # WHEN
-    listen_to_agendas_role_job(yao_new_job, sue_dakota_userhub)
+    listen_to_agendas_duty_job(yao_new_job, sue_dakota_userhub)
 
     # THEN
     assert yao_new_job.idea_exists(clean_road()) is False

@@ -2,8 +2,8 @@ from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
 from src.listen.listen import (
     create_listen_basis,
-    listen_to_facts_role_job,
-    listen_to_agendas_role_job,
+    listen_to_facts_duty_job,
+    listen_to_agendas_duty_job,
 )
 from src.listen.examples.listen_env import get_texas_userhub, env_dir_setup_cleanup
 from src.listen.examples.example_listen import (
@@ -25,49 +25,49 @@ from src.listen.examples.example_listen import (
 )
 
 
-def test_listen_to_facts_role_job_SetsSingleFactUnit_v1(env_dir_setup_cleanup):
+def test_listen_to_facts_duty_job_SetsSingleFactUnit_v1(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_role.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.set_char_pool(zia_pool)
+    yao_duty.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.set_char_pool(zia_pool)
     sue_texas_userhub = get_texas_userhub()
-    sue_texas_userhub.save_role_world(yao_role)
+    sue_texas_userhub.save_duty_world(yao_duty)
 
     zia_job = get_example_zia_speaker()
     sue_texas_userhub.save_job_world(zia_job)
     print(f"         {sue_texas_userhub.job_path(zia_text)=}")
 
-    new_yao_job = create_listen_basis(yao_role)
+    new_yao_job = create_listen_basis(yao_duty)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_agendas_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_agendas_duty_job(new_yao_job, sue_texas_userhub)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) != None
 
     # WHEN
-    listen_to_facts_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_facts_duty_job(new_yao_job, sue_texas_userhub)
 
     # THEN
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
 
 
-def test_listen_to_facts_role_job_SetsSingleFactUnitWithDifferentTask(
+def test_listen_to_facts_duty_job_SetsSingleFactUnitWithDifferentTask(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     yao_credor_weight = 47
     yao_debtor_weight = 41
     yao_pool = 87
     zia_text = "Zia"
-    yao_role.add_charunit(zia_text, yao_credor_weight, yao_debtor_weight)
-    yao_role.set_char_pool(yao_pool)
+    yao_duty.add_charunit(zia_text, yao_credor_weight, yao_debtor_weight)
+    yao_duty.set_char_pool(yao_pool)
     sue_texas_userhub = get_texas_userhub()
-    sue_texas_userhub.save_role_world(yao_role)
+    sue_texas_userhub.save_duty_world(yao_duty)
 
     zia_job = get_example_zia_speaker()
     zia_job.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
@@ -75,60 +75,60 @@ def test_listen_to_facts_role_job_SetsSingleFactUnitWithDifferentTask(
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     sue_texas_userhub.save_job_world(zia_job)
 
-    new_yao_job = create_listen_basis(yao_role)
+    new_yao_job = create_listen_basis(yao_duty)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_agendas_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_agendas_duty_job(new_yao_job, sue_texas_userhub)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) != None
     assert new_yao_job.get_fact(eat_road()) is None
 
     # WHEN
-    listen_to_facts_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_facts_duty_job(new_yao_job, sue_texas_userhub)
 
     # THEN
     assert new_yao_job.get_fact(eat_road()) != None
 
 
-def test_listen_to_facts_role_job_GetsFactsFromSrcWorldSelfNotSpeakerSelf(
+def test_listen_to_facts_duty_job_GetsFactsFromSrcWorldSelfNotSpeakerSelf(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    # yao_role has fact eat_road = full
+    # yao_duty has fact eat_road = full
     # yao_job has fact eat_road = hungry
-    # new_yao_job picks yao_role fact eat_road = full
-    yao_role = get_example_yao_speaker()
-    yao_role.set_fact(eat_road(), full_road())
+    # new_yao_job picks yao_duty fact eat_road = full
+    yao_duty = get_example_yao_speaker()
+    yao_duty.set_fact(eat_road(), full_road())
     sue_texas_userhub = get_texas_userhub()
-    sue_texas_userhub.save_role_world(yao_role)
-    print(f"{sue_texas_userhub.role_path(yao_role)=}")
-    assert yao_role.get_fact(eat_road()).pick == full_road()
+    sue_texas_userhub.save_duty_world(yao_duty)
+    print(f"{sue_texas_userhub.duty_path(yao_duty)=}")
+    assert yao_duty.get_fact(eat_road()).pick == full_road()
 
     old_yao_job = get_example_yao_speaker()
     assert old_yao_job.get_fact(eat_road()).pick == hungry_road()
     sue_texas_userhub.save_job_world(old_yao_job)
 
-    new_yao_job = create_listen_basis(yao_role)
+    new_yao_job = create_listen_basis(yao_duty)
     assert new_yao_job.get_fact(eat_road()) is None
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_agendas_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_agendas_duty_job(new_yao_job, sue_texas_userhub)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) != None
 
     # WHEN
-    listen_to_facts_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_facts_duty_job(new_yao_job, sue_texas_userhub)
 
     # THEN
     assert new_yao_job.get_fact(eat_road()) != None
     assert new_yao_job.get_fact(eat_road()).pick == full_road()
 
 
-def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirWorld_v1(
+def test_listen_to_facts_duty_job_ConfirmNoFactPickedFromOwnersSpeakerDirWorld_v1(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    yao_role = get_example_yao_speaker()
-    yao_role.del_fact(eat_road())
-    assert yao_role.get_fact(eat_road()) is None
+    yao_duty = get_example_yao_speaker()
+    yao_duty.del_fact(eat_road())
+    assert yao_duty.get_fact(eat_road()) is None
     sue_texas_userhub = get_texas_userhub()
-    sue_texas_userhub.save_role_world(yao_role)
+    sue_texas_userhub.save_duty_world(yao_duty)
 
     zia_job = get_example_zia_speaker()
     zia_job.set_fact(eat_road(), eat_road())
@@ -139,54 +139,54 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirWorld_v
     assert old_yao_job.get_fact(eat_road()).pick == hungry_road()
     sue_texas_userhub.save_job_world(old_yao_job)
 
-    new_yao_job = create_listen_basis(yao_role)
+    new_yao_job = create_listen_basis(yao_duty)
     assert new_yao_job.get_fact(eat_road()) is None
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_agendas_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_agendas_duty_job(new_yao_job, sue_texas_userhub)
     print(f"{new_yao_job.get_missing_fact_bases().keys()=}")
     print(f"{new_yao_job._idearoot._factunits.keys()=}")
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) != None
 
     # WHEN
-    listen_to_facts_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_facts_duty_job(new_yao_job, sue_texas_userhub)
 
     # THEN
-    assert yao_role.get_fact(eat_road()) is None
+    assert yao_duty.get_fact(eat_road()) is None
     assert zia_job.get_fact(eat_road()).pick == eat_road()
     assert old_yao_job.get_fact(eat_road()).pick == hungry_road()
     assert new_yao_job.get_fact(eat_road()).pick == eat_road()
 
 
-def test_listen_to_facts_role_job_SetsPrioritizesSelfFactsOverSpeakers(
+def test_listen_to_facts_duty_job_SetsPrioritizesSelfFactsOverSpeakers(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    yao_role = get_example_yao_speaker()
-    yao_role.set_fact(eat_road(), full_road())
-    assert yao_role.get_fact(eat_road()).pick == full_road()
+    yao_duty = get_example_yao_speaker()
+    yao_duty.set_fact(eat_road(), full_road())
+    assert yao_duty.get_fact(eat_road()).pick == full_road()
     sue_texas_userhub = get_texas_userhub()
-    sue_texas_userhub.save_role_world(yao_role)
+    sue_texas_userhub.save_duty_world(yao_duty)
 
     zia_job = get_example_zia_speaker()
     zia_job.set_fact(eat_road(), hungry_road())
     assert zia_job.get_fact(eat_road()).pick == hungry_road()
     sue_texas_userhub.save_job_world(zia_job)
 
-    new_yao_job = create_listen_basis(yao_role)
+    new_yao_job = create_listen_basis(yao_duty)
     assert new_yao_job.get_fact(eat_road()) is None
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_agendas_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_agendas_duty_job(new_yao_job, sue_texas_userhub)
     assert new_yao_job.get_missing_fact_bases().get(eat_road()) != None
 
     # WHEN
-    listen_to_facts_role_job(new_yao_job, sue_texas_userhub)
+    listen_to_facts_duty_job(new_yao_job, sue_texas_userhub)
 
     # THEN
     assert new_yao_job.get_fact(eat_road()) != None
     assert new_yao_job.get_fact(eat_road()).pick == full_road()
 
 
-def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirWorld_v2(
+def test_listen_to_facts_duty_job_ConfirmNoFactPickedFromOwnersSpeakerDirWorld_v2(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -202,24 +202,24 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirWorld_v
     assert bob_job.get_fact(eat_road()).pick == hungry_road()
     sue_texas_userhub.save_job_world(bob_job)
 
-    yao_role = get_example_yao_speaker()
-    yao_role.del_fact(eat_road())
-    assert yao_role.get_fact(eat_road()) is None
-    sue_texas_userhub.save_role_world(yao_role)
+    yao_duty = get_example_yao_speaker()
+    yao_duty.del_fact(eat_road())
+    assert yao_duty.get_fact(eat_road()) is None
+    sue_texas_userhub.save_duty_world(yao_duty)
 
-    new_yao_job1 = create_listen_basis(yao_role)
+    new_yao_job1 = create_listen_basis(yao_duty)
     assert new_yao_job1.get_fact(eat_road()) is None
     assert new_yao_job1.get_missing_fact_bases().get(eat_road()) is None
-    listen_to_agendas_role_job(new_yao_job1, sue_texas_userhub)
+    listen_to_agendas_duty_job(new_yao_job1, sue_texas_userhub)
     print(f"{new_yao_job1.get_missing_fact_bases().keys()=}")
     print(f"{new_yao_job1._idearoot._factunits.keys()=}")
     assert new_yao_job1.get_missing_fact_bases().get(eat_road()) != None
 
     # WHEN
-    listen_to_facts_role_job(new_yao_job1, sue_texas_userhub)
+    listen_to_facts_duty_job(new_yao_job1, sue_texas_userhub)
 
     # THEN
-    assert yao_role.get_fact(eat_road()) is None
+    assert yao_duty.get_fact(eat_road()) is None
     zia_charunit = new_yao_job1.get_char(zia_text)
     bob_charunit = new_yao_job1.get_char(bob_text)
     assert zia_charunit.debtor_weight < bob_charunit.debtor_weight
@@ -230,12 +230,12 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirWorld_v
     # WHEN
     yao_zia_debtor_weight = 15
     yao_bob_debtor_weight = 5
-    yao_role.add_charunit(zia_text, None, yao_zia_debtor_weight)
-    yao_role.add_charunit(bob_text, None, yao_bob_debtor_weight)
-    yao_role.set_char_pool(100)
-    new_yao_job2 = create_listen_basis(yao_role)
-    listen_to_agendas_role_job(new_yao_job2, sue_texas_userhub)
-    listen_to_facts_role_job(new_yao_job2, sue_texas_userhub)
+    yao_duty.add_charunit(zia_text, None, yao_zia_debtor_weight)
+    yao_duty.add_charunit(bob_text, None, yao_bob_debtor_weight)
+    yao_duty.set_char_pool(100)
+    new_yao_job2 = create_listen_basis(yao_duty)
+    listen_to_agendas_duty_job(new_yao_job2, sue_texas_userhub)
+    listen_to_facts_duty_job(new_yao_job2, sue_texas_userhub)
 
     # THEN
     zia_charunit = new_yao_job2.get_char(zia_text)
@@ -246,7 +246,7 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirWorld_v
     assert new_yao_job2.get_fact(eat_road()).pick == eat_road()
 
 
-# def test_listen_to_facts_role_job_SetsFact(env_dir_setup_cleanup):
+# def test_listen_to_facts_duty_job_SetsFact(env_dir_setup_cleanup):
 #     # GIVEN
 #     yao_text = "Yao"
 #     sue_text = "Sue"
@@ -275,13 +275,13 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirWorld_v
 
 #     sue_texas_userhub = get_texas_userhub()
 #     sue_texas_userhub.save_job_world(sue_text, sue_speaker.get_json(), True)
-#     yao_role = worldunit_shop(yao_text)
-#     yao_role.add_charunit(yao_text)
-#     yao_role.add_charunit(sue_text)
-#     new_yao_job = create_listen_basis(yao_role)
+#     yao_duty = worldunit_shop(yao_text)
+#     yao_duty.add_charunit(yao_text)
+#     yao_duty.add_charunit(sue_text)
+#     new_yao_job = create_listen_basis(yao_duty)
 #     print(f"{new_yao_job.get_idea_dict().keys()=}")
 #     # assert new_yao_job.get_missing_fact_bases().get(status_road) is None
-#     listen_to_agendas_role_job(new_yao_job, texas_userhub)
+#     listen_to_agendas_duty_job(new_yao_job, texas_userhub)
 #     print(f"{new_yao_job.get_idea_dict().keys()=}")
 #     assert new_yao_job.get_missing_fact_bases().get(status_road) != None
 
@@ -289,59 +289,59 @@ def test_listen_to_facts_role_job_ConfirmNoFactPickedFromOwnersSpeakerDirWorld_v
 #     # sue_speaker.set_fact(status_road, clean_road, create_missing_ideas=True)
 
 #     # # WHEN
-#     # listen_to_facts_role_job(yao_role, yao_job, missing_fact_bases)
+#     # listen_to_facts_duty_job(yao_duty, yao_job, missing_fact_bases)
 
 #     # # THEN
-#     # assert len(yao_role.get_missing_fact_bases().keys()) == 0
+#     # assert len(yao_duty.get_missing_fact_bases().keys()) == 0
 #     assert 1 == 3
 
 
-# def test_listen_to_facts_role_job_DoesNotOverrideFact():
+# def test_listen_to_facts_duty_job_DoesNotOverrideFact():
 #     # GIVEN
 #     yao_text = "Yao"
-#     yao_role = worldunit_shop(yao_text)
-#     yao_role.add_charunit(yao_text)
-#     yao_role.set_char_pool(20)
+#     yao_duty = worldunit_shop(yao_text)
+#     yao_duty.add_charunit(yao_text)
+#     yao_duty.set_char_pool(20)
 #     casa_text = "casa"
-#     casa_road = yao_role.make_l1_road(casa_text)
+#     casa_road = yao_duty.make_l1_road(casa_text)
 #     status_text = "status"
-#     status_road = yao_role.make_road(casa_road, status_text)
+#     status_road = yao_duty.make_road(casa_road, status_text)
 #     clean_text = "clean"
-#     clean_road = yao_role.make_road(status_road, clean_text)
+#     clean_road = yao_duty.make_road(status_road, clean_text)
 #     dirty_text = "dirty"
-#     dirty_road = yao_role.make_road(status_road, dirty_text)
+#     dirty_road = yao_duty.make_road(status_road, dirty_text)
 #     sweep_text = "sweep"
-#     sweep_road = yao_role.make_road(casa_road, sweep_text)
+#     sweep_road = yao_duty.make_road(casa_road, sweep_text)
 #     fridge_text = "fridge"
-#     fridge_road = yao_role.make_road(casa_road, fridge_text)
+#     fridge_road = yao_duty.make_road(casa_road, fridge_text)
 #     running_text = "running"
-#     running_road = yao_role.make_road(fridge_road, running_text)
+#     running_road = yao_duty.make_road(fridge_road, running_text)
 
-#     yao_role.add_idea(ideaunit_shop(running_text), fridge_road)
-#     yao_role.add_idea(ideaunit_shop(clean_text), status_road)
-#     yao_role.add_idea(ideaunit_shop(dirty_text), status_road)
-#     yao_role.add_idea(ideaunit_shop(sweep_text, pledge=True), casa_road)
-#     yao_role.edit_idea_attr(
+#     yao_duty.add_idea(ideaunit_shop(running_text), fridge_road)
+#     yao_duty.add_idea(ideaunit_shop(clean_text), status_road)
+#     yao_duty.add_idea(ideaunit_shop(dirty_text), status_road)
+#     yao_duty.add_idea(ideaunit_shop(sweep_text, pledge=True), casa_road)
+#     yao_duty.edit_idea_attr(
 #         sweep_road, reason_base=status_road, reason_premise=dirty_road
 #     )
-#     yao_role.edit_idea_attr(
+#     yao_duty.edit_idea_attr(
 #         sweep_road, reason_base=fridge_road, reason_premise=running_road
 #     )
-#     assert len(yao_role.get_missing_fact_bases()) == 2
-#     yao_role.set_fact(status_road, dirty_road)
-#     assert len(yao_role.get_missing_fact_bases()) == 1
-#     assert yao_role.get_fact(status_road).pick == dirty_road
+#     assert len(yao_duty.get_missing_fact_bases()) == 2
+#     yao_duty.set_fact(status_road, dirty_road)
+#     assert len(yao_duty.get_missing_fact_bases()) == 1
+#     assert yao_duty.get_fact(status_road).pick == dirty_road
 
 #     # WHEN
 #     yao_job = worldunit_shop(yao_text)
 #     yao_job.set_fact(status_road, clean_road, create_missing_ideas=True)
 #     yao_job.set_fact(fridge_road, running_road, create_missing_ideas=True)
-#     missing_fact_bases = list(yao_role.get_missing_fact_bases().keys())
-#     listen_to_facts_role_job(yao_role, yao_job, missing_fact_bases)
+#     missing_fact_bases = list(yao_duty.get_missing_fact_bases().keys())
+#     listen_to_facts_duty_job(yao_duty, yao_job, missing_fact_bases)
 
 #     # THEN
-#     assert len(yao_role.get_missing_fact_bases()) == 0
+#     assert len(yao_duty.get_missing_fact_bases()) == 0
 #     # did not grab speaker's factunit
-#     assert yao_role.get_fact(status_road).pick == dirty_road
+#     assert yao_duty.get_fact(status_road).pick == dirty_road
 #     # grabed speaker's factunit
-#     assert yao_role.get_fact(fridge_road).pick == running_road
+#     assert yao_duty.get_fact(fridge_road).pick == running_road

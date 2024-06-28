@@ -1,6 +1,6 @@
 from src._road.jaar_config import (
     soul_str,
-    home_str,
+    being_str,
     get_rootpart_of_econ_dir,
     treasury_file_name,
     max_tree_traverse_default,
@@ -12,8 +12,8 @@ def test_soul_str():
     assert soul_str() == "soul"
 
 
-def test_home_str():
-    assert home_str() == "home"
+def test_being_str():
+    assert being_str() == "being"
 
 
 def test_get_rootpart_of_econ_dir_ReturnsCorrectObj():

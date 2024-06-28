@@ -3,7 +3,7 @@ from src._road.jaar_config import get_descending_text
 from src._world.char import charunit_shop
 from src._world.world import worldunit_shop
 from src.listen.meld_files import get_file_names_in_voice_rank_order
-from src.listen.listen import create_job_file_from_role_file
+from src.listen.listen import create_job_file_from_duty_file
 from src.money.money import moneyunit_shop
 from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
 
@@ -89,33 +89,33 @@ def test_MoneyUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type
     elu_text = "Elu"
 
     yao_text = "Yao"
-    yao_role0_world = worldunit_shop(_owner_id=yao_text)
-    yao_role0_world.set_charunit(charunit_shop(ava_text))
-    yao_role0_world.set_charunit(charunit_shop(bob_text))
-    yao_role0_world.set_charunit(charunit_shop(cal_text))
-    yao_role0_world.set_charunit(charunit_shop(dom_text))
-    yao_role0_world.set_charunit(charunit_shop(elu_text))
-    texas_userhub.save_role_world(yao_role0_world)
-    create_job_file_from_role_file(texas_userhub, yao_text)
-    yao_role1_world = texas_userhub.get_role_world(yao_text)
-    assert yao_role1_world.get_char(ava_text)._treasury_voice_rank is None
-    assert yao_role1_world.get_char(bob_text)._treasury_voice_rank is None
-    assert yao_role1_world.get_char(cal_text)._treasury_voice_rank is None
-    assert yao_role1_world.get_char(dom_text)._treasury_voice_rank is None
-    assert yao_role1_world.get_char(elu_text)._treasury_voice_rank is None
+    yao_duty0_world = worldunit_shop(_owner_id=yao_text)
+    yao_duty0_world.set_charunit(charunit_shop(ava_text))
+    yao_duty0_world.set_charunit(charunit_shop(bob_text))
+    yao_duty0_world.set_charunit(charunit_shop(cal_text))
+    yao_duty0_world.set_charunit(charunit_shop(dom_text))
+    yao_duty0_world.set_charunit(charunit_shop(elu_text))
+    texas_userhub.save_duty_world(yao_duty0_world)
+    create_job_file_from_duty_file(texas_userhub, yao_text)
+    yao_duty1_world = texas_userhub.get_duty_world(yao_text)
+    assert yao_duty1_world.get_char(ava_text)._treasury_voice_rank is None
+    assert yao_duty1_world.get_char(bob_text)._treasury_voice_rank is None
+    assert yao_duty1_world.get_char(cal_text)._treasury_voice_rank is None
+    assert yao_duty1_world.get_char(dom_text)._treasury_voice_rank is None
+    assert yao_duty1_world.get_char(elu_text)._treasury_voice_rank is None
 
     # WHEN
-    x_money.set_role_voice_ranks(yao_text, sort_order=get_descending_text())
+    x_money.set_duty_voice_ranks(yao_text, sort_order=get_descending_text())
 
     # THEN
-    yao_role2_world = texas_userhub.get_role_world(yao_text)
-    assert yao_role2_world.get_char(ava_text)._treasury_voice_rank != None
-    assert yao_role2_world.get_char(bob_text)._treasury_voice_rank != None
-    assert yao_role2_world.get_char(cal_text)._treasury_voice_rank != None
-    assert yao_role2_world.get_char(dom_text)._treasury_voice_rank != None
-    assert yao_role2_world.get_char(elu_text)._treasury_voice_rank != None
-    assert yao_role2_world.get_char(ava_text)._treasury_voice_rank == 0
-    assert yao_role2_world.get_char(bob_text)._treasury_voice_rank == 1
-    assert yao_role2_world.get_char(cal_text)._treasury_voice_rank == 2
-    assert yao_role2_world.get_char(dom_text)._treasury_voice_rank == 3
-    assert yao_role2_world.get_char(elu_text)._treasury_voice_rank == 4
+    yao_duty2_world = texas_userhub.get_duty_world(yao_text)
+    assert yao_duty2_world.get_char(ava_text)._treasury_voice_rank != None
+    assert yao_duty2_world.get_char(bob_text)._treasury_voice_rank != None
+    assert yao_duty2_world.get_char(cal_text)._treasury_voice_rank != None
+    assert yao_duty2_world.get_char(dom_text)._treasury_voice_rank != None
+    assert yao_duty2_world.get_char(elu_text)._treasury_voice_rank != None
+    assert yao_duty2_world.get_char(ava_text)._treasury_voice_rank == 0
+    assert yao_duty2_world.get_char(bob_text)._treasury_voice_rank == 1
+    assert yao_duty2_world.get_char(cal_text)._treasury_voice_rank == 2
+    assert yao_duty2_world.get_char(dom_text)._treasury_voice_rank == 3
+    assert yao_duty2_world.get_char(elu_text)._treasury_voice_rank == 4

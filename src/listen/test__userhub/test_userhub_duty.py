@@ -31,7 +31,7 @@ def test_UserHub_create_econ_dir_if_missing_CreatesDirectory(env_dir_setup_clean
     assert os_path_exists(sue_userhub.econ_dir())
 
 
-def test_UserHub_save_role_world_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_UserHub_save_duty_world_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
@@ -44,16 +44,16 @@ def test_UserHub_save_role_world_CorrectlySavesFile(env_dir_setup_cleanup):
     bob_text = "Bob"
     bob_world = get_world_with_4_levels()
     bob_world.set_owner_id(bob_text)
-    assert sue_userhub.role_file_exists(bob_text) is False
+    assert sue_userhub.duty_file_exists(bob_text) is False
 
     # WHEN
-    sue_userhub.save_role_world(bob_world)
+    sue_userhub.save_duty_world(bob_world)
 
     # THEN
-    assert sue_userhub.role_file_exists(bob_text)
+    assert sue_userhub.duty_file_exists(bob_text)
 
 
-def test_UserHub_role_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+def test_UserHub_duty_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
@@ -66,16 +66,16 @@ def test_UserHub_role_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     bob_text = "Bob"
     bob_world = get_world_with_4_levels()
     bob_world.set_owner_id(bob_text)
-    assert sue_userhub.role_file_exists(bob_text) is False
+    assert sue_userhub.duty_file_exists(bob_text) is False
 
     # WHEN
-    sue_userhub.save_role_world(bob_world)
+    sue_userhub.save_duty_world(bob_world)
 
     # THEN
-    assert sue_userhub.role_file_exists(bob_text)
+    assert sue_userhub.duty_file_exists(bob_text)
 
 
-def test_UserHub_get_role_world_OpensFile(env_dir_setup_cleanup):
+def test_UserHub_get_duty_world_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     nation_text = "nation-state"
@@ -88,27 +88,27 @@ def test_UserHub_get_role_world_OpensFile(env_dir_setup_cleanup):
     bob_text = "Bob"
     bob_world = get_world_with_4_levels()
     bob_world.set_owner_id(bob_text)
-    sue_userhub.save_role_world(bob_world)
+    sue_userhub.save_duty_world(bob_world)
 
     # WHEN / THEN
-    assert sue_userhub.get_role_world(bob_text).get_dict() == bob_world.get_dict()
+    assert sue_userhub.get_duty_world(bob_text).get_dict() == bob_world.get_dict()
 
 
-def test_UserHub_delete_role_file_DeletesWorldFile(env_dir_setup_cleanup):
+def test_UserHub_delete_duty_file_DeletesWorldFile(env_dir_setup_cleanup):
     # GIVEN
     texas_userhub = get_texas_userhub()
     sue_world = get_world_with_4_levels()
     sue_text = sue_world._owner_id
-    texas_userhub.save_role_world(sue_world)
-    print(f"{texas_userhub.role_path(sue_text)=}")
-    role_path = texas_userhub.role_path(sue_text)
-    assert texas_userhub.role_file_exists(sue_text)
+    texas_userhub.save_duty_world(sue_world)
+    print(f"{texas_userhub.duty_path(sue_text)=}")
+    duty_path = texas_userhub.duty_path(sue_text)
+    assert texas_userhub.duty_file_exists(sue_text)
 
     # WHEN
-    texas_userhub.delete_role_file(sue_text)
+    texas_userhub.delete_duty_file(sue_text)
 
     # THEN
-    assert texas_userhub.role_file_exists(sue_text) is False
+    assert texas_userhub.duty_file_exists(sue_text) is False
 
 
 def test_UserHub_save_job_world_CorrectlySavesFile(env_dir_setup_cleanup):

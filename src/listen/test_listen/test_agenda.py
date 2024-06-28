@@ -225,17 +225,17 @@ def test_listen_to_speaker_agenda_Returns2AgendaIdeasLevel2TaskWorldWhereAnIdeaU
 def test_listen_to_speaker_agenda_ProcessesIrrationalWorld():
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     sue_text = "Sue"
     sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_role.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_duty.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_role.set_char_pool(yao_pool)
+    yao_duty.set_char_pool(yao_pool)
 
     sue_worldunit = worldunit_shop(sue_text)
     sue_worldunit.set_max_tree_traverse(5)
@@ -267,7 +267,7 @@ def test_listen_to_speaker_agenda_ProcessesIrrationalWorld():
     )
 
     # WHEN
-    yao_job = create_empty_world(yao_role, yao_text)
+    yao_job = create_empty_world(yao_duty, yao_text)
     yao_job.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_job.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_job.set_char_pool(yao_pool)
@@ -287,21 +287,21 @@ def test_listen_to_speaker_agenda_ProcessesIrrationalWorld():
 def test_listen_to_speaker_agenda_ProcessesBarrenWorld():
     # GIVEN
     yao_text = "Yao"
-    yao_role = worldunit_shop(yao_text)
+    yao_duty = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     sue_text = "Sue"
     sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_role.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_role.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_duty.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_duty.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_role.set_char_pool(yao_pool)
+    yao_duty.set_char_pool(yao_pool)
 
     # WHEN
-    sue_job = create_empty_world(yao_role, sue_text)
-    yao_job = create_empty_world(yao_role, yao_text)
+    sue_job = create_empty_world(yao_duty, sue_text)
+    yao_job = create_empty_world(yao_duty, yao_text)
     yao_job.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_job.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_job.set_char_pool(yao_pool)

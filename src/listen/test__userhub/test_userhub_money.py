@@ -102,7 +102,7 @@ def test_UserHub_get_econ_roads_ReturnsObj(env_dir_setup_cleanup):
     assert elpaso_road in sue_econ_roads
 
 
-def test_UserHub_save_all_soul_roles_CorrectlySetsroles(
+def test_UserHub_save_all_soul_dutys_CorrectlySetsdutys(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -129,16 +129,16 @@ def test_UserHub_save_all_soul_roles_CorrectlySetsroles(
     sue_userhub.save_soul_world(sue_soul_world)
     sue_dallas_userhub = userhub_shop(env_dir(), None, sue_text, dallas_road)
     sue_elpaso_userhub = userhub_shop(env_dir(), None, sue_text, elpaso_road)
-    assert os_path_exists(sue_dallas_userhub.role_path(sue_text)) is False
-    assert os_path_exists(sue_elpaso_userhub.role_path(sue_text)) is False
+    assert os_path_exists(sue_dallas_userhub.duty_path(sue_text)) is False
+    assert os_path_exists(sue_elpaso_userhub.duty_path(sue_text)) is False
     assert sue_userhub.econ_road is None
 
     # WHEN
-    sue_userhub.save_all_soul_roles()
+    sue_userhub.save_all_soul_dutys()
 
     # THEN
-    assert os_path_exists(sue_dallas_userhub.role_path(sue_text))
-    assert os_path_exists(sue_elpaso_userhub.role_path(sue_text))
+    assert os_path_exists(sue_dallas_userhub.duty_path(sue_text))
+    assert os_path_exists(sue_elpaso_userhub.duty_path(sue_text))
     assert sue_userhub.econ_road is None
 
 
