@@ -26,8 +26,8 @@ def soul_str() -> str:
     return "soul"
 
 
-def home_str() -> str:
-    return "home"
+def being_str() -> str:
+    return "being"
 
 
 def jobs_str() -> str:

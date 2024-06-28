@@ -63,21 +63,21 @@ def get_real_souls_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     return fig
 
 
-def get_real_homes_chars_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_beings_chars_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
     owner_userhubs = x_real.get_owner_userhubs()
-    # for all owners get home
-    home_dfs = []
+    # for all owners get being
+    being_dfs = []
     for x_userhub in owner_userhubs.values():
-        home_world = x_userhub.get_home_world()
-        home_world.calc_world_metrics()
-        home_df = get_world_charunits_dataframe(home_world)
-        home_df.insert(0, "owner_id", home_world._owner_id)
-        home_dfs.append(home_df)
-    return pandas_concat(home_dfs, ignore_index=True)
+        being_world = x_userhub.get_being_world()
+        being_world.calc_world_metrics()
+        being_df = get_world_charunits_dataframe(being_world)
+        being_df.insert(0, "owner_id", being_world._owner_id)
+        being_dfs.append(being_df)
+    return pandas_concat(being_dfs, ignore_index=True)
 
 
-def get_real_homes_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_beings_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "char_id",
@@ -88,7 +88,7 @@ def get_real_homes_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_world_agenda_cred",
         "_world_agenda_debt",
     ]
-    df = get_real_homes_chars_dataframe(x_real)
+    df = get_real_beings_chars_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -111,7 +111,7 @@ def get_real_homes_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', home chars metrics"
+    fig_title = f"Real '{x_real.real_id}', being chars metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -178,20 +178,20 @@ def get_real_souls_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     return fig
 
 
-def get_real_homes_agenda_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_beings_agenda_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
     owner_userhubs = x_real.get_owner_userhubs()
-    # for all owners get home
-    home_dfs = []
+    # for all owners get being
+    being_dfs = []
     for x_userhub in owner_userhubs.values():
-        home_world = x_userhub.get_home_world()
-        home_world.calc_world_metrics()
-        home_df = get_world_agenda_dataframe(home_world)
-        home_dfs.append(home_df)
-    return pandas_concat(home_dfs, ignore_index=True)
+        being_world = x_userhub.get_being_world()
+        being_world.calc_world_metrics()
+        being_df = get_world_agenda_dataframe(being_world)
+        being_dfs.append(being_df)
+    return pandas_concat(being_dfs, ignore_index=True)
 
 
-def get_real_homes_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_beings_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "world_importance",
@@ -204,7 +204,7 @@ def get_real_homes_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_numor",
         "_reest",
     ]
-    df = get_real_homes_agenda_dataframe(x_real)
+    df = get_real_beings_agenda_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -229,7 +229,7 @@ def get_real_homes_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', home agenda metrics"
+    fig_title = f"Real '{x_real.real_id}', being agenda metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

@@ -3,7 +3,7 @@ from src._road.jaar_config import get_json_filename
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
 from src.listen.userhub import userhub_shop
-from src.listen.listen import create_listen_basis, listen_to_agendas_soul_home
+from src.listen.listen import create_listen_basis, listen_to_agendas_soul_being
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as env_dir,
     env_dir_setup_cleanup,
@@ -27,7 +27,7 @@ from src.listen.examples.example_listen import (
 from os.path import exists as os_path_exists
 
 
-def test_listen_to_agendas_soul_home_AddsTasksToWorldWhenNo_suffbeliefIsSet(
+def test_listen_to_agendas_soul_being_AddsTasksToWorldWhenNo_suffbeliefIsSet(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -42,25 +42,25 @@ def test_listen_to_agendas_soul_home_AddsTasksToWorldWhenNo_suffbeliefIsSet(
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_soul_world(yao_soul)
 
-    zia_home = worldunit_shop(zia_text)
-    zia_home.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    zia_home.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_home.add_charunit(yao_text, debtor_weight=12)
+    zia_being = worldunit_shop(zia_text)
+    zia_being.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
+    zia_being.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    zia_being.add_charunit(yao_text, debtor_weight=12)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_home_world(zia_home)
+    zia_userhub.save_being_world(zia_being)
 
-    new_yao_home = create_listen_basis(yao_soul)
-    assert len(new_yao_home.get_agenda_dict()) == 0
+    new_yao_being = create_listen_basis(yao_soul)
+    assert len(new_yao_being.get_agenda_dict()) == 0
 
     # WHEN
-    print(f"{len(new_yao_home.get_idea_dict())=}")
-    listen_to_agendas_soul_home(new_yao_home, yao_userhub)
+    print(f"{len(new_yao_being.get_idea_dict())=}")
+    listen_to_agendas_soul_being(new_yao_being, yao_userhub)
 
     # THEN
-    assert len(new_yao_home.get_agenda_dict()) == 2
+    assert len(new_yao_being.get_agenda_dict()) == 2
 
 
-def test_listen_to_agendas_soul_home_AddsTasksToWorld(env_dir_setup_cleanup):
+def test_listen_to_agendas_soul_being_AddsTasksToWorld(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_soul = worldunit_shop(yao_text)
@@ -73,66 +73,66 @@ def test_listen_to_agendas_soul_home_AddsTasksToWorld(env_dir_setup_cleanup):
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_soul_world(yao_soul)
 
-    zia_home = worldunit_shop(zia_text)
-    zia_home.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    zia_home.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_home.add_charunit(yao_text, debtor_weight=12)
-    clean_ideaunit = zia_home.get_idea_obj(clean_road())
-    cook_ideaunit = zia_home.get_idea_obj(cook_road())
+    zia_being = worldunit_shop(zia_text)
+    zia_being.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
+    zia_being.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    zia_being.add_charunit(yao_text, debtor_weight=12)
+    clean_ideaunit = zia_being.get_idea_obj(clean_road())
+    cook_ideaunit = zia_being.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_home_world(zia_home)
-    new_yao_home = create_listen_basis(yao_soul)
-    assert len(new_yao_home.get_agenda_dict()) == 0
+    zia_userhub.save_being_world(zia_being)
+    new_yao_being = create_listen_basis(yao_soul)
+    assert len(new_yao_being.get_agenda_dict()) == 0
 
     # WHEN
-    print(f"{len(new_yao_home.get_idea_dict())=}")
-    listen_to_agendas_soul_home(new_yao_home, yao_userhub)
+    print(f"{len(new_yao_being.get_idea_dict())=}")
+    listen_to_agendas_soul_being(new_yao_being, yao_userhub)
 
     # THEN
-    assert len(new_yao_home.get_agenda_dict()) == 2
+    assert len(new_yao_being.get_agenda_dict()) == 2
 
 
-def test_listen_to_agendas_soul_home_AddsTasksToWorldWithDetailsDecidedBy_debtor_weight(
+def test_listen_to_agendas_soul_being_AddsTasksToWorldWithDetailsDecidedBy_debtor_weight(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    zia_home = get_example_zia_speaker()
-    bob_home = get_example_bob_speaker()
-    bob_home.edit_idea_attr(
+    zia_being = get_example_zia_speaker()
+    bob_being = get_example_bob_speaker()
+    bob_being.edit_idea_attr(
         road=cook_road(),
         reason_del_premise_base=eat_road(),
         reason_del_premise_need=hungry_road(),
     )
-    bob_cook_ideaunit = bob_home.get_idea_obj(cook_road())
-    zia_cook_ideaunit = zia_home.get_idea_obj(cook_road())
+    bob_cook_ideaunit = bob_being.get_idea_obj(cook_road())
+    zia_cook_ideaunit = zia_being.get_idea_obj(cook_road())
     assert bob_cook_ideaunit != zia_cook_ideaunit
     assert len(zia_cook_ideaunit._reasonunits) == 1
     assert len(bob_cook_ideaunit._reasonunits) == 0
-    zia_text = zia_home._owner_id
-    bob_text = bob_home._owner_id
+    zia_text = zia_being._owner_id
+    bob_text = bob_being._owner_id
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
     bob_userhub = userhub_shop(env_dir(), None, bob_text)
-    zia_userhub.save_home_world(zia_home)
-    bob_userhub.save_home_world(bob_home)
+    zia_userhub.save_being_world(zia_being)
+    bob_userhub.save_being_world(bob_being)
 
     yao_soul = get_example_yao_speaker()
     yao_text = yao_soul._owner_id
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_soul_world(yao_soul)
 
-    new_yao_home1 = create_listen_basis(yao_soul)
-    assert new_yao_home1.idea_exists(cook_road()) is False
+    new_yao_being1 = create_listen_basis(yao_soul)
+    assert new_yao_being1.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_agendas_soul_home(new_yao_home1, yao_userhub)
+    listen_to_agendas_soul_being(new_yao_being1, yao_userhub)
 
     # THEN
-    assert new_yao_home1.idea_exists(cook_road())
-    new_cook_idea = new_yao_home1.get_idea_obj(cook_road())
-    zia_charunit = new_yao_home1.get_char(zia_text)
-    bob_charunit = new_yao_home1.get_char(bob_text)
+    assert new_yao_being1.idea_exists(cook_road())
+    new_cook_idea = new_yao_being1.get_idea_obj(cook_road())
+    zia_charunit = new_yao_being1.get_char(zia_text)
+    bob_charunit = new_yao_being1.get_char(bob_text)
     assert zia_charunit.debtor_weight < bob_charunit.debtor_weight
     assert new_cook_idea.get_reasonunit(eat_road()) is None
 
@@ -141,23 +141,23 @@ def test_listen_to_agendas_soul_home_AddsTasksToWorldWithDetailsDecidedBy_debtor
     yao_soul.add_charunit(zia_text, None, yao_zia_debtor_weight)
     yao_soul.add_charunit(bob_text, None, yao_bob_debtor_weight)
     yao_soul.set_char_pool(100)
-    new_yao_home2 = create_listen_basis(yao_soul)
-    assert new_yao_home2.idea_exists(cook_road()) is False
+    new_yao_being2 = create_listen_basis(yao_soul)
+    assert new_yao_being2.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_agendas_soul_home(new_yao_home2, yao_userhub)
+    listen_to_agendas_soul_being(new_yao_being2, yao_userhub)
 
     # THEN
-    assert new_yao_home2.idea_exists(cook_road())
-    new_cook_idea = new_yao_home2.get_idea_obj(cook_road())
-    zia_charunit = new_yao_home2.get_char(zia_text)
-    bob_charunit = new_yao_home2.get_char(bob_text)
+    assert new_yao_being2.idea_exists(cook_road())
+    new_cook_idea = new_yao_being2.get_idea_obj(cook_road())
+    zia_charunit = new_yao_being2.get_char(zia_text)
+    bob_charunit = new_yao_being2.get_char(bob_text)
     assert zia_charunit.debtor_weight > bob_charunit.debtor_weight
     zia_eat_reasonunit = zia_cook_ideaunit.get_reasonunit(eat_road())
     assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit
 
 
-def test_listen_to_agendas_soul_home_ProcessesIrrationalWorld(env_dir_setup_cleanup):
+def test_listen_to_agendas_soul_being_ProcessesIrrationalWorld(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
     yao_soul = worldunit_shop(yao_text)
@@ -175,65 +175,65 @@ def test_listen_to_agendas_soul_home_ProcessesIrrationalWorld(env_dir_setup_clea
     yao_userhub.save_soul_world(yao_soul)
 
     zia_text = "Zia"
-    zia_home = worldunit_shop(zia_text)
-    zia_home.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    zia_home.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_home.add_charunit(yao_text, debtor_weight=12)
-    clean_ideaunit = zia_home.get_idea_obj(clean_road())
-    cook_ideaunit = zia_home.get_idea_obj(cook_road())
+    zia_being = worldunit_shop(zia_text)
+    zia_being.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
+    zia_being.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    zia_being.add_charunit(yao_text, debtor_weight=12)
+    clean_ideaunit = zia_being.get_idea_obj(clean_road())
+    cook_ideaunit = zia_being.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_home_world(zia_home)
+    zia_userhub.save_being_world(zia_being)
 
-    sue_home = worldunit_shop(sue_text)
-    sue_home.set_max_tree_traverse(5)
-    zia_home.add_charunit(yao_text, debtor_weight=12)
+    sue_being = worldunit_shop(sue_text)
+    sue_being.set_max_tree_traverse(5)
+    zia_being.add_charunit(yao_text, debtor_weight=12)
     vacuum_text = "vacuum"
-    vacuum_road = sue_home.make_l1_road(vacuum_text)
-    sue_home.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
-    vacuum_ideaunit = sue_home.get_idea_obj(vacuum_road)
+    vacuum_road = sue_being.make_l1_road(vacuum_text)
+    sue_being.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
+    vacuum_ideaunit = sue_being.get_idea_obj(vacuum_road)
     vacuum_ideaunit._assignedunit.set_suffbelief(yao_text)
 
     egg_text = "egg first"
-    egg_road = sue_home.make_l1_road(egg_text)
-    sue_home.add_l1_idea(ideaunit_shop(egg_text))
+    egg_road = sue_being.make_l1_road(egg_text)
+    sue_being.add_l1_idea(ideaunit_shop(egg_text))
     chicken_text = "chicken first"
-    chicken_road = sue_home.make_l1_road(chicken_text)
-    sue_home.add_l1_idea(ideaunit_shop(chicken_text))
+    chicken_road = sue_being.make_l1_road(chicken_text)
+    sue_being.add_l1_idea(ideaunit_shop(chicken_text))
     # set egg pledge is True when chicken first is False
-    sue_home.edit_idea_attr(
+    sue_being.edit_idea_attr(
         road=egg_road,
         pledge=True,
         reason_base=chicken_road,
         reason_suff_idea_active=True,
     )
     # set chick pledge is True when egg first is False
-    sue_home.edit_idea_attr(
+    sue_being.edit_idea_attr(
         road=chicken_road,
         pledge=True,
         reason_base=egg_road,
         reason_suff_idea_active=False,
     )
     sue_userhub = userhub_shop(env_dir(), None, sue_text)
-    sue_userhub.save_home_world(sue_home)
+    sue_userhub.save_being_world(sue_being)
 
     # WHEN
-    new_yao_home = create_listen_basis(yao_soul)
-    listen_to_agendas_soul_home(new_yao_home, yao_userhub)
+    new_yao_being = create_listen_basis(yao_soul)
+    listen_to_agendas_soul_being(new_yao_being, yao_userhub)
 
     # THEN irrational world is ignored
-    assert len(new_yao_home.get_agenda_dict()) != 3
-    assert len(new_yao_home.get_agenda_dict()) == 2
-    zia_charunit = new_yao_home.get_char(zia_text)
-    sue_charunit = new_yao_home.get_char(sue_text)
+    assert len(new_yao_being.get_agenda_dict()) != 3
+    assert len(new_yao_being.get_agenda_dict()) == 2
+    zia_charunit = new_yao_being.get_char(zia_text)
+    sue_charunit = new_yao_being.get_char(sue_text)
     print(f"{sue_charunit.debtor_weight=}")
     print(f"{sue_charunit._irrational_debtor_weight=}")
     assert zia_charunit._irrational_debtor_weight == 0
     assert sue_charunit._irrational_debtor_weight == 51
 
 
-def test_listen_to_agendas_soul_home_ProcessesMissingDebtorWorld(
+def test_listen_to_agendas_soul_being_ProcessesMissingDebtorWorld(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -254,33 +254,33 @@ def test_listen_to_agendas_soul_home_ProcessesMissingDebtorWorld(
     yao_soul.set_char_pool(yao_pool)
     yao_userhub.save_soul_world(yao_soul)
 
-    zia_home = worldunit_shop(zia_text)
-    zia_home.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    zia_home.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_home.add_charunit(yao_text, debtor_weight=12)
-    clean_ideaunit = zia_home.get_idea_obj(clean_road())
-    cook_ideaunit = zia_home.get_idea_obj(cook_road())
+    zia_being = worldunit_shop(zia_text)
+    zia_being.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
+    zia_being.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    zia_being.add_charunit(yao_text, debtor_weight=12)
+    clean_ideaunit = zia_being.get_idea_obj(clean_road())
+    cook_ideaunit = zia_being.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_home_world(zia_home)
+    zia_userhub.save_being_world(zia_being)
 
     # WHEN
-    new_yao_home = create_listen_basis(yao_soul)
-    listen_to_agendas_soul_home(new_yao_home, yao_userhub)
+    new_yao_being = create_listen_basis(yao_soul)
+    listen_to_agendas_soul_being(new_yao_being, yao_userhub)
 
     # THEN irrational world is ignored
-    assert len(new_yao_home.get_agenda_dict()) != 3
-    assert len(new_yao_home.get_agenda_dict()) == 2
-    zia_charunit = new_yao_home.get_char(zia_text)
-    sue_charunit = new_yao_home.get_char(sue_text)
+    assert len(new_yao_being.get_agenda_dict()) != 3
+    assert len(new_yao_being.get_agenda_dict()) == 2
+    zia_charunit = new_yao_being.get_char(zia_text)
+    sue_charunit = new_yao_being.get_char(sue_text)
     print(f"{sue_charunit.debtor_weight=}")
     print(f"{sue_charunit._inallocable_debtor_weight=}")
     assert zia_charunit._inallocable_debtor_weight == 0
     assert sue_charunit._inallocable_debtor_weight == 51
 
 
-def test_listen_to_agendas_soul_home_ListensToOwner_soul_AndNotOwner_home(
+def test_listen_to_agendas_soul_being_ListensToOwner_soul_AndNotOwner_being(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -300,32 +300,32 @@ def test_listen_to_agendas_soul_home_ListensToOwner_soul_AndNotOwner_home(
     yao_userhub = userhub_shop(env_dir(), None, yao_text)
     yao_userhub.save_soul_world(yao_soul)
 
-    # Save Zia to home
+    # Save Zia to being
     zia_text = "Zia"
-    zia_home = worldunit_shop(zia_text)
-    zia_home.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
-    zia_home.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
-    zia_home.add_charunit(yao_text, debtor_weight=12)
-    clean_ideaunit = zia_home.get_idea_obj(clean_road())
-    cook_ideaunit = zia_home.get_idea_obj(cook_road())
+    zia_being = worldunit_shop(zia_text)
+    zia_being.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
+    zia_being.add_idea(ideaunit_shop(cook_text(), pledge=True), casa_road())
+    zia_being.add_charunit(yao_text, debtor_weight=12)
+    clean_ideaunit = zia_being.get_idea_obj(clean_road())
+    cook_ideaunit = zia_being.get_idea_obj(cook_road())
     clean_ideaunit._assignedunit.set_suffbelief(yao_text)
     cook_ideaunit._assignedunit.set_suffbelief(yao_text)
     zia_userhub = userhub_shop(env_dir(), None, zia_text)
-    zia_userhub.save_home_world(zia_home)
+    zia_userhub.save_being_world(zia_being)
 
     # save yao with task to dutys
-    yao_old_home = worldunit_shop(yao_text)
+    yao_old_being = worldunit_shop(yao_text)
     vacuum_text = "vacuum"
-    vacuum_road = yao_old_home.make_l1_road(vacuum_text)
-    yao_old_home.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
-    vacuum_ideaunit = yao_old_home.get_idea_obj(vacuum_road)
+    vacuum_road = yao_old_being.make_l1_road(vacuum_text)
+    yao_old_being.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
+    vacuum_ideaunit = yao_old_being.get_idea_obj(vacuum_road)
     vacuum_ideaunit._assignedunit.set_suffbelief(yao_text)
-    yao_userhub.save_home_world(yao_old_home)
+    yao_userhub.save_being_world(yao_old_being)
 
     # WHEN
-    new_yao_home = create_listen_basis(yao_soul)
-    listen_to_agendas_soul_home(new_yao_home, yao_userhub)
+    new_yao_being = create_listen_basis(yao_soul)
+    listen_to_agendas_soul_being(new_yao_being, yao_userhub)
 
     # THEN irrational world is ignored
-    assert len(new_yao_home.get_agenda_dict()) != 3
-    assert len(new_yao_home.get_agenda_dict()) == 2
+    assert len(new_yao_being.get_agenda_dict()) != 3
+    assert len(new_yao_being.get_agenda_dict()) == 2

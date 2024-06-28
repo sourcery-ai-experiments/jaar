@@ -47,7 +47,7 @@ from src.gift.atom import (
     get_from_json as atomunit_get_from_json,
     modify_world_with_atomunit,
 )
-from src.listen.basis_worlds import get_default_home_world
+from src.listen.basis_worlds import get_default_being_world
 from src.gift.gift import GiftUnit, giftunit_shop, create_giftunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -59,7 +59,7 @@ class Invalid_soul_Exception(Exception):
     pass
 
 
-class Invalid_home_Exception(Exception):
+class Invalid_being_Exception(Exception):
     pass
 
 
@@ -123,8 +123,8 @@ class UserHub:
     def soul_dir(self) -> str:
         return f"{self.owner_dir()}/soul"
 
-    def home_dir(self) -> str:
-        return f"{self.owner_dir()}/home"
+    def being_dir(self) -> str:
+        return f"{self.owner_dir()}/being"
 
     def soul_file_name(self):
         return get_json_filename(self.owner_id)
@@ -132,11 +132,11 @@ class UserHub:
     def soul_file_path(self):
         return f"{self.soul_dir()}/{self.soul_file_name()}"
 
-    def home_file_name(self):
+    def being_file_name(self):
         return get_json_filename(self.owner_id)
 
-    def home_path(self):
-        return f"{self.home_dir()}/{self.home_file_name()}"
+    def being_path(self):
+        return f"{self.being_dir()}/{self.being_file_name()}"
 
     def save_file_soul(self, file_text: str, replace: bool):
         save_file(
@@ -146,10 +146,10 @@ class UserHub:
             replace=replace,
         )
 
-    def save_file_home(self, file_text: str, replace: bool):
+    def save_file_being(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.home_dir(),
-            file_name=self.home_file_name(),
+            dest_dir=self.being_dir(),
+            file_name=self.being_file_name(),
             file_text=file_text,
             replace=replace,
         )
@@ -157,8 +157,8 @@ class UserHub:
     def soul_file_exists(self) -> bool:
         return os_path_exists(self.soul_file_path())
 
-    def home_file_exists(self) -> bool:
-        return os_path_exists(self.home_path())
+    def being_file_exists(self) -> bool:
+        return os_path_exists(self.being_path())
 
     def open_file_soul(self):
         return open_file(self.soul_dir(), self.soul_file_name())
@@ -190,8 +190,8 @@ class UserHub:
     def delete_soul_file(self):
         delete_dir(self.soul_file_path())
 
-    def open_file_home(self):
-        return open_file(self.home_dir(), self.home_file_name())
+    def open_file_being(self):
+        return open_file(self.being_dir(), self.being_file_name())
 
     def get_max_atom_file_number(self) -> int:
         if not os_path_exists(self.atoms_dir()):
@@ -440,16 +440,16 @@ class UserHub:
         x_file_name = self.owner_file_name(x_world._owner_id)
         save_file(self.jobs_dir(), x_file_name, x_world.get_json())
 
-    def save_home_world(self, x_world: WorldUnit):
+    def save_being_world(self, x_world: WorldUnit):
         if x_world._owner_id != self.owner_id:
-            raise Invalid_home_Exception(
-                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s home world."
+            raise Invalid_being_Exception(
+                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s being world."
             )
-        self.save_file_home(x_world.get_json(), True)
+        self.save_file_being(x_world.get_json(), True)
 
-    def initialize_home_file(self, soul: WorldUnit):
-        if self.home_file_exists() is False:
-            self.save_home_world(get_default_home_world(soul))
+    def initialize_being_file(self, soul: WorldUnit):
+        if self.being_file_exists() is False:
+            self.save_being_world(get_default_being_world(soul))
 
     def duty_file_exists(self, owner_id: OwnerID) -> bool:
         return os_path_exists(self.duty_path(owner_id))
@@ -469,10 +469,10 @@ class UserHub:
         file_content = open_file(self.jobs_dir(), self.owner_file_name(owner_id))
         return worldunit_get_from_json(file_content)
 
-    def get_home_world(self) -> WorldUnit:
-        if self.home_file_exists() is False:
+    def get_being_world(self) -> WorldUnit:
+        if self.being_file_exists() is False:
             return None
-        file_content = self.open_file_home()
+        file_content = self.open_file_being()
         return worldunit_get_from_json(file_content)
 
     def delete_duty_file(self, owner_id: OwnerID):
@@ -492,7 +492,7 @@ class UserHub:
             road_delimiter=self.road_delimiter,
             pixel=self.pixel,
         )
-        return speaker_userhub.get_home_world()
+        return speaker_userhub.get_being_world()
 
     def get_perspective_world(self, speaker: WorldUnit) -> WorldUnit:
         # get copy of world without any metrics
