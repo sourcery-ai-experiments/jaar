@@ -2611,9 +2611,9 @@
                 },
                 "_is_expanded": false,
                 "_kids": {
-                    "being receptive": {
+                    "sympathetic receptive": {
                         "_kids": {
-                            "being receptive to Aaron": {
+                            "sympathetic receptive to Aaron": {
                                 "_balancelinks": {
                                     "Renee Elise Goldsberry": {
                                         "belief_id": "Renee Elise Goldsberry",
@@ -2696,7 +2696,7 @@
                                         "pledge": true
                                     }
                                 },
-                                "_label": "being receptive to Aaron",
+                                "_label": "sympathetic receptive to Aaron",
                                 "_reasonunits": {
                                     "A,Aaron Donald things effected by him": {
                                         "base": "A,Aaron Donald things effected by him",
@@ -2746,7 +2746,7 @@
                                 "_weight": 4.0
                             }
                         },
-                        "_label": "being receptive",
+                        "_label": "sympathetic receptive",
                         "_reasonunits": {
                             "A,Aaron Donald things effected by him": {
                                 "base": "A,Aaron Donald things effected by him",
