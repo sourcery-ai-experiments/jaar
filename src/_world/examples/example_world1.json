@@ -4074,7 +4074,7 @@
     "_penny": 1,
     "_chars": {
         "A a ron Jones": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4103,7 +4103,7 @@
             "char_id": "A a ron Jones"
         },
         "America": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4137,7 +4137,7 @@
             "char_id": "America"
         },
         "Anna": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4166,7 +4166,7 @@
             "char_id": "Anna"
         },
         "Benjamin Stoddert": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4200,7 +4200,7 @@
             "char_id": "Benjamin Stoddert"
         },
         "Bob302": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 6.25,
@@ -4234,7 +4234,7 @@
             "char_id": "Bob302"
         },
         "Chuck Lee": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4268,7 +4268,7 @@
             "char_id": "Chuck Lee"
         },
         "Ernesto Chavez": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4297,7 +4297,7 @@
             "char_id": "Ernesto Chavez"
         },
         "Jacque Chirac": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4326,7 +4326,7 @@
             "char_id": "Jacque Chirac"
         },
         "Jane Randolph": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4355,7 +4355,7 @@
             "char_id": "Jane Randolph"
         },
         "Maria Reynolds": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 6.75,
@@ -4384,7 +4384,7 @@
             "char_id": "Maria Reynolds"
         },
         "Martha Doubs": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4418,7 +4418,7 @@
             "char_id": "Martha Doubs"
         },
         "Mikayla": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 10,
@@ -4452,7 +4452,7 @@
             "char_id": "Mikayla"
         },
         "Norberto": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4481,7 +4481,7 @@
             "char_id": "Norberto"
         },
         "Perrison": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",appreciates US DOLLAR": {
                     "belief_id": ",appreciates US DOLLAR",
                     "credor_weight": 5,
@@ -4515,7 +4515,7 @@
             "char_id": "Perrison"
         },
         "Philipa": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Climate Death": {
                     "belief_id": ",Climate Death",
                     "credor_weight": 1,
@@ -4549,7 +4549,7 @@
             "char_id": "Philipa"
         },
         "Prashant": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",appreciates US DOLLAR": {
                     "belief_id": ",appreciates US DOLLAR",
                     "credor_weight": 2,
@@ -4578,7 +4578,7 @@
             "char_id": "Prashant"
         },
         "Renee Elise Goldsberry": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",appreciates US DOLLAR": {
                     "belief_id": ",appreciates US DOLLAR",
                     "credor_weight": 1,
@@ -4637,7 +4637,7 @@
             "char_id": "Renee Elise Goldsberry"
         },
         "Sam zamora": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4671,7 +4671,7 @@
             "char_id": "Sam zamora"
         },
         "Shadwell Harris": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4700,7 +4700,7 @@
             "char_id": "Shadwell Harris"
         },
         "Thomas OSU": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Climate Death": {
                     "belief_id": ",Climate Death",
                     "credor_weight": 1,
@@ -4729,7 +4729,7 @@
             "char_id": "Thomas OSU"
         },
         "Travis Fox": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4758,7 +4758,7 @@
             "char_id": "Travis Fox"
         },
         "WIlliam Wallace": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,

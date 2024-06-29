@@ -1,4 +1,4 @@
-from src._world.belieflink import belieflink_shop
+from src._world.beliefhold import beliefhold_shop
 from src._world.beliefunit import beliefunit_shop, balancelink_shop
 from src._world.char import charlink_shop
 from src._world.idea import ideaunit_shop
@@ -179,7 +179,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_WorldUnit_simpl
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink_insert():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_beliefhold_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_world = worldunit_shop(sue_text)
@@ -213,7 +213,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink
     # print(f"\n{sue_changeunit.atomunits=}")
     print(f"\n{zia_atomunit=}")
 
-    x_keylist = [atom_insert(), "world_char_belieflink", yao_text, run_text]
+    x_keylist = [atom_insert(), "world_char_beliefhold", yao_text, run_text]
     run_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert run_atomunit.get_value("char_id") == yao_text
     assert run_atomunit.get_value("belief_id") == run_text
@@ -228,7 +228,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink
     assert get_atomunit_total_count(sue_changeunit) == 4
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink_update():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_beliefhold_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_world = worldunit_shop(sue_text)
@@ -264,7 +264,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink
     # print(f"\n{sue_changeunit.atomunits=}")
     # print(f"\n{rico_atomunit=}")
 
-    x_keylist = [atom_update(), "world_char_belieflink", rico_text, run_text]
+    x_keylist = [atom_update(), "world_char_beliefhold", rico_text, run_text]
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("char_id") == rico_text
     assert rico_atomunit.get_value("belief_id") == run_text
@@ -275,7 +275,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink_delete():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_beliefhold_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_world = worldunit_shop(sue_text)
@@ -310,7 +310,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink
     sue_changeunit.add_all_different_atomunits(before_sue_world, after_sue_world)
 
     # THEN
-    x_keylist = [atom_delete(), "world_char_belieflink", dizz_text, fly_text]
+    x_keylist = [atom_delete(), "world_char_beliefhold", dizz_text, fly_text]
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("char_id") == dizz_text
     assert rico_atomunit.get_value("belief_id") == fly_text
