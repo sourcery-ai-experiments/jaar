@@ -75,8 +75,8 @@ def world_ideaunit_text() -> str:
     return "world_ideaunit"
 
 
-def world_idea_balancelink_text() -> str:
-    return "world_idea_balancelink"
+def world_idea_cashlink_text() -> str:
+    return "world_idea_cashlink"
 
 
 def world_idea_reasonunit_text() -> str:

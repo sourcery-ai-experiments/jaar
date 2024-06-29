@@ -6,7 +6,7 @@ from src._world.healer import healerhold_shop
 from src._world.char import CharID
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
-from src._world.beliefunit import balanceline_shop, balancelink_shop
+from src._world.beliefunit import cashline_shop, cashlink_shop
 from src._world.graphic import display_ideatree
 from pytest import raises as pytest_raises
 
@@ -249,18 +249,18 @@ def test_WorldUnit_calc_world_metrics_NLevelCorrectlySetsDescendantAttributes_2(
     x_world.add_idea(vacuum_idea, parent_road=casa_road)
 
     x_world.add_charunit(char_id=sue_text)
-    x_balancelink = balancelink_shop(belief_id=sue_text)
+    x_cashlink = cashlink_shop(belief_id=sue_text)
 
-    x_world._idearoot._kids[casa_text]._kids[email_text].set_balancelink(
-        balancelink=x_balancelink
+    x_world._idearoot._kids[casa_text]._kids[email_text].set_cashlink(
+        cashlink=x_cashlink
     )
     # print(x_world._kids[casa_text]._kids[email_text])
-    # print(x_world._kids[casa_text]._kids[email_text]._balancelink)
+    # print(x_world._kids[casa_text]._kids[email_text]._cashlink)
 
     # WHEN
     x_world.calc_world_metrics()
     # print(x_world._kids[casa_text]._kids[email_text])
-    # print(x_world._kids[casa_text]._kids[email_text]._balancelink)
+    # print(x_world._kids[casa_text]._kids[email_text]._cashlink)
 
     # THEN
     assert x_world._idearoot._all_char_cred is False
@@ -281,59 +281,59 @@ def test_WorldUnit_calc_world_metrics_NLevelCorrectlySetsDescendantAttributes_2(
     assert week_idea._kids[tue_text]._all_char_debt == True
 
 
-def test_WorldUnit_TreeTraverseSetsClearsBalanceLineestorsCorrectly():
+def test_WorldUnit_TreeTraverseSetsClearsCashLineestorsCorrectly():
     # GIVEN
     x_world = example_worlds_get_world_with_4_levels()
     x_world.calc_world_metrics()
-    # idea tree has no balancelinks
-    assert x_world._idearoot._balancelines == {}
-    x_world._idearoot._balancelines = {1: "testtest"}
-    assert x_world._idearoot._balancelines != {}
+    # idea tree has no cashlinks
+    assert x_world._idearoot._cashlines == {}
+    x_world._idearoot._cashlines = {1: "testtest"}
+    assert x_world._idearoot._cashlines != {}
 
     # WHEN
     x_world.calc_world_metrics()
 
     # THEN
-    assert not x_world._idearoot._balancelines
+    assert not x_world._idearoot._cashlines
 
     # WHEN
     # test for level 1 and level n
     casa_text = "casa"
     casa_idea = x_world._idearoot._kids[casa_text]
-    casa_idea._balancelines = {1: "testtest"}
-    assert casa_idea._balancelines != {}
+    casa_idea._cashlines = {1: "testtest"}
+    assert casa_idea._cashlines != {}
     x_world.calc_world_metrics()
 
     # THEN
-    assert not x_world._idearoot._kids[casa_text]._balancelines
+    assert not x_world._idearoot._kids[casa_text]._cashlines
 
 
-def test_WorldUnit_calc_world_metrics_TreeTraverseSetsBalanceLineestorFromRootCorrectly():
+def test_WorldUnit_calc_world_metrics_TreeTraverseSetsCashLineestorFromRootCorrectly():
     # GIVEN
     x_world = example_worlds_get_world_with_4_levels()
     x_world.calc_world_metrics()
-    # idea tree has no balancelinks
-    assert x_world._idearoot._balancelines == {}
+    # idea tree has no cashlinks
+    assert x_world._idearoot._cashlines == {}
     sue_text = "sue"
     week_text = "weekdays"
     nation_text = "nation-state"
-    sue_balancelink = balancelink_shop(belief_id=sue_text)
+    sue_cashlink = cashlink_shop(belief_id=sue_text)
     x_world.add_charunit(char_id=sue_text)
-    x_world._idearoot.set_balancelink(balancelink=sue_balancelink)
-    # idea tree has balancelines
-    assert x_world._idearoot._balanceheirs.get(sue_text) is None
+    x_world._idearoot.set_cashlink(cashlink=sue_cashlink)
+    # idea tree has cashlines
+    assert x_world._idearoot._cashheirs.get(sue_text) is None
 
     # WHEN
     x_world.calc_world_metrics()
 
     # THEN
-    assert x_world._idearoot._balanceheirs.get(sue_text) != None
-    assert x_world._idearoot._balanceheirs.get(sue_text).belief_id == sue_text
-    assert x_world._idearoot._balancelines != {}
+    assert x_world._idearoot._cashheirs.get(sue_text) != None
+    assert x_world._idearoot._cashheirs.get(sue_text).belief_id == sue_text
+    assert x_world._idearoot._cashlines != {}
     root_idea = x_world.get_idea_obj(road=x_world._idearoot._label)
-    sue_balanceline = x_world._idearoot._balancelines.get(sue_text)
-    print(f"{sue_balanceline._world_cred=} {root_idea._world_importance=} ")
-    print(f"  {sue_balanceline._world_debt=} {root_idea._world_importance=} ")
+    sue_cashline = x_world._idearoot._cashlines.get(sue_text)
+    print(f"{sue_cashline._world_cred=} {root_idea._world_importance=} ")
+    print(f"  {sue_cashline._world_debt=} {root_idea._world_importance=} ")
     sum_x = 0
     cat_road = x_world.make_l1_road("feed cat")
     cat_idea = x_world.get_idea_obj(cat_road)
@@ -358,44 +358,44 @@ def test_WorldUnit_calc_world_metrics_TreeTraverseSetsBalanceLineestorFromRootCo
     # for kid_idea in root_idea._kids.values():
     #     sum_x += kid_idea._world_importance
     #     print(f"  {kid_idea._world_importance=} {sum_x=} {kid_idea.get_road()=}")
-    assert round(sue_balanceline._world_cred, 15) == 1
-    assert round(sue_balanceline._world_debt, 15) == 1
-    x_balanceline = balanceline_shop(
+    assert round(sue_cashline._world_cred, 15) == 1
+    assert round(sue_cashline._world_debt, 15) == 1
+    x_cashline = cashline_shop(
         belief_id=sue_text,
         _world_cred=0.9999999999999998,
         _world_debt=0.9999999999999998,
     )
-    assert x_world._idearoot._balancelines == {x_balanceline.belief_id: x_balanceline}
+    assert x_world._idearoot._cashlines == {x_cashline.belief_id: x_cashline}
 
 
-def test_WorldUnit_calc_world_metrics_TreeTraverseSetsBalanceLineestorFromNonRootCorrectly():
+def test_WorldUnit_calc_world_metrics_TreeTraverseSetsCashLineestorFromNonRootCorrectly():
     # GIVEN
     x_world = example_worlds_get_world_with_4_levels()
     x_world.calc_world_metrics()
-    # idea tree has no balancelinks
+    # idea tree has no cashlinks
     sue_text = "sue"
-    assert x_world._idearoot._balancelines == {}
+    assert x_world._idearoot._cashlines == {}
     x_world.add_charunit(char_id=sue_text)
-    x_balancelink = balancelink_shop(belief_id=sue_text)
+    x_cashlink = cashlink_shop(belief_id=sue_text)
     casa_text = "casa"
     email_text = "email"
-    x_world._idearoot._kids[casa_text].set_balancelink(balancelink=x_balancelink)
+    x_world._idearoot._kids[casa_text].set_cashlink(cashlink=x_cashlink)
 
     # WHEN
-    # idea tree has balancelinks
+    # idea tree has cashlinks
     x_world.calc_world_metrics()
 
     # THEN
-    assert x_world._idearoot._balancelines != {}
-    x_balanceline = balanceline_shop(
+    assert x_world._idearoot._cashlines != {}
+    x_cashline = cashline_shop(
         belief_id=sue_text,
         _world_cred=0.23076923076923078,
         _world_debt=0.23076923076923078,
     )
-    assert x_world._idearoot._balancelines == {x_balanceline.belief_id: x_balanceline}
-    assert x_world._idearoot._kids[casa_text]._balancelines != {}
-    assert x_world._idearoot._kids[casa_text]._balancelines == {
-        x_balanceline.belief_id: x_balanceline
+    assert x_world._idearoot._cashlines == {x_cashline.belief_id: x_cashline}
+    assert x_world._idearoot._kids[casa_text]._cashlines != {}
+    assert x_world._idearoot._kids[casa_text]._cashlines == {
+        x_cashline.belief_id: x_cashline
     }
 
 
@@ -414,9 +414,9 @@ def test_world4char_Exists():
 
     sue_char_id = CharID(sue_text)
     x_world.add_charunit(char_id=sue_char_id)
-    x_balancelink = balancelink_shop(belief_id=sue_char_id)
+    x_cashlink = cashlink_shop(belief_id=sue_char_id)
     yrx = x_world._idearoot
-    yrx._kids[casa_text]._kids[email_text].set_balancelink(balancelink=x_balancelink)
+    yrx._kids[casa_text]._kids[email_text].set_cashlink(cashlink=x_cashlink)
 
     # WHEN
     sue_world4char = x_world.get_world4char(facts=None, char_id=sue_char_id)
@@ -444,17 +444,17 @@ def test_world4char_hasCorrectLevel1StructureNoBelieflessAncestors():
 
     yao_char_id = CharID("Yao")
     x_world.add_charunit(char_id=yao_char_id)
-    yao_bl = balancelink_shop(belief_id=yao_char_id)
+    yao_bl = cashlink_shop(belief_id=yao_char_id)
     yrx = x_world._idearoot
-    yrx._kids[week_text].set_balancelink(balancelink=yao_bl)
-    yrx._kids[feed_text].set_balancelink(balancelink=yao_bl)
+    yrx._kids[week_text].set_cashlink(cashlink=yao_bl)
+    yrx._kids[feed_text].set_cashlink(cashlink=yao_bl)
     nation_text = "nation-state"
-    yrx._kids[nation_text].set_balancelink(balancelink=yao_bl)
+    yrx._kids[nation_text].set_cashlink(cashlink=yao_bl)
 
     sue_char_id = CharID(sue_text)
     x_world.add_charunit(char_id=sue_char_id)
-    sue_bl = balancelink_shop(belief_id=sue_char_id)
-    yrx._kids[casa_text]._kids[email_text].set_balancelink(balancelink=sue_bl)
+    sue_bl = cashlink_shop(belief_id=sue_char_id)
+    yrx._kids[casa_text]._kids[email_text].set_cashlink(cashlink=sue_bl)
 
     # WHEN
     sue_world4char = x_world.get_world4char(sue_char_id, facts=None)

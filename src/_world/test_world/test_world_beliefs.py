@@ -1,7 +1,7 @@
 from src._road.road import get_default_real_id_roadnode
 from src._world.beliefunit import (
     BeliefID,
-    balancelink_shop,
+    cashlink_shop,
     beliefunit_shop,
     get_chars_relevant_beliefs,
     get_char_relevant_beliefs,
@@ -158,17 +158,17 @@ def test_examples_world_v001_HasBeliefs():
     # THEN
     print(f"{len(idea_dict)=}")
     db_idea = idea_dict.get(x_world.make_l1_road("D&B"))
-    print(f"{db_idea._label=} {db_idea._balancelinks=}")
-    assert len(db_idea._balancelinks) == 3
+    print(f"{db_idea._label=} {db_idea._cashlinks=}")
+    assert len(db_idea._cashlinks) == 3
     # for idea_key in idea_dict:
     #     print(f"{idea_key=}")
     #     if idea._label == "D&B":
-    #         print(f"{idea._label=} {idea._balancelinks=}")
-    #         db_balancelink_len = len(idea._balancelinks)
-    # assert db_balancelink_len == 3
+    #         print(f"{idea._label=} {idea._cashlinks=}")
+    #         db_cashlink_len = len(idea._cashlinks)
+    # assert db_cashlink_len == 3
 
 
-def test_WorldUnit_set_balancelink_correctly_sets_balancelinks():
+def test_WorldUnit_set_cashlink_correctly_sets_cashlinks():
     # GIVEN
     sue_text = "Sue"
     sue_world = worldunit_shop(sue_text)
@@ -183,18 +183,18 @@ def test_WorldUnit_set_balancelink_correctly_sets_balancelinks():
     assert len(sue_world._beliefs) == 3
     swim_text = "swim"
     sue_world.add_l1_idea(ideaunit_shop(swim_text))
-    balancelink_rico = balancelink_shop(belief_id=BeliefID(rico_text), credor_weight=10)
-    balancelink_carm = balancelink_shop(belief_id=BeliefID(carm_text), credor_weight=10)
-    balancelink_patr = balancelink_shop(belief_id=BeliefID(patr_text), credor_weight=10)
+    cashlink_rico = cashlink_shop(belief_id=BeliefID(rico_text), credor_weight=10)
+    cashlink_carm = cashlink_shop(belief_id=BeliefID(carm_text), credor_weight=10)
+    cashlink_patr = cashlink_shop(belief_id=BeliefID(patr_text), credor_weight=10)
     swim_road = sue_world.make_l1_road(swim_text)
-    sue_world.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
-    sue_world.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
-    sue_world.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
+    sue_world.edit_idea_attr(road=swim_road, cashlink=cashlink_rico)
+    sue_world.edit_idea_attr(road=swim_road, cashlink=cashlink_carm)
+    sue_world.edit_idea_attr(road=swim_road, cashlink=cashlink_patr)
 
     street_text = "streets"
     sue_world.add_idea(ideaunit_shop(street_text), parent_road=swim_road)
-    assert sue_world._idearoot._balancelinks in (None, {})
-    assert len(sue_world._idearoot._kids[swim_text]._balancelinks) == 3
+    assert sue_world._idearoot._cashlinks in (None, {})
+    assert len(sue_world._idearoot._kids[swim_text]._cashlinks) == 3
 
     # WHEN
     idea_dict = sue_world.get_idea_dict()
@@ -205,19 +205,19 @@ def test_WorldUnit_set_balancelink_correctly_sets_balancelinks():
     swim_idea = idea_dict.get(swim_road)
     street_idea = idea_dict.get(sue_world.make_road(swim_road, street_text))
 
-    assert len(swim_idea._balancelinks) == 3
-    assert len(swim_idea._balanceheirs) == 3
-    assert street_idea._balancelinks in (None, {})
-    assert len(street_idea._balanceheirs) == 3
+    assert len(swim_idea._cashlinks) == 3
+    assert len(swim_idea._cashheirs) == 3
+    assert street_idea._cashlinks in (None, {})
+    assert len(street_idea._cashheirs) == 3
 
     print(f"{len(idea_dict)}")
-    print(f"{swim_idea._balancelinks}")
-    print(f"{swim_idea._balanceheirs}")
-    print(f"{swim_idea._balanceheirs}")
-    assert len(sue_world._idearoot._kids["swim"]._balanceheirs) == 3
+    print(f"{swim_idea._cashlinks}")
+    print(f"{swim_idea._cashheirs}")
+    print(f"{swim_idea._cashheirs}")
+    assert len(sue_world._idearoot._kids["swim"]._cashheirs) == 3
 
 
-def test_WorldUnit_set_balancelink_correctly_deletes_balancelinks():
+def test_WorldUnit_set_cashlink_correctly_deletes_cashlinks():
     # GIVEN
     prom_text = "prom"
     x_world = worldunit_shop(prom_text)
@@ -232,39 +232,39 @@ def test_WorldUnit_set_balancelink_correctly_deletes_balancelinks():
     swim_road = x_world.make_road(prom_text, swim_text)
 
     x_world.add_l1_idea(ideaunit_shop(swim_text))
-    balancelink_rico = balancelink_shop(belief_id=BeliefID(rico_text), credor_weight=10)
-    balancelink_carm = balancelink_shop(belief_id=BeliefID(carm_text), credor_weight=10)
-    balancelink_patr = balancelink_shop(belief_id=BeliefID(patr_text), credor_weight=10)
+    cashlink_rico = cashlink_shop(belief_id=BeliefID(rico_text), credor_weight=10)
+    cashlink_carm = cashlink_shop(belief_id=BeliefID(carm_text), credor_weight=10)
+    cashlink_patr = cashlink_shop(belief_id=BeliefID(patr_text), credor_weight=10)
 
     swim_idea = x_world.get_idea_obj(swim_road)
-    x_world.edit_idea_attr(road=swim_road, balancelink=balancelink_rico)
-    x_world.edit_idea_attr(road=swim_road, balancelink=balancelink_carm)
-    x_world.edit_idea_attr(road=swim_road, balancelink=balancelink_patr)
+    x_world.edit_idea_attr(road=swim_road, cashlink=cashlink_rico)
+    x_world.edit_idea_attr(road=swim_road, cashlink=cashlink_carm)
+    x_world.edit_idea_attr(road=swim_road, cashlink=cashlink_patr)
 
-    assert len(swim_idea._balancelinks) == 3
-    assert len(swim_idea._balanceheirs) == 3
+    assert len(swim_idea._cashlinks) == 3
+    assert len(swim_idea._cashheirs) == 3
 
     # print(f"{len(idea_list)}")
-    # print(f"{idea_list[0]._balancelinks}")
-    # print(f"{idea_list[0]._balanceheirs}")
-    # print(f"{idea_list[1]._balanceheirs}")
-    assert len(x_world._idearoot._kids[swim_text]._balancelinks) == 3
-    assert len(x_world._idearoot._kids[swim_text]._balanceheirs) == 3
+    # print(f"{idea_list[0]._cashlinks}")
+    # print(f"{idea_list[0]._cashheirs}")
+    # print(f"{idea_list[1]._cashheirs}")
+    assert len(x_world._idearoot._kids[swim_text]._cashlinks) == 3
+    assert len(x_world._idearoot._kids[swim_text]._cashheirs) == 3
 
     # WHEN
-    x_world.edit_idea_attr(road=swim_road, balancelink_del=rico_text)
+    x_world.edit_idea_attr(road=swim_road, cashlink_del=rico_text)
 
     # THEN
     swim_idea = x_world.get_idea_obj(swim_road)
     print(f"{swim_idea._label=}")
-    print(f"{swim_idea._balancelinks=}")
-    print(f"{swim_idea._balanceheirs=}")
+    print(f"{swim_idea._cashlinks=}")
+    print(f"{swim_idea._cashheirs=}")
 
-    assert len(x_world._idearoot._kids[swim_text]._balancelinks) == 2
-    assert len(x_world._idearoot._kids[swim_text]._balanceheirs) == 2
+    assert len(x_world._idearoot._kids[swim_text]._cashlinks) == 2
+    assert len(x_world._idearoot._kids[swim_text]._cashheirs) == 2
 
 
-def test_WorldUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkWorldImportance():
+def test_WorldUnit_set_cashlink_CorrectlyCalculatesInheritedCashLinkWorldImportance():
     # GIVEN
     sue_text = "Sue"
     sue_world = worldunit_shop(sue_text)
@@ -274,17 +274,13 @@ def test_WorldUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkWorldI
     sue_world.set_charunit(charunit=charunit_shop(char_id=CharID(rico_text)))
     sue_world.set_charunit(charunit=charunit_shop(char_id=CharID(carm_text)))
     sue_world.set_charunit(charunit=charunit_shop(char_id=CharID(patr_text)))
-    blink_rico = balancelink_shop(
-        belief_id=rico_text, credor_weight=20, debtor_weight=6
-    )
-    blink_carm = balancelink_shop(
-        belief_id=carm_text, credor_weight=10, debtor_weight=1
-    )
-    blink_patr = balancelink_shop(belief_id=patr_text, credor_weight=10)
-    sue_world._idearoot.set_balancelink(balancelink=blink_rico)
-    sue_world._idearoot.set_balancelink(balancelink=blink_carm)
-    sue_world._idearoot.set_balancelink(balancelink=blink_patr)
-    assert len(sue_world._idearoot._balancelinks) == 3
+    blink_rico = cashlink_shop(belief_id=rico_text, credor_weight=20, debtor_weight=6)
+    blink_carm = cashlink_shop(belief_id=carm_text, credor_weight=10, debtor_weight=1)
+    blink_patr = cashlink_shop(belief_id=patr_text, credor_weight=10)
+    sue_world._idearoot.set_cashlink(cashlink=blink_rico)
+    sue_world._idearoot.set_cashlink(cashlink=blink_carm)
+    sue_world._idearoot.set_cashlink(cashlink=blink_patr)
+    assert len(sue_world._idearoot._cashlinks) == 3
 
     # WHEN
     idea_dict = sue_world.get_idea_dict()
@@ -292,11 +288,11 @@ def test_WorldUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkWorldI
     # THEN
     print(f"{idea_dict.keys()=}")
     idea_prom = idea_dict.get(get_default_real_id_roadnode())
-    assert len(idea_prom._balanceheirs) == 3
+    assert len(idea_prom._cashheirs) == 3
 
-    bheir_rico = idea_prom._balanceheirs.get(rico_text)
-    bheir_carm = idea_prom._balanceheirs.get(carm_text)
-    bheir_patr = idea_prom._balanceheirs.get(patr_text)
+    bheir_rico = idea_prom._cashheirs.get(rico_text)
+    bheir_carm = idea_prom._cashheirs.get(carm_text)
+    bheir_patr = idea_prom._cashheirs.get(patr_text)
     assert bheir_rico._world_cred == 0.5
     assert bheir_rico._world_debt == 0.75
     assert bheir_carm._world_cred == 0.25
@@ -308,7 +304,7 @@ def test_WorldUnit_set_balancelink_CorrectlyCalculatesInheritedBalanceLinkWorldI
 
     # world_cred_sum = 0
     # world_debt_sum = 0
-    # for belief in x_world._idearoot._balanceheirs.values():
+    # for belief in x_world._idearoot._cashheirs.values():
     #     print(f"{belief=}")
     #     assert belief._world_cred != None
     #     assert belief._world_cred in [0.25, 0.5]
@@ -332,16 +328,12 @@ def test_WorldUnit_get_idea_list_CorrectlyCalculates1LevelWorldBeliefWorldImport
     x_world.set_charunit(charunit=charunit_shop(char_id=CharID(rico_text)))
     x_world.set_charunit(charunit=charunit_shop(char_id=CharID(carm_text)))
     x_world.set_charunit(charunit=charunit_shop(char_id=CharID(patr_text)))
-    blink_rico = balancelink_shop(
-        belief_id=rico_text, credor_weight=20, debtor_weight=6
-    )
-    blink_carm = balancelink_shop(
-        belief_id=carm_text, credor_weight=10, debtor_weight=1
-    )
-    blink_patr = balancelink_shop(belief_id=patr_text, credor_weight=10)
-    x_world._idearoot.set_balancelink(balancelink=blink_rico)
-    x_world._idearoot.set_balancelink(balancelink=blink_carm)
-    x_world._idearoot.set_balancelink(balancelink=blink_patr)
+    blink_rico = cashlink_shop(belief_id=rico_text, credor_weight=20, debtor_weight=6)
+    blink_carm = cashlink_shop(belief_id=carm_text, credor_weight=10, debtor_weight=1)
+    blink_patr = cashlink_shop(belief_id=patr_text, credor_weight=10)
+    x_world._idearoot.set_cashlink(cashlink=blink_rico)
+    x_world._idearoot.set_cashlink(cashlink=blink_carm)
+    x_world._idearoot.set_cashlink(cashlink=blink_patr)
 
     assert len(x_world._beliefs) == 3
 
@@ -367,8 +359,8 @@ def test_WorldUnit_get_idea_list_CorrectlyCalculates1LevelWorldBeliefWorldImport
 
     # WHEN
     x_world.set_charunit(charunit=charunit_shop(char_id=CharID(sele_text)))
-    bl_sele = balancelink_shop(belief_id=sele_text, credor_weight=37)
-    x_world._idearoot.set_balancelink(balancelink=bl_sele)
+    bl_sele = cashlink_shop(belief_id=sele_text, credor_weight=37)
+    x_world._idearoot.set_cashlink(cashlink=bl_sele)
     assert len(x_world._beliefs) == 4
     x_world.calc_world_metrics()
 
@@ -411,16 +403,16 @@ def test_WorldUnit_get_idea_list_CorrectlyCalculates3levelWorldBeliefWorldImport
     x_world.set_charunit(charunit=charunit_shop(char_id=CharID(rico_text)))
     x_world.set_charunit(charunit=charunit_shop(char_id=CharID(carm_text)))
     x_world.set_charunit(charunit=charunit_shop(char_id=CharID(patr_text)))
-    rico_balancelink = balancelink_shop(
+    rico_cashlink = cashlink_shop(
         belief_id=rico_text, credor_weight=20, debtor_weight=6
     )
-    carm_balancelink = balancelink_shop(
+    carm_cashlink = cashlink_shop(
         belief_id=carm_text, credor_weight=10, debtor_weight=1
     )
-    parm_balancelink = balancelink_shop(belief_id=patr_text, credor_weight=10)
-    x_world._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
-    x_world._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
-    x_world._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
+    parm_cashlink = cashlink_shop(belief_id=patr_text, credor_weight=10)
+    x_world._idearoot._kids[swim_text].set_cashlink(cashlink=rico_cashlink)
+    x_world._idearoot._kids[swim_text].set_cashlink(cashlink=carm_cashlink)
+    x_world._idearoot._kids[swim_text].set_cashlink(cashlink=parm_cashlink)
     assert len(x_world._beliefs) == 3
 
     # WHEN
@@ -457,18 +449,18 @@ def test_WorldUnit_get_idea_list_CorrectlyCalculatesBeliefWorldImportanceLWwithB
     x_world.set_charunit(charunit=charunit_shop(char_id=CharID(rico_text)))
     x_world.set_charunit(charunit=charunit_shop(char_id=CharID(carm_text)))
     x_world.set_charunit(charunit=charunit_shop(char_id=CharID(patr_text)))
-    rico_balancelink = balancelink_shop(
+    rico_cashlink = cashlink_shop(
         belief_id=rico_text, credor_weight=20, debtor_weight=6
     )
-    carm_balancelink = balancelink_shop(
+    carm_cashlink = cashlink_shop(
         belief_id=carm_text, credor_weight=10, debtor_weight=1
     )
-    parm_balancelink = balancelink_shop(belief_id=patr_text, credor_weight=10)
-    x_world._idearoot._kids[swim_text].set_balancelink(balancelink=rico_balancelink)
-    x_world._idearoot._kids[swim_text].set_balancelink(balancelink=carm_balancelink)
-    x_world._idearoot._kids[swim_text].set_balancelink(balancelink=parm_balancelink)
+    parm_cashlink = cashlink_shop(belief_id=patr_text, credor_weight=10)
+    x_world._idearoot._kids[swim_text].set_cashlink(cashlink=rico_cashlink)
+    x_world._idearoot._kids[swim_text].set_cashlink(cashlink=carm_cashlink)
+    x_world._idearoot._kids[swim_text].set_cashlink(cashlink=parm_cashlink)
 
-    # no balancelinks attached to this one
+    # no cashlinks attached to this one
     x_world.add_l1_idea(ideaunit_shop("hunt", _weight=3))
 
     # WHEN
@@ -477,22 +469,22 @@ def test_WorldUnit_get_idea_list_CorrectlyCalculatesBeliefWorldImportanceLWwithB
     # THEN
 
     with pytest_raises(Exception) as excinfo:
-        x_world._idearoot._balancelinks[rico_text]
+        x_world._idearoot._cashlinks[rico_text]
     assert str(excinfo.value) == f"'{rico_text}'"
     with pytest_raises(Exception) as excinfo:
-        x_world._idearoot._balancelinks[carm_text]
+        x_world._idearoot._cashlinks[carm_text]
     assert str(excinfo.value) == f"'{carm_text}'"
     with pytest_raises(Exception) as excinfo:
-        x_world._idearoot._balancelinks[patr_text]
+        x_world._idearoot._cashlinks[patr_text]
     assert str(excinfo.value) == f"'{patr_text}'"
     with pytest_raises(Exception) as excinfo:
-        x_world._idearoot._kids["hunt"]._balanceheirs[rico_text]
+        x_world._idearoot._kids["hunt"]._cashheirs[rico_text]
     assert str(excinfo.value) == f"'{rico_text}'"
     with pytest_raises(Exception) as excinfo:
-        x_world._idearoot._kids["hunt"]._balanceheirs[carm_text]
+        x_world._idearoot._kids["hunt"]._cashheirs[carm_text]
     assert str(excinfo.value) == f"'{carm_text}'"
     with pytest_raises(Exception) as excinfo:
-        x_world._idearoot._kids["hunt"]._balanceheirs[patr_text]
+        x_world._idearoot._kids["hunt"]._cashheirs[patr_text]
     assert str(excinfo.value) == f"'{patr_text}'"
 
     # THEN
@@ -606,7 +598,7 @@ def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyMeldCharIDs():
     assert world.get_beliefunit(jog_text)._chars.get(rico_text).debtor_weight == 13
 
 
-def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyModifiesBalanceLinks():
+def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyModifiesCashLinks():
     # GIVEN
     x_world = worldunit_shop("prom")
     rico_text = "rico"
@@ -621,13 +613,13 @@ def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyModifiesBalanceLinks():
     x_world.add_idea(ideaunit_shop(camping_text), parent_road=outdoor_road)
 
     camping_idea = x_world.get_idea_obj(camping_road)
-    swim_balancelink = balancelink_shop(
+    swim_cashlink = cashlink_shop(
         belief_id=swim_beliefunit.belief_id, credor_weight=5, debtor_weight=3
     )
-    camping_idea.set_balancelink(swim_balancelink)
-    assert camping_idea._balancelinks.get(swim_text) != None
-    assert camping_idea._balancelinks.get(swim_text).credor_weight == 5
-    assert camping_idea._balancelinks.get(swim_text).debtor_weight == 3
+    camping_idea.set_cashlink(swim_cashlink)
+    assert camping_idea._cashlinks.get(swim_text) != None
+    assert camping_idea._cashlinks.get(swim_text).credor_weight == 5
+    assert camping_idea._cashlinks.get(swim_text).debtor_weight == 3
 
     # WHEN
     jog_text = ",jog"
@@ -636,13 +628,13 @@ def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyModifiesBalanceLinks():
     )
 
     # THEN
-    assert camping_idea._balancelinks.get(swim_text) is None
-    assert camping_idea._balancelinks.get(jog_text) != None
-    assert camping_idea._balancelinks.get(jog_text).credor_weight == 5
-    assert camping_idea._balancelinks.get(jog_text).debtor_weight == 3
+    assert camping_idea._cashlinks.get(swim_text) is None
+    assert camping_idea._cashlinks.get(jog_text) != None
+    assert camping_idea._cashlinks.get(jog_text).credor_weight == 5
+    assert camping_idea._cashlinks.get(jog_text).debtor_weight == 3
 
 
-def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyMeldsBalanceLinesBalanceLinksBalanceHeirs():
+def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyMeldsCashLinesCashLinksCashHeirs():
     # GIVEN
     x_world = worldunit_shop("prom")
     rico_text = "rico"
@@ -662,20 +654,20 @@ def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyMeldsBalanceLinesBalanceLi
     x_world.add_idea(ideaunit_shop(camping_text), parent_road=outdoor_road)
 
     camping_idea = x_world.get_idea_obj(camping_road)
-    swim_balancelink = balancelink_shop(
+    swim_cashlink = cashlink_shop(
         belief_id=swim_beliefunit.belief_id, credor_weight=5, debtor_weight=3
     )
-    camping_idea.set_balancelink(swim_balancelink)
-    jog_balancelink = balancelink_shop(
+    camping_idea.set_cashlink(swim_cashlink)
+    jog_cashlink = cashlink_shop(
         belief_id=jog_beliefunit.belief_id, credor_weight=7, debtor_weight=10
     )
-    camping_idea.set_balancelink(jog_balancelink)
-    assert camping_idea._balancelinks.get(swim_text) != None
-    assert camping_idea._balancelinks.get(swim_text).credor_weight == 5
-    assert camping_idea._balancelinks.get(swim_text).debtor_weight == 3
-    assert camping_idea._balancelinks.get(jog_text) != None
-    assert camping_idea._balancelinks.get(jog_text).credor_weight == 7
-    assert camping_idea._balancelinks.get(jog_text).debtor_weight == 10
+    camping_idea.set_cashlink(jog_cashlink)
+    assert camping_idea._cashlinks.get(swim_text) != None
+    assert camping_idea._cashlinks.get(swim_text).credor_weight == 5
+    assert camping_idea._cashlinks.get(swim_text).debtor_weight == 3
+    assert camping_idea._cashlinks.get(jog_text) != None
+    assert camping_idea._cashlinks.get(jog_text).credor_weight == 7
+    assert camping_idea._cashlinks.get(jog_text).debtor_weight == 10
 
     # WHEN
     x_world.edit_beliefunit_belief_id(
@@ -683,10 +675,10 @@ def test_WorldUnit_edit_beliefunit_belief_id_CorrectlyMeldsBalanceLinesBalanceLi
     )
 
     # THEN
-    assert camping_idea._balancelinks.get(swim_text) is None
-    assert camping_idea._balancelinks.get(jog_text) != None
-    assert camping_idea._balancelinks.get(jog_text).credor_weight == 12
-    assert camping_idea._balancelinks.get(jog_text).debtor_weight == 13
+    assert camping_idea._cashlinks.get(swim_text) is None
+    assert camping_idea._cashlinks.get(jog_text) != None
+    assert camping_idea._cashlinks.get(jog_text).credor_weight == 12
+    assert camping_idea._cashlinks.get(jog_text).debtor_weight == 13
 
 
 def test_WorldUnit_add_idea_CreatesMissingBeliefs():
@@ -701,8 +693,8 @@ def test_WorldUnit_add_idea_CreatesMissingBeliefs():
     )
 
     family_text = ",family"
-    balancelink_z = balancelink_shop(belief_id=family_text)
-    clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
+    cashlink_z = cashlink_shop(belief_id=family_text)
+    clean_cookery_idea.set_cashlink(cashlink=cashlink_z)
     assert len(x_world._beliefs) == 0
     assert x_world.get_beliefunit(family_text) is None
 
@@ -715,7 +707,7 @@ def test_WorldUnit_add_idea_CreatesMissingBeliefs():
     assert x_world.get_beliefunit(family_text)._chars in (None, {})
 
 
-def test_WorldUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balancelinks():
+def test_WorldUnit__get_filtered_cashlinks_idea_CorrectlyFiltersIdea_cashlinks():
     # GIVEN
     noa_text = "Noa"
     x1_world = worldunit_shop(noa_text)
@@ -730,22 +722,22 @@ def test_WorldUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_balancel
     swim_road = x1_world.make_l1_road(swim_text)
     x1_world.add_l1_idea(ideaunit_shop(casa_text))
     x1_world.add_l1_idea(ideaunit_shop(swim_text))
-    x1_world.edit_idea_attr(swim_road, balancelink=balancelink_shop(xia_text))
-    x1_world.edit_idea_attr(swim_road, balancelink=balancelink_shop(zoa_text))
+    x1_world.edit_idea_attr(swim_road, cashlink=cashlink_shop(xia_text))
+    x1_world.edit_idea_attr(swim_road, cashlink=cashlink_shop(zoa_text))
     x1_world_swim_idea = x1_world.get_idea_obj(swim_road)
-    assert len(x1_world_swim_idea._balancelinks) == 2
+    assert len(x1_world_swim_idea._cashlinks) == 2
     x_world = worldunit_shop(noa_text)
     x_world.add_charunit(char_id=xia_text)
 
     # WHEN
-    filtered_idea = x_world._get_filtered_balancelinks_idea(x1_world_swim_idea)
+    filtered_idea = x_world._get_filtered_cashlinks_idea(x1_world_swim_idea)
 
     # THEN
-    assert len(filtered_idea._balancelinks) == 1
-    assert list(filtered_idea._balancelinks.keys()) == [xia_text]
+    assert len(filtered_idea._cashlinks) == 1
+    assert list(filtered_idea._cashlinks.keys()) == [xia_text]
 
 
-def test_WorldUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
+def test_WorldUnit_add_idea_CorrectlyFiltersIdea_cashlinks():
     # GIVEN
     noa_text = "Noa"
     x1_world = worldunit_shop(noa_text)
@@ -760,14 +752,10 @@ def test_WorldUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
     swim_road = x1_world.make_l1_road(swim_text)
     x1_world.add_l1_idea(ideaunit_shop(casa_text))
     x1_world.add_l1_idea(ideaunit_shop(swim_text))
-    x1_world.edit_idea_attr(
-        road=swim_road, balancelink=balancelink_shop(belief_id=xia_text)
-    )
-    x1_world.edit_idea_attr(
-        road=swim_road, balancelink=balancelink_shop(belief_id=zoa_text)
-    )
+    x1_world.edit_idea_attr(road=swim_road, cashlink=cashlink_shop(belief_id=xia_text))
+    x1_world.edit_idea_attr(road=swim_road, cashlink=cashlink_shop(belief_id=zoa_text))
     x1_world_swim_idea = x1_world.get_idea_obj(swim_road)
-    assert len(x1_world_swim_idea._balancelinks) == 2
+    assert len(x1_world_swim_idea._cashlinks) == 2
 
     # WHEN
     x_world = worldunit_shop(noa_text)
@@ -776,8 +764,8 @@ def test_WorldUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
 
     # THEN
     x_world_swim_idea = x_world.get_idea_obj(swim_road)
-    assert len(x_world_swim_idea._balancelinks) == 1
-    assert list(x_world_swim_idea._balancelinks.keys()) == [xia_text]
+    assert len(x_world_swim_idea._cashlinks) == 1
+    assert list(x_world_swim_idea._cashlinks.keys()) == [xia_text]
 
 
 def test_WorldUnit_add_idea_DoesNotOverwriteBeliefs():
@@ -792,8 +780,8 @@ def test_WorldUnit_add_idea_DoesNotOverwriteBeliefs():
     )
 
     family_text = ",family"
-    balancelink_z = balancelink_shop(belief_id=family_text)
-    clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
+    cashlink_z = cashlink_shop(belief_id=family_text)
+    clean_cookery_idea.set_cashlink(cashlink=cashlink_z)
 
     beliefunit_z = beliefunit_shop(belief_id=family_text)
     beliefunit_z.set_charlink(charlink=charlink_shop(char_id="ann1"))

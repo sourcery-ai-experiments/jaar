@@ -15,7 +15,7 @@ def test_WorldUnit_get_tree_metrics_exists():
     assert zia_world_tree_metrics.node_count != None
     assert zia_world_tree_metrics.reason_bases != None
     assert zia_world_tree_metrics.level_count != None
-    assert zia_world_tree_metrics.balancelinks_metrics != None
+    assert zia_world_tree_metrics.cashlinks_metrics != None
 
 
 def test_WorldUnit_get_tree_metrics_get_idea_uid_max_correctlyGetsMaxIdeaUID():

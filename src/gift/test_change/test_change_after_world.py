@@ -1,5 +1,5 @@
 from src._road.road import get_terminus_node, get_parent_road
-from src._world.beliefunit import balancelink_shop
+from src._world.beliefunit import cashlink_shop
 from src._world.char import charlink_shop
 from src._world.reason_idea import factunit_shop
 from src._world.idea import ideaunit_shop
@@ -404,7 +404,7 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_update_ideaunit
     assert after_sue_worldunit.get_idea_obj(ball_road).pledge
 
 
-def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_idea_balancelink():
+def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_idea_cashlink():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = worldunit_shop(sue_text)
@@ -433,15 +433,15 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_idea_bal
     disc_road = before_sue_au.make_road(sports_road, disc_text)
     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
     before_sue_au.add_idea(ideaunit_shop(disc_text), sports_road)
-    before_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(run_text))
-    before_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(fly_text))
-    before_sue_au.edit_idea_attr(disc_road, balancelink=balancelink_shop(run_text))
-    before_sue_au.edit_idea_attr(disc_road, balancelink=balancelink_shop(fly_text))
-    assert len(before_sue_au.get_idea_obj(ball_road)._balancelinks) == 2
-    assert len(before_sue_au.get_idea_obj(disc_road)._balancelinks) == 2
+    before_sue_au.edit_idea_attr(ball_road, cashlink=cashlink_shop(run_text))
+    before_sue_au.edit_idea_attr(ball_road, cashlink=cashlink_shop(fly_text))
+    before_sue_au.edit_idea_attr(disc_road, cashlink=cashlink_shop(run_text))
+    before_sue_au.edit_idea_attr(disc_road, cashlink=cashlink_shop(fly_text))
+    assert len(before_sue_au.get_idea_obj(ball_road)._cashlinks) == 2
+    assert len(before_sue_au.get_idea_obj(disc_road)._cashlinks) == 2
 
     # WHEN
-    delete_disc_atomunit = atomunit_shop("world_idea_balancelink", atom_delete())
+    delete_disc_atomunit = atomunit_shop("world_idea_cashlink", atom_delete())
     delete_disc_atomunit.set_required_arg("road", disc_road)
     delete_disc_atomunit.set_required_arg("belief_id", fly_text)
     print(f"{delete_disc_atomunit=}")
@@ -450,11 +450,11 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_idea_bal
     after_sue_worldunit = sue_changeunit.get_edited_world(before_sue_au)
 
     # THEN
-    assert len(after_sue_worldunit.get_idea_obj(ball_road)._balancelinks) == 2
-    assert len(after_sue_worldunit.get_idea_obj(disc_road)._balancelinks) == 1
+    assert len(after_sue_worldunit.get_idea_obj(ball_road)._cashlinks) == 2
+    assert len(after_sue_worldunit.get_idea_obj(disc_road)._cashlinks) == 1
 
 
-def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_update_idea_balancelink():
+def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_update_idea_cashlink():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = worldunit_shop(sue_text)
@@ -471,15 +471,15 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_update_idea_bal
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
-    before_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(run_text))
-    run_balancelink = before_sue_au.get_idea_obj(ball_road)._balancelinks.get(run_text)
-    assert run_balancelink.credor_weight == 1
-    assert run_balancelink.debtor_weight == 1
+    before_sue_au.edit_idea_attr(ball_road, cashlink=cashlink_shop(run_text))
+    run_cashlink = before_sue_au.get_idea_obj(ball_road)._cashlinks.get(run_text)
+    assert run_cashlink.credor_weight == 1
+    assert run_cashlink.debtor_weight == 1
 
     # WHEN
     x_credor_weight = 55
     x_debtor_weight = 66
-    update_disc_atomunit = atomunit_shop("world_idea_balancelink", atom_update())
+    update_disc_atomunit = atomunit_shop("world_idea_cashlink", atom_update())
     update_disc_atomunit.set_required_arg("road", ball_road)
     update_disc_atomunit.set_required_arg("belief_id", run_text)
     update_disc_atomunit.set_optional_arg("credor_weight", x_credor_weight)
@@ -490,13 +490,13 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_update_idea_bal
     after_sue_au = sue_changeunit.get_edited_world(before_sue_au)
 
     # THEN
-    run_balancelink = after_sue_au.get_idea_obj(ball_road)._balancelinks.get(run_text)
-    print(f"{run_balancelink.credor_weight=}")
-    assert run_balancelink.credor_weight == x_credor_weight
-    assert run_balancelink.debtor_weight == x_debtor_weight
+    run_cashlink = after_sue_au.get_idea_obj(ball_road)._cashlinks.get(run_text)
+    print(f"{run_cashlink.credor_weight=}")
+    assert run_cashlink.credor_weight == x_credor_weight
+    assert run_cashlink.debtor_weight == x_debtor_weight
 
 
-def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_balancelink():
+def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_cashlink():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = worldunit_shop(sue_text)
@@ -514,12 +514,12 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_bal
     ball_road = before_sue_au.make_road(sports_road, ball_text)
     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
     before_ball_idea = before_sue_au.get_idea_obj(ball_road)
-    assert before_ball_idea._balancelinks.get(run_text) is None
+    assert before_ball_idea._cashlinks.get(run_text) is None
 
     # WHEN
     x_credor_weight = 55
     x_debtor_weight = 66
-    update_disc_atomunit = atomunit_shop("world_idea_balancelink", atom_insert())
+    update_disc_atomunit = atomunit_shop("world_idea_cashlink", atom_insert())
     update_disc_atomunit.set_required_arg("road", ball_road)
     update_disc_atomunit.set_required_arg("belief_id", run_text)
     update_disc_atomunit.set_optional_arg("credor_weight", x_credor_weight)
@@ -531,7 +531,7 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_bal
 
     # THEN
     after_ball_idea = after_sue_au.get_idea_obj(ball_road)
-    assert after_ball_idea._balancelinks.get(run_text) != None
+    assert after_ball_idea._cashlinks.get(run_text) != None
 
 
 def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_factunit():

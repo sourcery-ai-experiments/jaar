@@ -19,7 +19,7 @@ from src.gift.atom_config import (
     world_charunit_text,
     world_char_beliefhold_text,
     world_ideaunit_text,
-    world_idea_balancelink_text,
+    world_idea_cashlink_text,
     world_idea_reasonunit_text,
     world_idea_reason_premiseunit_text,
     world_idea_suffbelief_text,
@@ -44,8 +44,8 @@ def test_world_ideaunit_text_ReturnsObj():
     assert world_ideaunit_text() == "world_ideaunit"
 
 
-def test_world_idea_balancelink_text_ReturnsObj():
-    assert world_idea_balancelink_text() == "world_idea_balancelink"
+def test_world_idea_cashlink_text_ReturnsObj():
+    assert world_idea_cashlink_text() == "world_idea_cashlink"
 
 
 def test_world_idea_reasonunit_text_ReturnsObj():
@@ -74,7 +74,7 @@ def test_atom_config_HasCorrect_category():
         world_charunit_text(),
         world_char_beliefhold_text(),
         world_ideaunit_text(),
-        world_idea_balancelink_text(),
+        world_idea_cashlink_text(),
         world_idea_reasonunit_text(),
         world_idea_reason_premiseunit_text(),
         world_idea_suffbelief_text(),
@@ -150,7 +150,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     # set_mog("world_char_beliefhold", atom_insert(), mog, 1)
     # set_mog("beliefunit", atom_insert(), mog, 2)
     # set_mog("world_ideaunit", atom_insert(), mog, 3)
-    # set_mog("world_idea_balancelink", atom_insert(), mog, 4)
+    # set_mog("world_idea_cashlink", atom_insert(), mog, 4)
     # set_mog("world_idea_suffbelief", atom_insert(), mog, 5)
     # set_mog("world_idea_healerhold", atom_insert(), mog, 6)
     # set_mog("world_idea_factunit", atom_insert(), mog, 7)
@@ -160,7 +160,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     # set_mog("beliefunit", atom_update(), mog, 11)
     # set_mog("world_char_beliefhold", atom_update(), mog, 12)
     # set_mog("world_ideaunit", atom_update(), mog, 13)
-    # set_mog("world_idea_balancelink", atom_update(), mog, 14)
+    # set_mog("world_idea_cashlink", atom_update(), mog, 14)
     # set_mog("world_idea_factunit", atom_update(), mog, 15)
     # set_mog("world_idea_reason_premiseunit", atom_update(), mog, 16)
     # set_mog("world_idea_reasonunit", atom_update(), mog, 17)
@@ -169,7 +169,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     # set_mog("world_idea_factunit", atom_delete(), mog, 20)
     # set_mog("world_idea_suffbelief", atom_delete(), mog, 21)
     # set_mog("world_idea_healerhold", atom_delete(), mog, 22)
-    # set_mog("world_idea_balancelink", atom_delete(), mog, 23)
+    # set_mog("world_idea_cashlink", atom_delete(), mog, 23)
     # set_mog("world_ideaunit", atom_delete(), mog, 24)
     # set_mog("world_char_beliefhold", atom_delete(), mog, 25)
     # set_mog("world_charunit", atom_delete(), mog, 26)
@@ -179,7 +179,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     assert 0 == q_order("world_charunit", atom_insert(), mog, 0)
     assert 1 == q_order("world_char_beliefhold", atom_insert(), mog, 1)
     assert 2 == q_order("world_ideaunit", atom_insert(), mog, 2)
-    assert 3 == q_order("world_idea_balancelink", atom_insert(), mog, 3)
+    assert 3 == q_order("world_idea_cashlink", atom_insert(), mog, 3)
     assert 4 == q_order("world_idea_suffbelief", atom_insert(), mog, 4)
     assert 5 == q_order("world_idea_healerhold", atom_insert(), mog, 5)
     assert 6 == q_order("world_idea_factunit", atom_insert(), mog, 6)
@@ -188,7 +188,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     assert 9 == q_order("world_charunit", atom_update(), mog, 9)
     assert 10 == q_order("world_char_beliefhold", atom_update(), mog, 10)
     assert 11 == q_order("world_ideaunit", atom_update(), mog, 11)
-    assert 12 == q_order("world_idea_balancelink", atom_update(), mog, 12)
+    assert 12 == q_order("world_idea_cashlink", atom_update(), mog, 12)
     assert 13 == q_order("world_idea_factunit", atom_update(), mog, 13)
     assert 14 == q_order("world_idea_reason_premiseunit", atom_update(), mog, 14)
     assert 15 == q_order("world_idea_reasonunit", atom_update(), mog, 15)
@@ -197,7 +197,7 @@ def test_get_atom_config_dict_EveryCrudOperationHasChangeOrderBelief():
     assert 18 == q_order("world_idea_factunit", atom_delete(), mog, 18)
     assert 19 == q_order("world_idea_suffbelief", atom_delete(), mog, 19)
     assert 20 == q_order("world_idea_healerhold", atom_delete(), mog, 20)
-    assert 21 == q_order("world_idea_balancelink", atom_delete(), mog, 21)
+    assert 21 == q_order("world_idea_cashlink", atom_delete(), mog, 21)
     assert 22 == q_order("world_ideaunit", atom_delete(), mog, 22)
     assert 23 == q_order("world_char_beliefhold", atom_delete(), mog, 23)
     assert 24 == q_order("world_charunit", atom_delete(), mog, 24)
@@ -256,7 +256,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     cat_charunit = nx.get(world_charunit_text())
     cat_beliefhold = nx.get(world_char_beliefhold_text())
     cat_idea = nx.get(world_ideaunit_text())
-    cat_balancelink = nx.get(world_idea_balancelink_text())
+    cat_cashlink = nx.get(world_idea_cashlink_text())
     cat_reason = nx.get(world_idea_reasonunit_text())
     cat_premise = nx.get(world_idea_reason_premiseunit_text())
     cat_suffbelief = nx.get(world_idea_suffbelief_text())
@@ -267,7 +267,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     assert cat_charunit != None
     assert cat_beliefhold != None
     assert cat_idea != None
-    assert cat_balancelink != None
+    assert cat_cashlink != None
     assert cat_reason != None
     assert cat_premise != None
     assert cat_suffbelief != None
@@ -278,7 +278,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     normal_specs_charunit = cat_charunit.get(normal_specs_text())
     normal_specs_beliefhold = cat_beliefhold.get(normal_specs_text())
     normal_specs_idea = cat_idea.get(normal_specs_text())
-    normal_specs_balancelink = cat_balancelink.get(normal_specs_text())
+    normal_specs_cashlink = cat_cashlink.get(normal_specs_text())
     normal_specs_reason = cat_reason.get(normal_specs_text())
     normal_specs_premise = cat_premise.get(normal_specs_text())
     normal_specs_suffbelief = cat_suffbelief.get(normal_specs_text())
@@ -292,7 +292,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     assert normal_specs_charunit != None
     assert normal_specs_beliefhold != None
     assert normal_specs_idea != None
-    assert normal_specs_balancelink != None
+    assert normal_specs_cashlink != None
     assert normal_specs_reason != None
     assert normal_specs_premise != None
     assert normal_specs_suffbelief != None
@@ -303,7 +303,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     table_name_charunit = normal_specs_charunit.get(normal_table_name_text())
     table_name_beliefhold = normal_specs_beliefhold.get(normal_table_name_text())
     table_name_idea = normal_specs_idea.get(normal_table_name_text())
-    table_name_balancelink = normal_specs_balancelink.get(normal_table_name_text())
+    table_name_cashlink = normal_specs_cashlink.get(normal_table_name_text())
     table_name_reason = normal_specs_reason.get(normal_table_name_text())
     table_name_premise = normal_specs_premise.get(normal_table_name_text())
     table_name_suffbelief = normal_specs_suffbelief.get(normal_table_name_text())
@@ -314,7 +314,7 @@ def test_get_normalized_world_table_build_ReturnsCorrectObj():
     assert table_name_charunit == "charunit"
     assert table_name_beliefhold == "beliefhold"
     assert table_name_idea == "idea"
-    assert table_name_balancelink == "balancelink"
+    assert table_name_cashlink == "cashlink"
     assert table_name_reason == "reason"
     assert table_name_premise == "premise"
     assert table_name_suffbelief == "suffbelief"

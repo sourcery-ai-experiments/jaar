@@ -209,7 +209,7 @@ def beliefunit_shop(
 
 
 @dataclass
-class BalanceLink(BeliefCore):
+class CashLink(BeliefCore):
     credor_weight: float = 1.0
     debtor_weight: float = 1.0
 
@@ -222,54 +222,54 @@ class BalanceLink(BeliefCore):
 
     def meld(
         self,
-        exterior_balancelink,
+        exterior_cashlink,
         exterior_meld_strategy: str,
         src_meld_strategy: str,
     ):
         self.credor_weight = get_meld_weight(
             src_weight=self.credor_weight,
             src_meld_strategy=src_meld_strategy,
-            exterior_weight=exterior_balancelink.credor_weight,
+            exterior_weight=exterior_cashlink.credor_weight,
             exterior_meld_strategy=exterior_meld_strategy,
         )
         self.debtor_weight = get_meld_weight(
             src_weight=self.debtor_weight,
             src_meld_strategy=src_meld_strategy,
-            exterior_weight=exterior_balancelink.debtor_weight,
+            exterior_weight=exterior_cashlink.debtor_weight,
             exterior_meld_strategy=exterior_meld_strategy,
         )
 
 
-# class BalanceLinksshop:
-def balancelinks_get_from_json(balancelinks_json: str) -> dict[BeliefID, BalanceLink]:
-    balancelinks_dict = get_dict_from_json(json_x=balancelinks_json)
-    return balancelinks_get_from_dict(x_dict=balancelinks_dict)
+# class CashLinksshop:
+def cashlinks_get_from_json(cashlinks_json: str) -> dict[BeliefID, CashLink]:
+    cashlinks_dict = get_dict_from_json(json_x=cashlinks_json)
+    return cashlinks_get_from_dict(x_dict=cashlinks_dict)
 
 
-def balancelinks_get_from_dict(x_dict: dict) -> dict[BeliefID, BalanceLink]:
-    balancelinks = {}
-    for balancelinks_dict in x_dict.values():
-        x_belief = balancelink_shop(
-            belief_id=balancelinks_dict["belief_id"],
-            credor_weight=balancelinks_dict["credor_weight"],
-            debtor_weight=balancelinks_dict["debtor_weight"],
+def cashlinks_get_from_dict(x_dict: dict) -> dict[BeliefID, CashLink]:
+    cashlinks = {}
+    for cashlinks_dict in x_dict.values():
+        x_belief = cashlink_shop(
+            belief_id=cashlinks_dict["belief_id"],
+            credor_weight=cashlinks_dict["credor_weight"],
+            debtor_weight=cashlinks_dict["debtor_weight"],
         )
-        balancelinks[x_belief.belief_id] = x_belief
-    return balancelinks
+        cashlinks[x_belief.belief_id] = x_belief
+    return cashlinks
 
 
-def balancelink_shop(
+def cashlink_shop(
     belief_id: BeliefID, credor_weight: float = None, debtor_weight: float = None
-) -> BalanceLink:
+) -> CashLink:
     credor_weight = get_1_if_None(credor_weight)
     debtor_weight = get_1_if_None(debtor_weight)
-    return BalanceLink(
+    return CashLink(
         belief_id=belief_id, credor_weight=credor_weight, debtor_weight=debtor_weight
     )
 
 
 @dataclass
-class BalanceHeir(BeliefCore):
+class CashHeir(BeliefCore):
     credor_weight: float = 1.0
     debtor_weight: float = 1.0
     _world_cred: float = None
@@ -278,27 +278,27 @@ class BalanceHeir(BeliefCore):
     def set_world_cred_debt(
         self,
         idea_world_importance,
-        balanceheirs_credor_weight_sum: float,
-        balanceheirs_debtor_weight_sum: float,
+        cashheirs_credor_weight_sum: float,
+        cashheirs_debtor_weight_sum: float,
     ):
         self._world_cred = idea_world_importance * (
-            self.credor_weight / balanceheirs_credor_weight_sum
+            self.credor_weight / cashheirs_credor_weight_sum
         )
         self._world_debt = idea_world_importance * (
-            self.debtor_weight / balanceheirs_debtor_weight_sum
+            self.debtor_weight / cashheirs_debtor_weight_sum
         )
 
 
-def balanceheir_shop(
+def cashheir_shop(
     belief_id: BeliefID,
     credor_weight: float = None,
     debtor_weight: float = None,
     _world_cred: float = None,
     _world_debt: float = None,
-) -> BalanceHeir:
+) -> CashHeir:
     credor_weight = get_1_if_None(credor_weight)
     debtor_weight = get_1_if_None(debtor_weight)
-    return BalanceHeir(
+    return CashHeir(
         belief_id=belief_id,
         credor_weight=credor_weight,
         debtor_weight=debtor_weight,
@@ -308,7 +308,7 @@ def balanceheir_shop(
 
 
 @dataclass
-class BalanceLine(BeliefCore):
+class CashLine(BeliefCore):
     _world_cred: float = None
     _world_debt: float = None
 
@@ -324,8 +324,8 @@ class BalanceLine(BeliefCore):
             self._world_debt = 0
 
 
-def balanceline_shop(belief_id: BeliefID, _world_cred: float, _world_debt: float):
-    return BalanceLine(
+def cashline_shop(belief_id: BeliefID, _world_cred: float, _world_debt: float):
+    return CashLine(
         belief_id=belief_id, _world_cred=_world_cred, _world_debt=_world_debt
     )
 

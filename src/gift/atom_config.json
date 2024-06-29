@@ -67,7 +67,7 @@
             "atom_order": 9
         }
     },
-    "world_idea_balancelink": {
+    "world_idea_cashlink": {
         "calculated_attrs": {},
         "DELETE": {
             "atom_order": 21
@@ -76,7 +76,7 @@
             "atom_order": 3
         },
         "normal_specs": {
-            "normal_table_name": "balancelink"
+            "normal_table_name": "cashlink"
         },
         "optional_args": {
             "credor_weight": {
