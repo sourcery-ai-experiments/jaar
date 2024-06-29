@@ -1,6 +1,6 @@
 from src._world.world import worldunit_shop
 from src.money.money import moneyunit_shop
-from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_hubunit
 from src._instrument.sqlite import get_single_result, get_row_count_sqlstr
 from src.money.treasury_sqlstr import (
     get_chartreasuryunit_dict,
@@ -28,7 +28,7 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyPopulateschartreasuryunitTab
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -37,15 +37,15 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyPopulateschartreasuryunitTab
     sal_worldunit = worldunit_shop(_owner_id=sal_text)
     sal_worldunit.add_charunit(char_id=bob_text, credor_weight=1)
     sal_worldunit.add_charunit(char_id=tom_text, credor_weight=3)
-    x_money.userhub.save_job_world(sal_worldunit)
+    x_money.hubunit.save_job_world(sal_worldunit)
 
     bob_worldunit = worldunit_shop(_owner_id=bob_text)
     bob_worldunit.add_charunit(char_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_worldunit)
+    x_money.hubunit.save_job_world(bob_worldunit)
 
     tom_worldunit = worldunit_shop(_owner_id=tom_text)
     tom_worldunit.add_charunit(char_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_world(tom_worldunit)
+    x_money.hubunit.save_job_world(tom_worldunit)
 
     x_money.refresh_treasury_job_worlds_data()
     charunit_count_sqlstr = get_row_count_sqlstr("world_charunit")
@@ -104,7 +104,7 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyPopulateschartreasuryunitTab
     env_dir_setup_cleanup,
 ):
     # GIVEN 4 worlds, 85% of river blocks to sal
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -115,19 +115,19 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyPopulateschartreasuryunitTab
     sal_world.add_charunit(char_id=bob_text, credor_weight=2)
     sal_world.add_charunit(char_id=tom_text, credor_weight=7)
     sal_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
     bob_world.add_charunit(char_id=sal_text, credor_weight=3)
     bob_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(bob_world)
 
     tom_world = worldunit_shop(_owner_id=tom_text)
     tom_world.add_charunit(char_id=sal_text, credor_weight=2)
-    x_money.userhub.save_job_world(tom_world)
+    x_money.hubunit.save_job_world(tom_world)
 
     ava_world = worldunit_shop(_owner_id=ava_text)
-    x_money.userhub.save_job_world(ava_world)
+    x_money.hubunit.save_job_world(ava_world)
     x_money.refresh_treasury_job_worlds_data()
 
     charunit_count_sqlstr = get_row_count_sqlstr("world_charunit")
@@ -178,7 +178,7 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyPopulateschartreasuryunitTab
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 worlds, 85% of river blocks to sal, left over %15 goes on endless loop
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -190,24 +190,24 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyPopulateschartreasuryunitTab
     sal_world.add_charunit(char_id=bob_text, credor_weight=2)
     sal_world.add_charunit(char_id=tom_text, credor_weight=7)
     sal_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
     bob_world.add_charunit(char_id=sal_text, credor_weight=3)
     bob_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(bob_world)
 
     tom_world = worldunit_shop(_owner_id=tom_text)
     tom_world.add_charunit(char_id=sal_text, credor_weight=2)
-    x_money.userhub.save_job_world(tom_world)
+    x_money.hubunit.save_job_world(tom_world)
 
     ava_world = worldunit_shop(_owner_id=ava_text)
     ava_world.add_charunit(char_id=elu_text, credor_weight=2)
-    x_money.userhub.save_job_world(ava_world)
+    x_money.hubunit.save_job_world(ava_world)
 
     elu_world = worldunit_shop(_owner_id=elu_text)
     elu_world.add_charunit(char_id=ava_text, credor_weight=2)
-    x_money.userhub.save_job_world(elu_world)
+    x_money.hubunit.save_job_world(elu_world)
 
     x_money.refresh_treasury_job_worlds_data()
 
@@ -261,7 +261,7 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyPopulateschartreasuryunitTab
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 worlds, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -273,25 +273,25 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyPopulateschartreasuryunitTab
     sal_world.add_charunit(char_id=bob_text, credor_weight=2)
     sal_world.add_charunit(char_id=tom_text, credor_weight=7)
     sal_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
     bob_world.add_charunit(char_id=sal_text, credor_weight=3)
     bob_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(bob_world)
 
     tom_world = worldunit_shop(_owner_id=tom_text)
     tom_world.add_charunit(char_id=sal_text, credor_weight=2)
-    x_money.userhub.save_job_world(tom_world)
+    x_money.hubunit.save_job_world(tom_world)
 
     ava_world = worldunit_shop(_owner_id=ava_text)
     ava_world.add_charunit(char_id=elu_text, credor_weight=2)
-    x_money.userhub.save_job_world(ava_world)
+    x_money.hubunit.save_job_world(ava_world)
 
     elu_world = worldunit_shop(_owner_id=elu_text)
     elu_world.add_charunit(char_id=ava_text, credor_weight=19)
     elu_world.add_charunit(char_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_world(elu_world)
+    x_money.hubunit.save_job_world(elu_world)
 
     x_money.refresh_treasury_job_worlds_data()
 
@@ -348,7 +348,7 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyUsesMaxblocksCount(
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 worlds, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -360,25 +360,25 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyUsesMaxblocksCount(
     sal_world.add_charunit(char_id=bob_text, credor_weight=2)
     sal_world.add_charunit(char_id=tom_text, credor_weight=7)
     sal_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
     bob_world.add_charunit(char_id=sal_text, credor_weight=3)
     bob_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(bob_world)
 
     tom_world = worldunit_shop(_owner_id=tom_text)
     tom_world.add_charunit(char_id=sal_text, credor_weight=2)
-    x_money.userhub.save_job_world(tom_world)
+    x_money.hubunit.save_job_world(tom_world)
 
     ava_world = worldunit_shop(_owner_id=ava_text)
     ava_world.add_charunit(char_id=elu_text, credor_weight=2)
-    x_money.userhub.save_job_world(ava_world)
+    x_money.hubunit.save_job_world(ava_world)
 
     elu_world = worldunit_shop(_owner_id=elu_text)
     elu_world.add_charunit(char_id=ava_text, credor_weight=19)
     elu_world.add_charunit(char_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_world(elu_world)
+    x_money.hubunit.save_job_world(elu_world)
 
     x_money.refresh_treasury_job_worlds_data()
 
@@ -414,7 +414,7 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyPopulateschartreasuryunitTab
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 worlds, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -426,25 +426,25 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyPopulateschartreasuryunitTab
     sal_world.add_charunit(char_id=bob_text, credor_weight=2)
     sal_world.add_charunit(char_id=tom_text, credor_weight=7)
     sal_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
     bob_world.add_charunit(char_id=sal_text, credor_weight=3)
     bob_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(bob_world)
 
     tom_world = worldunit_shop(_owner_id=tom_text)
     tom_world.add_charunit(char_id=sal_text, credor_weight=2)
-    x_money.userhub.save_job_world(tom_world)
+    x_money.hubunit.save_job_world(tom_world)
 
     ava_world = worldunit_shop(_owner_id=ava_text)
     ava_world.add_charunit(char_id=elu_text, credor_weight=2)
-    x_money.userhub.save_job_world(ava_world)
+    x_money.hubunit.save_job_world(ava_world)
 
     elu_world = worldunit_shop(_owner_id=elu_text)
     elu_world.add_charunit(char_id=ava_text, credor_weight=19)
     elu_world.add_charunit(char_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_world(elu_world)
+    x_money.hubunit.save_job_world(elu_world)
 
     x_money.refresh_treasury_job_worlds_data()
 
@@ -502,7 +502,7 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyBuildsASingle_ContinuousRang
     env_dir_setup_cleanup,
 ):
     # GIVEN 5 worlds, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -514,25 +514,25 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyBuildsASingle_ContinuousRang
     sal_world.add_charunit(char_id=bob_text, credor_weight=2)
     sal_world.add_charunit(char_id=tom_text, credor_weight=7)
     sal_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
     bob_world.add_charunit(char_id=sal_text, credor_weight=3)
     bob_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(bob_world)
 
     tom_world = worldunit_shop(_owner_id=tom_text)
     tom_world.add_charunit(char_id=sal_text, credor_weight=2)
-    x_money.userhub.save_job_world(tom_world)
+    x_money.hubunit.save_job_world(tom_world)
 
     ava_world = worldunit_shop(_owner_id=ava_text)
     ava_world.add_charunit(char_id=elu_text, credor_weight=2)
-    x_money.userhub.save_job_world(ava_world)
+    x_money.hubunit.save_job_world(ava_world)
 
     elu_world = worldunit_shop(_owner_id=elu_text)
     elu_world.add_charunit(char_id=ava_text, credor_weight=19)
     elu_world.add_charunit(char_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_world(elu_world)
+    x_money.hubunit.save_job_world(elu_world)
 
     x_money.refresh_treasury_job_worlds_data()
 
@@ -571,7 +571,7 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyUpatesWorldCharUnits(
 ):
     """GIVEN 5 worlds, 85% of river blocks to sal, left over %15 goes on endless loop that slowly bleeds to sal"""
     # GIVEN
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -583,28 +583,28 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyUpatesWorldCharUnits(
     sal_world_src.add_charunit(char_id=bob_text, credor_weight=2, debtor_weight=2)
     sal_world_src.add_charunit(char_id=tom_text, credor_weight=2, debtor_weight=1)
     sal_world_src.add_charunit(char_id=ava_text, credor_weight=2, debtor_weight=2)
-    x_money.userhub.save_job_world(sal_world_src)
+    x_money.hubunit.save_job_world(sal_world_src)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
     bob_world.add_charunit(char_id=sal_text, credor_weight=3)
     bob_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(bob_world)
 
     tom_world = worldunit_shop(_owner_id=tom_text)
     tom_world.add_charunit(char_id=sal_text)
-    x_money.userhub.save_job_world(tom_world)
+    x_money.hubunit.save_job_world(tom_world)
 
     ava_world = worldunit_shop(_owner_id=ava_text)
     ava_world.add_charunit(char_id=elu_text, credor_weight=2)
-    x_money.userhub.save_job_world(ava_world)
+    x_money.hubunit.save_job_world(ava_world)
 
     elu_world = worldunit_shop(_owner_id=elu_text)
     elu_world.add_charunit(char_id=ava_text, credor_weight=8)
     elu_world.add_charunit(char_id=sal_text, credor_weight=2)
-    x_money.userhub.save_job_world(elu_world)
+    x_money.hubunit.save_job_world(elu_world)
 
     x_money.refresh_treasury_job_worlds_data()
-    sal_world_before = x_money.userhub.get_job_world(owner_id=sal_text)
+    sal_world_before = x_money.hubunit.get_job_world(owner_id=sal_text)
 
     x_money.set_cred_flow_for_world(owner_id=sal_text, max_blocks_count=100)
     assert len(sal_world_before._chars) == 3
@@ -638,7 +638,7 @@ def test_MoneyUnit_set_cred_flow_for_world_CorrectlyUpatesWorldCharUnits(
     assert bob_chartreasury.cash_master == sal_text
     assert tom_chartreasury.cash_master == sal_text
 
-    sal_world_after = x_money.userhub.get_job_world(owner_id=sal_text)
+    sal_world_after = x_money.hubunit.get_job_world(owner_id=sal_text)
     bob_char = sal_world_after._chars.get(bob_text)
     tom_char = sal_world_after._chars.get(tom_text)
     ava_char = sal_world_after._chars.get(ava_text)

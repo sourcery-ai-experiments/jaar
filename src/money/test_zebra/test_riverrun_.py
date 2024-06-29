@@ -1,7 +1,7 @@
 from src.money.examples.example_credorledgers import (
     example_yao_bob_zia_credorledgers,
     example_yao_bob_zia_tax_dues,
-    example_yao_userhub,
+    example_yao_hubunit,
 )
 from src.money.riverrun import RiverRun, riverrun_shop
 
@@ -11,7 +11,7 @@ def test_RiverRun_Exists():
     x_riverrun = RiverRun()
 
     # THEN
-    assert x_riverrun.userhub is None
+    assert x_riverrun.hubunit is None
     assert x_riverrun.number is None
     assert x_riverrun.econ_credorledgers is None
     assert x_riverrun.tax_dues is None
@@ -54,14 +54,14 @@ def test_RiverRun_set_cycle_max_CorrectlySetsAttr():
 def test_riverrun_shop_ReturnsCorrectObjWithArg():
     # GIVEN
     ten_int = 10
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     econ_credorledgers = example_yao_bob_zia_credorledgers()
     x_cycle_max = 10
     x_tax_dues = example_yao_bob_zia_tax_dues()
 
     # WHEN
     x_riverrun = riverrun_shop(
-        userhub=yao_userhub,
+        hubunit=yao_hubunit,
         number=ten_int,
         econ_credorledgers=econ_credorledgers,
         tax_dues=x_tax_dues,
@@ -69,7 +69,7 @@ def test_riverrun_shop_ReturnsCorrectObjWithArg():
     )
 
     # THEN
-    assert x_riverrun.userhub == yao_userhub
+    assert x_riverrun.hubunit == yao_hubunit
     assert x_riverrun.number == ten_int
     assert x_riverrun.econ_credorledgers == econ_credorledgers
     assert x_riverrun.tax_dues == x_tax_dues
@@ -86,13 +86,13 @@ def test_riverrun_shop_ReturnsCorrectObjWithArg():
 
 def test_riverrun_shop_ReturnsCorrectObjWithoutArgs():
     # GIVEN
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
 
     # WHEN
-    x_riverrun = riverrun_shop(userhub=yao_userhub)
+    x_riverrun = riverrun_shop(hubunit=yao_hubunit)
 
     # THEN
-    assert x_riverrun.userhub == yao_userhub
+    assert x_riverrun.hubunit == yao_hubunit
     assert x_riverrun.number == 0
     assert x_riverrun.econ_credorledgers == {}
     assert x_riverrun.tax_dues == {}
@@ -105,10 +105,10 @@ def test_riverrun_shop_ReturnsCorrectObjWithoutArgs():
 
 def test_RiverRun_set_econ_credorledger_SetsAttr():
     # GIVEN
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     yao_text = "Yao"
     yao_credor_weight = 500
-    x_riverrun = riverrun_shop(yao_userhub)
+    x_riverrun = riverrun_shop(yao_hubunit)
     assert x_riverrun.econ_credorledgers == {}
 
     # WHEN
@@ -122,11 +122,11 @@ def test_RiverRun_set_econ_credorledger_SetsAttr():
 
 def test_RiverRun_delete_econ_credorledgers_owner_SetsAttr():
     # GIVEN
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     yao_text = "Yao"
     bob_text = "Bob"
     sue_text = "Sue"
-    x_riverrun = riverrun_shop(yao_userhub)
+    x_riverrun = riverrun_shop(yao_hubunit)
     x_riverrun.set_econ_credorledger(yao_text, yao_text, 1)
     x_riverrun.set_econ_credorledger(bob_text, bob_text, 1)
     x_riverrun.set_econ_credorledger(bob_text, sue_text, 1)
@@ -144,13 +144,13 @@ def test_RiverRun_delete_econ_credorledgers_owner_SetsAttr():
 
 def test_RiverRun_get_all_econ_credorledger_char_ids_ReturnsCorrectObj():
     # GIVEN
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     yao_text = "Yao"
     bob_text = "Bob"
     sue_text = "Sue"
     zia_text = "Zia"
     xio_text = "Xio"
-    x_riverrun = riverrun_shop(yao_userhub)
+    x_riverrun = riverrun_shop(yao_hubunit)
 
     # WHEN
     all_chars_ids = x_riverrun.get_all_econ_credorledger_char_ids()

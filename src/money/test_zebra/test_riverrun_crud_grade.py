@@ -1,13 +1,13 @@
 from src.money.rivercycle import rivergrade_shop
 from src.money.riverrun import riverrun_shop
-from src.money.examples.example_credorledgers import example_yao_userhub
+from src.money.examples.example_credorledgers import example_yao_hubunit
 
 
 def test_RiverRun_set_initial_rivergrade_SetsAttr():
     # GIVEN
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     yao_number = 8
-    yao_riverrun = riverrun_shop(yao_userhub, yao_number)
+    yao_riverrun = riverrun_shop(yao_hubunit, yao_number)
     x_debtor_count = 5
     x_credor_count = 8
     yao_riverrun._debtor_count = x_debtor_count
@@ -20,7 +20,7 @@ def test_RiverRun_set_initial_rivergrade_SetsAttr():
 
     # THEN
     bob_rivergrade = rivergrade_shop(
-        yao_userhub, bob_text, yao_number, x_debtor_count, x_credor_count
+        yao_hubunit, bob_text, yao_number, x_debtor_count, x_credor_count
     )
     bob_rivergrade.grant_amount = 0
     assert yao_riverrun._rivergrades.get(bob_text) != None
@@ -32,9 +32,9 @@ def test_RiverRun_set_initial_rivergrade_SetsAttr():
 
 def test_RiverRun_rivergrades_is_empty_ReturnsObj():
     # GIVEN
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     yao_number = 8
-    yao_riverrun = riverrun_shop(yao_userhub, yao_number)
+    yao_riverrun = riverrun_shop(yao_hubunit, yao_number)
 
     assert yao_riverrun._rivergrades_is_empty()
 
@@ -48,9 +48,9 @@ def test_RiverRun_rivergrades_is_empty_ReturnsObj():
 
 def test_RiverRun_rivergrade_exists_ReturnsObj():
     # GIVEN
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     yao_number = 8
-    yao_riverrun = riverrun_shop(yao_userhub, yao_number)
+    yao_riverrun = riverrun_shop(yao_hubunit, yao_number)
     yao_riverrun.set_initial_rivergrade("Yao")
 
     bob_text = "Bob"
@@ -67,13 +67,13 @@ def test_RiverRun_rivergrade_exists_ReturnsObj():
 
 def test_RiverRun_set_all_initial_rivergrades_CorrectlySetsAttr():
     # GIVEN
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     yao_text = "Yao"
     bob_text = "Bob"
     sue_text = "Sue"
     zia_text = "Zia"
     xio_text = "Xio"
-    x_riverrun = riverrun_shop(yao_userhub)
+    x_riverrun = riverrun_shop(yao_hubunit)
     x_riverrun.set_econ_credorledger(yao_text, yao_text, 1)
     x_riverrun.set_econ_credorledger(yao_text, bob_text, 1)
     x_riverrun.set_econ_credorledger(zia_text, bob_text, 1)
@@ -97,13 +97,13 @@ def test_RiverRun_set_all_initial_rivergrades_CorrectlySetsAttr():
 
 def test_RiverRun_set_all_initial_rivergrades_CorrectlyOverWritesPrevious():
     # GIVEN
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     yao_text = "Yao"
     bob_text = "Bob"
     sue_text = "Sue"
     zia_text = "Zia"
     xio_text = "Xio"
-    x_riverrun = riverrun_shop(yao_userhub)
+    x_riverrun = riverrun_shop(yao_hubunit)
     x_riverrun.set_econ_credorledger(yao_text, yao_text, 1)
     x_riverrun.set_econ_credorledger(yao_text, bob_text, 1)
     x_riverrun.set_econ_credorledger(zia_text, bob_text, 1)

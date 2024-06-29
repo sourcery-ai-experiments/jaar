@@ -8,7 +8,7 @@ from src._world.world import (
 from src.money.money import moneyunit_shop
 from src.money.examples.econ_env import (
     temp_real_id,
-    get_texas_userhub,
+    get_texas_hubunit,
     env_dir_setup_cleanup,
 )
 from src._instrument.sqlite import get_single_result
@@ -37,7 +37,7 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyDeletesOldTreasuryI
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.create_treasury_db(in_memory=True)
 
     bob_text = "Bob"
@@ -45,7 +45,7 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyDeletesOldTreasuryI
 
     bob_worldunit = worldunit_shop(bob_text)
     bob_worldunit.add_charunit(tom_text, credor_weight=3, debtor_weight=1)
-    x_money.userhub.save_job_world(bob_worldunit)
+    x_money.hubunit.save_job_world(bob_worldunit)
     x_money.refresh_treasury_job_worlds_data()
     charunit_count_sqlstr = get_row_count_sqlstr("world_charunit")
     assert get_single_result(x_money.get_treasury_conn(), charunit_count_sqlstr) == 1
@@ -61,7 +61,7 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyDeletesOldTreasuryF
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.create_treasury_db(in_memory=False)
 
     bob_text = "Bob"
@@ -69,7 +69,7 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyDeletesOldTreasuryF
 
     bob_worldunit = worldunit_shop(bob_text)
     bob_worldunit.add_charunit(tom_text, credor_weight=3, debtor_weight=1)
-    x_money.userhub.save_job_world(bob_worldunit)
+    x_money.hubunit.save_job_world(bob_worldunit)
     x_money.refresh_treasury_job_worlds_data()
     charunit_count_sqlstr = get_row_count_sqlstr("world_charunit")
     assert get_single_result(x_money.get_treasury_conn(), charunit_count_sqlstr) == 1
@@ -85,7 +85,7 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyPopulatesCharunitTa
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 CharUnits = 12 charunit rows
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.create_treasury_db(in_memory=True)
 
     bob_text = "Bob"
@@ -97,25 +97,25 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyPopulatesCharunitTa
     bob_worldunit.add_charunit(tom_text, credor_weight=3, debtor_weight=1)
     bob_worldunit.add_charunit(sal_text, credor_weight=1, debtor_weight=4)
     bob_worldunit.add_charunit(elu_text, credor_weight=1, debtor_weight=4)
-    x_money.userhub.save_job_world(bob_worldunit)
+    x_money.hubunit.save_job_world(bob_worldunit)
 
     sal_worldunit = worldunit_shop(sal_text)
     sal_worldunit.add_charunit(bob_text, credor_weight=1, debtor_weight=4)
     sal_worldunit.add_charunit(tom_text, credor_weight=3, debtor_weight=1)
     sal_worldunit.add_charunit(elu_text, credor_weight=1, debtor_weight=4)
-    x_money.userhub.save_job_world(sal_worldunit)
+    x_money.hubunit.save_job_world(sal_worldunit)
 
     tom_worldunit = worldunit_shop(tom_text)
     tom_worldunit.add_charunit(bob_text, credor_weight=3, debtor_weight=1)
     tom_worldunit.add_charunit(sal_text, credor_weight=1, debtor_weight=4)
     tom_worldunit.add_charunit(elu_text, credor_weight=1, debtor_weight=4)
-    x_money.userhub.save_job_world(tom_worldunit)
+    x_money.hubunit.save_job_world(tom_worldunit)
 
     elu_worldunit = worldunit_shop(elu_text)
     elu_worldunit.add_charunit(bob_text, credor_weight=3, debtor_weight=1)
     elu_worldunit.add_charunit(tom_text, credor_weight=1, debtor_weight=4)
     elu_worldunit.add_charunit(elu_text, credor_weight=1, debtor_weight=4)
-    x_money.userhub.save_job_world(elu_worldunit)
+    x_money.hubunit.save_job_world(elu_worldunit)
 
     charunit_count_sqlstr = get_row_count_sqlstr("world_charunit")
     assert get_single_result(x_money.get_treasury_conn(), charunit_count_sqlstr) == 0
@@ -131,7 +131,7 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyPopulatesWorldTable
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 CharUnits = 12 charunit rows
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.create_treasury_db(in_memory=True)
 
     bob_text = "Bob"
@@ -139,10 +139,10 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyPopulatesWorldTable
     sal_text = "Sal"
     elu_text = "Elu"
 
-    x_money.userhub.save_job_world(worldunit_shop(bob_text))
-    x_money.userhub.save_job_world(worldunit_shop(tom_text))
-    x_money.userhub.save_job_world(worldunit_shop(sal_text))
-    x_money.userhub.save_job_world(worldunit_shop(elu_text))
+    x_money.hubunit.save_job_world(worldunit_shop(bob_text))
+    x_money.hubunit.save_job_world(worldunit_shop(tom_text))
+    x_money.hubunit.save_job_world(worldunit_shop(sal_text))
+    x_money.hubunit.save_job_world(worldunit_shop(elu_text))
 
     world_count_sqlstrs = get_row_count_sqlstr("worldunit")
     assert get_single_result(x_money.get_treasury_conn(), world_count_sqlstrs) == 0
@@ -158,7 +158,7 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyPopulatesWorldTable
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 CharUnits = 12 charunit rows
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.create_treasury_db(in_memory=True)
 
     bob_text = "Bob"
@@ -166,10 +166,10 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyPopulatesWorldTable
     sal_text = "Sal"
     elu_text = "Elu"
 
-    x_money.userhub.save_job_world(worldunit_shop(bob_text))
-    x_money.userhub.save_job_world(worldunit_shop(tom_text))
-    x_money.userhub.save_job_world(worldunit_shop(sal_text))
-    x_money.userhub.save_job_world(worldunit_shop(elu_text))
+    x_money.hubunit.save_job_world(worldunit_shop(bob_text))
+    x_money.hubunit.save_job_world(worldunit_shop(tom_text))
+    x_money.hubunit.save_job_world(worldunit_shop(sal_text))
+    x_money.hubunit.save_job_world(worldunit_shop(elu_text))
 
     world_count_sqlstrs = get_row_count_sqlstr("worldunit")
     assert get_single_result(x_money.get_treasury_conn(), world_count_sqlstrs) == 0
@@ -185,7 +185,7 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyPopulates_world_bel
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.create_treasury_db(in_memory=True)
 
     bob_text = "Bob"
@@ -196,8 +196,8 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_CorrectlyPopulates_world_bel
     bob_world.add_charunit(char_id=tom_text)
     tom_world.add_charunit(char_id=bob_text)
     tom_world.add_charunit(char_id=elu_text)
-    x_money.userhub.save_job_world(bob_world)
-    x_money.userhub.save_job_world(tom_world)
+    x_money.hubunit.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(tom_world)
 
     sqlstr = get_row_count_sqlstr("world_beliefunit")
     assert get_single_result(x_money.get_treasury_conn(), sqlstr) == 0
@@ -213,7 +213,7 @@ def test_MoneyUnit_get_world_ideaunit_table_insert_sqlstr_CorrectlyPopulatesTabl
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.refresh_treasury_job_worlds_data()
 
     bob_text = "Bob"
@@ -237,7 +237,7 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_Populates_world_ideaunit_tab
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 CharUnits = 12 charunit rows
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.refresh_treasury_job_worlds_data()
 
     bob_text = "Bob"
@@ -249,9 +249,9 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_Populates_world_ideaunit_tab
     bob_world.set_owner_id(new_owner_id=bob_text)
     tim_world.set_owner_id(new_owner_id=tim_text)
     sal_world.set_owner_id(new_owner_id=sal_text)
-    x_money.userhub.save_job_world(bob_world)
-    x_money.userhub.save_job_world(tim_world)
-    x_money.userhub.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(tim_world)
+    x_money.hubunit.save_job_world(sal_world)
 
     with x_money.get_treasury_conn() as treasury_conn:
         assert get_world_ideaunit_row_count(treasury_conn, bob_text) == 0
@@ -268,7 +268,7 @@ def test_MoneyUnit_refresh_treasury_job_worlds_data_Populates_world_ideaunit_tab
 
 def test_MoneyUnit_get_world_ideaunit_dict_ReturnsCorrectData(env_dir_setup_cleanup):
     # GIVEN
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.refresh_treasury_job_worlds_data()
 
     bob_text = "Bob"
@@ -283,10 +283,10 @@ def test_MoneyUnit_get_world_ideaunit_dict_ReturnsCorrectData(env_dir_setup_clea
     tim_world.set_owner_id(new_owner_id=tim_text)
     sal_world.set_owner_id(new_owner_id=sal_text)
     elu_world.set_owner_id(new_owner_id=elu_text)
-    x_money.userhub.save_job_world(bob_world)
-    x_money.userhub.save_job_world(tim_world)
-    x_money.userhub.save_job_world(sal_world)
-    x_money.userhub.save_job_world(elu_world)
+    x_money.hubunit.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(tim_world)
+    x_money.hubunit.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(elu_world)
     x_money.refresh_treasury_job_worlds_data()
     i_count_sqlstr = get_row_count_sqlstr("world_ideaunit")
     with x_money.get_treasury_conn() as treasury_conn:
@@ -308,7 +308,7 @@ def test_MoneyUnit_get_world_idea_factunit_table_insert_sqlstr_CorrectlyPopulate
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 CharUnits = 12 charunit rows
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.refresh_treasury_job_worlds_data()
 
     bob_text = "Bob"
@@ -335,7 +335,7 @@ def test_refresh_treasury_job_worlds_data_Populates_world_idea_factunit_table(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 CharUnits = 12 charunit rows
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.refresh_treasury_job_worlds_data()
 
     # create 3 worlds with varying numbers of facts
@@ -367,9 +367,9 @@ def test_refresh_treasury_job_worlds_data_Populates_world_idea_factunit_table(
     cookery_road = create_road(casa_road, cookery_text)
     sal_world.set_fact(base=cookery_road, pick=cookery_road)
 
-    x_money.userhub.save_job_world(bob_world)
-    x_money.userhub.save_job_world(tim_world)
-    x_money.userhub.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(tim_world)
+    x_money.hubunit.save_job_world(sal_world)
 
     with x_money.get_treasury_conn() as treasury_conn:
         assert get_world_idea_factunit_row_count(treasury_conn, bob_text) == 0
@@ -393,7 +393,7 @@ def test_MoneyUnit_get_world_beliefunit_table_insert_sqlstr_CorrectlyPopulatesTa
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 CharUnits = 12 charunit rows
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.refresh_treasury_job_worlds_data()
 
     bob_text = "Bob"
@@ -418,7 +418,7 @@ def test_MoneyUnit_get_world_beliefunit_dict_ReturnsBeliefUnitData(
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
 
     bob_text = "Bob"
     tom_text = "Tom"
@@ -428,8 +428,8 @@ def test_MoneyUnit_get_world_beliefunit_dict_ReturnsBeliefUnitData(
     bob_world.add_charunit(char_id=tom_text)
     tom_world.add_charunit(char_id=bob_text)
     tom_world.add_charunit(char_id=elu_text)
-    x_money.userhub.save_job_world(bob_world)
-    x_money.userhub.save_job_world(tom_world)
+    x_money.hubunit.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(tom_world)
     x_money.refresh_treasury_job_worlds_data()
     sqlstr = get_row_count_sqlstr("world_beliefunit")
     assert get_single_result(x_money.get_treasury_conn(), sqlstr) == 3

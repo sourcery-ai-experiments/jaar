@@ -1,6 +1,6 @@
 from src._world.world import worldunit_shop
 from src.money.money import moneyunit_shop
-from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_hubunit
 from src.money.treasury_sqlstr import (
     get_river_circle_table_insert_sqlstr,
     get_river_circle_dict,
@@ -12,7 +12,7 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 CharUnits = 12 ledger rows
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -24,12 +24,12 @@ def test_get_river_circle_table_delete_sqlstr_CorrectlyDeletesTable01(
     sal_world.add_charunit(char_id=bob_text, credor_weight=2)
     sal_world.add_charunit(char_id=tom_text, credor_weight=7)
     sal_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
     bob_world.add_charunit(char_id=sal_text, credor_weight=3)
     bob_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(bob_world)
 
     x_money.refresh_treasury_job_worlds_data()
     x_money.set_cred_flow_for_world(owner_id=sal_text)
@@ -51,7 +51,7 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     env_dir_setup_cleanup,
 ):
     # GIVEN Create example econ with 4 Healers, each with 3 CharUnits = 12 ledger rows
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
 
     sal_text = "Sal"
     bob_text = "Bob"
@@ -63,25 +63,25 @@ def test_get_river_circle_table_insert_sqlstr_CorrectlyPopulatesTable01(
     sal_world.add_charunit(char_id=bob_text, credor_weight=2)
     sal_world.add_charunit(char_id=tom_text, credor_weight=7)
     sal_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
     bob_world.add_charunit(char_id=sal_text, credor_weight=3)
     bob_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(bob_world)
 
     tom_world = worldunit_shop(_owner_id=tom_text)
     tom_world.add_charunit(char_id=sal_text, credor_weight=2)
-    x_money.userhub.save_job_world(tom_world)
+    x_money.hubunit.save_job_world(tom_world)
 
     ava_world = worldunit_shop(_owner_id=ava_text)
     ava_world.add_charunit(char_id=elu_text, credor_weight=2)
-    x_money.userhub.save_job_world(ava_world)
+    x_money.hubunit.save_job_world(ava_world)
 
     elu_world = worldunit_shop(_owner_id=elu_text)
     elu_world.add_charunit(char_id=ava_text, credor_weight=19)
     elu_world.add_charunit(char_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_world(elu_world)
+    x_money.hubunit.save_job_world(elu_world)
 
     x_money.refresh_treasury_job_worlds_data()
     x_money.set_cred_flow_for_world(owner_id=sal_text, max_blocks_count=100)

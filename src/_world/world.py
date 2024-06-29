@@ -1547,16 +1547,14 @@ class WorldUnit:
             self.calc_world_metrics()
 
     def get_agenda_dict(
-        self,
-        base: RoadUnit = None,
-        agenda_enterprise: bool = True,
-        agenda_state: bool = True,
+        self, necessary_base: RoadUnit = None
     ) -> dict[RoadUnit:IdeaUnit]:
         self.calc_world_metrics()
+        all_ideas = self._idea_dict.values()
         return {
             x_idea.get_road(): x_idea
-            for x_idea in self._idea_dict.values()
-            if x_idea.is_agenda_item(necessary_base=base)
+            for x_idea in all_ideas
+            if x_idea.is_agenda_item(necessary_base)
         }
 
     def get_all_pledges(self) -> dict[RoadUnit:IdeaUnit]:
@@ -1573,11 +1571,11 @@ class WorldUnit:
         return x_sum in (0, self._char_credor_pool) or self._char_credor_pool is None
 
     def is_charunits_debtor_weight_sum_correct(self) -> bool:
-        x_sum = self.get_charunits_debtor_weight_sum()
-        return self._char_debtor_pool is None or x_sum in (
-            self._char_debtor_pool,
-            0,
-        )
+        x_debtor_weight_sum = self.get_charunits_debtor_weight_sum()
+        char_debtor_pool = self._char_debtor_pool
+        x_debtor_weight_empty_or_pool = x_debtor_weight_sum in (char_debtor_pool, 0)
+        no_char_debtor_pool = self._char_debtor_pool is None
+        return no_char_debtor_pool or x_debtor_weight_empty_or_pool
 
     def get_charunits_credor_weight_sum(self) -> float:
         return sum(charunit.get_credor_weight() for charunit in self._chars.values())

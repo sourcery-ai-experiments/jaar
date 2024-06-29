@@ -4,7 +4,7 @@ from src._road.road import (
     get_default_real_id_roadnode,
     RoadUnit,
 )
-from src.listen.userhub import UserHub, userhub_shop
+from src.listen.hubunit import HubUnit, hubunit_shop
 from pytest import fixture as pytest_fixture
 
 
@@ -36,9 +36,9 @@ def get_texas_road() -> RoadUnit:
     return create_road_from_nodes([real_id, nation_text, usa_text, texas_text])
 
 
-def get_texas_userhub() -> UserHub:
+def get_texas_hubunit() -> HubUnit:
     real_id = get_default_real_id_roadnode()
-    return userhub_shop(
+    return hubunit_shop(
         get_listen_temp_env_dir(),
         real_id,
         owner_id="Sue",
@@ -55,9 +55,9 @@ def get_dakota_road() -> RoadUnit:
     return create_road_from_nodes([real_id, nation_text, usa_text, dakota_text])
 
 
-def get_dakota_userhub() -> UserHub:
+def get_dakota_hubunit() -> HubUnit:
     real_id = get_default_real_id_roadnode()
-    return userhub_shop(
+    return hubunit_shop(
         get_listen_temp_env_dir(),
         real_id,
         owner_id="Sue",

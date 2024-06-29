@@ -5,12 +5,12 @@ from src._world.world import worldunit_shop
 from src.listen.meld_files import get_file_names_in_voice_rank_order
 from src.listen.listen import create_job_file_from_duty_file
 from src.money.money import moneyunit_shop
-from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_userhub
+from src.money.examples.econ_env import env_dir_setup_cleanup, get_texas_hubunit
 
 
 def test_get_file_names_in_voice_rank_order_GetsCorrectFileOrder(env_dir_setup_cleanup):
     # GIVEN
-    temp_dir = f"{get_texas_userhub().reals_dir}/voice_rank_order_temp"
+    temp_dir = f"{get_texas_hubunit().reals_dir}/voice_rank_order_temp"
     print(f"{temp_dir=}")
     yao_text = "Yao"
 
@@ -80,8 +80,8 @@ def test_MoneyUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type
     env_dir_setup_cleanup,
 ):
     # GIVEN
-    texas_userhub = get_texas_userhub()
-    x_money = moneyunit_shop(texas_userhub)
+    texas_hubunit = get_texas_hubunit()
+    x_money = moneyunit_shop(texas_hubunit)
     ava_text = "Ava"
     bob_text = "Bob"
     cal_text = "Cal"
@@ -95,9 +95,9 @@ def test_MoneyUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type
     yao_duty0_world.set_charunit(charunit_shop(cal_text))
     yao_duty0_world.set_charunit(charunit_shop(dom_text))
     yao_duty0_world.set_charunit(charunit_shop(elu_text))
-    texas_userhub.save_duty_world(yao_duty0_world)
-    create_job_file_from_duty_file(texas_userhub, yao_text)
-    yao_duty1_world = texas_userhub.get_duty_world(yao_text)
+    texas_hubunit.save_duty_world(yao_duty0_world)
+    create_job_file_from_duty_file(texas_hubunit, yao_text)
+    yao_duty1_world = texas_hubunit.get_duty_world(yao_text)
     assert yao_duty1_world.get_char(ava_text)._treasury_voice_rank is None
     assert yao_duty1_world.get_char(bob_text)._treasury_voice_rank is None
     assert yao_duty1_world.get_char(cal_text)._treasury_voice_rank is None
@@ -108,7 +108,7 @@ def test_MoneyUnit_treasury_set_manager_voice_ranks_CorrectlyUpdatesRecords_type
     x_money.set_duty_voice_ranks(yao_text, sort_order=get_descending_text())
 
     # THEN
-    yao_duty2_world = texas_userhub.get_duty_world(yao_text)
+    yao_duty2_world = texas_hubunit.get_duty_world(yao_text)
     assert yao_duty2_world.get_char(ava_text)._treasury_voice_rank != None
     assert yao_duty2_world.get_char(bob_text)._treasury_voice_rank != None
     assert yao_duty2_world.get_char(cal_text)._treasury_voice_rank != None

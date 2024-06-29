@@ -31,7 +31,7 @@ def get_world_charunits_dataframe(x_world: WorldUnit) -> DataFrame:
 
 
 def get_world_agenda_dataframe(x_world: WorldUnit, base: RoadUnit = None) -> DataFrame:
-    agenda_dict = x_world.get_agenda_dict(base=base)
+    agenda_dict = x_world.get_agenda_dict(necessary_base=base)
     if agenda_dict == {}:
         return DataFrame(
             columns=[

@@ -15,7 +15,7 @@ from src.money.examples.econ_env import (
     temp_real_id,
     temp_reals_dir,
     env_dir_setup_cleanup,
-    get_texas_userhub,
+    get_texas_hubunit,
 )
 from pytest import raises as pytest_raises
 
@@ -134,7 +134,7 @@ def test_MoneyUnit_treasury_get_calendar_table_crud_sqlstr_CorrectlyManagesRecor
 ):
     # GIVEN
     real_id = temp_real_id()
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.create_treasury_db(in_memory=True)
     x_money.refresh_treasury_job_worlds_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")
@@ -197,7 +197,7 @@ def test_MoneyUnit_treasury_insert_agenda_into_treasury_RaisesBaseDoesNotExistEr
     # GIVEN
     # A world that has 1 agenda item
     real_id = temp_real_id()
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.create_treasury_db(in_memory=True)
     x_money.refresh_treasury_job_worlds_data()
 
@@ -223,7 +223,7 @@ def test_MoneyUnit_treasury_insert_agenda_into_treasury_RaisesBaseDoesNotExistEr
 def test_MoneyUnit_treasury_insert_agenda_into_treasury_CorrectlyPopulatesTreasury():
     # GIVEN
     # A world that has 1 agenda item
-    x_money = moneyunit_shop(get_texas_userhub())
+    x_money = moneyunit_shop(get_texas_hubunit())
     x_money.create_treasury_db(in_memory=True)
     x_money.refresh_treasury_job_worlds_data()
     calendar_count_sqlstr = get_row_count_sqlstr("calendar")

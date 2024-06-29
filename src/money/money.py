@@ -3,7 +3,7 @@ from src._road.jaar_config import default_river_blocks_count
 from src._road.road import OwnerID
 from src._world.char import charlink_shop
 from src._world.world import WorldUnit
-from src.listen.userhub import UserHub
+from src.listen.hubunit import HubUnit
 from src.money.treasury_sqlstr import (
     get_chartreasuryunit_dict,
     get_world_charunit_table_insert_sqlstr,
@@ -46,7 +46,7 @@ class AgendaBaseDoesNotExistException(Exception):
 
 @dataclass
 class MoneyUnit:
-    userhub: UserHub
+    hubunit: HubUnit
     _treasury_db = None
 
     # treasurying
@@ -150,11 +150,11 @@ class MoneyUnit:
             treasury_conn.execute(update_treasury_voice_rank_sqlstr(owner_id))
 
             sal_chartreasuryunits = get_chartreasuryunit_dict(treasury_conn, owner_id)
-            x_world = self.userhub.get_job_world(owner_id=owner_id)
+            x_world = self.hubunit.get_job_world(owner_id=owner_id)
             set_treasury_chartreasuryunits_to_world_charunits(
                 x_world, sal_chartreasuryunits
             )
-            self.userhub.save_job_world(x_world)
+            self.hubunit.save_job_world(x_world)
 
     def get_chartreasuryunits(self, owner_id: str) -> dict[str:CharTreasuryUnit]:
         with self.get_treasury_conn() as treasury_conn:
@@ -168,8 +168,8 @@ class MoneyUnit:
         self._treasury_populate_worlds_data()
 
     def _treasury_populate_worlds_data(self):
-        for owner_id in self.userhub.get_jobs_dir_file_names_list():
-            worldunit_x = self.userhub.get_job_world(owner_id)
+        for owner_id in self.hubunit.get_jobs_dir_file_names_list():
+            worldunit_x = self.hubunit.get_job_world(owner_id)
             worldunit_x.calc_world_metrics()
 
             self._treasury_insert_worldunit(worldunit_x)
@@ -229,7 +229,7 @@ class MoneyUnit:
 
     def get_treasury_conn(self) -> Connection:
         if self._treasury_db is None:
-            return self.userhub.treasury_db_file_conn()
+            return self.hubunit.treasury_db_file_conn()
         else:
             return self._treasury_db
 
@@ -238,13 +238,13 @@ class MoneyUnit:
     ) -> Connection:
         if overwrite:
             self._treasury_db = None
-            self.userhub.delete_treasury_db_file()
+            self.hubunit.delete_treasury_db_file()
 
         treasury_file_new = True
         if in_memory:
             self._treasury_db = sqlite3_connect(":memory:")
         else:
-            self.userhub.create_treasury_db_file()
+            self.hubunit.create_treasury_db_file()
 
         if treasury_file_new:
             with self.get_treasury_conn() as treasury_conn:
@@ -271,9 +271,7 @@ class MoneyUnit:
                     open=x_calendarreport.get_interval_begin(_),
                     nigh=x_calendarreport.get_interval_close(_),
                 )
-                x_agenda_items = x_worldunit.get_agenda_dict(
-                    base=x_calendarreport.time_road
-                )
+                x_agenda_items = x_worldunit.get_agenda_dict(x_calendarreport.time_road)
                 for agenda_item in x_agenda_items.values():
                     x_calendaragendaunit = CalendarAgendaUnit(
                         calendarreport=x_calendarreport,
@@ -289,17 +287,17 @@ class MoneyUnit:
     # exporting metrics to world files
     def set_duty_voice_ranks(self, owner_id: OwnerID, sort_order: str):
         if sort_order == "descending":
-            owner_duty = self.userhub.get_duty_world(owner_id)
+            owner_duty = self.hubunit.get_duty_world(owner_id)
             for count_x, x_charunit in enumerate(owner_duty._chars.values()):
                 x_charunit.set_treasury_voice_rank(count_x)
-            self.userhub.save_duty_world(owner_duty)
+            self.hubunit.save_duty_world(owner_duty)
 
 
-def moneyunit_shop(x_userhub: UserHub, in_memory_treasury: bool = None) -> MoneyUnit:
+def moneyunit_shop(x_hubunit: HubUnit, in_memory_treasury: bool = None) -> MoneyUnit:
     if in_memory_treasury is None:
         in_memory_treasury = True
 
-    x_moneyunit = MoneyUnit(x_userhub)
+    x_moneyunit = MoneyUnit(x_hubunit)
     x_moneyunit.create_treasury_db(in_memory=in_memory_treasury)
     return x_moneyunit
 

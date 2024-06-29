@@ -1,8 +1,8 @@
 from src._world.world import worldunit_shop
-from src.listen.userhub import userhub_shop
+from src.listen.hubunit import hubunit_shop
 from src.money.rivercycle import get_credorledger, get_debtorledger
 from src.money.riverrun import riverrun_shop
-from src.money.examples.example_credorledgers import example_yao_userhub
+from src.money.examples.example_credorledgers import example_yao_hubunit
 
 
 def test_get_credorledger_ReturnsCorrectObj():
@@ -100,8 +100,8 @@ def test_get_debtorledger_ReturnsCorrectObjWithNoEmpty_debtor_weight():
 def test_RiverRun_set_char_tax_due_SetsAttr():
     # GIVEN
     bob_text = "Bob"
-    bob_userhub = userhub_shop(None, None, bob_text)
-    bob_riverrun = riverrun_shop(bob_userhub)
+    bob_hubunit = hubunit_shop(None, None, bob_text)
+    bob_riverrun = riverrun_shop(bob_hubunit)
     yao_text = "Yao"
     assert bob_riverrun.tax_dues.get(yao_text) is None
 
@@ -115,8 +115,8 @@ def test_RiverRun_set_char_tax_due_SetsAttr():
 
 def test_RiverRun_tax_dues_unpaid_ReturnsObj():
     # GIVEN
-    yao_userhub = example_yao_userhub()
-    x_riverrun = riverrun_shop(yao_userhub)
+    yao_hubunit = example_yao_hubunit()
+    x_riverrun = riverrun_shop(yao_hubunit)
     assert x_riverrun.tax_dues_unpaid() == False
 
     # WHEN
@@ -150,10 +150,10 @@ def test_RiverRun_set_tax_dues_CorrectlySetsAttr():
     bob_text = "Bob"
     bob_money_amount = 1000
     bob_penny = 1
-    bob_userhub = userhub_shop(
+    bob_hubunit = hubunit_shop(
         None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
     )
-    bob_riverrun = riverrun_shop(bob_userhub)
+    bob_riverrun = riverrun_shop(bob_hubunit)
     sue_text = "Sue"
     yao_text = "Yao"
     bob_debtor_weight = 38
@@ -182,10 +182,10 @@ def test_RiverRun_char_has_tax_due_ReturnsCorrectBool():
     bob_text = "Bob"
     bob_money_amount = 1000
     bob_penny = 1
-    bob_userhub = userhub_shop(
+    bob_hubunit = hubunit_shop(
         None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
     )
-    bob_riverrun = riverrun_shop(bob_userhub)
+    bob_riverrun = riverrun_shop(bob_hubunit)
     yao_text = "Yao"
     sue_text = "Sue"
     zia_text = "Zia"
@@ -217,10 +217,10 @@ def test_RiverRun_delete_tax_due_SetsAttr():
     bob_text = "Bob"
     bob_money_amount = 88
     bob_penny = 11
-    bob_userhub = userhub_shop(
+    bob_hubunit = hubunit_shop(
         None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
     )
-    bob_riverrun = riverrun_shop(bob_userhub)
+    bob_riverrun = riverrun_shop(bob_hubunit)
     yao_text = "Yao"
     bob_riverrun.set_char_tax_due(yao_text, 5)
     assert bob_riverrun.char_has_tax_due(yao_text)
@@ -237,10 +237,10 @@ def test_RiverRun_get_char_tax_due_ReturnsCorrectObj():
     bob_text = "Bob"
     bob_money_amount = 1000
     bob_penny = 1
-    bob_userhub = userhub_shop(
+    bob_hubunit = hubunit_shop(
         None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
     )
-    bob_riverrun = riverrun_shop(bob_userhub)
+    bob_riverrun = riverrun_shop(bob_hubunit)
     sue_text = "Sue"
     yao_text = "Yao"
     zia_text = "Zia"
@@ -272,10 +272,10 @@ def test_RiverRun_levy_tax_due_SetsAttr():
     bob_text = "Bob"
     bob_money_amount = 1000
     bob_penny = 1
-    bob_userhub = userhub_shop(
+    bob_hubunit = hubunit_shop(
         None, None, bob_text, penny=bob_penny, econ_money_magnitude=bob_money_amount
     )
-    bob_riverrun = riverrun_shop(bob_userhub)
+    bob_riverrun = riverrun_shop(bob_hubunit)
     sue_text = "Sue"
     yao_text = "Yao"
     bob_debtor_weight = 38

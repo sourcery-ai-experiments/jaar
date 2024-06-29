@@ -1,7 +1,7 @@
 from src._road.road import RoadUnit, get_terminus_node, get_parent_road
 from src._world.beliefunit import BeliefID
 from src._world.world import WorldUnit
-from src.listen.userhub import UserHub
+from src.listen.hubunit import HubUnit
 from copy import deepcopy as copy_deepcopy
 
 
@@ -27,18 +27,18 @@ def create_pledge(
 
 
 def add_soul_pledge(
-    x_userhub: UserHub,
+    x_hubunit: HubUnit,
     pledge_road: RoadUnit,
     x_suffbelief: BeliefID = None,
     reason_premise: RoadUnit = None,
 ):
-    soul_world = x_userhub.get_soul_world()
+    soul_world = x_hubunit.get_soul_world()
     old_soul_world = copy_deepcopy(soul_world)
     create_pledge(soul_world, pledge_road, x_suffbelief, reason_premise)
-    next_giftunit = x_userhub._default_giftunit()
+    next_giftunit = x_hubunit._default_giftunit()
     next_giftunit._changeunit.add_all_different_atomunits(old_soul_world, soul_world)
     next_giftunit.save_files()
-    x_userhub.append_gifts_to_soul_file()
+    x_hubunit.append_gifts_to_soul_file()
 
 
 def create_fact(x_world: WorldUnit, fact_pick: RoadUnit):
@@ -48,11 +48,11 @@ def create_fact(x_world: WorldUnit, fact_pick: RoadUnit):
     x_world.set_fact(fact_base, fact_pick)
 
 
-def add_soul_fact(x_userhub: UserHub, fact_pick: RoadUnit):
-    soul_world = x_userhub.get_soul_world()
+def add_soul_fact(x_hubunit: HubUnit, fact_pick: RoadUnit):
+    soul_world = x_hubunit.get_soul_world()
     old_soul_world = copy_deepcopy(soul_world)
     create_fact(soul_world, fact_pick)
-    next_giftunit = x_userhub._default_giftunit()
+    next_giftunit = x_hubunit._default_giftunit()
     next_giftunit._changeunit.add_all_different_atomunits(old_soul_world, soul_world)
     next_giftunit.save_files()
-    x_userhub.append_gifts_to_soul_file()
+    x_hubunit.append_gifts_to_soul_file()

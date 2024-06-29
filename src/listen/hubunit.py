@@ -92,7 +92,7 @@ def get_econ_grades_dir(x_econ_dir: str) -> str:
 
 
 @dataclass
-class UserHub:
+class HubUnit:
     owner_id: OwnerID = None
     reals_dir: str = None
     real_id: str = None
@@ -392,7 +392,7 @@ class UserHub:
     def econ_dir(self) -> str:
         if self.econ_road is None:
             raise _econ_roadMissingException(
-                f"UserHub '{self.owner_id}' cannot save to econ_dir because it does not have econ_road."
+                f"HubUnit '{self.owner_id}' cannot save to econ_dir because it does not have econ_road."
             )
         return get_econ_path(self, self.econ_road)
 
@@ -485,14 +485,14 @@ class UserHub:
         delete_dir(self.treasury_db_path())
 
     def dw_speaker_world(self, speaker_id: OwnerID) -> WorldUnit:
-        speaker_userhub = userhub_shop(
+        speaker_hubunit = hubunit_shop(
             reals_dir=self.reals_dir,
             real_id=self.real_id,
             owner_id=speaker_id,
             road_delimiter=self.road_delimiter,
             pixel=self.pixel,
         )
-        return speaker_userhub.get_being_world()
+        return speaker_hubunit.get_being_world()
 
     def get_perspective_world(self, speaker: WorldUnit) -> WorldUnit:
         # get copy of world without any metrics
@@ -504,7 +504,7 @@ class UserHub:
         return self.get_perspective_world(self.dw_speaker_world(speaker_id))
 
     def rj_speaker_world(self, healer_id: OwnerID, speaker_id: OwnerID) -> WorldUnit:
-        speaker_userhub = userhub_shop(
+        speaker_hubunit = hubunit_shop(
             reals_dir=self.reals_dir,
             real_id=self.real_id,
             owner_id=healer_id,
@@ -512,7 +512,7 @@ class UserHub:
             road_delimiter=self.road_delimiter,
             pixel=self.pixel,
         )
-        return speaker_userhub.get_job_world(speaker_id)
+        return speaker_hubunit.get_job_world(speaker_id)
 
     def rj_perspective_world(
         self, healer_id: OwnerID, speaker_id: OwnerID
@@ -553,7 +553,7 @@ class UserHub:
     def treasury_db_file_conn(self) -> Connection:
         if self.econ_road is None:
             raise _econ_roadMissingException(
-                f"userhub cannot connect to treasury_db_file because econ_road is {self.econ_road}"
+                f"hubunit cannot connect to treasury_db_file because econ_road is {self.econ_road}"
             )
         if self.treasury_db_file_exists() is False:
             self.create_treasury_db_file()
@@ -566,7 +566,7 @@ class UserHub:
         self.econ_road = None
 
 
-def userhub_shop(
+def hubunit_shop(
     reals_dir: str,
     real_id: RealID,
     owner_id: OwnerID = None,
@@ -575,13 +575,13 @@ def userhub_shop(
     pixel: float = None,
     penny: float = None,
     econ_money_magnitude: float = None,
-) -> UserHub:
+) -> HubUnit:
     if reals_dir is None:
         reals_dir = get_test_reals_dir()
     if real_id is None:
         real_id = get_test_real_id()
 
-    return UserHub(
+    return HubUnit(
         reals_dir=reals_dir,
         real_id=real_id,
         owner_id=validate_roadnode(owner_id, road_delimiter),
@@ -593,8 +593,8 @@ def userhub_shop(
     )
 
 
-def get_econ_path(x_userhub: UserHub, x_road: RoadNode) -> str:
+def get_econ_path(x_hubunit: HubUnit, x_road: RoadNode) -> str:
     econ_root = get_rootpart_of_econ_dir()
-    x_road = rebuild_road(x_road, x_userhub.real_id, econ_root)
-    x_list = get_all_road_nodes(x_road, x_userhub.road_delimiter)
-    return f"{x_userhub.econs_dir()}{get_directory_path(x_list=[*x_list])}"
+    x_road = rebuild_road(x_road, x_hubunit.real_id, econ_root)
+    x_list = get_all_road_nodes(x_road, x_hubunit.road_delimiter)
+    return f"{x_hubunit.econs_dir()}{get_directory_path(x_list=[*x_list])}"

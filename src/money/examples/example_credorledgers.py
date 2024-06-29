@@ -1,16 +1,16 @@
 from src._road.road import OwnerID, CharID
 from src._world.world import worldunit_shop
-from src.listen.userhub import UserHub, userhub_shop
+from src.listen.hubunit import HubUnit, hubunit_shop
 from src.money.examples.econ_env import temp_reals_dir, temp_real_id, get_texas_road
 from src.money.rivercycle import get_credorledger
 
 
-def example_yao_userhub() -> UserHub:
-    return userhub_shop(temp_reals_dir(), temp_real_id(), "Yao")
+def example_yao_hubunit() -> HubUnit:
+    return hubunit_shop(temp_reals_dir(), temp_real_id(), "Yao")
 
 
-def example_yao_texas_userhub() -> UserHub:
-    return userhub_shop(temp_reals_dir(), temp_real_id(), "Yao", get_texas_road())
+def example_yao_texas_hubunit() -> HubUnit:
+    return hubunit_shop(temp_reals_dir(), temp_real_id(), "Yao", get_texas_road())
 
 
 def example_yao_credorledger() -> dict[str:float]:

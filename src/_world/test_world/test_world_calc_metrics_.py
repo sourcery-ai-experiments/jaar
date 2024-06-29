@@ -317,7 +317,7 @@ def test_example_worlds_world_v001_with_large_agenda_WorldCanFiltersOnBase():
     assert len(x_world.get_agenda_dict()) == 63
 
     # WHEN
-    pledge_list = x_world.get_agenda_dict(base=week_road)
+    pledge_list = x_world.get_agenda_dict(necessary_base=week_road)
 
     # THEN
     assert len(pledge_list) != 63

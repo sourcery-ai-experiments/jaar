@@ -1,4 +1,4 @@
-from src.money.examples.example_credorledgers import example_yao_userhub
+from src.money.examples.example_credorledgers import example_yao_hubunit
 from src.money.rivercycle import RiverGrade, rivergrade_shop
 
 
@@ -8,7 +8,7 @@ def test_RiverGrade_Exists():
 
     # THEN
     #: Leader soul get_char._debtor_weight (SELECT tax_due_amount FROM char WHERE char_id = bob_text)
-    assert x_rivergrade.userhub is None
+    assert x_rivergrade.hubunit is None
     assert x_rivergrade.char_id is None
     assert x_rivergrade.number is None
     #: Leader soul get_char._debtor_weight (SELECT tax_due_amount FROM char WHERE char_id = bob_text)
@@ -44,18 +44,18 @@ def test_RiverGrade_Exists():
 def test_rivergrade_shop_ReturnsCorrectObjWithArg():
     # GIVEN
     bob_text = "Bob"
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     ten_int = 10
     x_debtor_count = 7
     x_credor_count = 9
 
     # WHEN
     x_rivergrade = rivergrade_shop(
-        yao_userhub, bob_text, ten_int, x_debtor_count, x_credor_count
+        yao_hubunit, bob_text, ten_int, x_debtor_count, x_credor_count
     )
 
     # THEN
-    assert x_rivergrade.userhub == yao_userhub
+    assert x_rivergrade.hubunit == yao_hubunit
     assert x_rivergrade.char_id == bob_text
     assert x_rivergrade.number == ten_int
     assert x_rivergrade.tax_bill_amount is None
@@ -77,13 +77,13 @@ def test_rivergrade_shop_ReturnsCorrectObjWithArg():
 def test_rivergrade_shop_ReturnsCorrectObjWithoutArgs():
     # GIVEN
     bob_text = "Bob"
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
 
     # WHEN
-    x_rivergrade = rivergrade_shop(yao_userhub, bob_text)
+    x_rivergrade = rivergrade_shop(yao_hubunit, bob_text)
 
     # THEN
-    assert x_rivergrade.userhub == yao_userhub
+    assert x_rivergrade.hubunit == yao_hubunit
     assert x_rivergrade.number == 0
     assert x_rivergrade.tax_bill_amount is None
     assert x_rivergrade.grant_amount is None
@@ -134,7 +134,7 @@ def test_RiverGrade_set_tax_due_amount_SetsCorrectAttrs():
 def test_RiverGrade_get_dict_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     ten_int = 10
     x_tax_bill_amount = 90
     x_grant_amount = 91
@@ -151,7 +151,7 @@ def test_RiverGrade_get_dict_ReturnsCorrectObj():
     x_rewards_count = 108
     x_rewards_magnitude = 109
     x_rivergrade = rivergrade_shop(
-        yao_userhub, bob_text, ten_int, x_debtor_count, x_credor_count
+        yao_hubunit, bob_text, ten_int, x_debtor_count, x_credor_count
     )
     x_rivergrade.tax_bill_amount = x_tax_bill_amount
     x_rivergrade.grant_amount = x_grant_amount
@@ -172,9 +172,9 @@ def test_RiverGrade_get_dict_ReturnsCorrectObj():
     rivergrade_dict = x_rivergrade.get_dict()
 
     # THEN
-    assert rivergrade_dict.get("real_id") == yao_userhub.real_id
-    assert rivergrade_dict.get("healer_id") == yao_userhub.owner_id
-    assert rivergrade_dict.get("econ_road") == yao_userhub.econ_road
+    assert rivergrade_dict.get("real_id") == yao_hubunit.real_id
+    assert rivergrade_dict.get("healer_id") == yao_hubunit.owner_id
+    assert rivergrade_dict.get("econ_road") == yao_hubunit.econ_road
     assert rivergrade_dict.get("tax_bill_amount") == x_tax_bill_amount
     assert rivergrade_dict.get("grant_amount") == x_grant_amount
     assert rivergrade_dict.get("debtor_rank_num") == x_debtor_rank_num
@@ -194,12 +194,12 @@ def test_RiverGrade_get_dict_ReturnsCorrectObj():
 def test_RiverGrade_get_json_ReturnsCorrectObj():
     # GIVEN
     bob_text = "Bob"
-    yao_userhub = example_yao_userhub()
+    yao_hubunit = example_yao_hubunit()
     ten_int = 10
     x_debtor_count = 101
     x_credor_count = 103
     x_rivergrade = rivergrade_shop(
-        yao_userhub, bob_text, ten_int, x_debtor_count, x_credor_count
+        yao_hubunit, bob_text, ten_int, x_debtor_count, x_credor_count
     )
 
     # WHEN

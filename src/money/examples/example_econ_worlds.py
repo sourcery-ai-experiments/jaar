@@ -6,7 +6,7 @@ from src._world.examples.example_worlds import (
     get_world_x1_3levels_1reason_1facts,
 )
 from src.money.money import moneyunit_shop
-from src.money.examples.econ_env import temp_real_id, get_texas_userhub
+from src.money.examples.econ_env import temp_real_id, get_texas_hubunit
 from random import randrange
 
 
@@ -173,24 +173,24 @@ def setup_test_example_environment():
 
 def _delete_and_set_ex4():
     ex4_id = "ex4"
-    ex4_userhub = get_texas_userhub()
-    ex4_userhub.real_id = ex4_id
-    x_money = moneyunit_shop(ex4_userhub)
-    delete_dir(x_money.userhub.econ_dir())
+    ex4_hubunit = get_texas_hubunit()
+    ex4_hubunit.real_id = ex4_id
+    x_money = moneyunit_shop(ex4_hubunit)
+    delete_dir(x_money.hubunit.econ_dir())
     x_money.create_treasury_db(in_memory=True)
-    x_money.userhub.save_job_world(get_7nodeJRootWithH_world())
-    x_money.userhub.save_job_world(get_world_with7amCleanTableReason())
-    x_money.userhub.save_job_world(get_world_base_time_example())
-    x_money.userhub.save_job_world(get_world_x1_3levels_1reason_1facts())
+    x_money.hubunit.save_job_world(get_7nodeJRootWithH_world())
+    x_money.hubunit.save_job_world(get_world_with7amCleanTableReason())
+    x_money.hubunit.save_job_world(get_world_base_time_example())
+    x_money.hubunit.save_job_world(get_world_x1_3levels_1reason_1facts())
 
 
 def _delete_and_set_ex6(ex6_id: str = None):
     if ex6_id is None:
         ex6_id = "ex6"
-    ex6_userhub = get_texas_userhub()
-    ex6_userhub.real_id = ex6_id
-    x_money = moneyunit_shop(ex6_userhub)
-    delete_dir(x_money.userhub.econ_dir())
+    ex6_hubunit = get_texas_hubunit()
+    ex6_hubunit.real_id = ex6_id
+    x_money = moneyunit_shop(ex6_hubunit)
+    delete_dir(x_money.hubunit.econ_dir())
     x_money.create_treasury_db(in_memory=False)
 
     sal_text = "Sal"
@@ -203,25 +203,25 @@ def _delete_and_set_ex6(ex6_id: str = None):
     sal_world.add_charunit(char_id=bob_text, credor_weight=2)
     sal_world.add_charunit(char_id=tom_text, credor_weight=7)
     sal_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(sal_world)
+    x_money.hubunit.save_job_world(sal_world)
 
     bob_world = worldunit_shop(_owner_id=bob_text)
     bob_world.add_charunit(char_id=sal_text, credor_weight=3)
     bob_world.add_charunit(char_id=ava_text, credor_weight=1)
-    x_money.userhub.save_job_world(bob_world)
+    x_money.hubunit.save_job_world(bob_world)
 
     tom_world = worldunit_shop(_owner_id=tom_text)
     tom_world.add_charunit(char_id=sal_text, credor_weight=2)
-    x_money.userhub.save_job_world(tom_world)
+    x_money.hubunit.save_job_world(tom_world)
 
     ava_world = worldunit_shop(_owner_id=ava_text)
     ava_world.add_charunit(char_id=elu_text, credor_weight=2)
-    x_money.userhub.save_job_world(ava_world)
+    x_money.hubunit.save_job_world(ava_world)
 
     elu_world = worldunit_shop(_owner_id=elu_text)
     elu_world.add_charunit(char_id=ava_text, credor_weight=19)
     elu_world.add_charunit(char_id=sal_text, credor_weight=1)
-    x_money.userhub.save_job_world(elu_world)
+    x_money.hubunit.save_job_world(elu_world)
 
     x_money.refresh_treasury_job_worlds_data()
     x_money.set_cred_flow_for_world(owner_id=sal_text, max_blocks_count=100)

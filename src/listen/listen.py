@@ -7,7 +7,7 @@ from src._road.road import (
 from src._world.idea import IdeaUnit
 from src._world.world import WorldUnit, CharUnit
 from src.listen.basis_worlds import create_empty_world, create_listen_basis
-from src.listen.userhub import UserHub, userhub_shop
+from src.listen.hubunit import HubUnit, hubunit_shop
 from copy import deepcopy as copy_deepcopy
 from dataclasses import dataclass
 
@@ -46,8 +46,8 @@ def _allocate_inallocable_debtor_weight(listener: WorldUnit, speaker_owner_id: O
 
 
 def get_speaker_perspective(speaker: WorldUnit, listener_owner_id: OwnerID):
-    listener_userhub = userhub_shop("", "", listener_owner_id)
-    return listener_userhub.get_perspective_world(speaker)
+    listener_hubunit = hubunit_shop("", "", listener_owner_id)
+    return listener_hubunit.get_perspective_world(speaker)
 
 
 def _get_pixel_scaled_weight(
@@ -207,113 +207,113 @@ def listen_to_speaker_agenda(listener: WorldUnit, speaker: WorldUnit) -> WorldUn
     return _ingest_perspective_agenda(listener, agenda)
 
 
-def listen_to_agendas_soul_being(listener_being: WorldUnit, listener_userhub: UserHub):
+def listen_to_agendas_soul_being(listener_being: WorldUnit, listener_hubunit: HubUnit):
     for x_charunit in get_ordered_debtors_roll(listener_being):
         if x_charunit.char_id == listener_being._owner_id:
-            listen_to_speaker_agenda(listener_being, listener_userhub.get_soul_world())
+            listen_to_speaker_agenda(listener_being, listener_hubunit.get_soul_world())
         else:
             speaker_id = x_charunit.char_id
-            speaker_being = listener_userhub.dw_speaker_world(speaker_id)
+            speaker_being = listener_hubunit.dw_speaker_world(speaker_id)
             if speaker_being is None:
                 speaker_being = create_empty_world(listener_being, speaker_id)
             listen_to_speaker_agenda(listener_being, speaker_being)
 
 
-def listen_to_agendas_duty_job(listener_job: WorldUnit, healer_userhub: UserHub):
+def listen_to_agendas_duty_job(listener_job: WorldUnit, healer_hubunit: HubUnit):
     listener_id = listener_job._owner_id
     for x_charunit in get_ordered_debtors_roll(listener_job):
         if x_charunit.char_id == listener_id:
-            listener_duty = healer_userhub.get_duty_world(listener_id)
+            listener_duty = healer_hubunit.get_duty_world(listener_id)
             listen_to_speaker_agenda(listener_job, listener_duty)
         else:
             speaker_id = x_charunit.char_id
-            healer_id = healer_userhub.owner_id
-            speaker_job = healer_userhub.rj_speaker_world(healer_id, speaker_id)
+            healer_id = healer_hubunit.owner_id
+            speaker_job = healer_hubunit.rj_speaker_world(healer_id, speaker_id)
             if speaker_job is None:
                 speaker_job = create_empty_world(listener_job, speaker_id)
             listen_to_speaker_agenda(listener_job, speaker_job)
 
 
-def listen_to_facts_duty_job(new_job: WorldUnit, healer_userhub: UserHub):
-    duty = healer_userhub.get_duty_world(new_job._owner_id)
+def listen_to_facts_duty_job(new_job: WorldUnit, healer_hubunit: HubUnit):
+    duty = healer_hubunit.get_duty_world(new_job._owner_id)
     migrate_all_facts(duty, new_job)
     for x_charunit in get_ordered_debtors_roll(new_job):
         if x_charunit.char_id != new_job._owner_id:
-            speaker_job = healer_userhub.get_job_world(x_charunit.char_id)
+            speaker_job = healer_hubunit.get_job_world(x_charunit.char_id)
             if speaker_job != None:
                 listen_to_speaker_fact(new_job, speaker_job)
 
 
-def listen_to_facts_soul_being(new_being: WorldUnit, listener_userhub: UserHub):
-    migrate_all_facts(listener_userhub.get_soul_world(), new_being)
+def listen_to_facts_soul_being(new_being: WorldUnit, listener_hubunit: HubUnit):
+    migrate_all_facts(listener_hubunit.get_soul_world(), new_being)
     for x_charunit in get_ordered_debtors_roll(new_being):
         speaker_id = x_charunit.char_id
         if speaker_id != new_being._owner_id:
-            speaker_being = listener_userhub.dw_speaker_world(speaker_id)
+            speaker_being = listener_hubunit.dw_speaker_world(speaker_id)
             if speaker_being != None:
                 listen_to_speaker_fact(new_being, speaker_being)
 
 
-def listen_to_debtors_roll_soul_being(listener_userhub: UserHub) -> WorldUnit:
-    soul = listener_userhub.get_soul_world()
+def listen_to_debtors_roll_soul_being(listener_hubunit: HubUnit) -> WorldUnit:
+    soul = listener_hubunit.get_soul_world()
     new_world = create_listen_basis(soul)
     if soul._char_debtor_pool is None:
         return new_world
-    listen_to_agendas_soul_being(new_world, listener_userhub)
-    listen_to_facts_soul_being(new_world, listener_userhub)
+    listen_to_agendas_soul_being(new_world, listener_hubunit)
+    listen_to_facts_soul_being(new_world, listener_hubunit)
     return new_world
 
 
 def listen_to_debtors_roll_duty_job(
-    healer_userhub: UserHub, listener_id: OwnerID
+    healer_hubunit: HubUnit, listener_id: OwnerID
 ) -> WorldUnit:
-    duty = healer_userhub.get_duty_world(listener_id)
+    duty = healer_hubunit.get_duty_world(listener_id)
     new_duty = create_listen_basis(duty)
     if duty._char_debtor_pool is None:
         return new_duty
-    listen_to_agendas_duty_job(new_duty, healer_userhub)
-    listen_to_facts_duty_job(new_duty, healer_userhub)
+    listen_to_agendas_duty_job(new_duty, healer_hubunit)
+    listen_to_facts_duty_job(new_duty, healer_hubunit)
     return new_duty
 
 
-def listen_to_owner_jobs(listener_userhub: UserHub) -> None:
-    soul = listener_userhub.get_soul_world()
+def listen_to_owner_jobs(listener_hubunit: HubUnit) -> None:
+    soul = listener_hubunit.get_soul_world()
     new_being = create_listen_basis(soul)
     pre_being_dict = new_being.get_dict()
     soul.calc_world_metrics()
     new_being.calc_world_metrics()
 
     for x_healer_id, econ_dict in soul._healers_dict.items():
-        listener_id = listener_userhub.owner_id
-        healer_userhub = copy_deepcopy(listener_userhub)
-        healer_userhub.owner_id = x_healer_id
-        _pick_econ_jobs_and_listen(listener_id, econ_dict, healer_userhub, new_being)
+        listener_id = listener_hubunit.owner_id
+        healer_hubunit = copy_deepcopy(listener_hubunit)
+        healer_hubunit.owner_id = x_healer_id
+        _pick_econ_jobs_and_listen(listener_id, econ_dict, healer_hubunit, new_being)
 
     if new_being.get_dict() == pre_being_dict:
         agenda = list(soul.get_agenda_dict().values())
         _ingest_perspective_agenda(new_being, agenda)
         listen_to_speaker_fact(new_being, soul)
 
-    listener_userhub.save_being_world(new_being)
+    listener_hubunit.save_being_world(new_being)
 
 
 def _pick_econ_jobs_and_listen(
     listener_id: OwnerID,
     econ_dict: dict[RoadUnit],
-    healer_userhub: UserHub,
+    healer_hubunit: HubUnit,
     new_being: WorldUnit,
 ):
     for econ_path in econ_dict:
-        healer_userhub.econ_road = econ_path
-        pick_econ_job_and_listen(listener_id, healer_userhub, new_being)
+        healer_hubunit.econ_road = econ_path
+        pick_econ_job_and_listen(listener_id, healer_hubunit, new_being)
 
 
 def pick_econ_job_and_listen(
-    listener_owner_id: OwnerID, healer_userhub: UserHub, new_being: WorldUnit
+    listener_owner_id: OwnerID, healer_hubunit: HubUnit, new_being: WorldUnit
 ):
     listener_id = listener_owner_id
-    if healer_userhub.job_file_exists(listener_id):
-        econ_job = healer_userhub.get_job_world(listener_id)
+    if healer_hubunit.job_file_exists(listener_id):
+        econ_job = healer_hubunit.get_job_world(listener_id)
     else:
         econ_job = create_empty_world(new_being, new_being._owner_id)
     listen_to_job_agenda(new_being, econ_job)
@@ -330,11 +330,11 @@ def listen_to_job_agenda(listener: WorldUnit, job: WorldUnit):
     listener.calc_world_metrics()
 
 
-def create_job_file_from_duty_file(healer_userhub: UserHub, owner_id: OwnerID):
-    x_job = listen_to_debtors_roll_duty_job(healer_userhub, listener_id=owner_id)
-    healer_userhub.save_job_world(x_job)
+def create_job_file_from_duty_file(healer_hubunit: HubUnit, owner_id: OwnerID):
+    x_job = listen_to_debtors_roll_duty_job(healer_hubunit, listener_id=owner_id)
+    healer_hubunit.save_job_world(x_job)
 
 
-def create_being_file_from_soul_file(userhub: UserHub):
-    x_being = listen_to_debtors_roll_soul_being(userhub)
-    userhub.save_being_world(x_being)
+def create_being_file_from_soul_file(hubunit: HubUnit):
+    x_being = listen_to_debtors_roll_soul_being(hubunit)
+    hubunit.save_being_world(x_being)

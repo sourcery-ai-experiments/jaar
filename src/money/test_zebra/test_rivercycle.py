@@ -1,5 +1,5 @@
 from src._world.world import worldunit_shop
-from src.listen.userhub import userhub_shop
+from src.listen.hubunit import hubunit_shop
 from src.money.examples.example_credorledgers import (
     example_yao_credorledger,
     example_bob_credorledger,
@@ -20,7 +20,7 @@ def test_RiverCylce_Exists():
     x_rivercycle = RiverCycle()
 
     # THEN
-    assert x_rivercycle.userhub is None
+    assert x_rivercycle.hubunit is None
     assert x_rivercycle.number is None
     assert x_rivercycle.econ_credorledgers is None
     assert x_rivercycle.riverbooks is None
@@ -29,13 +29,13 @@ def test_RiverCylce_Exists():
 def test_rivercycle_shop_ReturnsCorrectObj():
     # GIVEN
     one_int = 1
-    yao_userhub = userhub_shop(None, None, "Yao")
+    yao_hubunit = hubunit_shop(None, None, "Yao")
 
     # WHEN
-    one_rivercycle = rivercycle_shop(yao_userhub, one_int)
+    one_rivercycle = rivercycle_shop(yao_hubunit, one_int)
 
     # THEN
-    assert one_rivercycle.userhub == yao_userhub
+    assert one_rivercycle.hubunit == yao_hubunit
     assert one_rivercycle.number == 1
     assert one_rivercycle.econ_credorledgers == {}
     assert one_rivercycle.riverbooks == {}
@@ -44,11 +44,11 @@ def test_rivercycle_shop_ReturnsCorrectObj():
 def test_RiverCylce_set_complete_riverbook_CorrectlySetsAttr():
     # GIVEN
     one_int = 1
-    yao_userhub = userhub_shop(None, None, "Yao")
-    one_rivercycle = rivercycle_shop(yao_userhub, one_int)
+    yao_hubunit = hubunit_shop(None, None, "Yao")
+    one_rivercycle = rivercycle_shop(yao_hubunit, one_int)
     bob_book_money_amount = 555
     bob_text = "Bob"
-    bob_riverbook = create_riverbook(yao_userhub, bob_text, {}, bob_book_money_amount)
+    bob_riverbook = create_riverbook(yao_hubunit, bob_text, {}, bob_book_money_amount)
     assert one_rivercycle.riverbooks == {}
 
     # WHEN
@@ -62,10 +62,10 @@ def test_RiverCylce_set_riverbook_CorrectlySetsAttr():
     # GIVEN
     one_int = 1
     yao_text = "Yao"
-    yao_userhub = userhub_shop(None, None, yao_text)
+    yao_hubunit = hubunit_shop(None, None, yao_text)
     bob_text = "Bob"
     econ_credorledger = {bob_text: {yao_text: 75, bob_text: 25}}
-    one_rivercycle = rivercycle_shop(yao_userhub, one_int, econ_credorledger)
+    one_rivercycle = rivercycle_shop(yao_hubunit, one_int, econ_credorledger)
     bob_book_money_amount = 500
     assert one_rivercycle.riverbooks == {}
 
@@ -75,7 +75,7 @@ def test_RiverCylce_set_riverbook_CorrectlySetsAttr():
     # THEN
     bob_credorledger = econ_credorledger.get(bob_text)
     bob_riverbook = create_riverbook(
-        yao_userhub, bob_text, bob_credorledger, bob_book_money_amount
+        yao_hubunit, bob_text, bob_credorledger, bob_book_money_amount
     )
     assert one_rivercycle.riverbooks == {bob_text: bob_riverbook}
 
@@ -83,10 +83,10 @@ def test_RiverCylce_set_riverbook_CorrectlySetsAttr():
 def test_RiverCylce_create_cylceledger_ReturnsCorrectObjOneRiverBook():
     # GIVEN
     yao_text = "Yao"
-    yao_userhub = userhub_shop(None, None, yao_text)
+    yao_hubunit = hubunit_shop(None, None, yao_text)
     one_int = 1
     yao_credorledger = {yao_text: {yao_text: 334.0}}
-    one_rivercycle = rivercycle_shop(yao_userhub, one_int, yao_credorledger)
+    one_rivercycle = rivercycle_shop(yao_hubunit, one_int, yao_credorledger)
     book_money_amount = 450
     one_rivercycle.set_riverbook(yao_text, book_money_amount)
 
@@ -101,13 +101,13 @@ def test_RiverCylce_create_cylceledger_ReturnsCorrectObjTwoRiverBooks():
     # GIVEN
     yao_text = "Yao"
     bob_text = "Bob"
-    yao_userhub = userhub_shop(None, None, yao_text)
+    yao_hubunit = hubunit_shop(None, None, yao_text)
     one_int = 1
     econ_credorledgers = {
         yao_text: {yao_text: 75, bob_text: 25},
         bob_text: {yao_text: 49, bob_text: 51},
     }
-    one_rivercycle = rivercycle_shop(yao_userhub, one_int, econ_credorledgers)
+    one_rivercycle = rivercycle_shop(yao_hubunit, one_int, econ_credorledgers)
     yao_book_money_amount = 500
     bob_book_money_amount = 100000
     one_rivercycle.set_riverbook(yao_text, yao_book_money_amount)
@@ -125,14 +125,14 @@ def test_RiverCylce_create_cylceledger_ReturnsCorrectObjTwoRiverBooks():
 def test_create_init_rivercycle_ReturnsObjScenarioOne_charunit():
     # GIVEN
     yao_text = "Yao"
-    yao_userhub = userhub_shop(None, None, yao_text)
+    yao_hubunit = hubunit_shop(None, None, yao_text)
     yao_world = worldunit_shop(yao_text)
     yao_world.add_charunit(yao_text)
     yao_credorledger = get_credorledger(yao_world)
     econ_credorledgers = {yao_text: yao_credorledger}
 
     # WHEN
-    yao_init_rivercycle = create_init_rivercycle(yao_userhub, econ_credorledgers)
+    yao_init_rivercycle = create_init_rivercycle(yao_hubunit, econ_credorledgers)
 
     # THEN
     assert yao_init_rivercycle.number == 0
@@ -148,7 +148,7 @@ def test_create_init_rivercycle_ReturnsObjScenarioThree_charunit():
     yao_credor_weight = 7
     bob_credor_weight = 3
     zia_credor_weight = 10
-    yao_userhub = userhub_shop(None, None, yao_text)
+    yao_hubunit = hubunit_shop(None, None, yao_text)
     yao_world = worldunit_shop(yao_text)
     yao_world.add_charunit(yao_text, yao_credor_weight)
     yao_world.add_charunit(bob_text, bob_credor_weight)
@@ -158,7 +158,7 @@ def test_create_init_rivercycle_ReturnsObjScenarioThree_charunit():
     print(f"{econ_credorledgers=}")
 
     # WHEN
-    yao_init_rivercycle = create_init_rivercycle(yao_userhub, econ_credorledgers)
+    yao_init_rivercycle = create_init_rivercycle(yao_hubunit, econ_credorledgers)
 
     # THEN
     assert yao_init_rivercycle.number == 0
@@ -176,7 +176,7 @@ def test_create_next_rivercycle_ReturnsObjScenarioThree_charunit():
     yao_text = "Yao"
     bob_text = "Bob"
     zia_text = "Zia"
-    yao_userhub = userhub_shop(None, None, yao_text)
+    yao_hubunit = hubunit_shop(None, None, yao_text)
     yao_credorledger = example_yao_credorledger()
     bob_credorledger = example_bob_credorledger()
     zia_credorledger = example_zia_credorledger()
@@ -186,7 +186,7 @@ def test_create_next_rivercycle_ReturnsObjScenarioThree_charunit():
         zia_text: zia_credorledger,
     }
     print(f"{econ_credorledgers=}")
-    init_rivercycle = create_init_rivercycle(yao_userhub, econ_credorledgers)
+    init_rivercycle = create_init_rivercycle(yao_hubunit, econ_credorledgers)
     init_cycleledger = init_rivercycle.create_cylceledger()
     print(f"{init_cycleledger=}")
 
@@ -223,7 +223,7 @@ def test_create_next_rivercycle_ReturnsObjDoesNotReference_cycleledger_From_prev
     yao_text = "Yao"
     bob_text = "Bob"
     zia_text = "Zia"
-    yao_userhub = userhub_shop(None, None, yao_text)
+    yao_hubunit = hubunit_shop(None, None, yao_text)
     yao_credorledger = example_yao_credorledger()
     bob_credorledger = example_bob_credorledger()
     zia_credorledger = example_zia_credorledger()
@@ -233,7 +233,7 @@ def test_create_next_rivercycle_ReturnsObjDoesNotReference_cycleledger_From_prev
         zia_text: zia_credorledger,
     }
     print(f"{econ_credorledgers=}")
-    init_rivercycle = create_init_rivercycle(yao_userhub, econ_credorledgers)
+    init_rivercycle = create_init_rivercycle(yao_hubunit, econ_credorledgers)
     init_cycleledger = init_rivercycle.create_cylceledger()
     print(f"{init_cycleledger=}")
     init_cycleledger[bob_text] = init_cycleledger.get(bob_text) - 500000

@@ -1,7 +1,7 @@
 from src._world.healer import healerhold_shop
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
-from src.listen.userhub import userhub_shop
+from src.listen.hubunit import hubunit_shop
 from src.real.real import realunit_shop
 from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
 from os.path import exists as os_path_exists
@@ -12,11 +12,11 @@ def test_RealUnit_generate_being_world_Sets_being_WorldFile(env_dir_setup_cleanu
     music_text = "Music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), True)
     sue_text = "Sue"
-    sue_userhub = userhub_shop(None, music_text, sue_text, None)
+    sue_hubunit = hubunit_shop(None, music_text, sue_text, None)
     x_sue_being_path = f"{music_real._owners_dir}/{sue_text}/being/{sue_text}.json"
     assert os_path_exists(x_sue_being_path) is False
     music_real.init_owner_econs(sue_text)
-    assert sue_userhub.being_path() == x_sue_being_path
+    assert sue_hubunit.being_path() == x_sue_being_path
     assert os_path_exists(x_sue_being_path)
 
     # WHEN
@@ -33,12 +33,12 @@ def test_RealUnit_generate_being_world_ReturnsRegeneratedObj(env_dir_setup_clean
     music_real = realunit_shop("music", get_test_reals_dir(), True)
     sue_text = "Sue"
     music_real.init_owner_econs(sue_text)
-    sue_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, sue_text, None)
-    before_sue_world = sue_userhub.get_being_world()
+    sue_hubunit = hubunit_shop(music_real.reals_dir, music_real.real_id, sue_text, None)
+    before_sue_world = sue_hubunit.get_being_world()
     bob_text = "Bob"
     before_sue_world.add_charunit(bob_text)
-    sue_userhub.save_being_world(before_sue_world)
-    assert sue_userhub.get_being_world().char_exists(bob_text)
+    sue_hubunit.save_being_world(before_sue_world)
+    assert sue_hubunit.get_being_world().char_exists(bob_text)
 
     # WHEN
     after_sue_world = music_real.generate_being_world(sue_text)
@@ -54,15 +54,15 @@ def test_RealUnit_generate_being_world_SetsCorrectFileWithout_healerhold(
     music_real = realunit_shop("music", get_test_reals_dir(), True)
     bob_text = "Bob"
     music_real.init_owner_econs(bob_text)
-    bob_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
+    bob_hubunit = hubunit_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     before_bob_being_world = music_real.generate_being_world(bob_text)
     sue_text = "Sue"
     assert before_bob_being_world.char_exists(sue_text) is False
 
     # WHEN
-    bob_soul_world = bob_userhub.get_soul_world()
+    bob_soul_world = bob_hubunit.get_soul_world()
     bob_soul_world.add_charunit(sue_text)
-    bob_userhub.save_soul_world(bob_soul_world)
+    bob_hubunit.save_soul_world(bob_soul_world)
 
     # WHEN
     after_bob_being_world = music_real.generate_being_world(bob_text)
@@ -77,12 +77,12 @@ def test_RealUnit_generate_being_world_SetsFileWith_healerhold(env_dir_setup_cle
 
     bob_text = "Bob"
     music_real.init_owner_econs(bob_text)
-    bob_userhub = userhub_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
+    bob_hubunit = hubunit_shop(music_real.reals_dir, music_real.real_id, bob_text, None)
     after_bob_being_world = music_real.generate_being_world(bob_text)
     assert after_bob_being_world.char_exists(bob_text) is False
 
     # WHEN
-    bob_soul_world = bob_userhub.get_soul_world()
+    bob_soul_world = bob_hubunit.get_soul_world()
     bob_soul_world.add_charunit(bob_text)
     bob_soul_world.set_char_pool(100)
     texas_text = "Texas"
@@ -92,7 +92,7 @@ def test_RealUnit_generate_being_world_SetsFileWith_healerhold(env_dir_setup_cle
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
     bob_soul_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_soul_world.add_idea(elpaso_idea, texas_road)
-    bob_userhub.save_soul_world(bob_soul_world)
+    bob_hubunit.save_soul_world(bob_soul_world)
     after_bob_being_world = music_real.generate_being_world(bob_text)
 
     # THEN
@@ -109,9 +109,9 @@ def test_RealUnit_generate_all_being_worlds_SetsCorrectFiles(
     sue_text = "Sue"
     music_real.init_owner_econs(bob_text)
     reals_dir = music_real.reals_dir
-    bob_userhub = userhub_shop(reals_dir, music_real.real_id, bob_text, None)
+    bob_hubunit = hubunit_shop(reals_dir, music_real.real_id, bob_text, None)
     music_real.init_owner_econs(sue_text)
-    sue_userhub = userhub_shop(reals_dir, music_real.real_id, sue_text, None)
+    sue_hubunit = hubunit_shop(reals_dir, music_real.real_id, sue_text, None)
     bob_soul_world = music_real.generate_being_world(bob_text)
     sue_soul_world = music_real.generate_being_world(sue_text)
 
@@ -121,18 +121,18 @@ def test_RealUnit_generate_all_being_worlds_SetsCorrectFiles(
     elpaso_road = bob_soul_world.make_road(texas_road, elpaso_text)
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
 
-    bob_soul_world = bob_userhub.get_soul_world()
+    bob_soul_world = bob_hubunit.get_soul_world()
     bob_soul_world.add_charunit(bob_text)
     bob_soul_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     bob_soul_world.add_idea(elpaso_idea, texas_road)
-    bob_userhub.save_soul_world(bob_soul_world)
+    bob_hubunit.save_soul_world(bob_soul_world)
 
-    sue_soul_world = sue_userhub.get_soul_world()
+    sue_soul_world = sue_hubunit.get_soul_world()
     sue_soul_world.add_charunit(sue_text)
     sue_soul_world.add_charunit(bob_text)
     sue_soul_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     sue_soul_world.add_idea(elpaso_idea, texas_road)
-    sue_userhub.save_soul_world(sue_soul_world)
+    sue_hubunit.save_soul_world(sue_soul_world)
 
     before_bob_being_world = music_real.get_being_file_world(bob_text)
     before_sue_being_world = music_real.get_being_file_world(sue_text)
