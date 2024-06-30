@@ -9,16 +9,16 @@
 from src.gift.atom_graphic import atomunit_periodic_table0
 
 
-def test_worldunit_explanation_ShowsExplanation0WorldConceptGraph():
+def test_atomunit_periodic_table0_ShowsExplanation0Graph():
     # GIVEN / WHEN
     atomunit_periodic_table0_fig = atomunit_periodic_table0()
 
-    # THEN
-    show_figure = True
-    if show_figure:
-        atomunit_periodic_table0_fig.show()
+    # # THEN
+    # show_figure = True
+    # if show_figure:
+    #     atomunit_periodic_table0_fig.show()
 
-    assert 1 == 2
+    # assert 1 == 2
 
     # # a_world = get_1node_world()
     # # a_world = get_2node_world()
