@@ -10,7 +10,6 @@ from plotly.graph_objects import (
     Scatter as plotly_Scatter,
     Table as plotly_Table,
 )
-from dash import Dash, dcc, html, Input, Output
 
 
 def _get_dot_diameter(x_ratio: float):
@@ -349,10 +348,15 @@ def add_people_shape(
     add_shape_text(fig, x=text_x, y=text_y, text=display_text)
 
 
-def worldunit_explanation0() -> plotly_Figure:
+def get_worldunit_base_fig() -> plotly_Figure:
     fig = plotly_Figure()
     fig.update_xaxes(range=[0, 4])
     fig.update_yaxes(range=[0, 4])
+    return fig
+
+
+def worldunit_explanation0() -> plotly_Figure:
+    fig = get_worldunit_base_fig()
 
     # Add shapes
     base_w = 0.1
@@ -371,10 +375,7 @@ def worldunit_explanation0() -> plotly_Figure:
 
 
 def worldunit_explanation1() -> plotly_Figure:
-    fig = plotly_Figure()
-
-    fig.update_xaxes(range=[0, 4])
-    fig.update_yaxes(range=[0, 4])
+    fig = get_worldunit_base_fig()
 
     # Add shapes
     base_w = 0.1
@@ -405,10 +406,7 @@ def worldunit_explanation1() -> plotly_Figure:
 
 
 def worldunit_explanation2() -> plotly_Figure:
-    fig = plotly_Figure()
-
-    fig.update_xaxes(range=[0, 4])
-    fig.update_yaxes(range=[0, 4])
+    fig = get_worldunit_base_fig()
 
     # Add shapes
     base_w = 0.1
@@ -434,10 +432,7 @@ def worldunit_explanation2() -> plotly_Figure:
 
 
 def worldunit_explanation3() -> plotly_Figure:
-    fig = plotly_Figure()
-
-    fig.update_xaxes(range=[0, 4])
-    fig.update_yaxes(range=[0, 4])
+    fig = get_worldunit_base_fig()
 
     # Add shapes
     base_w = 0.1
@@ -468,10 +463,7 @@ def worldunit_explanation3() -> plotly_Figure:
 
 
 def worldunit_explanation4() -> plotly_Figure:
-    fig = plotly_Figure()
-
-    fig.update_xaxes(range=[0, 4])
-    fig.update_yaxes(range=[0, 4])
+    fig = get_worldunit_base_fig()
 
     # Add shapes
     base_w = 0.1
@@ -502,9 +494,7 @@ def worldunit_explanation4() -> plotly_Figure:
 
 
 def fiscal_explanation0() -> plotly_Figure:
-    fig = plotly_Figure()
-    fig.update_xaxes(range=[0, 4])
-    fig.update_yaxes(range=[0, 4])
+    fig = get_worldunit_base_fig()
 
     # Add shapes
     base_w = 0.1
