@@ -4,7 +4,7 @@ from src._road.road import (
     default_road_delimiter_if_none,
 )
 from src._world.healer import healerhold_shop
-from src._world.beliefunit import BeliefID, cashlink_shop, cashheir_shop
+from src._world.beliefunit import BeliefID, fiscallink_shop, fiscalheir_shop
 from src._world.reason_idea import (
     reasonunit_shop,
     reasonheir_shop,
@@ -37,8 +37,8 @@ def test_IdeaUnit_exists():
     assert x_ideaunit.pledge is None
     assert x_ideaunit._problem_bool is None
     assert x_ideaunit._descendant_pledge_count is None
-    assert x_ideaunit._cashlines is None
-    assert x_ideaunit._cashheirs is None
+    assert x_ideaunit._fiscallines is None
+    assert x_ideaunit._fiscalheirs is None
     assert x_ideaunit._is_expanded is None
     assert x_ideaunit._factheirs is None
     assert x_ideaunit._factunits is None
@@ -84,9 +84,9 @@ def test_ideaunit_shop_NoParametersReturnsCorrectObj():
     assert x_ideaunit.pledge is False
     assert x_ideaunit._problem_bool is False
     assert x_ideaunit._descendant_pledge_count is None
-    assert x_ideaunit._cashlines == {}
-    assert x_ideaunit._cashlinks == {}
-    assert x_ideaunit._cashheirs == {}
+    assert x_ideaunit._fiscallines == {}
+    assert x_ideaunit._fiscallinks == {}
+    assert x_ideaunit._fiscalheirs == {}
     assert x_ideaunit._is_expanded == True
     assert x_ideaunit._factheirs == {}
     assert x_ideaunit._factunits == {}
@@ -171,11 +171,11 @@ def test_IdeaUnit_set_parent_road_ReturnsCorrectObj():
     assert ball_idea._parent_road == sports_road
 
 
-def test_IdeaUnit_cashlinks_exist():
+def test_IdeaUnit_fiscallinks_exist():
     # GIVEN
     biker_credor_weight = 12
     biker_debtor_weight = 15
-    biker_link = cashlink_shop(
+    biker_link = fiscallink_shop(
         belief_id=BeliefID("bikers2"),
         credor_weight=biker_credor_weight,
         debtor_weight=biker_debtor_weight,
@@ -184,7 +184,7 @@ def test_IdeaUnit_cashlinks_exist():
     swimmer_belief_id = BeliefID("swimmers")
     swimmer_credor_weight = 29
     swimmer_debtor_weight = 32
-    swimmer_link = cashlink_shop(
+    swimmer_link = fiscallink_shop(
         belief_id=swimmer_belief_id,
         credor_weight=swimmer_credor_weight,
         debtor_weight=swimmer_debtor_weight,
@@ -197,18 +197,18 @@ def test_IdeaUnit_cashlinks_exist():
 
     # WHEN
     sport_text = "sport"
-    sport_idea = ideaunit_shop(_label=sport_text, _cashlinks=belief_links)
+    sport_idea = ideaunit_shop(_label=sport_text, _fiscallinks=belief_links)
 
     # THEN
-    assert sport_idea._cashlinks == belief_links
+    assert sport_idea._fiscallinks == belief_links
 
 
-def test_IdeaUnit_get_inherited_cashheirs_weight_sum_SetsAttrCorrectly_WithValues():
+def test_IdeaUnit_get_inherited_fiscalheirs_weight_sum_SetsAttrCorrectly_WithValues():
     # GIVEN
     biker_credor_weight = 12
     biker_debtor_weight = 15
     biker_text = "bikers2"
-    biker_link = cashheir_shop(
+    biker_link = fiscalheir_shop(
         belief_id=BeliefID(biker_text),
         credor_weight=biker_credor_weight,
         debtor_weight=biker_debtor_weight,
@@ -218,7 +218,7 @@ def test_IdeaUnit_get_inherited_cashheirs_weight_sum_SetsAttrCorrectly_WithValue
     swimmer_belief_id = BeliefID(swimmer_text)
     swimmer_credor_weight = 29
     swimmer_debtor_weight = 32
-    swimmer_link = cashheir_shop(
+    swimmer_link = fiscalheir_shop(
         belief_id=swimmer_belief_id,
         credor_weight=swimmer_credor_weight,
         debtor_weight=swimmer_debtor_weight,
@@ -231,47 +231,47 @@ def test_IdeaUnit_get_inherited_cashheirs_weight_sum_SetsAttrCorrectly_WithValue
 
     # WHEN
     sport_text = "sport"
-    sport_idea = ideaunit_shop(_label=sport_text, _cashheirs=belief_links)
+    sport_idea = ideaunit_shop(_label=sport_text, _fiscalheirs=belief_links)
 
     # THEN
-    assert sport_idea.get_cashheirs_credor_weight_sum() != None
-    assert sport_idea.get_cashheirs_credor_weight_sum() == 41
-    assert sport_idea.get_cashheirs_debtor_weight_sum() != None
-    assert sport_idea.get_cashheirs_debtor_weight_sum() == 47
+    assert sport_idea.get_fiscalheirs_credor_weight_sum() != None
+    assert sport_idea.get_fiscalheirs_credor_weight_sum() == 41
+    assert sport_idea.get_fiscalheirs_debtor_weight_sum() != None
+    assert sport_idea.get_fiscalheirs_debtor_weight_sum() == 47
 
-    assert len(sport_idea._cashheirs) == 2
+    assert len(sport_idea._fiscalheirs) == 2
 
-    swimmer_cashheir = sport_idea._cashheirs.get(swimmer_text)
-    assert swimmer_cashheir._world_cred is None
-    assert swimmer_cashheir._world_debt is None
-    biker_cashheir = sport_idea._cashheirs.get(biker_text)
-    assert biker_cashheir._world_cred is None
-    assert biker_cashheir._world_debt is None
+    swimmer_fiscalheir = sport_idea._fiscalheirs.get(swimmer_text)
+    assert swimmer_fiscalheir._world_cred is None
+    assert swimmer_fiscalheir._world_debt is None
+    biker_fiscalheir = sport_idea._fiscalheirs.get(biker_text)
+    assert biker_fiscalheir._world_cred is None
+    assert biker_fiscalheir._world_debt is None
 
     # WHEN
     sport_idea._world_importance = 0.25
-    sport_idea.set_cashheirs_world_cred_debt()
+    sport_idea.set_fiscalheirs_world_cred_debt()
 
     # THEN
-    print(f"{len(sport_idea._cashheirs)=}")
-    swimmer_cashheir = sport_idea._cashheirs.get(swimmer_text)
-    assert swimmer_cashheir._world_cred != None
-    assert swimmer_cashheir._world_debt != None
-    biker_cashheir = sport_idea._cashheirs.get(biker_text)
-    assert biker_cashheir._world_cred != None
-    assert biker_cashheir._world_debt != None
+    print(f"{len(sport_idea._fiscalheirs)=}")
+    swimmer_fiscalheir = sport_idea._fiscalheirs.get(swimmer_text)
+    assert swimmer_fiscalheir._world_cred != None
+    assert swimmer_fiscalheir._world_debt != None
+    biker_fiscalheir = sport_idea._fiscalheirs.get(biker_text)
+    assert biker_fiscalheir._world_cred != None
+    assert biker_fiscalheir._world_debt != None
 
 
-def test_IdeaUnit_get_cashlinks_weight_sum_ReturnsCorrectObj_NoValues():
+def test_IdeaUnit_get_fiscallinks_weight_sum_ReturnsCorrectObj_NoValues():
     # GIVEN /WHEN
     sport_text = "sport"
     sport_idea = ideaunit_shop(_label=sport_text)
-    assert sport_idea.get_cashheirs_credor_weight_sum() != None
-    assert sport_idea.get_cashheirs_debtor_weight_sum() != None
+    assert sport_idea.get_fiscalheirs_credor_weight_sum() != None
+    assert sport_idea.get_fiscalheirs_debtor_weight_sum() != None
 
     # WHEN / THEN
     # does not crash with empty set
-    sport_idea.set_cashheirs_world_cred_debt()
+    sport_idea.set_fiscalheirs_world_cred_debt()
 
 
 def test_IdeaUnit_set_reasonheirsCorrectlySourcesFromOutside():
@@ -468,18 +468,18 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     biker_belief_id = BeliefID("bikers")
     biker_credor_weight = 3.0
     biker_debtor_weight = 7.0
-    biker_link = cashlink_shop(
+    biker_link = fiscallink_shop(
         biker_belief_id, biker_credor_weight, biker_debtor_weight
     )
     flyer_belief_id = BeliefID("flyers")
     flyer_credor_weight = 6.0
     flyer_debtor_weight = 9.0
-    flyer_link = cashlink_shop(
+    flyer_link = fiscallink_shop(
         belief_id=flyer_belief_id,
         credor_weight=flyer_credor_weight,
         debtor_weight=flyer_debtor_weight,
     )
-    biker_and_flyer_cashlinks = {
+    biker_and_flyer_fiscallinks = {
         biker_link.belief_id: biker_link,
         flyer_link.belief_id: flyer_link,
     }
@@ -493,7 +493,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
         "credor_weight": flyer_link.credor_weight,
         "debtor_weight": flyer_link.debtor_weight,
     }
-    x1_cashlinks = {biker_belief_id: biker_get_dict, flyer_belief_id: flyer_get_dict}
+    x1_fiscallinks = {biker_belief_id: biker_get_dict, flyer_belief_id: flyer_get_dict}
     sue_text = "Sue"
     yao_text = "Yao"
     sue_assignedunit = assignedunit_shop({sue_text: -1, yao_text: -1})
@@ -504,7 +504,7 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     casa_idea = ideaunit_shop(
         _parent_road=casa_road,
         _kids=None,
-        _cashlinks=biker_and_flyer_cashlinks,
+        _fiscallinks=biker_and_flyer_fiscallinks,
         _weight=30,
         _label=casa_text,
         _level=1,
@@ -544,8 +544,8 @@ def test_IdeaUnit_get_dict_ReturnsCorrectCompleteDict():
     assert len(casa_dict["_kids"]) == 1
     assert casa_dict["_kids"] == casa_idea.get_kids_dict()
     assert casa_dict["_reasonunits"] == casa_idea.get_reasonunits_dict()
-    assert casa_dict["_cashlinks"] == casa_idea.get_cashlinks_dict()
-    assert casa_dict["_cashlinks"] == x1_cashlinks
+    assert casa_dict["_fiscallinks"] == casa_idea.get_fiscallinks_dict()
+    assert casa_dict["_fiscallinks"] == x1_fiscallinks
     assert casa_dict["_assignedunit"] == sue_assignedunit.get_dict()
     assert casa_dict["_healerhold"] == yao_healerhold.get_dict()
     assert casa_dict["_originunit"] == casa_idea.get_originunit_dict()
@@ -593,7 +593,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     casa_idea.set_factunit(factunit_shop(a_road, a_road))
 
     yao_text = "Yao"
-    casa_idea.set_cashlink(cashlink_shop(yao_text))
+    casa_idea.set_fiscallink(fiscallink_shop(yao_text))
 
     x_assignedunit = casa_idea._assignedunit
     x_assignedunit.set_suffbelief(belief_id=yao_text)
@@ -608,7 +608,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     assert casa_idea.pledge
     assert casa_idea._meld_strategy != "default"
     assert casa_idea._factunits != None
-    assert casa_idea._cashlinks != None
+    assert casa_idea._fiscallinks != None
     assert casa_idea._assignedunit != None
     assert casa_idea._originunit != None
     assert casa_idea._kids != {}
@@ -621,7 +621,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWith_attrs_CorrectlySetTrue():
     assert casa_dict.get("pledge")
     assert casa_dict.get("_meld_strategy") == ignore_text
     assert casa_dict.get("_factunits") != None
-    assert casa_dict.get("_cashlinks") != None
+    assert casa_dict.get("_fiscallinks") != None
     assert casa_dict.get("_assignedunit") != None
     assert casa_dict.get("_originunit") != None
     assert casa_dict.get("_kids") != None
@@ -634,7 +634,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert casa_idea.pledge is False
     assert casa_idea._meld_strategy == "default"
     assert casa_idea._factunits == {}
-    assert casa_idea._cashlinks == {}
+    assert casa_idea._fiscallinks == {}
     assert casa_idea._assignedunit == assignedunit_shop()
     assert casa_idea._healerhold == healerhold_shop()
     assert casa_idea._originunit == originunit_shop()
@@ -648,7 +648,7 @@ def test_IdeaUnit_get_dict_ReturnsDictWithAttrsCorrectlyEmpty():
     assert casa_dict.get("pledge") is None
     assert casa_dict.get("_meld_strategy") is None
     assert casa_dict.get("_factunits") is None
-    assert casa_dict.get("_cashlinks") is None
+    assert casa_dict.get("_fiscallinks") is None
     assert casa_dict.get("_assignedunit") is None
     assert casa_dict.get("_healerhold") is None
     assert casa_dict.get("_originunit") is None

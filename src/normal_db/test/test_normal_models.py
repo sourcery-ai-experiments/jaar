@@ -11,7 +11,7 @@ from src.normal_db.normal_models import (
     BeliefTable,
     BeliefHoldTable,
     IdeaTable,
-    CashLinkTable,
+    FiscalLinkTable,
     ReasonTable,
     PremiseTable,
     SuffBeliefTable,
@@ -125,16 +125,16 @@ def test_normalized_table_IdeaTable_idea_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_CashLinkTable_cashlink_Exists():
+def test_normalized_table_FiscalLinkTable_fiscallink_Exists():
     # GIVEN
-    config_category = get_normalized_world_table_build().get("world_idea_cashlink")
-    mapper = inspect(CashLinkTable)
+    config_category = get_normalized_world_table_build().get("world_idea_fiscallink")
+    mapper = inspect(FiscalLinkTable)
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "cashlink"
-    assert config_table_name == CashLinkTable.__tablename__
+    assert config_table_name == "fiscallink"
+    assert config_table_name == FiscalLinkTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 

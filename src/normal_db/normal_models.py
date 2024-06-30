@@ -64,8 +64,8 @@ class IdeaTable(Base):
     pledge = Column(Integer)
 
 
-class CashLinkTable(Base):
-    __tablename__ = "cashlink"
+class FiscalLinkTable(Base):
+    __tablename__ = "fiscallink"
     uid = Column(Integer, primary_key=True)
     belief_id = Column(String)
     road = Column(String)

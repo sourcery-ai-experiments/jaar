@@ -43,13 +43,13 @@ from src._world.reason_idea import (
     factunits_get_from_dict,
 )
 from src._world.beliefunit import (
-    CashHeir,
-    CashLink,
-    cashlinks_get_from_dict,
+    FiscalHeir,
+    FiscalLink,
+    fiscallinks_get_from_dict,
     BeliefID,
-    CashLine,
-    cashline_shop,
-    cashheir_shop,
+    FiscalLine,
+    fiscalline_shop,
+    fiscalheir_shop,
     BeliefUnit,
 )
 from src._world.origin import OriginUnit, originunit_get_from_dict
@@ -95,8 +95,8 @@ class IdeaAttrFilter:
     descendant_pledge_count: int = None
     all_char_cred: bool = None
     all_char_debt: bool = None
-    cashlink: CashLink = None
-    cashlink_del: BeliefID = None
+    fiscallink: FiscalLink = None
+    fiscallink_del: BeliefID = None
     is_expanded: bool = None
     meld_strategy: str = None
     problem_bool: bool = None
@@ -179,8 +179,8 @@ def ideaattrfilter_shop(
     descendant_pledge_count: int = None,
     all_char_cred: bool = None,
     all_char_debt: bool = None,
-    cashlink: CashLink = None,
-    cashlink_del: BeliefID = None,
+    fiscallink: FiscalLink = None,
+    fiscallink_del: BeliefID = None,
     is_expanded: bool = None,
     meld_strategy: str = None,
     problem_bool: bool = None,
@@ -212,8 +212,8 @@ def ideaattrfilter_shop(
         descendant_pledge_count=descendant_pledge_count,
         all_char_cred=all_char_cred,
         all_char_debt=all_char_debt,
-        cashlink=cashlink,
-        cashlink_del=cashlink_del,
+        fiscallink=fiscallink,
+        fiscallink_del=fiscallink_del,
         is_expanded=is_expanded,
         meld_strategy=meld_strategy,
         problem_bool=problem_bool,
@@ -232,9 +232,9 @@ class IdeaUnit:
     _kids: dict = None
     _world_real_id: RealID = None
     _uid: int = None  # Calculated field?
-    _cashlinks: dict[BeliefID:CashLink] = None
-    _cashheirs: dict[BeliefID:CashHeir] = None  # Calculated field
-    _cashlines: dict[BeliefID:CashLine] = None  # Calculated field
+    _fiscallinks: dict[BeliefID:FiscalLink] = None
+    _fiscalheirs: dict[BeliefID:FiscalHeir] = None  # Calculated field
+    _fiscallines: dict[BeliefID:FiscalLine] = None  # Calculated field
     _reasonunits: dict[RoadUnit:ReasonUnit] = None
     _reasonheirs: dict[RoadUnit:ReasonHeir] = None  # Calculated field
     _assignedunit: AssignedUnit = None
@@ -375,7 +375,7 @@ class IdeaUnit:
         self._world_fund_onset = fund_onset_x
         self._world_fund_cease = self._world_fund_onset + self._world_importance
         self._world_fund_cease = min(self._world_fund_cease, parent_fund_cease)
-        self.set_cashheirs_world_cred_debt()
+        self.set_fiscalheirs_world_cred_debt()
 
     def get_kids_in_range(self, begin: float, close: float) -> list:
         return [
@@ -448,51 +448,51 @@ class IdeaUnit:
     def set_parent_road(self, parent_road):
         self._parent_road = parent_road
 
-    def inherit_cashheirs(self, parent_cashheirs: dict[BeliefID:CashHeir] = None):
-        if parent_cashheirs is None:
-            parent_cashheirs = {}
+    def inherit_fiscalheirs(self, parent_fiscalheirs: dict[BeliefID:FiscalHeir] = None):
+        if parent_fiscalheirs is None:
+            parent_fiscalheirs = {}
 
-        self._cashheirs = {}
-        for ib in parent_cashheirs.values():
-            cashheir = cashheir_shop(
+        self._fiscalheirs = {}
+        for ib in parent_fiscalheirs.values():
+            fiscalheir = fiscalheir_shop(
                 belief_id=ib.belief_id,
                 credor_weight=ib.credor_weight,
                 debtor_weight=ib.debtor_weight,
             )
-            self._cashheirs[cashheir.belief_id] = cashheir
+            self._fiscalheirs[fiscalheir.belief_id] = fiscalheir
 
-        for ib in self._cashlinks.values():
-            cashheir = cashheir_shop(
+        for ib in self._fiscallinks.values():
+            fiscalheir = fiscalheir_shop(
                 belief_id=ib.belief_id,
                 credor_weight=ib.credor_weight,
                 debtor_weight=ib.debtor_weight,
             )
-            self._cashheirs[cashheir.belief_id] = cashheir
+            self._fiscalheirs[fiscalheir.belief_id] = fiscalheir
 
-    def set_kidless_cashlines(self):
-        # get cashlines from self
-        for bh in self._cashheirs.values():
-            x_cashline = cashline_shop(
+    def set_kidless_fiscallines(self):
+        # get fiscallines from self
+        for bh in self._fiscalheirs.values():
+            x_fiscalline = fiscalline_shop(
                 belief_id=bh.belief_id,
                 _world_cred=bh._world_cred,
                 _world_debt=bh._world_debt,
             )
-            self._cashlines[x_cashline.belief_id] = x_cashline
+            self._fiscallines[x_fiscalline.belief_id] = x_fiscalline
 
-    def set_cashlines(self, child_cashlines: dict[BeliefID:CashLine] = None):
-        if child_cashlines is None:
-            child_cashlines = {}
+    def set_fiscallines(self, child_fiscallines: dict[BeliefID:FiscalLine] = None):
+        if child_fiscallines is None:
+            child_fiscallines = {}
 
-        # get cashlines from child
-        for bl in child_cashlines.values():
-            if self._cashlines.get(bl.belief_id) is None:
-                self._cashlines[bl.belief_id] = cashline_shop(
+        # get fiscallines from child
+        for bl in child_fiscallines.values():
+            if self._fiscallines.get(bl.belief_id) is None:
+                self._fiscallines[bl.belief_id] = fiscalline_shop(
                     belief_id=bl.belief_id,
                     _world_cred=0,
                     _world_debt=0,
                 )
 
-            self._cashlines[bl.belief_id].add_world_cred_debt(
+            self._fiscallines[bl.belief_id].add_world_cred_debt(
                 world_cred=bl._world_cred, world_debt=bl._world_debt
             )
 
@@ -501,24 +501,28 @@ class IdeaUnit:
         for x_idea in self._kids.values():
             self._kids_total_weight += x_idea._weight
 
-    def get_cashheirs_credor_weight_sum(self) -> float:
-        return sum(cashlink.credor_weight for cashlink in self._cashheirs.values())
+    def get_fiscalheirs_credor_weight_sum(self) -> float:
+        return sum(
+            fiscallink.credor_weight for fiscallink in self._fiscalheirs.values()
+        )
 
-    def get_cashheirs_debtor_weight_sum(self) -> float:
-        return sum(cashlink.debtor_weight for cashlink in self._cashheirs.values())
+    def get_fiscalheirs_debtor_weight_sum(self) -> float:
+        return sum(
+            fiscallink.debtor_weight for fiscallink in self._fiscalheirs.values()
+        )
 
-    def set_cashheirs_world_cred_debt(self):
-        cashheirs_credor_weight_sum = self.get_cashheirs_credor_weight_sum()
-        cashheirs_debtor_weight_sum = self.get_cashheirs_debtor_weight_sum()
-        for cashheir_x in self._cashheirs.values():
-            cashheir_x.set_world_cred_debt(
+    def set_fiscalheirs_world_cred_debt(self):
+        fiscalheirs_credor_weight_sum = self.get_fiscalheirs_credor_weight_sum()
+        fiscalheirs_debtor_weight_sum = self.get_fiscalheirs_debtor_weight_sum()
+        for fiscalheir_x in self._fiscalheirs.values():
+            fiscalheir_x.set_world_cred_debt(
                 idea_world_importance=self._world_importance,
-                cashheirs_credor_weight_sum=cashheirs_credor_weight_sum,
-                cashheirs_debtor_weight_sum=cashheirs_debtor_weight_sum,
+                fiscalheirs_credor_weight_sum=fiscalheirs_credor_weight_sum,
+                fiscalheirs_debtor_weight_sum=fiscalheirs_debtor_weight_sum,
             )
 
-    def clear_cashlines(self):
-        self._cashlines = {}
+    def clear_fiscallines(self):
+        self._fiscallines = {}
 
     def set_idea_label(self, _label: str):
         if (
@@ -598,16 +602,16 @@ class IdeaUnit:
             else:
                 self._reasonunits.get(lx.base).meld(lx)
 
-    def _meld_cashlinks(self, exterior_idea):
-        for bl in exterior_idea._cashlinks.values():
-            if self._cashlinks.get(bl.belief_id) != None:
-                self._cashlinks.get(bl.belief_id).meld(
-                    exterior_cashlink=bl,
+    def _meld_fiscallinks(self, exterior_idea):
+        for bl in exterior_idea._fiscallinks.values():
+            if self._fiscallinks.get(bl.belief_id) != None:
+                self._fiscallinks.get(bl.belief_id).meld(
+                    exterior_fiscallink=bl,
                     exterior_meld_strategy=exterior_idea._meld_strategy,
                     src_meld_strategy=self._meld_strategy,
                 )
             else:
-                self._cashlinks[bl.belief_id] = bl
+                self._fiscallinks[bl.belief_id] = bl
 
     def _meld_factunits(self, exterior_idea):
         for hc in exterior_idea._factunits.values():
@@ -637,7 +641,7 @@ class IdeaUnit:
                 exterior_meld_strategy=exterior_idea._meld_strategy,
             )
         self._meld_reasonunits(exterior_idea=exterior_idea)
-        self._meld_cashlinks(exterior_idea=exterior_idea)
+        self._meld_fiscallinks(exterior_idea=exterior_idea)
         self._meld_factunits(exterior_idea=exterior_idea)
         if exterior_idea._meld_strategy != "override":
             self._meld_attributes_that_must_be_equal(exterior_idea=exterior_idea)
@@ -740,10 +744,10 @@ class IdeaUnit:
             self._all_char_cred = idea_attr.all_char_cred
         if idea_attr.all_char_debt != None:
             self._all_char_debt = idea_attr.all_char_debt
-        if idea_attr.cashlink != None:
-            self.set_cashlink(cashlink=idea_attr.cashlink)
-        if idea_attr.cashlink_del != None:
-            self.del_cashlink(belief_id=idea_attr.cashlink_del)
+        if idea_attr.fiscallink != None:
+            self.set_fiscallink(fiscallink=idea_attr.fiscallink)
+        if idea_attr.fiscallink_del != None:
+            self.del_fiscallink(belief_id=idea_attr.fiscallink_del)
         if idea_attr.is_expanded != None:
             self._is_expanded = idea_attr.is_expanded
         if idea_attr.pledge != None:
@@ -847,14 +851,14 @@ class IdeaUnit:
     def clear_kids(self):
         self._kids = {}
 
-    def set_cashlink(self, cashlink: CashLink):
-        self._cashlinks[cashlink.belief_id] = cashlink
+    def set_fiscallink(self, fiscallink: FiscalLink):
+        self._fiscallinks[fiscallink.belief_id] = fiscallink
 
-    def del_cashlink(self, belief_id: BeliefID):
+    def del_fiscallink(self, belief_id: BeliefID):
         try:
-            self._cashlinks.pop(belief_id)
+            self._fiscallinks.pop(belief_id)
         except KeyError as e:
-            raise (f"Cannot delete cashlink '{belief_id}'.") from e
+            raise (f"Cannot delete fiscallink '{belief_id}'.") from e
 
     def set_reasonunit(self, reason: ReasonUnit):
         reason.delimiter = self._road_delimiter
@@ -964,10 +968,10 @@ class IdeaUnit:
     def get_kids_dict(self):
         return {c_road: kid.get_dict() for c_road, kid in self._kids.items()}
 
-    def get_cashlinks_dict(self):
+    def get_fiscallinks_dict(self):
         return {
-            x_belief_id: cashlink.get_dict()
-            for x_belief_id, cashlink in self._cashlinks.items()
+            x_belief_id: fiscallink.get_dict()
+            for x_belief_id, fiscallink in self._fiscallinks.items()
         }
 
     def is_kidless(self):
@@ -976,11 +980,11 @@ class IdeaUnit:
     def is_arithmetic(self):
         return self._begin != None and self._close != None
 
-    def is_cashheirless(self):
+    def is_fiscalheirless(self):
         x_bool = None
-        if self._cashheirs in [{}, None]:
+        if self._fiscalheirs in [{}, None]:
             x_bool = True
-        elif self._cashheirs != [{}, None]:
+        elif self._fiscalheirs != [{}, None]:
             x_bool = False
         return x_bool
 
@@ -999,8 +1003,8 @@ class IdeaUnit:
             x_dict["_assignedunit"] = self.get_assignedunit_dict()
         if self._healerhold not in [None, healerhold_shop()]:
             x_dict["_healerhold"] = self._healerhold.get_dict()
-        if self._cashlinks not in [{}, None]:
-            x_dict["_cashlinks"] = self.get_cashlinks_dict()
+        if self._fiscallinks not in [{}, None]:
+            x_dict["_fiscallinks"] = self.get_fiscallinks_dict()
         if self._originunit not in [None, originunit_shop()]:
             x_dict["_originunit"] = self.get_originunit_dict()
         if self._begin != None:
@@ -1079,9 +1083,9 @@ def ideaunit_shop(
     _parent_road: RoadUnit = None,
     _kids: dict = None,
     _weight: int = 1,
-    _cashlinks: dict[BeliefID:CashLink] = None,
-    _cashheirs: dict[BeliefID:CashHeir] = None,  # Calculated field
-    _cashlines: dict[BeliefID:CashLink] = None,  # Calculated field
+    _fiscallinks: dict[BeliefID:FiscalLink] = None,
+    _fiscalheirs: dict[BeliefID:FiscalHeir] = None,  # Calculated field
+    _fiscallines: dict[BeliefID:FiscalLink] = None,  # Calculated field
     _reasonunits: dict[RoadUnit:ReasonUnit] = None,
     _reasonheirs: dict[RoadUnit:ReasonHeir] = None,  # Calculated field
     _assignedunit: AssignedUnit = None,
@@ -1134,9 +1138,9 @@ def ideaunit_shop(
         _parent_road=_parent_road,
         _kids=get_empty_dict_if_none(_kids),
         _weight=_weight,
-        _cashlinks=get_empty_dict_if_none(_cashlinks),
-        _cashheirs=get_empty_dict_if_none(_cashheirs),
-        _cashlines=get_empty_dict_if_none(_cashlines),
+        _fiscallinks=get_empty_dict_if_none(_fiscallinks),
+        _fiscalheirs=get_empty_dict_if_none(_fiscalheirs),
+        _fiscallines=get_empty_dict_if_none(_fiscallines),
         _reasonunits=get_empty_dict_if_none(_reasonunits),
         _reasonheirs=get_empty_dict_if_none(_reasonheirs),
         _assignedunit=_assignedunit,
@@ -1220,11 +1224,11 @@ def get_obj_from_idea_dict(x_dict: dict[str:], dict_key: str) -> any:
             if x_dict.get(dict_key) != None
             else factunits_get_from_dict({})
         )
-    elif dict_key == "_cashlinks":
+    elif dict_key == "_fiscallinks":
         return (
-            cashlinks_get_from_dict(x_dict[dict_key])
+            fiscallinks_get_from_dict(x_dict[dict_key])
             if x_dict.get(dict_key) != None
-            else cashlinks_get_from_dict({})
+            else fiscallinks_get_from_dict({})
         )
     elif dict_key in {"_kids"}:
         return x_dict[dict_key] if x_dict.get(dict_key) != None else {}

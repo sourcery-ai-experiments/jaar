@@ -377,9 +377,9 @@ class ChangeUnit:
                 ideaunit=insert_ideaunit,
                 insert_factunit_bases=set(insert_ideaunit._factunits.keys()),
             )
-            self.add_atomunit_idea_cashlink_inserts(
+            self.add_atomunit_idea_fiscallink_inserts(
                 after_ideaunit=insert_ideaunit,
-                insert_cashlink_belief_ids=set(insert_ideaunit._cashlinks.keys()),
+                insert_fiscallink_belief_ids=set(insert_ideaunit._fiscallinks.keys()),
             )
             self.add_atomunit_idea_reasonunit_inserts(
                 after_ideaunit=insert_ideaunit,
@@ -458,26 +458,26 @@ class ChangeUnit:
                 ),
             )
 
-            # insert / update / delete cashunits
-            before_cashlinks_belief_ids = set(before_ideaunit._cashlinks.keys())
-            after_cashlinks_belief_ids = set(after_ideaunit._cashlinks.keys())
-            self.add_atomunit_idea_cashlink_inserts(
+            # insert / update / delete fiscalunits
+            before_fiscallinks_belief_ids = set(before_ideaunit._fiscallinks.keys())
+            after_fiscallinks_belief_ids = set(after_ideaunit._fiscallinks.keys())
+            self.add_atomunit_idea_fiscallink_inserts(
                 after_ideaunit=after_ideaunit,
-                insert_cashlink_belief_ids=after_cashlinks_belief_ids.difference(
-                    before_cashlinks_belief_ids
+                insert_fiscallink_belief_ids=after_fiscallinks_belief_ids.difference(
+                    before_fiscallinks_belief_ids
                 ),
             )
-            self.add_atomunit_idea_cashlink_updates(
+            self.add_atomunit_idea_fiscallink_updates(
                 before_ideaunit=before_ideaunit,
                 after_ideaunit=after_ideaunit,
-                update_cashlink_belief_ids=before_cashlinks_belief_ids.intersection(
-                    after_cashlinks_belief_ids
+                update_fiscallink_belief_ids=before_fiscallinks_belief_ids.intersection(
+                    after_fiscallinks_belief_ids
                 ),
             )
-            self.add_atomunit_idea_cashlink_deletes(
+            self.add_atomunit_idea_fiscallink_deletes(
                 idea_road=idea_road,
-                delete_cashlink_belief_ids=before_cashlinks_belief_ids.difference(
-                    after_cashlinks_belief_ids
+                delete_fiscallink_belief_ids=before_fiscallinks_belief_ids.difference(
+                    after_fiscallinks_belief_ids
                 ),
             )
 
@@ -546,9 +546,9 @@ class ChangeUnit:
                 idea_road=delete_idea_road,
                 delete_factunit_bases=set(delete_ideaunit._factunits.keys()),
             )
-            self.add_atomunit_idea_cashlink_deletes(
+            self.add_atomunit_idea_fiscallink_deletes(
                 idea_road=delete_idea_road,
-                delete_cashlink_belief_ids=set(delete_ideaunit._cashlinks.keys()),
+                delete_fiscallink_belief_ids=set(delete_ideaunit._fiscallinks.keys()),
             )
             self.add_atomunit_idea_reasonunit_deletes(
                 before_ideaunit=delete_ideaunit,
@@ -724,50 +724,56 @@ class ChangeUnit:
             x_atomunit.set_required_arg("belief_id", delete_suffbelief_belief_id)
             self.set_atomunit(x_atomunit)
 
-    def add_atomunit_idea_cashlink_inserts(
-        self, after_ideaunit: IdeaUnit, insert_cashlink_belief_ids: set
+    def add_atomunit_idea_fiscallink_inserts(
+        self, after_ideaunit: IdeaUnit, insert_fiscallink_belief_ids: set
     ):
-        for after_cashlink_belief_id in insert_cashlink_belief_ids:
-            after_cashlink = after_ideaunit._cashlinks.get(after_cashlink_belief_id)
-            x_atomunit = atomunit_shop("world_idea_cashlink", atom_insert())
+        for after_fiscallink_belief_id in insert_fiscallink_belief_ids:
+            after_fiscallink = after_ideaunit._fiscallinks.get(
+                after_fiscallink_belief_id
+            )
+            x_atomunit = atomunit_shop("world_idea_fiscallink", atom_insert())
             x_atomunit.set_required_arg("road", after_ideaunit.get_road())
-            x_atomunit.set_required_arg("belief_id", after_cashlink.belief_id)
-            x_atomunit.set_optional_arg("credor_weight", after_cashlink.credor_weight)
-            x_atomunit.set_optional_arg("debtor_weight", after_cashlink.debtor_weight)
+            x_atomunit.set_required_arg("belief_id", after_fiscallink.belief_id)
+            x_atomunit.set_optional_arg("credor_weight", after_fiscallink.credor_weight)
+            x_atomunit.set_optional_arg("debtor_weight", after_fiscallink.debtor_weight)
             self.set_atomunit(x_atomunit)
 
-    def add_atomunit_idea_cashlink_updates(
+    def add_atomunit_idea_fiscallink_updates(
         self,
         before_ideaunit: IdeaUnit,
         after_ideaunit: IdeaUnit,
-        update_cashlink_belief_ids: set,
+        update_fiscallink_belief_ids: set,
     ):
-        for update_cashlink_belief_id in update_cashlink_belief_ids:
-            before_cashlink = before_ideaunit._cashlinks.get(update_cashlink_belief_id)
-            after_cashlink = after_ideaunit._cashlinks.get(update_cashlink_belief_id)
+        for update_fiscallink_belief_id in update_fiscallink_belief_ids:
+            before_fiscallink = before_ideaunit._fiscallinks.get(
+                update_fiscallink_belief_id
+            )
+            after_fiscallink = after_ideaunit._fiscallinks.get(
+                update_fiscallink_belief_id
+            )
             if optional_args_different(
-                "world_idea_cashlink", before_cashlink, after_cashlink
+                "world_idea_fiscallink", before_fiscallink, after_fiscallink
             ):
-                x_atomunit = atomunit_shop("world_idea_cashlink", atom_update())
+                x_atomunit = atomunit_shop("world_idea_fiscallink", atom_update())
                 x_atomunit.set_required_arg("road", before_ideaunit.get_road())
-                x_atomunit.set_required_arg("belief_id", after_cashlink.belief_id)
-                if before_cashlink.credor_weight != after_cashlink.credor_weight:
+                x_atomunit.set_required_arg("belief_id", after_fiscallink.belief_id)
+                if before_fiscallink.credor_weight != after_fiscallink.credor_weight:
                     x_atomunit.set_optional_arg(
-                        "credor_weight", after_cashlink.credor_weight
+                        "credor_weight", after_fiscallink.credor_weight
                     )
-                if before_cashlink.debtor_weight != after_cashlink.debtor_weight:
+                if before_fiscallink.debtor_weight != after_fiscallink.debtor_weight:
                     x_atomunit.set_optional_arg(
-                        "debtor_weight", after_cashlink.debtor_weight
+                        "debtor_weight", after_fiscallink.debtor_weight
                     )
                 self.set_atomunit(x_atomunit)
 
-    def add_atomunit_idea_cashlink_deletes(
-        self, idea_road: RoadUnit, delete_cashlink_belief_ids: set
+    def add_atomunit_idea_fiscallink_deletes(
+        self, idea_road: RoadUnit, delete_fiscallink_belief_ids: set
     ):
-        for delete_cashlink_belief_id in delete_cashlink_belief_ids:
-            x_atomunit = atomunit_shop("world_idea_cashlink", atom_delete())
+        for delete_fiscallink_belief_id in delete_fiscallink_belief_ids:
+            x_atomunit = atomunit_shop("world_idea_fiscallink", atom_delete())
             x_atomunit.set_required_arg("road", idea_road)
-            x_atomunit.set_required_arg("belief_id", delete_cashlink_belief_id)
+            x_atomunit.set_required_arg("belief_id", delete_fiscallink_belief_id)
             self.set_atomunit(x_atomunit)
 
     def add_atomunit_idea_factunit_inserts(
@@ -893,12 +899,12 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
     x_list = [atom_delete(), "world_ideaunit"]
     world_ideaunit_delete_dict = get_leg_obj(atoms_dict, x_list)
 
-    x_list = [atom_insert(), "world_idea_cashlink"]
-    world_idea_cashlink_insert_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_update(), "world_idea_cashlink"]
-    world_idea_cashlink_update_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_delete(), "world_idea_cashlink"]
-    world_idea_cashlink_delete_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_insert(), "world_idea_fiscallink"]
+    world_idea_fiscallink_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "world_idea_fiscallink"]
+    world_idea_fiscallink_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "world_idea_fiscallink"]
+    world_idea_fiscallink_delete_dict = get_leg_obj(atoms_dict, x_list)
 
     x_list = [atom_insert(), "world_idea_reasonunit"]
     world_idea_reasonunit_insert_dict = get_leg_obj(atoms_dict, x_list)
@@ -986,17 +992,17 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
             leg_list, world_ideaunit_delete_dict, x_world
         )
 
-    if world_idea_cashlink_insert_dict != None:
-        add_world_idea_cashlink_insert_to_legible_list(
-            leg_list, world_idea_cashlink_insert_dict, x_world
+    if world_idea_fiscallink_insert_dict != None:
+        add_world_idea_fiscallink_insert_to_legible_list(
+            leg_list, world_idea_fiscallink_insert_dict, x_world
         )
-    if world_idea_cashlink_update_dict != None:
-        add_world_idea_cashlink_update_to_legible_list(
-            leg_list, world_idea_cashlink_update_dict, x_world
+    if world_idea_fiscallink_update_dict != None:
+        add_world_idea_fiscallink_update_to_legible_list(
+            leg_list, world_idea_fiscallink_update_dict, x_world
         )
-    if world_idea_cashlink_delete_dict != None:
-        add_world_idea_cashlink_delete_to_legible_list(
-            leg_list, world_idea_cashlink_delete_dict, x_world
+    if world_idea_fiscallink_delete_dict != None:
+        add_world_idea_fiscallink_delete_to_legible_list(
+            leg_list, world_idea_fiscallink_delete_dict, x_world
         )
 
     if world_idea_reasonunit_insert_dict != None:
@@ -1373,45 +1379,45 @@ def add_world_ideaunit_delete_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_world_idea_cashlink_insert_to_legible_list(
-    legible_list: list[str], idea_cashlink_insert_dict: dict, x_world: WorldUnit
+def add_world_idea_fiscallink_insert_to_legible_list(
+    legible_list: list[str], idea_fiscallink_insert_dict: dict, x_world: WorldUnit
 ):
-    for road_dict in idea_cashlink_insert_dict.values():
-        for idea_cashlink_atom in road_dict.values():
-            belief_id_value = idea_cashlink_atom.get_value("belief_id")
-            road_value = idea_cashlink_atom.get_value("road")
-            credor_weight_value = idea_cashlink_atom.get_value("credor_weight")
-            debtor_weight_value = idea_cashlink_atom.get_value("debtor_weight")
-            x_str = f"Cashlink created for belief {belief_id_value} for idea '{road_value}' with credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
+    for road_dict in idea_fiscallink_insert_dict.values():
+        for idea_fiscallink_atom in road_dict.values():
+            belief_id_value = idea_fiscallink_atom.get_value("belief_id")
+            road_value = idea_fiscallink_atom.get_value("road")
+            credor_weight_value = idea_fiscallink_atom.get_value("credor_weight")
+            debtor_weight_value = idea_fiscallink_atom.get_value("debtor_weight")
+            x_str = f"Fiscallink created for belief {belief_id_value} for idea '{road_value}' with credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_world_idea_cashlink_update_to_legible_list(
-    legible_list: list[str], idea_cashlink_update_dict: dict, x_world: WorldUnit
+def add_world_idea_fiscallink_update_to_legible_list(
+    legible_list: list[str], idea_fiscallink_update_dict: dict, x_world: WorldUnit
 ):
-    for road_dict in idea_cashlink_update_dict.values():
-        for idea_cashlink_atom in road_dict.values():
-            belief_id_value = idea_cashlink_atom.get_value("belief_id")
-            road_value = idea_cashlink_atom.get_value("road")
-            credor_weight_value = idea_cashlink_atom.get_value("credor_weight")
-            debtor_weight_value = idea_cashlink_atom.get_value("debtor_weight")
+    for road_dict in idea_fiscallink_update_dict.values():
+        for idea_fiscallink_atom in road_dict.values():
+            belief_id_value = idea_fiscallink_atom.get_value("belief_id")
+            road_value = idea_fiscallink_atom.get_value("road")
+            credor_weight_value = idea_fiscallink_atom.get_value("credor_weight")
+            debtor_weight_value = idea_fiscallink_atom.get_value("debtor_weight")
             if credor_weight_value != None and debtor_weight_value != None:
-                x_str = f"Cashlink has been transited for belief {belief_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
+                x_str = f"Fiscallink has been transited for belief {belief_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
             elif credor_weight_value != None and debtor_weight_value is None:
-                x_str = f"Cashlink has been transited for belief {belief_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value}."
+                x_str = f"Fiscallink has been transited for belief {belief_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value}."
             elif credor_weight_value is None and debtor_weight_value != None:
-                x_str = f"Cashlink has been transited for belief {belief_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
+                x_str = f"Fiscallink has been transited for belief {belief_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_world_idea_cashlink_delete_to_legible_list(
-    legible_list: list[str], idea_cashlink_delete_dict: dict, x_world: WorldUnit
+def add_world_idea_fiscallink_delete_to_legible_list(
+    legible_list: list[str], idea_fiscallink_delete_dict: dict, x_world: WorldUnit
 ):
-    for road_dict in idea_cashlink_delete_dict.values():
-        for idea_cashlink_atom in road_dict.values():
-            belief_id_value = idea_cashlink_atom.get_value("belief_id")
-            road_value = idea_cashlink_atom.get_value("road")
-            x_str = f"Cashlink for belief {belief_id_value}, idea '{road_value}' has been deleted."
+    for road_dict in idea_fiscallink_delete_dict.values():
+        for idea_fiscallink_atom in road_dict.values():
+            belief_id_value = idea_fiscallink_atom.get_value("belief_id")
+            road_value = idea_fiscallink_atom.get_value("road")
+            x_str = f"Fiscallink for belief {belief_id_value}, idea '{road_value}' has been deleted."
             legible_list.append(x_str)
 
 

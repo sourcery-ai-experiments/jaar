@@ -18,6 +18,7 @@
             "debtor_weight": {
                 "python_type": "int",
                 "sqlite_datatype": "INTEGER"
+
             }
         },
         "required_args": {
@@ -67,7 +68,7 @@
             "atom_order": 9
         }
     },
-    "world_idea_cashlink": {
+    "world_idea_fiscallink": {
         "calculated_attrs": {},
         "DELETE": {
             "atom_order": 21
@@ -76,7 +77,7 @@
             "atom_order": 3
         },
         "normal_specs": {
-            "normal_table_name": "cashlink"
+            "normal_table_name": "fiscallink"
         },
         "optional_args": {
             "credor_weight": {

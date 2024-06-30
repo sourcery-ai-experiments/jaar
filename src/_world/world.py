@@ -51,12 +51,12 @@ from src._world.char import (
 )
 from src._world.beliefhold import beliefhold_shop
 from src._world.beliefunit import (
-    CashLink,
+    FiscalLink,
     BeliefID,
     BeliefUnit,
     get_beliefunits_from_dict,
     beliefunit_shop,
-    cashlink_shop,
+    fiscallink_shop,
     get_char_relevant_beliefs,
     get_chars_relevant_beliefs,
     get_intersection_of_chars,
@@ -423,28 +423,30 @@ class WorldUnit:
 
     def _are_all_chars_beliefs_are_in_idea_kid(self, road: RoadUnit) -> bool:
         idea_kid = self.get_idea_obj(road)
-        # get dict of all idea cashheirs
-        cashheir_list = idea_kid._cashheirs.keys()
-        cashheir_dict = {cashheir_belief_id: 1 for cashheir_belief_id in cashheir_list}
+        # get dict of all idea fiscalheirs
+        fiscalheir_list = idea_kid._fiscalheirs.keys()
+        fiscalheir_dict = {
+            fiscalheir_belief_id: 1 for fiscalheir_belief_id in fiscalheir_list
+        }
         non_single_beliefunits = {
             beliefunit.belief_id: beliefunit
             for beliefunit in self._beliefs.values()
             if beliefunit._char_mirror != True
         }
-        # check all non_char_mirror_beliefunits are in cashheirs
+        # check all non_char_mirror_beliefunits are in fiscalheirs
         for non_single_belief in non_single_beliefunits.values():
-            if cashheir_dict.get(non_single_belief.belief_id) is None:
+            if fiscalheir_dict.get(non_single_belief.belief_id) is None:
                 return False
 
-        # get dict of all charlinks that are in all cashheirs
-        cashheir_charunits = {}
-        for cashheir_char_id in cashheir_dict:
-            beliefunit = self.get_beliefunit(cashheir_char_id)
+        # get dict of all charlinks that are in all fiscalheirs
+        fiscalheir_charunits = {}
+        for fiscalheir_char_id in fiscalheir_dict:
+            beliefunit = self.get_beliefunit(fiscalheir_char_id)
             for charlink in beliefunit._chars.values():
-                cashheir_charunits[charlink.char_id] = self.get_char(charlink.char_id)
+                fiscalheir_charunits[charlink.char_id] = self.get_char(charlink.char_id)
 
-        # check all world._chars are in cashheir_charunits
-        return len(self._chars) == len(cashheir_charunits)
+        # check all world._chars are in fiscalheir_charunits
+        return len(self._chars) == len(fiscalheir_charunits)
 
     def get_time_min_from_dt(self, dt: datetime) -> float:
         x_hregidea = HregIdea(self._road_delimiter)
@@ -582,35 +584,35 @@ class WorldUnit:
         )
         return f"every {num_with_letter_ending} {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
 
-    def get_chars_metrics(self) -> dict[BeliefID:CashLink]:
+    def get_chars_metrics(self) -> dict[BeliefID:FiscalLink]:
         tree_metrics = self.get_tree_metrics()
-        return tree_metrics.cashlinks_metrics
+        return tree_metrics.fiscallinks_metrics
 
     def add_to_belief_world_cred_debt(
         self,
         belief_id: BeliefID,
-        cashheir_world_cred: float,
-        cashheir_world_debt: float,
+        fiscalheir_world_cred: float,
+        fiscalheir_world_debt: float,
     ):
         for belief in self._beliefs.values():
             if belief.belief_id == belief_id:
-                belief._world_cred += cashheir_world_cred
-                belief._world_debt += cashheir_world_debt
+                belief._world_cred += fiscalheir_world_cred
+                belief._world_debt += fiscalheir_world_debt
 
     def add_to_belief_world_agenda_cred_debt(
         self,
         belief_id: BeliefID,
-        cashline_world_cred: float,
-        cashline_world_debt: float,
+        fiscalline_world_cred: float,
+        fiscalline_world_debt: float,
     ):
         for belief in self._beliefs.values():
             if (
                 belief.belief_id == belief_id
-                and cashline_world_cred != None
-                and cashline_world_debt != None
+                and fiscalline_world_cred != None
+                and fiscalline_world_debt != None
             ):
-                belief._world_agenda_cred += cashline_world_cred
-                belief._world_agenda_debt += cashline_world_debt
+                belief._world_agenda_cred += fiscalline_world_cred
+                belief._world_agenda_debt += fiscalline_world_debt
 
     def add_to_charunit_world_cred_debt(
         self,
@@ -804,13 +806,13 @@ class WorldUnit:
             self.set_beliefunit(y_beliefunit=beliefunit_x)
             self.del_beliefunit(belief_id=old_belief_id)
 
-        self._edit_cashlinks_belief_id(
+        self._edit_fiscallinks_belief_id(
             old_belief_id=old_belief_id,
             new_belief_id=new_belief_id,
             allow_belief_overwite=allow_belief_overwite,
         )
 
-    def _edit_cashlinks_belief_id(
+    def _edit_fiscallinks_belief_id(
         self,
         old_belief_id: BeliefID,
         new_belief_id: BeliefID,
@@ -818,30 +820,30 @@ class WorldUnit:
     ):
         for x_idea in self.get_idea_dict().values():
             if (
-                x_idea._cashlinks.get(new_belief_id) != None
-                and x_idea._cashlinks.get(old_belief_id) != None
+                x_idea._fiscallinks.get(new_belief_id) != None
+                and x_idea._fiscallinks.get(old_belief_id) != None
             ):
-                old_cashlink = x_idea._cashlinks.get(old_belief_id)
-                old_cashlink.belief_id = new_belief_id
-                x_idea._cashlinks.get(new_belief_id).meld(
-                    exterior_cashlink=old_cashlink,
+                old_fiscallink = x_idea._fiscallinks.get(old_belief_id)
+                old_fiscallink.belief_id = new_belief_id
+                x_idea._fiscallinks.get(new_belief_id).meld(
+                    exterior_fiscallink=old_fiscallink,
                     exterior_meld_strategy="sum",
                     src_meld_strategy="sum",
                 )
 
-                x_idea.del_cashlink(belief_id=old_belief_id)
+                x_idea.del_fiscallink(belief_id=old_belief_id)
             elif (
-                x_idea._cashlinks.get(new_belief_id) is None
-                and x_idea._cashlinks.get(old_belief_id) != None
+                x_idea._fiscallinks.get(new_belief_id) is None
+                and x_idea._fiscallinks.get(old_belief_id) != None
             ):
-                old_cashlink = x_idea._cashlinks.get(old_belief_id)
-                new_cashlink = cashlink_shop(
+                old_fiscallink = x_idea._fiscallinks.get(old_belief_id)
+                new_fiscallink = fiscallink_shop(
                     belief_id=new_belief_id,
-                    credor_weight=old_cashlink.credor_weight,
-                    debtor_weight=old_cashlink.debtor_weight,
+                    credor_weight=old_fiscallink.credor_weight,
+                    debtor_weight=old_fiscallink.debtor_weight,
                 )
-                x_idea.set_cashlink(cashlink=new_cashlink)
-                x_idea.del_cashlink(belief_id=old_belief_id)
+                x_idea.set_fiscallink(fiscallink=new_fiscallink)
+                x_idea.del_fiscallink(belief_id=old_belief_id)
 
     def clear_charunits_beliefholds(self):
         for x_charunit in self._chars.values():
@@ -1047,7 +1049,7 @@ class WorldUnit:
         tree_metrics.evaluate_node(
             level=self._idearoot._level,
             reasons=self._idearoot._reasonunits,
-            cashlinks=self._idearoot._cashlinks,
+            fiscallinks=self._idearoot._fiscallinks,
             uid=self._idearoot._uid,
             pledge=self._idearoot.pledge,
             idea_road=self._idearoot.get_road(),
@@ -1067,7 +1069,7 @@ class WorldUnit:
         tree_metrics.evaluate_node(
             level=idea_kid._level,
             reasons=idea_kid._reasonunits,
-            cashlinks=idea_kid._cashlinks,
+            fiscallinks=idea_kid._fiscallinks,
             uid=idea_kid._uid,
             pledge=idea_kid.pledge,
             idea_road=idea_kid.get_road(),
@@ -1162,7 +1164,7 @@ class WorldUnit:
         if idea_kid._world_real_id != self._real_id:
             idea_kid._world_real_id = self._real_id
         if not create_missing_beliefs:
-            idea_kid = self._get_filtered_cashlinks_idea(idea_kid)
+            idea_kid = self._get_filtered_fiscallinks_idea(idea_kid)
         idea_kid.set_parent_road(parent_road=parent_road)
 
         # create any missing ideas
@@ -1195,16 +1197,16 @@ class WorldUnit:
         if create_missing_ideas:
             self._create_missing_ideas(road=kid_road)
         if create_missing_beliefs:
-            self._create_missing_beliefs_chars(cashlinks=idea_kid._cashlinks)
+            self._create_missing_beliefs_chars(fiscallinks=idea_kid._fiscallinks)
 
-    def _get_filtered_cashlinks_idea(self, x_idea: IdeaUnit) -> IdeaUnit:
-        _cashlinks_to_delete = [
-            _cashlink_belief_id
-            for _cashlink_belief_id in x_idea._cashlinks.keys()
-            if self.get_beliefunit(_cashlink_belief_id) is None
+    def _get_filtered_fiscallinks_idea(self, x_idea: IdeaUnit) -> IdeaUnit:
+        _fiscallinks_to_delete = [
+            _fiscallink_belief_id
+            for _fiscallink_belief_id in x_idea._fiscallinks.keys()
+            if self.get_beliefunit(_fiscallink_belief_id) is None
         ]
-        for _cashlink_belief_id in _cashlinks_to_delete:
-            x_idea._cashlinks.pop(_cashlink_belief_id)
+        for _fiscallink_belief_id in _fiscallinks_to_delete:
+            x_idea._fiscallinks.pop(_fiscallink_belief_id)
 
         if x_idea._assignedunit != None:
             _suffbeliefs_to_delete = [
@@ -1217,11 +1219,11 @@ class WorldUnit:
 
         return x_idea
 
-    def _create_missing_beliefs_chars(self, cashlinks: dict[BeliefID:CashLink]):
-        for cashlink_x in cashlinks.values():
-            if self.get_beliefunit(cashlink_x.belief_id) is None:
+    def _create_missing_beliefs_chars(self, fiscallinks: dict[BeliefID:FiscalLink]):
+        for fiscallink_x in fiscallinks.values():
+            if self.get_beliefunit(fiscallink_x.belief_id) is None:
                 beliefunit_x = beliefunit_shop(
-                    belief_id=cashlink_x.belief_id, _chars={}
+                    belief_id=fiscallink_x.belief_id, _chars={}
                 )
                 self.set_beliefunit(y_beliefunit=beliefunit_x)
 
@@ -1485,8 +1487,8 @@ class WorldUnit:
         descendant_pledge_count: int = None,
         all_char_cred: bool = None,
         all_char_debt: bool = None,
-        cashlink: CashLink = None,
-        cashlink_del: BeliefID = None,
+        fiscallink: FiscalLink = None,
+        fiscallink_del: BeliefID = None,
         is_expanded: bool = None,
         meld_strategy: MeldStrategy = None,
         problem_bool: bool = None,
@@ -1523,8 +1525,8 @@ class WorldUnit:
             descendant_pledge_count=descendant_pledge_count,
             all_char_cred=all_char_cred,
             all_char_debt=all_char_debt,
-            cashlink=cashlink,
-            cashlink_del=cashlink_del,
+            fiscallink=fiscallink,
+            fiscallink_del=fiscallink_del,
             is_expanded=is_expanded,
             pledge=pledge,
             factunit=factunit,
@@ -1538,8 +1540,8 @@ class WorldUnit:
         x_idea = self.get_idea_obj(road)
         x_idea._set_idea_attr(idea_attr=x_ideaattrfilter)
 
-        # deleting or setting a cashlink reqquires a tree traverse to correctly set cashheirs and cashlines
-        if cashlink_del != None or cashlink != None:
+        # deleting or setting a fiscallink reqquires a tree traverse to correctly set fiscalheirs and fiscallines
+        if fiscallink_del != None or fiscallink != None:
             self.calc_world_metrics()
 
     def get_agenda_dict(
@@ -1638,34 +1640,34 @@ class WorldUnit:
             )
 
     def _reset_beliefunits_world_cred_debt(self):
-        for cashlink_obj in self._beliefs.values():
-            cashlink_obj.reset_world_cred_debt()
+        for fiscallink_obj in self._beliefs.values():
+            fiscallink_obj.reset_world_cred_debt()
 
-    def _set_beliefunits_world_importance(self, cashheirs: dict[BeliefID:CashLink]):
-        for cashlink_obj in cashheirs.values():
+    def _set_beliefunits_world_importance(self, fiscalheirs: dict[BeliefID:FiscalLink]):
+        for fiscallink_obj in fiscalheirs.values():
             self.add_to_belief_world_cred_debt(
-                belief_id=cashlink_obj.belief_id,
-                cashheir_world_cred=cashlink_obj._world_cred,
-                cashheir_world_debt=cashlink_obj._world_debt,
+                belief_id=fiscallink_obj.belief_id,
+                fiscalheir_world_cred=fiscallink_obj._world_cred,
+                fiscalheir_world_debt=fiscallink_obj._world_debt,
             )
 
     def _allot_world_agenda_importance(self):
         for idea in self._idea_dict.values():
-            # If there are no cashlines associated with idea
+            # If there are no fiscallines associated with idea
             # allot world_importance via general charunit
             # cred ratio and debt ratio
-            # if idea.is_agenda_item() and idea._cashlines == {}:
+            # if idea.is_agenda_item() and idea._fiscallines == {}:
             if idea.is_agenda_item():
-                if idea._cashlines == {}:
+                if idea._fiscallines == {}:
                     self._add_to_charunits_world_agenda_cred_debt(
                         idea._world_importance
                     )
                 else:
-                    for x_cashline in idea._cashlines.values():
+                    for x_fiscalline in idea._fiscallines.values():
                         self.add_to_belief_world_agenda_cred_debt(
-                            belief_id=x_cashline.belief_id,
-                            cashline_world_cred=x_cashline._world_cred,
-                            cashline_world_debt=x_cashline._world_debt,
+                            belief_id=x_fiscalline.belief_id,
+                            fiscalline_world_cred=x_fiscalline._world_cred,
+                            fiscalline_world_debt=x_fiscalline._world_debt,
                         )
 
     def _allot_beliefs_world_importance(self):
@@ -1762,7 +1764,7 @@ class WorldUnit:
 
     def _set_ancestors_metrics(self, road: RoadUnit, econ_exceptions: bool = False):
         task_count = 0
-        child_cashlines = None
+        child_fiscallines = None
         belief_everyone = None
         ancestor_roads = get_ancestor_roads(road=road)
         econ_justified_by_problem = True
@@ -1774,10 +1776,10 @@ class WorldUnit:
             x_idea_obj = self.get_idea_obj(road=youngest_road)
             x_idea_obj.add_to_descendant_pledge_count(task_count)
             if x_idea_obj.is_kidless():
-                x_idea_obj.set_kidless_cashlines()
-                child_cashlines = x_idea_obj._cashlines
+                x_idea_obj.set_kidless_fiscallines()
+                child_fiscallines = x_idea_obj._fiscallines
             else:
-                x_idea_obj.set_cashlines(child_cashlines=child_cashlines)
+                x_idea_obj.set_fiscallines(child_fiscallines=child_fiscallines)
 
             if x_idea_obj._task:
                 task_count += 1
@@ -1786,7 +1788,7 @@ class WorldUnit:
                 belief_everyone != False
                 and x_idea_obj._all_char_cred != False
                 and x_idea_obj._all_char_debt != False
-                and x_idea_obj._cashheirs != {}
+                and x_idea_obj._fiscalheirs != {}
             ) or (
                 belief_everyone != False
                 and x_idea_obj._all_char_cred is False
@@ -1819,8 +1821,8 @@ class WorldUnit:
         x_idearoot.set_idearoot_inherit_reasonheirs()
         x_idearoot.set_assignedheir(parent_assignheir=None, world_beliefs=self._beliefs)
         x_idearoot.set_factheirs(facts=self._idearoot._factunits)
-        x_idearoot.inherit_cashheirs()
-        x_idearoot.clear_cashlines()
+        x_idearoot.inherit_fiscalheirs()
+        x_idearoot.clear_fiscallines()
         x_idearoot._weight = 1
         x_idearoot.set_kids_total_weight()
         x_idearoot.set_sibling_total_weight(1)
@@ -1830,7 +1832,7 @@ class WorldUnit:
             world_owner_id=self._owner_id,
         )
         x_idearoot.set_world_importance(fund_onset_x=0, parent_fund_cease=1)
-        x_idearoot.set_cashheirs_world_cred_debt()
+        x_idearoot.set_fiscalheirs_world_cred_debt()
         x_idearoot.set_ancestor_pledge_count(0, False)
         x_idearoot.clear_descendant_pledge_count()
         x_idearoot.clear_all_char_cred_debt()
@@ -1853,8 +1855,8 @@ class WorldUnit:
         idea_kid.set_factheirs(facts=parent_idea._factheirs)
         idea_kid.set_reasonheirs(self._idea_dict, parent_idea._reasonheirs)
         idea_kid.set_assignedheir(parent_idea._assignedheir, self._beliefs)
-        idea_kid.inherit_cashheirs(parent_idea._cashheirs)
-        idea_kid.clear_cashlines()
+        idea_kid.inherit_fiscalheirs(parent_idea._fiscalheirs)
+        idea_kid.clear_fiscallines()
         idea_kid.set_active(
             tree_traverse_count=self._tree_traverse_count,
             world_beliefunits=self._beliefs,
@@ -1878,11 +1880,11 @@ class WorldUnit:
             self._allot_world_importance(idea=idea_kid)
 
     def _allot_world_importance(self, idea: IdeaUnit):
-        # TODO manage situations where cashheir.credor_weight is None for all cashheirs
-        # TODO manage situations where cashheir.debtor_weight is None for all cashheirs
-        if idea.is_cashheirless() is False:
-            self._set_beliefunits_world_importance(idea._cashheirs)
-        elif idea.is_cashheirless():
+        # TODO manage situations where fiscalheir.credor_weight is None for all fiscalheirs
+        # TODO manage situations where fiscalheir.debtor_weight is None for all fiscalheirs
+        if idea.is_fiscalheirless() is False:
+            self._set_beliefunits_world_importance(idea._fiscalheirs)
+        elif idea.is_fiscalheirless():
             self._add_to_charunits_world_cred_debt(idea._world_importance)
 
     def get_world_importance(
@@ -2156,7 +2158,7 @@ class WorldUnit:
         for ykx in self._idearoot._kids.values():
             y4a_included = any(
                 belief_ancestor.belief_id in char_beliefs
-                for belief_ancestor in ykx._cashlines.values()
+                for belief_ancestor in ykx._fiscallines.values()
             )
 
             if y4a_included:
@@ -2164,7 +2166,7 @@ class WorldUnit:
                     _label=ykx._label,
                     _world_importance=ykx._world_importance,
                     _reasonunits=ykx._reasonunits,
-                    _cashlinks=ykx._cashlinks,
+                    _fiscallinks=ykx._fiscallinks,
                     _begin=ykx._begin,
                     _close=ykx._close,
                     pledge=ykx.pledge,
@@ -2432,7 +2434,7 @@ def set_idearoot_from_world_dict(x_world: WorldUnit, world_dict: dict):
         _assignedunit=get_obj_from_idea_dict(idearoot_dict, "_assignedunit"),
         _healerhold=get_obj_from_idea_dict(idearoot_dict, "_healerhold"),
         _factunits=get_obj_from_idea_dict(idearoot_dict, "_factunits"),
-        _cashlinks=get_obj_from_idea_dict(idearoot_dict, "_cashlinks"),
+        _fiscallinks=get_obj_from_idea_dict(idearoot_dict, "_fiscallinks"),
         _is_expanded=get_obj_from_idea_dict(idearoot_dict, "_is_expanded"),
         _road_delimiter=get_obj_from_idea_dict(idearoot_dict, "_road_delimiter"),
         _world_real_id=x_world._real_id,
@@ -2472,7 +2474,7 @@ def set_idearoot_kids_from_dict(x_world: WorldUnit, idearoot_dict: dict):
             _assignedunit=get_obj_from_idea_dict(idea_dict, "_assignedunit"),
             _healerhold=get_obj_from_idea_dict(idea_dict, "_healerhold"),
             _originunit=get_obj_from_idea_dict(idea_dict, "_originunit"),
-            _cashlinks=get_obj_from_idea_dict(idea_dict, "_cashlinks"),
+            _fiscallinks=get_obj_from_idea_dict(idea_dict, "_fiscallinks"),
             _factunits=get_obj_from_idea_dict(idea_dict, "_factunits"),
             _is_expanded=get_obj_from_idea_dict(idea_dict, "_is_expanded"),
             _range_source_road=get_obj_from_idea_dict(idea_dict, "_range_source_road"),
