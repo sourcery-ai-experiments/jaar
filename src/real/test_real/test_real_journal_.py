@@ -30,7 +30,7 @@ def test_RealUnit_get_journal_db_path_ReturnsCorrectObj():
     assert x_journal_db_path == f"{x_real_dir}/{journal_file_name}"
 
 
-def test_RealUnit_create_journal_db_CreatesDBIfItDoesNotExist(
+def test_RealUnit_create_journal_db_CreatesDBIfDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -47,7 +47,7 @@ def test_RealUnit_create_journal_db_CreatesDBIfItDoesNotExist(
     assert os_path_exists(music_real.get_journal_db_path())
 
 
-def test_RealUnit_create_journal_db_DoesNotOverWriteDBIfItExists(
+def test_RealUnit_create_journal_db_DoesNotOverWriteDBIfExists(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -94,7 +94,7 @@ def test_RealUnit_create_journal_db_CanCreateInMemory(env_dir_setup_cleanup):
     assert os_path_exists(music_real.get_journal_db_path()) is False
 
 
-def test_RealUnit_get_journal_conn_CreatesTreasuryDBIfItDoesNotExist(
+def test_RealUnit_get_journal_conn_CreatesTreasuryDBIfDoesNotExist(
     env_dir_setup_cleanup,
 ):
     # GIVEN create Real

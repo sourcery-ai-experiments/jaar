@@ -162,7 +162,7 @@ def test_HubUnit_create_treasury_db_file_CorrectlyCreatesDatabase(
     assert os_path_exists(sue_hubunit.treasury_db_path())
 
 
-def test_HubUnit_create_treasury_db_DoesNotOverWriteDBIfItExists(
+def test_HubUnit_create_treasury_db_DoesNotOverWriteDBIfExists(
     env_dir_setup_cleanup,
 ):
     # GIVEN create econ
@@ -208,7 +208,7 @@ def test_HubUnit_treasury_db_file_exists_ReturnsObj(env_dir_setup_cleanup):
     assert sue_hubunit.treasury_db_file_exists()
 
 
-# def test_HubUnit_treasury_db_file_conn_CreatesTreasuryDBIfItDoesNotExist(
+# def test_HubUnit_treasury_db_file_conn_CreatesTreasuryDBIfDoesNotExist(
 #     env_dir_setup_cleanup,
 # ):
 #     # GIVEN create
