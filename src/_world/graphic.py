@@ -219,7 +219,7 @@ def get_world_agenda_plotly_fig(x_world: WorldUnit) -> plotly_Figure:
     return fig
 
 
-def add_shape_text(fig, x, y, text):
+def add_rect_text(fig, x, y, text):
     fig.add_annotation(
         xref="paper",
         yref="paper",
@@ -230,7 +230,7 @@ def add_shape_text(fig, x, y, text):
     )
 
 
-def add_idea_shape(
+def add_idea_rect(
     fig: plotly_Figure,
     base_width,
     base_h,
@@ -267,10 +267,10 @@ def add_idea_shape(
     )
     text_y = (shape_y0 + shape_y1) / 2
     text_x = (shape_x0 + shape_x1) / 2
-    add_shape_text(fig, x=text_x, y=text_y, text=display_text)
+    add_rect_text(fig, x=text_x, y=text_y, text=display_text)
 
 
-def add_belief_shape(
+def add_belief_rect(
     fig: plotly_Figure,
     base_width,
     base_h,
@@ -309,10 +309,10 @@ def add_belief_shape(
     )
     text_y = (shape_y0 + shape_y1) / 2
     text_x = (shape_x0 + shape_x1) / 2
-    add_shape_text(fig, x=text_x, y=text_y, text=display_text)
+    add_rect_text(fig, x=text_x, y=text_y, text=display_text)
 
 
-def add_people_shape(
+def add_people_rect(
     fig: plotly_Figure,
     base_width,
     base_h,
@@ -345,7 +345,7 @@ def add_people_shape(
     )
     text_y = (shape_y0 + shape_y1) / 2
     text_x = (shape_x0 + shape_x1) / 2
-    add_shape_text(fig, x=text_x, y=text_y, text=display_text)
+    add_rect_text(fig, x=text_x, y=text_y, text=display_text)
 
 
 def get_worldunit_base_fig() -> plotly_Figure:
@@ -361,8 +361,8 @@ def worldunit_explanation0() -> plotly_Figure:
     # Add shapes
     base_w = 0.1
     base_h = 0.125
-    add_belief_shape(fig, base_w, base_h, 1, 0, 1, "beliefs")
-    add_people_shape(fig, base_w, base_h, 0, 0, 1, "people")
+    add_belief_rect(fig, base_w, base_h, 1, 0, 1, "beliefs")
+    add_people_rect(fig, base_w, base_h, 0, 0, 1, "people")
     fig.add_trace(
         plotly_Scatter(
             x=[2.0],
@@ -380,14 +380,14 @@ def worldunit_explanation1() -> plotly_Figure:
     # Add shapes
     base_w = 0.1
     base_h = 0.125
-    add_belief_shape(fig, base_w, base_h, 2, 0, 0.2, "belief1")
-    add_belief_shape(fig, base_w, base_h, 2, 0.2, 0.4, "belief2")
-    add_belief_shape(fig, base_w, base_h, 2, 0.4, 0.6, "belief3")
-    add_belief_shape(fig, base_w, base_h, 2, 0.6, 1, "belief4")
-    add_people_shape(fig, base_w, base_h, 0, 0, 0.3, "char0")
-    add_people_shape(fig, base_w, base_h, 0, 0.3, 0.5, "char1")
-    add_people_shape(fig, base_w, base_h, 0, 0.5, 0.7, "char2")
-    add_people_shape(fig, base_w, base_h, 0, 0.7, 1, "char3")
+    add_belief_rect(fig, base_w, base_h, 2, 0, 0.2, "belief1")
+    add_belief_rect(fig, base_w, base_h, 2, 0.2, 0.4, "belief2")
+    add_belief_rect(fig, base_w, base_h, 2, 0.4, 0.6, "belief3")
+    add_belief_rect(fig, base_w, base_h, 2, 0.6, 1, "belief4")
+    add_people_rect(fig, base_w, base_h, 0, 0, 0.3, "char0")
+    add_people_rect(fig, base_w, base_h, 0, 0.3, 0.5, "char1")
+    add_people_rect(fig, base_w, base_h, 0, 0.5, 0.7, "char2")
+    add_people_rect(fig, base_w, base_h, 0, 0.7, 1, "char3")
 
     fig.add_trace(
         plotly_Scatter(
@@ -411,9 +411,9 @@ def worldunit_explanation2() -> plotly_Figure:
     # Add shapes
     base_w = 0.1
     base_h = 0.125
-    add_idea_shape(fig, base_w, base_h, 0, 0, 1, "Root Idea")
-    add_belief_shape(fig, base_w, base_h, 1, 0, 1, "beliefs")
-    add_people_shape(fig, base_w, base_h, 0, 0, 1, "people")
+    add_idea_rect(fig, base_w, base_h, 0, 0, 1, "Root Idea")
+    add_belief_rect(fig, base_w, base_h, 1, 0, 1, "beliefs")
+    add_people_rect(fig, base_w, base_h, 0, 0, 1, "people")
 
     fig.add_trace(
         plotly_Scatter(
@@ -437,14 +437,14 @@ def worldunit_explanation3() -> plotly_Figure:
     # Add shapes
     base_w = 0.1
     base_h = 0.125
-    add_idea_shape(fig, base_w, base_h, 2, 0.4, 0.7, "Sub Idea")
-    add_idea_shape(fig, base_w, base_h, 2, 0.3, 0.4, "Sub Idea")
-    add_idea_shape(fig, base_w, base_h, 1, 0, 0.3, "Sub Idea")
-    add_idea_shape(fig, base_w, base_h, 1, 0.3, 0.7, "Sub Idea")
-    add_idea_shape(fig, base_w, base_h, 1, 0.7, 1, "Sub Idea")
-    add_idea_shape(fig, base_w, base_h, 0, 0, 1, "Root Idea")
-    add_belief_shape(fig, base_w, base_h, 1, 0, 1, "beliefs")
-    add_people_shape(fig, base_w, base_h, 0, 0, 1, "people")
+    add_idea_rect(fig, base_w, base_h, 2, 0.4, 0.7, "Sub Idea")
+    add_idea_rect(fig, base_w, base_h, 2, 0.3, 0.4, "Sub Idea")
+    add_idea_rect(fig, base_w, base_h, 1, 0, 0.3, "Sub Idea")
+    add_idea_rect(fig, base_w, base_h, 1, 0.3, 0.7, "Sub Idea")
+    add_idea_rect(fig, base_w, base_h, 1, 0.7, 1, "Sub Idea")
+    add_idea_rect(fig, base_w, base_h, 0, 0, 1, "Root Idea")
+    add_belief_rect(fig, base_w, base_h, 1, 0, 1, "beliefs")
+    add_people_rect(fig, base_w, base_h, 0, 0, 1, "people")
 
     fig.add_trace(
         plotly_Scatter(
@@ -468,14 +468,14 @@ def worldunit_explanation4() -> plotly_Figure:
     # Add shapes
     base_w = 0.1
     base_h = 0.125
-    add_idea_shape(fig, base_w, base_h, 2, 0.4, 0.7, "Premise against Pledge")
-    add_idea_shape(fig, base_w, base_h, 2, 0.1, 0.4, "Premise for Pledge")
-    add_idea_shape(fig, base_w, base_h, 1, 0, 0.1, "Idea")
-    add_idea_shape(fig, base_w, base_h, 1, 0.1, 0.7, "Pledge Reason Base")
-    add_idea_shape(fig, base_w, base_h, 0, 0, 1, "Root Idea")
-    add_idea_shape(fig, base_w, base_h, 1, 0.7, 1, "Pledge Itself", True)
-    add_belief_shape(fig, base_w, base_h, 1, 0, 1, "beliefs")
-    add_people_shape(fig, base_w, base_h, 0, 0, 1, "people")
+    add_idea_rect(fig, base_w, base_h, 2, 0.4, 0.7, "Premise against Pledge")
+    add_idea_rect(fig, base_w, base_h, 2, 0.1, 0.4, "Premise for Pledge")
+    add_idea_rect(fig, base_w, base_h, 1, 0, 0.1, "Idea")
+    add_idea_rect(fig, base_w, base_h, 1, 0.1, 0.7, "Pledge Reason Base")
+    add_idea_rect(fig, base_w, base_h, 0, 0, 1, "Root Idea")
+    add_idea_rect(fig, base_w, base_h, 1, 0.7, 1, "Pledge Itself", True)
+    add_belief_rect(fig, base_w, base_h, 1, 0, 1, "beliefs")
+    add_people_rect(fig, base_w, base_h, 0, 0, 1, "people")
 
     fig.add_trace(
         plotly_Scatter(
@@ -499,8 +499,8 @@ def fiscal_explanation0() -> plotly_Figure:
     # Add shapes
     base_w = 0.1
     base_h = 0.125
-    add_belief_shape(fig, base_w, base_h, 3, 0, 1, "beliefs")
-    add_people_shape(fig, base_w, base_h, 0, 0, 1, "people")
+    add_belief_rect(fig, base_w, base_h, 3, 0, 1, "beliefs")
+    add_people_rect(fig, base_w, base_h, 0, 0, 1, "people")
     fig.add_trace(
         plotly_Scatter(
             x=[2.0],

@@ -59,11 +59,7 @@ class AtomUnit:
         return x_list
 
     def set_atom_order(self):
-        self.atom_order = get_atom_order(
-            category=self.category,
-            crud_text=self.crud_text,
-            atom_order_text="atom_order",
-        )
+        self.atom_order = get_atom_order(self.crud_text, self.category)
 
     def set_arg(self, x_key: str, x_value: any):
         for required_arg in self._get_required_args_dict():
