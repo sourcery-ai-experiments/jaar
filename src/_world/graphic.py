@@ -239,6 +239,7 @@ def add_idea_shape(
     level_width0,
     level_width1,
     display_text,
+    show_red: bool = False,
 ):
     level_bump = level * 0.125
     home_form_x0 = base_width + 0.1
@@ -248,6 +249,9 @@ def add_idea_shape(
     shape_x1 = home_form_x0 + (home_width * level_width1)
     shape_y0 = level_bump + base_h + 0.25
     shape_y1 = level_bump + base_h + 0.375
+    x_color = "RoyalBlue"
+    if show_red:
+        x_color = "Red"
     fig.add_shape(
         type="rect",
         xref="paper",
@@ -257,7 +261,7 @@ def add_idea_shape(
         x1=shape_x1,
         y1=shape_y1,
         line=dict(
-            color="RoyalBlue",
+            color=x_color,
             width=8,
         ),
         fillcolor=None,  # "LightSkyBlue",
@@ -460,6 +464,61 @@ def worldunit_explanation3() -> plotly_Figure:
         )
     )
 
+    return fig
+
+
+def worldunit_explanation4() -> plotly_Figure:
+    fig = plotly_Figure()
+
+    fig.update_xaxes(range=[0, 4])
+    fig.update_yaxes(range=[0, 4])
+
+    # Add shapes
+    base_w = 0.1
+    base_h = 0.125
+    add_idea_shape(fig, base_w, base_h, 2, 0.4, 0.7, "Premise against Pledge")
+    add_idea_shape(fig, base_w, base_h, 2, 0.1, 0.4, "Premise for Pledge")
+    add_idea_shape(fig, base_w, base_h, 1, 0, 0.1, "Idea")
+    add_idea_shape(fig, base_w, base_h, 1, 0.1, 0.7, "Pledge Reason Base")
+    add_idea_shape(fig, base_w, base_h, 0, 0, 1, "Root Idea")
+    add_idea_shape(fig, base_w, base_h, 1, 0.7, 1, "Pledge Itself", True)
+    add_belief_shape(fig, base_w, base_h, 1, 0, 1, "beliefs")
+    add_people_shape(fig, base_w, base_h, 0, 0, 1, "people")
+
+    fig.add_trace(
+        plotly_Scatter(
+            x=[2.0, 2.00, 2.00],
+            y=[3.75, 3.5, 3.25],
+            text=[
+                "What Jaar Worlds Are Made of Explanation 1",
+                "Some Ideas are pledges, others are reasons for pledges",
+                "All ideas build from one",
+            ],
+            mode="text",
+        )
+    )
+
+    return fig
+
+
+def fiscal_explanation0() -> plotly_Figure:
+    fig = plotly_Figure()
+    fig.update_xaxes(range=[0, 4])
+    fig.update_yaxes(range=[0, 4])
+
+    # Add shapes
+    base_w = 0.1
+    base_h = 0.125
+    add_belief_shape(fig, base_w, base_h, 3, 0, 1, "beliefs")
+    add_people_shape(fig, base_w, base_h, 0, 0, 1, "people")
+    fig.add_trace(
+        plotly_Scatter(
+            x=[2.0],
+            y=[3.75],
+            text=["What Jaar Worlds Are Made of Explanation 0"],
+            mode="text",
+        )
+    )
     return fig
 
 

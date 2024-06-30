@@ -11,24 +11,31 @@ from src._world.graphic import (
     worldunit_explanation1,
     worldunit_explanation2,
     worldunit_explanation3,
-    # worldunit_explanation4,
+    worldunit_explanation4,
+    fiscal_explanation0,
 )
 
 
 def test_worldunit_explanation_ShowsExplanation0WorldConceptGraph():
     # GIVEN / WHEN
-    x_fig = worldunit_explanation0()
-    x_fig = worldunit_explanation1()
-    x_fig = worldunit_explanation2()
-    x_fig = worldunit_explanation3()
-    # x_fig = worldunit_explanation4()
+    worldunit_explanation0_fig = worldunit_explanation0()
+    worldunit_explanation1_fig = worldunit_explanation1()
+    worldunit_explanation2_fig = worldunit_explanation2()
+    worldunit_explanation3_fig = worldunit_explanation3()
+    worldunit_explanation4_fig = worldunit_explanation4()
+    fiscal_explanation0_fig = fiscal_explanation0()
 
-    # THEN
-    show_figure = True
-    if show_figure:
-        x_fig.show()
+    # # THEN
+    # show_figure = True
+    # if show_figure:
+    #     # worldunit_explanation0_fig.show()
+    #     # worldunit_explanation1_fig.show()
+    #     # worldunit_explanation2_fig.show()
+    #     # worldunit_explanation3_fig.show()
+    #     # worldunit_explanation4_fig.show()
+    #     fiscal_explanation0_fig.show()
 
-    assert 1 == 2
+    # assert 1 == 2
 
     # # a_world = get_1node_world()
     # # a_world = get_2node_world()
