@@ -32,8 +32,9 @@ class CharUnit(CharCore):
 
     credor_weight: int = None
     debtor_weight: int = None
-    # calculated fields
+    # special attribute: static in world json, in memory it is deleted after loading and recalculated during saving.
     _beliefholds: dict[CharID:BeliefHold] = None
+    # calculated fields
     _irrational_debtor_weight: int = None  # set by listening process
     _inallocable_debtor_weight: int = None  # set by listening process
     # set by World.calc_world_metrics()
