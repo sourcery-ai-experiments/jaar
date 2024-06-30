@@ -8,8 +8,8 @@ from src._instrument.python import (
 )
 from src._road.road import RoadUnit, get_terminus_node, get_parent_road
 from src._world.reason_idea import FactUnit, ReasonUnit
-from src._world.char import BeliefLink, CharID, CharUnit
-from src._world.belieflink import BeliefLink, BeliefID
+from src._world.char import BeliefHold, CharID, CharUnit
+from src._world.beliefhold import BeliefHold, BeliefID
 from src._world.idea import IdeaUnit
 from src._world.world import WorldUnit, worldunit_shop
 from src.gift.atom_config import CRUD_command
@@ -130,9 +130,9 @@ class ChangeUnit:
         self, before_world: WorldUnit, after_world: WorldUnit
     ):
         before_world.calc_world_metrics()
-        before_world._migrate_beliefunits_to_belieflinks()
+        before_world._migrate_beliefunits_to_beliefholds()
         after_world.calc_world_metrics()
-        after_world._migrate_beliefunits_to_belieflinks()
+        after_world._migrate_beliefunits_to_beliefholds()
         self.add_atomunits_worldunit_simple_attrs(before_world, after_world)
         self.add_atomunits_chars(before_world, after_world)
         self.add_atomunits_ideas(before_world, after_world)
@@ -201,12 +201,12 @@ class ChangeUnit:
             self.set_atomunit(x_atomunit)
             non_mirror_belief_ids = {
                 x_belief_id
-                for x_belief_id in insert_charunit._belieflinks.keys()
+                for x_belief_id in insert_charunit._beliefholds.keys()
                 if x_belief_id != insert_char_id
             }
-            self.add_atomunit_belieflinks_inserts(
+            self.add_atomunit_beliefholds_inserts(
                 after_charunit=insert_charunit,
-                insert_belieflink_belief_ids=non_mirror_belief_ids,
+                insert_beliefhold_belief_ids=non_mirror_belief_ids,
             )
 
     def add_atomunit_charunit_updates(
@@ -229,7 +229,7 @@ class ChangeUnit:
                         "debtor_weight", after_charunit.debtor_weight
                     )
                 self.set_atomunit(x_atomunit)
-            self.add_atomunit_beliefunit_update_belieflinks(
+            self.add_atomunit_beliefunit_update_beliefholds(
                 after_charunit=after_charunit, before_charunit=before_charunit
             )
 
@@ -243,91 +243,91 @@ class ChangeUnit:
             delete_charunit = before_world.get_char(delete_char_id)
             non_mirror_belief_ids = {
                 x_belief_id
-                for x_belief_id in delete_charunit._belieflinks.keys()
+                for x_belief_id in delete_charunit._beliefholds.keys()
                 if x_belief_id != delete_char_id
             }
-            self.add_atomunit_belieflinks_delete(delete_char_id, non_mirror_belief_ids)
+            self.add_atomunit_beliefholds_delete(delete_char_id, non_mirror_belief_ids)
 
-    def add_atomunit_beliefunit_update_belieflinks(
+    def add_atomunit_beliefunit_update_beliefholds(
         self, after_charunit: CharUnit, before_charunit: CharUnit
     ):
         # before_non_mirror_belief_ids
         before_belief_ids = {
             x_belief_id
-            for x_belief_id in before_charunit._belieflinks.keys()
+            for x_belief_id in before_charunit._beliefholds.keys()
             if x_belief_id != before_charunit.char_id
         }
         # after_non_mirror_belief_ids
         after_belief_ids = {
             x_belief_id
-            for x_belief_id in after_charunit._belieflinks.keys()
+            for x_belief_id in after_charunit._beliefholds.keys()
             if x_belief_id != after_charunit.char_id
         }
 
-        self.add_atomunit_belieflinks_inserts(
+        self.add_atomunit_beliefholds_inserts(
             after_charunit=after_charunit,
-            insert_belieflink_belief_ids=after_belief_ids.difference(before_belief_ids),
+            insert_beliefhold_belief_ids=after_belief_ids.difference(before_belief_ids),
         )
 
-        self.add_atomunit_belieflinks_delete(
+        self.add_atomunit_beliefholds_delete(
             before_char_id=after_charunit.char_id,
             before_belief_ids=before_belief_ids.difference(after_belief_ids),
         )
 
         update_belief_ids = before_belief_ids.intersection(after_belief_ids)
         for update_char_id in update_belief_ids:
-            before_belieflink = before_charunit.get_belieflink(update_char_id)
-            after_belieflink = after_charunit.get_belieflink(update_char_id)
+            before_beliefhold = before_charunit.get_beliefhold(update_char_id)
+            after_beliefhold = after_charunit.get_beliefhold(update_char_id)
             if optional_args_different(
-                "world_char_belieflink", before_belieflink, after_belieflink
+                "world_char_beliefhold", before_beliefhold, after_beliefhold
             ):
-                self.add_atomunit_belieflink_update(
+                self.add_atomunit_beliefhold_update(
                     char_id=after_charunit.char_id,
-                    before_belieflink=before_belieflink,
-                    after_belieflink=after_belieflink,
+                    before_beliefhold=before_beliefhold,
+                    after_beliefhold=after_beliefhold,
                 )
 
-    def add_atomunit_belieflinks_inserts(
+    def add_atomunit_beliefholds_inserts(
         self,
         after_charunit: CharUnit,
-        insert_belieflink_belief_ids: list[BeliefID],
+        insert_beliefhold_belief_ids: list[BeliefID],
     ):
         after_char_id = after_charunit.char_id
-        for insert_belief_id in insert_belieflink_belief_ids:
-            after_belieflink = after_charunit.get_belieflink(insert_belief_id)
-            x_atomunit = atomunit_shop("world_char_belieflink", atom_insert())
+        for insert_belief_id in insert_beliefhold_belief_ids:
+            after_beliefhold = after_charunit.get_beliefhold(insert_belief_id)
+            x_atomunit = atomunit_shop("world_char_beliefhold", atom_insert())
             x_atomunit.set_required_arg("char_id", after_char_id)
-            x_atomunit.set_required_arg("belief_id", after_belieflink.belief_id)
-            if after_belieflink.credor_weight != None:
+            x_atomunit.set_required_arg("belief_id", after_beliefhold.belief_id)
+            if after_beliefhold.credor_weight != None:
                 x_atomunit.set_optional_arg(
-                    "credor_weight", after_belieflink.credor_weight
+                    "credor_weight", after_beliefhold.credor_weight
                 )
-            if after_belieflink.debtor_weight != None:
+            if after_beliefhold.debtor_weight != None:
                 x_atomunit.set_optional_arg(
-                    "debtor_weight", after_belieflink.debtor_weight
+                    "debtor_weight", after_beliefhold.debtor_weight
                 )
             self.set_atomunit(x_atomunit)
 
-    def add_atomunit_belieflink_update(
+    def add_atomunit_beliefhold_update(
         self,
         char_id: CharID,
-        before_belieflink: BeliefLink,
-        after_belieflink: BeliefLink,
+        before_beliefhold: BeliefHold,
+        after_beliefhold: BeliefHold,
     ):
-        x_atomunit = atomunit_shop("world_char_belieflink", atom_update())
+        x_atomunit = atomunit_shop("world_char_beliefhold", atom_update())
         x_atomunit.set_required_arg("char_id", char_id)
-        x_atomunit.set_required_arg("belief_id", after_belieflink.belief_id)
-        if after_belieflink.credor_weight != before_belieflink.credor_weight:
-            x_atomunit.set_optional_arg("credor_weight", after_belieflink.credor_weight)
-        if after_belieflink.debtor_weight != before_belieflink.debtor_weight:
-            x_atomunit.set_optional_arg("debtor_weight", after_belieflink.debtor_weight)
+        x_atomunit.set_required_arg("belief_id", after_beliefhold.belief_id)
+        if after_beliefhold.credor_weight != before_beliefhold.credor_weight:
+            x_atomunit.set_optional_arg("credor_weight", after_beliefhold.credor_weight)
+        if after_beliefhold.debtor_weight != before_beliefhold.debtor_weight:
+            x_atomunit.set_optional_arg("debtor_weight", after_beliefhold.debtor_weight)
         self.set_atomunit(x_atomunit)
 
-    def add_atomunit_belieflinks_delete(
+    def add_atomunit_beliefholds_delete(
         self, before_char_id: CharID, before_belief_ids: BeliefID
     ):
         for delete_belief_id in before_belief_ids:
-            x_atomunit = atomunit_shop("world_char_belieflink", atom_delete())
+            x_atomunit = atomunit_shop("world_char_beliefhold", atom_delete())
             x_atomunit.set_required_arg("char_id", before_char_id)
             x_atomunit.set_required_arg("belief_id", delete_belief_id)
             self.set_atomunit(x_atomunit)
@@ -377,9 +377,9 @@ class ChangeUnit:
                 ideaunit=insert_ideaunit,
                 insert_factunit_bases=set(insert_ideaunit._factunits.keys()),
             )
-            self.add_atomunit_idea_balancelink_inserts(
+            self.add_atomunit_idea_fiscallink_inserts(
                 after_ideaunit=insert_ideaunit,
-                insert_balancelink_belief_ids=set(insert_ideaunit._balancelinks.keys()),
+                insert_fiscallink_belief_ids=set(insert_ideaunit._fiscallinks.keys()),
             )
             self.add_atomunit_idea_reasonunit_inserts(
                 after_ideaunit=insert_ideaunit,
@@ -458,26 +458,26 @@ class ChangeUnit:
                 ),
             )
 
-            # insert / update / delete balanceunits
-            before_balancelinks_belief_ids = set(before_ideaunit._balancelinks.keys())
-            after_balancelinks_belief_ids = set(after_ideaunit._balancelinks.keys())
-            self.add_atomunit_idea_balancelink_inserts(
+            # insert / update / delete fiscalunits
+            before_fiscallinks_belief_ids = set(before_ideaunit._fiscallinks.keys())
+            after_fiscallinks_belief_ids = set(after_ideaunit._fiscallinks.keys())
+            self.add_atomunit_idea_fiscallink_inserts(
                 after_ideaunit=after_ideaunit,
-                insert_balancelink_belief_ids=after_balancelinks_belief_ids.difference(
-                    before_balancelinks_belief_ids
+                insert_fiscallink_belief_ids=after_fiscallinks_belief_ids.difference(
+                    before_fiscallinks_belief_ids
                 ),
             )
-            self.add_atomunit_idea_balancelink_updates(
+            self.add_atomunit_idea_fiscallink_updates(
                 before_ideaunit=before_ideaunit,
                 after_ideaunit=after_ideaunit,
-                update_balancelink_belief_ids=before_balancelinks_belief_ids.intersection(
-                    after_balancelinks_belief_ids
+                update_fiscallink_belief_ids=before_fiscallinks_belief_ids.intersection(
+                    after_fiscallinks_belief_ids
                 ),
             )
-            self.add_atomunit_idea_balancelink_deletes(
+            self.add_atomunit_idea_fiscallink_deletes(
                 idea_road=idea_road,
-                delete_balancelink_belief_ids=before_balancelinks_belief_ids.difference(
-                    after_balancelinks_belief_ids
+                delete_fiscallink_belief_ids=before_fiscallinks_belief_ids.difference(
+                    after_fiscallinks_belief_ids
                 ),
             )
 
@@ -546,9 +546,9 @@ class ChangeUnit:
                 idea_road=delete_idea_road,
                 delete_factunit_bases=set(delete_ideaunit._factunits.keys()),
             )
-            self.add_atomunit_idea_balancelink_deletes(
+            self.add_atomunit_idea_fiscallink_deletes(
                 idea_road=delete_idea_road,
-                delete_balancelink_belief_ids=set(delete_ideaunit._balancelinks.keys()),
+                delete_fiscallink_belief_ids=set(delete_ideaunit._fiscallinks.keys()),
             )
             self.add_atomunit_idea_reasonunit_deletes(
                 before_ideaunit=delete_ideaunit,
@@ -724,60 +724,56 @@ class ChangeUnit:
             x_atomunit.set_required_arg("belief_id", delete_suffbelief_belief_id)
             self.set_atomunit(x_atomunit)
 
-    def add_atomunit_idea_balancelink_inserts(
-        self, after_ideaunit: IdeaUnit, insert_balancelink_belief_ids: set
+    def add_atomunit_idea_fiscallink_inserts(
+        self, after_ideaunit: IdeaUnit, insert_fiscallink_belief_ids: set
     ):
-        for after_balancelink_belief_id in insert_balancelink_belief_ids:
-            after_balancelink = after_ideaunit._balancelinks.get(
-                after_balancelink_belief_id
+        for after_fiscallink_belief_id in insert_fiscallink_belief_ids:
+            after_fiscallink = after_ideaunit._fiscallinks.get(
+                after_fiscallink_belief_id
             )
-            x_atomunit = atomunit_shop("world_idea_balancelink", atom_insert())
+            x_atomunit = atomunit_shop("world_idea_fiscallink", atom_insert())
             x_atomunit.set_required_arg("road", after_ideaunit.get_road())
-            x_atomunit.set_required_arg("belief_id", after_balancelink.belief_id)
-            x_atomunit.set_optional_arg(
-                "credor_weight", after_balancelink.credor_weight
-            )
-            x_atomunit.set_optional_arg(
-                "debtor_weight", after_balancelink.debtor_weight
-            )
+            x_atomunit.set_required_arg("belief_id", after_fiscallink.belief_id)
+            x_atomunit.set_optional_arg("credor_weight", after_fiscallink.credor_weight)
+            x_atomunit.set_optional_arg("debtor_weight", after_fiscallink.debtor_weight)
             self.set_atomunit(x_atomunit)
 
-    def add_atomunit_idea_balancelink_updates(
+    def add_atomunit_idea_fiscallink_updates(
         self,
         before_ideaunit: IdeaUnit,
         after_ideaunit: IdeaUnit,
-        update_balancelink_belief_ids: set,
+        update_fiscallink_belief_ids: set,
     ):
-        for update_balancelink_belief_id in update_balancelink_belief_ids:
-            before_balancelink = before_ideaunit._balancelinks.get(
-                update_balancelink_belief_id
+        for update_fiscallink_belief_id in update_fiscallink_belief_ids:
+            before_fiscallink = before_ideaunit._fiscallinks.get(
+                update_fiscallink_belief_id
             )
-            after_balancelink = after_ideaunit._balancelinks.get(
-                update_balancelink_belief_id
+            after_fiscallink = after_ideaunit._fiscallinks.get(
+                update_fiscallink_belief_id
             )
             if optional_args_different(
-                "world_idea_balancelink", before_balancelink, after_balancelink
+                "world_idea_fiscallink", before_fiscallink, after_fiscallink
             ):
-                x_atomunit = atomunit_shop("world_idea_balancelink", atom_update())
+                x_atomunit = atomunit_shop("world_idea_fiscallink", atom_update())
                 x_atomunit.set_required_arg("road", before_ideaunit.get_road())
-                x_atomunit.set_required_arg("belief_id", after_balancelink.belief_id)
-                if before_balancelink.credor_weight != after_balancelink.credor_weight:
+                x_atomunit.set_required_arg("belief_id", after_fiscallink.belief_id)
+                if before_fiscallink.credor_weight != after_fiscallink.credor_weight:
                     x_atomunit.set_optional_arg(
-                        "credor_weight", after_balancelink.credor_weight
+                        "credor_weight", after_fiscallink.credor_weight
                     )
-                if before_balancelink.debtor_weight != after_balancelink.debtor_weight:
+                if before_fiscallink.debtor_weight != after_fiscallink.debtor_weight:
                     x_atomunit.set_optional_arg(
-                        "debtor_weight", after_balancelink.debtor_weight
+                        "debtor_weight", after_fiscallink.debtor_weight
                     )
                 self.set_atomunit(x_atomunit)
 
-    def add_atomunit_idea_balancelink_deletes(
-        self, idea_road: RoadUnit, delete_balancelink_belief_ids: set
+    def add_atomunit_idea_fiscallink_deletes(
+        self, idea_road: RoadUnit, delete_fiscallink_belief_ids: set
     ):
-        for delete_balancelink_belief_id in delete_balancelink_belief_ids:
-            x_atomunit = atomunit_shop("world_idea_balancelink", atom_delete())
+        for delete_fiscallink_belief_id in delete_fiscallink_belief_ids:
+            x_atomunit = atomunit_shop("world_idea_fiscallink", atom_delete())
             x_atomunit.set_required_arg("road", idea_road)
-            x_atomunit.set_required_arg("belief_id", delete_balancelink_belief_id)
+            x_atomunit.set_required_arg("belief_id", delete_fiscallink_belief_id)
             self.set_atomunit(x_atomunit)
 
     def add_atomunit_idea_factunit_inserts(
@@ -889,12 +885,12 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
     # x_list = atoms_dict, [atom_delete(), "world_beliefunit"]
     # beliefunit_delete_dict = get_leg_obj(x_list)
 
-    x_list = [atom_insert(), "world_char_belieflink"]
-    char_belieflink_insert_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_update(), "world_char_belieflink"]
-    char_belieflink_update_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_delete(), "world_char_belieflink"]
-    char_belieflink_delete_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_insert(), "world_char_beliefhold"]
+    char_beliefhold_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "world_char_beliefhold"]
+    char_beliefhold_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "world_char_beliefhold"]
+    char_beliefhold_delete_dict = get_leg_obj(atoms_dict, x_list)
 
     x_list = [atom_insert(), "world_ideaunit"]
     world_ideaunit_insert_dict = get_leg_obj(atoms_dict, x_list)
@@ -903,12 +899,12 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
     x_list = [atom_delete(), "world_ideaunit"]
     world_ideaunit_delete_dict = get_leg_obj(atoms_dict, x_list)
 
-    x_list = [atom_insert(), "world_idea_balancelink"]
-    world_idea_balancelink_insert_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_update(), "world_idea_balancelink"]
-    world_idea_balancelink_update_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_delete(), "world_idea_balancelink"]
-    world_idea_balancelink_delete_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_insert(), "world_idea_fiscallink"]
+    world_idea_fiscallink_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_update(), "world_idea_fiscallink"]
+    world_idea_fiscallink_update_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "world_idea_fiscallink"]
+    world_idea_fiscallink_delete_dict = get_leg_obj(atoms_dict, x_list)
 
     x_list = [atom_insert(), "world_idea_reasonunit"]
     world_idea_reasonunit_insert_dict = get_leg_obj(atoms_dict, x_list)
@@ -970,17 +966,17 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
     #         leg_list, beliefunit_delete_dict, x_world
     #     )
 
-    if char_belieflink_insert_dict != None:
-        add_world_char_belieflink_insert_to_legible_list(
-            leg_list, char_belieflink_insert_dict, x_world
+    if char_beliefhold_insert_dict != None:
+        add_world_char_beliefhold_insert_to_legible_list(
+            leg_list, char_beliefhold_insert_dict, x_world
         )
-    if char_belieflink_update_dict != None:
-        add_world_char_belieflink_update_to_legible_list(
-            leg_list, char_belieflink_update_dict, x_world
+    if char_beliefhold_update_dict != None:
+        add_world_char_beliefhold_update_to_legible_list(
+            leg_list, char_beliefhold_update_dict, x_world
         )
-    if char_belieflink_delete_dict != None:
-        add_world_char_belieflink_delete_to_legible_list(
-            leg_list, char_belieflink_delete_dict, x_world
+    if char_beliefhold_delete_dict != None:
+        add_world_char_beliefhold_delete_to_legible_list(
+            leg_list, char_beliefhold_delete_dict, x_world
         )
 
     if world_ideaunit_insert_dict != None:
@@ -996,17 +992,17 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
             leg_list, world_ideaunit_delete_dict, x_world
         )
 
-    if world_idea_balancelink_insert_dict != None:
-        add_world_idea_balancelink_insert_to_legible_list(
-            leg_list, world_idea_balancelink_insert_dict, x_world
+    if world_idea_fiscallink_insert_dict != None:
+        add_world_idea_fiscallink_insert_to_legible_list(
+            leg_list, world_idea_fiscallink_insert_dict, x_world
         )
-    if world_idea_balancelink_update_dict != None:
-        add_world_idea_balancelink_update_to_legible_list(
-            leg_list, world_idea_balancelink_update_dict, x_world
+    if world_idea_fiscallink_update_dict != None:
+        add_world_idea_fiscallink_update_to_legible_list(
+            leg_list, world_idea_fiscallink_update_dict, x_world
         )
-    if world_idea_balancelink_delete_dict != None:
-        add_world_idea_balancelink_delete_to_legible_list(
-            leg_list, world_idea_balancelink_delete_dict, x_world
+    if world_idea_fiscallink_delete_dict != None:
+        add_world_idea_fiscallink_delete_to_legible_list(
+            leg_list, world_idea_fiscallink_delete_dict, x_world
         )
 
     if world_idea_reasonunit_insert_dict != None:
@@ -1202,28 +1198,28 @@ def add_world_beliefunit_delete_to_legible_list(
         legible_list.append(x_str)
 
 
-def add_world_char_belieflink_insert_to_legible_list(
-    legible_list: list[str], char_belieflink_insert_dict: dict, x_world: WorldUnit
+def add_world_char_beliefhold_insert_to_legible_list(
+    legible_list: list[str], char_beliefhold_insert_dict: dict, x_world: WorldUnit
 ):
-    for char_belieflink_dict in char_belieflink_insert_dict.values():
-        for char_belieflink_atom in char_belieflink_dict.values():
-            belief_id = char_belieflink_atom.get_value("belief_id")
-            char_id = char_belieflink_atom.get_value("char_id")
-            credor_weight_value = char_belieflink_atom.get_value("credor_weight")
-            debtor_weight_value = char_belieflink_atom.get_value("debtor_weight")
+    for char_beliefhold_dict in char_beliefhold_insert_dict.values():
+        for char_beliefhold_atom in char_beliefhold_dict.values():
+            belief_id = char_beliefhold_atom.get_value("belief_id")
+            char_id = char_beliefhold_atom.get_value("char_id")
+            credor_weight_value = char_beliefhold_atom.get_value("credor_weight")
+            debtor_weight_value = char_beliefhold_atom.get_value("debtor_weight")
             x_str = f"Belief '{belief_id}' has new member {char_id} with belief_cred={credor_weight_value} and belief_debt={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_world_char_belieflink_update_to_legible_list(
-    legible_list: list[str], char_belieflink_update_dict: dict, x_world: WorldUnit
+def add_world_char_beliefhold_update_to_legible_list(
+    legible_list: list[str], char_beliefhold_update_dict: dict, x_world: WorldUnit
 ):
-    for char_belieflink_dict in char_belieflink_update_dict.values():
-        for char_belieflink_atom in char_belieflink_dict.values():
-            belief_id = char_belieflink_atom.get_value("belief_id")
-            char_id = char_belieflink_atom.get_value("char_id")
-            credor_weight_value = char_belieflink_atom.get_value("credor_weight")
-            debtor_weight_value = char_belieflink_atom.get_value("debtor_weight")
+    for char_beliefhold_dict in char_beliefhold_update_dict.values():
+        for char_beliefhold_atom in char_beliefhold_dict.values():
+            belief_id = char_beliefhold_atom.get_value("belief_id")
+            char_id = char_beliefhold_atom.get_value("char_id")
+            credor_weight_value = char_beliefhold_atom.get_value("credor_weight")
+            debtor_weight_value = char_beliefhold_atom.get_value("debtor_weight")
             if credor_weight_value != None and debtor_weight_value != None:
                 x_str = f"Belief '{belief_id}' member {char_id} has new belief_cred={credor_weight_value} and belief_debt={debtor_weight_value}."
             elif credor_weight_value != None and debtor_weight_value is None:
@@ -1233,13 +1229,13 @@ def add_world_char_belieflink_update_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_world_char_belieflink_delete_to_legible_list(
-    legible_list: list[str], char_belieflink_delete_dict: dict, x_world: WorldUnit
+def add_world_char_beliefhold_delete_to_legible_list(
+    legible_list: list[str], char_beliefhold_delete_dict: dict, x_world: WorldUnit
 ):
-    for char_belieflink_dict in char_belieflink_delete_dict.values():
-        for char_belieflink_atom in char_belieflink_dict.values():
-            belief_id = char_belieflink_atom.get_value("belief_id")
-            char_id = char_belieflink_atom.get_value("char_id")
+    for char_beliefhold_dict in char_beliefhold_delete_dict.values():
+        for char_beliefhold_atom in char_beliefhold_dict.values():
+            belief_id = char_beliefhold_atom.get_value("belief_id")
+            char_id = char_beliefhold_atom.get_value("char_id")
             x_str = f"Belief '{belief_id}' no longer has member {char_id}."
             legible_list.append(x_str)
 
@@ -1383,45 +1379,45 @@ def add_world_ideaunit_delete_to_legible_list(
             legible_list.append(x_str)
 
 
-def add_world_idea_balancelink_insert_to_legible_list(
-    legible_list: list[str], idea_balancelink_insert_dict: dict, x_world: WorldUnit
+def add_world_idea_fiscallink_insert_to_legible_list(
+    legible_list: list[str], idea_fiscallink_insert_dict: dict, x_world: WorldUnit
 ):
-    for road_dict in idea_balancelink_insert_dict.values():
-        for idea_balancelink_atom in road_dict.values():
-            belief_id_value = idea_balancelink_atom.get_value("belief_id")
-            road_value = idea_balancelink_atom.get_value("road")
-            credor_weight_value = idea_balancelink_atom.get_value("credor_weight")
-            debtor_weight_value = idea_balancelink_atom.get_value("debtor_weight")
-            x_str = f"Balancelink created for belief {belief_id_value} for idea '{road_value}' with credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
+    for road_dict in idea_fiscallink_insert_dict.values():
+        for idea_fiscallink_atom in road_dict.values():
+            belief_id_value = idea_fiscallink_atom.get_value("belief_id")
+            road_value = idea_fiscallink_atom.get_value("road")
+            credor_weight_value = idea_fiscallink_atom.get_value("credor_weight")
+            debtor_weight_value = idea_fiscallink_atom.get_value("debtor_weight")
+            x_str = f"Fiscallink created for belief {belief_id_value} for idea '{road_value}' with credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_world_idea_balancelink_update_to_legible_list(
-    legible_list: list[str], idea_balancelink_update_dict: dict, x_world: WorldUnit
+def add_world_idea_fiscallink_update_to_legible_list(
+    legible_list: list[str], idea_fiscallink_update_dict: dict, x_world: WorldUnit
 ):
-    for road_dict in idea_balancelink_update_dict.values():
-        for idea_balancelink_atom in road_dict.values():
-            belief_id_value = idea_balancelink_atom.get_value("belief_id")
-            road_value = idea_balancelink_atom.get_value("road")
-            credor_weight_value = idea_balancelink_atom.get_value("credor_weight")
-            debtor_weight_value = idea_balancelink_atom.get_value("debtor_weight")
+    for road_dict in idea_fiscallink_update_dict.values():
+        for idea_fiscallink_atom in road_dict.values():
+            belief_id_value = idea_fiscallink_atom.get_value("belief_id")
+            road_value = idea_fiscallink_atom.get_value("road")
+            credor_weight_value = idea_fiscallink_atom.get_value("credor_weight")
+            debtor_weight_value = idea_fiscallink_atom.get_value("debtor_weight")
             if credor_weight_value != None and debtor_weight_value != None:
-                x_str = f"Balancelink has been transited for belief {belief_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
+                x_str = f"Fiscallink has been transited for belief {belief_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value} and debtor_weight={debtor_weight_value}."
             elif credor_weight_value != None and debtor_weight_value is None:
-                x_str = f"Balancelink has been transited for belief {belief_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value}."
+                x_str = f"Fiscallink has been transited for belief {belief_id_value} for idea '{road_value}'. Now credor_weight={credor_weight_value}."
             elif credor_weight_value is None and debtor_weight_value != None:
-                x_str = f"Balancelink has been transited for belief {belief_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
+                x_str = f"Fiscallink has been transited for belief {belief_id_value} for idea '{road_value}'. Now debtor_weight={debtor_weight_value}."
             legible_list.append(x_str)
 
 
-def add_world_idea_balancelink_delete_to_legible_list(
-    legible_list: list[str], idea_balancelink_delete_dict: dict, x_world: WorldUnit
+def add_world_idea_fiscallink_delete_to_legible_list(
+    legible_list: list[str], idea_fiscallink_delete_dict: dict, x_world: WorldUnit
 ):
-    for road_dict in idea_balancelink_delete_dict.values():
-        for idea_balancelink_atom in road_dict.values():
-            belief_id_value = idea_balancelink_atom.get_value("belief_id")
-            road_value = idea_balancelink_atom.get_value("road")
-            x_str = f"Balancelink for belief {belief_id_value}, idea '{road_value}' has been deleted."
+    for road_dict in idea_fiscallink_delete_dict.values():
+        for idea_fiscallink_atom in road_dict.values():
+            belief_id_value = idea_fiscallink_atom.get_value("belief_id")
+            road_value = idea_fiscallink_atom.get_value("road")
+            x_str = f"Fiscallink for belief {belief_id_value}, idea '{road_value}' has been deleted."
             legible_list.append(x_str)
 
 

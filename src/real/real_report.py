@@ -9,11 +9,11 @@ from plotly.graph_objects import Figure as plotly_Figure, Table as plotly_Table
 
 def get_real_souls_chars_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
-    owner_userhubs = x_real.get_owner_userhubs()
+    owner_hubunits = x_real.get_owner_hubunits()
     # for all owners get soul
     soul_dfs = []
-    for x_userhub in owner_userhubs.values():
-        soul_world = x_userhub.get_soul_world()
+    for x_hubunit in owner_hubunits.values():
+        soul_world = x_hubunit.get_soul_world()
         soul_world.calc_world_metrics()
         df = get_world_charunits_dataframe(soul_world)
         df.insert(0, "owner_id", soul_world._owner_id)
@@ -65,11 +65,11 @@ def get_real_souls_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
 
 def get_real_beings_chars_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
-    owner_userhubs = x_real.get_owner_userhubs()
+    owner_hubunits = x_real.get_owner_hubunits()
     # for all owners get being
     being_dfs = []
-    for x_userhub in owner_userhubs.values():
-        being_world = x_userhub.get_being_world()
+    for x_hubunit in owner_hubunits.values():
+        being_world = x_hubunit.get_being_world()
         being_world.calc_world_metrics()
         being_df = get_world_charunits_dataframe(being_world)
         being_df.insert(0, "owner_id", being_world._owner_id)
@@ -121,11 +121,11 @@ def get_real_beings_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
 
 def get_real_souls_agenda_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
-    owner_userhubs = x_real.get_owner_userhubs()
+    owner_hubunits = x_real.get_owner_hubunits()
     # for all owners get soul
     soul_dfs = []
-    for x_userhub in owner_userhubs.values():
-        soul_world = x_userhub.get_soul_world()
+    for x_hubunit in owner_hubunits.values():
+        soul_world = x_hubunit.get_soul_world()
         soul_world.calc_world_metrics()
         df = get_world_agenda_dataframe(soul_world)
         soul_dfs.append(df)
@@ -180,11 +180,11 @@ def get_real_souls_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
 
 def get_real_beings_agenda_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
-    owner_userhubs = x_real.get_owner_userhubs()
+    owner_hubunits = x_real.get_owner_hubunits()
     # for all owners get being
     being_dfs = []
-    for x_userhub in owner_userhubs.values():
-        being_world = x_userhub.get_being_world()
+    for x_hubunit in owner_hubunits.values():
+        being_world = x_hubunit.get_being_world()
         being_world.calc_world_metrics()
         being_df = get_world_agenda_dataframe(being_world)
         being_dfs.append(being_df)

@@ -114,7 +114,7 @@ def test_world_ideakid_assignedunit_CorrectlySets_grandchild_idea_assignedheir()
     assert four_idea._assignedheir == assigned_heir_x
 
 
-def test_WorldUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUnit():
+def test_WorldUnit__get_filtered_fiscallinks_idea_CorrectlyFiltersIdea_AssignUnit():
     # GIVEN
     noa_text = "Noa"
     noa1_world = worldunit_shop(noa_text)
@@ -140,7 +140,7 @@ def test_WorldUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUn
     # WHEN
     noa2_world = worldunit_shop(noa_text)
     noa2_world.add_charunit(char_id=xia_text)
-    filtered_idea = noa2_world._get_filtered_balancelinks_idea(noa1_world_swim_idea)
+    filtered_idea = noa2_world._get_filtered_fiscallinks_idea(noa1_world_swim_idea)
 
     # THEN
     filtered_swim_suffbeliefs = filtered_idea._assignedunit._suffbeliefs
@@ -148,7 +148,7 @@ def test_WorldUnit__get_filtered_balancelinks_idea_CorrectlyFiltersIdea_AssignUn
     assert list(filtered_swim_suffbeliefs) == [xia_text]
 
 
-def test_WorldUnit_add_idea_CorrectlyFiltersIdea_balancelinks():
+def test_WorldUnit_add_idea_CorrectlyFiltersIdea_fiscallinks():
     # GIVEN
     noa1_world = worldunit_shop("Noa")
     xia_text = "Xia"

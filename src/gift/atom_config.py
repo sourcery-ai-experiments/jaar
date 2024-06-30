@@ -1,5 +1,9 @@
 from src._instrument.file import open_file, save_file
-from src._instrument.python import get_json_from_dict, get_dict_from_json
+from src._instrument.python import (
+    get_json_from_dict,
+    get_dict_from_json,
+    get_nested_value,
+)
 from os import getcwd as os_getcwd
 
 
@@ -67,16 +71,16 @@ def world_charunit_text() -> str:
     return "world_charunit"
 
 
-def world_char_belieflink_text() -> str:
-    return "world_char_belieflink"
+def world_char_beliefhold_text() -> str:
+    return "world_char_beliefhold"
 
 
 def world_ideaunit_text() -> str:
     return "world_ideaunit"
 
 
-def world_idea_balancelink_text() -> str:
-    return "world_idea_balancelink"
+def world_idea_fiscallink_text() -> str:
+    return "world_idea_fiscallink"
 
 
 def world_idea_reasonunit_text() -> str:
@@ -228,28 +232,19 @@ def is_category_ref(category_text: str) -> bool:
     return category_text in category_ref()
 
 
-def get_atom_order(
-    category: str,
-    crud_text: str,
-    atom_order_text: str,
-    expected_atom_order: int = None,
-) -> int:
-    atom_config_dict = get_atom_config_dict()
-    category_dict = atom_config_dict.get(category)
-    crud_dict = category_dict.get(crud_text)
-    return crud_dict.get(atom_order_text)
+def get_atom_order(crud_text: str, category: str) -> int:
+    return get_nested_value(get_atom_config_dict(), [category, crud_text, "atom_order"])
 
 
 def set_mog(
-    category: str,
     crud_text: str,
-    atom_order_text: str,
+    category: str,
     atom_order_int: int,
 ) -> int:
     atom_config_dict = get_atom_config_dict()
     category_dict = atom_config_dict.get(category)
     crud_dict = category_dict.get(crud_text)
-    crud_dict[atom_order_text] = atom_order_int
+    crud_dict["atom_order"] = atom_order_int
     save_atom_config_file(atom_config_dict)
 
 

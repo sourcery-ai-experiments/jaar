@@ -1,14 +1,14 @@
 from src._world.char import charlink_shop
 from src._world.beliefunit import (
-    BalanceLine,
-    balanceline_shop,
+    FiscalLine,
+    fiscalline_shop,
     BeliefUnit,
     beliefunit_shop,
     BeliefID,
-    BalanceLink,
-    balancelink_shop,
-    balancelinks_get_from_json,
-    balanceheir_shop,
+    FiscalLink,
+    fiscallink_shop,
+    fiscallinks_get_from_json,
+    fiscalheir_shop,
     get_from_json as beliefunits_get_from_json,
     get_beliefunit_from_dict,
     get_beliefunits_from_dict,
@@ -298,46 +298,46 @@ def test_BeliefUnit_get_beliefunits_from_dict_ReturnsCorrectObjWith_road_delimit
     assert x_beliefunits == teachers_obj_check_dict
 
 
-def test_BalanceLink_exists():
+def test_FiscalLink_exists():
     # GIVEN
     bikers_belief_id = BeliefID("bikers")
 
     # WHEN
-    bikers_balancelink = BalanceLink(belief_id=bikers_belief_id)
+    bikers_fiscallink = FiscalLink(belief_id=bikers_belief_id)
 
     # THEN
-    assert bikers_balancelink.belief_id == bikers_belief_id
-    assert bikers_balancelink.credor_weight == 1.0
-    assert bikers_balancelink.debtor_weight == 1.0
+    assert bikers_fiscallink.belief_id == bikers_belief_id
+    assert bikers_fiscallink.credor_weight == 1.0
+    assert bikers_fiscallink.debtor_weight == 1.0
 
 
-def test_balancelink_shop_ReturnsCorrectObj():
+def test_fiscallink_shop_ReturnsCorrectObj():
     # GIVEN
     bikers_belief_id = BeliefID("bikers")
     bikers_credor_weight = 3.0
     bikers_debtor_weight = 5.0
 
     # WHEN
-    bikers_balancelink = balancelink_shop(
+    bikers_fiscallink = fiscallink_shop(
         belief_id=bikers_belief_id,
         credor_weight=bikers_credor_weight,
         debtor_weight=bikers_debtor_weight,
     )
 
     # THEN
-    assert bikers_balancelink.credor_weight == bikers_credor_weight
-    assert bikers_balancelink.debtor_weight == bikers_debtor_weight
+    assert bikers_fiscallink.credor_weight == bikers_credor_weight
+    assert bikers_fiscallink.debtor_weight == bikers_debtor_weight
 
 
-def test_BalanceHeir_set_world_importance_CorrectlySetsAttr():
+def test_FiscalHeir_set_world_importance_CorrectlySetsAttr():
     # GIVEN
     bikers_belief_id = BeliefID("bikers")
     bikers_credor_weight = 3.0
     bikers_debt_weight = 6.0
-    balancelinks_sum_credor_weight = 60
-    balancelinks_sum_debtor_weight = 60
+    fiscallinks_sum_credor_weight = 60
+    fiscallinks_sum_debtor_weight = 60
     idea_world_importance = 1
-    belief_heir_x = balanceheir_shop(
+    belief_heir_x = fiscalheir_shop(
         belief_id=bikers_belief_id,
         credor_weight=bikers_credor_weight,
         debtor_weight=bikers_debt_weight,
@@ -346,8 +346,8 @@ def test_BalanceHeir_set_world_importance_CorrectlySetsAttr():
     # WHEN
     belief_heir_x.set_world_cred_debt(
         idea_world_importance=idea_world_importance,
-        balanceheirs_credor_weight_sum=balancelinks_sum_credor_weight,
-        balanceheirs_debtor_weight_sum=balancelinks_sum_debtor_weight,
+        fiscalheirs_credor_weight_sum=fiscallinks_sum_credor_weight,
+        fiscalheirs_debtor_weight_sum=fiscallinks_sum_debtor_weight,
     )
 
     # THEN
@@ -355,12 +355,12 @@ def test_BalanceHeir_set_world_importance_CorrectlySetsAttr():
     assert belief_heir_x._world_debt == 0.1
 
 
-def test_BalanceLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
+def test_FiscalLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     # GIVEN
     bikers_belief_id = BeliefID("bikers")
     bikers_credor_weight = 3.0
     bikers_debtor_weight = 5.0
-    bikers_link = balancelink_shop(
+    bikers_link = fiscallink_shop(
         belief_id=bikers_belief_id,
         credor_weight=bikers_credor_weight,
         debtor_weight=bikers_debtor_weight,
@@ -380,50 +380,50 @@ def test_BalanceLink_get_dict_ReturnsDictWithNecessaryDataForJSON():
     }
 
 
-def test_balancelinks_get_from_JSON_ReturnsCorrectObj_SimpleExample():
+def test_fiscallinks_get_from_JSON_ReturnsCorrectObj_SimpleExample():
     # GIVEN
     teacher_text = "teachers"
-    teacher_balancelink = balancelink_shop(
+    teacher_fiscallink = fiscallink_shop(
         belief_id=teacher_text, credor_weight=103, debtor_weight=155
     )
-    teacher_dict = teacher_balancelink.get_dict()
-    balancelinks_dict = {teacher_balancelink.belief_id: teacher_dict}
+    teacher_dict = teacher_fiscallink.get_dict()
+    fiscallinks_dict = {teacher_fiscallink.belief_id: teacher_dict}
 
-    teachers_json = get_json_from_dict(dict_x=balancelinks_dict)
+    teachers_json = get_json_from_dict(dict_x=fiscallinks_dict)
     assert teachers_json != None
     assert x_is_json(json_x=teachers_json)
 
     # WHEN
-    balancelinks_obj_dict = balancelinks_get_from_json(balancelinks_json=teachers_json)
+    fiscallinks_obj_dict = fiscallinks_get_from_json(fiscallinks_json=teachers_json)
 
     # THEN
-    assert balancelinks_obj_dict != None
-    teachers_obj_check_dict = {teacher_balancelink.belief_id: teacher_balancelink}
-    print(f"    {balancelinks_obj_dict=}")
+    assert fiscallinks_obj_dict != None
+    teachers_obj_check_dict = {teacher_fiscallink.belief_id: teacher_fiscallink}
+    print(f"    {fiscallinks_obj_dict=}")
     print(f"{teachers_obj_check_dict=}")
-    assert balancelinks_obj_dict == teachers_obj_check_dict
+    assert fiscallinks_obj_dict == teachers_obj_check_dict
 
 
-def test_BalanceLine_exists():
+def test_FiscalLine_exists():
     # GIVEN
     bikers_belief_id = BeliefID("bikers")
     bikers_world_cred = 0.33
     bikers_world_debt = 0.55
 
     # WHEN
-    bikers_balanceline = BalanceLine(
+    bikers_fiscalline = FiscalLine(
         belief_id=bikers_belief_id,
         _world_cred=bikers_world_cred,
         _world_debt=bikers_world_debt,
     )
 
     # THEN
-    assert bikers_balanceline.belief_id == bikers_belief_id
-    assert bikers_balanceline._world_cred == bikers_world_cred
-    assert bikers_balanceline._world_debt == bikers_world_debt
+    assert bikers_fiscalline.belief_id == bikers_belief_id
+    assert bikers_fiscalline._world_cred == bikers_world_cred
+    assert bikers_fiscalline._world_debt == bikers_world_debt
 
 
-def test_balanceline_shop_ReturnsCorrectObj_exists():
+def test_fiscalline_shop_ReturnsCorrectObj_exists():
     # GIVEN
     bikers_belief_id = BeliefID("bikers")
     bikers_belief_id = bikers_belief_id
@@ -431,31 +431,31 @@ def test_balanceline_shop_ReturnsCorrectObj_exists():
     bikers_world_debt = 0.55
 
     # WHEN
-    biker_balanceline = balanceline_shop(
+    biker_fiscalline = fiscalline_shop(
         belief_id=bikers_belief_id,
         _world_cred=bikers_world_cred,
         _world_debt=bikers_world_debt,
     )
 
-    assert biker_balanceline != None
-    assert biker_balanceline.belief_id == bikers_belief_id
-    assert biker_balanceline._world_cred == bikers_world_cred
-    assert biker_balanceline._world_debt == bikers_world_debt
+    assert biker_fiscalline != None
+    assert biker_fiscalline.belief_id == bikers_belief_id
+    assert biker_fiscalline._world_cred == bikers_world_cred
+    assert biker_fiscalline._world_debt == bikers_world_debt
 
 
-def test_BalanceLine_add_world_cred_debt_CorrectlyModifiesAttr():
+def test_FiscalLine_add_world_cred_debt_CorrectlyModifiesAttr():
     # GIVEN
     bikers_belief_id = BeliefID("bikers")
-    bikers_balanceline = balanceline_shop(
+    bikers_fiscalline = fiscalline_shop(
         belief_id=bikers_belief_id, _world_cred=0.33, _world_debt=0.55
     )
-    assert bikers_balanceline.belief_id == bikers_belief_id
-    assert bikers_balanceline._world_cred == 0.33
-    assert bikers_balanceline._world_debt == 0.55
+    assert bikers_fiscalline.belief_id == bikers_belief_id
+    assert bikers_fiscalline._world_cred == 0.33
+    assert bikers_fiscalline._world_debt == 0.55
 
     # WHEN
-    bikers_balanceline.add_world_cred_debt(world_cred=0.11, world_debt=0.2)
+    bikers_fiscalline.add_world_cred_debt(world_cred=0.11, world_debt=0.2)
 
     # THEN
-    assert bikers_balanceline._world_cred == 0.44
-    assert bikers_balanceline._world_debt == 0.75
+    assert bikers_fiscalline._world_cred == 0.44
+    assert bikers_fiscalline._world_debt == 0.75

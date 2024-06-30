@@ -3,7 +3,7 @@ from src._road.jaar_config import get_gifts_folder, get_json_filename
 from src._road.road import default_road_delimiter_if_none
 from src._world.healer import healerhold_shop
 from src._world.idea import ideaunit_shop
-from src.listen.userhub import userhub_shop
+from src.listen.hubunit import hubunit_shop
 from src.real.real import RealUnit, realunit_shop
 from src.real.examples.real_env import get_test_reals_dir, env_dir_setup_cleanup
 from os.path import exists as os_path_exists, isdir as os_path_isdir
@@ -123,15 +123,15 @@ def test_RealUnit_init_owner_econs_CorrectlySetsDirAndFiles(env_dir_setup_cleanu
         in_memory_journal=True,
     )
     sue_text = "Sue"
-    sue_userhub = userhub_shop(None, music_text, sue_text, None, pixel=x_pixel)
-    assert os_path_exists(sue_userhub.being_path()) is False
+    sue_hubunit = hubunit_shop(None, music_text, sue_text, None, pixel=x_pixel)
+    assert os_path_exists(sue_hubunit.being_path()) is False
 
     # WHEN
     music_real.init_owner_econs(sue_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
-    assert os_path_exists(sue_userhub.being_path())
+    assert os_path_exists(sue_hubunit.being_path())
 
 
 def test_RealUnit_get_owner_soul_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
@@ -140,11 +140,11 @@ def test_RealUnit_get_owner_soul_from_file_ReturnsCorrectObj(env_dir_setup_clean
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
     sue_text = "Sue"
     music_real.init_owner_econs(sue_text)
-    sue_userhub = userhub_shop(None, music_text, sue_text, None)
+    sue_hubunit = hubunit_shop(None, music_text, sue_text, None)
     bob_text = "Bob"
-    sue_soul = sue_userhub.get_soul_world()
+    sue_soul = sue_hubunit.get_soul_world()
     sue_soul.add_charunit(bob_text)
-    sue_userhub.save_soul_world(sue_soul)
+    sue_hubunit.save_soul_world(sue_soul)
 
     # WHEN
     gen_sue_soul = music_real.get_owner_soul_from_file(sue_text)
@@ -164,10 +164,10 @@ def test_RealUnit__set_all_healer_dutys_CorrectlySetsdutys(
     yao_text = "Yao"
     music_real.init_owner_econs(sue_text)
     music_real.init_owner_econs(yao_text)
-    sue_userhub = userhub_shop(None, music_text, sue_text, None)
-    yao_userhub = userhub_shop(None, music_text, yao_text, None)
-    sue_soul_world = sue_userhub.get_soul_world()
-    yao_soul_world = yao_userhub.get_soul_world()
+    sue_hubunit = hubunit_shop(None, music_text, sue_text, None)
+    yao_hubunit = hubunit_shop(None, music_text, yao_text, None)
+    sue_soul_world = sue_hubunit.get_soul_world()
+    yao_soul_world = yao_hubunit.get_soul_world()
 
     sue_soul_world.add_charunit(sue_text)
     sue_soul_world.add_charunit(yao_text)
@@ -191,14 +191,14 @@ def test_RealUnit__set_all_healer_dutys_CorrectlySetsdutys(
     yao_soul_world.add_idea(dallas_idea, texas_road)
     yao_soul_world.add_idea(elpaso_idea, texas_road)
     # display_ideatree(sue_soul_world.calc_world_metrics(), mode="Econ").show()
-    sue_userhub.save_soul_world(sue_soul_world)
-    yao_userhub.save_soul_world(yao_soul_world)
+    sue_hubunit.save_soul_world(sue_soul_world)
+    yao_hubunit.save_soul_world(yao_soul_world)
     sue_file_name = get_json_filename(sue_text)
     yao_file_name = get_json_filename(yao_text)
-    sue_dallas_userhub = userhub_shop(None, music_text, sue_text, dallas_road)
-    yao_dallas_userhub = userhub_shop(None, music_text, yao_text, dallas_road)
-    sue_dutys_dir = sue_dallas_userhub.dutys_dir()
-    yao_dutys_dir = yao_dallas_userhub.dutys_dir()
+    sue_dallas_hubunit = hubunit_shop(None, music_text, sue_text, dallas_road)
+    yao_dallas_hubunit = hubunit_shop(None, music_text, yao_text, dallas_road)
+    sue_dutys_dir = sue_dallas_hubunit.dutys_dir()
+    yao_dutys_dir = yao_dallas_hubunit.dutys_dir()
     sue_dallas_sue_duty_file_path = f"{sue_dutys_dir}/{sue_file_name}"
     sue_dallas_yao_duty_file_path = f"{sue_dutys_dir}/{yao_file_name}"
     yao_dallas_sue_duty_file_path = f"{yao_dutys_dir}/{sue_file_name}"
@@ -227,22 +227,22 @@ def test_RealUnit__set_all_healer_dutys_CorrectlySetsdutys(
     assert os_path_exists(yao_dallas_yao_duty_file_path)
 
 
-def test_RealUnit_get_owner_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_RealUnit_get_owner_hubunits_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = realunit_shop("music", get_test_reals_dir(), in_memory_journal=True)
     sue_text = "Sue"
     yao_text = "Yao"
 
     # WHEN / THEN
-    assert len(music_real.get_owner_userhubs()) == 0
+    assert len(music_real.get_owner_hubunits()) == 0
 
     # WHEN
     music_real.init_owner_econs(sue_text)
     music_real.init_owner_econs(yao_text)
-    music_all_owners = music_real.get_owner_userhubs()
+    music_all_owners = music_real.get_owner_hubunits()
 
     # THEN
-    sue_userhub = userhub_shop(
+    sue_hubunit = hubunit_shop(
         reals_dir=music_real.reals_dir,
         real_id=music_real.real_id,
         owner_id=sue_text,
@@ -250,7 +250,7 @@ def test_RealUnit_get_owner_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
         road_delimiter=music_real._road_delimiter,
         pixel=music_real._pixel,
     )
-    yao_userhub = userhub_shop(
+    yao_hubunit = hubunit_shop(
         reals_dir=music_real.reals_dir,
         real_id=music_real.real_id,
         owner_id=yao_text,
@@ -258,6 +258,6 @@ def test_RealUnit_get_owner_userhubs_ReturnsCorrectObj(env_dir_setup_cleanup):
         road_delimiter=music_real._road_delimiter,
         pixel=music_real._pixel,
     )
-    assert music_all_owners.get(sue_text) == sue_userhub
-    assert music_all_owners.get(yao_text) == yao_userhub
-    assert len(music_real.get_owner_userhubs()) == 2
+    assert music_all_owners.get(sue_text) == sue_hubunit
+    assert music_all_owners.get(yao_text) == yao_hubunit
+    assert len(music_real.get_owner_hubunits()) == 2

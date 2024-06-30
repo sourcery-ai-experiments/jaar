@@ -3,7 +3,7 @@ from src._road.road import RoadUnit
 from src._world.world import worldunit_shop, get_from_json as worldunit_get_from_json
 from src._world.idea import IdeaUnit, ideaunit_shop
 from src._world.reason_idea import reasonunit_shop
-from src._world.beliefunit import beliefunit_shop, balancelink_shop
+from src._world.beliefunit import beliefunit_shop, fiscallink_shop
 from src._world.char import charlink_shop
 from src._world.reason_assign import assignedunit_shop
 from src._world.examples.example_worlds import (
@@ -317,7 +317,7 @@ def test_example_worlds_world_v001_with_large_agenda_WorldCanFiltersOnBase():
     assert len(x_world.get_agenda_dict()) == 63
 
     # WHEN
-    pledge_list = x_world.get_agenda_dict(base=week_road)
+    pledge_list = x_world.get_agenda_dict(necessary_base=week_road)
 
     # THEN
     assert len(pledge_list) != 63
@@ -634,8 +634,8 @@ def test_WorldUnit_create_agenda_item_CorrectlyCreatesAllWorldAttributes():
     # beliefunit_z = beliefunit_shop(belief_id=family_text)
     # beliefunit_z.set_charlink(charlink=anna_charlink)
     # beliefunit_z.set_charlink(charlink=beto_charlink)
-    balancelink_z = balancelink_shop(belief_id=family_text)
-    clean_cookery_idea.set_balancelink(balancelink=balancelink_z)
+    fiscallink_z = fiscallink_shop(belief_id=family_text)
+    clean_cookery_idea.set_fiscallink(fiscallink=fiscallink_z)
 
     assert len(zia_world._chars) == 0
     assert len(zia_world._beliefs) == 0

@@ -1,7 +1,7 @@
 from src._instrument.python import get_1_if_None, get_dict_from_json, get_0_if_None
 from src._road.road import CharID, default_road_delimiter_if_none, validate_roadnode
 from src._road.finance import default_pixel_if_none
-from src._world.belieflink import BeliefID, BeliefLink, belieflinks_get_from_dict
+from src._world.beliefhold import BeliefID, BeliefHold, beliefholds_get_from_dict
 from dataclasses import dataclass
 
 
@@ -32,8 +32,9 @@ class CharUnit(CharCore):
 
     credor_weight: int = None
     debtor_weight: int = None
+    # special attribute: static in world json, in memory it is deleted after loading and recalculated during saving.
+    _beliefholds: dict[CharID:BeliefHold] = None
     # calculated fields
-    _belieflinks: dict[CharID:BeliefLink] = None
     _irrational_debtor_weight: int = None  # set by listening process
     _inallocable_debtor_weight: int = None  # set by listening process
     # set by World.calc_world_metrics()
@@ -194,29 +195,29 @@ class CharUnit(CharCore):
         self._irrational_debtor_weight += exterior_charunit._irrational_debtor_weight
         self._inallocable_debtor_weight += exterior_charunit._inallocable_debtor_weight
 
-    def set_belieflink(self, belieflink: BeliefLink):
-        self._belieflinks[belieflink.belief_id] = belieflink
+    def set_beliefhold(self, beliefhold: BeliefHold):
+        self._beliefholds[beliefhold.belief_id] = beliefhold
 
-    def get_belieflink(self, belief_id: BeliefID) -> BeliefLink:
-        return self._belieflinks.get(belief_id)
+    def get_beliefhold(self, belief_id: BeliefID) -> BeliefHold:
+        return self._beliefholds.get(belief_id)
 
-    def belieflink_exists(self, belief_id: BeliefID) -> bool:
-        return self._belieflinks.get(belief_id) != None
+    def beliefhold_exists(self, belief_id: BeliefID) -> bool:
+        return self._beliefholds.get(belief_id) != None
 
-    def delete_belieflink(self, belief_id: BeliefID):
-        return self._belieflinks.pop(belief_id)
+    def delete_beliefhold(self, belief_id: BeliefID):
+        return self._beliefholds.pop(belief_id)
 
-    def clear_belieflinks(self):
-        self._belieflinks = {}
+    def clear_beliefholds(self):
+        self._beliefholds = {}
 
-    def get_belieflinks_dict(self) -> dict:
+    def get_beliefholds_dict(self) -> dict:
         return {
-            x_belieflink.belief_id: {
-                "belief_id": x_belieflink.belief_id,
-                "credor_weight": x_belieflink.credor_weight,
-                "debtor_weight": x_belieflink.debtor_weight,
+            x_beliefhold.belief_id: {
+                "belief_id": x_beliefhold.belief_id,
+                "credor_weight": x_beliefhold.credor_weight,
+                "debtor_weight": x_beliefhold.debtor_weight,
             }
-            for x_belieflink in self._belieflinks.values()
+            for x_beliefhold in self._beliefholds.values()
         }
 
     def get_dict(self, all_attrs: bool = False) -> dict[str:str]:
@@ -224,7 +225,7 @@ class CharUnit(CharCore):
             "char_id": self.char_id,
             "credor_weight": self.credor_weight,
             "debtor_weight": self.debtor_weight,
-            "_belieflinks": self.get_belieflinks_dict(),
+            "_beliefholds": self.get_beliefholds_dict(),
             "_credor_operational": self._credor_operational,
             "_debtor_operational": self._debtor_operational,
             "_treasury_due_paid": self._treasury_due_paid,
@@ -286,7 +287,7 @@ def charunit_get_from_dict(charunit_dict: dict, _road_delimiter: str) -> CharUni
         _debtor_operational=charunit_dict["_debtor_operational"],
         _road_delimiter=_road_delimiter,
     )
-    x_charunit._belieflinks = belieflinks_get_from_dict(charunit_dict["_belieflinks"])
+    x_charunit._beliefholds = beliefholds_get_from_dict(charunit_dict["_beliefholds"])
     x_charunit.set_treasury_attr(
         _treasury_due_paid=_treasury_due_paid,
         _treasury_due_diff=_treasury_due_diff,
@@ -312,7 +313,7 @@ def charunit_shop(
     x_charunit = CharUnit(
         credor_weight=get_1_if_None(credor_weight),
         debtor_weight=get_1_if_None(debtor_weight),
-        _belieflinks={},
+        _beliefholds={},
         _irrational_debtor_weight=get_0_if_None(),
         _inallocable_debtor_weight=get_0_if_None(),
         _credor_operational=_credor_operational,

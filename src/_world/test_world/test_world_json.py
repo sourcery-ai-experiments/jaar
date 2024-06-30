@@ -1,6 +1,6 @@
 from src._instrument.python import x_is_json, get_dict_from_json
 from src._road.road import default_road_delimiter_if_none
-from src._world.beliefunit import beliefunit_shop, balancelink_shop
+from src._world.beliefunit import beliefunit_shop, fiscallink_shop
 from src._world.char import charlink_shop
 from src._world.healer import healerhold_shop
 from src._world.reason_assign import assignedunit_shop
@@ -19,7 +19,7 @@ from src._world.examples.example_worlds import (
 from pytest import raises as pytest_raises
 
 
-def test_WorldUnit_get_dict_SetsCharUnit_belieflinks():
+def test_WorldUnit_get_dict_SetsCharUnit_beliefholds():
     # GIVEN
     yao_text = "Yao"
     sue_text = "Sue"
@@ -40,23 +40,23 @@ def test_WorldUnit_get_dict_SetsCharUnit_belieflinks():
     run_beliefunit.set_charlink(sue_run_charlink)
     run_beliefunit.set_charlink(zia_run_charlink)
     assert len(bob_world.get_beliefunit(run_text)._chars) == 2
-    assert len(bob_world.get_char(yao_text)._belieflinks) == 0
-    assert len(bob_world.get_char(sue_text)._belieflinks) == 0
+    assert len(bob_world.get_char(yao_text)._beliefholds) == 0
+    assert len(bob_world.get_char(sue_text)._beliefholds) == 0
 
     # WHEN
     bob_world.get_dict()
 
     # THEN
-    assert len(bob_world.get_char(sue_text)._belieflinks) == 2
-    assert len(bob_world.get_char(zia_text)._belieflinks) == 2
+    assert len(bob_world.get_char(sue_text)._beliefholds) == 2
+    assert len(bob_world.get_char(zia_text)._beliefholds) == 2
     sue_charunit = bob_world.get_char(sue_text)
     zia_charunit = bob_world.get_char(zia_text)
-    sue_belieflink = sue_charunit.get_belieflink(run_text)
-    zia_belieflink = zia_charunit.get_belieflink(run_text)
-    assert sue_belieflink.credor_weight == sue_credor_weight
-    assert sue_belieflink.debtor_weight == sue_debtor_weight
-    assert zia_belieflink.credor_weight == zia_credor_weight
-    assert zia_belieflink.debtor_weight == zia_debtor_weight
+    sue_beliefhold = sue_charunit.get_beliefhold(run_text)
+    zia_beliefhold = zia_charunit.get_beliefhold(run_text)
+    assert sue_beliefhold.credor_weight == sue_credor_weight
+    assert sue_beliefhold.debtor_weight == sue_debtor_weight
+    assert zia_beliefhold.credor_weight == zia_credor_weight
+    assert zia_beliefhold.debtor_weight == zia_debtor_weight
 
 
 def test_WorldUnit_get_dict_ReturnsDictObject():
@@ -375,9 +375,9 @@ def test_worldunit_get_from_json_ReturnsCorrectObjSimpleExample():
     tim_assignedunit = assignedunit_shop()
     tim_assignedunit.set_suffbelief(belief_id=tim_text)
     zia_world.edit_idea_attr(shave_road, assignedunit=tim_assignedunit)
-    zia_world.edit_idea_attr(shave_road, balancelink=balancelink_shop(tim_text))
-    zia_world.edit_idea_attr(shave_road, balancelink=balancelink_shop(sue_text))
-    zia_world.edit_idea_attr(zia_world._real_id, balancelink=balancelink_shop(sue_text))
+    zia_world.edit_idea_attr(shave_road, fiscallink=fiscallink_shop(tim_text))
+    zia_world.edit_idea_attr(shave_road, fiscallink=fiscallink_shop(sue_text))
+    zia_world.edit_idea_attr(zia_world._real_id, fiscallink=fiscallink_shop(sue_text))
     # add healerhold to shave ideaunit
     run_healerhold = healerhold_shop({run_text})
     zia_world.edit_idea_attr(shave_road, healerhold=run_healerhold)
@@ -423,7 +423,7 @@ def test_worldunit_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_idearoot._assignedunit == zia_world._idearoot._assignedunit
     assert json_idearoot._assignedunit == run_assignedunit
     assert len(json_idearoot._factunits) == 1
-    assert len(json_idearoot._balancelinks) == 1
+    assert len(json_idearoot._fiscallinks) == 1
 
     assert len(json_world._idearoot._kids) == 2
 
@@ -445,7 +445,7 @@ def test_worldunit_get_from_json_ReturnsCorrectObjSimpleExample():
     assert json_shave_idea._originunit == zia_shave_idea._originunit
     print(f"{json_shave_idea._healerhold=}")
     assert json_shave_idea._healerhold == zia_shave_idea._healerhold
-    assert len(json_shave_idea._balancelinks) == 2
+    assert len(json_shave_idea._fiscallinks) == 2
     assert len(json_shave_idea._factunits) == 1
     assert zia_shave_idea._problem_bool
     assert json_shave_idea._problem_bool == zia_shave_idea._problem_bool
@@ -541,9 +541,9 @@ def test_get_dict_of_world_from_dict_ReturnsDictOfWorldUnits():
         x2_world._owner_id: x2_world.get_dict(),
         x3_world._owner_id: x3_world.get_dict(),
     }
-    x1_world.clear_charunits_belieflinks()
-    x2_world.clear_charunits_belieflinks()
-    x3_world.clear_charunits_belieflinks()
+    x1_world.clear_charunits_beliefholds()
+    x2_world.clear_charunits_beliefholds()
+    x3_world.clear_charunits_beliefholds()
 
     # WHEN
     ccn_dict_of_obj = get_dict_of_world_from_dict(cn_dict_of_dicts)

@@ -1,5 +1,5 @@
-from src._world.belieflink import belieflink_shop
-from src._world.beliefunit import beliefunit_shop, balancelink_shop
+from src._world.beliefhold import beliefhold_shop
+from src._world.beliefunit import beliefunit_shop, fiscallink_shop
 from src._world.char import charlink_shop
 from src._world.idea import ideaunit_shop
 from src._world.reason_idea import factunit_shop
@@ -179,7 +179,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_WorldUnit_simpl
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink_insert():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_beliefhold_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_world = worldunit_shop(sue_text)
@@ -213,7 +213,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink
     # print(f"\n{sue_changeunit.atomunits=}")
     print(f"\n{zia_atomunit=}")
 
-    x_keylist = [atom_insert(), "world_char_belieflink", yao_text, run_text]
+    x_keylist = [atom_insert(), "world_char_beliefhold", yao_text, run_text]
     run_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert run_atomunit.get_value("char_id") == yao_text
     assert run_atomunit.get_value("belief_id") == run_text
@@ -228,7 +228,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink
     assert get_atomunit_total_count(sue_changeunit) == 4
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink_update():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_beliefhold_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_world = worldunit_shop(sue_text)
@@ -264,7 +264,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink
     # print(f"\n{sue_changeunit.atomunits=}")
     # print(f"\n{rico_atomunit=}")
 
-    x_keylist = [atom_update(), "world_char_belieflink", rico_text, run_text]
+    x_keylist = [atom_update(), "world_char_beliefhold", rico_text, run_text]
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("char_id") == rico_text
     assert rico_atomunit.get_value("belief_id") == run_text
@@ -275,7 +275,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink_delete():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_beliefhold_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_world = worldunit_shop(sue_text)
@@ -310,7 +310,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_char_belieflink
     sue_changeunit.add_all_different_atomunits(before_sue_world, after_sue_world)
 
     # THEN
-    x_keylist = [atom_delete(), "world_char_belieflink", dizz_text, fly_text]
+    x_keylist = [atom_delete(), "world_char_beliefhold", dizz_text, fly_text]
     rico_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert rico_atomunit.get_value("char_id") == dizz_text
     assert rico_atomunit.get_value("belief_id") == fly_text
@@ -495,7 +495,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_update():
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelink_delete():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_fiscallink_delete():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = worldunit_shop(sue_text)
@@ -524,13 +524,13 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     disc_road = before_sue_au.make_road(sports_road, disc_text)
     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
     before_sue_au.add_idea(ideaunit_shop(disc_text), sports_road)
-    before_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(run_text))
-    before_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(fly_text))
-    before_sue_au.edit_idea_attr(disc_road, balancelink=balancelink_shop(run_text))
-    before_sue_au.edit_idea_attr(disc_road, balancelink=balancelink_shop(fly_text))
+    before_sue_au.edit_idea_attr(ball_road, fiscallink=fiscallink_shop(run_text))
+    before_sue_au.edit_idea_attr(ball_road, fiscallink=fiscallink_shop(fly_text))
+    before_sue_au.edit_idea_attr(disc_road, fiscallink=fiscallink_shop(run_text))
+    before_sue_au.edit_idea_attr(disc_road, fiscallink=fiscallink_shop(fly_text))
 
     after_sue_world = copy_deepcopy(before_sue_au)
-    after_sue_world.edit_idea_attr(disc_road, balancelink_del=run_text)
+    after_sue_world.edit_idea_attr(disc_road, fiscallink_del=run_text)
 
     # WHEN
     sue_changeunit = changeunit_shop()
@@ -539,7 +539,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     # THEN
     print(f"{print_atomunit_keys(sue_changeunit)=}")
 
-    x_keylist = [atom_delete(), "world_idea_balancelink", disc_road, run_text]
+    x_keylist = [atom_delete(), "world_idea_fiscallink", disc_road, run_text]
     run_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert run_atomunit.get_value("road") == disc_road
     assert run_atomunit.get_value("belief_id") == run_text
@@ -547,7 +547,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelink_insert():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_fiscallink_insert():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = worldunit_shop(sue_text)
@@ -576,15 +576,15 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     disc_road = before_sue_au.make_road(sports_road, disc_text)
     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
     before_sue_au.add_idea(ideaunit_shop(disc_text), sports_road)
-    before_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(run_text))
-    before_sue_au.edit_idea_attr(disc_road, balancelink=balancelink_shop(fly_text))
+    before_sue_au.edit_idea_attr(ball_road, fiscallink=fiscallink_shop(run_text))
+    before_sue_au.edit_idea_attr(disc_road, fiscallink=fiscallink_shop(fly_text))
     after_sue_au = copy_deepcopy(before_sue_au)
-    after_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(fly_text))
+    after_sue_au.edit_idea_attr(ball_road, fiscallink=fiscallink_shop(fly_text))
     after_run_credor_weight = 44
     after_run_debtor_weight = 66
     after_sue_au.edit_idea_attr(
         disc_road,
-        balancelink=balancelink_shop(
+        fiscallink=fiscallink_shop(
             run_text,
             credor_weight=after_run_credor_weight,
             debtor_weight=after_run_debtor_weight,
@@ -598,7 +598,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     # THEN
     print(f"{print_atomunit_keys(sue_changeunit)=}")
 
-    x_keylist = [atom_insert(), "world_idea_balancelink", disc_road, run_text]
+    x_keylist = [atom_insert(), "world_idea_fiscallink", disc_road, run_text]
     run_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert run_atomunit.get_value("road") == disc_road
     assert run_atomunit.get_value("belief_id") == run_text
@@ -610,7 +610,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     assert get_atomunit_total_count(sue_changeunit) == 2
 
 
-def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelink_update():
+def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_fiscallink_update():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = worldunit_shop(sue_text)
@@ -627,15 +627,15 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     ball_text = "basketball"
     ball_road = before_sue_au.make_road(sports_road, ball_text)
     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
-    before_sue_au.edit_idea_attr(ball_road, balancelink=balancelink_shop(run_text))
-    run_balancelink = before_sue_au.get_idea_obj(ball_road)._balancelinks.get(run_text)
+    before_sue_au.edit_idea_attr(ball_road, fiscallink=fiscallink_shop(run_text))
+    run_fiscallink = before_sue_au.get_idea_obj(ball_road)._fiscallinks.get(run_text)
 
     after_sue_world = copy_deepcopy(before_sue_au)
     after_credor_weight = 55
     after_debtor_weight = 66
     after_sue_world.edit_idea_attr(
         ball_road,
-        balancelink=balancelink_shop(
+        fiscallink=fiscallink_shop(
             belief_id=run_text,
             credor_weight=after_credor_weight,
             debtor_weight=after_debtor_weight,
@@ -648,7 +648,7 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_balancelin
     # THEN
     print(f"{print_atomunit_keys(sue_changeunit)=}")
 
-    x_keylist = [atom_update(), "world_idea_balancelink", ball_road, run_text]
+    x_keylist = [atom_update(), "world_idea_fiscallink", ball_road, run_text]
     ball_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert ball_atomunit.get_value("road") == ball_road
     assert ball_atomunit.get_value("belief_id") == run_text

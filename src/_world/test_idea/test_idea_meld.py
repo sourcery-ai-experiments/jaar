@@ -1,5 +1,5 @@
 from src._world.idea import ideaunit_shop, IdeaAttrFilter, IdeaUnit
-from src._world.beliefunit import BalanceLink, BeliefID, balancelink_shop
+from src._world.beliefunit import FiscalLink, BeliefID, fiscallink_shop
 from src._world.reason_idea import (
     reasonunit_shop,
     ReasonUnit,
@@ -36,8 +36,8 @@ def arbitrarily_set_idea_attr(
     descendant_pledge_count: int = None,
     all_char_cred: bool = None,
     all_char_debt: bool = None,
-    balancelink: BalanceLink = None,
-    balancelink_del: BeliefID = None,
+    fiscallink: FiscalLink = None,
+    fiscallink_del: BeliefID = None,
     is_expanded: bool = None,
     pledge: bool = None,
     meld_strategy: str = None,
@@ -65,8 +65,8 @@ def arbitrarily_set_idea_attr(
         descendant_pledge_count=descendant_pledge_count,
         all_char_cred=all_char_cred,
         all_char_debt=all_char_debt,
-        balancelink=balancelink,
-        balancelink_del=balancelink_del,
+        fiscallink=fiscallink,
+        fiscallink_del=fiscallink_del,
         is_expanded=is_expanded,
         pledge=pledge,
         meld_strategy=meld_strategy,
@@ -189,7 +189,7 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_TwoReasonsMeldScenario_reasonunits():
     assert x1_idea._reasonunits[reason_base_x2] != None
 
 
-def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strategyEquals_default():
+def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_fiscallinkWhen_meld_strategyEquals_default():
     # GIVEN
     casa_text = "casa"
     x1_idea = ideaunit_shop("clean", _parent_road=casa_text)
@@ -197,23 +197,23 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strat
     default_text = "default"
     arbitrarily_set_idea_attr(idea=x1_idea, meld_strategy=default_text)
     arbitrarily_set_idea_attr(
-        idea=x1_idea, balancelink=balancelink_shop(belief_id=br1, credor_weight=2)
+        idea=x1_idea, fiscallink=fiscallink_shop(belief_id=br1, credor_weight=2)
     )
     x2_idea = ideaunit_shop("Swimming")
     arbitrarily_set_idea_attr(idea=x2_idea, meld_strategy=default_text)
     arbitrarily_set_idea_attr(
-        idea=x2_idea, balancelink=balancelink_shop(belief_id=br1, credor_weight=3)
+        idea=x2_idea, fiscallink=fiscallink_shop(belief_id=br1, credor_weight=3)
     )
 
     # WHEN
     x1_idea.meld(exterior_idea=x2_idea)
 
     # THEN
-    bl_x = balancelink_shop(belief_id=br1, credor_weight=2)
-    assert x1_idea._balancelinks[br1] == bl_x
+    bl_x = fiscallink_shop(belief_id=br1, credor_weight=2)
+    assert x1_idea._fiscallinks[br1] == bl_x
 
 
-def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strategyEquals_sum():
+def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_fiscallinkWhen_meld_strategyEquals_sum():
     # GIVEN
     sum_text = "sum"
     casa_text = "casa"
@@ -223,24 +223,24 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_balancelinkWhen_meld_strat
     arbitrarily_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     arbitrarily_set_idea_attr(
         idea=x1_idea,
-        balancelink=balancelink_shop(belief_id=br1, credor_weight=2, debtor_weight=3),
+        fiscallink=fiscallink_shop(belief_id=br1, credor_weight=2, debtor_weight=3),
     )
     x2_idea = ideaunit_shop("Swimming")
     arbitrarily_set_idea_attr(idea=x2_idea, meld_strategy=sum_text)
     arbitrarily_set_idea_attr(
         idea=x2_idea,
-        balancelink=balancelink_shop(belief_id=br1, credor_weight=2, debtor_weight=3),
+        fiscallink=fiscallink_shop(belief_id=br1, credor_weight=2, debtor_weight=3),
     )
 
     # WHEN
     x1_idea.meld(exterior_idea=x2_idea)
 
     # THEN
-    lu_x = balancelink_shop(belief_id=br1, credor_weight=4, debtor_weight=6)
-    assert x1_idea._balancelinks[br1] == lu_x
+    lu_x = fiscallink_shop(belief_id=br1, credor_weight=4, debtor_weight=6)
+    assert x1_idea._fiscallinks[br1] == lu_x
 
 
-def test_IdeaUnit_meld_ReturnsCorrectObj_TwoBeliefsScenario_balancelink():
+def test_IdeaUnit_meld_ReturnsCorrectObj_TwoBeliefsScenario_fiscallink():
     # GIVEN
     sum_text = "sum"
     casa_text = "casa"
@@ -249,24 +249,24 @@ def test_IdeaUnit_meld_ReturnsCorrectObj_TwoBeliefsScenario_balancelink():
     br1 = "Running"
     arbitrarily_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     arbitrarily_set_idea_attr(
-        idea=x1_idea, balancelink=balancelink_shop(belief_id=br1, credor_weight=2)
+        idea=x1_idea, fiscallink=fiscallink_shop(belief_id=br1, credor_weight=2)
     )
 
     br2 = "Bears"
     x2_idea = ideaunit_shop("Swimming")
     arbitrarily_set_idea_attr(idea=x1_idea, meld_strategy=sum_text)
     arbitrarily_set_idea_attr(
-        idea=x2_idea, balancelink=balancelink_shop(belief_id=br2, credor_weight=2)
+        idea=x2_idea, fiscallink=fiscallink_shop(belief_id=br2, credor_weight=2)
     )
 
     # WHEN
     x1_idea.meld(exterior_idea=x2_idea)
 
     # THEN
-    lu_x1 = balancelink_shop(belief_id=br1, credor_weight=2)
-    lu_x2 = balancelink_shop(belief_id=br2, credor_weight=2)
-    assert x1_idea._balancelinks[br1] == lu_x1
-    assert x1_idea._balancelinks[br2] == lu_x2
+    lu_x1 = fiscallink_shop(belief_id=br1, credor_weight=2)
+    lu_x2 = fiscallink_shop(belief_id=br2, credor_weight=2)
+    assert x1_idea._fiscallinks[br1] == lu_x1
+    assert x1_idea._fiscallinks[br2] == lu_x2
 
 
 def test_IdeaUnit_meld_ReturnsCorrectObj_BaseScenario_factunits():

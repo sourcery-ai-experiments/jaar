@@ -990,7 +990,7 @@
                 "_is_expanded": false,
                 "_kids": {
                     "call high school friend": {
-                        "_balancelinks": {
+                        "_fiscallinks": {
                             "Perrison": {
                                 "belief_id": "Perrison",
                                 "credor_weight": 1.0,
@@ -1044,7 +1044,7 @@
                         "_is_expanded": false,
                         "_kids": {
                             "check cat water": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1111,7 +1111,7 @@
                                 "pledge": true
                             },
                             "clean baby seats": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1155,7 +1155,7 @@
                                 "pledge": true
                             },
                             "clean bathroom": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1188,7 +1188,7 @@
                                 "pledge": true
                             },
                             "clean cat poo": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1229,7 +1229,7 @@
                                 "pledge": true
                             },
                             "clean humidifiers": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1270,7 +1270,7 @@
                                 "pledge": true
                             },
                             "clean sheets couch blankets": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     "Perrison": {
                                         "belief_id": "Perrison",
                                         "credor_weight": 1.0,
@@ -1322,7 +1322,7 @@
                                 "pledge": true
                             },
                             "clean table": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1363,7 +1363,7 @@
                                 "pledge": true
                             },
                             "deep clean play mat": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1415,7 +1415,7 @@
                                 "pledge": true
                             },
                             "empty roomba": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1456,7 +1456,7 @@
                                 "pledge": true
                             },
                             "empty roomba Friday": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1497,7 +1497,7 @@
                                 "pledge": true
                             },
                             "laundry monday": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1538,7 +1538,7 @@
                                 "pledge": true
                             },
                             "laundry saturday": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     "Travis Fox": {
                                         "belief_id": "Travis Fox",
                                         "credor_weight": 1.0,
@@ -1579,7 +1579,7 @@
                                 "pledge": true
                             },
                             "laundry wednesday": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     "America": {
                                         "belief_id": "America",
                                         "credor_weight": 1.0,
@@ -1645,7 +1645,7 @@
                                 "_weight": 1
                             },
                             "prepare_bed clean bedroom": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1678,7 +1678,7 @@
                                 "pledge": true
                             },
                             "roomba bedroom": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1719,7 +1719,7 @@
                                 "pledge": true
                             },
                             "roomba bedroom Friday": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1760,7 +1760,7 @@
                                 "pledge": true
                             },
                             "roomba living area": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1801,7 +1801,7 @@
                                 "pledge": true
                             },
                             "roomba living area thur": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1842,7 +1842,7 @@
                                 "pledge": true
                             },
                             "roomba maintenance": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1883,7 +1883,7 @@
                                 "pledge": true
                             },
                             "wipe down play mat2": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1941,7 +1941,7 @@
                     "exercise": {
                         "_kids": {
                             "5 push-ups": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1966,7 +1966,7 @@
                                 "pledge": true
                             },
                             "check protein for week is adequate": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -1991,7 +1991,7 @@
                                 "pledge": true
                             },
                             "clip nails": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2024,7 +2024,7 @@
                                 "pledge": true
                             },
                             "cook veggies every morning": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2049,7 +2049,7 @@
                                 "pledge": true
                             },
                             "daily exercise 20min": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2094,7 +2094,7 @@
                                 "pledge": true
                             },
                             "morning multivitamin": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2136,7 +2136,7 @@
                                 "_weight": 1
                             },
                             "noce hair removal": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2172,7 +2172,7 @@
                                 "pledge": true
                             },
                             "pull ear hair": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2208,7 +2208,7 @@
                                 "pledge": true
                             },
                             "shampoo hair": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2241,7 +2241,7 @@
                                 "pledge": true
                             },
                             "straight back for 45 secs": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2266,7 +2266,7 @@
                                 "pledge": true
                             },
                             "trim beard": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2301,7 +2301,7 @@
                             "weight training": {
                                 "_kids": {
                                     "bike or something": {
-                                        "_balancelinks": {
+                                        "_fiscallinks": {
                                             ",Family": {
                                                 "belief_id": ",Family",
                                                 "credor_weight": 1.0,
@@ -2334,7 +2334,7 @@
                                         "pledge": true
                                     },
                                     "chest and arms (mon)": {
-                                        "_balancelinks": {
+                                        "_fiscallinks": {
                                             ",Family": {
                                                 "belief_id": ",Family",
                                                 "credor_weight": 1.0,
@@ -2407,7 +2407,7 @@
                                         "_weight": 1
                                     },
                                     "core lower back": {
-                                        "_balancelinks": {
+                                        "_fiscallinks": {
                                             ",Family": {
                                                 "belief_id": ",Family",
                                                 "credor_weight": 1.0,
@@ -2440,7 +2440,7 @@
                                         "pledge": true
                                     },
                                     "rest": {
-                                        "_balancelinks": {
+                                        "_fiscallinks": {
                                             ",Family": {
                                                 "belief_id": ",Family",
                                                 "credor_weight": 1.0,
@@ -2463,7 +2463,7 @@
                                         "_weight": 1
                                     },
                                     "shoulders and upper back": {
-                                        "_balancelinks": {
+                                        "_fiscallinks": {
                                             ",Family": {
                                                 "belief_id": ",Family",
                                                 "credor_weight": 1.0,
@@ -2511,7 +2511,7 @@
                                         "pledge": true
                                     },
                                     "squats hamstrings and calves": {
-                                        "_balancelinks": {
+                                        "_fiscallinks": {
                                             ",Family": {
                                                 "belief_id": ",Family",
                                                 "credor_weight": 1.0,
@@ -2557,7 +2557,7 @@
                         "_is_expanded": false,
                         "_kids": {
                             "be reponsible for rent": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     "Perrison": {
                                         "belief_id": "Perrison",
                                         "credor_weight": 1.0,
@@ -2590,7 +2590,7 @@
                                 "pledge": true
                             },
                             "be responsible for expenses card": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2623,7 +2623,7 @@
                                 "pledge": true
                             },
                             "be responsible for utilities": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2656,7 +2656,7 @@
                                 "pledge": true
                             },
                             "set resturant bucks for the week": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2694,7 +2694,7 @@
                         "_weight": 1
                     },
                     "Housing": {
-                        "_balancelinks": {
+                        "_fiscallinks": {
                             ",OceanVista Apt": {
                                 "belief_id": ",OceanVista Apt",
                                 "credor_weight": 1.0,
@@ -2742,7 +2742,7 @@
                                             "bed area": {
                                                 "_kids": {
                                                     "heater maintenance": {
-                                                        "_balancelinks": {
+                                                        "_fiscallinks": {
                                                             "Norberto": {
                                                                 "belief_id": "Norberto",
                                                                 "credor_weight": 1.0,
@@ -2833,7 +2833,7 @@
                         "_is_expanded": false,
                         "_kids": {
                             "clip fingernails": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     "America": {
                                         "belief_id": "America",
                                         "credor_weight": 1.0,
@@ -2885,7 +2885,7 @@
                                 "pledge": true
                             },
                             "get rid of toy buy new toy": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Family": {
                                         "belief_id": ",Family",
                                         "credor_weight": 1.0,
@@ -2970,7 +2970,7 @@
                         "_weight": 1
                     },
                     "say hi to birds": {
-                        "_balancelinks": {
+                        "_fiscallinks": {
                             ",Family": {
                                 "belief_id": ",Family",
                                 "credor_weight": 1.0,
@@ -3026,7 +3026,7 @@
                 "_weight": 40
             },
             "D&B": {
-                "_balancelinks": {
+                "_fiscallinks": {
                     ",Climate Death": {
                         "belief_id": ",Climate Death",
                         "credor_weight": 1.0,
@@ -3049,7 +3049,7 @@
                         "_is_expanded": false,
                         "_kids": {
                             "sympathetic receptive to David": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     "Renee Elise Goldsberry": {
                                         "belief_id": "Renee Elise Goldsberry",
                                         "credor_weight": 1.0,
@@ -3058,7 +3058,7 @@
                                 },
                                 "_kids": {
                                     "be available for phone call": {
-                                        "_balancelinks": {
+                                        "_fiscallinks": {
                                             "Renee Elise Goldsberry": {
                                                 "belief_id": "Renee Elise Goldsberry",
                                                 "credor_weight": 1.0,
@@ -3091,7 +3091,7 @@
                                         "pledge": true
                                     },
                                     "call David and discuss methodology": {
-                                        "_balancelinks": {
+                                        "_fiscallinks": {
                                             ",Climate Death": {
                                                 "belief_id": ",Climate Death",
                                                 "credor_weight": 1.0,
@@ -3170,7 +3170,7 @@
                         "_weight": 1
                     },
                     "Aarons friends are desperate for of housing support": {
-                        "_balancelinks": {
+                        "_fiscallinks": {
                             "Renee Elise Goldsberry": {
                                 "belief_id": "Renee Elise Goldsberry",
                                 "credor_weight": 1.0,
@@ -3180,7 +3180,7 @@
                         "_is_expanded": false,
                         "_kids": {
                             "Ask Chuck monthly what I can do": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     "Renee Elise Goldsberry": {
                                         "belief_id": "Renee Elise Goldsberry",
                                         "credor_weight": 1.0,
@@ -3217,7 +3217,7 @@
                         "_weight": 1
                     },
                     "develop D&B software": {
-                        "_balancelinks": {
+                        "_fiscallinks": {
                             ",hurt by us dollar": {
                                 "belief_id": ",hurt by us dollar",
                                 "credor_weight": 1.0,
@@ -3278,7 +3278,7 @@
                         "_is_expanded": false,
                         "_kids": {
                             "donate to influential people that are pro-Climate Death": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Climate Death": {
                                         "belief_id": ",Climate Death",
                                         "credor_weight": 1.0,
@@ -3364,7 +3364,7 @@
                         "_is_expanded": false,
                         "_kids": {
                             "write letters about Climate Death to congressman": {
-                                "_balancelinks": {
+                                "_fiscallinks": {
                                     ",Climate Death": {
                                         "belief_id": ",Climate Death",
                                         "credor_weight": 1.0,
@@ -4074,7 +4074,7 @@
     "_penny": 1,
     "_chars": {
         "A a ron Jones": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4103,7 +4103,7 @@
             "char_id": "A a ron Jones"
         },
         "America": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4137,7 +4137,7 @@
             "char_id": "America"
         },
         "Anna": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4166,7 +4166,7 @@
             "char_id": "Anna"
         },
         "Benjamin Stoddert": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4200,7 +4200,7 @@
             "char_id": "Benjamin Stoddert"
         },
         "Bob302": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 6.25,
@@ -4234,7 +4234,7 @@
             "char_id": "Bob302"
         },
         "Chuck Lee": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4268,7 +4268,7 @@
             "char_id": "Chuck Lee"
         },
         "Ernesto Chavez": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4297,7 +4297,7 @@
             "char_id": "Ernesto Chavez"
         },
         "Jacque Chirac": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4326,7 +4326,7 @@
             "char_id": "Jacque Chirac"
         },
         "Jane Randolph": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4355,7 +4355,7 @@
             "char_id": "Jane Randolph"
         },
         "Maria Reynolds": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 6.75,
@@ -4384,7 +4384,7 @@
             "char_id": "Maria Reynolds"
         },
         "Martha Doubs": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4418,7 +4418,7 @@
             "char_id": "Martha Doubs"
         },
         "Mikayla": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 10,
@@ -4452,7 +4452,7 @@
             "char_id": "Mikayla"
         },
         "Norberto": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4481,7 +4481,7 @@
             "char_id": "Norberto"
         },
         "Perrison": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",appreciates US DOLLAR": {
                     "belief_id": ",appreciates US DOLLAR",
                     "credor_weight": 5,
@@ -4515,7 +4515,7 @@
             "char_id": "Perrison"
         },
         "Philipa": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Climate Death": {
                     "belief_id": ",Climate Death",
                     "credor_weight": 1,
@@ -4549,7 +4549,7 @@
             "char_id": "Philipa"
         },
         "Prashant": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",appreciates US DOLLAR": {
                     "belief_id": ",appreciates US DOLLAR",
                     "credor_weight": 2,
@@ -4578,7 +4578,7 @@
             "char_id": "Prashant"
         },
         "Renee Elise Goldsberry": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",appreciates US DOLLAR": {
                     "belief_id": ",appreciates US DOLLAR",
                     "credor_weight": 1,
@@ -4637,7 +4637,7 @@
             "char_id": "Renee Elise Goldsberry"
         },
         "Sam zamora": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4671,7 +4671,7 @@
             "char_id": "Sam zamora"
         },
         "Shadwell Harris": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,
@@ -4700,7 +4700,7 @@
             "char_id": "Shadwell Harris"
         },
         "Thomas OSU": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Climate Death": {
                     "belief_id": ",Climate Death",
                     "credor_weight": 1,
@@ -4729,7 +4729,7 @@
             "char_id": "Thomas OSU"
         },
         "Travis Fox": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",Everyone": {
                     "belief_id": ",Everyone",
                     "credor_weight": 1,
@@ -4758,7 +4758,7 @@
             "char_id": "Travis Fox"
         },
         "WIlliam Wallace": {
-            "_belieflinks": {
+            "_beliefholds": {
                 ",ACME DevOps": {
                     "belief_id": ",ACME DevOps",
                     "credor_weight": 1,

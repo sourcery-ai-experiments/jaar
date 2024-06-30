@@ -386,7 +386,7 @@ def test_WorldUnit_meld_ReturnsCorrectObj_LargeExample():
     yao_world = world_v001()
 
     yao_idearoot = yao_world._idearoot
-    yao_worldr_bl = yao_idearoot._balancelines
+    yao_worldr_bl = yao_idearoot._fiscallines
     family_text = ",Family"
     yao_family_bl = yao_worldr_bl.get(family_text)
 
@@ -418,7 +418,7 @@ def test_WorldUnit_meld_ReturnsCorrectObj_LargeExample():
     assert bob_world._beliefs == yao_world._beliefs
     assert len(bob_world.get_idea_dict()) == len(yao_world.get_idea_dict())
 
-    bob_worldr_bl = bob_idearoot._balancelines
+    bob_worldr_bl = bob_idearoot._fiscallines
     bob_family_bl = bob_worldr_bl.get(family_text)
     print("Melded")
 
@@ -432,11 +432,11 @@ def test_WorldUnit_meld_ReturnsCorrectObj_LargeExample():
     assert abs(bob_family_bl._world_cred - yao_family_bl._world_cred) < 0.0001
     assert abs(bob_family_bl._world_debt - yao_family_bl._world_debt) < 0.0001
 
-    # for balanceline in bob_worldr_bl.values():
-    #     if balanceline.char_id != fam_text:
-    #         assert balanceline == yao_worldr_bl.get(balanceline.char_id)
+    # for fiscalline in bob_worldr_bl.values():
+    #     if fiscalline.char_id != fam_text:
+    #         assert fiscalline == yao_worldr_bl.get(fiscalline.char_id)
     assert bob_worldr_bl == yao_worldr_bl
-    # assert x_world1._idearoot._balancelines == bob2_world._idearoot._balancelines
+    # assert x_world1._idearoot._fiscallines == bob2_world._idearoot._fiscallines
     # assert x_world1._idearoot == bob2_world._idearoot
 
 

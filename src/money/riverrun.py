@@ -14,13 +14,13 @@ from src.money.rivercycle import (
     create_init_rivercycle,
     create_next_rivercycle,
 )
-from src.listen.userhub import UserHub
+from src.listen.hubunit import HubUnit
 from dataclasses import dataclass
 
 
 @dataclass
 class RiverRun:
-    userhub: UserHub = None
+    hubunit: HubUnit = None
     number: int = None
     econ_credorledgers: dict[OwnerID : dict[CharID:float]] = None
     tax_dues: dict[CharID:float] = None
@@ -85,8 +85,8 @@ class RiverRun:
         return len(self.tax_dues) != 0
 
     def set_tax_dues(self, debtorledger: dict[CharID:float]):
-        x_amount = self.userhub.econ_money_magnitude
-        self.tax_dues = allot_scale(debtorledger, x_amount, self.userhub.penny)
+        x_amount = self.hubunit.econ_money_magnitude
+        self.tax_dues = allot_scale(debtorledger, x_amount, self.hubunit.penny)
 
     def char_has_tax_due(self, x_char_id: CharID) -> bool:
         return self.tax_dues.get(x_char_id) != None
@@ -152,7 +152,7 @@ class RiverRun:
         return get_0_if_None(self._grants.get(char_id))
 
     def set_initial_rivergrade(self, char_id: CharID):
-        x_rivergrade = rivergrade_shop(self.userhub, char_id, self.number)
+        x_rivergrade = rivergrade_shop(self.hubunit, char_id, self.number)
         x_rivergrade.debtor_count = self._debtor_count
         x_rivergrade.credor_count = self._credor_count
         x_rivergrade.grant_amount = self._get_char_grant(char_id)
@@ -177,7 +177,7 @@ class RiverRun:
         self.set_all_initial_rivergrades()
 
         self._cycle_count = 0
-        x_rivercyle = create_init_rivercycle(self.userhub, self.econ_credorledgers)
+        x_rivercyle = create_init_rivercycle(self.hubunit, self.econ_credorledgers)
         x_cyclelegder = x_rivercyle.create_cylceledger()
         self._cycle_payees_curr = set(x_cyclelegder.keys())
         x_cyclelegder, tax_got_curr = self.levy_tax_dues(x_cyclelegder)
@@ -199,19 +199,19 @@ class RiverRun:
         tax_dues_chars = set(self.tax_dues.keys())
         tax_yields_chars = set(self._tax_yields.keys())
         self._debtor_count = len(tax_dues_chars.union(tax_yields_chars))
-        self._credor_count = len(self.econ_credorledgers.get(self.userhub.owner_id))
+        self._credor_count = len(self.econ_credorledgers.get(self.hubunit.owner_id))
 
     def _set_grants(self):
-        grant_credorledger = self.econ_credorledgers.get(self.userhub.owner_id)
+        grant_credorledger = self.econ_credorledgers.get(self.hubunit.owner_id)
         self._grants = allot_scale(
             ledger=grant_credorledger,
-            scale_number=self.userhub.econ_money_magnitude,
-            grain_unit=self.userhub.penny,
+            scale_number=self.hubunit.econ_money_magnitude,
+            grain_unit=self.hubunit.penny,
         )
 
     def _save_rivergrade_file(self, char_id: CharID):
         rivergrade = self.get_rivergrade(char_id)
-        grade_path = self.userhub.grade_path(char_id)
+        grade_path = self.hubunit.grade_path(char_id)
         grade_filename = get_json_filename(char_id)
         save_file(grade_path, grade_filename, rivergrade.get_json())
 
@@ -234,14 +234,14 @@ class RiverRun:
 
 
 def riverrun_shop(
-    userhub: UserHub,
+    hubunit: HubUnit,
     number: int = None,
     econ_credorledgers: dict[OwnerID : dict[CharID:float]] = None,
     tax_dues: dict[CharID:float] = None,
     cycle_max: int = None,
 ):
     x_riverun = RiverRun(
-        userhub=userhub,
+        hubunit=hubunit,
         number=get_0_if_None(number),
         econ_credorledgers=get_empty_dict_if_none(econ_credorledgers),
         tax_dues=get_empty_dict_if_none(tax_dues),

@@ -72,13 +72,13 @@ WorldUnit IdeaUnit objects
 
 WorldUnit IdeaUnit hierarchical structure
 
-WorldUnit IdeaUnit BalanceLink objects
+WorldUnit IdeaUnit FiscalLink objects
 
-WorldUnit IdeaUnit BalanceLine objects
+WorldUnit IdeaUnit FiscalLine objects
 
-WorldUnit IdeaUnit BalanceHeir objects
+WorldUnit IdeaUnit FiscalHeir objects
 
-WorldUnit IdeaUnit BalanceHeir objects
+WorldUnit IdeaUnit FiscalHeir objects
 
 WorldUnit IdeaUnit Reason PremiseUnit objects
 
