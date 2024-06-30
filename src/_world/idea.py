@@ -17,12 +17,12 @@ from src._road.road import (
 )
 from src._world.meld import get_meld_default
 from src._world.healer import HealerHold, healerhold_shop, healerhold_get_from_dict
-from src._world.reason_assign import (
+from src._world.reason_culture import (
     AssignedUnit,
     AssignedHeir,
-    assignedunit_shop,
-    assigned_heir_shop,
-    assignedunit_get_from_dict,
+    cultureunit_shop,
+    cultureheir_shop,
+    cultureunit_get_from_dict,
 )
 from src._world.reason_idea import (
     FactCore,
@@ -80,7 +80,7 @@ class IdeaAttrFilter:
     reason_del_premise_base: RoadUnit = None
     reason_del_premise_need: RoadUnit = None
     reason_suff_idea_active: str = None
-    assignedunit: AssignedUnit = None
+    cultureunit: AssignedUnit = None
     healerhold: HealerHold = None
     begin: float = None
     close: float = None
@@ -164,7 +164,7 @@ def ideaattrfilter_shop(
     reason_del_premise_base: RoadUnit = None,
     reason_del_premise_need: RoadUnit = None,
     reason_suff_idea_active: str = None,
-    assignedunit: AssignedUnit = None,
+    cultureunit: AssignedUnit = None,
     healerhold: HealerHold = None,
     begin: float = None,
     close: float = None,
@@ -197,7 +197,7 @@ def ideaattrfilter_shop(
         reason_del_premise_base=reason_del_premise_base,
         reason_del_premise_need=reason_del_premise_need,
         reason_suff_idea_active=reason_suff_idea_active,
-        assignedunit=assignedunit,
+        cultureunit=cultureunit,
         healerhold=healerhold,
         begin=begin,
         close=close,
@@ -237,8 +237,8 @@ class IdeaUnit:
     _fiscallines: dict[BeliefID:FiscalLine] = None  # Calculated field
     _reasonunits: dict[RoadUnit:ReasonUnit] = None
     _reasonheirs: dict[RoadUnit:ReasonHeir] = None  # Calculated field
-    _assignedunit: AssignedUnit = None
-    _assignedheir: AssignedHeir = None  # Calculated field
+    _cultureunit: AssignedUnit = None
+    _cultureheir: AssignedHeir = None  # Calculated field
     _factunits: dict[RoadUnit:FactUnit] = None
     _factheirs: dict[RoadUnit:FactHeir] = None  # Calculated field
     _healerhold: HealerHold = None
@@ -718,8 +718,8 @@ class IdeaUnit:
                 base=idea_attr.reason_base,
                 suff_idea_active=idea_attr.reason_suff_idea_active,
             )
-        if idea_attr.assignedunit != None:
-            self._assignedunit = idea_attr.assignedunit
+        if idea_attr.cultureunit != None:
+            self._cultureunit = idea_attr.cultureunit
         if idea_attr.healerhold != None:
             self._healerhold = idea_attr.healerhold
         if idea_attr.begin != None:
@@ -907,10 +907,10 @@ class IdeaUnit:
             x_bool
             and world_beliefunits != {}
             and world_owner_id != None
-            and self._assignedheir._suffbeliefs != {}
+            and self._cultureheir._heldbeliefs != {}
         ):
-            self._assignedheir.set_owner_id_assigned(world_beliefunits, world_owner_id)
-            if self._assignedheir._owner_id_assigned is False:
+            self._cultureheir.set_owner_id_culture(world_beliefunits, world_owner_id)
+            if self._cultureheir._owner_id_culture is False:
                 x_bool = False
         return x_bool
 
@@ -999,8 +999,8 @@ class IdeaUnit:
             x_dict["_kids"] = self.get_kids_dict()
         if self._reasonunits not in [{}, None]:
             x_dict["_reasonunits"] = self.get_reasonunits_dict()
-        if self._assignedunit not in [None, assignedunit_shop()]:
-            x_dict["_assignedunit"] = self.get_assignedunit_dict()
+        if self._cultureunit not in [None, cultureunit_shop()]:
+            x_dict["_cultureunit"] = self.get_cultureunit_dict()
         if self._healerhold not in [None, healerhold_shop()]:
             x_dict["_healerhold"] = self._healerhold.get_dict()
         if self._fiscallinks not in [{}, None]:
@@ -1054,27 +1054,24 @@ class IdeaUnit:
             dict_x=self._factunits, old_road=old_road, new_road=new_road
         )
 
-    def set_assignedunit_empty_if_null(self):
-        if self._assignedunit is None:
-            self._assignedunit = assignedunit_shop()
+    def set_cultureunit_empty_if_null(self):
+        if self._cultureunit is None:
+            self._cultureunit = cultureunit_shop()
 
-    def set_assignedheir(
+    def set_cultureheir(
         self,
-        parent_assignheir: AssignedHeir,
+        parent_cultureheir: AssignedHeir,
         world_beliefs: dict[BeliefID:BeliefUnit],
     ):
-        self._assignedheir = assigned_heir_shop()
-        self._assignedheir.set_suffbeliefs(
-            parent_assignheir=parent_assignheir,
-            assignunit=self._assignedunit,
+        self._cultureheir = cultureheir_shop()
+        self._cultureheir.set_heldbeliefs(
+            parent_cultureheir=parent_cultureheir,
+            cultureunit=self._cultureunit,
             world_beliefs=world_beliefs,
         )
 
-    def get_assignedunit_dict(self):
-        return self._assignedunit.get_dict()
-
-    def assignor_in(self, belief_ids: dict[BeliefID:-1]):
-        return self._assignedheir.belief_in(belief_ids)
+    def get_cultureunit_dict(self):
+        return self._cultureunit.get_dict()
 
 
 def ideaunit_shop(
@@ -1088,8 +1085,8 @@ def ideaunit_shop(
     _fiscallines: dict[BeliefID:FiscalLink] = None,  # Calculated field
     _reasonunits: dict[RoadUnit:ReasonUnit] = None,
     _reasonheirs: dict[RoadUnit:ReasonHeir] = None,  # Calculated field
-    _assignedunit: AssignedUnit = None,
-    _assignedheir: AssignedHeir = None,  # Calculated field
+    _cultureunit: AssignedUnit = None,
+    _cultureheir: AssignedHeir = None,  # Calculated field
     _factunits: dict[FactUnit] = None,
     _factheirs: dict[FactHeir] = None,  # Calculated field
     _healerhold: HealerHold = None,
@@ -1143,8 +1140,8 @@ def ideaunit_shop(
         _fiscallines=get_empty_dict_if_none(_fiscallines),
         _reasonunits=get_empty_dict_if_none(_reasonunits),
         _reasonheirs=get_empty_dict_if_none(_reasonheirs),
-        _assignedunit=_assignedunit,
-        _assignedheir=_assignedheir,
+        _cultureunit=_cultureunit,
+        _cultureheir=_cultureheir,
         _factunits=get_empty_dict_if_none(_factunits),
         _factheirs=get_empty_dict_if_none(_factheirs),
         _healerhold=_healerhold,
@@ -1184,7 +1181,7 @@ def ideaunit_shop(
         x_ideakid.set_idea_label(_label=_world_real_id)
     else:
         x_ideakid.set_idea_label(_label=_label)
-    x_ideakid.set_assignedunit_empty_if_null()
+    x_ideakid.set_cultureunit_empty_if_null()
     x_ideakid.set_originunit_empty_if_null()
     return x_ideakid
 
@@ -1200,11 +1197,11 @@ def get_obj_from_idea_dict(x_dict: dict[str:], dict_key: str) -> any:
             if x_dict.get(dict_key) != None
             else None
         )
-    elif dict_key == "_assignedunit":
+    elif dict_key == "_cultureunit":
         return (
-            assignedunit_get_from_dict(x_dict[dict_key])
+            cultureunit_get_from_dict(x_dict[dict_key])
             if x_dict.get(dict_key) != None
-            else assignedunit_shop()
+            else cultureunit_shop()
         )
     elif dict_key == "_healerhold":
         return (

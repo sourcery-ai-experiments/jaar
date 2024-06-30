@@ -176,7 +176,7 @@ def atomunit_periodic_table0() -> plotly_Figure:
     world_char_beliefhold_insert = get_insert_rect("world_char_beliefhold")
     world_ideaunit_insert = get_insert_rect("world_ideaunit")
     world_idea_fiscallink_insert = get_insert_rect("world_idea_fiscallink")
-    world_idea_suffbelief_insert = get_insert_rect("world_idea_suffbelief")
+    world_idea_heldbelief_insert = get_insert_rect("world_idea_heldbelief")
     world_idea_healerhold_insert = get_insert_rect("world_idea_healerhold")
     world_idea_factunit_insert = get_insert_rect("world_idea_factunit")
     world_idea_reasonunit_insert = get_insert_rect("world_idea_reasonunit")
@@ -191,7 +191,7 @@ def atomunit_periodic_table0() -> plotly_Figure:
     world_idea_reason_premiseunit_delete = get_delete_rect(premise_text)
     world_idea_reasonunit_delete = get_delete_rect("world_idea_reasonunit")
     world_idea_factunit_delete = get_delete_rect("world_idea_factunit")
-    world_idea_suffbelief_delete = get_delete_rect("world_idea_suffbelief")
+    world_idea_heldbelief_delete = get_delete_rect("world_idea_heldbelief")
     world_idea_healerhold_delete = get_delete_rect("world_idea_healerhold")
     world_idea_fiscallink_delete = get_delete_rect("world_idea_fiscallink")
     world_ideaunit_delete = get_delete_rect("world_ideaunit")
@@ -208,8 +208,8 @@ def atomunit_periodic_table0() -> plotly_Figure:
     world_char_beliefhold_delete.set_level(1, 0.7, 1, green_text)
     world_idea_healerhold_insert.set_level(3, 0.2, 0.4)
     world_idea_healerhold_delete.set_level(3, 0.6, 0.8)
-    world_idea_suffbelief_insert.set_level(4, 0.2, 0.4)
-    world_idea_suffbelief_delete.set_level(4, 0.6, 0.8)
+    world_idea_heldbelief_insert.set_level(4, 0.2, 0.4)
+    world_idea_heldbelief_delete.set_level(4, 0.6, 0.8)
     world_idea_fiscallink_insert.set_level(5, 0.2, 0.4, green_text)
     world_idea_fiscallink_update.set_level(5, 0.4, 0.6, green_text)
     world_idea_fiscallink_delete.set_level(5, 0.6, 0.8, green_text)
@@ -229,7 +229,7 @@ def atomunit_periodic_table0() -> plotly_Figure:
 
     # world_ideaunit_insert = get_insert_rect("world_ideaunit")
     # world_idea_fiscallink_insert = get_insert_rect("world_idea_fiscallink")
-    # world_idea_suffbelief_insert = get_insert_rect("world_idea_suffbelief")
+    # world_idea_heldbelief_insert = get_insert_rect("world_idea_heldbelief")
     # world_idea_healerhold_insert = get_insert_rect("world_idea_healerhold")
     # world_idea_factunit_insert = get_insert_rect("world_idea_factunit")
     # world_idea_reasonunit_insert = get_insert_rect("world_idea_reasonunit")
@@ -242,7 +242,7 @@ def atomunit_periodic_table0() -> plotly_Figure:
     # world_idea_reason_premiseunit_delete = get_delete_rect(premise_text)
     # world_idea_reasonunit_delete = get_delete_rect("world_idea_reasonunit")
     # world_idea_factunit_delete = get_delete_rect("world_idea_factunit")
-    # world_idea_suffbelief_delete = get_delete_rect("world_idea_suffbelief")
+    # world_idea_heldbelief_delete = get_delete_rect("world_idea_heldbelief")
     # world_idea_healerhold_delete = get_delete_rect("world_idea_healerhold")
     # world_idea_fiscallink_delete = get_delete_rect("world_idea_fiscallink")
     # world_ideaunit_delete = get_delete_rect("world_ideaunit")
@@ -253,7 +253,7 @@ def atomunit_periodic_table0() -> plotly_Figure:
     # Add shapes
     add_atom_rect(fig, world_charunit_insert)
     add_atom_rect(fig, world_char_beliefhold_insert)
-    add_atom_rect(fig, world_idea_suffbelief_insert)
+    add_atom_rect(fig, world_idea_heldbelief_insert)
     add_atom_rect(fig, world_idea_healerhold_insert)
     add_atom_rect(fig, world_idea_factunit_insert)
     add_atom_rect(fig, world_idea_reasonunit_insert)
@@ -266,7 +266,7 @@ def atomunit_periodic_table0() -> plotly_Figure:
     add_atom_rect(fig, world_idea_reason_premiseunit_delete)
     add_atom_rect(fig, world_idea_reasonunit_delete)
     add_atom_rect(fig, world_idea_factunit_delete)
-    add_atom_rect(fig, world_idea_suffbelief_delete)
+    add_atom_rect(fig, world_idea_heldbelief_delete)
     add_atom_rect(fig, world_idea_healerhold_delete)
     add_atom_rect(fig, world_idea_fiscallink_insert)
     add_atom_rect(fig, world_idea_fiscallink_update)
@@ -280,17 +280,15 @@ def atomunit_periodic_table0() -> plotly_Figure:
     add_beliefunits_circle(fig)
     add_different_ideas_circle(fig)
 
-    # fig.add_trace(
-    #     plotly_Scatter(
-    #         x=[2.0, 2.00, 2.00],
-    #         y=[3.75, 3.5, 3.25],
-    #         text=[
-    #             "What Jaar Worlds Are Made of Explanation 1",
-    #             "Some Ideas are pledges, others are reasons for pledges",
-    #             "All ideas build from one",
-    #         ],
-    #         mode="text",
-    #     )
-    # )
+    fig.add_trace(
+        plotly_Scatter(
+            x=[2.0],
+            y=[13],
+            text=[
+                "Periodic Table of AtomUnits",
+            ],
+            mode="text",
+        )
+    )
 
     return fig

@@ -243,7 +243,7 @@
             "atom_order": 15
         }
     },
-    "world_idea_suffbelief": {
+    "world_idea_heldbelief": {
         "calculated_attrs": {},
         "DELETE": {
             "atom_order": 19
@@ -252,7 +252,7 @@
             "atom_order": 4
         },
         "normal_specs": {
-            "normal_table_name": "suffbelief"
+            "normal_table_name": "heldbelief"
         },
         "optional_args": {},
         "required_args": {

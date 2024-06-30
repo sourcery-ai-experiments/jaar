@@ -27,7 +27,7 @@ from src.listen.examples.example_listen import (
 from os.path import exists as os_path_exists
 
 
-def test_listen_to_agendas_soul_being_AddsTasksToWorldWhenNo_suffbeliefIsSet(
+def test_listen_to_agendas_soul_being_AddsTasksToWorldWhenNo_heldbeliefIsSet(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -79,8 +79,8 @@ def test_listen_to_agendas_soul_being_AddsTasksToWorld(env_dir_setup_cleanup):
     zia_being.add_charunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_being.get_idea_obj(clean_road())
     cook_ideaunit = zia_being.get_idea_obj(cook_road())
-    clean_ideaunit._assignedunit.set_suffbelief(yao_text)
-    cook_ideaunit._assignedunit.set_suffbelief(yao_text)
+    clean_ideaunit._cultureunit.set_heldbelief(yao_text)
+    cook_ideaunit._cultureunit.set_heldbelief(yao_text)
     zia_hubunit = hubunit_shop(env_dir(), None, zia_text)
     zia_hubunit.save_being_world(zia_being)
     new_yao_being = create_listen_basis(yao_soul)
@@ -181,8 +181,8 @@ def test_listen_to_agendas_soul_being_ProcessesIrrationalWorld(env_dir_setup_cle
     zia_being.add_charunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_being.get_idea_obj(clean_road())
     cook_ideaunit = zia_being.get_idea_obj(cook_road())
-    clean_ideaunit._assignedunit.set_suffbelief(yao_text)
-    cook_ideaunit._assignedunit.set_suffbelief(yao_text)
+    clean_ideaunit._cultureunit.set_heldbelief(yao_text)
+    cook_ideaunit._cultureunit.set_heldbelief(yao_text)
     zia_hubunit = hubunit_shop(env_dir(), None, zia_text)
     zia_hubunit.save_being_world(zia_being)
 
@@ -193,7 +193,7 @@ def test_listen_to_agendas_soul_being_ProcessesIrrationalWorld(env_dir_setup_cle
     vacuum_road = sue_being.make_l1_road(vacuum_text)
     sue_being.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
     vacuum_ideaunit = sue_being.get_idea_obj(vacuum_road)
-    vacuum_ideaunit._assignedunit.set_suffbelief(yao_text)
+    vacuum_ideaunit._cultureunit.set_heldbelief(yao_text)
 
     egg_text = "egg first"
     egg_road = sue_being.make_l1_road(egg_text)
@@ -260,8 +260,8 @@ def test_listen_to_agendas_soul_being_ProcessesMissingDebtorWorld(
     zia_being.add_charunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_being.get_idea_obj(clean_road())
     cook_ideaunit = zia_being.get_idea_obj(cook_road())
-    clean_ideaunit._assignedunit.set_suffbelief(yao_text)
-    cook_ideaunit._assignedunit.set_suffbelief(yao_text)
+    clean_ideaunit._cultureunit.set_heldbelief(yao_text)
+    cook_ideaunit._cultureunit.set_heldbelief(yao_text)
     zia_hubunit = hubunit_shop(env_dir(), None, zia_text)
     zia_hubunit.save_being_world(zia_being)
 
@@ -308,8 +308,8 @@ def test_listen_to_agendas_soul_being_ListensToOwner_soul_AndNotOwner_being(
     zia_being.add_charunit(yao_text, debtor_weight=12)
     clean_ideaunit = zia_being.get_idea_obj(clean_road())
     cook_ideaunit = zia_being.get_idea_obj(cook_road())
-    clean_ideaunit._assignedunit.set_suffbelief(yao_text)
-    cook_ideaunit._assignedunit.set_suffbelief(yao_text)
+    clean_ideaunit._cultureunit.set_heldbelief(yao_text)
+    cook_ideaunit._cultureunit.set_heldbelief(yao_text)
     zia_hubunit = hubunit_shop(env_dir(), None, zia_text)
     zia_hubunit.save_being_world(zia_being)
 
@@ -319,7 +319,7 @@ def test_listen_to_agendas_soul_being_ListensToOwner_soul_AndNotOwner_being(
     vacuum_road = yao_old_being.make_l1_road(vacuum_text)
     yao_old_being.add_l1_idea(ideaunit_shop(vacuum_text, pledge=True))
     vacuum_ideaunit = yao_old_being.get_idea_obj(vacuum_road)
-    vacuum_ideaunit._assignedunit.set_suffbelief(yao_text)
+    vacuum_ideaunit._cultureunit.set_heldbelief(yao_text)
     yao_hubunit.save_being_world(yao_old_being)
 
     # WHEN

@@ -14,7 +14,7 @@ from src.normal_db.normal_models import (
     FiscalLinkTable,
     ReasonTable,
     PremiseTable,
-    SuffBeliefTable,
+    HeldBeliefTable,
     HealerHoldTable,
     FactTable,
 )
@@ -166,16 +166,16 @@ def test_normalized_table_PremiseTable_premise_Exists():
     all_columns_are_as_config_requires(mapper, config_category)
 
 
-def test_normalized_table_SuffBeliefTable_suffbelief_Exists():
+def test_normalized_table_HeldBeliefTable_heldbelief_Exists():
     # GIVEN
-    config_category = get_normalized_world_table_build().get("world_idea_suffbelief")
-    mapper = inspect(SuffBeliefTable)
+    config_category = get_normalized_world_table_build().get("world_idea_heldbelief")
+    mapper = inspect(HeldBeliefTable)
     print_out_expected_class_attribute_declarations(config_category)
 
     # WHEN / THEN
     config_table_name = get_config_table_name(config_category)
-    assert config_table_name == "suffbelief"
-    assert config_table_name == SuffBeliefTable.__tablename__
+    assert config_table_name == "heldbelief"
+    assert config_table_name == HeldBeliefTable.__tablename__
     all_columns_are_as_config_requires(mapper, config_category)
 
 

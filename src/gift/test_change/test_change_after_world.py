@@ -933,7 +933,7 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_idea_rea
     assert after_ball_idea.get_reasonunit(knee_road) is None
 
 
-def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_suffbelief():
+def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_heldbelief():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = worldunit_shop(sue_text)
@@ -945,10 +945,10 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_suf
     ball_road = before_sue_au.make_road(sports_road, ball_text)
     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
     before_ball_ideaunit = before_sue_au.get_idea_obj(ball_road)
-    assert before_ball_ideaunit._assignedunit._suffbeliefs == {}
+    assert before_ball_ideaunit._cultureunit._heldbeliefs == {}
 
     # WHEN
-    update_disc_atomunit = atomunit_shop("world_idea_suffbelief", atom_insert())
+    update_disc_atomunit = atomunit_shop("world_idea_heldbelief", atom_insert())
     update_disc_atomunit.set_required_arg("road", ball_road)
     update_disc_atomunit.set_required_arg("belief_id", rico_text)
     sue_changeunit = changeunit_shop()
@@ -957,11 +957,11 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_suf
 
     # THEN
     after_ball_ideaunit = after_sue_au.get_idea_obj(ball_road)
-    assert after_ball_ideaunit._assignedunit._suffbeliefs != {}
-    assert after_ball_ideaunit._assignedunit.get_suffbelief(rico_text) != None
+    assert after_ball_ideaunit._cultureunit._heldbeliefs != {}
+    assert after_ball_ideaunit._cultureunit.get_heldbelief(rico_text) != None
 
 
-def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_idea_suffbelief():
+def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_idea_heldbelief():
     # GIVEN
     sue_text = "Sue"
     before_sue_au = worldunit_shop(sue_text)
@@ -973,22 +973,22 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_idea_suf
     ball_road = before_sue_au.make_road(sports_road, ball_text)
     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
     before_ball_ideaunit = before_sue_au.get_idea_obj(ball_road)
-    before_ball_ideaunit._assignedunit.set_suffbelief(rico_text)
-    assert before_ball_ideaunit._assignedunit._suffbeliefs != {}
-    assert before_ball_ideaunit._assignedunit.get_suffbelief(rico_text) != None
+    before_ball_ideaunit._cultureunit.set_heldbelief(rico_text)
+    assert before_ball_ideaunit._cultureunit._heldbeliefs != {}
+    assert before_ball_ideaunit._cultureunit.get_heldbelief(rico_text) != None
 
     # WHEN
-    update_disc_atomunit = atomunit_shop("world_idea_suffbelief", atom_delete())
+    update_disc_atomunit = atomunit_shop("world_idea_heldbelief", atom_delete())
     update_disc_atomunit.set_required_arg("road", ball_road)
     update_disc_atomunit.set_required_arg("belief_id", rico_text)
     sue_changeunit = changeunit_shop()
     sue_changeunit.set_atomunit(update_disc_atomunit)
-    print(f"{before_sue_au.get_idea_obj(ball_road)._assignedunit=}")
+    print(f"{before_sue_au.get_idea_obj(ball_road)._cultureunit=}")
     after_sue_au = sue_changeunit.get_edited_world(before_sue_au)
 
     # THEN
     after_ball_ideaunit = after_sue_au.get_idea_obj(ball_road)
-    assert after_ball_ideaunit._assignedunit._suffbeliefs == {}
+    assert after_ball_ideaunit._cultureunit._heldbeliefs == {}
 
 
 def test_ChangeUnit_get_changeunit_example1_ContainsAtomUnits():

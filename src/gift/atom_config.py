@@ -91,8 +91,8 @@ def world_idea_reason_premiseunit_text() -> str:
     return "world_idea_reason_premiseunit"
 
 
-def world_idea_suffbelief_text() -> str:
-    return "world_idea_suffbelief"
+def world_idea_heldbelief_text() -> str:
+    return "world_idea_heldbelief"
 
 
 def world_idea_healerhold_text() -> str:
