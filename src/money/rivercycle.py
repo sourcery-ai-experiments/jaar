@@ -100,12 +100,12 @@ def rivercycle_shop(
 
 
 def create_init_rivercycle(
-    leader_hubunit: HubUnit,
+    healer_hubunit: HubUnit,
     econ_credorledgers: dict[OwnerID : dict[CharID:float]],
 ) -> RiverCycle:
-    x_rivercycle = rivercycle_shop(leader_hubunit, 0, econ_credorledgers)
-    init_amount = leader_hubunit.econ_money_magnitude
-    x_rivercycle.set_riverbook(leader_hubunit.owner_id, init_amount)
+    x_rivercycle = rivercycle_shop(healer_hubunit, 0, econ_credorledgers)
+    init_amount = healer_hubunit.econ_money_magnitude
+    x_rivercycle.set_riverbook(healer_hubunit.owner_id, init_amount)
     return x_rivercycle
 
 
