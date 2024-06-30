@@ -13,7 +13,7 @@ def test_worldunit_explanation_ShowsExplanation0WorldConceptGraph():
     # GIVEN / WHEN
     atomunit_periodic_table0_fig = atomunit_periodic_table0()
 
-    # # THEN
+    # THEN
     # show_figure = True
     # if show_figure:
     #     atomunit_periodic_table0_fig.show()

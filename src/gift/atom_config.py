@@ -236,6 +236,12 @@ def get_atom_order(crud_text: str, category: str) -> int:
     return get_nested_value(get_atom_config_dict(), [category, crud_text, "atom_order"])
 
 
+def get_normal_table_name(category: str) -> int:
+    return get_nested_value(
+        get_atom_config_dict(), [category, "normal_specs", "normal_table_name"]
+    )
+
+
 def set_mog(
     crud_text: str,
     category: str,
