@@ -14,11 +14,11 @@ def test_worldunit_explanation_ShowsExplanation0WorldConceptGraph():
     atomunit_periodic_table0_fig = atomunit_periodic_table0()
 
     # THEN
-    # show_figure = True
-    # if show_figure:
-    #     atomunit_periodic_table0_fig.show()
+    show_figure = True
+    if show_figure:
+        atomunit_periodic_table0_fig.show()
 
-    # assert 1 == 2
+    assert 1 == 2
 
     # # a_world = get_1node_world()
     # # a_world = get_2node_world()
