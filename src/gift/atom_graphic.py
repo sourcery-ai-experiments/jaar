@@ -5,11 +5,7 @@ from src.gift.atom_config import (
     get_normal_table_name,
 )
 from src.gift.atom import atomunit_shop, AtomUnit
-from plotly.graph_objects import (
-    Figure as plotly_Figure,
-    Scatter as plotly_Scatter,
-    Table as plotly_Table,
-)
+from plotly.graph_objects import Figure as plotly_Figure, Scatter as plotly_Scatter
 from dataclasses import dataclass
 
 
@@ -30,7 +26,7 @@ class AtomPlotlyShape:
         self.level = 0
         self.level_width0 = 0.1
         self.level_width1 = 0.9
-        self.display_text = f"{self.x_atomunit.crud_text} {get_normal_table_name(self.x_atomunit.category)} Order: {self.x_atomunit.atom_order}"
+        self.display_text = f"{get_normal_table_name(self.x_atomunit.category)} {self.x_atomunit.crud_text} Order: {self.x_atomunit.atom_order}"
 
     def set_level(self, x_level, x_width0, x_width1, color=None):
         self.level = x_level
@@ -47,7 +43,7 @@ def get_insert_rect(category: str) -> AtomPlotlyShape:
     return atom_rect
 
 
-def get_update_rect(category: str) -> AtomUnit:
+def get_update_rect(category: str) -> AtomPlotlyShape:
     x_atomunit = atomunit_shop(category, atom_update())
     x_atomunit.set_atom_order()
     atom_rect = AtomPlotlyShape(x_atomunit=x_atomunit)
@@ -55,7 +51,7 @@ def get_update_rect(category: str) -> AtomUnit:
     return atom_rect
 
 
-def get_delete_rect(category: str) -> AtomUnit:
+def get_delete_rect(category: str) -> AtomPlotlyShape:
     x_atomunit = atomunit_shop(category, atom_delete())
     x_atomunit.set_atom_order()
     atom_rect = AtomPlotlyShape(x_atomunit=x_atomunit)
@@ -213,9 +209,9 @@ def atomunit_periodic_table0() -> plotly_Figure:
     world_idea_fiscallink_insert.set_level(5, 0.2, 0.4, green_text)
     world_idea_fiscallink_update.set_level(5, 0.4, 0.6, green_text)
     world_idea_fiscallink_delete.set_level(5, 0.6, 0.8, green_text)
-    world_ideaunit_insert.set_level(6, 0, 0.3)
-    world_ideaunit_update.set_level(6, 0.3, 0.7)
-    world_ideaunit_delete.set_level(6, 0.7, 1)
+    world_ideaunit_insert.set_level(6, 0, 0.3, green_text)
+    world_ideaunit_update.set_level(6, 0.3, 0.7, green_text)
+    world_ideaunit_delete.set_level(6, 0.7, 1, green_text)
     world_idea_reasonunit_insert.set_level(7, 0.2, 0.4)
     world_idea_reasonunit_update.set_level(7, 0.4, 0.6)
     world_idea_reasonunit_delete.set_level(7, 0.6, 0.8)
