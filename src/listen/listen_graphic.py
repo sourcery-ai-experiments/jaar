@@ -246,16 +246,16 @@ def get_listening_structures1_fig() -> plotly_Figure:
     sue_duty_text = f"{sue_text} duty"
     sue_job_text = f"{sue_text} job"
     d_sue1_p1 = f"Healer = {sue_text} "
-    d_sue1_p2 = f"Problem = problem1"
-    d_sue1_p3 = f"Econ = project1"
+    d_sue1_p2 = "Problem = problem1"
+    d_sue1_p3 = "Econ = project1"
     d_sue1_p4 = f"Money = {default_money_magnitude()} "
     d_bob1_p1 = f"Healer = {bob_text} "
-    d_bob1_p2 = f"Problem = problem1"
-    d_bob1_p3 = f"Econ = project1"
+    d_bob1_p2 = "Problem = problem1"
+    d_bob1_p3 = "Econ = project1"
     d_bob1_p4 = f"Money = {default_money_magnitude()} "
     d_sue2_p1 = f"Healer = {sue_text} "
-    d_sue2_p2 = f"Problem = problem2"
-    d_sue2_p3 = f"Project = project3"
+    d_sue2_p2 = "Problem = problem2"
+    d_sue2_p3 = "Project = project3"
     d_sue2_p4 = f"Money={default_money_magnitude()} "
 
     add_world_rect(fig, 3.0, 4.0, 4.0, 5.0, sue_duty_text)
@@ -313,16 +313,16 @@ def get_listening_structures2_fig() -> plotly_Figure:
     sue_duty_text = f"{sue_text} duty"
     sue_job_text = f"{sue_text} job"
     d_sue1_p1 = f"Healer = {sue_text} "
-    d_sue1_p2 = f"Problem = problem1"
-    d_sue1_p3 = f"Econ = project1"
+    d_sue1_p2 = "Problem = problem1"
+    d_sue1_p3 = "Econ = project1"
     d_sue1_p4 = f"Money = {default_money_magnitude()} "
     d_bob1_p1 = f"Healer = {bob_text} "
-    d_bob1_p2 = f"Problem = problem1"
-    d_bob1_p3 = f"Econ = project1"
+    d_bob1_p2 = "Problem = problem1"
+    d_bob1_p3 = "Econ = project1"
     d_bob1_p4 = f"Money = {default_money_magnitude()} "
     d_sue2_p1 = f"Healer = {sue_text} "
-    d_sue2_p2 = f"Problem = problem2"
-    d_sue2_p3 = f"Project = project3"
+    d_sue2_p2 = "Problem = problem2"
+    d_sue2_p3 = "Project = project3"
     d_sue2_p4 = f"Money={default_money_magnitude()} "
 
     add_world_rect(fig, 3.0, 4.0, 4.0, 5.0, sue_duty_text)
@@ -360,6 +360,7 @@ def get_listening_structures3_fig() -> plotly_Figure:
     fig.update_yaxes(range=[-4, 10])
     sue_text = "Sue"
     bob_text = "Bob"
+    yao_text = "Yao"
     sue_soul_text = f"{sue_text}.{soul_str()}"
     sue_being_text = f"{sue_text}.{being_str()}"
     dir_being_text = f"{being_str()}s dir"
@@ -367,47 +368,37 @@ def get_listening_structures3_fig() -> plotly_Figure:
 
     green_text = "Green"
     blue_text = "blue"
+    blue_text = "blue"
     add_world_rect(fig, 1.0, 7.0, 2.0, 8.0, sue_soul_text, green_text)
     add_direc_rect(fig, 0.7, 6.7, 2.3, 8.3, dir_soul_text)
     add_world_rect(fig, 1.0, -2.0, 2.0, -1.0, sue_being_text, green_text)
     add_direc_rect(fig, 0.7, -2.3, 2.3, -0.7, dir_being_text)
 
-    add_2_curve(fig, path="M 1.75,6.8 C 2,5.4 7.4,5.1 7.5,5", color=blue_text)
-    add_2_curve(fig, path="M 1.75,6.8 C 2,5.4 5.4,5.2 5.5,5", color=blue_text)
+    add_rect_arrow(fig, 3.85, 3.8, 4, 3.6, blue_text)
+    add_2_curve(fig, path="M 4,3.6 C 4.3,3.4 7.4,2.1 7.5,2", color=blue_text)
+    add_2_curve(fig, path="M 4,3.6 C 4.3,3.4 5.4,2.2 5.5,2", color=blue_text)
     add_2_curve(fig, path="M 1.75,6.8 C 2,5.5 3.4,5.2 3.5,5", color=blue_text)
     add_rect_arrow(fig, 1.85, 6.5, 1.75, 6.8, blue_text)
-    add_2_curve(fig, path="M 1.75,-0.8 C 2,-0.2 7.4,0.4 7.5,1", color=blue_text)
-    add_2_curve(fig, path="M 1.75,-0.8 C 2,-0.2 5.4,0.4 5.5,1", color=blue_text)
+    # add_2_curve(fig, path="M 1.75,-0.8 C 2,-0.2 7.4,0.4 7.5,1", color=blue_text)
+    # add_2_curve(fig, path="M 1.75,-0.8 C 2,-0.2 5.4,0.4 5.5,1", color=blue_text)
     add_2_curve(fig, path="M 1.75,-0.8 C 2,-0.2 3.4,0.4 3.5,1", color=blue_text)
     add_rect_arrow(fig, 1.71, -1.0, 1.75, -0.8, blue_text)
 
     sue_duty_text = f"{sue_text} duty"
     sue_job_text = f"{sue_text} job"
+    bob_job_text = f"{bob_text} job"
+    yao_job_text = f"{yao_text} job"
     d_sue1_p1 = f"Healer = {sue_text} "
-    d_sue1_p2 = f"Problem = problem1"
-    d_sue1_p3 = f"Econ = project1"
+    d_sue1_p2 = "Problem = problem1"
+    d_sue1_p3 = "Econ = project1"
     d_sue1_p4 = f"Money = {default_money_magnitude()} "
-    d_bob1_p1 = f"Healer = {bob_text} "
-    d_bob1_p2 = f"Problem = problem1"
-    d_bob1_p3 = f"Econ = project1"
-    d_bob1_p4 = f"Money = {default_money_magnitude()} "
-    d_sue2_p1 = f"Healer = {sue_text} "
-    d_sue2_p2 = f"Problem = problem2"
-    d_sue2_p3 = f"Project = project3"
-    d_sue2_p4 = f"Money={default_money_magnitude()} "
 
     add_world_rect(fig, 3.0, 4.0, 4.0, 5.0, sue_duty_text)
     add_world_rect(fig, 3.0, 1.0, 4.0, 2.0, sue_job_text)
     add_rect_arrow(fig, 3.7, 2.1, 3.7, 3.9, green_text)
-    add_econ__rect(fig, 2.7, 0.7, 4.3, 6.7, d_sue1_p1, d_sue1_p2, d_sue1_p3, d_sue1_p4)
-    add_world_rect(fig, 5.0, 4.0, 6.0, 5.0, sue_duty_text)
-    add_world_rect(fig, 5.0, 1.0, 6.0, 2.0, sue_job_text)
-    add_rect_arrow(fig, 5.7, 2.1, 5.7, 3.9, green_text)
-    add_econ__rect(fig, 4.7, 0.7, 6.3, 6.7, d_bob1_p1, d_bob1_p2, d_bob1_p3, d_bob1_p4)
-    add_world_rect(fig, 7.0, 4.0, 8.0, 5.0, sue_duty_text)
-    add_world_rect(fig, 7.0, 1.0, 8.0, 2.0, sue_job_text)
-    add_rect_arrow(fig, 7.7, 2.1, 7.7, 3.9, green_text)
-    add_econ__rect(fig, 6.7, 0.7, 8.3, 6.7, d_sue2_p1, d_sue2_p2, d_sue2_p3, d_sue2_p4)
+    add_econ__rect(fig, 2.7, 0.7, 8.3, 6.7, d_sue1_p1, d_sue1_p2, d_sue1_p3, d_sue1_p4)
+    add_world_rect(fig, 5.0, 1.0, 6.0, 2.0, yao_job_text)
+    add_world_rect(fig, 7.0, 1.0, 8.0, 2.0, bob_job_text)
 
     green_text = "Green"
     fig.add_trace(

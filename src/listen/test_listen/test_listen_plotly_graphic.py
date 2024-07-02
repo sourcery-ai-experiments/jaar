@@ -15,13 +15,13 @@ from src.listen.listen_graphic import (
 
 def test_atomunit_periodic_table0_ShowsExplanation0Graph():
     # GIVEN / WHEN
-    listening_structures0_fig = get_listening_structures0_fig()
-    listening_structures1_fig = get_listening_structures1_fig()
-    listening_structures2_fig = get_listening_structures2_fig()
+    # listening_structures0_fig = get_listening_structures0_fig()
+    # listening_structures1_fig = get_listening_structures1_fig()
+    # listening_structures2_fig = get_listening_structures2_fig()
     listening_structures3_fig = get_listening_structures3_fig()
 
-    # # THEN
-    # show_figure = True
+    # THEN
+    show_figure = True
     # if show_figure:
     #     # listening_structures0_fig.show()
     #     # listening_structures1_fig.show()
