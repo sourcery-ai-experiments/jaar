@@ -67,7 +67,7 @@ def get_hubunit_base_fig() -> plotly_Figure:
     return fig
 
 
-def get_listening_structures0_fig() -> plotly_Figure:
+def get_listen_structures0_fig() -> plotly_Figure:
     fig = get_hubunit_base_fig()
     sue_text = "Sue"
     bob_text = "Bob"
@@ -108,7 +108,7 @@ def get_listening_structures0_fig() -> plotly_Figure:
     return fig
 
 
-def get_listening_structures1_fig() -> plotly_Figure:
+def get_listen_structures1_fig() -> plotly_Figure:
     fig = get_hubunit_base_fig()
     sue_text = "Sue"
     bob_text = "Bob"
@@ -165,7 +165,7 @@ def get_listening_structures1_fig() -> plotly_Figure:
     return fig
 
 
-def get_listening_structures2_fig() -> plotly_Figure:
+def get_listen_structures2_fig() -> plotly_Figure:
     fig = get_hubunit_base_fig()
     fig.update_yaxes(range=[-4, 10])
     sue_text = "Sue"
@@ -236,7 +236,7 @@ def get_listening_structures2_fig() -> plotly_Figure:
     return fig
 
 
-def get_listening_structures3_fig() -> plotly_Figure:
+def get_listen_structures3_fig() -> plotly_Figure:
     fig = get_hubunit_base_fig()
     fig.update_yaxes(range=[-4, 10])
     sue_text = "Sue"
