@@ -1,38 +1,6 @@
-from src._road.jaar_config import soul_str, dutys_str, jobs_str, being_str
+from src._road.jaar_config import soul_str, being_str
 from src._road.finance import default_money_magnitude
-from src.listen.hubunit import hubunit_shop, HubUnit
-from plotly.graph_objects import (
-    Figure as plotly_Figure,
-    Scatter as plotly_Scatter,
-    Table as plotly_Table,
-)
-from dataclasses import dataclass
-
-
-# @dataclass
-# class ListenPlotlyShape:
-#     x_hubunit: HubUnit
-#     base_width: float = None
-#     base_h: float = None
-#     level: float = None
-#     level_width0: float = None
-#     level_width1: float = None
-#     display_text: str = None
-#     color: str = None
-
-#     def set_attrs(self):
-#         self.base_width = 0.1
-#         self.base_h = 0.2
-#         self.level = 0
-#         self.level_width0 = 0.1
-#         self.level_width1 = 0.9
-#         self.display_text = f"{self.x_hubunit.crud_text} {get_normal_table_name(self.x_hubunit.category)} Order: {self.x_hubunit.listen_order}"
-
-#     def set_level(self, x_level, x_width0, x_width1, color=None):
-#         self.level = x_level
-#         self.level_width0 = x_width0
-#         self.level_width1 = x_width1
-#         self.color = color
+from plotly.graph_objects import Figure as plotly_Figure, Scatter as plotly_Scatter
 
 
 def add_world_rect(fig: plotly_Figure, x0, y0, x1, y1, display_text, x_color=None):
@@ -90,93 +58,6 @@ def add_rect_arrow(fig: plotly_Figure, x0, y0, ax0, ay0, color=None):
         arrowwidth=3,
         arrowcolor=color,
     )
-
-
-# def add_listen_rect(fig: plotly_Figure, listenplotyshape: ListenPlotlyShape):
-#     level_bump = listenplotyshape.level * 0.05
-#     home_form_x0 = listenplotyshape.base_width
-#     home_form_x1 = 1 - listenplotyshape.base_width
-#     home_width = home_form_x1 - home_form_x0
-#     shape_x0 = home_form_x0 + (home_width * listenplotyshape.level_width0)
-#     shape_x1 = home_form_x0 + (home_width * listenplotyshape.level_width1)
-#     shape_y0 = level_bump + listenplotyshape.base_h
-#     shape_y1 = level_bump + listenplotyshape.base_h + 0.05
-#     x_color = "RoyalBlue"
-#     if listenplotyshape.color != None:
-#         x_color = listenplotyshape.color
-#     fig.add_shape(
-#         type="rect",
-#         xref="paper",
-#         yref="paper",
-#         x0=shape_x0,
-#         y0=shape_y0,
-#         x1=shape_x1,
-#         y1=shape_y1,
-#         line=dict(
-#             color=x_color,
-#             width=8,
-#         ),
-#         fillcolor=None,  # "LightSkyBlue",
-#     )
-#     text_y = (shape_y0 + shape_y1) / 2
-#     text_x = (shape_x0 + shape_x1) / 2
-#     add_rect_text(fig, x=text_x, y=text_y, text=listenplotyshape.display_text)
-
-
-# def add_beliefunits_circle(fig: plotly_Figure):
-#     home_form_x0 = 0.2
-#     home_form_x1 = 1 - 0.2
-#     home_width = home_form_x1 - home_form_x0
-#     shape_x0 = home_form_x0 + (home_width * 0.425)
-#     shape_x1 = home_form_x0 + (home_width * 0.575)
-#     shape_y0 = 0.325
-#     shape_y1 = 0.425
-#     x_color = "Green"
-#     fig.add_shape(
-#         type="circle",
-#         xref="paper",
-#         yref="paper",
-#         x0=shape_x0,
-#         y0=shape_y0,
-#         x1=shape_x1,
-#         y1=shape_y1,
-#         line=dict(
-#             color=x_color,
-#             width=8,
-#         ),
-#         fillcolor=None,  # "LightSkyBlue",
-#     )
-#     text_y = (shape_y0 + shape_y1) / 2
-#     text_x = (shape_x0 + shape_x1) / 2
-#     add_rect_text(fig, x=text_x, y=text_y, text="BeliefUnits")
-
-
-# def add_different_ideas_circle(fig: plotly_Figure):
-#     home_form_x0 = 0.2
-#     home_form_x1 = 1 - 0.2
-#     home_width = home_form_x1 - home_form_x0
-#     shape_x0 = home_form_x0
-#     shape_x1 = home_form_x0 + home_width
-#     shape_y0 = 0.54
-#     shape_y1 = 0.75
-#     x_color = "Grey"
-#     fig.add_shape(
-#         type="circle",
-#         xref="paper",
-#         yref="paper",
-#         x0=shape_x0,
-#         y0=shape_y0,
-#         x1=shape_x1,
-#         y1=shape_y1,
-#         line=dict(
-#             color=x_color,
-#             width=3,
-#         ),
-#         fillcolor=None,  # "LightSkyBlue",
-#     )
-#     text_y = shape_y1 - 0.01
-#     text_x = (shape_x0 + shape_x1) / 2
-#     add_rect_text(fig, x=text_x, y=text_y, text="Different Ideas")
 
 
 def get_hubunit_base_fig() -> plotly_Figure:
