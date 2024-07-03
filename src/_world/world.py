@@ -1875,7 +1875,7 @@ class WorldUnit:
         idea_kid.clear_all_char_cred_debt()
 
         if idea_kid.is_kidless():
-            # set idea's ancestor metrics using world root as common reference
+            # set idea's ancestor metrics using world root as common source
             self._set_ancestors_metrics(idea_kid.get_road(), econ_exceptions)
             self._allot_world_importance(idea=idea_kid)
 
