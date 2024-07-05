@@ -36,14 +36,6 @@ def test_get_real_souls_chars_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup)
         "_world_agenda_debt",
         "_world_agenda_ratio_cred",
         "_world_agenda_ratio_debt",
-        "_credor_operational",
-        "_debtor_operational",
-        "_treasury_due_paid",
-        "_treasury_due_diff",
-        "_output_world_meld_order",
-        "_treasury_cred_score",
-        "_treasury_voice_rank",
-        "_treasury_voice_hx_lowest_rank",
     }
     print(f"{set(x_df.columns)=}")
     print(x_df)
@@ -89,14 +81,6 @@ def test_get_real_beings_chars_dataframe_ReturnsCorrectObj(
         "_world_agenda_debt",
         "_world_agenda_ratio_cred",
         "_world_agenda_ratio_debt",
-        "_credor_operational",
-        "_debtor_operational",
-        "_treasury_due_paid",
-        "_treasury_due_diff",
-        "_output_world_meld_order",
-        "_treasury_cred_score",
-        "_treasury_voice_rank",
-        "_treasury_voice_hx_lowest_rank",
         "_inallocable_debtor_weight",
     }
     print(f"{set(x_df.columns)=}")

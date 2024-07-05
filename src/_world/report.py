@@ -16,14 +16,6 @@ def get_world_charunits_dataframe(x_world: WorldUnit) -> DataFrame:
                 "_world_agenda_debt",
                 "_world_agenda_ratio_cred",
                 "_world_agenda_ratio_debt",
-                "_credor_operational",
-                "_debtor_operational",
-                "_treasury_due_paid",
-                "_treasury_due_diff",
-                "_output_world_meld_order",
-                "_treasury_cred_score",
-                "_treasury_voice_rank",
-                "_treasury_voice_hx_lowest_rank",
             ]
         )
     x_charunits_list = list(x_world.get_chars_dict(all_attrs=True).values())

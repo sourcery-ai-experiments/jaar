@@ -1,4 +1,565 @@
 {
+    "_chars": {
+        "A a ron Jones": {
+            "_beliefholds": {
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",OceanVista Apt": {
+                    "belief_id": ",OceanVista Apt",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "A a ron Jones": {
+                    "belief_id": "A a ron Jones",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "A a ron Jones",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "America": {
+            "_beliefholds": {
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Family": {
+                    "belief_id": ",Family",
+                    "credor_weight": 6.45,
+                    "debtor_weight": 1
+                },
+                ",Friends": {
+                    "belief_id": ",Friends",
+                    "credor_weight": 6.1,
+                    "debtor_weight": 1
+                },
+                "America": {
+                    "belief_id": "America",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "America",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Anna": {
+            "_beliefholds": {
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Family": {
+                    "belief_id": ",Family",
+                    "credor_weight": 6.2,
+                    "debtor_weight": 1
+                },
+                "Anna": {
+                    "belief_id": "Anna",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Anna",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Benjamin Stoddert": {
+            "_beliefholds": {
+                ",ACME DevOps": {
+                    "belief_id": ",ACME DevOps",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",ACME General": {
+                    "belief_id": ",ACME General",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Benjamin Stoddert": {
+                    "belief_id": "Benjamin Stoddert",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Benjamin Stoddert",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Bob302": {
+            "_beliefholds": {
+                ",ACME DevOps": {
+                    "belief_id": ",ACME DevOps",
+                    "credor_weight": 6.25,
+                    "debtor_weight": 1
+                },
+                ",appreciates US DOLLAR": {
+                    "belief_id": ",appreciates US DOLLAR",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Bob302": {
+                    "belief_id": "Bob302",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Bob302",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Chuck Lee": {
+            "_beliefholds": {
+                ",ACME DevOps": {
+                    "belief_id": ",ACME DevOps",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",ACME General": {
+                    "belief_id": ",ACME General",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Chuck Lee": {
+                    "belief_id": "Chuck Lee",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Chuck Lee",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Ernesto Chavez": {
+            "_beliefholds": {
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Philosophy": {
+                    "belief_id": ",Philosophy",
+                    "credor_weight": 6.5,
+                    "debtor_weight": 1
+                },
+                "Ernesto Chavez": {
+                    "belief_id": "Ernesto Chavez",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Ernesto Chavez",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Jacque Chirac": {
+            "_beliefholds": {
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",OceanVista Apt": {
+                    "belief_id": ",OceanVista Apt",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Jacque Chirac": {
+                    "belief_id": "Jacque Chirac",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Jacque Chirac",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Jane Randolph": {
+            "_beliefholds": {
+                ",ACME DevOps": {
+                    "belief_id": ",ACME DevOps",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Jane Randolph": {
+                    "belief_id": "Jane Randolph",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Jane Randolph",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Maria Reynolds": {
+            "_beliefholds": {
+                ",ACME DevOps": {
+                    "belief_id": ",ACME DevOps",
+                    "credor_weight": 6.75,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Maria Reynolds": {
+                    "belief_id": "Maria Reynolds",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Maria Reynolds",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Martha Doubs": {
+            "_beliefholds": {
+                ",ACME DevOps": {
+                    "belief_id": ",ACME DevOps",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",ACME General": {
+                    "belief_id": ",ACME General",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Martha Doubs": {
+                    "belief_id": "Martha Doubs",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Martha Doubs",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Mikayla": {
+            "_beliefholds": {
+                ",ACME DevOps": {
+                    "belief_id": ",ACME DevOps",
+                    "credor_weight": 10,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Philosophy": {
+                    "belief_id": ",Philosophy",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Mikayla": {
+                    "belief_id": "Mikayla",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Mikayla",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Norberto": {
+            "_beliefholds": {
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",OceanVista Apt": {
+                    "belief_id": ",OceanVista Apt",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Norberto": {
+                    "belief_id": "Norberto",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Norberto",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Perrison": {
+            "_beliefholds": {
+                ",appreciates US DOLLAR": {
+                    "belief_id": ",appreciates US DOLLAR",
+                    "credor_weight": 5,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Friends": {
+                    "belief_id": ",Friends",
+                    "credor_weight": 6.4,
+                    "debtor_weight": 1
+                },
+                "Perrison": {
+                    "belief_id": "Perrison",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Perrison",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Philipa": {
+            "_beliefholds": {
+                ",Climate Death": {
+                    "belief_id": ",Climate Death",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Philosophy": {
+                    "belief_id": ",Philosophy",
+                    "credor_weight": 52,
+                    "debtor_weight": 1
+                },
+                "Philipa": {
+                    "belief_id": "Philipa",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Philipa",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Prashant": {
+            "_beliefholds": {
+                ",appreciates US DOLLAR": {
+                    "belief_id": ",appreciates US DOLLAR",
+                    "credor_weight": 2,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Prashant": {
+                    "belief_id": "Prashant",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Prashant",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Renee Elise Goldsberry": {
+            "_beliefholds": {
+                ",appreciates US DOLLAR": {
+                    "belief_id": ",appreciates US DOLLAR",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Climate Death": {
+                    "belief_id": ",Climate Death",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Friends": {
+                    "belief_id": ",Friends",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",hurt by us dollar": {
+                    "belief_id": ",hurt by us dollar",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",People who identify by UTEP": {
+                    "belief_id": ",People who identify by UTEP",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Philosophy": {
+                    "belief_id": ",Philosophy",
+                    "credor_weight": 3,
+                    "debtor_weight": 1
+                },
+                ",SHOW ME2": {
+                    "belief_id": ",SHOW ME2",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Renee Elise Goldsberry": {
+                    "belief_id": "Renee Elise Goldsberry",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Renee Elise Goldsberry",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Sam zamora": {
+            "_beliefholds": {
+                ",ACME DevOps": {
+                    "belief_id": ",ACME DevOps",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",ACME General": {
+                    "belief_id": ",ACME General",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Sam zamora": {
+                    "belief_id": "Sam zamora",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Sam zamora",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Shadwell Harris": {
+            "_beliefholds": {
+                ",ACME DevOps": {
+                    "belief_id": ",ACME DevOps",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Shadwell Harris": {
+                    "belief_id": "Shadwell Harris",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Shadwell Harris",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Thomas OSU": {
+            "_beliefholds": {
+                ",Climate Death": {
+                    "belief_id": ",Climate Death",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "Thomas OSU": {
+                    "belief_id": "Thomas OSU",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Thomas OSU",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "Travis Fox": {
+            "_beliefholds": {
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Family": {
+                    "belief_id": ",Family",
+                    "credor_weight": 6.35,
+                    "debtor_weight": 1
+                },
+                "Travis Fox": {
+                    "belief_id": "Travis Fox",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "Travis Fox",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        },
+        "WIlliam Wallace": {
+            "_beliefholds": {
+                ",ACME DevOps": {
+                    "belief_id": ",ACME DevOps",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                ",Everyone": {
+                    "belief_id": ",Everyone",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                },
+                "WIlliam Wallace": {
+                    "belief_id": "WIlliam Wallace",
+                    "credor_weight": 1,
+                    "debtor_weight": 1
+                }
+            },
+            "char_id": "WIlliam Wallace",
+            "credor_weight": 1,
+            "debtor_weight": 1
+        }
+    },
     "_idearoot": {
         "_factunits": {
             "music,day_hour": {
@@ -3045,130 +3606,6 @@
                 },
                 "_is_expanded": false,
                 "_kids": {
-                    "sympathetic receptive": {
-                        "_is_expanded": false,
-                        "_kids": {
-                            "sympathetic receptive to David": {
-                                "_fiscallinks": {
-                                    "Renee Elise Goldsberry": {
-                                        "belief_id": "Renee Elise Goldsberry",
-                                        "credor_weight": 1.0,
-                                        "debtor_weight": 1.0
-                                    }
-                                },
-                                "_kids": {
-                                    "be available for phone call": {
-                                        "_fiscallinks": {
-                                            "Renee Elise Goldsberry": {
-                                                "belief_id": "Renee Elise Goldsberry",
-                                                "credor_weight": 1.0,
-                                                "debtor_weight": 1.0
-                                            }
-                                        },
-                                        "_label": "be available for phone call",
-                                        "_reasonunits": {
-                                            "music,Aaron Donald things effected by him": {
-                                                "base": "music,Aaron Donald things effected by him",
-                                                "premises": {
-                                                    "music,Aaron Donald things effected by him,interesting": {
-                                                        "need": "music,Aaron Donald things effected by him,interesting"
-                                                    }
-                                                }
-                                            },
-                                            "music,day_minute": {
-                                                "base": "music,day_minute",
-                                                "premises": {
-                                                    "music,day_minute": {
-                                                        "need": "music,day_minute",
-                                                        "nigh": 669,
-                                                        "open": 666
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        "_uid": 163,
-                                        "_weight": 1,
-                                        "pledge": true
-                                    },
-                                    "call David and discuss methodology": {
-                                        "_fiscallinks": {
-                                            ",Climate Death": {
-                                                "belief_id": ",Climate Death",
-                                                "credor_weight": 1.0,
-                                                "debtor_weight": 1.0
-                                            },
-                                            "Renee Elise Goldsberry": {
-                                                "belief_id": "Renee Elise Goldsberry",
-                                                "credor_weight": 1.0,
-                                                "debtor_weight": 1.0
-                                            }
-                                        },
-                                        "_label": "call David and discuss methodology",
-                                        "_reasonunits": {
-                                            "music,Aaron Donald things effected by him": {
-                                                "base": "music,Aaron Donald things effected by him",
-                                                "premises": {
-                                                    "music,Aaron Donald things effected by him,interesting": {
-                                                        "need": "music,Aaron Donald things effected by him,interesting"
-                                                    }
-                                                }
-                                            },
-                                            "music,day_minute": {
-                                                "base": "music,day_minute",
-                                                "premises": {
-                                                    "music,day_minute": {
-                                                        "need": "music,day_minute",
-                                                        "nigh": 480,
-                                                        "open": 480
-                                                    }
-                                                }
-                                            },
-                                            "music,year_month": {
-                                                "base": "music,year_month",
-                                                "premises": {
-                                                    "music,year_month": {
-                                                        "divisor": 1,
-                                                        "need": "music,year_month",
-                                                        "nigh": 0,
-                                                        "open": 0
-                                                    }
-                                                }
-                                            }
-                                        },
-                                        "_uid": 164,
-                                        "_weight": 1,
-                                        "pledge": true
-                                    }
-                                },
-                                "_label": "sympathetic receptive to David",
-                                "_reasonunits": {
-                                    "music,Aaron Donald things effected by him": {
-                                        "base": "music,Aaron Donald things effected by him",
-                                        "premises": {
-                                            "music,Aaron Donald things effected by him,interesting": {
-                                                "need": "music,Aaron Donald things effected by him,interesting"
-                                            }
-                                        }
-                                    }
-                                },
-                                "_uid": 162,
-                                "_weight": 1
-                            }
-                        },
-                        "_label": "sympathetic receptive",
-                        "_reasonunits": {
-                            "music,Aaron Donald things effected by him": {
-                                "base": "music,Aaron Donald things effected by him",
-                                "premises": {
-                                    "music,Aaron Donald things effected by him,interesting": {
-                                        "need": "music,Aaron Donald things effected by him,interesting"
-                                    }
-                                }
-                            }
-                        },
-                        "_uid": 161,
-                        "_weight": 1
-                    },
                     "Aarons friends are desperate for of housing support": {
                         "_fiscallinks": {
                             "Renee Elise Goldsberry": {
@@ -3359,6 +3796,130 @@
                         "_uid": 149,
                         "_weight": 1,
                         "pledge": true
+                    },
+                    "sympathetic receptive": {
+                        "_is_expanded": false,
+                        "_kids": {
+                            "sympathetic receptive to David": {
+                                "_fiscallinks": {
+                                    "Renee Elise Goldsberry": {
+                                        "belief_id": "Renee Elise Goldsberry",
+                                        "credor_weight": 1.0,
+                                        "debtor_weight": 1.0
+                                    }
+                                },
+                                "_kids": {
+                                    "be available for phone call": {
+                                        "_fiscallinks": {
+                                            "Renee Elise Goldsberry": {
+                                                "belief_id": "Renee Elise Goldsberry",
+                                                "credor_weight": 1.0,
+                                                "debtor_weight": 1.0
+                                            }
+                                        },
+                                        "_label": "be available for phone call",
+                                        "_reasonunits": {
+                                            "music,Aaron Donald things effected by him": {
+                                                "base": "music,Aaron Donald things effected by him",
+                                                "premises": {
+                                                    "music,Aaron Donald things effected by him,interesting": {
+                                                        "need": "music,Aaron Donald things effected by him,interesting"
+                                                    }
+                                                }
+                                            },
+                                            "music,day_minute": {
+                                                "base": "music,day_minute",
+                                                "premises": {
+                                                    "music,day_minute": {
+                                                        "need": "music,day_minute",
+                                                        "nigh": 669,
+                                                        "open": 666
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "_uid": 163,
+                                        "_weight": 1,
+                                        "pledge": true
+                                    },
+                                    "call David and discuss methodology": {
+                                        "_fiscallinks": {
+                                            ",Climate Death": {
+                                                "belief_id": ",Climate Death",
+                                                "credor_weight": 1.0,
+                                                "debtor_weight": 1.0
+                                            },
+                                            "Renee Elise Goldsberry": {
+                                                "belief_id": "Renee Elise Goldsberry",
+                                                "credor_weight": 1.0,
+                                                "debtor_weight": 1.0
+                                            }
+                                        },
+                                        "_label": "call David and discuss methodology",
+                                        "_reasonunits": {
+                                            "music,Aaron Donald things effected by him": {
+                                                "base": "music,Aaron Donald things effected by him",
+                                                "premises": {
+                                                    "music,Aaron Donald things effected by him,interesting": {
+                                                        "need": "music,Aaron Donald things effected by him,interesting"
+                                                    }
+                                                }
+                                            },
+                                            "music,day_minute": {
+                                                "base": "music,day_minute",
+                                                "premises": {
+                                                    "music,day_minute": {
+                                                        "need": "music,day_minute",
+                                                        "nigh": 480,
+                                                        "open": 480
+                                                    }
+                                                }
+                                            },
+                                            "music,year_month": {
+                                                "base": "music,year_month",
+                                                "premises": {
+                                                    "music,year_month": {
+                                                        "divisor": 1,
+                                                        "need": "music,year_month",
+                                                        "nigh": 0,
+                                                        "open": 0
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "_uid": 164,
+                                        "_weight": 1,
+                                        "pledge": true
+                                    }
+                                },
+                                "_label": "sympathetic receptive to David",
+                                "_reasonunits": {
+                                    "music,Aaron Donald things effected by him": {
+                                        "base": "music,Aaron Donald things effected by him",
+                                        "premises": {
+                                            "music,Aaron Donald things effected by him,interesting": {
+                                                "need": "music,Aaron Donald things effected by him,interesting"
+                                            }
+                                        }
+                                    }
+                                },
+                                "_uid": 162,
+                                "_weight": 1
+                            }
+                        },
+                        "_label": "sympathetic receptive",
+                        "_reasonunits": {
+                            "music,Aaron Donald things effected by him": {
+                                "base": "music,Aaron Donald things effected by him",
+                                "premises": {
+                                    "music,Aaron Donald things effected by him,interesting": {
+                                        "need": "music,Aaron Donald things effected by him,interesting"
+                                    }
+                                }
+                            }
+                        },
+                        "_uid": 161,
+                        "_weight": 1
                     },
                     "write letters to reps": {
                         "_is_expanded": false,
@@ -4072,721 +4633,6 @@
     },
     "_owner_id": "Yao",
     "_penny": 1,
-    "_chars": {
-        "A a ron Jones": {
-            "_beliefholds": {
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",OceanVista Apt": {
-                    "belief_id": ",OceanVista Apt",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "A a ron Jones": {
-                    "belief_id": "A a ron Jones",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "A a ron Jones"
-        },
-        "America": {
-            "_beliefholds": {
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Family": {
-                    "belief_id": ",Family",
-                    "credor_weight": 6.45,
-                    "debtor_weight": 1
-                },
-                ",Friends": {
-                    "belief_id": ",Friends",
-                    "credor_weight": 6.1,
-                    "debtor_weight": 1
-                },
-                "America": {
-                    "belief_id": "America",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "America"
-        },
-        "Anna": {
-            "_beliefholds": {
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Family": {
-                    "belief_id": ",Family",
-                    "credor_weight": 6.2,
-                    "debtor_weight": 1
-                },
-                "Anna": {
-                    "belief_id": "Anna",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Anna"
-        },
-        "Benjamin Stoddert": {
-            "_beliefholds": {
-                ",ACME DevOps": {
-                    "belief_id": ",ACME DevOps",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",ACME General": {
-                    "belief_id": ",ACME General",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Benjamin Stoddert": {
-                    "belief_id": "Benjamin Stoddert",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Benjamin Stoddert"
-        },
-        "Bob302": {
-            "_beliefholds": {
-                ",ACME DevOps": {
-                    "belief_id": ",ACME DevOps",
-                    "credor_weight": 6.25,
-                    "debtor_weight": 1
-                },
-                ",appreciates US DOLLAR": {
-                    "belief_id": ",appreciates US DOLLAR",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Bob302": {
-                    "belief_id": "Bob302",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Bob302"
-        },
-        "Chuck Lee": {
-            "_beliefholds": {
-                ",ACME DevOps": {
-                    "belief_id": ",ACME DevOps",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",ACME General": {
-                    "belief_id": ",ACME General",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Chuck Lee": {
-                    "belief_id": "Chuck Lee",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Chuck Lee"
-        },
-        "Ernesto Chavez": {
-            "_beliefholds": {
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Philosophy": {
-                    "belief_id": ",Philosophy",
-                    "credor_weight": 6.5,
-                    "debtor_weight": 1
-                },
-                "Ernesto Chavez": {
-                    "belief_id": "Ernesto Chavez",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Ernesto Chavez"
-        },
-        "Jacque Chirac": {
-            "_beliefholds": {
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",OceanVista Apt": {
-                    "belief_id": ",OceanVista Apt",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Jacque Chirac": {
-                    "belief_id": "Jacque Chirac",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Jacque Chirac"
-        },
-        "Jane Randolph": {
-            "_beliefholds": {
-                ",ACME DevOps": {
-                    "belief_id": ",ACME DevOps",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Jane Randolph": {
-                    "belief_id": "Jane Randolph",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Jane Randolph"
-        },
-        "Maria Reynolds": {
-            "_beliefholds": {
-                ",ACME DevOps": {
-                    "belief_id": ",ACME DevOps",
-                    "credor_weight": 6.75,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Maria Reynolds": {
-                    "belief_id": "Maria Reynolds",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Maria Reynolds"
-        },
-        "Martha Doubs": {
-            "_beliefholds": {
-                ",ACME DevOps": {
-                    "belief_id": ",ACME DevOps",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",ACME General": {
-                    "belief_id": ",ACME General",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Martha Doubs": {
-                    "belief_id": "Martha Doubs",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Martha Doubs"
-        },
-        "Mikayla": {
-            "_beliefholds": {
-                ",ACME DevOps": {
-                    "belief_id": ",ACME DevOps",
-                    "credor_weight": 10,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Philosophy": {
-                    "belief_id": ",Philosophy",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Mikayla": {
-                    "belief_id": "Mikayla",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Mikayla"
-        },
-        "Norberto": {
-            "_beliefholds": {
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",OceanVista Apt": {
-                    "belief_id": ",OceanVista Apt",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Norberto": {
-                    "belief_id": "Norberto",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Norberto"
-        },
-        "Perrison": {
-            "_beliefholds": {
-                ",appreciates US DOLLAR": {
-                    "belief_id": ",appreciates US DOLLAR",
-                    "credor_weight": 5,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Friends": {
-                    "belief_id": ",Friends",
-                    "credor_weight": 6.4,
-                    "debtor_weight": 1
-                },
-                "Perrison": {
-                    "belief_id": "Perrison",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Perrison"
-        },
-        "Philipa": {
-            "_beliefholds": {
-                ",Climate Death": {
-                    "belief_id": ",Climate Death",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Philosophy": {
-                    "belief_id": ",Philosophy",
-                    "credor_weight": 52,
-                    "debtor_weight": 1
-                },
-                "Philipa": {
-                    "belief_id": "Philipa",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Philipa"
-        },
-        "Prashant": {
-            "_beliefholds": {
-                ",appreciates US DOLLAR": {
-                    "belief_id": ",appreciates US DOLLAR",
-                    "credor_weight": 2,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Prashant": {
-                    "belief_id": "Prashant",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Prashant"
-        },
-        "Renee Elise Goldsberry": {
-            "_beliefholds": {
-                ",appreciates US DOLLAR": {
-                    "belief_id": ",appreciates US DOLLAR",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Climate Death": {
-                    "belief_id": ",Climate Death",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Friends": {
-                    "belief_id": ",Friends",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",hurt by us dollar": {
-                    "belief_id": ",hurt by us dollar",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",People who identify by UTEP": {
-                    "belief_id": ",People who identify by UTEP",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Philosophy": {
-                    "belief_id": ",Philosophy",
-                    "credor_weight": 3,
-                    "debtor_weight": 1
-                },
-                ",SHOW ME2": {
-                    "belief_id": ",SHOW ME2",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Renee Elise Goldsberry": {
-                    "belief_id": "Renee Elise Goldsberry",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Renee Elise Goldsberry"
-        },
-        "Sam zamora": {
-            "_beliefholds": {
-                ",ACME DevOps": {
-                    "belief_id": ",ACME DevOps",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",ACME General": {
-                    "belief_id": ",ACME General",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Sam zamora": {
-                    "belief_id": "Sam zamora",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Sam zamora"
-        },
-        "Shadwell Harris": {
-            "_beliefholds": {
-                ",ACME DevOps": {
-                    "belief_id": ",ACME DevOps",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Shadwell Harris": {
-                    "belief_id": "Shadwell Harris",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Shadwell Harris"
-        },
-        "Thomas OSU": {
-            "_beliefholds": {
-                ",Climate Death": {
-                    "belief_id": ",Climate Death",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "Thomas OSU": {
-                    "belief_id": "Thomas OSU",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Thomas OSU"
-        },
-        "Travis Fox": {
-            "_beliefholds": {
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Family": {
-                    "belief_id": ",Family",
-                    "credor_weight": 6.35,
-                    "debtor_weight": 1
-                },
-                "Travis Fox": {
-                    "belief_id": "Travis Fox",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "Travis Fox"
-        },
-        "WIlliam Wallace": {
-            "_beliefholds": {
-                ",ACME DevOps": {
-                    "belief_id": ",ACME DevOps",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                ",Everyone": {
-                    "belief_id": ",Everyone",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                },
-                "WIlliam Wallace": {
-                    "belief_id": "WIlliam Wallace",
-                    "credor_weight": 1,
-                    "debtor_weight": 1
-                }
-            },
-            "_credor_operational": null,
-            "_debtor_operational": null,
-            "_treasury_cred_score": 0,
-            "_treasury_due_diff": 0,
-            "_treasury_due_paid": 0,
-            "_treasury_voice_hx_lowest_rank": 0,
-            "_treasury_voice_rank": 0,
-            "credor_weight": 1,
-            "debtor_weight": 1,
-            "char_id": "WIlliam Wallace"
-        }
-    },
     "_pixel": 1,
     "_real_id": "music",
     "_road_delimiter": ",",

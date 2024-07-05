@@ -269,16 +269,6 @@ class WorldUnit:
     def make_l1_road(self, l1_node: RoadNode):
         return self.make_road(self._real_id, l1_node)
 
-    def set_chars_output_world_meld_order(self):
-        sort_chars_list = list(self._chars.values())
-        sort_chars_list.sort(key=lambda x: x.char_id.lower(), reverse=False)
-        for count_x, x_charunit in enumerate(sort_chars_list):
-            x_charunit.set_output_world_meld_order(count_x)
-
-    def clear_chars_output_world_meld_order(self):
-        for x_charunit in self._chars.values():
-            x_charunit.clear_output_world_meld_order()
-
     def set_road_delimiter(self, new_road_delimiter: str):
         self.calc_world_metrics()
         if self._road_delimiter != new_road_delimiter:
@@ -310,12 +300,6 @@ class WorldUnit:
 
         self.edit_idea_label(old_road=old_real_id, new_label=self._real_id)
         self.calc_world_metrics()
-
-    def set_charunit_external_metrics(self, external_metrics: CharUnitExternalMetrics):
-        char_x = self.get_char(external_metrics.internal_char_id)
-        char_x._credor_operational = external_metrics.credor_operational
-        char_x._debtor_operational = external_metrics.debtor_operational
-        # self.set_charunit(charunit=char_x)
 
     def set_max_tree_traverse(self, int_x: int):
         if int_x < 2:
