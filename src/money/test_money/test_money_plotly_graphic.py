@@ -1,47 +1,29 @@
-# from src._world.examples.example_worlds import (
-#     world_v001_with_large_agenda,
-#     get_world_with_4_levels,
-#     get_world_with_4_levels_and_2reasons,
-#     get_world_x1_3levels_1reason_1facts,
-# )
-# from src._world.world import worldunit_shop
 from src.money.money_graphic import (
     get_money_structures0_fig,
     get_money_structures1_fig,
     get_money_structures2_fig,
     get_money_structures3_fig,
+    get_money_structures4_fig,
+    get_money_structures5_fig,
 )
 
 
-def test_atomunit_periodic_table0_ShowsExplanation0Graph():
+def test_money_graphics_ExplainThingsWell():
     # GIVEN / WHEN
-    money_structures0_fig = get_money_structures0_fig()
-    money_structures1_fig = get_money_structures1_fig()
-    money_structures2_fig = get_money_structures2_fig()
-    money_structures3_fig = get_money_structures3_fig()
+    # money_structures0_fig = get_money_structures0_fig()
+    # money_structures1_fig = get_money_structures1_fig()
+    # money_structures2_fig = get_money_structures2_fig()
+    # money_structures3_fig = get_money_structures3_fig()
+    # money_structures4_fig = get_money_structures4_fig()
+    # money_structures5_fig = get_money_structures5_fig()
 
     # THEN
     # money_structures0_fig.show()
     # money_structures1_fig.show()
-    money_structures2_fig.show()
-    money_structures3_fig.show()
+    # money_structures2_fig.show()
+    # money_structures3_fig.show()
+    # money_structures4_fig.show()
+    # money_structures5_fig.show()
 
-    assert 1 == 2
-
-    # # a_world = get_1node_world()
-    # # a_world = get_2node_world()
-    # # a_world = get_3node_world()
-    # # a_world = get_5nodeHG_world()
-    # # a_world = get_7nodeJRoot_world()
-    # a_world = get_world_with_4_levels()
-    # # a_world = world_v001()
-    # a_world.calc_world_metrics()
-    # print(f"World {a_world._real_id}: Nodes ({len(a_world._idea_dict)})")
-
-    # # WHEN
-    # x_fig = concept_world_level0(a_world)
-
-    # # THEN
-    # show_figure = True
-    # if show_figure:
-    #     x_fig.show()
+    # assert 1 == 2
+    pass
