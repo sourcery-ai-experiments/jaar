@@ -124,17 +124,17 @@ def test_RealUnit_init_owner_econs_CorrectlySetsDirAndFiles(env_dir_setup_cleanu
     )
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(None, music_text, sue_text, None, pixel=x_pixel)
-    assert os_path_exists(sue_hubunit.being_path()) is False
+    assert os_path_exists(sue_hubunit.doing_path()) is False
 
     # WHEN
     music_real.init_owner_econs(sue_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
-    assert os_path_exists(sue_hubunit.being_path())
+    assert os_path_exists(sue_hubunit.doing_path())
 
 
-def test_RealUnit_get_owner_soul_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_RealUnit_get_owner_suis_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
@@ -142,16 +142,16 @@ def test_RealUnit_get_owner_soul_from_file_ReturnsCorrectObj(env_dir_setup_clean
     music_real.init_owner_econs(sue_text)
     sue_hubunit = hubunit_shop(None, music_text, sue_text, None)
     bob_text = "Bob"
-    sue_soul = sue_hubunit.get_soul_world()
-    sue_soul.add_charunit(bob_text)
-    sue_hubunit.save_soul_world(sue_soul)
+    sue_suis = sue_hubunit.get_suis_world()
+    sue_suis.add_charunit(bob_text)
+    sue_hubunit.save_suis_world(sue_suis)
 
     # WHEN
-    gen_sue_soul = music_real.get_owner_soul_from_file(sue_text)
+    gen_sue_suis = music_real.get_owner_suis_from_file(sue_text)
 
     # THEN
-    assert gen_sue_soul != None
-    assert gen_sue_soul.char_exists(bob_text)
+    assert gen_sue_suis != None
+    assert gen_sue_suis.char_exists(bob_text)
 
 
 def test_RealUnit__set_all_healer_dutys_CorrectlySetsdutys(
@@ -166,33 +166,33 @@ def test_RealUnit__set_all_healer_dutys_CorrectlySetsdutys(
     music_real.init_owner_econs(yao_text)
     sue_hubunit = hubunit_shop(None, music_text, sue_text, None)
     yao_hubunit = hubunit_shop(None, music_text, yao_text, None)
-    sue_soul_world = sue_hubunit.get_soul_world()
-    yao_soul_world = yao_hubunit.get_soul_world()
+    sue_suis_world = sue_hubunit.get_suis_world()
+    yao_suis_world = yao_hubunit.get_suis_world()
 
-    sue_soul_world.add_charunit(sue_text)
-    sue_soul_world.add_charunit(yao_text)
-    yao_soul_world.add_charunit(sue_text)
-    yao_soul_world.add_charunit(yao_text)
+    sue_suis_world.add_charunit(sue_text)
+    sue_suis_world.add_charunit(yao_text)
+    yao_suis_world.add_charunit(sue_text)
+    yao_suis_world.add_charunit(yao_text)
     texas_text = "Texas"
-    texas_road = sue_soul_world.make_l1_road(texas_text)
-    sue_soul_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    yao_soul_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    texas_road = sue_suis_world.make_l1_road(texas_text)
+    sue_suis_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    yao_suis_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
-    dallas_road = sue_soul_world.make_road(texas_road, dallas_text)
+    dallas_road = sue_suis_world.make_road(texas_road, dallas_text)
     dallas_healerhold = healerhold_shop({sue_text, yao_text})
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
     elpaso_text = "el paso"
-    elpaso_road = sue_soul_world.make_road(texas_road, elpaso_text)
+    elpaso_road = sue_suis_world.make_road(texas_road, elpaso_text)
     elpaso_healerhold = healerhold_shop({sue_text})
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
 
-    sue_soul_world.add_idea(dallas_idea, texas_road)
-    sue_soul_world.add_idea(elpaso_idea, texas_road)
-    yao_soul_world.add_idea(dallas_idea, texas_road)
-    yao_soul_world.add_idea(elpaso_idea, texas_road)
-    # display_ideatree(sue_soul_world.calc_world_metrics(), mode="Econ").show()
-    sue_hubunit.save_soul_world(sue_soul_world)
-    yao_hubunit.save_soul_world(yao_soul_world)
+    sue_suis_world.add_idea(dallas_idea, texas_road)
+    sue_suis_world.add_idea(elpaso_idea, texas_road)
+    yao_suis_world.add_idea(dallas_idea, texas_road)
+    yao_suis_world.add_idea(elpaso_idea, texas_road)
+    # display_ideatree(sue_suis_world.calc_world_metrics(), mode="Econ").show()
+    sue_hubunit.save_suis_world(sue_suis_world)
+    yao_hubunit.save_suis_world(yao_suis_world)
     sue_file_name = get_json_filename(sue_text)
     yao_file_name = get_json_filename(yao_text)
     sue_dallas_hubunit = hubunit_shop(None, music_text, sue_text, dallas_road)

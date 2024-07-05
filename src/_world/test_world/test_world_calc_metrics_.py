@@ -582,7 +582,7 @@ def test_set_fact_WeekdayWorldItemsCorrectlyReturned():
 
 
 def test_WorldUnit_create_agenda_item_CorrectlyCreatesAllWorldAttributes():
-    # WHEN "I am cleaning the cookery since I'm in the flat and it's 8am and it's dirty and I'm doing this for my family"
+    # WHEN "I am cleaning the cookery since I'm in the flat and it's 8am and it's dirty and its for my family"
 
     # GIVEN
     zia_world = worldunit_shop("Zia")
