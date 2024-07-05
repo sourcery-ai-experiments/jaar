@@ -124,14 +124,14 @@ def test_RealUnit_init_owner_econs_CorrectlySetsDirAndFiles(env_dir_setup_cleanu
     )
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(None, music_text, sue_text, None, pixel=x_pixel)
-    assert os_path_exists(sue_hubunit.being_path()) is False
+    assert os_path_exists(sue_hubunit.doing_path()) is False
 
     # WHEN
     music_real.init_owner_econs(sue_text)
 
     # THEN
     print(f"{get_test_reals_dir()=}")
-    assert os_path_exists(sue_hubunit.being_path())
+    assert os_path_exists(sue_hubunit.doing_path())
 
 
 def test_RealUnit_get_owner_suis_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):

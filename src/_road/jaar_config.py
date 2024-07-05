@@ -26,8 +26,8 @@ def suis_str() -> str:
     return "suis"
 
 
-def being_str() -> str:
-    return "being"
+def doing_str() -> str:
+    return "doing"
 
 
 def jobs_str() -> str:

@@ -1,4 +1,4 @@
-from src._road.jaar_config import suis_str, being_str
+from src._road.jaar_config import suis_str, doing_str
 from src._road.finance import default_money_magnitude
 from plotly.graph_objects import Figure as plotly_Figure, Scatter as plotly_Scatter
 
@@ -73,20 +73,20 @@ def get_listen_structures0_fig() -> plotly_Figure:
     bob_text = "Bob"
     yao_text = "Yao"
     sue_suis_text = f"{sue_text}.{suis_str()}"
-    sue_being_text = f"{sue_text}.{being_str()}"
-    yao_being_text = f"{yao_text}.{being_str()}"
-    bob_being_text = f"{bob_text}.{being_str()}"
-    dir_being_text = f"{being_str()}s directory"
+    sue_doing_text = f"{sue_text}.{doing_str()}"
+    yao_doing_text = f"{yao_text}.{doing_str()}"
+    bob_doing_text = f"{bob_text}.{doing_str()}"
+    dir_doing_text = f"{doing_str()}s directory"
     dir_suis_text = f"{suis_str()}s directory"
 
     green_text = "Green"
     med_purple = "MediumPurple"
     add_world_rect(fig, 1.0, 7.0, 2.0, 8.0, sue_suis_text, green_text)
     add_direc_rect(fig, 0.7, 6.7, 6.3, 8.3, dir_suis_text)
-    add_world_rect(fig, 1.0, 1.0, 2.0, 2.0, sue_being_text, green_text)
-    add_world_rect(fig, 3.0, 1.0, 4.0, 2.0, yao_being_text)
-    add_world_rect(fig, 5.0, 1.0, 6.0, 2.0, bob_being_text)
-    add_direc_rect(fig, 0.7, 0.7, 6.3, 2.3, dir_being_text)
+    add_world_rect(fig, 1.0, 1.0, 2.0, 2.0, sue_doing_text, green_text)
+    add_world_rect(fig, 3.0, 1.0, 4.0, 2.0, yao_doing_text)
+    add_world_rect(fig, 5.0, 1.0, 6.0, 2.0, bob_doing_text)
+    add_direc_rect(fig, 0.7, 0.7, 6.3, 2.3, dir_doing_text)
     add_2_curve(fig, path="M 1.75,6.8 C 2,5.5 5,4 5.5,2", color=med_purple)
     add_2_curve(fig, path="M 1.75,6.8 C 2,5.5 3,4 3.5,2", color=med_purple)
     add_rect_arrow(fig, 1.75, 2, 1.75, 6.8, green_text)
@@ -99,7 +99,7 @@ def get_listen_structures0_fig() -> plotly_Figure:
             y=[9.0, 8.75],
             text=[
                 "Reality World Listening Structures",
-                "The suis world listens to other's being worlds and builds a beling world from itself and others",
+                "The suis world listens to other's doing worlds and builds a beling world from itself and others",
             ],
             mode="text",
         )
@@ -171,16 +171,16 @@ def get_listen_structures2_fig() -> plotly_Figure:
     sue_text = "Sue"
     bob_text = "Bob"
     sue_suis_text = f"{sue_text}.{suis_str()}"
-    sue_being_text = f"{sue_text}.{being_str()}"
-    dir_being_text = f"{being_str()}s dir"
+    sue_doing_text = f"{sue_text}.{doing_str()}"
+    dir_doing_text = f"{doing_str()}s dir"
     dir_suis_text = f"{suis_str()}s dir"
 
     green_text = "Green"
     blue_text = "blue"
     add_world_rect(fig, 1.0, 7.0, 2.0, 8.0, sue_suis_text, green_text)
     add_direc_rect(fig, 0.7, 6.7, 2.3, 8.3, dir_suis_text)
-    add_world_rect(fig, 1.0, -2.0, 2.0, -1.0, sue_being_text, green_text)
-    add_direc_rect(fig, 0.7, -2.3, 2.3, -0.7, dir_being_text)
+    add_world_rect(fig, 1.0, -2.0, 2.0, -1.0, sue_doing_text, green_text)
+    add_direc_rect(fig, 0.7, -2.3, 2.3, -0.7, dir_doing_text)
 
     add_2_curve(fig, path="M 1.75,6.8 C 2,5.4 7.4,5.1 7.5,5", color=blue_text)
     add_2_curve(fig, path="M 1.75,6.8 C 2,5.4 5.4,5.2 5.5,5", color=blue_text)
@@ -243,8 +243,8 @@ def get_listen_structures3_fig() -> plotly_Figure:
     bob_text = "Bob"
     yao_text = "Yao"
     sue_suis_text = f"{sue_text}.{suis_str()}"
-    sue_being_text = f"{sue_text}.{being_str()}"
-    dir_being_text = f"{being_str()}s dir"
+    sue_doing_text = f"{sue_text}.{doing_str()}"
+    dir_doing_text = f"{doing_str()}s dir"
     dir_suis_text = f"{suis_str()}s dir"
 
     green_text = "Green"
@@ -252,8 +252,8 @@ def get_listen_structures3_fig() -> plotly_Figure:
     blue_text = "blue"
     add_world_rect(fig, 1.0, 7.0, 2.0, 8.0, sue_suis_text, green_text)
     add_direc_rect(fig, 0.7, 6.7, 2.3, 8.3, dir_suis_text)
-    add_world_rect(fig, 1.0, -2.0, 2.0, -1.0, sue_being_text, green_text)
-    add_direc_rect(fig, 0.7, -2.3, 2.3, -0.7, dir_being_text)
+    add_world_rect(fig, 1.0, -2.0, 2.0, -1.0, sue_doing_text, green_text)
+    add_direc_rect(fig, 0.7, -2.3, 2.3, -0.7, dir_doing_text)
 
     add_rect_arrow(fig, 3.85, 3.8, 4, 3.6, blue_text)
     add_2_curve(fig, path="M 4,3.6 C 4.3,3.4 7.4,2.1 7.5,2", color=blue_text)

@@ -47,7 +47,7 @@ from src.gift.atom import (
     get_from_json as atomunit_get_from_json,
     modify_world_with_atomunit,
 )
-from src.listen.basis_worlds import get_default_being_world
+from src.listen.basis_worlds import get_default_doing_world
 from src.gift.gift import GiftUnit, giftunit_shop, create_giftunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -59,7 +59,7 @@ class Invalid_suis_Exception(Exception):
     pass
 
 
-class Invalid_being_Exception(Exception):
+class Invalid_doing_Exception(Exception):
     pass
 
 
@@ -123,8 +123,8 @@ class HubUnit:
     def suis_dir(self) -> str:
         return f"{self.owner_dir()}/suis"
 
-    def being_dir(self) -> str:
-        return f"{self.owner_dir()}/being"
+    def doing_dir(self) -> str:
+        return f"{self.owner_dir()}/doing"
 
     def suis_file_name(self):
         return get_json_filename(self.owner_id)
@@ -132,11 +132,11 @@ class HubUnit:
     def suis_file_path(self):
         return f"{self.suis_dir()}/{self.suis_file_name()}"
 
-    def being_file_name(self):
+    def doing_file_name(self):
         return get_json_filename(self.owner_id)
 
-    def being_path(self):
-        return f"{self.being_dir()}/{self.being_file_name()}"
+    def doing_path(self):
+        return f"{self.doing_dir()}/{self.doing_file_name()}"
 
     def save_file_suis(self, file_text: str, replace: bool):
         save_file(
@@ -146,10 +146,10 @@ class HubUnit:
             replace=replace,
         )
 
-    def save_file_being(self, file_text: str, replace: bool):
+    def save_file_doing(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.being_dir(),
-            file_name=self.being_file_name(),
+            dest_dir=self.doing_dir(),
+            file_name=self.doing_file_name(),
             file_text=file_text,
             replace=replace,
         )
@@ -157,8 +157,8 @@ class HubUnit:
     def suis_file_exists(self) -> bool:
         return os_path_exists(self.suis_file_path())
 
-    def being_file_exists(self) -> bool:
-        return os_path_exists(self.being_path())
+    def doing_file_exists(self) -> bool:
+        return os_path_exists(self.doing_path())
 
     def open_file_suis(self):
         return open_file(self.suis_dir(), self.suis_file_name())
@@ -190,8 +190,8 @@ class HubUnit:
     def delete_suis_file(self):
         delete_dir(self.suis_file_path())
 
-    def open_file_being(self):
-        return open_file(self.being_dir(), self.being_file_name())
+    def open_file_doing(self):
+        return open_file(self.doing_dir(), self.doing_file_name())
 
     def get_max_atom_file_number(self) -> int:
         if not os_path_exists(self.atoms_dir()):
@@ -440,16 +440,16 @@ class HubUnit:
         x_file_name = self.owner_file_name(x_world._owner_id)
         save_file(self.jobs_dir(), x_file_name, x_world.get_json())
 
-    def save_being_world(self, x_world: WorldUnit):
+    def save_doing_world(self, x_world: WorldUnit):
         if x_world._owner_id != self.owner_id:
-            raise Invalid_being_Exception(
-                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s being world."
+            raise Invalid_doing_Exception(
+                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s doing world."
             )
-        self.save_file_being(x_world.get_json(), True)
+        self.save_file_doing(x_world.get_json(), True)
 
-    def initialize_being_file(self, suis: WorldUnit):
-        if self.being_file_exists() is False:
-            self.save_being_world(get_default_being_world(suis))
+    def initialize_doing_file(self, suis: WorldUnit):
+        if self.doing_file_exists() is False:
+            self.save_doing_world(get_default_doing_world(suis))
 
     def duty_file_exists(self, owner_id: OwnerID) -> bool:
         return os_path_exists(self.duty_path(owner_id))
@@ -469,10 +469,10 @@ class HubUnit:
         file_content = open_file(self.jobs_dir(), self.owner_file_name(owner_id))
         return worldunit_get_from_json(file_content)
 
-    def get_being_world(self) -> WorldUnit:
-        if self.being_file_exists() is False:
+    def get_doing_world(self) -> WorldUnit:
+        if self.doing_file_exists() is False:
             return None
-        file_content = self.open_file_being()
+        file_content = self.open_file_doing()
         return worldunit_get_from_json(file_content)
 
     def delete_duty_file(self, owner_id: OwnerID):
@@ -492,7 +492,7 @@ class HubUnit:
             road_delimiter=self.road_delimiter,
             pixel=self.pixel,
         )
-        return speaker_hubunit.get_being_world()
+        return speaker_hubunit.get_doing_world()
 
     def get_perspective_world(self, speaker: WorldUnit) -> WorldUnit:
         # get copy of world without any metrics

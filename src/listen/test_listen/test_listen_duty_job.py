@@ -218,7 +218,7 @@ def get_yao_ohio_hubunit() -> HubUnit:
         real_id=yao_world._real_id,
         owner_id=yao_world._owner_id,
         econ_road=get_ohio_road(),
-        # pipeline_suis_being_text(),
+        # pipeline_suis_doing_text(),
     )
 
 
@@ -229,7 +229,7 @@ def get_yao_iowa_hubunit() -> HubUnit:
         real_id=yao_world._real_id,
         owner_id=yao_world._owner_id,
         econ_road=get_iowa_road(),
-        # pipeline_suis_being_text(),
+        # pipeline_suis_doing_text(),
     )
 
 
@@ -240,7 +240,7 @@ def get_zia_utah_hubunit() -> HubUnit:
         real_id=yao_world._real_id,
         owner_id="Zia",
         econ_road=get_utah_road(),
-        # pipeline_suis_being_text(),
+        # pipeline_suis_doing_text(),
     )
 
 
@@ -292,7 +292,7 @@ def test_listen_to_owner_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     zia_utah_hubunit = get_zia_utah_hubunit()
     # delete_dir(yao_iowa_hubunit.owners_dir())
     assert yao_iowa_hubunit.suis_file_exists() is False
-    assert yao_iowa_hubunit.being_file_exists() is False
+    assert yao_iowa_hubunit.doing_file_exists() is False
     assert yao_iowa_hubunit.job_file_exists(yao_text) is False
     assert yao_ohio_hubunit.job_file_exists(yao_text) is False
     assert zia_utah_hubunit.job_file_exists(yao_text) is False
@@ -306,23 +306,23 @@ def test_listen_to_owner_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     assert zia_utah_hubunit.job_file_exists(yao_text)
 
     # WHEN
-    assert yao_iowa_hubunit.being_file_exists() is False
+    assert yao_iowa_hubunit.doing_file_exists() is False
     listen_to_owner_jobs(yao_iowa_hubunit)
-    assert yao_iowa_hubunit.being_file_exists()
+    assert yao_iowa_hubunit.doing_file_exists()
 
-    yao_being = yao_iowa_hubunit.get_being_world()
-    yao_being.calc_world_metrics()
-    assert yao_being._chars.keys() == yao_suis0._chars.keys()
-    assert yao_being.get_char(yao_text)._irrational_debtor_weight == 0
-    assert yao_being.get_beliefunits_dict() == yao_suis0.get_beliefunits_dict()
-    assert len(yao_being._idea_dict) == 10
-    print(f"{yao_being._idea_dict.keys()=}")
-    print(f"{yao_being.get_factunits_dict().keys()=}")
-    assert yao_being.idea_exists(cook_road())
-    assert yao_being.idea_exists(clean_road())
-    assert yao_being.idea_exists(run_road()) is False
-    assert len(yao_being._idearoot._factunits) == 2
-    assert yao_being != yao_suis0
+    yao_doing = yao_iowa_hubunit.get_doing_world()
+    yao_doing.calc_world_metrics()
+    assert yao_doing._chars.keys() == yao_suis0._chars.keys()
+    assert yao_doing.get_char(yao_text)._irrational_debtor_weight == 0
+    assert yao_doing.get_beliefunits_dict() == yao_suis0.get_beliefunits_dict()
+    assert len(yao_doing._idea_dict) == 10
+    print(f"{yao_doing._idea_dict.keys()=}")
+    print(f"{yao_doing.get_factunits_dict().keys()=}")
+    assert yao_doing.idea_exists(cook_road())
+    assert yao_doing.idea_exists(clean_road())
+    assert yao_doing.idea_exists(run_road()) is False
+    assert len(yao_doing._idearoot._factunits) == 2
+    assert yao_doing != yao_suis0
 
 
 def test_listen_to_owner_jobs_Pipeline_Scenario1_yao_suis_CanOnlyReferenceItself(
@@ -359,7 +359,7 @@ def test_listen_to_owner_jobs_Pipeline_Scenario1_yao_suis_CanOnlyReferenceItself
     zia_utah_hubunit = get_zia_utah_hubunit()
     # delete_dir(yao_iowa_hubunit.owners_dir())
     assert yao_iowa_hubunit.suis_file_exists() is False
-    assert yao_iowa_hubunit.being_file_exists() is False
+    assert yao_iowa_hubunit.doing_file_exists() is False
     assert yao_iowa_hubunit.job_file_exists(yao_text) is False
     assert yao_ohio_hubunit.job_file_exists(yao_text) is False
     assert zia_utah_hubunit.job_file_exists(yao_text) is False
@@ -374,29 +374,29 @@ def test_listen_to_owner_jobs_Pipeline_Scenario1_yao_suis_CanOnlyReferenceItself
     assert zia_utah_hubunit.job_file_exists(yao_text) is False
 
     # WHEN
-    assert yao_iowa_hubunit.being_file_exists() is False
+    assert yao_iowa_hubunit.doing_file_exists() is False
     listen_to_owner_jobs(yao_iowa_hubunit)
-    assert yao_iowa_hubunit.being_file_exists()
+    assert yao_iowa_hubunit.doing_file_exists()
 
-    yao_being = yao_iowa_hubunit.get_being_world()
-    yao_being.calc_world_metrics()
-    assert yao_being._chars.keys() == yao_suis0._chars.keys()
-    assert yao_being.get_char(yao_text)._irrational_debtor_weight == 0
-    assert yao_being.get_beliefunits_dict() == yao_suis0.get_beliefunits_dict()
-    assert len(yao_being._idea_dict) == 4
-    print(f"{yao_being._idea_dict.keys()=}")
-    print(f"{yao_being.get_factunits_dict().keys()=}")
-    assert yao_being.idea_exists(cook_road()) is False
-    assert yao_being.idea_exists(clean_road()) is False
-    assert yao_being.idea_exists(run_road()) is False
-    assert yao_being.idea_exists(get_swim_road())
-    assert yao_being.idea_exists(get_in_ocean_road())
-    assert yao_being.idea_exists(get_on_land_road()) is False
-    assert yao_being.get_fact(get_location_road()) != None
-    assert yao_being.get_fact(get_location_road()).pick == get_in_ocean_road()
-    assert len(yao_being.get_agenda_dict()) == 1
-    assert len(yao_being._idearoot._factunits) == 1
-    assert yao_being != yao_suis0
+    yao_doing = yao_iowa_hubunit.get_doing_world()
+    yao_doing.calc_world_metrics()
+    assert yao_doing._chars.keys() == yao_suis0._chars.keys()
+    assert yao_doing.get_char(yao_text)._irrational_debtor_weight == 0
+    assert yao_doing.get_beliefunits_dict() == yao_suis0.get_beliefunits_dict()
+    assert len(yao_doing._idea_dict) == 4
+    print(f"{yao_doing._idea_dict.keys()=}")
+    print(f"{yao_doing.get_factunits_dict().keys()=}")
+    assert yao_doing.idea_exists(cook_road()) is False
+    assert yao_doing.idea_exists(clean_road()) is False
+    assert yao_doing.idea_exists(run_road()) is False
+    assert yao_doing.idea_exists(get_swim_road())
+    assert yao_doing.idea_exists(get_in_ocean_road())
+    assert yao_doing.idea_exists(get_on_land_road()) is False
+    assert yao_doing.get_fact(get_location_road()) != None
+    assert yao_doing.get_fact(get_location_road()).pick == get_in_ocean_road()
+    assert len(yao_doing.get_agenda_dict()) == 1
+    assert len(yao_doing._idearoot._factunits) == 1
+    assert yao_doing != yao_suis0
 
 
 def test_create_job_file_from_duty_file_CreatesEmptyJob(env_dir_setup_cleanup):

@@ -5,7 +5,7 @@ from src._world.world import worldunit_shop
 from src.listen.basis_worlds import (
     create_empty_world,
     create_listen_basis,
-    get_default_being_world,
+    get_default_doing_world,
 )
 
 
@@ -99,7 +99,7 @@ def test_create_listen_basis_ReturnsCorrectObj():
     assert job_zia_charunit._inallocable_debtor_weight == 0
 
 
-def test_get_default_being_world_ReturnsCorrectObj():
+def test_get_default_doing_world_ReturnsCorrectObj():
     # GIVEN
     sue_text = "Sue"
     blue_text = "blue"
@@ -122,19 +122,19 @@ def test_get_default_being_world_ReturnsCorrectObj():
     sue_worldunit.set_max_tree_traverse(sue_max_tree_traverse)
 
     # WHEN
-    default_being_world = get_default_being_world(sue_worldunit)
+    default_doing_world = get_default_doing_world(sue_worldunit)
 
     # THEN
-    default_being_world.calc_world_metrics()
-    assert default_being_world._owner_id == sue_worldunit._owner_id
-    assert default_being_world._owner_id == sue_text
-    assert default_being_world._real_id == sue_worldunit._real_id
-    assert default_being_world._real_id == blue_text
-    assert default_being_world._road_delimiter == slash_text
-    assert default_being_world._pixel == five_pixel
-    assert default_being_world._char_credor_pool is None
-    assert default_being_world._char_debtor_pool is None
-    assert default_being_world._max_tree_traverse == sue_max_tree_traverse
-    assert len(default_being_world.get_chars_dict()) == 1
-    assert len(default_being_world.get_beliefunits_dict()) == 1
-    assert len(default_being_world._idea_dict) == 1
+    default_doing_world.calc_world_metrics()
+    assert default_doing_world._owner_id == sue_worldunit._owner_id
+    assert default_doing_world._owner_id == sue_text
+    assert default_doing_world._real_id == sue_worldunit._real_id
+    assert default_doing_world._real_id == blue_text
+    assert default_doing_world._road_delimiter == slash_text
+    assert default_doing_world._pixel == five_pixel
+    assert default_doing_world._char_credor_pool is None
+    assert default_doing_world._char_debtor_pool is None
+    assert default_doing_world._max_tree_traverse == sue_max_tree_traverse
+    assert len(default_doing_world.get_chars_dict()) == 1
+    assert len(default_doing_world.get_beliefunits_dict()) == 1
+    assert len(default_doing_world._idea_dict) == 1

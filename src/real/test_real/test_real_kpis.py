@@ -1,12 +1,12 @@
 from src.real.real_report import (
     get_real_suiss_chars_dataframe,
     get_real_suiss_chars_plotly_fig,
-    get_real_beings_chars_dataframe,
-    get_real_beings_chars_plotly_fig,
+    get_real_doings_chars_dataframe,
+    get_real_doings_chars_plotly_fig,
     get_real_suiss_agenda_dataframe,
     get_real_suiss_agenda_plotly_fig,
-    get_real_beings_agenda_dataframe,
-    get_real_beings_agenda_plotly_fig,
+    get_real_doings_agenda_dataframe,
+    get_real_doings_agenda_plotly_fig,
 )
 from src.real.examples.example_reals import (
     create_example_real2,
@@ -58,15 +58,15 @@ def test_get_real_suiss_chars_plotly_fig_DisplaysCorrectInfo(env_dir_setup_clean
     # assert 1 == 2
 
 
-def test_get_real_beings_chars_dataframe_ReturnsCorrectObj(
+def test_get_real_doings_chars_dataframe_ReturnsCorrectObj(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = create_example_real2()
-    music_real.generate_all_being_worlds()
+    music_real.generate_all_doing_worlds()
 
     # WHEN
-    x_df = get_real_beings_chars_dataframe(music_real)
+    x_df = get_real_doings_chars_dataframe(music_real)
 
     # THEN
     charunit_colums = {
@@ -90,15 +90,15 @@ def test_get_real_beings_chars_dataframe_ReturnsCorrectObj(
     assert set(x_df.columns) == charunit_colums
 
 
-def test_get_real_beings_chars_plotly_fig_DisplaysCorrectInfo(
+def test_get_real_doings_chars_plotly_fig_DisplaysCorrectInfo(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = create_example_real2()
-    music_real.generate_all_being_worlds()
+    music_real.generate_all_doing_worlds()
 
     # WHEN
-    x_fig = get_real_beings_chars_plotly_fig(music_real)
+    x_fig = get_real_doings_chars_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True
@@ -147,13 +147,13 @@ def test_get_real_suiss_agenda_plotly_fig_DisplaysCorrectInfo(env_dir_setup_clea
     #     x_fig.show()
 
 
-def test_get_real_beings_agenda_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_get_real_doings_agenda_dataframe_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_real = create_example_real4()
-    music_real.generate_all_being_worlds()
+    music_real.generate_all_doing_worlds()
 
     # WHEN
-    x_df = get_real_beings_agenda_dataframe(music_real)
+    x_df = get_real_doings_agenda_dataframe(music_real)
 
     # THEN
     agenda_colums = {
@@ -175,15 +175,15 @@ def test_get_real_beings_agenda_dataframe_ReturnsCorrectObj(env_dir_setup_cleanu
     assert x_df.shape[0] in [8, 9]
 
 
-def test_get_real_beings_agenda_plotly_fig_DisplaysCorrectInfo(
+def test_get_real_doings_agenda_plotly_fig_DisplaysCorrectInfo(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     music_real = create_example_real4()
-    music_real.generate_all_being_worlds()
+    music_real.generate_all_doing_worlds()
 
     # WHEN
-    x_fig = get_real_beings_agenda_plotly_fig(music_real)
+    x_fig = get_real_doings_agenda_plotly_fig(music_real)
 
     # # THEN
     # show_figure = True
