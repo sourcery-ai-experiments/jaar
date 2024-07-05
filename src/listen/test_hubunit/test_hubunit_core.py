@@ -125,15 +125,15 @@ def test_hubunit_shop_ReturnsCorrectObj():
     assert x_hubunit.owner_dir() == f"{x_hubunit.owners_dir()}/{sue_text}"
     assert x_hubunit.econs_dir() == f"{x_hubunit.owner_dir()}/econs"
     assert x_hubunit.atoms_dir() == f"{x_hubunit.owner_dir()}/atoms"
-    assert x_hubunit.suis_dir() == f"{x_hubunit.owner_dir()}/suis"
-    assert x_hubunit.doing_dir() == f"{x_hubunit.owner_dir()}/doing"
+    assert x_hubunit.mind_dir() == f"{x_hubunit.owner_dir()}/mind"
+    assert x_hubunit.being_dir() == f"{x_hubunit.owner_dir()}/being"
     assert x_hubunit.gifts_dir() == f"{x_hubunit.owner_dir()}/{get_gifts_folder()}"
-    assert x_hubunit.suis_file_name() == f"{sue_text}.json"
-    x_suis_file_path = f"{x_hubunit.suis_dir()}/{x_hubunit.suis_file_name()}"
-    assert x_hubunit.suis_file_path() == x_suis_file_path
-    assert x_hubunit.doing_file_name() == f"{sue_text}.json"
-    x_doingpath = f"{x_hubunit.doing_dir()}/{x_hubunit.doing_file_name()}"
-    assert x_hubunit.doing_path() == x_doingpath
+    assert x_hubunit.mind_file_name() == f"{sue_text}.json"
+    x_mind_file_path = f"{x_hubunit.mind_dir()}/{x_hubunit.mind_file_name()}"
+    assert x_hubunit.mind_file_path() == x_mind_file_path
+    assert x_hubunit.being_file_name() == f"{sue_text}.json"
+    x_beingpath = f"{x_hubunit.being_dir()}/{x_hubunit.being_file_name()}"
+    assert x_hubunit.being_path() == x_beingpath
 
 
 def test_hubunit_shop_ReturnsCorrectObjWhenEmpty():
@@ -191,98 +191,98 @@ def test_hubunit_shop_RaisesErrorIf_owner_id_Contains_road_delimiter():
     )
 
 
-def test_HubUnit_save_file_suis_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_HubUnit_save_file_mind_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), None, sue_text)
-    assert os_path_exists(sue_hubunit.suis_file_path()) is False
+    assert os_path_exists(sue_hubunit.mind_file_path()) is False
 
     # WHEN
-    sue_hubunit.save_file_suis(file_text="fooboo", replace=True)
+    sue_hubunit.save_file_mind(file_text="fooboo", replace=True)
 
     # THEN
-    assert os_path_exists(sue_hubunit.suis_file_path())
+    assert os_path_exists(sue_hubunit.mind_file_path())
 
 
-def test_HubUnit_suis_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+def test_HubUnit_mind_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), None, sue_text)
-    assert sue_hubunit.suis_file_exists() is False
+    assert sue_hubunit.mind_file_exists() is False
 
     # WHEN
-    sue_hubunit.save_file_suis(file_text="fooboo", replace=True)
+    sue_hubunit.save_file_mind(file_text="fooboo", replace=True)
 
     # THEN
-    assert sue_hubunit.suis_file_exists()
+    assert sue_hubunit.mind_file_exists()
 
 
-def test_HubUnit_open_file_suis_OpensFile(env_dir_setup_cleanup):
+def test_HubUnit_open_file_mind_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), None, sue_text)
     example_text = "fooboo"
-    sue_hubunit.save_file_suis(example_text, replace=True)
+    sue_hubunit.save_file_mind(example_text, replace=True)
 
     # WHEN / THEN
-    assert sue_hubunit.open_file_suis() == example_text
+    assert sue_hubunit.open_file_mind() == example_text
 
 
-def test_HubUnit_save_file_doing_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_HubUnit_save_file_being_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), None, sue_text)
-    assert os_path_exists(sue_hubunit.doing_path()) is False
+    assert os_path_exists(sue_hubunit.being_path()) is False
 
     # WHEN
-    sue_hubunit.save_file_doing(file_text="fooboo", replace=True)
+    sue_hubunit.save_file_being(file_text="fooboo", replace=True)
 
     # THEN
-    assert os_path_exists(sue_hubunit.doing_path())
+    assert os_path_exists(sue_hubunit.being_path())
 
 
-def test_HubUnit_doing_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+def test_HubUnit_being_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), None, sue_text)
-    assert sue_hubunit.doing_file_exists() is False
+    assert sue_hubunit.being_file_exists() is False
 
     # WHEN
-    sue_hubunit.save_file_doing(file_text="fooboo", replace=True)
+    sue_hubunit.save_file_being(file_text="fooboo", replace=True)
 
     # THEN
-    assert sue_hubunit.doing_file_exists()
+    assert sue_hubunit.being_file_exists()
 
 
-def test_HubUnit_open_file_doing_OpensFile(env_dir_setup_cleanup):
+def test_HubUnit_open_file_being_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), None, sue_text)
     example_text = "fooboo"
-    sue_hubunit.save_file_doing(example_text, replace=True)
+    sue_hubunit.save_file_being(example_text, replace=True)
 
     # WHEN / THEN
-    assert sue_hubunit.open_file_doing() == example_text
+    assert sue_hubunit.open_file_being() == example_text
 
 
-def test_HubUnit_save_suis_world_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_HubUnit_save_mind_world_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
     real_id = root_label()
     sue_hubunit = hubunit_shop(env_dir(), real_id, sue_text, None)
 
-    print(f"{sue_hubunit.suis_file_path()=}")
-    assert sue_hubunit.suis_file_exists() is False
+    print(f"{sue_hubunit.mind_file_path()=}")
+    assert sue_hubunit.mind_file_exists() is False
 
     # WHEN
-    sue_hubunit.save_suis_world(sue_worldunit)
+    sue_hubunit.save_mind_world(sue_worldunit)
 
     # THEN
-    assert sue_hubunit.suis_file_exists()
+    assert sue_hubunit.mind_file_exists()
 
 
-def test_HubUnit_save_suis_world_RaisesErrorWhenWorld_doing_id_IsWrong(
+def test_HubUnit_save_mind_world_RaisesErrorWhenWorld_being_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -294,14 +294,14 @@ def test_HubUnit_save_suis_world_RaisesErrorWhenWorld_doing_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_hubunit.save_suis_world(worldunit_shop(yao_text))
+        sue_hubunit.save_mind_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s suis world."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s mind world."
     )
 
 
-def test_HubUnit_get_suis_world_OpensFile(env_dir_setup_cleanup):
+def test_HubUnit_get_mind_world_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
@@ -312,13 +312,13 @@ def test_HubUnit_get_suis_world_OpensFile(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_hubunit = hubunit_shop(env_dir(), None, sue_text, texas_road)
-    sue_hubunit.save_suis_world(sue_worldunit)
+    sue_hubunit.save_mind_world(sue_worldunit)
 
     # WHEN / THEN
-    assert sue_hubunit.get_suis_world().get_dict() == sue_worldunit.get_dict()
+    assert sue_hubunit.get_mind_world().get_dict() == sue_worldunit.get_dict()
 
 
-def test_HubUnit_save_doing_world_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_HubUnit_save_being_world_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
@@ -326,17 +326,17 @@ def test_HubUnit_save_doing_world_CorrectlySavesFile(env_dir_setup_cleanup):
     real_id = root_label()
     sue_hubunit = hubunit_shop(env_dir(), real_id, sue_text, None)
 
-    print(f"{sue_hubunit.doing_path()=}")
-    assert sue_hubunit.doing_file_exists() is False
+    print(f"{sue_hubunit.being_path()=}")
+    assert sue_hubunit.being_file_exists() is False
 
     # WHEN
-    sue_hubunit.save_doing_world(sue_worldunit)
+    sue_hubunit.save_being_world(sue_worldunit)
 
     # THEN
-    assert sue_hubunit.doing_file_exists()
+    assert sue_hubunit.being_file_exists()
 
 
-def test_HubUnit_get_doing_world_OpensFile(env_dir_setup_cleanup):
+def test_HubUnit_get_being_world_OpensFile(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
@@ -347,23 +347,23 @@ def test_HubUnit_get_doing_world_OpensFile(env_dir_setup_cleanup):
     texas_text = "Texas"
     texas_road = create_road(usa_road, texas_text)
     sue_hubunit = hubunit_shop(env_dir(), None, sue_text, texas_road)
-    sue_hubunit.save_doing_world(sue_worldunit)
+    sue_hubunit.save_being_world(sue_worldunit)
 
     # WHEN / THEN
-    assert sue_hubunit.get_doing_world().get_dict() == sue_worldunit.get_dict()
+    assert sue_hubunit.get_being_world().get_dict() == sue_worldunit.get_dict()
 
 
-def test_HubUnit_get_doing_world_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
+def test_HubUnit_get_being_world_ReturnsNoneIfFileDoesNotExist(env_dir_setup_cleanup):
     # GIVEN
     sue_worldunit = get_world_with_4_levels()
     sue_text = sue_worldunit._owner_id
     sue_hubunit = hubunit_shop(env_dir(), None, sue_text)
 
     # WHEN / THEN
-    assert sue_hubunit.get_doing_world() is None
+    assert sue_hubunit.get_being_world() is None
 
 
-def test_HubUnit_save_doing_world_RaisesErrorWhenWorld_doing_id_IsWrong(
+def test_HubUnit_save_being_world_RaisesErrorWhenWorld_being_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -375,8 +375,8 @@ def test_HubUnit_save_doing_world_RaisesErrorWhenWorld_doing_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_hubunit.save_doing_world(worldunit_shop(yao_text))
+        sue_hubunit.save_being_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s doing world."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s being world."
     )

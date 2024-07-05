@@ -3,7 +3,7 @@ from src._world.beliefunit import BeliefUnit, BeliefID
 from src._world.char import CharID
 
 
-class InvalidAssignedheirPopulateException(Exception):
+class InvalidAssignedHeirPopulateException(Exception):
     pass
 
 
@@ -105,7 +105,7 @@ class AssignedHeir:
                 set(all_parent_cultureheir_chars)
             ):
                 # else raise error
-                raise InvalidAssignedheirPopulateException(
+                raise InvalidAssignedHeirPopulateException(
                     f"parent_culture_heir does not contain all chars of the idea's cultureunit\n{set(all_parent_cultureheir_chars)=}\n\n{set(all_cultureunit_chars)=}"
                 )
 

@@ -47,7 +47,7 @@ from src.gift.atom import (
     get_from_json as atomunit_get_from_json,
     modify_world_with_atomunit,
 )
-from src.listen.basis_worlds import get_default_doing_world
+from src.listen.basis_worlds import get_default_being_world
 from src.gift.gift import GiftUnit, giftunit_shop, create_giftunit_from_files
 from os.path import exists as os_path_exists
 from copy import deepcopy as copy_deepcopy
@@ -55,11 +55,11 @@ from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 
 
-class Invalid_suis_Exception(Exception):
+class Invalid_mind_Exception(Exception):
     pass
 
 
-class Invalid_doing_Exception(Exception):
+class Invalid_being_Exception(Exception):
     pass
 
 
@@ -120,63 +120,63 @@ class HubUnit:
     def gifts_dir(self):
         return f"{self.owner_dir()}/{get_gifts_folder()}"
 
-    def suis_dir(self) -> str:
-        return f"{self.owner_dir()}/suis"
+    def mind_dir(self) -> str:
+        return f"{self.owner_dir()}/mind"
 
-    def doing_dir(self) -> str:
-        return f"{self.owner_dir()}/doing"
+    def being_dir(self) -> str:
+        return f"{self.owner_dir()}/being"
 
-    def suis_file_name(self):
+    def mind_file_name(self):
         return get_json_filename(self.owner_id)
 
-    def suis_file_path(self):
-        return f"{self.suis_dir()}/{self.suis_file_name()}"
+    def mind_file_path(self):
+        return f"{self.mind_dir()}/{self.mind_file_name()}"
 
-    def doing_file_name(self):
+    def being_file_name(self):
         return get_json_filename(self.owner_id)
 
-    def doing_path(self):
-        return f"{self.doing_dir()}/{self.doing_file_name()}"
+    def being_path(self):
+        return f"{self.being_dir()}/{self.being_file_name()}"
 
-    def save_file_suis(self, file_text: str, replace: bool):
+    def save_file_mind(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.suis_dir(),
-            file_name=self.suis_file_name(),
+            dest_dir=self.mind_dir(),
+            file_name=self.mind_file_name(),
             file_text=file_text,
             replace=replace,
         )
 
-    def save_file_doing(self, file_text: str, replace: bool):
+    def save_file_being(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.doing_dir(),
-            file_name=self.doing_file_name(),
+            dest_dir=self.being_dir(),
+            file_name=self.being_file_name(),
             file_text=file_text,
             replace=replace,
         )
 
-    def suis_file_exists(self) -> bool:
-        return os_path_exists(self.suis_file_path())
+    def mind_file_exists(self) -> bool:
+        return os_path_exists(self.mind_file_path())
 
-    def doing_file_exists(self) -> bool:
-        return os_path_exists(self.doing_path())
+    def being_file_exists(self) -> bool:
+        return os_path_exists(self.being_path())
 
-    def open_file_suis(self):
-        return open_file(self.suis_dir(), self.suis_file_name())
+    def open_file_mind(self):
+        return open_file(self.mind_dir(), self.mind_file_name())
 
-    def save_suis_world(self, x_world: WorldUnit):
+    def save_mind_world(self, x_world: WorldUnit):
         if x_world._owner_id != self.owner_id:
-            raise Invalid_suis_Exception(
-                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s suis world."
+            raise Invalid_mind_Exception(
+                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s mind world."
             )
-        self.save_file_suis(x_world.get_json(), True)
+        self.save_file_mind(x_world.get_json(), True)
 
-    def get_suis_world(self) -> WorldUnit:
-        if self.suis_file_exists() is False:
+    def get_mind_world(self) -> WorldUnit:
+        if self.mind_file_exists() is False:
             return None
-        file_content = self.open_file_suis()
+        file_content = self.open_file_mind()
         return worldunit_get_from_json(file_content)
 
-    def default_suis_world(self) -> WorldUnit:
+    def default_mind_world(self) -> WorldUnit:
         x_worldunit = worldunit_shop(
             _owner_id=self.owner_id,
             _real_id=self.real_id,
@@ -187,11 +187,11 @@ class HubUnit:
         x_worldunit._last_gift_id = init_gift_id()
         return x_worldunit
 
-    def delete_suis_file(self):
-        delete_dir(self.suis_file_path())
+    def delete_mind_file(self):
+        delete_dir(self.mind_file_path())
 
-    def open_file_doing(self):
-        return open_file(self.doing_dir(), self.doing_file_name())
+    def open_file_being(self):
+        return open_file(self.being_dir(), self.being_file_name())
 
     def get_max_atom_file_number(self) -> int:
         if not os_path_exists(self.atoms_dir()):
@@ -352,42 +352,42 @@ class HubUnit:
             _atoms_dir=self.atoms_dir(),
         )
         x_giftunit._changeunit.add_all_different_atomunits(
-            before_world=self.default_suis_world(),
-            after_world=self.default_suis_world(),
+            before_world=self.default_mind_world(),
+            after_world=self.default_mind_world(),
         )
         x_giftunit.save_files()
 
-    def _create_suis_from_gifts(self):
-        x_world = self._merge_any_gifts(self.default_suis_world())
-        self.save_suis_world(x_world)
+    def _create_mind_from_gifts(self):
+        x_world = self._merge_any_gifts(self.default_mind_world())
+        self.save_mind_world(x_world)
 
-    def _create_initial_gift_and_suis_files(self):
+    def _create_initial_gift_and_mind_files(self):
         self._create_initial_gift_files_from_default()
-        self._create_suis_from_gifts()
+        self._create_mind_from_gifts()
 
-    def _create_initial_gift_files_from_suis(self):
+    def _create_initial_gift_files_from_mind(self):
         x_giftunit = self._default_giftunit()
         x_giftunit._changeunit.add_all_different_atomunits(
-            before_world=self.default_suis_world(),
-            after_world=self.get_suis_world(),
+            before_world=self.default_mind_world(),
+            after_world=self.get_mind_world(),
         )
         x_giftunit.save_files()
 
-    def initialize_gift_suis_files(self):
-        x_suis_file_exists = self.suis_file_exists()
+    def initialize_gift_mind_files(self):
+        x_mind_file_exists = self.mind_file_exists()
         gift_file_exists = self.gift_file_exists(init_gift_id())
-        if x_suis_file_exists is False and gift_file_exists is False:
-            self._create_initial_gift_and_suis_files()
-        elif x_suis_file_exists is False and gift_file_exists:
-            self._create_suis_from_gifts()
-        elif x_suis_file_exists and gift_file_exists is False:
-            self._create_initial_gift_files_from_suis()
+        if x_mind_file_exists is False and gift_file_exists is False:
+            self._create_initial_gift_and_mind_files()
+        elif x_mind_file_exists is False and gift_file_exists:
+            self._create_mind_from_gifts()
+        elif x_mind_file_exists and gift_file_exists is False:
+            self._create_initial_gift_files_from_mind()
 
-    def append_gifts_to_suis_file(self):
-        suis_world = self.get_suis_world()
-        suis_world = self._merge_any_gifts(suis_world)
-        self.save_suis_world(suis_world)
-        return self.get_suis_world()
+    def append_gifts_to_mind_file(self):
+        mind_world = self.get_mind_world()
+        mind_world = self._merge_any_gifts(mind_world)
+        self.save_mind_world(mind_world)
+        return self.get_mind_world()
 
     def econ_dir(self) -> str:
         if self.econ_road is None:
@@ -440,16 +440,16 @@ class HubUnit:
         x_file_name = self.owner_file_name(x_world._owner_id)
         save_file(self.jobs_dir(), x_file_name, x_world.get_json())
 
-    def save_doing_world(self, x_world: WorldUnit):
+    def save_being_world(self, x_world: WorldUnit):
         if x_world._owner_id != self.owner_id:
-            raise Invalid_doing_Exception(
-                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s doing world."
+            raise Invalid_being_Exception(
+                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s being world."
             )
-        self.save_file_doing(x_world.get_json(), True)
+        self.save_file_being(x_world.get_json(), True)
 
-    def initialize_doing_file(self, suis: WorldUnit):
-        if self.doing_file_exists() is False:
-            self.save_doing_world(get_default_doing_world(suis))
+    def initialize_being_file(self, mind: WorldUnit):
+        if self.being_file_exists() is False:
+            self.save_being_world(get_default_being_world(mind))
 
     def duty_file_exists(self, owner_id: OwnerID) -> bool:
         return os_path_exists(self.duty_path(owner_id))
@@ -469,10 +469,10 @@ class HubUnit:
         file_content = open_file(self.jobs_dir(), self.owner_file_name(owner_id))
         return worldunit_get_from_json(file_content)
 
-    def get_doing_world(self) -> WorldUnit:
-        if self.doing_file_exists() is False:
+    def get_being_world(self) -> WorldUnit:
+        if self.being_file_exists() is False:
             return None
-        file_content = self.open_file_doing()
+        file_content = self.open_file_being()
         return worldunit_get_from_json(file_content)
 
     def delete_duty_file(self, owner_id: OwnerID):
@@ -492,7 +492,7 @@ class HubUnit:
             road_delimiter=self.road_delimiter,
             pixel=self.pixel,
         )
-        return speaker_hubunit.get_doing_world()
+        return speaker_hubunit.get_being_world()
 
     def get_perspective_world(self, speaker: WorldUnit) -> WorldUnit:
         # get copy of world without any metrics
@@ -521,25 +521,25 @@ class HubUnit:
         return self.get_perspective_world(speaker_job)
 
     def get_econ_roads(self):
-        x_suis_world = self.get_suis_world()
-        x_suis_world.calc_world_metrics()
-        if x_suis_world._econs_justified is False:
-            x_str = f"Cannot get_econ_roads from '{self.owner_id}' suis world because 'WorldUnit._econs_justified' is False."
+        x_mind_world = self.get_mind_world()
+        x_mind_world.calc_world_metrics()
+        if x_mind_world._econs_justified is False:
+            x_str = f"Cannot get_econ_roads from '{self.owner_id}' mind world because 'WorldUnit._econs_justified' is False."
             raise get_econ_roadsException(x_str)
-        if x_suis_world._econs_buildable is False:
-            x_str = f"Cannot get_econ_roads from '{self.owner_id}' suis world because 'WorldUnit._econs_buildable' is False."
+        if x_mind_world._econs_buildable is False:
+            x_str = f"Cannot get_econ_roads from '{self.owner_id}' mind world because 'WorldUnit._econs_buildable' is False."
             raise get_econ_roadsException(x_str)
-        owner_healer_dict = x_suis_world._healers_dict.get(self.owner_id)
+        owner_healer_dict = x_mind_world._healers_dict.get(self.owner_id)
         if owner_healer_dict is None:
             return get_empty_set_if_none(None)
-        econ_roads = x_suis_world._healers_dict.get(self.owner_id).keys()
+        econ_roads = x_mind_world._healers_dict.get(self.owner_id).keys()
         return get_empty_set_if_none(econ_roads)
 
-    def save_all_suis_dutys(self):
-        suis = self.get_suis_world()
+    def save_all_mind_dutys(self):
+        mind = self.get_mind_world()
         for x_econ_road in self.get_econ_roads():
             self.econ_road = x_econ_road
-            self.save_duty_world(suis)
+            self.save_duty_world(mind)
         self.econ_road = None
 
     def create_treasury_db_file(self):
@@ -559,7 +559,7 @@ class HubUnit:
             self.create_treasury_db_file()
         return sqlite_connection(self.treasury_db_path())
 
-    def create_suis_treasury_db_files(self):
+    def create_mind_treasury_db_files(self):
         for x_econ_road in self.get_econ_roads():
             self.econ_road = x_econ_road
             self.create_treasury_db_file()

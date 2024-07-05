@@ -35,7 +35,7 @@ def test_HubUnit_get_dw_perspective_world_ReturnsWorldWith_owner_idSetToHubUnit_
     bob_worldunit = get_world_with_4_levels()
     bob_worldunit.set_owner_id(bob_text)
     bob_hubunit = hubunit_shop(env_dir(), real_id(), bob_text)
-    bob_hubunit.save_doing_world(bob_worldunit)
+    bob_hubunit.save_being_world(bob_worldunit)
 
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), real_id(), sue_text)

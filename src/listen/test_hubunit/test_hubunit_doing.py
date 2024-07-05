@@ -10,59 +10,59 @@ from pytest import raises as pytest_raises
 from os.path import exists as os_path_exists
 
 
-def test_HubUnit_doing_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
+def test_HubUnit_being_file_exists_ReturnsCorrectBool(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), root_label(), sue_text, None)
-    assert os_path_exists(sue_hubunit.doing_path()) is False
-    assert sue_hubunit.doing_file_exists() is False
+    assert os_path_exists(sue_hubunit.being_path()) is False
+    assert sue_hubunit.being_file_exists() is False
 
     # WHEN
     save_file(
-        dest_dir=sue_hubunit.doing_dir(),
-        file_name=sue_hubunit.doing_file_name(),
+        dest_dir=sue_hubunit.being_dir(),
+        file_name=sue_hubunit.being_file_name(),
         file_text=worldunit_shop(sue_text).get_json(),
     )
 
     # THEN
-    assert os_path_exists(sue_hubunit.doing_path())
-    assert sue_hubunit.doing_file_exists()
+    assert os_path_exists(sue_hubunit.being_path())
+    assert sue_hubunit.being_file_exists()
 
 
-def test_HubUnit_save_doing_file_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_HubUnit_save_being_file_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), root_label(), sue_text, None)
-    assert sue_hubunit.doing_file_exists() is False
+    assert sue_hubunit.being_file_exists() is False
 
     # WHEN
     sue_world = worldunit_shop(sue_text)
     bob_text = "Bob"
     sue_world.add_charunit(bob_text)
-    sue_hubunit.save_doing_world(sue_world)
+    sue_hubunit.save_being_world(sue_world)
 
     # THEN
-    assert sue_hubunit.doing_file_exists()
+    assert sue_hubunit.being_file_exists()
 
-    doing_file_text = open_file(sue_hubunit.doing_dir(), sue_hubunit.doing_file_name())
-    print(f"{doing_file_text=}")
-    doing_world = worldunit_get_from_json(doing_file_text)
-    assert doing_world.char_exists(bob_text)
+    being_file_text = open_file(sue_hubunit.being_dir(), sue_hubunit.being_file_name())
+    print(f"{being_file_text=}")
+    being_world = worldunit_get_from_json(being_file_text)
+    assert being_world.char_exists(bob_text)
 
     # # WHEN
     sue2_world = worldunit_shop(sue_text)
     zia_text = "Zia"
     sue2_world.add_charunit(zia_text)
-    sue_hubunit.save_doing_world(sue2_world)
+    sue_hubunit.save_being_world(sue2_world)
 
     # THEN
-    doing_file_text = open_file(sue_hubunit.doing_dir(), sue_hubunit.doing_file_name())
-    print(f"{doing_file_text=}")
-    doing_world = worldunit_get_from_json(doing_file_text)
-    assert doing_world.char_exists(zia_text)
+    being_file_text = open_file(sue_hubunit.being_dir(), sue_hubunit.being_file_name())
+    print(f"{being_file_text=}")
+    being_world = worldunit_get_from_json(being_file_text)
+    assert being_world.char_exists(zia_text)
 
 
-def test_HubUnit_save_doing_file_RaisesErrorWhenWorld_doing_id_IsWrong(
+def test_HubUnit_save_being_file_RaisesErrorWhenWorld_being_id_IsWrong(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -72,46 +72,46 @@ def test_HubUnit_save_doing_file_RaisesErrorWhenWorld_doing_id_IsWrong(
     # WHEN / THEN
     yao_text = "yao"
     with pytest_raises(Exception) as excinfo:
-        sue_hubunit.save_doing_world(worldunit_shop(yao_text))
+        sue_hubunit.save_being_world(worldunit_shop(yao_text))
     assert (
         str(excinfo.value)
-        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s doing world."
+        == f"WorldUnit with owner_id '{yao_text}' cannot be saved as owner_id '{sue_text}''s being world."
     )
 
 
-def test_HubUnit_initialize_doing_file_CorrectlySavesFile(env_dir_setup_cleanup):
+def test_HubUnit_initialize_being_file_CorrectlySavesFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), root_label(), sue_text, None)
     sue_world = worldunit_shop(sue_text, root_label())
-    assert sue_hubunit.doing_file_exists() is False
+    assert sue_hubunit.being_file_exists() is False
 
     # WHEN
-    sue_hubunit.initialize_doing_file(sue_world)
+    sue_hubunit.initialize_being_file(sue_world)
 
     # THEN
-    doing_world = sue_hubunit.get_doing_world()
-    assert doing_world._real_id == root_label()
-    assert doing_world._owner_id == sue_text
+    being_world = sue_hubunit.get_being_world()
+    assert being_world._real_id == root_label()
+    assert being_world._owner_id == sue_text
     bob_text = "Bob"
-    assert doing_world.char_exists(bob_text) is False
+    assert being_world.char_exists(bob_text) is False
 
     # GIVEN
     sue_world = worldunit_shop(sue_text)
     sue_world.add_charunit(bob_text)
-    sue_hubunit.save_doing_world(sue_world)
-    doing_world = sue_hubunit.get_doing_world()
-    assert doing_world.get_char(bob_text)
+    sue_hubunit.save_being_world(sue_world)
+    being_world = sue_hubunit.get_being_world()
+    assert being_world.get_char(bob_text)
 
     # WHEN
-    sue_hubunit.initialize_doing_file(sue_world)
+    sue_hubunit.initialize_being_file(sue_world)
 
     # THEN
-    doing_world = sue_hubunit.get_doing_world()
-    assert doing_world.get_char(bob_text)
+    being_world = sue_hubunit.get_being_world()
+    assert being_world.get_char(bob_text)
 
 
-def test_HubUnit_initialize_doing_file_CorrectlyDoesNotOverwrite(
+def test_HubUnit_initialize_being_file_CorrectlyDoesNotOverwrite(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -120,42 +120,42 @@ def test_HubUnit_initialize_doing_file_CorrectlyDoesNotOverwrite(
     sue_pixel = 7
     sue_hubunit = hubunit_shop(env_dir(), root_label(), sue_text, None, pixel=sue_pixel)
     sue_world = worldunit_shop(sue_text, root_label(), _pixel=sue_pixel)
-    sue_hubunit.initialize_doing_file(sue_world)
-    assert sue_hubunit.doing_file_exists()
-    delete_dir(sue_hubunit.doing_path())
-    assert sue_hubunit.doing_file_exists() is False
+    sue_hubunit.initialize_being_file(sue_world)
+    assert sue_hubunit.being_file_exists()
+    delete_dir(sue_hubunit.being_path())
+    assert sue_hubunit.being_file_exists() is False
 
     # WHEN
     bob_text = "Bob"
     sue_world.add_charunit(bob_text)
-    sue_hubunit.initialize_doing_file(sue_world)
+    sue_hubunit.initialize_being_file(sue_world)
 
     # THEN
-    assert sue_hubunit.doing_file_exists()
+    assert sue_hubunit.being_file_exists()
 
     sue_real_dir = f"{env_dir()}/{root_label()}"
     sue_owners_dir = f"{sue_real_dir}/owners"
     sue_owner_dir = f"{sue_owners_dir}/{sue_text}"
-    sue_doing_dir = f"{sue_owner_dir}/doing"
-    sue_doing_file_name = f"{sue_text}.json"
-    doing_file_text = open_file(dest_dir=sue_doing_dir, file_name=sue_doing_file_name)
-    print(f"{doing_file_text=}")
-    doing_world = worldunit_get_from_json(doing_file_text)
-    assert doing_world._real_id == root_label()
-    assert doing_world._owner_id == sue_text
-    assert doing_world._pixel == sue_pixel
+    sue_being_dir = f"{sue_owner_dir}/being"
+    sue_being_file_name = f"{sue_text}.json"
+    being_file_text = open_file(dest_dir=sue_being_dir, file_name=sue_being_file_name)
+    print(f"{being_file_text=}")
+    being_world = worldunit_get_from_json(being_file_text)
+    assert being_world._real_id == root_label()
+    assert being_world._owner_id == sue_text
+    assert being_world._pixel == sue_pixel
 
 
-def test_HubUnit_initialize_doing_file_CreatesDirsAndFiles(env_dir_setup_cleanup):
+def test_HubUnit_initialize_being_file_CreatesDirsAndFiles(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), root_label(), sue_text, None)
     delete_dir(sue_hubunit.real_dir())
-    assert os_path_exists(sue_hubunit.doing_path()) is False
+    assert os_path_exists(sue_hubunit.being_path()) is False
 
     # WHEN
     sue_world = worldunit_shop(sue_text, root_label())
-    sue_hubunit.initialize_doing_file(sue_world)
+    sue_hubunit.initialize_being_file(sue_world)
 
     # THEN
-    assert os_path_exists(sue_hubunit.doing_path())
+    assert os_path_exists(sue_hubunit.being_path())

@@ -7,21 +7,21 @@ from pandas import DataFrame, concat as pandas_concat
 from plotly.graph_objects import Figure as plotly_Figure, Table as plotly_Table
 
 
-def get_real_suiss_chars_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_minds_chars_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
     owner_hubunits = x_real.get_owner_hubunits()
-    # for all owners get suis
-    suis_dfs = []
+    # for all owners get mind
+    mind_dfs = []
     for x_hubunit in owner_hubunits.values():
-        suis_world = x_hubunit.get_suis_world()
-        suis_world.calc_world_metrics()
-        df = get_world_charunits_dataframe(suis_world)
-        df.insert(0, "owner_id", suis_world._owner_id)
-        suis_dfs.append(df)
-    return pandas_concat(suis_dfs, ignore_index=True)
+        mind_world = x_hubunit.get_mind_world()
+        mind_world.calc_world_metrics()
+        df = get_world_charunits_dataframe(mind_world)
+        df.insert(0, "owner_id", mind_world._owner_id)
+        mind_dfs.append(df)
+    return pandas_concat(mind_dfs, ignore_index=True)
 
 
-def get_real_suiss_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_minds_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "char_id",
@@ -32,7 +32,7 @@ def get_real_suiss_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_world_agenda_cred",
         "_world_agenda_debt",
     ]
-    df = get_real_suiss_chars_dataframe(x_real)
+    df = get_real_minds_chars_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -55,7 +55,7 @@ def get_real_suiss_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', suis chars metrics"
+    fig_title = f"Real '{x_real.real_id}', mind chars metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -63,21 +63,21 @@ def get_real_suiss_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     return fig
 
 
-def get_real_doings_chars_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_beings_chars_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
     owner_hubunits = x_real.get_owner_hubunits()
-    # for all owners get doing
-    doing_dfs = []
+    # for all owners get being
+    being_dfs = []
     for x_hubunit in owner_hubunits.values():
-        doing_world = x_hubunit.get_doing_world()
-        doing_world.calc_world_metrics()
-        doing_df = get_world_charunits_dataframe(doing_world)
-        doing_df.insert(0, "owner_id", doing_world._owner_id)
-        doing_dfs.append(doing_df)
-    return pandas_concat(doing_dfs, ignore_index=True)
+        being_world = x_hubunit.get_being_world()
+        being_world.calc_world_metrics()
+        being_df = get_world_charunits_dataframe(being_world)
+        being_df.insert(0, "owner_id", being_world._owner_id)
+        being_dfs.append(being_df)
+    return pandas_concat(being_dfs, ignore_index=True)
 
 
-def get_real_doings_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_beings_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "char_id",
@@ -88,7 +88,7 @@ def get_real_doings_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_world_agenda_cred",
         "_world_agenda_debt",
     ]
-    df = get_real_doings_chars_dataframe(x_real)
+    df = get_real_beings_chars_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -111,7 +111,7 @@ def get_real_doings_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', doing chars metrics"
+    fig_title = f"Real '{x_real.real_id}', being chars metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -119,20 +119,20 @@ def get_real_doings_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     return fig
 
 
-def get_real_suiss_agenda_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_minds_agenda_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
     owner_hubunits = x_real.get_owner_hubunits()
-    # for all owners get suis
-    suis_dfs = []
+    # for all owners get mind
+    mind_dfs = []
     for x_hubunit in owner_hubunits.values():
-        suis_world = x_hubunit.get_suis_world()
-        suis_world.calc_world_metrics()
-        df = get_world_agenda_dataframe(suis_world)
-        suis_dfs.append(df)
-    return pandas_concat(suis_dfs, ignore_index=True)
+        mind_world = x_hubunit.get_mind_world()
+        mind_world.calc_world_metrics()
+        df = get_world_agenda_dataframe(mind_world)
+        mind_dfs.append(df)
+    return pandas_concat(mind_dfs, ignore_index=True)
 
 
-def get_real_suiss_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_minds_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "world_importance",
@@ -145,7 +145,7 @@ def get_real_suiss_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_numor",
         "_reest",
     ]
-    df = get_real_suiss_agenda_dataframe(x_real)
+    df = get_real_minds_agenda_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -170,7 +170,7 @@ def get_real_suiss_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', suis agenda metrics"
+    fig_title = f"Real '{x_real.real_id}', mind agenda metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -178,20 +178,20 @@ def get_real_suiss_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     return fig
 
 
-def get_real_doings_agenda_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_beings_agenda_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
     owner_hubunits = x_real.get_owner_hubunits()
-    # for all owners get doing
-    doing_dfs = []
+    # for all owners get being
+    being_dfs = []
     for x_hubunit in owner_hubunits.values():
-        doing_world = x_hubunit.get_doing_world()
-        doing_world.calc_world_metrics()
-        doing_df = get_world_agenda_dataframe(doing_world)
-        doing_dfs.append(doing_df)
-    return pandas_concat(doing_dfs, ignore_index=True)
+        being_world = x_hubunit.get_being_world()
+        being_world.calc_world_metrics()
+        being_df = get_world_agenda_dataframe(being_world)
+        being_dfs.append(being_df)
+    return pandas_concat(being_dfs, ignore_index=True)
 
 
-def get_real_doings_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_beings_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "world_importance",
@@ -204,7 +204,7 @@ def get_real_doings_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_numor",
         "_reest",
     ]
-    df = get_real_doings_agenda_dataframe(x_real)
+    df = get_real_beings_agenda_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -229,7 +229,7 @@ def get_real_doings_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', doing agenda metrics"
+    fig_title = f"Real '{x_real.real_id}', being agenda metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

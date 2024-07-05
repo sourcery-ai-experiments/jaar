@@ -1,6 +1,6 @@
 from src._road.jaar_config import (
-    suis_str,
-    doing_str,
+    mind_str,
+    being_str,
     get_rootpart_of_econ_dir,
     treasury_file_name,
     max_tree_traverse_default,
@@ -8,12 +8,12 @@ from src._road.jaar_config import (
 )
 
 
-def test_suis_str():
-    assert suis_str() == "suis"
+def test_mind_str():
+    assert mind_str() == "mind"
 
 
-def test_doing_str():
-    assert doing_str() == "doing"
+def test_being_str():
+    assert being_str() == "being"
 
 
 def test_get_rootpart_of_econ_dir_ReturnsCorrectObj():
