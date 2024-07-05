@@ -7,7 +7,7 @@ from src.listen.basis_worlds import get_default_being_world
 from src.listen.hubunit import hubunit_shop, HubUnit
 from src.listen.listen import (
     listen_to_speaker_agenda,
-    listen_to_debtors_roll_soul_being,
+    listen_to_debtors_roll_suis_being,
     listen_to_debtors_roll_duty_job,
     create_job_file_from_duty_file,
 )
@@ -19,12 +19,12 @@ from sqlite3 import connect as sqlite3_connect, Connection
 @dataclass
 class RealUnit:
     """Data pipelines:
-    pipeline1: gifts->soul
-    pipeline2: soul->dutys
+    pipeline1: gifts->suis
+    pipeline2: suis->dutys
     pipeline3: duty->job
     pipeline4: job->being
-    pipeline5: soul->being (direct)
-    pipeline6: soul->job->being (through jobs)
+    pipeline5: suis->being (direct)
+    pipeline6: suis->job->being (through jobs)
     pipeline7: gifts->being (could be 5 of 6)
     """
 
@@ -116,16 +116,16 @@ class RealUnit:
 
     def init_owner_econs(self, owner_id: OwnerID):
         x_hubunit = self._get_hubunit(owner_id)
-        x_hubunit.initialize_gift_soul_files()
-        x_hubunit.initialize_being_file(self.get_owner_soul_from_file(owner_id))
+        x_hubunit.initialize_gift_suis_files()
+        x_hubunit.initialize_being_file(self.get_owner_suis_from_file(owner_id))
 
-    def get_owner_soul_from_file(self, owner_id: OwnerID) -> WorldUnit:
-        return self._get_hubunit(owner_id).get_soul_world()
+    def get_owner_suis_from_file(self, owner_id: OwnerID) -> WorldUnit:
+        return self._get_hubunit(owner_id).get_suis_world()
 
     def _set_all_healer_dutys(self, owner_id: OwnerID):
-        x_soul = self.get_owner_soul_from_file(owner_id)
-        x_soul.calc_world_metrics()
-        for healer_id, healer_dict in x_soul._healers_dict.items():
+        x_suis = self.get_owner_suis_from_file(owner_id)
+        x_suis.calc_world_metrics()
+        for healer_id, healer_dict in x_suis._healers_dict.items():
             healer_hubunit = hubunit_shop(
                 self.reals_dir,
                 self.real_id,
@@ -136,25 +136,25 @@ class RealUnit:
                 pixel=self._pixel,
             )
             for econ_road in healer_dict.keys():
-                self._set_owner_duty(healer_hubunit, econ_road, x_soul)
+                self._set_owner_duty(healer_hubunit, econ_road, x_suis)
 
     def _set_owner_duty(
         self,
         healer_hubunit: HubUnit,
         econ_road: RoadUnit,
-        soul_world: WorldUnit,
+        suis_world: WorldUnit,
     ):
         healer_hubunit.econ_road = econ_road
         healer_hubunit.create_treasury_db_file()
-        healer_hubunit.save_duty_world(soul_world)
+        healer_hubunit.save_duty_world(suis_world)
 
     # being world management
     def generate_being_world(self, owner_id: OwnerID) -> WorldUnit:
         listener_hubunit = self._get_hubunit(owner_id)
-        x_soul = listener_hubunit.get_soul_world()
-        x_soul.calc_world_metrics()
-        x_being = get_default_being_world(x_soul)
-        for healer_id, healer_dict in x_soul._healers_dict.items():
+        x_suis = listener_hubunit.get_suis_world()
+        x_suis.calc_world_metrics()
+        x_being = get_default_being_world(x_suis)
+        for healer_id, healer_dict in x_suis._healers_dict.items():
             healer_hubunit = hubunit_shop(
                 reals_dir=self.reals_dir,
                 real_id=self.real_id,
@@ -164,7 +164,7 @@ class RealUnit:
                 road_delimiter=self._road_delimiter,
                 pixel=self._pixel,
             )
-            healer_hubunit.create_soul_treasury_db_files()
+            healer_hubunit.create_suis_treasury_db_files()
             for econ_road in healer_dict.keys():
                 econ_hubunit = hubunit_shop(
                     reals_dir=self.reals_dir,
@@ -175,20 +175,20 @@ class RealUnit:
                     road_delimiter=self._road_delimiter,
                     pixel=self._pixel,
                 )
-                econ_hubunit.save_duty_world(x_soul)
+                econ_hubunit.save_duty_world(x_suis)
                 create_job_file_from_duty_file(econ_hubunit, owner_id)
                 x_job = econ_hubunit.get_job_world(owner_id)
                 listen_to_speaker_agenda(x_being, x_job)
 
-        # if nothing has come from soul->duty->job->being pipeline use soul->being pipeline
+        # if nothing has come from suis->duty->job->being pipeline use suis->being pipeline
         x_being.calc_world_metrics()
         if len(x_being._idea_dict) == 1:
-            # pipeline_soul_being_text()
-            listen_to_debtors_roll_soul_being(listener_hubunit)
+            # pipeline_suis_being_text()
+            listen_to_debtors_roll_suis_being(listener_hubunit)
             listener_hubunit.open_file_being()
             x_being.calc_world_metrics()
         if len(x_being._idea_dict) == 1:
-            x_being = x_soul
+            x_being = x_suis
         listener_hubunit.save_being_world(x_being)
 
         return self.get_being_file_world(owner_id)

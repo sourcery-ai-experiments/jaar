@@ -3,7 +3,7 @@ from src._road.jaar_config import get_json_filename
 from src._world.idea import ideaunit_shop
 from src._world.world import worldunit_shop
 from src.listen.hubunit import hubunit_shop
-from src.listen.listen import create_listen_basis, listen_to_agendas_soul_being
+from src.listen.listen import create_listen_basis, listen_to_agendas_suis_being
 from src.listen.examples.listen_env import (
     get_listen_temp_env_dir as env_dir,
     env_dir_setup_cleanup,
@@ -27,20 +27,20 @@ from src.listen.examples.example_listen import (
 from os.path import exists as os_path_exists
 
 
-def test_listen_to_agendas_soul_being_AddsTasksToWorldWhenNo_heldbeliefIsSet(
+def test_listen_to_agendas_suis_being_AddsTasksToWorldWhenNo_heldbeliefIsSet(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_soul = worldunit_shop(yao_text)
+    yao_suis = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_soul.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_soul.set_char_pool(zia_pool)
+    yao_suis.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_suis.set_char_pool(zia_pool)
     yao_hubunit = hubunit_shop(env_dir(), None, yao_text)
-    yao_hubunit.save_soul_world(yao_soul)
+    yao_hubunit.save_suis_world(yao_suis)
 
     zia_being = worldunit_shop(zia_text)
     zia_being.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
@@ -49,29 +49,29 @@ def test_listen_to_agendas_soul_being_AddsTasksToWorldWhenNo_heldbeliefIsSet(
     zia_hubunit = hubunit_shop(env_dir(), None, zia_text)
     zia_hubunit.save_being_world(zia_being)
 
-    new_yao_being = create_listen_basis(yao_soul)
+    new_yao_being = create_listen_basis(yao_suis)
     assert len(new_yao_being.get_agenda_dict()) == 0
 
     # WHEN
     print(f"{len(new_yao_being.get_idea_dict())=}")
-    listen_to_agendas_soul_being(new_yao_being, yao_hubunit)
+    listen_to_agendas_suis_being(new_yao_being, yao_hubunit)
 
     # THEN
     assert len(new_yao_being.get_agenda_dict()) == 2
 
 
-def test_listen_to_agendas_soul_being_AddsTasksToWorld(env_dir_setup_cleanup):
+def test_listen_to_agendas_suis_being_AddsTasksToWorld(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_soul = worldunit_shop(yao_text)
+    yao_suis = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     zia_pool = 87
-    yao_soul.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_soul.set_char_pool(zia_pool)
+    yao_suis.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_suis.set_char_pool(zia_pool)
     yao_hubunit = hubunit_shop(env_dir(), None, yao_text)
-    yao_hubunit.save_soul_world(yao_soul)
+    yao_hubunit.save_suis_world(yao_suis)
 
     zia_being = worldunit_shop(zia_text)
     zia_being.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
@@ -83,18 +83,18 @@ def test_listen_to_agendas_soul_being_AddsTasksToWorld(env_dir_setup_cleanup):
     cook_ideaunit._cultureunit.set_heldbelief(yao_text)
     zia_hubunit = hubunit_shop(env_dir(), None, zia_text)
     zia_hubunit.save_being_world(zia_being)
-    new_yao_being = create_listen_basis(yao_soul)
+    new_yao_being = create_listen_basis(yao_suis)
     assert len(new_yao_being.get_agenda_dict()) == 0
 
     # WHEN
     print(f"{len(new_yao_being.get_idea_dict())=}")
-    listen_to_agendas_soul_being(new_yao_being, yao_hubunit)
+    listen_to_agendas_suis_being(new_yao_being, yao_hubunit)
 
     # THEN
     assert len(new_yao_being.get_agenda_dict()) == 2
 
 
-def test_listen_to_agendas_soul_being_AddsTasksToWorldWithDetailsDecidedBy_debtor_weight(
+def test_listen_to_agendas_suis_being_AddsTasksToWorldWithDetailsDecidedBy_debtor_weight(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -117,16 +117,16 @@ def test_listen_to_agendas_soul_being_AddsTasksToWorldWithDetailsDecidedBy_debto
     zia_hubunit.save_being_world(zia_being)
     bob_hubunit.save_being_world(bob_being)
 
-    yao_soul = get_example_yao_speaker()
-    yao_text = yao_soul._owner_id
+    yao_suis = get_example_yao_speaker()
+    yao_text = yao_suis._owner_id
     yao_hubunit = hubunit_shop(env_dir(), None, yao_text)
-    yao_hubunit.save_soul_world(yao_soul)
+    yao_hubunit.save_suis_world(yao_suis)
 
-    new_yao_being1 = create_listen_basis(yao_soul)
+    new_yao_being1 = create_listen_basis(yao_suis)
     assert new_yao_being1.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_agendas_soul_being(new_yao_being1, yao_hubunit)
+    listen_to_agendas_suis_being(new_yao_being1, yao_hubunit)
 
     # THEN
     assert new_yao_being1.idea_exists(cook_road())
@@ -138,14 +138,14 @@ def test_listen_to_agendas_soul_being_AddsTasksToWorldWithDetailsDecidedBy_debto
 
     yao_zia_debtor_weight = 15
     yao_bob_debtor_weight = 5
-    yao_soul.add_charunit(zia_text, None, yao_zia_debtor_weight)
-    yao_soul.add_charunit(bob_text, None, yao_bob_debtor_weight)
-    yao_soul.set_char_pool(100)
-    new_yao_being2 = create_listen_basis(yao_soul)
+    yao_suis.add_charunit(zia_text, None, yao_zia_debtor_weight)
+    yao_suis.add_charunit(bob_text, None, yao_bob_debtor_weight)
+    yao_suis.set_char_pool(100)
+    new_yao_being2 = create_listen_basis(yao_suis)
     assert new_yao_being2.idea_exists(cook_road()) is False
 
     # WHEN
-    listen_to_agendas_soul_being(new_yao_being2, yao_hubunit)
+    listen_to_agendas_suis_being(new_yao_being2, yao_hubunit)
 
     # THEN
     assert new_yao_being2.idea_exists(cook_road())
@@ -157,22 +157,22 @@ def test_listen_to_agendas_soul_being_AddsTasksToWorldWithDetailsDecidedBy_debto
     assert new_cook_idea.get_reasonunit(eat_road()) == zia_eat_reasonunit
 
 
-def test_listen_to_agendas_soul_being_ProcessesIrrationalWorld(env_dir_setup_cleanup):
+def test_listen_to_agendas_suis_being_ProcessesIrrationalWorld(env_dir_setup_cleanup):
     # GIVEN
     yao_text = "Yao"
-    yao_soul = worldunit_shop(yao_text)
+    yao_suis = worldunit_shop(yao_text)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
     sue_text = "Sue"
     sue_credor_weight = 57
     sue_debtor_weight = 51
-    yao_soul.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_soul.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_suis.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_suis.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_soul.set_char_pool(yao_pool)
+    yao_suis.set_char_pool(yao_pool)
     yao_hubunit = hubunit_shop(env_dir(), None, yao_text)
-    yao_hubunit.save_soul_world(yao_soul)
+    yao_hubunit.save_suis_world(yao_suis)
 
     zia_text = "Zia"
     zia_being = worldunit_shop(zia_text)
@@ -219,8 +219,8 @@ def test_listen_to_agendas_soul_being_ProcessesIrrationalWorld(env_dir_setup_cle
     sue_hubunit.save_being_world(sue_being)
 
     # WHEN
-    new_yao_being = create_listen_basis(yao_soul)
-    listen_to_agendas_soul_being(new_yao_being, yao_hubunit)
+    new_yao_being = create_listen_basis(yao_suis)
+    listen_to_agendas_suis_being(new_yao_being, yao_hubunit)
 
     # THEN irrational world is ignored
     assert len(new_yao_being.get_agenda_dict()) != 3
@@ -233,26 +233,26 @@ def test_listen_to_agendas_soul_being_ProcessesIrrationalWorld(env_dir_setup_cle
     assert sue_charunit._irrational_debtor_weight == 51
 
 
-def test_listen_to_agendas_soul_being_ProcessesMissingDebtorWorld(
+def test_listen_to_agendas_suis_being_ProcessesMissingDebtorWorld(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
     yao_hubunit = hubunit_shop(env_dir(), None, yao_text)
-    delete_dir(yao_hubunit.soul_file_path())  # don't know why I have to do this...
-    print(f"{os_path_exists(yao_hubunit.soul_file_path())=}")
-    yao_soul = worldunit_shop(yao_text)
+    delete_dir(yao_hubunit.suis_file_path())  # don't know why I have to do this...
+    print(f"{os_path_exists(yao_hubunit.suis_file_path())=}")
+    yao_suis = worldunit_shop(yao_text)
     zia_text = "Zia"
     sue_text = "Sue"
     zia_credor_weight = 47
     sue_credor_weight = 57
     zia_debtor_weight = 41
     sue_debtor_weight = 51
-    yao_soul.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
-    yao_soul.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
+    yao_suis.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_suis.add_charunit(sue_text, sue_credor_weight, sue_debtor_weight)
     yao_pool = 92
-    yao_soul.set_char_pool(yao_pool)
-    yao_hubunit.save_soul_world(yao_soul)
+    yao_suis.set_char_pool(yao_pool)
+    yao_hubunit.save_suis_world(yao_suis)
 
     zia_being = worldunit_shop(zia_text)
     zia_being.add_idea(ideaunit_shop(clean_text(), pledge=True), casa_road())
@@ -266,8 +266,8 @@ def test_listen_to_agendas_soul_being_ProcessesMissingDebtorWorld(
     zia_hubunit.save_being_world(zia_being)
 
     # WHEN
-    new_yao_being = create_listen_basis(yao_soul)
-    listen_to_agendas_soul_being(new_yao_being, yao_hubunit)
+    new_yao_being = create_listen_basis(yao_suis)
+    listen_to_agendas_suis_being(new_yao_being, yao_hubunit)
 
     # THEN irrational world is ignored
     assert len(new_yao_being.get_agenda_dict()) != 3
@@ -280,25 +280,25 @@ def test_listen_to_agendas_soul_being_ProcessesMissingDebtorWorld(
     assert sue_charunit._inallocable_debtor_weight == 51
 
 
-def test_listen_to_agendas_soul_being_ListensToOwner_soul_AndNotOwner_being(
+def test_listen_to_agendas_suis_being_ListensToOwner_suis_AndNotOwner_being(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     yao_text = "Yao"
-    yao_soul = worldunit_shop(yao_text)
+    yao_suis = worldunit_shop(yao_text)
     yao_text = "Yao"
     yao_credor_weight = 57
     yao_debtor_weight = 51
-    yao_soul.add_charunit(yao_text, yao_credor_weight, yao_debtor_weight)
+    yao_suis.add_charunit(yao_text, yao_credor_weight, yao_debtor_weight)
     zia_text = "Zia"
     zia_credor_weight = 47
     zia_debtor_weight = 41
-    yao_soul.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
+    yao_suis.add_charunit(zia_text, zia_credor_weight, zia_debtor_weight)
     yao_pool = 87
-    yao_soul.set_char_pool(yao_pool)
+    yao_suis.set_char_pool(yao_pool)
     # save yao without task to dutys
     yao_hubunit = hubunit_shop(env_dir(), None, yao_text)
-    yao_hubunit.save_soul_world(yao_soul)
+    yao_hubunit.save_suis_world(yao_suis)
 
     # Save Zia to being
     zia_text = "Zia"
@@ -323,8 +323,8 @@ def test_listen_to_agendas_soul_being_ListensToOwner_soul_AndNotOwner_being(
     yao_hubunit.save_being_world(yao_old_being)
 
     # WHEN
-    new_yao_being = create_listen_basis(yao_soul)
-    listen_to_agendas_soul_being(new_yao_being, yao_hubunit)
+    new_yao_being = create_listen_basis(yao_suis)
+    listen_to_agendas_suis_being(new_yao_being, yao_hubunit)
 
     # THEN irrational world is ignored
     assert len(new_yao_being.get_agenda_dict()) != 3

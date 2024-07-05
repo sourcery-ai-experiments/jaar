@@ -1,5 +1,5 @@
 from src._road.jaar_config import (
-    soul_str,
+    suis_str,
     being_str,
     get_rootpart_of_econ_dir,
     treasury_file_name,
@@ -8,8 +8,8 @@ from src._road.jaar_config import (
 )
 
 
-def test_soul_str():
-    assert soul_str() == "soul"
+def test_suis_str():
+    assert suis_str() == "suis"
 
 
 def test_being_str():

@@ -22,8 +22,8 @@ def get_json_filename(filename_without_extention) -> str:
     return f"{filename_without_extention}.json"
 
 
-def soul_str() -> str:
-    return "soul"
+def suis_str() -> str:
+    return "suis"
 
 
 def being_str() -> str:

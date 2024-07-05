@@ -60,9 +60,9 @@ def test_RealUnit_generate_being_world_SetsCorrectFileWithout_healerhold(
     assert before_bob_being_world.char_exists(sue_text) is False
 
     # WHEN
-    bob_soul_world = bob_hubunit.get_soul_world()
-    bob_soul_world.add_charunit(sue_text)
-    bob_hubunit.save_soul_world(bob_soul_world)
+    bob_suis_world = bob_hubunit.get_suis_world()
+    bob_suis_world.add_charunit(sue_text)
+    bob_hubunit.save_suis_world(bob_suis_world)
 
     # WHEN
     after_bob_being_world = music_real.generate_being_world(bob_text)
@@ -82,17 +82,17 @@ def test_RealUnit_generate_being_world_SetsFileWith_healerhold(env_dir_setup_cle
     assert after_bob_being_world.char_exists(bob_text) is False
 
     # WHEN
-    bob_soul_world = bob_hubunit.get_soul_world()
-    bob_soul_world.add_charunit(bob_text)
-    bob_soul_world.set_char_pool(100)
+    bob_suis_world = bob_hubunit.get_suis_world()
+    bob_suis_world.add_charunit(bob_text)
+    bob_suis_world.set_char_pool(100)
     texas_text = "Texas"
-    texas_road = bob_soul_world.make_l1_road(texas_text)
+    texas_road = bob_suis_world.make_l1_road(texas_text)
     elpaso_text = "el paso"
-    elpaso_road = bob_soul_world.make_road(texas_road, elpaso_text)
+    elpaso_road = bob_suis_world.make_road(texas_road, elpaso_text)
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
-    bob_soul_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    bob_soul_world.add_idea(elpaso_idea, texas_road)
-    bob_hubunit.save_soul_world(bob_soul_world)
+    bob_suis_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    bob_suis_world.add_idea(elpaso_idea, texas_road)
+    bob_hubunit.save_suis_world(bob_suis_world)
     after_bob_being_world = music_real.generate_being_world(bob_text)
 
     # THEN
@@ -112,27 +112,27 @@ def test_RealUnit_generate_all_being_worlds_SetsCorrectFiles(
     bob_hubunit = hubunit_shop(reals_dir, music_real.real_id, bob_text, None)
     music_real.init_owner_econs(sue_text)
     sue_hubunit = hubunit_shop(reals_dir, music_real.real_id, sue_text, None)
-    bob_soul_world = music_real.generate_being_world(bob_text)
-    sue_soul_world = music_real.generate_being_world(sue_text)
+    bob_suis_world = music_real.generate_being_world(bob_text)
+    sue_suis_world = music_real.generate_being_world(sue_text)
 
     texas_text = "Texas"
-    texas_road = bob_soul_world.make_l1_road(texas_text)
+    texas_road = bob_suis_world.make_l1_road(texas_text)
     elpaso_text = "el paso"
-    elpaso_road = bob_soul_world.make_road(texas_road, elpaso_text)
+    elpaso_road = bob_suis_world.make_road(texas_road, elpaso_text)
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=healerhold_shop({bob_text}))
 
-    bob_soul_world = bob_hubunit.get_soul_world()
-    bob_soul_world.add_charunit(bob_text)
-    bob_soul_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    bob_soul_world.add_idea(elpaso_idea, texas_road)
-    bob_hubunit.save_soul_world(bob_soul_world)
+    bob_suis_world = bob_hubunit.get_suis_world()
+    bob_suis_world.add_charunit(bob_text)
+    bob_suis_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    bob_suis_world.add_idea(elpaso_idea, texas_road)
+    bob_hubunit.save_suis_world(bob_suis_world)
 
-    sue_soul_world = sue_hubunit.get_soul_world()
-    sue_soul_world.add_charunit(sue_text)
-    sue_soul_world.add_charunit(bob_text)
-    sue_soul_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    sue_soul_world.add_idea(elpaso_idea, texas_road)
-    sue_hubunit.save_soul_world(sue_soul_world)
+    sue_suis_world = sue_hubunit.get_suis_world()
+    sue_suis_world.add_charunit(sue_text)
+    sue_suis_world.add_charunit(bob_text)
+    sue_suis_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    sue_suis_world.add_idea(elpaso_idea, texas_road)
+    sue_hubunit.save_suis_world(sue_suis_world)
 
     before_bob_being_world = music_real.get_being_file_world(bob_text)
     before_sue_being_world = music_real.get_being_file_world(sue_text)
