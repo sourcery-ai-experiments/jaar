@@ -1,7 +1,7 @@
 from src._world.examples.example_worlds import (
     world_v001_with_large_agenda,
     get_world_with_4_levels,
-    get_world_assignment_laundry_example1,
+    get_world_laundry_example1,
     get_world_with_4_levels_and_2reasons,
     get_world_x1_3levels_1reason_1facts,
 )
@@ -39,7 +39,7 @@ def test_display_ideatree_GivenWorld_shows_Tasks():
     # a_world = get_3node_world()
     # a_world = get_5nodeHG_world()
     # a_world = get_7nodeJRoot_world()
-    a_world = get_world_assignment_laundry_example1()
+    a_world = get_world_laundry_example1()
     # a_world = world_v001()
     a_world.calc_world_metrics()
     print(f"World {a_world._real_id}: Nodes ({len(a_world._idea_dict)})")

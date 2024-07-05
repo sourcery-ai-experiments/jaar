@@ -385,9 +385,9 @@ class ChangeUnit:
                 after_ideaunit=insert_ideaunit,
                 insert_reasonunit_bases=set(insert_ideaunit._reasonunits.keys()),
             )
-            self.add_atomunit_idea_suffbelief_insert(
+            self.add_atomunit_idea_heldbelief_insert(
                 idea_road=insert_idea_road,
-                insert_suffbelief_belief_ids=insert_ideaunit._assignedunit._suffbeliefs.keys(),
+                insert_heldbelief_belief_ids=insert_ideaunit._cultureunit._heldbeliefs.keys(),
             )
 
     def add_atomunit_idea_updates(
@@ -508,23 +508,23 @@ class ChangeUnit:
             # update reasonunits_permises update_premise
             # update reasonunits_permises delete_premise
 
-            # insert / update / delete suffbeliefs
-            before_suffbeliefs_belief_ids = set(
-                before_ideaunit._assignedunit._suffbeliefs.keys()
+            # insert / update / delete heldbeliefs
+            before_heldbeliefs_belief_ids = set(
+                before_ideaunit._cultureunit._heldbeliefs.keys()
             )
-            after_suffbeliefs_belief_ids = set(
-                after_ideaunit._assignedunit._suffbeliefs.keys()
+            after_heldbeliefs_belief_ids = set(
+                after_ideaunit._cultureunit._heldbeliefs.keys()
             )
-            self.add_atomunit_idea_suffbelief_insert(
+            self.add_atomunit_idea_heldbelief_insert(
                 idea_road=idea_road,
-                insert_suffbelief_belief_ids=after_suffbeliefs_belief_ids.difference(
-                    before_suffbeliefs_belief_ids
+                insert_heldbelief_belief_ids=after_heldbeliefs_belief_ids.difference(
+                    before_heldbeliefs_belief_ids
                 ),
             )
-            self.add_atomunit_idea_suffbelief_deletes(
+            self.add_atomunit_idea_heldbelief_deletes(
                 idea_road=idea_road,
-                delete_suffbelief_belief_ids=before_suffbeliefs_belief_ids.difference(
-                    after_suffbeliefs_belief_ids
+                delete_heldbelief_belief_ids=before_heldbeliefs_belief_ids.difference(
+                    after_heldbeliefs_belief_ids
                 ),
             )
 
@@ -554,10 +554,10 @@ class ChangeUnit:
                 before_ideaunit=delete_ideaunit,
                 delete_reasonunit_bases=set(delete_ideaunit._reasonunits.keys()),
             )
-            self.add_atomunit_idea_suffbelief_deletes(
+            self.add_atomunit_idea_heldbelief_deletes(
                 idea_road=delete_idea_road,
-                delete_suffbelief_belief_ids=set(
-                    delete_ideaunit._assignedunit._suffbeliefs.keys()
+                delete_heldbelief_belief_ids=set(
+                    delete_ideaunit._cultureunit._heldbeliefs.keys()
                 ),
             )
 
@@ -706,22 +706,22 @@ class ChangeUnit:
             x_atomunit.set_required_arg("need", delete_premise_need)
             self.set_atomunit(x_atomunit)
 
-    def add_atomunit_idea_suffbelief_insert(
-        self, idea_road: RoadUnit, insert_suffbelief_belief_ids: set
+    def add_atomunit_idea_heldbelief_insert(
+        self, idea_road: RoadUnit, insert_heldbelief_belief_ids: set
     ):
-        for insert_suffbelief_belief_id in insert_suffbelief_belief_ids:
-            x_atomunit = atomunit_shop("world_idea_suffbelief", atom_insert())
+        for insert_heldbelief_belief_id in insert_heldbelief_belief_ids:
+            x_atomunit = atomunit_shop("world_idea_heldbelief", atom_insert())
             x_atomunit.set_required_arg("road", idea_road)
-            x_atomunit.set_required_arg("belief_id", insert_suffbelief_belief_id)
+            x_atomunit.set_required_arg("belief_id", insert_heldbelief_belief_id)
             self.set_atomunit(x_atomunit)
 
-    def add_atomunit_idea_suffbelief_deletes(
-        self, idea_road: RoadUnit, delete_suffbelief_belief_ids: set
+    def add_atomunit_idea_heldbelief_deletes(
+        self, idea_road: RoadUnit, delete_heldbelief_belief_ids: set
     ):
-        for delete_suffbelief_belief_id in delete_suffbelief_belief_ids:
-            x_atomunit = atomunit_shop("world_idea_suffbelief", atom_delete())
+        for delete_heldbelief_belief_id in delete_heldbelief_belief_ids:
+            x_atomunit = atomunit_shop("world_idea_heldbelief", atom_delete())
             x_atomunit.set_required_arg("road", idea_road)
-            x_atomunit.set_required_arg("belief_id", delete_suffbelief_belief_id)
+            x_atomunit.set_required_arg("belief_id", delete_heldbelief_belief_id)
             self.set_atomunit(x_atomunit)
 
     def add_atomunit_idea_fiscallink_inserts(
@@ -920,10 +920,10 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
     x_list = [atom_delete(), "world_idea_reason_premiseunit"]
     world_idea_reason_premiseunit_delete_dict = get_leg_obj(atoms_dict, x_list)
 
-    x_list = [atom_insert(), "world_idea_suffbelief"]
-    world_idea_suffbelief_insert_dict = get_leg_obj(atoms_dict, x_list)
-    x_list = [atom_delete(), "world_idea_suffbelief"]
-    world_idea_suffbelief_delete_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_insert(), "world_idea_heldbelief"]
+    world_idea_heldbelief_insert_dict = get_leg_obj(atoms_dict, x_list)
+    x_list = [atom_delete(), "world_idea_heldbelief"]
+    world_idea_heldbelief_delete_dict = get_leg_obj(atoms_dict, x_list)
 
     x_list = [atom_insert(), "world_idea_healerhold"]
     world_idea_healerhold_insert_dict = get_leg_obj(atoms_dict, x_list)
@@ -1031,13 +1031,13 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
             leg_list, world_idea_reason_premiseunit_delete_dict, x_world
         )
 
-    if world_idea_suffbelief_insert_dict != None:
-        add_world_idea_suffbelief_insert_to_legible_list(
-            leg_list, world_idea_suffbelief_insert_dict, x_world
+    if world_idea_heldbelief_insert_dict != None:
+        add_world_idea_heldbelief_insert_to_legible_list(
+            leg_list, world_idea_heldbelief_insert_dict, x_world
         )
-    if world_idea_suffbelief_delete_dict != None:
-        add_world_idea_suffbelief_delete_to_legible_list(
-            leg_list, world_idea_suffbelief_delete_dict, x_world
+    if world_idea_heldbelief_delete_dict != None:
+        add_world_idea_heldbelief_delete_to_legible_list(
+            leg_list, world_idea_heldbelief_delete_dict, x_world
         )
 
     if world_idea_healerhold_insert_dict != None:
@@ -1541,25 +1541,25 @@ def add_world_reason_premiseunit_delete_to_legible_list(
                 legible_list.append(x_str)
 
 
-def add_world_idea_suffbelief_insert_to_legible_list(
-    legible_list: list[str], idea_suffbelief_insert_dict: dict, x_world: WorldUnit
+def add_world_idea_heldbelief_insert_to_legible_list(
+    legible_list: list[str], idea_heldbelief_insert_dict: dict, x_world: WorldUnit
 ):
-    for road_dict in idea_suffbelief_insert_dict.values():
-        for idea_suffbelief_atom in road_dict.values():
-            belief_id_value = idea_suffbelief_atom.get_value("belief_id")
-            road_value = idea_suffbelief_atom.get_value("road")
-            x_str = f"Suffbelief '{belief_id_value}' created for idea '{road_value}'."
+    for road_dict in idea_heldbelief_insert_dict.values():
+        for idea_heldbelief_atom in road_dict.values():
+            belief_id_value = idea_heldbelief_atom.get_value("belief_id")
+            road_value = idea_heldbelief_atom.get_value("road")
+            x_str = f"heldbelief '{belief_id_value}' created for idea '{road_value}'."
             legible_list.append(x_str)
 
 
-def add_world_idea_suffbelief_delete_to_legible_list(
-    legible_list: list[str], idea_suffbelief_delete_dict: dict, x_world: WorldUnit
+def add_world_idea_heldbelief_delete_to_legible_list(
+    legible_list: list[str], idea_heldbelief_delete_dict: dict, x_world: WorldUnit
 ):
-    for road_dict in idea_suffbelief_delete_dict.values():
-        for idea_suffbelief_atom in road_dict.values():
-            belief_id_value = idea_suffbelief_atom.get_value("belief_id")
-            road_value = idea_suffbelief_atom.get_value("road")
-            x_str = f"Suffbelief '{belief_id_value}' deleted for idea '{road_value}'."
+    for road_dict in idea_heldbelief_delete_dict.values():
+        for idea_heldbelief_atom in road_dict.values():
+            belief_id_value = idea_heldbelief_atom.get_value("belief_id")
+            road_value = idea_heldbelief_atom.get_value("road")
+            x_str = f"heldbelief '{belief_id_value}' deleted for idea '{road_value}'."
             legible_list.append(x_str)
 
 

@@ -12,7 +12,7 @@ from src._world.world import (
     worldunit_shop,
     get_from_json as worldunit_get_from_json,
 )
-from src._world.reason_assign import assignedunit_shop
+from src._world.reason_culture import cultureunit_shop
 from src._world.examples.world_env import get_world_examples_dir as env_dir
 
 
@@ -338,7 +338,7 @@ def get_world_irrational_example() -> WorldUnit:
     return hatter_world
 
 
-def get_assignment_world_example1():
+def get_world_mop_example1():
     neo_world = worldunit_shop("Neo")
     casa_text = "casa"
     casa_road = neo_world.make_l1_road(casa_text)
@@ -365,7 +365,7 @@ def get_assignment_world_example1():
     return neo_world
 
 
-def get_world_assignment_laundry_example1() -> WorldUnit:
+def get_world_laundry_example1() -> WorldUnit:
     amos_text = "Amos"
     amos_world = worldunit_shop(_owner_id=amos_text)
     cali_text = "Cali"
@@ -402,10 +402,9 @@ def get_world_assignment_laundry_example1() -> WorldUnit:
     amos_world.edit_idea_attr(
         road=laundry_task_road, reason_base=basket_road, reason_premise=b_smel_road
     )
-    # assign Cali to task
-    cali_assignunit = assignedunit_shop()
-    cali_assignunit.set_suffbelief(cali_text)
-    amos_world.edit_idea_attr(road=laundry_task_road, assignedunit=cali_assignunit)
+    cali_cultureunit = cultureunit_shop()
+    cali_cultureunit.set_heldbelief(cali_text)
+    amos_world.edit_idea_attr(road=laundry_task_road, cultureunit=cali_cultureunit)
     # print(f"{basket_road=}")
     # print(f"{amos_world._real_id=}")
     amos_world.set_fact(base=basket_road, pick=b_full_road)

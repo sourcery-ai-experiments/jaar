@@ -91,8 +91,8 @@ def world_idea_reason_premiseunit_text() -> str:
     return "world_idea_reason_premiseunit"
 
 
-def world_idea_suffbelief_text() -> str:
-    return "world_idea_suffbelief"
+def world_idea_heldbelief_text() -> str:
+    return "world_idea_heldbelief"
 
 
 def world_idea_healerhold_text() -> str:
@@ -234,6 +234,12 @@ def is_category_ref(category_text: str) -> bool:
 
 def get_atom_order(crud_text: str, category: str) -> int:
     return get_nested_value(get_atom_config_dict(), [category, crud_text, "atom_order"])
+
+
+def get_normal_table_name(category: str) -> int:
+    return get_nested_value(
+        get_atom_config_dict(), [category, "normal_specs", "normal_table_name"]
+    )
 
 
 def set_mog(

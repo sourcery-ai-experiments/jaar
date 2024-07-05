@@ -44,24 +44,9 @@ class CharUnit(CharCore):
     _world_agenda_debt: float = None
     _world_agenda_ratio_cred: float = None
     _world_agenda_ratio_debt: float = None
-    _credor_operational: bool = None
-    _debtor_operational: bool = None
-    # set by River process
-    _treasury_due_paid: float = None
-    _treasury_due_diff: float = None
-    _output_world_meld_order: int = None
-    _treasury_cred_score: float = None
-    _treasury_voice_rank: int = None
-    _treasury_voice_hx_lowest_rank: int = None
 
     def set_pixel(self, x_pixel: float):
         self._pixel = x_pixel
-
-    def clear_output_world_meld_order(self):
-        self._output_world_meld_order = None
-
-    def set_output_world_meld_order(self, _output_world_meld_order: int):
-        self._output_world_meld_order = _output_world_meld_order
 
     def set_credor_debtor_weight(
         self,
@@ -72,42 +57,6 @@ class CharUnit(CharCore):
             self.set_credor_weight(credor_weight)
         if debtor_weight != None:
             self.set_debtor_weight(debtor_weight)
-
-    def clear_treasurying_data(self):
-        self._treasury_due_paid = None
-        self._treasury_due_diff = None
-        self._treasury_cred_score = None
-        self._treasury_voice_rank = None
-
-    def set_treasury_attr(
-        self,
-        _treasury_due_paid: float,
-        _treasury_due_diff: float,
-        cred_score: float,
-        voice_rank: int,
-    ):
-        self._treasury_due_paid = _treasury_due_paid
-        self._treasury_due_diff = _treasury_due_diff
-        self._treasury_cred_score = cred_score
-        self.set_treasury_voice_rank(voice_rank)
-
-    def set_treasury_voice_rank(self, voice_rank: int):
-        self._treasury_voice_rank = voice_rank
-        self._set_treasury_voice_hx_lowest_rank()
-
-    def _set_treasury_voice_hx_lowest_rank(
-        self, treasury_voice_hx_lowest_rank: float = None
-    ):
-        if (
-            treasury_voice_hx_lowest_rank != None
-            and self._treasury_voice_hx_lowest_rank != None
-        ):
-            self._treasury_voice_hx_lowest_rank = treasury_voice_hx_lowest_rank
-
-        if self._treasury_voice_hx_lowest_rank is None or (
-            self._treasury_voice_hx_lowest_rank > self._treasury_voice_rank
-        ):
-            self._treasury_voice_hx_lowest_rank = self._treasury_voice_rank
 
     def set_credor_weight(self, credor_weight: int):
         if (credor_weight / self._pixel).is_integer() is False:
@@ -226,13 +175,6 @@ class CharUnit(CharCore):
             "credor_weight": self.credor_weight,
             "debtor_weight": self.debtor_weight,
             "_beliefholds": self.get_beliefholds_dict(),
-            "_credor_operational": self._credor_operational,
-            "_debtor_operational": self._debtor_operational,
-            "_treasury_due_paid": self._treasury_due_paid,
-            "_treasury_due_diff": self._treasury_due_diff,
-            "_treasury_cred_score": self._treasury_cred_score,
-            "_treasury_voice_rank": self._treasury_voice_rank,
-            "_treasury_voice_hx_lowest_rank": self._treasury_voice_hx_lowest_rank,
         }
         if self._irrational_debtor_weight not in [None, 0]:
             x_dict["_irrational_debtor_weight"] = self._irrational_debtor_weight
@@ -250,7 +192,6 @@ class CharUnit(CharCore):
         x_dict["_world_agenda_debt"] = self._world_agenda_debt
         x_dict["_world_agenda_ratio_cred"] = self._world_agenda_ratio_cred
         x_dict["_world_agenda_ratio_debt"] = self._world_agenda_ratio_debt
-        x_dict["_output_world_meld_order"] = self._output_world_meld_order
 
 
 # class CharUnitsshop:
@@ -272,29 +213,13 @@ def charunits_get_from_dict(
 def charunit_get_from_dict(charunit_dict: dict, _road_delimiter: str) -> CharUnit:
     _irrational_debtor_weight = charunit_dict.get("_irrational_debtor_weight", 0)
     _inallocable_debtor_weight = charunit_dict.get("_inallocable_debtor_weight", 0)
-    _treasury_due_paid = charunit_dict.get("_treasury_due_paid", 0)
-    _treasury_due_diff = charunit_dict.get("_treasury_due_diff", 0)
-    _treasury_cred_score = charunit_dict.get("_treasury_cred_score", 0)
-    _treasury_voice_rank = charunit_dict.get("_treasury_voice_rank", 0)
-    _treasury_voice_hx_lowest_rank = charunit_dict.get(
-        "_treasury_voice_hx_lowest_rank", 0
-    )
     x_charunit = charunit_shop(
         char_id=charunit_dict["char_id"],
         credor_weight=charunit_dict["credor_weight"],
         debtor_weight=charunit_dict["debtor_weight"],
-        _credor_operational=charunit_dict["_credor_operational"],
-        _debtor_operational=charunit_dict["_debtor_operational"],
         _road_delimiter=_road_delimiter,
     )
     x_charunit._beliefholds = beliefholds_get_from_dict(charunit_dict["_beliefholds"])
-    x_charunit.set_treasury_attr(
-        _treasury_due_paid=_treasury_due_paid,
-        _treasury_due_diff=_treasury_due_diff,
-        cred_score=_treasury_cred_score,
-        voice_rank=_treasury_voice_rank,
-    )
-    x_charunit._set_treasury_voice_hx_lowest_rank(_treasury_voice_hx_lowest_rank)
     x_charunit.add_irrational_debtor_weight(get_0_if_None(_irrational_debtor_weight))
     x_charunit.add_inallocable_debtor_weight(get_0_if_None(_inallocable_debtor_weight))
 
@@ -305,8 +230,6 @@ def charunit_shop(
     char_id: CharID,
     credor_weight: int = None,
     debtor_weight: int = None,
-    _credor_operational: bool = None,
-    _debtor_operational: bool = None,
     _road_delimiter: str = None,
     _pixel: float = None,
 ) -> CharUnit:
@@ -316,16 +239,12 @@ def charunit_shop(
         _beliefholds={},
         _irrational_debtor_weight=get_0_if_None(),
         _inallocable_debtor_weight=get_0_if_None(),
-        _credor_operational=_credor_operational,
-        _debtor_operational=_debtor_operational,
         _world_cred=get_0_if_None(),
         _world_debt=get_0_if_None(),
         _world_agenda_cred=get_0_if_None(),
         _world_agenda_debt=get_0_if_None(),
         _world_agenda_ratio_cred=get_0_if_None(),
         _world_agenda_ratio_debt=get_0_if_None(),
-        _treasury_due_paid=None,
-        _treasury_due_diff=None,
         _road_delimiter=default_road_delimiter_if_none(_road_delimiter),
         _pixel=default_pixel_if_none(_pixel),
     )

@@ -12,17 +12,17 @@ from src.listen.listen import (
 #     old_ideaunit = ideaunit_shop(clean_text, _weight=14)
 #     old_ideaunit.set_world_importance(0.5)
 #     swimmers_text = ",swimmers"
-#     old_ideaunit._assignedunit.set_suffbelief(swimmers_text)
+#     old_ideaunit._cultureunit.set_heldbelief(swimmers_text)
 #     print(f"{old_ideaunit._weight=}")
-#     assert old_ideaunit._assignedunit.suffbelief_exists(swimmers_text)
+#     assert old_ideaunit._cultureunit.heldbelief_exists(swimmers_text)
 
 #     # WHEN
 #     yao_text = "Yao"
 #     new_ideaunit = create_ingest_idea(old_ideaunit, 6, 0.25, listener=yao_text)
 
 #     # THEN
-#     assert new_ideaunit._assignedunit.suffbelief_exists(swimmers_text) is False
-#     assert new_ideaunit._assignedunit.suffbelief_exists(yao_text)
+#     assert new_ideaunit._cultureunit.heldbelief_exists(swimmers_text) is False
+#     assert new_ideaunit._cultureunit.heldbelief_exists(yao_text)
 #     assert new_ideaunit._weight == 99
 
 

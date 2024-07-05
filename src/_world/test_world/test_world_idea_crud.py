@@ -221,7 +221,7 @@ def test_WorldUnit_add_idea_CanCreateRoadUnitToGrandkidIdea():
     assert sue_world.get_level_count(level=3) == 3
 
 
-def test_WorldUnit_add_idea_CreatesIdeaUnitsreferencedBy_reasonunits():
+def test_WorldUnit_add_idea_CreatesIdeaUnitsUsedBy_reasonunits():
     # GIVEN
     sue_world = get_world_with_4_levels()
     sue_world.calc_world_metrics()

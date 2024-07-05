@@ -541,9 +541,9 @@ def test_WorldUnit_calc_world_metrics_RaisesErrorWhen_is_charunits_debtor_weight
     rico_debtor_weight = 15
     carm_debtor_weight = 25
     patr_debtor_weight = 40
-    yao_world.set_charunit(charunit_shop(rico_text, None, None, rico_debtor_weight))
-    yao_world.set_charunit(charunit_shop(carm_text, None, None, carm_debtor_weight))
-    yao_world.set_charunit(charunit_shop(patr_text, None, None, patr_debtor_weight))
+    yao_world.set_charunit(charunit_shop(rico_text, rico_debtor_weight))
+    yao_world.set_charunit(charunit_shop(carm_text, carm_debtor_weight))
+    yao_world.set_charunit(charunit_shop(patr_text, patr_debtor_weight))
     assert yao_world._char_debtor_pool is None
     assert yao_world.is_charunits_debtor_weight_sum_correct()
     assert yao_world.calc_world_metrics() is None

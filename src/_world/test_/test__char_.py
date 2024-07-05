@@ -33,14 +33,6 @@ def test_CharUnit_exists():
     assert bob_charunit._world_debt is None
     assert bob_charunit._world_agenda_cred is None
     assert bob_charunit._world_agenda_debt is None
-    assert bob_charunit._credor_operational is None
-    assert bob_charunit._debtor_operational is None
-    assert bob_charunit._treasury_due_paid is None
-    assert bob_charunit._treasury_due_diff is None
-    assert bob_charunit._treasury_cred_score is None
-    assert bob_charunit._treasury_voice_rank is None
-    assert bob_charunit._treasury_voice_hx_lowest_rank is None
-    assert bob_charunit._output_world_meld_order is None
     assert bob_charunit._road_delimiter is None
     assert bob_charunit._pixel is None
 
@@ -129,33 +121,6 @@ def test_CharUnit_set_pixel_CorrectlySetsAttribute():
 
     # THEN
     assert bob_charunit._pixel == x_pixel
-
-
-def test_CharUnit_set_output_world_meld_order_CorrectlySetsAttribute():
-    # GIVEN
-    bob_charunit = charunit_shop("Bob")
-    assert bob_charunit._output_world_meld_order is None
-
-    # WHEN
-    x_output_world_meld_order = 5
-    bob_charunit.set_output_world_meld_order(x_output_world_meld_order)
-
-    # THEN
-    assert bob_charunit._output_world_meld_order == x_output_world_meld_order
-
-
-def test_CharUnit_clear_output_world_meld_order_CorrectlySetsAttribute():
-    # GIVEN
-    bob_charunit = charunit_shop("Bob")
-    x_output_world_meld_order = 5
-    bob_charunit.set_output_world_meld_order(x_output_world_meld_order)
-    assert bob_charunit._output_world_meld_order == x_output_world_meld_order
-
-    # WHEN
-    bob_charunit.clear_output_world_meld_order()
-
-    # THEN
-    assert bob_charunit._output_world_meld_order is None
 
 
 def test_CharUnit_set_credor_weight_CorrectlySetsAttribute():
@@ -400,110 +365,3 @@ def test_CharUnit_set_world_agenda_ratio_cred_debt_SetsAttrCorrectly():
     # THEN
     assert bob_charunit._world_agenda_ratio_cred == 0.75
     assert bob_charunit._world_agenda_ratio_debt == 0.5
-
-
-def test_CharUnit_set_treasury_attr_SetsAttrCorrectly():
-    # GIVEN
-    x_world_agenda_ratio_cred = 0.077
-    x_world_agenda_ratio_debt = 0.066
-
-    bob_charunit = charunit_shop("Bob")
-    bob_charunit._world_agenda_ratio_cred = x_world_agenda_ratio_cred
-    bob_charunit._world_agenda_ratio_debt = x_world_agenda_ratio_debt
-    assert bob_charunit._world_agenda_ratio_cred == 0.077
-    assert bob_charunit._world_agenda_ratio_debt == 0.066
-    assert bob_charunit._treasury_due_paid is None
-    assert bob_charunit._treasury_due_diff is None
-    assert bob_charunit._treasury_cred_score is None
-    assert bob_charunit._treasury_voice_rank is None
-    assert bob_charunit._treasury_voice_hx_lowest_rank is None
-
-    # WHEN
-    x_treasury_due_paid = 0.2
-    x_treasury_due_diff = 0.123
-    x_treasury_cred_score = 900
-    x_treasury_voice_rank = 45
-    bob_charunit.set_treasury_attr(
-        _treasury_due_paid=x_treasury_due_paid,
-        _treasury_due_diff=x_treasury_due_diff,
-        cred_score=x_treasury_cred_score,
-        voice_rank=x_treasury_voice_rank,
-    )
-    # THEN
-    assert bob_charunit._world_agenda_ratio_cred == x_world_agenda_ratio_cred
-    assert bob_charunit._world_agenda_ratio_debt == x_world_agenda_ratio_debt
-    assert bob_charunit._treasury_due_paid == x_treasury_due_paid
-    assert bob_charunit._treasury_due_diff == x_treasury_due_diff
-    assert bob_charunit._treasury_cred_score == x_treasury_cred_score
-    assert bob_charunit._treasury_voice_rank == x_treasury_voice_rank
-    assert bob_charunit._treasury_voice_hx_lowest_rank == x_treasury_voice_rank
-
-
-def test_CharUnit_set_treasury_attr_CorrectlyDecreasesOrIgnores_treasury_voice_hx_lowest_rank():
-    # GIVEN
-    x_world_agenda_ratio_cred = 0.077
-    x_world_agenda_ratio_debt = 0.066
-    bob_charunit = charunit_shop("Bob")
-    bob_charunit._world_agenda_ratio_cred = x_world_agenda_ratio_cred
-    bob_charunit._world_agenda_ratio_debt = x_world_agenda_ratio_debt
-    x_treasury_due_paid = 0.2
-    x_treasury_due_diff = 0.123
-    x_treasury_cred_score = 900
-    old_x_treasury_voice_rank = 45
-    bob_charunit.set_treasury_attr(
-        _treasury_due_paid=x_treasury_due_paid,
-        _treasury_due_diff=x_treasury_due_diff,
-        cred_score=x_treasury_cred_score,
-        voice_rank=old_x_treasury_voice_rank,
-    )
-    assert bob_charunit._treasury_voice_hx_lowest_rank == old_x_treasury_voice_rank
-
-    # WHEN
-    new_x_treasury_voice_rank = 33
-    bob_charunit.set_treasury_attr(
-        _treasury_due_paid=x_treasury_due_paid,
-        _treasury_due_diff=x_treasury_due_diff,
-        cred_score=x_treasury_cred_score,
-        voice_rank=new_x_treasury_voice_rank,
-    )
-    # THEN
-    assert bob_charunit._treasury_voice_hx_lowest_rank == new_x_treasury_voice_rank
-
-    # WHEN
-    not_lower_x_treasury_voice_rank = 60
-    bob_charunit.set_treasury_attr(
-        _treasury_due_paid=x_treasury_due_paid,
-        _treasury_due_diff=x_treasury_due_diff,
-        cred_score=x_treasury_cred_score,
-        voice_rank=not_lower_x_treasury_voice_rank,
-    )
-    # THEN
-    assert bob_charunit._treasury_voice_hx_lowest_rank == new_x_treasury_voice_rank
-
-
-def test_CharUnit_clear_treasurying_data_SetsAttrCorrectly_Method():
-    # GIVEN
-    bob_charunit = charunit_shop("Bob")
-    bob_charunit._world_agenda_ratio_cred = 0.355
-    bob_charunit._world_agenda_ratio_debt = 0.066
-    x_treasury_cred_score = 900
-    x_treasury_voice_rank = 45
-    bob_charunit.set_treasury_attr(
-        _treasury_due_paid=0.399,
-        _treasury_due_diff=0.044,
-        cred_score=x_treasury_cred_score,
-        voice_rank=x_treasury_voice_rank,
-    )
-    assert bob_charunit._treasury_due_paid == 0.399
-    assert bob_charunit._treasury_due_diff == 0.044
-    assert bob_charunit._treasury_cred_score == x_treasury_cred_score
-    assert bob_charunit._treasury_voice_rank == x_treasury_voice_rank
-
-    # WHEN
-    bob_charunit.clear_treasurying_data()
-
-    # THEN
-    assert bob_charunit._treasury_due_paid is None
-    assert bob_charunit._treasury_due_diff is None
-    assert bob_charunit._treasury_cred_score is None
-    assert bob_charunit._treasury_voice_rank is None

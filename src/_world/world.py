@@ -70,7 +70,7 @@ from src._world.reason_idea import (
     RoadUnit,
     factunit_shop,
 )
-from src._world.reason_assign import AssignedUnit
+from src._world.reason_culture import AssignedUnit
 from src._world.tree_metrics import TreeMetrics, treemetrics_shop
 from src._world.hreg_time import HregTimeIdeaSource as HregIdea
 from src._world.lemma import lemmas_shop, Lemmas
@@ -269,16 +269,6 @@ class WorldUnit:
     def make_l1_road(self, l1_node: RoadNode):
         return self.make_road(self._real_id, l1_node)
 
-    def set_chars_output_world_meld_order(self):
-        sort_chars_list = list(self._chars.values())
-        sort_chars_list.sort(key=lambda x: x.char_id.lower(), reverse=False)
-        for count_x, x_charunit in enumerate(sort_chars_list):
-            x_charunit.set_output_world_meld_order(count_x)
-
-    def clear_chars_output_world_meld_order(self):
-        for x_charunit in self._chars.values():
-            x_charunit.clear_output_world_meld_order()
-
     def set_road_delimiter(self, new_road_delimiter: str):
         self.calc_world_metrics()
         if self._road_delimiter != new_road_delimiter:
@@ -310,12 +300,6 @@ class WorldUnit:
 
         self.edit_idea_label(old_road=old_real_id, new_label=self._real_id)
         self.calc_world_metrics()
-
-    def set_charunit_external_metrics(self, external_metrics: CharUnitExternalMetrics):
-        char_x = self.get_char(external_metrics.internal_char_id)
-        char_x._credor_operational = external_metrics.credor_operational
-        char_x._debtor_operational = external_metrics.debtor_operational
-        # self.set_charunit(charunit=char_x)
 
     def set_max_tree_traverse(self, int_x: int):
         if int_x < 2:
@@ -1208,14 +1192,14 @@ class WorldUnit:
         for _fiscallink_belief_id in _fiscallinks_to_delete:
             x_idea._fiscallinks.pop(_fiscallink_belief_id)
 
-        if x_idea._assignedunit != None:
-            _suffbeliefs_to_delete = [
-                _suffbelief_belief_id
-                for _suffbelief_belief_id in x_idea._assignedunit._suffbeliefs.keys()
-                if self.get_beliefunit(_suffbelief_belief_id) is None
+        if x_idea._cultureunit != None:
+            _heldbeliefs_to_delete = [
+                _heldbelief_belief_id
+                for _heldbelief_belief_id in x_idea._cultureunit._heldbeliefs.keys()
+                if self.get_beliefunit(_heldbelief_belief_id) is None
             ]
-            for _suffbelief_belief_id in _suffbeliefs_to_delete:
-                x_idea._assignedunit.del_suffbelief(_suffbelief_belief_id)
+            for _heldbelief_belief_id in _heldbeliefs_to_delete:
+                x_idea._cultureunit.del_heldbelief(_heldbelief_belief_id)
 
         return x_idea
 
@@ -1472,7 +1456,7 @@ class WorldUnit:
         reason_del_premise_base: RoadUnit = None,
         reason_del_premise_need: RoadUnit = None,
         reason_suff_idea_active: str = None,
-        assignedunit: AssignedUnit = None,
+        cultureunit: AssignedUnit = None,
         healerhold: HealerHold = None,
         begin: float = None,
         close: float = None,
@@ -1512,7 +1496,7 @@ class WorldUnit:
             reason_del_premise_base=reason_del_premise_base,
             reason_del_premise_need=reason_del_premise_need,
             reason_suff_idea_active=reason_suff_idea_active,
-            assignedunit=assignedunit,
+            cultureunit=cultureunit,
             healerhold=healerhold,
             begin=begin,
             close=close,
@@ -1819,7 +1803,7 @@ class WorldUnit:
         x_idearoot._level = 0
         x_idearoot.set_parent_road(parent_road="")
         x_idearoot.set_idearoot_inherit_reasonheirs()
-        x_idearoot.set_assignedheir(parent_assignheir=None, world_beliefs=self._beliefs)
+        x_idearoot.set_cultureheir(parent_cultureheir=None, world_beliefs=self._beliefs)
         x_idearoot.set_factheirs(facts=self._idearoot._factunits)
         x_idearoot.inherit_fiscalheirs()
         x_idearoot.clear_fiscallines()
@@ -1854,7 +1838,7 @@ class WorldUnit:
         idea_kid.set_parent_road(parent_idea.get_road())
         idea_kid.set_factheirs(facts=parent_idea._factheirs)
         idea_kid.set_reasonheirs(self._idea_dict, parent_idea._reasonheirs)
-        idea_kid.set_assignedheir(parent_idea._assignedheir, self._beliefs)
+        idea_kid.set_cultureheir(parent_idea._cultureheir, self._beliefs)
         idea_kid.inherit_fiscalheirs(parent_idea._fiscalheirs)
         idea_kid.clear_fiscallines()
         idea_kid.set_active(
@@ -1875,7 +1859,7 @@ class WorldUnit:
         idea_kid.clear_all_char_cred_debt()
 
         if idea_kid.is_kidless():
-            # set idea's ancestor metrics using world root as common reference
+            # set idea's ancestor metrics using world root as common source
             self._set_ancestors_metrics(idea_kid.get_road(), econ_exceptions)
             self._allot_world_importance(idea=idea_kid)
 
@@ -2268,76 +2252,6 @@ class WorldUnit:
         if char_id != None:
             self._originunit.set_originlink(char_id, char_weight)
 
-    def get_assignment(
-        self,
-        world_x,
-        assignor_chars: dict[CharID:CharUnit],
-        assignor_char_id: CharID,
-    ) -> any:
-        self.calc_world_metrics()
-        self._set_assignment_chars(world_x, assignor_chars, assignor_char_id)
-        self._set_assignment_beliefs(world_x)
-        assignor_pledges = self._get_assignor_pledge_ideas(world_x, assignor_char_id)
-        relevant_roads = self._get_relevant_roads(assignor_pledges)
-        self._set_assignment_ideas(world_x, relevant_roads)
-        return world_x
-
-    def _set_assignment_ideas(self, x_world, relevant_roads: dict[RoadUnit:str]):
-        sorted_relevants = sorted(list(relevant_roads))
-        # difficult to know how to manage root idea attributes...
-        if sorted_relevants != []:
-            root_road = sorted_relevants.pop(0)
-
-        for relevant_road in sorted_relevants:
-            relevant_idea = copy_deepcopy(self.get_idea_obj(relevant_road))
-            relevant_idea.find_replace_road(
-                old_road=get_root_node_from_road(relevant_road, self._road_delimiter),
-                new_road=x_world._real_id,
-            )
-            relevant_idea.clear_kids()
-            x_world.add_idea(relevant_idea, parent_road=relevant_idea._parent_road)
-
-        for afu in self._idearoot._factunits.values():
-            if relevant_roads.get(afu.base) != None:
-                x_world.set_fact(
-                    base=rebuild_road(afu.base, self._real_id, x_world._real_id),
-                    pick=rebuild_road(afu.pick, self._real_id, x_world._real_id),
-                    open=afu.open,
-                    nigh=afu.nigh,
-                )
-
-    def _set_assignment_chars(
-        self,
-        world_x,
-        assignor_chars: dict[CharID:CharUnit],
-        assignor_char_id: CharID,
-    ):
-        if self.char_exists(assignor_char_id):
-            # get all chars that are both in self._chars and assignor_known_chars
-            chars_set = get_intersection_of_chars(self._chars, assignor_chars)
-            for char_id_x in chars_set:
-                world_x.set_charunit(charunit=self.get_char(char_id_x))
-        return world_x
-
-    def _set_assignment_beliefs(self, world_x):
-        revelant_beliefs = get_chars_relevant_beliefs(self._beliefs, world_x._chars)
-        for belief_belief_id, belief_chars in revelant_beliefs.items():
-            if world_x._beliefs.get(belief_belief_id) is None:
-                belief_x = beliefunit_shop(belief_id=belief_belief_id)
-                for char_id in belief_chars:
-                    belief_x.set_charlink(charlink_shop(char_id=char_id))
-                world_x.set_beliefunit(belief_x)
-
-    def _get_assignor_pledge_ideas(
-        self, world_x, assignor_char_id: BeliefID
-    ) -> dict[RoadUnit:int]:
-        assignor_beliefs = get_char_relevant_beliefs(world_x._beliefs, assignor_char_id)
-        return {
-            idea_road: -1
-            for idea_road, x_idea in self._idea_dict.items()
-            if (x_idea.assignor_in(assignor_beliefs) and x_idea.pledge)
-        }
-
 
 def worldunit_shop(
     _owner_id: OwnerID = None,
@@ -2431,7 +2345,7 @@ def set_idearoot_from_world_dict(x_world: WorldUnit, world_dict: dict):
         _range_source_road=get_obj_from_idea_dict(idearoot_dict, "_range_source_road"),
         _numeric_road=get_obj_from_idea_dict(idearoot_dict, "_numeric_road"),
         _reasonunits=get_obj_from_idea_dict(idearoot_dict, "_reasonunits"),
-        _assignedunit=get_obj_from_idea_dict(idearoot_dict, "_assignedunit"),
+        _cultureunit=get_obj_from_idea_dict(idearoot_dict, "_cultureunit"),
         _healerhold=get_obj_from_idea_dict(idearoot_dict, "_healerhold"),
         _factunits=get_obj_from_idea_dict(idearoot_dict, "_factunits"),
         _fiscallinks=get_obj_from_idea_dict(idearoot_dict, "_fiscallinks"),
@@ -2471,7 +2385,7 @@ def set_idearoot_kids_from_dict(x_world: WorldUnit, idearoot_dict: dict):
             pledge=get_obj_from_idea_dict(idea_dict, "pledge"),
             _problem_bool=get_obj_from_idea_dict(idea_dict, "_problem_bool"),
             _reasonunits=get_obj_from_idea_dict(idea_dict, "_reasonunits"),
-            _assignedunit=get_obj_from_idea_dict(idea_dict, "_assignedunit"),
+            _cultureunit=get_obj_from_idea_dict(idea_dict, "_cultureunit"),
             _healerhold=get_obj_from_idea_dict(idea_dict, "_healerhold"),
             _originunit=get_obj_from_idea_dict(idea_dict, "_originunit"),
             _fiscallinks=get_obj_from_idea_dict(idea_dict, "_fiscallinks"),

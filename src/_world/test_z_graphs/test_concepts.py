@@ -1,7 +1,6 @@
 from src._world.examples.example_worlds import (
     world_v001_with_large_agenda,
     get_world_with_4_levels,
-    get_world_assignment_laundry_example1,
     get_world_with_4_levels_and_2reasons,
     get_world_x1_3levels_1reason_1facts,
 )

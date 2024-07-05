@@ -30,7 +30,7 @@ def test_add_soul_pledge_Addspledgegift(env_dir_setup_cleanup):
     assert new_sue_soul.idea_exists(clean_road)
 
 
-def test_add_soul_pledge_SetssoulWorldpledgeIdea_suffbelief(env_dir_setup_cleanup):
+def test_add_soul_pledge_SetssoulWorldpledgeIdea_heldbelief(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), root_label(), sue_text)
@@ -42,14 +42,14 @@ def test_add_soul_pledge_SetssoulWorldpledgeIdea_suffbelief(env_dir_setup_cleanu
 
     # WHEN
     bob_text = "Bob"
-    add_soul_pledge(sue_hubunit, clean_road, x_suffbelief=bob_text)
+    add_soul_pledge(sue_hubunit, clean_road, x_heldbelief=bob_text)
 
     # THEN
     new_sue_soul = sue_hubunit.get_soul_world()
     assert new_sue_soul.idea_exists(clean_road)
     clean_idea = new_sue_soul.get_idea_obj(clean_road)
-    print(f"{clean_idea._assignedunit._suffbeliefs=}")
-    assert clean_idea._assignedunit.suffbelief_exists(bob_text)
+    print(f"{clean_idea._cultureunit._heldbeliefs=}")
+    assert clean_idea._cultureunit.heldbelief_exists(bob_text)
 
 
 def test_add_soul_pledge_CanAdd_reasonunit(env_dir_setup_cleanup):

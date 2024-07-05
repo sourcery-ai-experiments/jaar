@@ -5,17 +5,28 @@
 #     get_world_x1_3levels_1reason_1facts,
 # )
 # from src._world.world import worldunit_shop
-from src.gift.atom_graphic import atomunit_periodic_table0
+from src.listen.listen_graphic import (
+    get_listen_structures0_fig,
+    get_listen_structures1_fig,
+    get_listen_structures2_fig,
+    get_listen_structures3_fig,
+)
 
 
-def test_atomunit_periodic_table0_ShowsExplanation0Graph():
+def test_listen_structures0_ShowsExplanation0Graph():
     # GIVEN / WHEN
-    atomunit_periodic_table0_fig = atomunit_periodic_table0()
+    listen_structures0_fig = get_listen_structures0_fig()
+    listen_structures1_fig = get_listen_structures1_fig()
+    listen_structures2_fig = get_listen_structures2_fig()
+    listen_structures3_fig = get_listen_structures3_fig()
 
     # # THEN
     # show_figure = True
     # if show_figure:
-    #     atomunit_periodic_table0_fig.show()
+    #     # listen_structures0_fig.show()
+    #     # listen_structures1_fig.show()
+    #     # listen_structures2_fig.show()
+    #     listen_structures3_fig.show()
 
     # assert 1 == 2
 

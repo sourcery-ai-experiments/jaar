@@ -5,7 +5,7 @@ from src._world.idea import IdeaUnit, ideaunit_shop
 from src._world.reason_idea import reasonunit_shop
 from src._world.beliefunit import beliefunit_shop, fiscallink_shop
 from src._world.char import charlink_shop
-from src._world.reason_assign import assignedunit_shop
+from src._world.reason_culture import cultureunit_shop
 from src._world.examples.example_worlds import (
     get_world_with_4_levels as example_worlds_get_world_with_4_levels,
     get_world_with_4_levels_and_2reasons as example_worlds_get_world_with_4_levels_and_2reasons,
@@ -177,7 +177,7 @@ def test_WorldUnit_get_all_pledges_ReturnsCorrectObj():
     sweep_idea = zia_world.get_idea_obj(sweep_road)
     bob_text = "Bob"
     zia_world.add_charunit(bob_text)
-    sweep_idea._assignedunit.set_suffbelief(bob_text)
+    sweep_idea._cultureunit.set_heldbelief(bob_text)
     print(f"{sweep_idea}")
     agenda_dict = zia_world.get_agenda_dict()
     assert agenda_dict.get(clean_road) != None
@@ -748,23 +748,23 @@ def test_agenda_IsSetByAssignedUnit_1CharBelief():
 
     sue_text = "Sue"
     bob_world.add_charunit(char_id=sue_text)
-    assignedunit_sue = assignedunit_shop()
-    assignedunit_sue.set_suffbelief(belief_id=sue_text)
+    cultureunit_sue = cultureunit_shop()
+    cultureunit_sue.set_heldbelief(belief_id=sue_text)
     assert len(bob_world.get_agenda_dict()) == 1
 
     # WHEN
-    bob_world.edit_idea_attr(road=casa_road, assignedunit=assignedunit_sue)
+    bob_world.edit_idea_attr(road=casa_road, cultureunit=cultureunit_sue)
 
     # THEN
     assert len(bob_world.get_agenda_dict()) == 0
 
     # WHEN
     bob_world.add_charunit(char_id=bob_text)
-    assignedunit_bob = assignedunit_shop()
-    assignedunit_bob.set_suffbelief(belief_id=bob_text)
+    cultureunit_bob = cultureunit_shop()
+    cultureunit_bob.set_heldbelief(belief_id=bob_text)
 
     # WHEN
-    bob_world.edit_idea_attr(road=casa_road, assignedunit=assignedunit_bob)
+    bob_world.edit_idea_attr(road=casa_road, cultureunit=cultureunit_bob)
 
     # THEN
     assert len(bob_world.get_agenda_dict()) == 1
@@ -790,12 +790,12 @@ def test_agenda_IsSetByAssignedUnit_2CharBelief():
     run_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
     bob_world.set_beliefunit(y_beliefunit=run_belief)
 
-    run_assignedunit = assignedunit_shop()
-    run_assignedunit.set_suffbelief(belief_id=run_text)
+    run_cultureunit = cultureunit_shop()
+    run_cultureunit.set_heldbelief(belief_id=run_text)
     assert len(bob_world.get_agenda_dict()) == 1
 
     # WHEN
-    bob_world.edit_idea_attr(road=casa_road, assignedunit=run_assignedunit)
+    bob_world.edit_idea_attr(road=casa_road, cultureunit=run_cultureunit)
 
     # THEN
     assert len(bob_world.get_agenda_dict()) == 0
