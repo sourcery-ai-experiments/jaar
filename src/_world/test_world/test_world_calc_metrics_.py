@@ -737,7 +737,7 @@ def test_Isue116Resolved_correctlySetsTaskAsTrue():
     assert get_tasks_count(pledge_idea_list) == 64
 
 
-def test_agenda_IsSetByAssignedUnit_1CharBelief():
+def test_agenda_IsSetByCultureUnit_1CharBelief():
     # GIVEN
     bob_text = "Bob"
     bob_world = worldunit_shop(bob_text)
@@ -773,7 +773,7 @@ def test_agenda_IsSetByAssignedUnit_1CharBelief():
     # print(f"{agenda_dict[0]._label=}")
 
 
-def test_agenda_IsSetByAssignedUnit_2CharBelief():
+def test_agenda_IsSetByCultureUnit_2CharBelief():
     # GIVEN
     bob_text = "Bob"
     bob_world = worldunit_shop(bob_text)

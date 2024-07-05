@@ -18,8 +18,8 @@ from src._road.road import (
 from src._world.meld import get_meld_default
 from src._world.healer import HealerHold, healerhold_shop, healerhold_get_from_dict
 from src._world.reason_culture import (
-    AssignedUnit,
-    AssignedHeir,
+    CultureUnit,
+    CultureHeir,
     cultureunit_shop,
     cultureheir_shop,
     cultureunit_get_from_dict,
@@ -80,7 +80,7 @@ class IdeaAttrFilter:
     reason_del_premise_base: RoadUnit = None
     reason_del_premise_need: RoadUnit = None
     reason_suff_idea_active: str = None
-    cultureunit: AssignedUnit = None
+    cultureunit: CultureUnit = None
     healerhold: HealerHold = None
     begin: float = None
     close: float = None
@@ -164,7 +164,7 @@ def ideaattrfilter_shop(
     reason_del_premise_base: RoadUnit = None,
     reason_del_premise_need: RoadUnit = None,
     reason_suff_idea_active: str = None,
-    cultureunit: AssignedUnit = None,
+    cultureunit: CultureUnit = None,
     healerhold: HealerHold = None,
     begin: float = None,
     close: float = None,
@@ -237,8 +237,8 @@ class IdeaUnit:
     _fiscallines: dict[BeliefID:FiscalLine] = None  # Calculated field
     _reasonunits: dict[RoadUnit:ReasonUnit] = None
     _reasonheirs: dict[RoadUnit:ReasonHeir] = None  # Calculated field
-    _cultureunit: AssignedUnit = None
-    _cultureheir: AssignedHeir = None  # Calculated field
+    _cultureunit: CultureUnit = None
+    _cultureheir: CultureHeir = None  # Calculated field
     _factunits: dict[RoadUnit:FactUnit] = None
     _factheirs: dict[RoadUnit:FactHeir] = None  # Calculated field
     _healerhold: HealerHold = None
@@ -1060,7 +1060,7 @@ class IdeaUnit:
 
     def set_cultureheir(
         self,
-        parent_cultureheir: AssignedHeir,
+        parent_cultureheir: CultureHeir,
         world_beliefs: dict[BeliefID:BeliefUnit],
     ):
         self._cultureheir = cultureheir_shop()
@@ -1085,8 +1085,8 @@ def ideaunit_shop(
     _fiscallines: dict[BeliefID:FiscalLink] = None,  # Calculated field
     _reasonunits: dict[RoadUnit:ReasonUnit] = None,
     _reasonheirs: dict[RoadUnit:ReasonHeir] = None,  # Calculated field
-    _cultureunit: AssignedUnit = None,
-    _cultureheir: AssignedHeir = None,  # Calculated field
+    _cultureunit: CultureUnit = None,
+    _cultureheir: CultureHeir = None,  # Calculated field
     _factunits: dict[FactUnit] = None,
     _factheirs: dict[FactHeir] = None,  # Calculated field
     _healerhold: HealerHold = None,
