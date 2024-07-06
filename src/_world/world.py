@@ -33,7 +33,7 @@ from src._road.road import (
     CharID,
     HealerID,
     RealID,
-    is_roadunit_convertible_to_path,
+    roadunit_can_be_dir_path,
 )
 from src._world.meld import (
     get_meld_weight,
@@ -535,15 +535,13 @@ class WorldUnit:
             str_x = self._get_jajatime_week_legible_text(open, divisor)
         elif divisor != None and divisor % 1440 == 0:
             if divisor == 1440:
-                str_x = (
-                    f"every day at {x_hregidea.convert1440toReadableTime(min1440=open)}"
-                )
+                str_x = f"every day at {x_hregidea.readable_1440_time(min1440=open)}"
             else:
                 num_days = int(divisor / 1440)
                 num_with_letter_ending = x_hregidea.get_number_with_letter_ending(
                     num=num_days
                 )
-                str_x = f"every {num_with_letter_ending} day at {x_hregidea.convert1440toReadableTime(min1440=open)}"
+                str_x = f"every {num_with_letter_ending} day at {x_hregidea.readable_1440_time(min1440=open)}"
         else:
             str_x = "unknown"
         return str_x
@@ -562,11 +560,11 @@ class WorldUnit:
             weekday_idea_node = idea
 
         if divisor == 10080:
-            return f"every {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
+            return f"every {weekday_idea_node._label} at {x_hregidea.readable_1440_time(min1440=open % 1440)}"
         num_with_letter_ending = x_hregidea.get_number_with_letter_ending(
             num=divisor // 10080
         )
-        return f"every {num_with_letter_ending} {weekday_idea_node._label} at {x_hregidea.convert1440toReadableTime(min1440=open % 1440)}"
+        return f"every {num_with_letter_ending} {weekday_idea_node._label} at {x_hregidea.readable_1440_time(min1440=open % 1440)}"
 
     def get_chars_metrics(self) -> dict[BeliefID:FiscalLink]:
         tree_metrics = self.get_tree_metrics()
@@ -1986,7 +1984,7 @@ class WorldUnit:
 
     def _get_buildable_econs(self) -> bool:
         return all(
-            is_roadunit_convertible_to_path(econ_road, self._road_delimiter) != False
+            roadunit_can_be_dir_path(econ_road, self._road_delimiter) != False
             for econ_road in self._econ_dict.keys()
         )
 

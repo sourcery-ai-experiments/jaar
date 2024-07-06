@@ -462,18 +462,11 @@ class HregTimeIdeaSource:
         hour_int = int(dt.strftime("%H"))
         min_int = int(dt.strftime("%M"))
         min1440 = (hour_int * 60) + min_int
-        return f"{weekday_text[:3]} {monthdescription_text[:3]} {monthday_text}, {year_text} at {self.convert1440toReadableTime(min1440)}"
+        return f"{weekday_text[:3]} {monthdescription_text[:3]} {monthday_text}, {year_text} at {self.readable_1440_time(min1440)}"
 
-    def convert1440toHHMM(self, min1440: int):
-        x_open_minutes = (
-            f"0{min1440 % 60:.0f}" if min1440 % 60 < 10 else f"{min1440 % 60:.0f}"
-        )
-        return f"{min1440 // 60:.0f}:{x_open_minutes}"
-
-    def convert1440toReadableTime(self, min1440: int):
-        x_open_minutes = (
-            f"0{min1440 % 60:.0f}" if min1440 % 60 < 10 else f"{min1440 % 60:.0f}"
-        )
+    def readable_1440_time(self, min1440: int) -> str:
+        min_num = min1440 % 60
+        x_open_minutes = f"0{min_num:.0f}" if min_num < 10 else f"{min_num:.0f}"
         open_24hr = int(f"{min1440 // 60:.0f}")
         open_12hr = ""
         am_pm = ""

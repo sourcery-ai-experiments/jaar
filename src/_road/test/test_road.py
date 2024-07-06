@@ -24,7 +24,7 @@ from src._road.road import (
     default_road_delimiter_if_none,
     replace_road_delimiter,
     validate_roadnode,
-    is_roadunit_convertible_to_path,
+    roadunit_can_be_dir_path,
 )
 from pytest import raises as pytest_raises
 from dataclasses import dataclass
@@ -586,19 +586,19 @@ def test_validate_roadnode_RaisesErrorWhenRoadNode():
     )
 
 
-def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_simple_delimiter():
+def test_roadunit_can_be_dir_path_ReturnsCorrectObj_simple_delimiter():
     # GIVEN
     comma_text = ","
-    assert is_roadunit_convertible_to_path("run", delimiter=comma_text)
-    assert is_roadunit_convertible_to_path("run,sport", delimiter=comma_text)
+    assert roadunit_can_be_dir_path("run", delimiter=comma_text)
+    assert roadunit_can_be_dir_path("run,sport", delimiter=comma_text)
     print(f"{platform_system()=}")
     assert (
         platform_system() == "Windows"
-        and is_roadunit_convertible_to_path("run,sport?", delimiter=comma_text) is False
+        and roadunit_can_be_dir_path("run,sport?", delimiter=comma_text) is False
     ) or platform_system() == "Linux"
 
 
-def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_complicated_delimiter():
+def test_roadunit_can_be_dir_path_ReturnsCorrectObj_complicated_delimiter():
     # GIVEN
     question_text = "?"
     sport_text = "sport"
@@ -609,16 +609,16 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObj_complicated_delimiter
     lap_road = create_road(run_road, lap_text, delimiter=question_text)
     assert lap_road == f"{sport_road}?{run_text}?{lap_text}"
 
-    assert is_roadunit_convertible_to_path(sport_road, delimiter=question_text)
-    assert is_roadunit_convertible_to_path(run_road, delimiter=question_text)
-    assert is_roadunit_convertible_to_path(lap_road, delimiter=question_text)
+    assert roadunit_can_be_dir_path(sport_road, delimiter=question_text)
+    assert roadunit_can_be_dir_path(run_road, delimiter=question_text)
+    assert roadunit_can_be_dir_path(lap_road, delimiter=question_text)
     assert (
         platform_system() == "Windows"
-        and is_roadunit_convertible_to_path(lap_road, delimiter=",") is False
+        and roadunit_can_be_dir_path(lap_road, delimiter=",") is False
     ) or platform_system() == "Linux"
 
 
-def test_is_roadunit_convertible_to_path_ReturnsCorrectObjGivenSlashNotDelimiterEdgeCases():
+def test_roadunit_can_be_dir_path_ReturnsCorrectObjGivenSlashNotDelimiterEdgeCases():
     # GIVEN
     question_text = "?"
     sport_text = "sport"
@@ -629,7 +629,7 @@ def test_is_roadunit_convertible_to_path_ReturnsCorrectObjGivenSlashNotDelimiter
     lap_road = create_road(run_road, lap_text, delimiter=question_text)
     assert lap_road == f"{sport_road}?{run_text}?{lap_text}"
 
-    assert is_roadunit_convertible_to_path(sport_road, delimiter=question_text)
-    assert is_roadunit_convertible_to_path(run_road, delimiter=question_text) is False
-    assert is_roadunit_convertible_to_path(lap_road, delimiter=question_text) is False
-    assert is_roadunit_convertible_to_path(lap_road, delimiter=",") is False
+    assert roadunit_can_be_dir_path(sport_road, delimiter=question_text)
+    assert roadunit_can_be_dir_path(run_road, delimiter=question_text) is False
+    assert roadunit_can_be_dir_path(lap_road, delimiter=question_text) is False
+    assert roadunit_can_be_dir_path(lap_road, delimiter=",") is False

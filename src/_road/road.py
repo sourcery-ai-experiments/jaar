@@ -240,7 +240,7 @@ def validate_roadnode(
     return x_roadnode
 
 
-def is_roadunit_convertible_to_path(x_roadunit: RoadUnit, delimiter: str) -> bool:
+def roadunit_can_be_dir_path(x_roadunit: RoadUnit, delimiter: str) -> bool:
     x_road_nodes = get_all_road_nodes(x_roadunit, delimiter)
     slash_text = "/"
     x_road_os_path = create_road_from_nodes(x_road_nodes, delimiter=slash_text)
