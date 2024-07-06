@@ -197,7 +197,7 @@ def add_rect_arrow(fig: plotly_Figure, x0, y0, ax0, ay0, color=None, width=None)
         yref="y",
         axref="x",
         ayref="y",
-        text="",  # if you want only the arrow
+        text="",  # no label
         showarrow=True,
         arrowhead=2,
         arrowsize=1,
