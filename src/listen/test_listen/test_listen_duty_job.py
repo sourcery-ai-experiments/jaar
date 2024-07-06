@@ -265,8 +265,8 @@ def get_example_yao_think_with_3_healers():
 def test_listen_to_owner_jobs_Pipeline_Scenario0(env_dir_setup_cleanup):
     # GIVEN
     # yao0_think with 3 debotors of different credor_weights
-    # yao_job1 with 1 task, fact that doesn't want that task
-    # yao_job2 with 2 tasks, one is equal fact wants task
+    # yao_job1 with 1 task, fact that doesn't make that task active
+    # yao_job2 with 2 tasks, one is equal fact that makes task active
     # yao_job3 with 1 new task, fact stays with it
 
     yao_think0 = get_example_yao_think_with_3_healers()
@@ -330,8 +330,8 @@ def test_listen_to_owner_jobs_Pipeline_Scenario1_yao_think_CanOnlyReferenceItsel
 ):
     # GIVEN
     # yao0_think with 3 debotors of different credor_weights
-    # yao_job1 with 1 task, fact that doesn't want that task
-    # yao_job2 with 2 tasks, one is equal fact wants task
+    # yao_job1 with 1 task, fact that doesn't make that task active
+    # yao_job2 with 2 tasks, one is equal fact that makes task active
     # yao_job3 with 1 new task, fact stays with it
 
     yao_think0 = get_example_yao_think_with_3_healers()
