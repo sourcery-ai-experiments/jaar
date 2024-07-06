@@ -7,21 +7,21 @@ from pandas import DataFrame, concat as pandas_concat
 from plotly.graph_objects import Figure as plotly_Figure, Table as plotly_Table
 
 
-def get_real_thinks_chars_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_wants_chars_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
     owner_hubunits = x_real.get_owner_hubunits()
-    # for all owners get think
-    think_dfs = []
+    # for all owners get want
+    want_dfs = []
     for x_hubunit in owner_hubunits.values():
-        think_world = x_hubunit.get_think_world()
-        think_world.calc_world_metrics()
-        df = get_world_charunits_dataframe(think_world)
-        df.insert(0, "owner_id", think_world._owner_id)
-        think_dfs.append(df)
-    return pandas_concat(think_dfs, ignore_index=True)
+        want_world = x_hubunit.get_want_world()
+        want_world.calc_world_metrics()
+        df = get_world_charunits_dataframe(want_world)
+        df.insert(0, "owner_id", want_world._owner_id)
+        want_dfs.append(df)
+    return pandas_concat(want_dfs, ignore_index=True)
 
 
-def get_real_thinks_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_wants_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "char_id",
@@ -32,7 +32,7 @@ def get_real_thinks_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_world_agenda_cred",
         "_world_agenda_debt",
     ]
-    df = get_real_thinks_chars_dataframe(x_real)
+    df = get_real_wants_chars_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -55,7 +55,7 @@ def get_real_thinks_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', think chars metrics"
+    fig_title = f"Real '{x_real.real_id}', want chars metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)
@@ -119,20 +119,20 @@ def get_real_actions_chars_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     return fig
 
 
-def get_real_thinks_agenda_dataframe(x_real: RealUnit) -> DataFrame:
+def get_real_wants_agenda_dataframe(x_real: RealUnit) -> DataFrame:
     # get list of all owner paths
     owner_hubunits = x_real.get_owner_hubunits()
-    # for all owners get think
-    think_dfs = []
+    # for all owners get want
+    want_dfs = []
     for x_hubunit in owner_hubunits.values():
-        think_world = x_hubunit.get_think_world()
-        think_world.calc_world_metrics()
-        df = get_world_agenda_dataframe(think_world)
-        think_dfs.append(df)
-    return pandas_concat(think_dfs, ignore_index=True)
+        want_world = x_hubunit.get_want_world()
+        want_world.calc_world_metrics()
+        df = get_world_agenda_dataframe(want_world)
+        want_dfs.append(df)
+    return pandas_concat(want_dfs, ignore_index=True)
 
 
-def get_real_thinks_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
+def get_real_wants_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     column_header_list = [
         "owner_id",
         "world_importance",
@@ -145,7 +145,7 @@ def get_real_thinks_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
         "_numor",
         "_reest",
     ]
-    df = get_real_thinks_agenda_dataframe(x_real)
+    df = get_real_wants_agenda_dataframe(x_real)
     header_dict = dict(
         values=column_header_list, fill_color="paleturquoise", align="left"
     )
@@ -170,7 +170,7 @@ def get_real_thinks_agenda_plotly_fig(x_real: RealUnit) -> plotly_Figure:
     )
 
     fig = plotly_Figure(data=[x_table])
-    fig_title = f"Real '{x_real.real_id}', think agenda metrics"
+    fig_title = f"Real '{x_real.real_id}', want agenda metrics"
     fig.update_xaxes(showgrid=False)
     fig.update_yaxes(showgrid=False, zeroline=True, showticklabels=False)
     fig.update_layout(plot_bgcolor="white", title=fig_title, title_font_size=20)

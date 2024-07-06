@@ -22,8 +22,8 @@ def get_json_filename(filename_without_extention) -> str:
     return f"{filename_without_extention}.json"
 
 
-def think_str() -> str:
-    return "think"
+def want_str() -> str:
+    return "want"
 
 
 def action_str() -> str:

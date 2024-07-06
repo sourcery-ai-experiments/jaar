@@ -134,7 +134,7 @@ def test_RealUnit_init_owner_econs_CorrectlySetsDirAndFiles(env_dir_setup_cleanu
     assert os_path_exists(sue_hubunit.action_path())
 
 
-def test_RealUnit_get_owner_think_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
+def test_RealUnit_get_owner_want_from_file_ReturnsCorrectObj(env_dir_setup_cleanup):
     # GIVEN
     music_text = "music"
     music_real = realunit_shop(music_text, get_test_reals_dir(), in_memory_journal=True)
@@ -142,16 +142,16 @@ def test_RealUnit_get_owner_think_from_file_ReturnsCorrectObj(env_dir_setup_clea
     music_real.init_owner_econs(sue_text)
     sue_hubunit = hubunit_shop(None, music_text, sue_text, None)
     bob_text = "Bob"
-    sue_think = sue_hubunit.get_think_world()
-    sue_think.add_charunit(bob_text)
-    sue_hubunit.save_think_world(sue_think)
+    sue_want = sue_hubunit.get_want_world()
+    sue_want.add_charunit(bob_text)
+    sue_hubunit.save_want_world(sue_want)
 
     # WHEN
-    gen_sue_think = music_real.get_owner_think_from_file(sue_text)
+    gen_sue_want = music_real.get_owner_want_from_file(sue_text)
 
     # THEN
-    assert gen_sue_think != None
-    assert gen_sue_think.char_exists(bob_text)
+    assert gen_sue_want != None
+    assert gen_sue_want.char_exists(bob_text)
 
 
 def test_RealUnit__set_all_healer_dutys_CorrectlySetsdutys(
@@ -166,33 +166,33 @@ def test_RealUnit__set_all_healer_dutys_CorrectlySetsdutys(
     music_real.init_owner_econs(yao_text)
     sue_hubunit = hubunit_shop(None, music_text, sue_text, None)
     yao_hubunit = hubunit_shop(None, music_text, yao_text, None)
-    sue_think_world = sue_hubunit.get_think_world()
-    yao_think_world = yao_hubunit.get_think_world()
+    sue_want_world = sue_hubunit.get_want_world()
+    yao_want_world = yao_hubunit.get_want_world()
 
-    sue_think_world.add_charunit(sue_text)
-    sue_think_world.add_charunit(yao_text)
-    yao_think_world.add_charunit(sue_text)
-    yao_think_world.add_charunit(yao_text)
+    sue_want_world.add_charunit(sue_text)
+    sue_want_world.add_charunit(yao_text)
+    yao_want_world.add_charunit(sue_text)
+    yao_want_world.add_charunit(yao_text)
     texas_text = "Texas"
-    texas_road = sue_think_world.make_l1_road(texas_text)
-    sue_think_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
-    yao_think_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    texas_road = sue_want_world.make_l1_road(texas_text)
+    sue_want_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
+    yao_want_world.add_l1_idea(ideaunit_shop(texas_text, _problem_bool=True))
     dallas_text = "dallas"
-    dallas_road = sue_think_world.make_road(texas_road, dallas_text)
+    dallas_road = sue_want_world.make_road(texas_road, dallas_text)
     dallas_healerhold = healerhold_shop({sue_text, yao_text})
     dallas_idea = ideaunit_shop(dallas_text, _healerhold=dallas_healerhold)
     elpaso_text = "el paso"
-    elpaso_road = sue_think_world.make_road(texas_road, elpaso_text)
+    elpaso_road = sue_want_world.make_road(texas_road, elpaso_text)
     elpaso_healerhold = healerhold_shop({sue_text})
     elpaso_idea = ideaunit_shop(elpaso_text, _healerhold=elpaso_healerhold)
 
-    sue_think_world.add_idea(dallas_idea, texas_road)
-    sue_think_world.add_idea(elpaso_idea, texas_road)
-    yao_think_world.add_idea(dallas_idea, texas_road)
-    yao_think_world.add_idea(elpaso_idea, texas_road)
-    # display_ideatree(sue_think_world.calc_world_metrics(), mode="Econ").show()
-    sue_hubunit.save_think_world(sue_think_world)
-    yao_hubunit.save_think_world(yao_think_world)
+    sue_want_world.add_idea(dallas_idea, texas_road)
+    sue_want_world.add_idea(elpaso_idea, texas_road)
+    yao_want_world.add_idea(dallas_idea, texas_road)
+    yao_want_world.add_idea(elpaso_idea, texas_road)
+    # display_ideatree(sue_want_world.calc_world_metrics(), mode="Econ").show()
+    sue_hubunit.save_want_world(sue_want_world)
+    yao_hubunit.save_want_world(yao_want_world)
     sue_file_name = get_json_filename(sue_text)
     yao_file_name = get_json_filename(yao_text)
     sue_dallas_hubunit = hubunit_shop(None, music_text, sue_text, dallas_road)

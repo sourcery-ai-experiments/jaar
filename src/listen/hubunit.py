@@ -55,7 +55,7 @@ from dataclasses import dataclass
 from sqlite3 import connect as sqlite3_connect, Connection
 
 
-class Invalid_think_Exception(Exception):
+class Invalid_want_Exception(Exception):
     pass
 
 
@@ -120,17 +120,17 @@ class HubUnit:
     def gifts_dir(self):
         return f"{self.owner_dir()}/{get_gifts_folder()}"
 
-    def think_dir(self) -> str:
-        return f"{self.owner_dir()}/think"
+    def want_dir(self) -> str:
+        return f"{self.owner_dir()}/want"
 
     def action_dir(self) -> str:
         return f"{self.owner_dir()}/action"
 
-    def think_file_name(self):
+    def want_file_name(self):
         return get_json_filename(self.owner_id)
 
-    def think_file_path(self):
-        return f"{self.think_dir()}/{self.think_file_name()}"
+    def want_file_path(self):
+        return f"{self.want_dir()}/{self.want_file_name()}"
 
     def action_file_name(self):
         return get_json_filename(self.owner_id)
@@ -138,10 +138,10 @@ class HubUnit:
     def action_path(self):
         return f"{self.action_dir()}/{self.action_file_name()}"
 
-    def save_file_think(self, file_text: str, replace: bool):
+    def save_file_want(self, file_text: str, replace: bool):
         save_file(
-            dest_dir=self.think_dir(),
-            file_name=self.think_file_name(),
+            dest_dir=self.want_dir(),
+            file_name=self.want_file_name(),
             file_text=file_text,
             replace=replace,
         )
@@ -154,29 +154,29 @@ class HubUnit:
             replace=replace,
         )
 
-    def think_file_exists(self) -> bool:
-        return os_path_exists(self.think_file_path())
+    def want_file_exists(self) -> bool:
+        return os_path_exists(self.want_file_path())
 
     def action_file_exists(self) -> bool:
         return os_path_exists(self.action_path())
 
-    def open_file_think(self):
-        return open_file(self.think_dir(), self.think_file_name())
+    def open_file_want(self):
+        return open_file(self.want_dir(), self.want_file_name())
 
-    def save_think_world(self, x_world: WorldUnit):
+    def save_want_world(self, x_world: WorldUnit):
         if x_world._owner_id != self.owner_id:
-            raise Invalid_think_Exception(
-                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s think world."
+            raise Invalid_want_Exception(
+                f"WorldUnit with owner_id '{x_world._owner_id}' cannot be saved as owner_id '{self.owner_id}''s want world."
             )
-        self.save_file_think(x_world.get_json(), True)
+        self.save_file_want(x_world.get_json(), True)
 
-    def get_think_world(self) -> WorldUnit:
-        if self.think_file_exists() is False:
+    def get_want_world(self) -> WorldUnit:
+        if self.want_file_exists() is False:
             return None
-        file_content = self.open_file_think()
+        file_content = self.open_file_want()
         return worldunit_get_from_json(file_content)
 
-    def default_think_world(self) -> WorldUnit:
+    def default_want_world(self) -> WorldUnit:
         x_worldunit = worldunit_shop(
             _owner_id=self.owner_id,
             _real_id=self.real_id,
@@ -187,8 +187,8 @@ class HubUnit:
         x_worldunit._last_gift_id = init_gift_id()
         return x_worldunit
 
-    def delete_think_file(self):
-        delete_dir(self.think_file_path())
+    def delete_want_file(self):
+        delete_dir(self.want_file_path())
 
     def open_file_action(self):
         return open_file(self.action_dir(), self.action_file_name())
@@ -352,42 +352,42 @@ class HubUnit:
             _atoms_dir=self.atoms_dir(),
         )
         x_giftunit._changeunit.add_all_different_atomunits(
-            before_world=self.default_think_world(),
-            after_world=self.default_think_world(),
+            before_world=self.default_want_world(),
+            after_world=self.default_want_world(),
         )
         x_giftunit.save_files()
 
-    def _create_think_from_gifts(self):
-        x_world = self._merge_any_gifts(self.default_think_world())
-        self.save_think_world(x_world)
+    def _create_want_from_gifts(self):
+        x_world = self._merge_any_gifts(self.default_want_world())
+        self.save_want_world(x_world)
 
-    def _create_initial_gift_and_think_files(self):
+    def _create_initial_gift_and_want_files(self):
         self._create_initial_gift_files_from_default()
-        self._create_think_from_gifts()
+        self._create_want_from_gifts()
 
-    def _create_initial_gift_files_from_think(self):
+    def _create_initial_gift_files_from_want(self):
         x_giftunit = self._default_giftunit()
         x_giftunit._changeunit.add_all_different_atomunits(
-            before_world=self.default_think_world(),
-            after_world=self.get_think_world(),
+            before_world=self.default_want_world(),
+            after_world=self.get_want_world(),
         )
         x_giftunit.save_files()
 
-    def initialize_gift_think_files(self):
-        x_think_file_exists = self.think_file_exists()
+    def initialize_gift_want_files(self):
+        x_want_file_exists = self.want_file_exists()
         gift_file_exists = self.gift_file_exists(init_gift_id())
-        if x_think_file_exists is False and gift_file_exists is False:
-            self._create_initial_gift_and_think_files()
-        elif x_think_file_exists is False and gift_file_exists:
-            self._create_think_from_gifts()
-        elif x_think_file_exists and gift_file_exists is False:
-            self._create_initial_gift_files_from_think()
+        if x_want_file_exists is False and gift_file_exists is False:
+            self._create_initial_gift_and_want_files()
+        elif x_want_file_exists is False and gift_file_exists:
+            self._create_want_from_gifts()
+        elif x_want_file_exists and gift_file_exists is False:
+            self._create_initial_gift_files_from_want()
 
-    def append_gifts_to_think_file(self):
-        think_world = self.get_think_world()
-        think_world = self._merge_any_gifts(think_world)
-        self.save_think_world(think_world)
-        return self.get_think_world()
+    def append_gifts_to_want_file(self):
+        want_world = self.get_want_world()
+        want_world = self._merge_any_gifts(want_world)
+        self.save_want_world(want_world)
+        return self.get_want_world()
 
     def econ_dir(self) -> str:
         if self.econ_road is None:
@@ -447,9 +447,9 @@ class HubUnit:
             )
         self.save_file_action(x_world.get_json(), True)
 
-    def initialize_action_file(self, think: WorldUnit):
+    def initialize_action_file(self, want: WorldUnit):
         if self.action_file_exists() is False:
-            self.save_action_world(get_default_action_world(think))
+            self.save_action_world(get_default_action_world(want))
 
     def duty_file_exists(self, owner_id: OwnerID) -> bool:
         return os_path_exists(self.duty_path(owner_id))
@@ -521,25 +521,25 @@ class HubUnit:
         return self.get_perspective_world(speaker_job)
 
     def get_econ_roads(self):
-        x_think_world = self.get_think_world()
-        x_think_world.calc_world_metrics()
-        if x_think_world._econs_justified is False:
-            x_str = f"Cannot get_econ_roads from '{self.owner_id}' think world because 'WorldUnit._econs_justified' is False."
+        x_want_world = self.get_want_world()
+        x_want_world.calc_world_metrics()
+        if x_want_world._econs_justified is False:
+            x_str = f"Cannot get_econ_roads from '{self.owner_id}' want world because 'WorldUnit._econs_justified' is False."
             raise get_econ_roadsException(x_str)
-        if x_think_world._econs_buildable is False:
-            x_str = f"Cannot get_econ_roads from '{self.owner_id}' think world because 'WorldUnit._econs_buildable' is False."
+        if x_want_world._econs_buildable is False:
+            x_str = f"Cannot get_econ_roads from '{self.owner_id}' want world because 'WorldUnit._econs_buildable' is False."
             raise get_econ_roadsException(x_str)
-        owner_healer_dict = x_think_world._healers_dict.get(self.owner_id)
+        owner_healer_dict = x_want_world._healers_dict.get(self.owner_id)
         if owner_healer_dict is None:
             return get_empty_set_if_none(None)
-        econ_roads = x_think_world._healers_dict.get(self.owner_id).keys()
+        econ_roads = x_want_world._healers_dict.get(self.owner_id).keys()
         return get_empty_set_if_none(econ_roads)
 
-    def save_all_think_dutys(self):
-        think = self.get_think_world()
+    def save_all_want_dutys(self):
+        want = self.get_want_world()
         for x_econ_road in self.get_econ_roads():
             self.econ_road = x_econ_road
-            self.save_duty_world(think)
+            self.save_duty_world(want)
         self.econ_road = None
 
     def create_treasury_db_file(self):
@@ -559,7 +559,7 @@ class HubUnit:
             self.create_treasury_db_file()
         return sqlite_connection(self.treasury_db_path())
 
-    def create_think_treasury_db_files(self):
+    def create_want_treasury_db_files(self):
         for x_econ_road in self.get_econ_roads():
             self.econ_road = x_econ_road
             self.create_treasury_db_file()
