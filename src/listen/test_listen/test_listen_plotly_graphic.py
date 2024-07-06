@@ -20,15 +20,15 @@ def test_listen_structures0_ShowsExplanation0Graph():
     listen_structures2_fig = get_listen_structures2_fig()
     listen_structures3_fig = get_listen_structures3_fig()
 
-    # # THEN
-    # show_figure = True
-    # if show_figure:
-    #     # listen_structures0_fig.show()
-    #     # listen_structures1_fig.show()
-    #     # listen_structures2_fig.show()
-    #     listen_structures3_fig.show()
+    # THEN
+    show_figure = True
+    if show_figure:
+        listen_structures0_fig.show()
+        # listen_structures1_fig.show()
+        # listen_structures2_fig.show()
+        # listen_structures3_fig.show()
 
-    # assert 1 == 2
+    assert 1 == 2
 
     # # a_world = get_1node_world()
     # # a_world = get_2node_world()

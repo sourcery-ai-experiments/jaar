@@ -3,11 +3,11 @@ from src._road.jaar_config import get_gifts_folder
 from src._road.finance import default_pixel_if_none, default_penny_if_none
 from src._road.road import default_road_delimiter_if_none, OwnerID, RoadUnit, RealID
 from src._world.world import WorldUnit
-from src.listen.basis_worlds import get_default_being_world
+from src.listen.basis_worlds import get_default_action_world
 from src.listen.hubunit import hubunit_shop, HubUnit
 from src.listen.listen import (
     listen_to_speaker_agenda,
-    listen_to_debtors_roll_mind_being,
+    listen_to_debtors_roll_think_action,
     listen_to_debtors_roll_duty_job,
     create_job_file_from_duty_file,
 )
@@ -19,13 +19,13 @@ from sqlite3 import connect as sqlite3_connect, Connection
 @dataclass
 class RealUnit:
     """Data pipelines:
-    pipeline1: gifts->mind
-    pipeline2: mind->dutys
+    pipeline1: gifts->think
+    pipeline2: think->dutys
     pipeline3: duty->job
-    pipeline4: job->being
-    pipeline5: mind->being (direct)
-    pipeline6: mind->job->being (through jobs)
-    pipeline7: gifts->being (could be 5 of 6)
+    pipeline4: job->action
+    pipeline5: think->action (direct)
+    pipeline6: think->job->action (through jobs)
+    pipeline7: gifts->action (could be 5 of 6)
     """
 
     real_id: RealID
@@ -116,16 +116,16 @@ class RealUnit:
 
     def init_owner_econs(self, owner_id: OwnerID):
         x_hubunit = self._get_hubunit(owner_id)
-        x_hubunit.initialize_gift_mind_files()
-        x_hubunit.initialize_being_file(self.get_owner_mind_from_file(owner_id))
+        x_hubunit.initialize_gift_think_files()
+        x_hubunit.initialize_action_file(self.get_owner_think_from_file(owner_id))
 
-    def get_owner_mind_from_file(self, owner_id: OwnerID) -> WorldUnit:
-        return self._get_hubunit(owner_id).get_mind_world()
+    def get_owner_think_from_file(self, owner_id: OwnerID) -> WorldUnit:
+        return self._get_hubunit(owner_id).get_think_world()
 
     def _set_all_healer_dutys(self, owner_id: OwnerID):
-        x_mind = self.get_owner_mind_from_file(owner_id)
-        x_mind.calc_world_metrics()
-        for healer_id, healer_dict in x_mind._healers_dict.items():
+        x_think = self.get_owner_think_from_file(owner_id)
+        x_think.calc_world_metrics()
+        for healer_id, healer_dict in x_think._healers_dict.items():
             healer_hubunit = hubunit_shop(
                 self.reals_dir,
                 self.real_id,
@@ -136,25 +136,25 @@ class RealUnit:
                 pixel=self._pixel,
             )
             for econ_road in healer_dict.keys():
-                self._set_owner_duty(healer_hubunit, econ_road, x_mind)
+                self._set_owner_duty(healer_hubunit, econ_road, x_think)
 
     def _set_owner_duty(
         self,
         healer_hubunit: HubUnit,
         econ_road: RoadUnit,
-        mind_world: WorldUnit,
+        think_world: WorldUnit,
     ):
         healer_hubunit.econ_road = econ_road
         healer_hubunit.create_treasury_db_file()
-        healer_hubunit.save_duty_world(mind_world)
+        healer_hubunit.save_duty_world(think_world)
 
-    # being world management
-    def generate_being_world(self, owner_id: OwnerID) -> WorldUnit:
+    # action world management
+    def generate_action_world(self, owner_id: OwnerID) -> WorldUnit:
         listener_hubunit = self._get_hubunit(owner_id)
-        x_mind = listener_hubunit.get_mind_world()
-        x_mind.calc_world_metrics()
-        x_being = get_default_being_world(x_mind)
-        for healer_id, healer_dict in x_mind._healers_dict.items():
+        x_think = listener_hubunit.get_think_world()
+        x_think.calc_world_metrics()
+        x_action = get_default_action_world(x_think)
+        for healer_id, healer_dict in x_think._healers_dict.items():
             healer_hubunit = hubunit_shop(
                 reals_dir=self.reals_dir,
                 real_id=self.real_id,
@@ -164,7 +164,7 @@ class RealUnit:
                 road_delimiter=self._road_delimiter,
                 pixel=self._pixel,
             )
-            healer_hubunit.create_mind_treasury_db_files()
+            healer_hubunit.create_think_treasury_db_files()
             for econ_road in healer_dict.keys():
                 econ_hubunit = hubunit_shop(
                     reals_dir=self.reals_dir,
@@ -175,30 +175,30 @@ class RealUnit:
                     road_delimiter=self._road_delimiter,
                     pixel=self._pixel,
                 )
-                econ_hubunit.save_duty_world(x_mind)
+                econ_hubunit.save_duty_world(x_think)
                 create_job_file_from_duty_file(econ_hubunit, owner_id)
                 x_job = econ_hubunit.get_job_world(owner_id)
-                listen_to_speaker_agenda(x_being, x_job)
+                listen_to_speaker_agenda(x_action, x_job)
 
-        # if nothing has come from mind->duty->job->being pipeline use mind->being pipeline
-        x_being.calc_world_metrics()
-        if len(x_being._idea_dict) == 1:
-            # pipeline_mind_being_text()
-            listen_to_debtors_roll_mind_being(listener_hubunit)
-            listener_hubunit.open_file_being()
-            x_being.calc_world_metrics()
-        if len(x_being._idea_dict) == 1:
-            x_being = x_mind
-        listener_hubunit.save_being_world(x_being)
+        # if nothing has come from think->duty->job->action pipeline use think->action pipeline
+        x_action.calc_world_metrics()
+        if len(x_action._idea_dict) == 1:
+            # pipeline_think_action_text()
+            listen_to_debtors_roll_think_action(listener_hubunit)
+            listener_hubunit.open_file_action()
+            x_action.calc_world_metrics()
+        if len(x_action._idea_dict) == 1:
+            x_action = x_think
+        listener_hubunit.save_action_world(x_action)
 
-        return self.get_being_file_world(owner_id)
+        return self.get_action_file_world(owner_id)
 
-    def generate_all_being_worlds(self):
+    def generate_all_action_worlds(self):
         for x_owner_id in self._get_owner_folder_names():
-            self.generate_being_world(x_owner_id)
+            self.generate_action_world(x_owner_id)
 
-    def get_being_file_world(self, owner_id: OwnerID) -> WorldUnit:
-        return self._get_hubunit(owner_id).get_being_world()
+    def get_action_file_world(self, owner_id: OwnerID) -> WorldUnit:
+        return self._get_hubunit(owner_id).get_action_world()
 
 
 def realunit_shop(

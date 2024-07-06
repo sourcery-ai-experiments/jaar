@@ -9,7 +9,7 @@ from src.listen.examples.listen_env import (
 from os.path import exists as os_path_exists
 
 
-def test_HubUnit_default_mind_world_ReturnsCorrectObj():
+def test_HubUnit_default_think_world_ReturnsCorrectObj():
     # GIVEN
     sue_text = "Sue"
     slash_text = "/"
@@ -26,28 +26,28 @@ def test_HubUnit_default_mind_world_ReturnsCorrectObj():
     )
 
     # WHEN
-    sue_default_mind = sue_hubunit.default_mind_world()
+    sue_default_think = sue_hubunit.default_think_world()
 
     # THEN
-    assert sue_default_mind._real_id == sue_hubunit.real_id
-    assert sue_default_mind._owner_id == sue_hubunit.owner_id
-    assert sue_default_mind._road_delimiter == sue_hubunit.road_delimiter
-    assert sue_default_mind._pixel == sue_hubunit.pixel
-    assert sue_default_mind._penny == sue_hubunit.penny
+    assert sue_default_think._real_id == sue_hubunit.real_id
+    assert sue_default_think._owner_id == sue_hubunit.owner_id
+    assert sue_default_think._road_delimiter == sue_hubunit.road_delimiter
+    assert sue_default_think._pixel == sue_hubunit.pixel
+    assert sue_default_think._penny == sue_hubunit.penny
 
 
-def test_HubUnit_delete_mind_file_DeletesmindFile(env_dir_setup_cleanup):
+def test_HubUnit_delete_think_file_DeletesthinkFile(env_dir_setup_cleanup):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), real_id(), sue_text)
-    sue_hubunit.save_mind_world(sue_hubunit.default_mind_world())
-    assert sue_hubunit.mind_file_exists()
+    sue_hubunit.save_think_world(sue_hubunit.default_think_world())
+    assert sue_hubunit.think_file_exists()
 
     # WHEN
-    sue_hubunit.delete_mind_file()
+    sue_hubunit.delete_think_file()
 
     # THEN
-    assert sue_hubunit.mind_file_exists() is False
+    assert sue_hubunit.think_file_exists() is False
 
 
 def test_HubUnit_create_initial_gift_files_from_default_CorrectlySavesGiftUnitFiles(
@@ -60,17 +60,17 @@ def test_HubUnit_create_initial_gift_files_from_default_CorrectlySavesGiftUnitFi
     init_gift_file_name = sue_hubunit.gift_file_name(init_gift_id())
     init_gift_file_path = f"{sue_hubunit.gifts_dir()}/{init_gift_file_name}"
     assert os_path_exists(init_gift_file_path) is False
-    assert sue_hubunit.mind_file_exists() is False
+    assert sue_hubunit.think_file_exists() is False
 
     # WHEN
     sue_hubunit._create_initial_gift_files_from_default()
 
     # THEN
     assert os_path_exists(init_gift_file_path)
-    assert sue_hubunit.mind_file_exists() is False
+    assert sue_hubunit.think_file_exists() is False
 
 
-def test_HubUnit_create_mind_from_gifts_CreatesmindFileFromGiftFiles(
+def test_HubUnit_create_think_from_gifts_CreatesthinkFileFromGiftFiles(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -81,18 +81,18 @@ def test_HubUnit_create_mind_from_gifts_CreatesmindFileFromGiftFiles(
     init_gift_file_path = f"{sue_hubunit.gifts_dir()}/{init_gift_file_name}"
     sue_hubunit._create_initial_gift_files_from_default()
     assert os_path_exists(init_gift_file_path)
-    assert sue_hubunit.mind_file_exists() is False
+    assert sue_hubunit.think_file_exists() is False
 
     # WHEN
-    sue_hubunit._create_mind_from_gifts()
+    sue_hubunit._create_think_from_gifts()
 
     # THEN
-    assert sue_hubunit.mind_file_exists()
-    static_sue_mind = sue_hubunit._merge_any_gifts(sue_hubunit.default_mind_world())
-    assert sue_hubunit.get_mind_world().get_dict() == static_sue_mind.get_dict()
+    assert sue_hubunit.think_file_exists()
+    static_sue_think = sue_hubunit._merge_any_gifts(sue_hubunit.default_think_world())
+    assert sue_hubunit.get_think_world().get_dict() == static_sue_think.get_dict()
 
 
-def test_HubUnit_create_initial_gift_and_mind_files_CreatesGiftFilesAndmindFile(
+def test_HubUnit_create_initial_gift_and_think_files_CreatesGiftFilesAndthinkFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
@@ -102,138 +102,138 @@ def test_HubUnit_create_initial_gift_and_mind_files_CreatesGiftFilesAndmindFile(
     init_gift_file_name = sue_hubunit.gift_file_name(init_gift_id())
     init_gift_file_path = f"{sue_hubunit.gifts_dir()}/{init_gift_file_name}"
     assert os_path_exists(init_gift_file_path) is False
-    assert sue_hubunit.mind_file_exists() is False
+    assert sue_hubunit.think_file_exists() is False
 
     # WHEN
-    sue_hubunit._create_initial_gift_and_mind_files()
+    sue_hubunit._create_initial_gift_and_think_files()
 
     # THEN
     assert os_path_exists(init_gift_file_path)
-    assert sue_hubunit.mind_file_exists()
-    static_sue_mind = sue_hubunit._merge_any_gifts(sue_hubunit.default_mind_world())
-    assert sue_hubunit.get_mind_world().get_dict() == static_sue_mind.get_dict()
+    assert sue_hubunit.think_file_exists()
+    static_sue_think = sue_hubunit._merge_any_gifts(sue_hubunit.default_think_world())
+    assert sue_hubunit.get_think_world().get_dict() == static_sue_think.get_dict()
 
 
-def test_HubUnit_create_initial_gift_files_from_mind_SavesOnlyGiftFiles(
+def test_HubUnit_create_initial_gift_files_from_think_SavesOnlyGiftFiles(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
     sue_hubunit = hubunit_shop(env_dir(), real_id(), sue_text, pixel=seven_int)
-    sue_mind_world = sue_hubunit.default_mind_world()
+    sue_think_world = sue_hubunit.default_think_world()
     bob_text = "Bob"
-    sue_mind_world.add_charunit(bob_text)
-    assert sue_hubunit.mind_file_exists() is False
-    sue_hubunit.save_mind_world(sue_mind_world)
-    assert sue_hubunit.mind_file_exists()
+    sue_think_world.add_charunit(bob_text)
+    assert sue_hubunit.think_file_exists() is False
+    sue_hubunit.save_think_world(sue_think_world)
+    assert sue_hubunit.think_file_exists()
     init_gift_file_path = f"{sue_hubunit.gifts_dir()}/{init_gift_id()}.json"
     assert os_path_exists(init_gift_file_path) is False
 
     # WHEN
-    sue_hubunit._create_initial_gift_files_from_mind()
+    sue_hubunit._create_initial_gift_files_from_think()
 
     # THEN
     assert os_path_exists(init_gift_file_path)
 
 
-def test_HubUnit_initialize_gift_mind_files_CorrectlySavesmindFileAndGiftFile(
+def test_HubUnit_initialize_gift_think_files_CorrectlySavesthinkFileAndGiftFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
     sue_hubunit = hubunit_shop(env_dir(), real_id(), sue_text, pixel=seven_int)
-    assert sue_hubunit.mind_file_exists() is False
+    assert sue_hubunit.think_file_exists() is False
     init_gift_file_path = f"{sue_hubunit.gifts_dir()}/{init_gift_id()}.json"
     delete_dir(sue_hubunit.gifts_dir())
     assert os_path_exists(init_gift_file_path) is False
 
     # WHEN
-    sue_hubunit.initialize_gift_mind_files()
+    sue_hubunit.initialize_gift_think_files()
 
     # THEN
-    mind_world = sue_hubunit.get_mind_world()
-    assert mind_world._real_id == real_id()
-    assert mind_world._owner_id == sue_text
-    assert mind_world._pixel == seven_int
+    think_world = sue_hubunit.get_think_world()
+    assert think_world._real_id == real_id()
+    assert think_world._owner_id == sue_text
+    assert think_world._pixel == seven_int
     assert os_path_exists(init_gift_file_path)
 
 
-def test_HubUnit_initialize_gift_mind_files_CorrectlySavesOnlymindFile(
+def test_HubUnit_initialize_gift_think_files_CorrectlySavesOnlythinkFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
     sue_hubunit = hubunit_shop(env_dir(), real_id(), sue_text, pixel=seven_int)
-    sue_hubunit.initialize_gift_mind_files()
-    assert sue_hubunit.mind_file_exists()
-    sue_hubunit.delete_mind_file()
-    assert sue_hubunit.mind_file_exists() is False
+    sue_hubunit.initialize_gift_think_files()
+    assert sue_hubunit.think_file_exists()
+    sue_hubunit.delete_think_file()
+    assert sue_hubunit.think_file_exists() is False
     init_gift_file_path = f"{sue_hubunit.gifts_dir()}/{init_gift_id()}.json"
     assert os_path_exists(init_gift_file_path)
 
     # WHEN
-    sue_hubunit.initialize_gift_mind_files()
+    sue_hubunit.initialize_gift_think_files()
 
     # THEN
-    mind_world = sue_hubunit.get_mind_world()
-    assert mind_world._real_id == real_id()
-    assert mind_world._owner_id == sue_text
-    assert mind_world._pixel == seven_int
+    think_world = sue_hubunit.get_think_world()
+    assert think_world._real_id == real_id()
+    assert think_world._owner_id == sue_text
+    assert think_world._pixel == seven_int
     assert os_path_exists(init_gift_file_path)
 
 
-def test_HubUnit_initialize_gift_mind_files_CorrectlySavesOnlygiftFile(
+def test_HubUnit_initialize_gift_think_files_CorrectlySavesOnlygiftFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     seven_int = 7
     sue_hubunit = hubunit_shop(env_dir(), real_id(), sue_text, pixel=seven_int)
-    sue_hubunit.initialize_gift_mind_files()
-    sue_mind_world = sue_hubunit.get_mind_world()
+    sue_hubunit.initialize_gift_think_files()
+    sue_think_world = sue_hubunit.get_think_world()
     bob_text = "Bob"
-    sue_mind_world.add_charunit(bob_text)
-    sue_hubunit.save_mind_world(sue_mind_world)
-    assert sue_hubunit.mind_file_exists()
+    sue_think_world.add_charunit(bob_text)
+    sue_hubunit.save_think_world(sue_think_world)
+    assert sue_hubunit.think_file_exists()
     init_gift_file_path = f"{sue_hubunit.gifts_dir()}/{init_gift_id()}.json"
     delete_dir(sue_hubunit.gifts_dir())
     assert os_path_exists(init_gift_file_path) is False
 
     # WHEN
-    sue_hubunit.initialize_gift_mind_files()
+    sue_hubunit.initialize_gift_think_files()
 
     # THEN
-    assert sue_mind_world._real_id == real_id()
-    assert sue_mind_world._owner_id == sue_text
-    assert sue_mind_world._pixel == seven_int
-    assert sue_mind_world.char_exists(bob_text)
+    assert sue_think_world._real_id == real_id()
+    assert sue_think_world._owner_id == sue_text
+    assert sue_think_world._pixel == seven_int
+    assert sue_think_world.char_exists(bob_text)
     assert os_path_exists(init_gift_file_path)
 
 
-def test_HubUnit_append_gifts_to_mind_file_AddsgiftsTomindFile(
+def test_HubUnit_append_gifts_to_think_file_AddsgiftsTothinkFile(
     env_dir_setup_cleanup,
 ):
     # GIVEN
     sue_text = "Sue"
     sue_hubunit = hubunit_shop(env_dir(), real_id(), sue_text)
-    sue_hubunit.initialize_gift_mind_files()
+    sue_hubunit.initialize_gift_think_files()
     sue_hubunit.save_gift_file(sue_2atomunits_giftunit())
-    mind_world = sue_hubunit.get_mind_world()
-    print(f"{mind_world._real_id=}")
+    think_world = sue_hubunit.get_think_world()
+    print(f"{think_world._real_id=}")
     sports_text = "sports"
-    sports_road = mind_world.make_l1_road(sports_text)
+    sports_road = think_world.make_l1_road(sports_text)
     knee_text = "knee"
-    knee_road = mind_world.make_road(sports_road, knee_text)
-    assert mind_world.idea_exists(sports_road) is False
-    assert mind_world.idea_exists(knee_road) is False
+    knee_road = think_world.make_road(sports_road, knee_text)
+    assert think_world.idea_exists(sports_road) is False
+    assert think_world.idea_exists(knee_road) is False
 
     # WHEN
-    new_world = sue_hubunit.append_gifts_to_mind_file()
+    new_world = sue_hubunit.append_gifts_to_think_file()
 
     # THEN
-    assert new_world != mind_world
+    assert new_world != think_world
     assert new_world.idea_exists(sports_road)
     assert new_world.idea_exists(knee_road)
