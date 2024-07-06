@@ -13,6 +13,8 @@
 [![Downloads](https://pepy.tech/badge/borb/month)](https://pepy.tech/projeect/borb)
 -->
 
+JAAR Version 0.0.0
+
 `jaar` is a python library for listening to the climate of a community.
 
 ## 0.0 About jaar

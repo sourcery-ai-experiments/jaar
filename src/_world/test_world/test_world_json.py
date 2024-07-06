@@ -189,7 +189,7 @@ def test_WorldUnit_get_dict_ReturnsDictWith_idearoot_healerhold():
     assert idearoot_dict["_healerhold"] == run_healerhold.get_dict()
 
 
-def test_WorldUnit_get_dict_ReturnsDictWith_ideakid_AssignedUnit():
+def test_WorldUnit_get_dict_ReturnsDictWith_ideakid_CultureUnit():
     # GIVEN
     tom_world = worldunit_shop("Tom")
     run_text = ",run"

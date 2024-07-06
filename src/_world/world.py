@@ -70,7 +70,7 @@ from src._world.reason_idea import (
     RoadUnit,
     factunit_shop,
 )
-from src._world.reason_culture import AssignedUnit
+from src._world.reason_culture import CultureUnit
 from src._world.tree_metrics import TreeMetrics, treemetrics_shop
 from src._world.hreg_time import HregTimeIdeaSource as HregIdea
 from src._world.lemma import lemmas_shop, Lemmas
@@ -1456,7 +1456,7 @@ class WorldUnit:
         reason_del_premise_base: RoadUnit = None,
         reason_del_premise_need: RoadUnit = None,
         reason_suff_idea_active: str = None,
-        cultureunit: AssignedUnit = None,
+        cultureunit: CultureUnit = None,
         healerhold: HealerHold = None,
         begin: float = None,
         close: float = None,

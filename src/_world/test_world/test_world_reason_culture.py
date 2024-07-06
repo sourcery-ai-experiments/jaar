@@ -4,7 +4,7 @@ from src._world.idea import ideaunit_shop
 from src._world.beliefunit import beliefunit_shop
 
 
-def test_world_edit_idea_attr_CorrectlySetsAssignedUnit():
+def test_world_edit_idea_attr_CorrectlySetsCultureUnit():
     # GIVEN
     xio_world = worldunit_shop("Xio")
     run_text = "run"
@@ -112,7 +112,7 @@ def test_world_ideakid_cultureunit_CorrectlySets_grandchild_idea_cultureheir():
     assert four_idea._cultureheir == culture_heir_x
 
 
-def test_WorldUnit__get_filtered_fiscallinks_idea_CorrectlyFiltersIdea_Assignedunit():
+def test_WorldUnit__get_filtered_fiscallinks_idea_CorrectlyFiltersIdea_Cultureunit():
     # GIVEN
     noa_text = "Noa"
     noa1_world = worldunit_shop(noa_text)

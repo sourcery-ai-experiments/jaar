@@ -1,7 +1,7 @@
 from src._world.reason_culture import (
-    AssignedUnit,
+    CultureUnit,
     cultureunit_shop,
-    AssignedHeir,
+    CultureHeir,
     cultureheir_shop,
     create_cultureunit,
 )
@@ -11,12 +11,12 @@ from src._world.world import worldunit_shop
 from pytest import raises as pytest_raises
 
 
-def test_AssignedUnit_exists():
+def test_CultureUnit_exists():
     # GIVEN
     _heldbeliefs_x = {1: 2}
 
     # WHEN
-    cultureunit_x = AssignedUnit(_heldbeliefs=_heldbeliefs_x)
+    cultureunit_x = CultureUnit(_heldbeliefs=_heldbeliefs_x)
 
     # THEN
     assert cultureunit_x
@@ -56,7 +56,7 @@ def test_create_cultureunit_ReturnsCorrectObj():
     assert len(swim_cultureunit._heldbeliefs) == 1
 
 
-def test_AssignedUnit_get_dict_ReturnsCorrectDictWithSingle_heldbelief():
+def test_CultureUnit_get_dict_ReturnsCorrectDictWithSingle_heldbelief():
     # GIVEN
     bob_belief_id = BeliefID("Bob")
     _heldbeliefs_x = {bob_belief_id: bob_belief_id}
@@ -72,7 +72,7 @@ def test_AssignedUnit_get_dict_ReturnsCorrectDictWithSingle_heldbelief():
     assert obj_dict == example_dict
 
 
-def test_AssignedUnit_set_heldbelief_CorrectlySets_heldbeliefs_v1():
+def test_CultureUnit_set_heldbelief_CorrectlySets_heldbeliefs_v1():
     # GIVEN
     cultureunit_x = cultureunit_shop(_heldbeliefs={})
     assert len(cultureunit_x._heldbeliefs) == 0
@@ -85,7 +85,7 @@ def test_AssignedUnit_set_heldbelief_CorrectlySets_heldbeliefs_v1():
     assert len(cultureunit_x._heldbeliefs) == 1
 
 
-def test_AssignedUnit_heldbelief_exists_ReturnsCorrectObj():
+def test_CultureUnit_heldbelief_exists_ReturnsCorrectObj():
     # GIVEN
     cultureunit_x = cultureunit_shop(_heldbeliefs={})
     jim_text = "Jim"
@@ -98,7 +98,7 @@ def test_AssignedUnit_heldbelief_exists_ReturnsCorrectObj():
     assert cultureunit_x.heldbelief_exists(jim_text)
 
 
-def test_AssignedUnit_del_heldbelief_CorrectlyDeletes_heldbeliefs_v1():
+def test_CultureUnit_del_heldbelief_CorrectlyDeletes_heldbeliefs_v1():
     # GIVEN
     cultureunit_x = cultureunit_shop(_heldbeliefs={})
     jim_text = "Jim"
@@ -114,13 +114,13 @@ def test_AssignedUnit_del_heldbelief_CorrectlyDeletes_heldbeliefs_v1():
     assert len(cultureunit_x._heldbeliefs) == 1
 
 
-def test_AssignedHeir_exists():
+def test_CultureHeir_exists():
     # GIVEN
     _heldbeliefs_x = {1: 2}
     _owner_id_culture_x = True
 
     # WHEN
-    culture_heir_x = AssignedHeir(
+    culture_heir_x = CultureHeir(
         _heldbeliefs=_heldbeliefs_x, _owner_id_culture=_owner_id_culture_x
     )
 
@@ -146,7 +146,7 @@ def test_cultureheir_shop_ReturnsCorrectWithCorrectAttributes_v1():
     assert culture_heir_x._owner_id_culture == _owner_id_culture_x
 
 
-def test_AssignedHeir_get_all_suff_chars_ReturnsSingleDictWithAllChars_v1():
+def test_CultureHeir_get_all_suff_chars_ReturnsSingleDictWithAllChars_v1():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -164,7 +164,7 @@ def test_AssignedHeir_get_all_suff_chars_ReturnsSingleDictWithAllChars_v1():
     assert len(all_chars) == 1
 
 
-def test_AssignedHeir_get_all_suff_chars_ReturnsSingleDictWithAllChars_v2():
+def test_CultureHeir_get_all_suff_chars_ReturnsSingleDictWithAllChars_v2():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -190,7 +190,7 @@ def test_AssignedHeir_get_all_suff_chars_ReturnsSingleDictWithAllChars_v2():
     assert len(all_chars) == 2
 
 
-def test_AssignedHeir_set_owner_id_culture_CorrectlySetsAttribute_Empty_heldbeliefs_x():
+def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_Empty_heldbeliefs_x():
     # GIVEN
     _heldbeliefs_x = {}
     culture_heir_x = cultureheir_shop(_heldbeliefs=_heldbeliefs_x)
@@ -204,7 +204,7 @@ def test_AssignedHeir_set_owner_id_culture_CorrectlySetsAttribute_Empty_heldbeli
     assert culture_heir_x._owner_id_culture
 
 
-def test_AssignedHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v1():
+def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v1():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -229,7 +229,7 @@ def test_AssignedHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldb
     assert culture_heir_x._owner_id_culture
 
 
-def test_AssignedHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v2():
+def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v2():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -254,7 +254,7 @@ def test_AssignedHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldb
     assert culture_heir_x._owner_id_culture is False
 
 
-def test_AssignedHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v3():
+def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v3():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -285,7 +285,7 @@ def test_AssignedHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldb
     assert culture_heir_x._owner_id_culture is False
 
 
-def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v3():
+def test_CultureHeir_set__CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v3():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -316,7 +316,7 @@ def test_AssignedHeir_set__CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v3():
     assert culture_heir_x._owner_id_culture is False
 
 
-def test_AssignedHeir_set_heldbelief_AssignedUnitEmpty_ParentAssignedHeirEmpty():
+def test_CultureHeir_set_heldbelief_CultureUnitEmpty_ParentCultureHeirEmpty():
     # GIVEN
     culture_heir_x = cultureheir_shop(_heldbeliefs={})
     parent_cultureheir_empty = cultureheir_shop()
@@ -333,7 +333,7 @@ def test_AssignedHeir_set_heldbelief_AssignedUnitEmpty_ParentAssignedHeirEmpty()
     culture_heir_x._heldbeliefs = {}
 
 
-def test_AssignedHeir_set_heldbelief_AssignedUnitNotEmpty_ParentAssignedHeirIsNone():
+def test_CultureHeir_set_heldbelief_CultureUnitNotEmpty_ParentCultureHeirIsNone():
     # GIVEN
     kent_text = "kent"
     swim_text = ",swim"
@@ -351,7 +351,7 @@ def test_AssignedHeir_set_heldbelief_AssignedUnitNotEmpty_ParentAssignedHeirIsNo
     assert culture_heir_x._heldbeliefs.keys() == cultureunit_x._heldbeliefs.keys()
 
 
-def test_AssignedHeir_set_heldbelief_AssignedUnitNotEmpty_ParentAssignedHeirEmpty():
+def test_CultureHeir_set_heldbelief_CultureUnitNotEmpty_ParentCultureHeirEmpty():
     # GIVEN
     kent_text = "kent"
     swim_text = ",swim"
@@ -370,7 +370,7 @@ def test_AssignedHeir_set_heldbelief_AssignedUnitNotEmpty_ParentAssignedHeirEmpt
     assert culture_heir_x._heldbeliefs.keys() == cultureunit_x._heldbeliefs.keys()
 
 
-def test_AssignedHeir_set_heldbelief_AssignedUnitEmpty_ParentAssignedHeirNotEmpty():
+def test_CultureHeir_set_heldbelief_CultureUnitEmpty_ParentCultureHeirNotEmpty():
     # GIVEN
     kent_text = "kent"
     swim_text = ",swim"
@@ -398,7 +398,7 @@ def test_AssignedHeir_set_heldbelief_AssignedUnitEmpty_ParentAssignedHeirNotEmpt
     assert culture_heir_x._heldbeliefs.keys() == parent_culture_heir._heldbeliefs.keys()
 
 
-def test_AssignedHeir_set_heldbelief_AssignedUnitEqualParentAssignedHeir_NonEmpty():
+def test_CultureHeir_set_heldbelief_CultureUnitEqualParentCultureHeir_NonEmpty():
     # GIVEN
     kent_text = "kent"
     swim_text = ",swim"
@@ -423,7 +423,7 @@ def test_AssignedHeir_set_heldbelief_AssignedUnitEqualParentAssignedHeir_NonEmpt
     assert culture_heir_x._heldbeliefs.keys() == parent_culture_heir._heldbeliefs.keys()
 
 
-def test_AssignedHeir_set_heldbelief_AssignedUnit_NotEqual_ParentAssignedHeir_NonEmpty():
+def test_CultureHeir_set_heldbelief_CultureUnit_NotEqual_ParentCultureHeir_NonEmpty():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -470,7 +470,7 @@ def test_AssignedHeir_set_heldbelief_AssignedUnit_NotEqual_ParentAssignedHeir_No
     assert list(culture_heir_x._heldbeliefs) == [swim2_text]
 
 
-def test_AssignedHeir_set_heldbelief_AssignedUnit_NotEqualParentAssignedHeir_RaisesError():
+def test_CultureHeir_set_heldbelief_CultureUnit_NotEqualParentCultureHeir_RaisesError():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -519,7 +519,7 @@ def test_AssignedHeir_set_heldbelief_AssignedUnit_NotEqualParentAssignedHeir_Rai
     )
 
 
-def test_AssignedUnit_get_heldbelief_ReturnsCorrectObj():
+def test_CultureUnit_get_heldbelief_ReturnsCorrectObj():
     # GIVEN
     climb_text = ",climbers"
     walk_text = ",walkers"
@@ -537,7 +537,7 @@ def test_AssignedUnit_get_heldbelief_ReturnsCorrectObj():
     assert x_cultureunit.get_heldbelief(run_text) is None
 
 
-def test_AssignedHeir_belief_in_ReturnsCorrectBoolWhen_heldbeliefsNotEmpty():
+def test_CultureHeir_belief_in_ReturnsCorrectBoolWhen_heldbeliefsNotEmpty():
     # GIVEN
     swim_text = ",swim"
     hike_text = ",hike"
@@ -569,7 +569,7 @@ def test_AssignedHeir_belief_in_ReturnsCorrectBoolWhen_heldbeliefsNotEmpty():
     assert cultureheir_x.belief_in(hunt_play_dict) is False
 
 
-def test_AssignedHeir_belief_in_ReturnsCorrectBoolWhen_heldbeliefsEmpty():
+def test_CultureHeir_belief_in_ReturnsCorrectBoolWhen_heldbeliefsEmpty():
     # GIVEN
     hike_text = ",hike"
     hike_dict = {hike_text: -1}

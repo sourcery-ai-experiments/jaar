@@ -22,12 +22,12 @@ def get_json_filename(filename_without_extention) -> str:
     return f"{filename_without_extention}.json"
 
 
-def suis_str() -> str:
-    return "suis"
+def want_str() -> str:
+    return "want"
 
 
-def doing_str() -> str:
-    return "doing"
+def action_str() -> str:
+    return "action"
 
 
 def jobs_str() -> str:

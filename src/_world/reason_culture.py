@@ -3,12 +3,12 @@ from src._world.beliefunit import BeliefUnit, BeliefID
 from src._world.char import CharID
 
 
-class InvalidAssignedheirPopulateException(Exception):
+class InvalidCultureHeirPopulateException(Exception):
     pass
 
 
 @dataclass
-class AssignedUnit:
+class CultureUnit:
     _heldbeliefs: dict[BeliefID:BeliefID]
 
     def get_dict(self) -> dict[str:str]:
@@ -31,11 +31,11 @@ class AssignedUnit:
         return self._heldbeliefs.get(belief_id)
 
 
-def cultureunit_shop(_heldbeliefs: dict[BeliefID:BeliefID] = None) -> AssignedUnit:
+def cultureunit_shop(_heldbeliefs: dict[BeliefID:BeliefID] = None) -> CultureUnit:
     if _heldbeliefs is None:
         _heldbeliefs = {}
 
-    return AssignedUnit(_heldbeliefs=_heldbeliefs)
+    return CultureUnit(_heldbeliefs=_heldbeliefs)
 
 
 def create_cultureunit(heldbelief: BeliefID):
@@ -45,7 +45,7 @@ def create_cultureunit(heldbelief: BeliefID):
 
 
 @dataclass
-class AssignedHeir:
+class CultureHeir:
     _heldbeliefs: dict[BeliefID:BeliefID]
     _owner_id_culture: bool
 
@@ -78,7 +78,7 @@ class AssignedHeir:
     def set_heldbeliefs(
         self,
         parent_cultureheir,
-        cultureunit: AssignedUnit,
+        cultureunit: CultureUnit,
         world_beliefs: dict[BeliefID:BeliefUnit],
     ):
         dict_x = {}
@@ -105,7 +105,7 @@ class AssignedHeir:
                 set(all_parent_cultureheir_chars)
             ):
                 # else raise error
-                raise InvalidAssignedheirPopulateException(
+                raise InvalidCultureHeirPopulateException(
                     f"parent_culture_heir does not contain all chars of the idea's cultureunit\n{set(all_parent_cultureheir_chars)=}\n\n{set(all_cultureunit_chars)=}"
                 )
 
@@ -122,13 +122,13 @@ class AssignedHeir:
 
 def cultureheir_shop(
     _heldbeliefs: dict[BeliefID:BeliefID] = None, _owner_id_culture: bool = None
-) -> AssignedHeir:
+) -> CultureHeir:
     if _heldbeliefs is None:
         _heldbeliefs = {}
     if _owner_id_culture is None:
         _owner_id_culture = False
 
-    return AssignedHeir(_heldbeliefs=_heldbeliefs, _owner_id_culture=_owner_id_culture)
+    return CultureHeir(_heldbeliefs=_heldbeliefs, _owner_id_culture=_owner_id_culture)
 
     # def meld(self, exterior_reason):
     #     for premise_x in exterior_reason.premises.values():
@@ -142,7 +142,7 @@ def cultureheir_shop(
     #         )
 
 
-def cultureunit_get_from_dict(cultureunit_dict: dict) -> AssignedUnit:
+def cultureunit_get_from_dict(cultureunit_dict: dict) -> CultureUnit:
     cultureunit_x = cultureunit_shop()
     for heldbelief_belief_id in cultureunit_dict.get("_heldbeliefs"):
         cultureunit_x.set_heldbelief(belief_id=heldbelief_belief_id)

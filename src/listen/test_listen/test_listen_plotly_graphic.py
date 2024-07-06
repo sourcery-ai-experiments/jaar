@@ -23,10 +23,10 @@ def test_listen_structures0_ShowsExplanation0Graph():
     # # THEN
     # show_figure = True
     # if show_figure:
-    #     # listen_structures0_fig.show()
+    #     listen_structures0_fig.show()
     #     # listen_structures1_fig.show()
     #     # listen_structures2_fig.show()
-    #     listen_structures3_fig.show()
+    #     # listen_structures3_fig.show()
 
     # assert 1 == 2
 

@@ -57,7 +57,7 @@ def add_column_rect(
 def add_river_row(fig, grants_dict: dict, money_amt, row_x0, row_x1, y0, color=None):
     row_len = row_x1 - row_x0
     grants_sum = sum(grants_dict.values())
-    ratio_dict = {grantee: wx / grants_sum for grantee, wx in grants_dict.items()}
+    ratio_dict = {grantee: grax / grants_sum for grantee, grax in grants_dict.items()}
     for grantee in grants_dict:
         new_x1 = row_x0 + row_len * ratio_dict.get(grantee)
         add_river_rect(fig, row_x0, y0, new_x1, y0 + 1, grantee, color, money_amt)
@@ -69,7 +69,7 @@ def add_river_col(fig, num_dict: dict, money_amt, x0, y0, c_len):
     row_y1 = row_y0 - c_len
     row_len = row_y1 - row_y0
     num_sum = sum(num_dict.values())
-    ratio_dict = {char_id: wx / num_sum for char_id, wx in num_dict.items()}
+    ratio_dict = {char_id: charx / num_sum for char_id, charx in num_dict.items()}
     for grantee in num_dict:
         new_y1 = row_y0 + row_len * ratio_dict.get(grantee)
         add_column_rect(fig, x0, row_y0, x0 + 1, new_y1, grantee, None, money_amt)
@@ -197,7 +197,7 @@ def add_rect_arrow(fig: plotly_Figure, x0, y0, ax0, ay0, color=None, width=None)
         yref="y",
         axref="x",
         ayref="y",
-        text="",  # if you want only the arrow
+        text="",  # no label
         showarrow=True,
         arrowhead=2,
         arrowsize=1,
