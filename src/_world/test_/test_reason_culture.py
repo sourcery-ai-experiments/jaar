@@ -13,35 +13,35 @@ from pytest import raises as pytest_raises
 
 def test_CultureUnit_exists():
     # GIVEN
-    _heldbeliefs_x = {1: 2}
+    x_heldbeliefs = {1}
 
     # WHEN
-    cultureunit_x = CultureUnit(_heldbeliefs=_heldbeliefs_x)
+    x_cultureunit = CultureUnit(_heldbeliefs=x_heldbeliefs)
 
     # THEN
-    assert cultureunit_x
-    assert cultureunit_x._heldbeliefs == _heldbeliefs_x
+    assert x_cultureunit
+    assert x_cultureunit._heldbeliefs == x_heldbeliefs
 
 
 def test_cultureunit_shop_ReturnsCorrectWithCorrectAttributes_v1():
     # GIVEN
-    _heldbeliefs_x = {1: 2}
+    x_heldbeliefs = {1}
 
     # WHEN
-    cultureunit_x = cultureunit_shop(_heldbeliefs=_heldbeliefs_x)
+    x_cultureunit = cultureunit_shop(_heldbeliefs=x_heldbeliefs)
 
     # THEN
-    assert cultureunit_x
-    assert cultureunit_x._heldbeliefs == _heldbeliefs_x
+    assert x_cultureunit
+    assert x_cultureunit._heldbeliefs == x_heldbeliefs
 
 
 def test_cultureunit_shop_ifEmptyReturnsCorrectWithCorrectAttributes():
     # GIVEN / WHEN
-    cultureunit_x = cultureunit_shop()
+    x_cultureunit = cultureunit_shop()
 
     # THEN
-    assert cultureunit_x
-    assert cultureunit_x._heldbeliefs == {}
+    assert x_cultureunit
+    assert x_cultureunit._heldbeliefs == set()
 
 
 def test_create_cultureunit_ReturnsCorrectObj():
@@ -59,90 +59,90 @@ def test_create_cultureunit_ReturnsCorrectObj():
 def test_CultureUnit_get_dict_ReturnsCorrectDictWithSingle_heldbelief():
     # GIVEN
     bob_belief_id = BeliefID("Bob")
-    _heldbeliefs_x = {bob_belief_id: bob_belief_id}
-    culture_x = cultureunit_shop(_heldbeliefs=_heldbeliefs_x)
+    x_heldbeliefs = {bob_belief_id: bob_belief_id}
+    culture_x = cultureunit_shop(_heldbeliefs=x_heldbeliefs)
 
     # WHEN
     obj_dict = culture_x.get_dict()
 
     # THEN
     assert obj_dict != None
-    example_dict = {"_heldbeliefs": {bob_belief_id: bob_belief_id}}
+    example_dict = {"_heldbeliefs": [bob_belief_id]}
     print(f"{example_dict=}")
     assert obj_dict == example_dict
 
 
 def test_CultureUnit_set_heldbelief_CorrectlySets_heldbeliefs_v1():
     # GIVEN
-    cultureunit_x = cultureunit_shop(_heldbeliefs={})
-    assert len(cultureunit_x._heldbeliefs) == 0
+    x_cultureunit = cultureunit_shop()
+    assert len(x_cultureunit._heldbeliefs) == 0
 
     # WHEN
     jim_text = "Jim"
-    cultureunit_x.set_heldbelief(belief_id=jim_text)
+    x_cultureunit.set_heldbelief(belief_id=jim_text)
 
     # THEN
-    assert len(cultureunit_x._heldbeliefs) == 1
+    assert len(x_cultureunit._heldbeliefs) == 1
 
 
 def test_CultureUnit_heldbelief_exists_ReturnsCorrectObj():
     # GIVEN
-    cultureunit_x = cultureunit_shop(_heldbeliefs={})
+    x_cultureunit = cultureunit_shop()
     jim_text = "Jim"
-    assert cultureunit_x.heldbelief_exists(jim_text) is False
+    assert x_cultureunit.heldbelief_exists(jim_text) is False
 
     # WHEN
-    cultureunit_x.set_heldbelief(belief_id=jim_text)
+    x_cultureunit.set_heldbelief(belief_id=jim_text)
 
     # THEN
-    assert cultureunit_x.heldbelief_exists(jim_text)
+    assert x_cultureunit.heldbelief_exists(jim_text)
 
 
 def test_CultureUnit_del_heldbelief_CorrectlyDeletes_heldbeliefs_v1():
     # GIVEN
-    cultureunit_x = cultureunit_shop(_heldbeliefs={})
+    x_cultureunit = cultureunit_shop()
     jim_text = "Jim"
     sue_text = "Sue"
-    cultureunit_x.set_heldbelief(belief_id=jim_text)
-    cultureunit_x.set_heldbelief(belief_id=sue_text)
-    assert len(cultureunit_x._heldbeliefs) == 2
+    x_cultureunit.set_heldbelief(belief_id=jim_text)
+    x_cultureunit.set_heldbelief(belief_id=sue_text)
+    assert len(x_cultureunit._heldbeliefs) == 2
 
     # WHEN
-    cultureunit_x.del_heldbelief(belief_id=sue_text)
+    x_cultureunit.del_heldbelief(belief_id=sue_text)
 
     # THEN
-    assert len(cultureunit_x._heldbeliefs) == 1
+    assert len(x_cultureunit._heldbeliefs) == 1
 
 
 def test_CultureHeir_exists():
     # GIVEN
-    _heldbeliefs_x = {1: 2}
+    x_heldbeliefs = {1}
     _owner_id_culture_x = True
 
     # WHEN
     culture_heir_x = CultureHeir(
-        _heldbeliefs=_heldbeliefs_x, _owner_id_culture=_owner_id_culture_x
+        _heldbeliefs=x_heldbeliefs, _owner_id_culture=_owner_id_culture_x
     )
 
     # THEN
     assert culture_heir_x
-    assert culture_heir_x._heldbeliefs == _heldbeliefs_x
+    assert culture_heir_x._heldbeliefs == x_heldbeliefs
     assert culture_heir_x._owner_id_culture == _owner_id_culture_x
 
 
 def test_cultureheir_shop_ReturnsCorrectWithCorrectAttributes_v1():
     # GIVEN
-    _heldbeliefs_x = {1: 2}
+    x_heldbeliefs = {1}
     _owner_id_culture_x = "example"
 
     # WHEN
     culture_heir_x = cultureheir_shop(
-        _heldbeliefs=_heldbeliefs_x, _owner_id_culture=_owner_id_culture_x
+        _heldbeliefs=x_heldbeliefs, _owner_id_culture=_owner_id_culture_x
     )
 
     # THEN
     assert culture_heir_x
-    assert culture_heir_x._heldbeliefs == _heldbeliefs_x
+    assert culture_heir_x._heldbeliefs == x_heldbeliefs
     assert culture_heir_x._owner_id_culture == _owner_id_culture_x
 
 
@@ -154,8 +154,8 @@ def test_CultureHeir_get_all_suff_chars_ReturnsSingleDictWithAllChars_v1():
     x_world.add_charunit(char_id=jim_text)
     x_world.add_charunit(char_id=sue_text)
 
-    _heldbeliefs_x = {jim_text: -1}
-    culture_heir_x = cultureheir_shop(_heldbeliefs=_heldbeliefs_x)
+    x_heldbeliefs = {jim_text}
+    culture_heir_x = cultureheir_shop(_heldbeliefs=x_heldbeliefs)
 
     # WHEN
     all_chars = culture_heir_x._get_all_suff_chars(world_beliefs=x_world._beliefs)
@@ -180,8 +180,8 @@ def test_CultureHeir_get_all_suff_chars_ReturnsSingleDictWithAllChars_v2():
     swim_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim_belief)
 
-    _heldbeliefs_x = {swim_text: -1}
-    culture_heir_x = cultureheir_shop(_heldbeliefs=_heldbeliefs_x)
+    x_heldbeliefs = {swim_text}
+    culture_heir_x = cultureheir_shop(_heldbeliefs=x_heldbeliefs)
 
     # WHEN
     all_chars = culture_heir_x._get_all_suff_chars(world_beliefs=x_world._beliefs)
@@ -190,21 +190,21 @@ def test_CultureHeir_get_all_suff_chars_ReturnsSingleDictWithAllChars_v2():
     assert len(all_chars) == 2
 
 
-def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_Empty_heldbeliefs_x():
+def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_Emptyx_heldbeliefs():
     # GIVEN
-    _heldbeliefs_x = {}
-    culture_heir_x = cultureheir_shop(_heldbeliefs=_heldbeliefs_x)
+    x_heldbeliefs = set()
+    culture_heir_x = cultureheir_shop(_heldbeliefs=x_heldbeliefs)
     assert culture_heir_x._owner_id_culture is False
 
     # WHEN
-    world_beliefs = {}
+    world_beliefs = set()
     culture_heir_x.set_owner_id_culture(world_beliefs=world_beliefs, world_owner_id="")
 
     # THEN
     assert culture_heir_x._owner_id_culture
 
 
-def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v1():
+def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmptyx_heldbeliefs_v1():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -218,8 +218,8 @@ def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbe
     # print(f"{world_beliefs.get(jim_text)=}")
     # print(f"{world_beliefs.get(sue_text)=}")
 
-    _heldbeliefs_x = {jim_text: -1}
-    culture_heir_x = cultureheir_shop(_heldbeliefs=_heldbeliefs_x)
+    x_heldbeliefs = {jim_text}
+    culture_heir_x = cultureheir_shop(_heldbeliefs=x_heldbeliefs)
     assert culture_heir_x._owner_id_culture is False
 
     # WHEN
@@ -229,7 +229,7 @@ def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbe
     assert culture_heir_x._owner_id_culture
 
 
-def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v2():
+def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmptyx_heldbeliefs_v2():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -243,8 +243,8 @@ def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbe
     # print(f"{world_beliefs.get(jim_text)=}")
     # print(f"{world_beliefs.get(sue_text)=}")
 
-    _heldbeliefs_x = {sue_text: -1}
-    culture_heir_x = cultureheir_shop(_heldbeliefs=_heldbeliefs_x)
+    x_heldbeliefs = {sue_text}
+    culture_heir_x = cultureheir_shop(_heldbeliefs=x_heldbeliefs)
     assert culture_heir_x._owner_id_culture is False
 
     # WHEN
@@ -254,7 +254,7 @@ def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbe
     assert culture_heir_x._owner_id_culture is False
 
 
-def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v3():
+def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmptyx_heldbeliefs_v3():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -270,8 +270,8 @@ def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbe
     swim_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim_belief)
 
-    _heldbeliefs_x = {swim_text: -1}
-    culture_heir_x = cultureheir_shop(_heldbeliefs=_heldbeliefs_x)
+    x_heldbeliefs = {swim_text}
+    culture_heir_x = cultureheir_shop(_heldbeliefs=x_heldbeliefs)
     assert culture_heir_x._owner_id_culture is False
     culture_heir_x.set_owner_id_culture(x_world._beliefs, x_world._owner_id)
     assert culture_heir_x._owner_id_culture
@@ -285,7 +285,7 @@ def test_CultureHeir_set_owner_id_culture_CorrectlySetsAttribute_NonEmpty_heldbe
     assert culture_heir_x._owner_id_culture is False
 
 
-def test_CultureHeir_set__CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v3():
+def test_CultureHeir_set__CorrectlySetsAttribute_NonEmptyx_heldbeliefs_v3():
     # GIVEN
     jim_text = "Jim"
     sue_text = "Sue"
@@ -301,8 +301,8 @@ def test_CultureHeir_set__CorrectlySetsAttribute_NonEmpty_heldbeliefs_x_v3():
     swim_belief.set_charlink(charlink=charlink_shop(char_id=sue_text))
     x_world.set_beliefunit(y_beliefunit=swim_belief)
 
-    _heldbeliefs_x = {swim_text: -1}
-    culture_heir_x = cultureheir_shop(_heldbeliefs=_heldbeliefs_x)
+    x_heldbeliefs = {swim_text}
+    culture_heir_x = cultureheir_shop(_heldbeliefs=x_heldbeliefs)
     assert culture_heir_x._owner_id_culture is False
     culture_heir_x.set_owner_id_culture(x_world._beliefs, x_world._owner_id)
     assert culture_heir_x._owner_id_culture
@@ -320,12 +320,12 @@ def test_CultureHeir_set_heldbelief_CultureUnitEmpty_ParentCultureHeirEmpty():
     # GIVEN
     culture_heir_x = cultureheir_shop(_heldbeliefs={})
     parent_cultureheir_empty = cultureheir_shop()
-    cultureunit_x = cultureunit_shop()
+    x_cultureunit = cultureunit_shop()
 
     # WHEN
     culture_heir_x.set_heldbeliefs(
         parent_cultureheir=parent_cultureheir_empty,
-        cultureunit=cultureunit_x,
+        cultureunit=x_cultureunit,
         world_beliefs=None,
     )
 
@@ -337,37 +337,37 @@ def test_CultureHeir_set_heldbelief_CultureUnitNotEmpty_ParentCultureHeirIsNone(
     # GIVEN
     kent_text = "kent"
     swim_text = ",swim"
-    cultureunit_x = cultureunit_shop()
-    cultureunit_x.set_heldbelief(belief_id=kent_text)
-    cultureunit_x.set_heldbelief(belief_id=swim_text)
+    x_cultureunit = cultureunit_shop()
+    x_cultureunit.set_heldbelief(belief_id=kent_text)
+    x_cultureunit.set_heldbelief(belief_id=swim_text)
 
     # WHEN
     culture_heir_x = cultureheir_shop()
     culture_heir_x.set_heldbeliefs(
-        parent_cultureheir=None, cultureunit=cultureunit_x, world_beliefs=None
+        parent_cultureheir=None, cultureunit=x_cultureunit, world_beliefs=None
     )
 
     # THEN
-    assert culture_heir_x._heldbeliefs.keys() == cultureunit_x._heldbeliefs.keys()
+    assert culture_heir_x._heldbeliefs == x_cultureunit._heldbeliefs
 
 
 def test_CultureHeir_set_heldbelief_CultureUnitNotEmpty_ParentCultureHeirEmpty():
     # GIVEN
     kent_text = "kent"
     swim_text = ",swim"
-    cultureunit_x = cultureunit_shop()
-    cultureunit_x.set_heldbelief(belief_id=kent_text)
-    cultureunit_x.set_heldbelief(belief_id=swim_text)
+    x_cultureunit = cultureunit_shop()
+    x_cultureunit.set_heldbelief(belief_id=kent_text)
+    x_cultureunit.set_heldbelief(belief_id=swim_text)
 
     # WHEN
     culture_heir_x = cultureheir_shop()
     parent_cultureheir_empty = cultureheir_shop()
     culture_heir_x.set_heldbeliefs(
-        parent_cultureheir_empty, cultureunit=cultureunit_x, world_beliefs=None
+        parent_cultureheir_empty, cultureunit=x_cultureunit, world_beliefs=None
     )
 
     # THEN
-    assert culture_heir_x._heldbeliefs.keys() == cultureunit_x._heldbeliefs.keys()
+    assert culture_heir_x._heldbeliefs == x_cultureunit._heldbeliefs
 
 
 def test_CultureHeir_set_heldbelief_CultureUnitEmpty_ParentCultureHeirNotEmpty():
@@ -388,14 +388,14 @@ def test_CultureHeir_set_heldbelief_CultureUnitEmpty_ParentCultureHeirNotEmpty()
 
     # WHEN
     culture_heir_x = cultureheir_shop()
-    assert culture_heir_x._heldbeliefs == {}
+    assert culture_heir_x._heldbeliefs == set()
     culture_heir_x.set_heldbeliefs(
         parent_culture_heir, cultureunit=cultureunit_empty, world_beliefs=None
     )
 
     # THEN
-    assert len(culture_heir_x._heldbeliefs.keys())
-    assert culture_heir_x._heldbeliefs.keys() == parent_culture_heir._heldbeliefs.keys()
+    assert len(culture_heir_x._heldbeliefs)
+    assert culture_heir_x._heldbeliefs == parent_culture_heir._heldbeliefs
 
 
 def test_CultureHeir_set_heldbelief_CultureUnitEqualParentCultureHeir_NonEmpty():
@@ -414,13 +414,13 @@ def test_CultureHeir_set_heldbelief_CultureUnitEqualParentCultureHeir_NonEmpty()
 
     # WHEN
     culture_heir_x = cultureheir_shop()
-    assert culture_heir_x._heldbeliefs == {}
+    assert culture_heir_x._heldbeliefs == set()
     culture_heir_x.set_heldbeliefs(
         parent_culture_heir, cultureunit=cultureunit_swim, world_beliefs=None
     )
 
     # THEN
-    assert culture_heir_x._heldbeliefs.keys() == parent_culture_heir._heldbeliefs.keys()
+    assert culture_heir_x._heldbeliefs == parent_culture_heir._heldbeliefs
 
 
 def test_CultureHeir_set_heldbelief_CultureUnit_NotEqual_ParentCultureHeir_NonEmpty():
@@ -465,8 +465,8 @@ def test_CultureHeir_set_heldbelief_CultureUnit_NotEqual_ParentCultureHeir_NonEm
     )
 
     # THEN
-    assert culture_heir_x._heldbeliefs.keys() == cultureunit_swim2._heldbeliefs.keys()
-    assert len(culture_heir_x._heldbeliefs.keys()) == 1
+    assert culture_heir_x._heldbeliefs == cultureunit_swim2._heldbeliefs
+    assert len(culture_heir_x._heldbeliefs) == 1
     assert list(culture_heir_x._heldbeliefs) == [swim2_text]
 
 
@@ -537,58 +537,59 @@ def test_CultureUnit_get_heldbelief_ReturnsCorrectObj():
     assert x_cultureunit.get_heldbelief(run_text) is None
 
 
-def test_CultureHeir_belief_in_ReturnsCorrectBoolWhen_heldbeliefsNotEmpty():
+def test_CultureHeir_belief_id_in_ReturnsCorrectBoolWhen_heldbeliefsNotEmpty():
     # GIVEN
     swim_text = ",swim"
     hike_text = ",hike"
-    swim_dict = {swim_text: -1}
-    hike_dict = {hike_text: -1}
-    cultureunit_x = cultureunit_shop()
-    cultureunit_x.set_heldbelief(belief_id=swim_text)
-    cultureunit_x.set_heldbelief(belief_id=hike_text)
-    cultureheir_x = cultureheir_shop()
-    cultureheir_x.set_heldbeliefs(
-        parent_cultureheir=None, cultureunit=cultureunit_x, world_beliefs=None
+    swim_dict = {swim_text}
+    hike_dict = {hike_text}
+    x_cultureunit = cultureunit_shop()
+    x_cultureunit.set_heldbelief(belief_id=swim_text)
+    x_cultureunit.set_heldbelief(belief_id=hike_text)
+    x_cultureheir = cultureheir_shop()
+    x_cultureheir.set_heldbeliefs(
+        parent_cultureheir=None, cultureunit=x_cultureunit, world_beliefs=None
     )
     hunt_text = ",hunt"
-    hunt_dict = {hunt_text: -1}
+    hunt_dict = {hunt_text}
     play_text = ",play"
-    play_dict = {play_text: -1}
-    assert cultureheir_x._heldbeliefs.get(swim_text) != None
-    assert cultureheir_x._heldbeliefs.get(hike_text) != None
-    assert cultureheir_x._heldbeliefs.get(hunt_text) is None
-    assert cultureheir_x._heldbeliefs.get(play_text) is None
-    hunt_hike_dict = {hunt_text: -1, hike_text: -1}
-    hunt_play_dict = {hunt_text: -1, play_text: -1}
+    play_dict = {play_text}
+    assert swim_text in x_cultureheir._heldbeliefs
+    assert hike_text in x_cultureheir._heldbeliefs
+    print(f"{hunt_text in x_cultureheir._heldbeliefs=}")
+    assert hunt_text not in x_cultureheir._heldbeliefs
+    assert play_text not in x_cultureheir._heldbeliefs
+    hunt_hike_dict = {hunt_text, hike_text}
+    hunt_play_dict = {hunt_text, play_text}
 
     # WHEN / THEN
-    assert cultureheir_x.belief_in(swim_dict)
-    assert cultureheir_x.belief_in(hike_dict)
-    assert cultureheir_x.belief_in(hunt_dict) is False
-    assert cultureheir_x.belief_in(hunt_hike_dict)
-    assert cultureheir_x.belief_in(hunt_play_dict) is False
+    assert x_cultureheir.belief_in(swim_dict)
+    assert x_cultureheir.belief_in(hike_dict)
+    assert x_cultureheir.belief_in(hunt_dict) is False
+    assert x_cultureheir.belief_in(hunt_hike_dict)
+    assert x_cultureheir.belief_in(hunt_play_dict) is False
 
 
 def test_CultureHeir_belief_in_ReturnsCorrectBoolWhen_heldbeliefsEmpty():
     # GIVEN
     hike_text = ",hike"
-    hike_dict = {hike_text: -1}
-    cultureunit_x = cultureunit_shop()
-    cultureheir_x = cultureheir_shop()
-    cultureheir_x.set_heldbeliefs(
-        parent_cultureheir=None, cultureunit=cultureunit_x, world_beliefs=None
+    hike_dict = {hike_text}
+    x_cultureunit = cultureunit_shop()
+    x_cultureheir = cultureheir_shop()
+    x_cultureheir.set_heldbeliefs(
+        parent_cultureheir=None, cultureunit=x_cultureunit, world_beliefs=None
     )
     hunt_text = ",hunt"
-    hunt_dict = {hunt_text: -1}
+    hunt_dict = {hunt_text}
     play_text = ",play"
-    play_dict = {play_text: -1}
-    assert cultureheir_x._heldbeliefs == {}
-    hunt_hike_dict = {hunt_text: -1, hike_text: -1}
-    hunt_play_dict = {hunt_text: -1, play_text: -1}
+    play_dict = {play_text}
+    assert x_cultureheir._heldbeliefs == set()
+    hunt_hike_dict = {hunt_text, hike_text}
+    hunt_play_dict = {hunt_text, play_text}
 
     # WHEN / THEN
-    assert cultureheir_x.belief_in(hike_dict)
-    assert cultureheir_x.belief_in(hunt_dict)
-    assert cultureheir_x.belief_in(play_dict)
-    assert cultureheir_x.belief_in(hunt_hike_dict)
-    assert cultureheir_x.belief_in(hunt_play_dict)
+    assert x_cultureheir.belief_in(hike_dict)
+    assert x_cultureheir.belief_in(hunt_dict)
+    assert x_cultureheir.belief_in(play_dict)
+    assert x_cultureheir.belief_in(hunt_hike_dict)
+    assert x_cultureheir.belief_in(hunt_play_dict)

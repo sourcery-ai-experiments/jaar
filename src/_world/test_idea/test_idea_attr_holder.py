@@ -15,7 +15,7 @@ def test_IdeaAttrFilter_Exists():
     assert new_obj.reason_premise_divisor is None
     assert new_obj.reason_del_premise_base is None
     assert new_obj.reason_del_premise_need is None
-    assert new_obj.reason_suff_idea_active is None
+    assert new_obj.reason_base_idea_active_requisite is None
     assert new_obj.cultureunit is None
     assert new_obj.healerhold is None
     assert new_obj.begin is None

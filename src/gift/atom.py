@@ -343,7 +343,9 @@ def _modify_world_idea_reasonunit_update(x_world: WorldUnit, x_atom: AtomUnit):
     x_world.edit_idea_attr(
         road=x_atom.get_value("road"),
         reason_base=x_atom.get_value("base"),
-        reason_suff_idea_active=x_atom.get_value("suff_idea_active"),
+        reason_base_idea_active_requisite=x_atom.get_value(
+            "base_idea_active_requisite"
+        ),
     )
 
 
@@ -351,7 +353,9 @@ def _modify_world_idea_reasonunit_insert(x_world: WorldUnit, x_atom: AtomUnit):
     x_world.edit_idea_attr(
         road=x_atom.get_value("road"),
         reason_base=x_atom.get_value("base"),
-        reason_suff_idea_active=x_atom.get_value("suff_idea_active"),
+        reason_base_idea_active_requisite=x_atom.get_value(
+            "base_idea_active_requisite"
+        ),
     )
 
 
@@ -559,7 +563,7 @@ def optional_args_different(category: str, x_obj: any, y_obj: any) -> bool:
             or (x_obj.nigh != y_obj.nigh)
         )
     elif category == "world_idea_reasonunit":
-        return x_obj.suff_idea_active != y_obj.suff_idea_active
+        return x_obj.base_idea_active_requisite != y_obj.base_idea_active_requisite
     elif category == "world_idea_reason_premiseunit":
         return (
             x_obj.open != y_obj.open

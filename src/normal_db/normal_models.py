@@ -78,7 +78,7 @@ class ReasonTable(Base):
     uid = Column(Integer, primary_key=True)
     base = Column(String)
     road = Column(String)
-    suff_idea_active = Column(Integer)
+    base_idea_active_requisite = Column(Integer)
 
 
 class PremiseTable(Base):

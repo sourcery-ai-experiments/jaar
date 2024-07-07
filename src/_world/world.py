@@ -1193,7 +1193,7 @@ class WorldUnit:
         if x_idea._cultureunit != None:
             _heldbeliefs_to_delete = [
                 _heldbelief_belief_id
-                for _heldbelief_belief_id in x_idea._cultureunit._heldbeliefs.keys()
+                for _heldbelief_belief_id in x_idea._cultureunit._heldbeliefs
                 if self.get_beliefunit(_heldbelief_belief_id) is None
             ]
             for _heldbelief_belief_id in _heldbeliefs_to_delete:
@@ -1453,7 +1453,7 @@ class WorldUnit:
         reason_premise_divisor: int = None,
         reason_del_premise_base: RoadUnit = None,
         reason_del_premise_need: RoadUnit = None,
-        reason_suff_idea_active: str = None,
+        reason_base_idea_active_requisite: str = None,
         cultureunit: CultureUnit = None,
         healerhold: HealerHold = None,
         begin: float = None,
@@ -1493,7 +1493,7 @@ class WorldUnit:
             reason_premise_divisor=reason_premise_divisor,
             reason_del_premise_base=reason_del_premise_base,
             reason_del_premise_need=reason_del_premise_need,
-            reason_suff_idea_active=reason_suff_idea_active,
+            reason_base_idea_active_requisite=reason_base_idea_active_requisite,
             cultureunit=cultureunit,
             healerhold=healerhold,
             begin=begin,

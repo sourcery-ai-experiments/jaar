@@ -313,11 +313,11 @@ class FiscalLine(BeliefCore):
     _world_debt: float = None
 
     def add_world_cred_debt(self, world_cred: float, world_debt: float):
-        self.set_world_cred_debt_zero_if_null()
+        self.set_world_cred_debt_zero_if_none()
         self._world_cred += world_cred
         self._world_debt += world_debt
 
-    def set_world_cred_debt_zero_if_null(self):
+    def set_world_cred_debt_zero_if_none(self):
         if self._world_cred is None:
             self._world_cred = 0
         if self._world_debt is None:

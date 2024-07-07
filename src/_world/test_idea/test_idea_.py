@@ -851,7 +851,7 @@ def test_IdeaUnit_record_active_hx_CorrectlyRecordsHistorry():
     assert clean_idea._active_hx == {0: False}
 
 
-def test_IdeaUnit_set_cultureunit_empty_if_null():
+def test_IdeaUnit_set_cultureunit_empty_if_none():
     # GIVEN
     run_text = "run"
     run_idea = ideaunit_shop(_label=run_text)
@@ -859,7 +859,7 @@ def test_IdeaUnit_set_cultureunit_empty_if_null():
     assert run_idea._cultureunit is None
 
     # WHEN
-    run_idea.set_cultureunit_empty_if_null()
+    run_idea.set_cultureunit_empty_if_none()
 
     # THEN
     assert run_idea._cultureunit != None

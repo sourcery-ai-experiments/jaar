@@ -1,6 +1,7 @@
-from dataclasses import dataclass
+from src._instrument.python import get_empty_set_if_none
 from src._world.beliefunit import BeliefUnit, BeliefID
 from src._world.char import CharID
+from dataclasses import dataclass
 
 
 class InvalidCultureHeirPopulateException(Exception):
@@ -9,33 +10,27 @@ class InvalidCultureHeirPopulateException(Exception):
 
 @dataclass
 class CultureUnit:
-    _heldbeliefs: dict[BeliefID:BeliefID]
+    _heldbeliefs: set[BeliefID]
 
     def get_dict(self) -> dict[str:str]:
-        _heldbeliefs = {
-            x_belief_id: x_belief_id  # premise.get_dict()
-            for x_belief_id, _heldbelief in self._heldbeliefs.items()
-        }
-        return {"_heldbeliefs": _heldbeliefs}
+        return {"_heldbeliefs": list(self._heldbeliefs)}
 
     def set_heldbelief(self, belief_id: BeliefID):
-        self._heldbeliefs[belief_id] = -1
+        self._heldbeliefs.add(belief_id)
 
     def heldbelief_exists(self, belief_id: BeliefID):
-        return self._heldbeliefs.get(belief_id) != None
+        return belief_id in self._heldbeliefs
 
     def del_heldbelief(self, belief_id: BeliefID):
-        self._heldbeliefs.pop(belief_id)
+        self._heldbeliefs.remove(belief_id)
 
     def get_heldbelief(self, belief_id: BeliefID) -> BeliefID:
-        return self._heldbeliefs.get(belief_id)
+        if self.heldbelief_exists(belief_id):
+            return belief_id
 
 
-def cultureunit_shop(_heldbeliefs: dict[BeliefID:BeliefID] = None) -> CultureUnit:
-    if _heldbeliefs is None:
-        _heldbeliefs = {}
-
-    return CultureUnit(_heldbeliefs=_heldbeliefs)
+def cultureunit_shop(_heldbeliefs: set[BeliefID] = None) -> CultureUnit:
+    return CultureUnit(get_empty_set_if_none(_heldbeliefs))
 
 
 def create_cultureunit(heldbelief: BeliefID):
@@ -46,16 +41,16 @@ def create_cultureunit(heldbelief: BeliefID):
 
 @dataclass
 class CultureHeir:
-    _heldbeliefs: dict[BeliefID:BeliefID]
+    _heldbeliefs: set[BeliefID]
     _owner_id_culture: bool
 
     def _get_all_chars(
         self,
         world_beliefs: dict[BeliefID:BeliefUnit],
-        belief_id_dict: dict[BeliefID:],
+        belief_id_set: set[BeliefID],
     ) -> dict[BeliefID:BeliefUnit]:
         dict_x = {}
-        for belief_id_x in belief_id_dict:
+        for belief_id_x in belief_id_set:
             dict_x |= world_beliefs.get(belief_id_x)._chars
         return dict_x
 
@@ -64,11 +59,14 @@ class CultureHeir:
     ) -> dict[BeliefID:BeliefUnit]:
         return self._get_all_chars(world_beliefs, self._heldbeliefs)
 
+    def is_empty(self) -> bool:
+        return self._heldbeliefs == set()
+
     def set_owner_id_culture(
         self, world_beliefs: dict[BeliefID:BeliefUnit], world_owner_id: CharID
     ):
         self._owner_id_culture = False
-        if self._heldbeliefs == {}:
+        if self.is_empty():
             self._owner_id_culture = True
         else:
             all_suff_chars_x = self._get_all_suff_chars(world_beliefs)
@@ -81,25 +79,25 @@ class CultureHeir:
         cultureunit: CultureUnit,
         world_beliefs: dict[BeliefID:BeliefUnit],
     ):
-        dict_x = {}
-        if parent_cultureheir is None or parent_cultureheir._heldbeliefs == {}:
+        x_set = set()
+        if parent_cultureheir is None or parent_cultureheir._heldbeliefs == set():
             for heldbelief in cultureunit._heldbeliefs:
-                dict_x[heldbelief] = -1
-        elif cultureunit._heldbeliefs == {} or (
-            parent_cultureheir._heldbeliefs.keys() == cultureunit._heldbeliefs.keys()
+                x_set.add(heldbelief)
+        elif cultureunit._heldbeliefs == set() or (
+            parent_cultureheir._heldbeliefs == cultureunit._heldbeliefs
         ):
-            for heldbelief in parent_cultureheir._heldbeliefs.keys():
-                dict_x[heldbelief] = -1
+            for heldbelief in parent_cultureheir._heldbeliefs:
+                x_set.add(heldbelief)
         else:
             # get all_chars of parent cultureheir beliefs
             all_parent_cultureheir_chars = self._get_all_chars(
                 world_beliefs=world_beliefs,
-                belief_id_dict=parent_cultureheir._heldbeliefs,
+                belief_id_set=parent_cultureheir._heldbeliefs,
             )
             # get all_chars of cultureunit beliefs
             all_cultureunit_chars = self._get_all_chars(
                 world_beliefs=world_beliefs,
-                belief_id_dict=cultureunit._heldbeliefs,
+                belief_id_set=cultureunit._heldbeliefs,
             )
             if not set(all_cultureunit_chars).issubset(
                 set(all_parent_cultureheir_chars)
@@ -110,41 +108,27 @@ class CultureHeir:
                 )
 
             # set dict_x = to cultureunit beliefs
-            for heldbelief in cultureunit._heldbeliefs.keys():
-                dict_x[heldbelief] = -1
-        self._heldbeliefs = dict_x
+            for heldbelief in cultureunit._heldbeliefs:
+                x_set.add(heldbelief)
+        self._heldbeliefs = x_set
 
-    def belief_in(self, belief_ids: dict[BeliefID:-1]):
-        return self._heldbeliefs == {} or any(
-            self._heldbeliefs.get(gn_x) != None for gn_x in belief_ids
-        )
+    def belief_in(self, belief_ids: set[BeliefID]):
+        return self.is_empty() or any(gn_x in self._heldbeliefs for gn_x in belief_ids)
 
 
 def cultureheir_shop(
-    _heldbeliefs: dict[BeliefID:BeliefID] = None, _owner_id_culture: bool = None
+    _heldbeliefs: set[BeliefID] = None, _owner_id_culture: bool = None
 ) -> CultureHeir:
-    if _heldbeliefs is None:
-        _heldbeliefs = {}
+    _heldbeliefs = get_empty_set_if_none(_heldbeliefs)
     if _owner_id_culture is None:
         _owner_id_culture = False
 
     return CultureHeir(_heldbeliefs=_heldbeliefs, _owner_id_culture=_owner_id_culture)
 
-    # def meld(self, exterior_reason):
-    #     for premise_x in exterior_reason.premises.values():
-    #         if self.premises.get(premise_x.need) is None:
-    #             self.premises[premise_x.need] = premise_x
-    #         else:
-    #             self.premises.get(premise_x.need).meld(premise_x)
-    #     if exterior_reason.base != self.base:
-    #         raise InvalidReasonException(
-    #             f"Meld fail: reason={exterior_reason.base} is different {self.base=}"
-    #         )
-
 
 def cultureunit_get_from_dict(cultureunit_dict: dict) -> CultureUnit:
-    cultureunit_x = cultureunit_shop()
-    for heldbelief_belief_id in cultureunit_dict.get("_heldbeliefs"):
-        cultureunit_x.set_heldbelief(belief_id=heldbelief_belief_id)
+    x_cultureunit = cultureunit_shop()
+    for x_belief_id in cultureunit_dict.get("_heldbeliefs"):
+        x_cultureunit.set_heldbelief(x_belief_id)
 
-    return cultureunit_x
+    return x_cultureunit

@@ -165,7 +165,7 @@ def test_WorldUnit_get_dict_ReturnsDictWith_idearoot_cultureunit():
 
     # THEN
     assert idearoot_dict["_cultureunit"] == x_cultureunit.get_dict()
-    assert idearoot_dict["_cultureunit"] == {"_heldbeliefs": {run_text: run_text}}
+    assert idearoot_dict["_cultureunit"] == {"_heldbeliefs": [run_text]}
 
 
 def test_WorldUnit_get_dict_ReturnsDictWith_idearoot_healerhold():
@@ -212,7 +212,7 @@ def test_WorldUnit_get_dict_ReturnsDictWith_ideakid_CultureUnit():
 
     culture_dict_x = idearoot_dict[_kids][morn_text][_cultureunit]
     assert culture_dict_x == x_cultureunit.get_dict()
-    assert culture_dict_x == {"_heldbeliefs": {run_text: run_text}}
+    assert culture_dict_x == {"_heldbeliefs": [run_text]}
 
 
 def test_WorldUnit_get_json_ReturnsCorrectJSON_SimpleExample():

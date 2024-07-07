@@ -1003,11 +1003,11 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_reasonunit
     before_sue_world.add_idea(ideaunit_shop(medical_text), knee_road)
 
     after_sue_world = copy_deepcopy(before_sue_world)
-    after_medical_suff_idea_active = False
+    after_medical_base_idea_active_requisite = False
     after_sue_world.edit_idea_attr(
         road=ball_road,
         reason_base=medical_road,
-        reason_suff_idea_active=after_medical_suff_idea_active,
+        reason_base_idea_active_requisite=after_medical_base_idea_active_requisite,
     )
 
     sue_changeunit = changeunit_shop()
@@ -1024,7 +1024,10 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_reasonunit
     ball_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert ball_atomunit.get_value("road") == ball_road
     assert ball_atomunit.get_value("base") == medical_road
-    assert ball_atomunit.get_value("suff_idea_active") == after_medical_suff_idea_active
+    assert (
+        ball_atomunit.get_value("base_idea_active_requisite")
+        == after_medical_base_idea_active_requisite
+    )
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
@@ -1043,19 +1046,19 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_reasonunit
     medical_road = before_sue_world.make_road(knee_road, medical_text)
     before_sue_world.add_l1_idea(ideaunit_shop(knee_text))
     before_sue_world.add_idea(ideaunit_shop(medical_text), knee_road)
-    before_medical_suff_idea_active = True
+    before_medical_base_idea_active_requisite = True
     before_sue_world.edit_idea_attr(
         road=ball_road,
         reason_base=medical_road,
-        reason_suff_idea_active=before_medical_suff_idea_active,
+        reason_base_idea_active_requisite=before_medical_base_idea_active_requisite,
     )
 
     after_sue_world = copy_deepcopy(before_sue_world)
-    after_medical_suff_idea_active = False
+    after_medical_base_idea_active_requisite = False
     after_sue_world.edit_idea_attr(
         road=ball_road,
         reason_base=medical_road,
-        reason_suff_idea_active=after_medical_suff_idea_active,
+        reason_base_idea_active_requisite=after_medical_base_idea_active_requisite,
     )
 
     # WHEN
@@ -1073,7 +1076,10 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_reasonunit
     ball_atomunit = get_nested_value(sue_changeunit.atomunits, x_keylist)
     assert ball_atomunit.get_value("road") == ball_road
     assert ball_atomunit.get_value("base") == medical_road
-    assert ball_atomunit.get_value("suff_idea_active") == after_medical_suff_idea_active
+    assert (
+        ball_atomunit.get_value("base_idea_active_requisite")
+        == after_medical_base_idea_active_requisite
+    )
     assert get_atomunit_total_count(sue_changeunit) == 1
 
 
@@ -1092,11 +1098,11 @@ def test_ChangeUnit_add_all_different_atomunits_Creates_AtomUnit_idea_reasonunit
     medical_road = before_sue_world.make_road(knee_road, medical_text)
     before_sue_world.add_l1_idea(ideaunit_shop(knee_text))
     before_sue_world.add_idea(ideaunit_shop(medical_text), knee_road)
-    before_medical_suff_idea_active = True
+    before_medical_base_idea_active_requisite = True
     before_sue_world.edit_idea_attr(
         road=ball_road,
         reason_base=medical_road,
-        reason_suff_idea_active=before_medical_suff_idea_active,
+        reason_base_idea_active_requisite=before_medical_base_idea_active_requisite,
     )
 
     after_sue_world = copy_deepcopy(before_sue_world)
