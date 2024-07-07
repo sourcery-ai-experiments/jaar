@@ -945,7 +945,7 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_hel
     ball_road = before_sue_au.make_road(sports_road, ball_text)
     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
     before_ball_ideaunit = before_sue_au.get_idea_obj(ball_road)
-    assert before_ball_ideaunit._cultureunit._heldbeliefs == {}
+    assert before_ball_ideaunit._cultureunit._heldbeliefs == set()
 
     # WHEN
     update_disc_atomunit = atomunit_shop("world_idea_heldbelief", atom_insert())
@@ -988,7 +988,7 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_idea_hel
 
     # THEN
     after_ball_ideaunit = after_sue_au.get_idea_obj(ball_road)
-    assert after_ball_ideaunit._cultureunit._heldbeliefs == {}
+    assert after_ball_ideaunit._cultureunit._heldbeliefs == set()
 
 
 def test_ChangeUnit_get_changeunit_example1_ContainsAtomUnits():

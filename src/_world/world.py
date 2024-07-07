@@ -1193,7 +1193,7 @@ class WorldUnit:
         if x_idea._cultureunit != None:
             _heldbeliefs_to_delete = [
                 _heldbelief_belief_id
-                for _heldbelief_belief_id in x_idea._cultureunit._heldbeliefs.keys()
+                for _heldbelief_belief_id in x_idea._cultureunit._heldbeliefs
                 if self.get_beliefunit(_heldbelief_belief_id) is None
             ]
             for _heldbelief_belief_id in _heldbeliefs_to_delete:

@@ -387,7 +387,7 @@ class ChangeUnit:
             )
             self.add_atomunit_idea_heldbelief_insert(
                 idea_road=insert_idea_road,
-                insert_heldbelief_belief_ids=insert_ideaunit._cultureunit._heldbeliefs.keys(),
+                insert_heldbelief_belief_ids=insert_ideaunit._cultureunit._heldbeliefs,
             )
 
     def add_atomunit_idea_updates(
@@ -510,11 +510,9 @@ class ChangeUnit:
 
             # insert / update / delete heldbeliefs
             before_heldbeliefs_belief_ids = set(
-                before_ideaunit._cultureunit._heldbeliefs.keys()
+                before_ideaunit._cultureunit._heldbeliefs
             )
-            after_heldbeliefs_belief_ids = set(
-                after_ideaunit._cultureunit._heldbeliefs.keys()
-            )
+            after_heldbeliefs_belief_ids = set(after_ideaunit._cultureunit._heldbeliefs)
             self.add_atomunit_idea_heldbelief_insert(
                 idea_road=idea_road,
                 insert_heldbelief_belief_ids=after_heldbeliefs_belief_ids.difference(
@@ -557,7 +555,7 @@ class ChangeUnit:
             self.add_atomunit_idea_heldbelief_deletes(
                 idea_road=delete_idea_road,
                 delete_heldbelief_belief_ids=set(
-                    delete_ideaunit._cultureunit._heldbeliefs.keys()
+                    delete_ideaunit._cultureunit._heldbeliefs
                 ),
             )
 
@@ -952,19 +950,6 @@ def create_legible_list(x_change: ChangeUnit, x_world: WorldUnit) -> list[str]:
         add_world_charunit_delete_to_legible_list(
             leg_list, charunit_delete_dict, x_world
         )
-
-    # if beliefunit_insert_dict != None:
-    #     add_world_beliefunit_insert_to_legible_list(
-    #         leg_list, beliefunit_insert_dict, x_world
-    #     )
-    # if beliefunit_update_dict != None:
-    #     add_world_beliefunit_update_to_legible_list(
-    #         leg_list, beliefunit_update_dict, x_world
-    #     )
-    # if beliefunit_delete_dict != None:
-    #     add_world_beliefunit_delete_to_legible_list(
-    #         leg_list, beliefunit_delete_dict, x_world
-    #     )
 
     if char_beliefhold_insert_dict != None:
         add_world_char_beliefhold_insert_to_legible_list(
