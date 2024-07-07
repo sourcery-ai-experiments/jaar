@@ -93,7 +93,7 @@ def get_convert_format_filenames() -> set[str]:
     }
 
 
-def get_convert_format_dict(convert_format_name: str) -> dict[str:str]:
+def get_convert_format_dict(convert_format_name: str) -> dict[str, str]:
     convert_format_filename = get_json_filename(convert_format_name)
     convert_format_json = open_file(get_convert_format_dir(), convert_format_filename)
     return get_dict_from_json(convert_format_json)
