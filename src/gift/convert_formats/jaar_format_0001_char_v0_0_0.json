@@ -1,0 +1,32 @@
+{
+    "char_id": {
+        "required": [
+            "must_be_RoadNode"
+        ]
+    },
+    "char_pool": {
+        "required": [
+            "must_be_number"
+        ]
+    },
+    "credor_weight": {
+        "required": [
+            "must_be_number"
+        ]
+    },
+    "debtor_weight": {
+        "required": [
+            "must_be_number"
+        ]
+    },
+    "owner_id": {
+        "required": [
+            "must_be_RoadNode"
+        ]
+    },
+    "real_id": {
+        "required": [
+            "must_be_RoadNode"
+        ]
+    }
+}
