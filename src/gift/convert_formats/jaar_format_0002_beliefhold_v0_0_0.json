@@ -1,31 +1,31 @@
 {
     "belief_id": {
-        "required": [
+        "validate": [
             "must_be_str"
         ]
     },
     "char_id": {
-        "required": [
+        "validate": [
             "must_be_RoadNode"
         ]
     },
     "credor_weight": {
-        "required": [
+        "validate": [
             "must_be_number"
         ]
     },
     "debtor_weight": {
-        "required": [
+        "validate": [
             "must_be_number"
         ]
     },
     "owner_id": {
-        "required": [
+        "validate": [
             "must_be_RoadNode"
         ]
     },
     "real_id": {
-        "required": [
+        "validate": [
             "must_be_RoadNode"
         ]
     }

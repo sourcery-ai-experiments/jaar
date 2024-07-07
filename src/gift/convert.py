@@ -33,12 +33,20 @@ def credor_weight_str() -> str:
     return "credor_weight"
 
 
+def ideaunit_str() -> str:
+    return "ideaunit"
+
+
 def validate_str() -> str:
     return "validate"
 
 
 def must_be_roadnode_str() -> str:
     return "must_be_RoadNode"
+
+
+def must_be_str() -> str:
+    return "must_be_str"
 
 
 def must_be_number_str() -> str:
@@ -57,8 +65,16 @@ def jaar_format_0002_beliefhold_v0_0_0() -> str:
     return "jaar_format_0002_beliefhold_v0_0_0"
 
 
+def jaar_format_0003_ideaunit_v0_0_0() -> str:
+    return "jaar_format_0003_ideaunit_v0_0_0"
+
+
 def get_convert_format_filenames() -> set[str]:
-    return {jaar_format_0001_char_v0_0_0(), jaar_format_0002_beliefhold_v0_0_0()}
+    return {
+        jaar_format_0001_char_v0_0_0(),
+        jaar_format_0002_beliefhold_v0_0_0(),
+        jaar_format_0003_ideaunit_v0_0_0(),
+    }
 
 
 def get_convert_format_dict(convert_format_name: str) -> dict[str:str]:
@@ -99,14 +115,14 @@ def create_convert_format(
             sorted_beliefholds = sorted(
                 unsorted_beliefholds, key=lambda x_beliefhold: x_beliefhold.belief_id
             )
-            for x_belieflink in sorted_beliefholds:
+            for x_beliefunit in sorted_beliefholds:
                 d2_list = [
                     x_worldunit._real_id,
                     x_worldunit._owner_id,
                     x_charunit.char_id,
-                    x_belieflink.belief_id,
-                    x_belieflink.credor_weight,
-                    x_belieflink.debtor_weight,
+                    x_beliefunit.belief_id,
+                    x_beliefunit.credor_weight,
+                    x_beliefunit.debtor_weight,
                 ]
                 d1_list.append(d2_list)
 
