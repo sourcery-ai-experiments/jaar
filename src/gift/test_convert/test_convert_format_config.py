@@ -32,9 +32,13 @@ from src.gift.convert import (
     real_id_str,
     owner_id_str,
     char_id_str,
+    belief_id_str,
     char_pool_str,
     debtor_weight_str,
     credor_weight_str,
+    validate_str,
+    must_be_roadnode_str,
+    must_be_number_str,
     get_convert_format_dir,
     get_convert_format_filenames,
     get_convert_format_dict,
@@ -89,10 +93,6 @@ def test_convert_format_FilesExist():
     assert len(convert_format_filenames) == len(get_convert_format_filenames())
 
 
-def required_str() -> str:
-    return "required"
-
-
 def test_get_convert_format_dict_HasCorrectAttrs_jaar_format_0001_char_v0_0_0():
     # GIVEN
     convert_format_name = jaar_format_0001_char_v0_0_0()
@@ -113,17 +113,49 @@ def test_get_convert_format_dict_HasCorrectAttrs_jaar_format_0001_char_v0_0_0():
     assert char_pool_dict != None
     assert debtor_weight_dict != None
     assert credor_weight_dict != None
-    real_id_required = real_id_dict.get(required_str())
-    owner_id_required = owner_id_dict.get(required_str())
-    char_id_required = char_id_dict.get(required_str())
-    char_pool_required = char_pool_dict.get(required_str())
-    debtor_weight_required = debtor_weight_dict.get(required_str())
-    credor_weight_required = credor_weight_dict.get(required_str())
-    must_be_roadnode_str = "must_be_RoadNode"
-    must_be_number = "must_be_number"
-    assert real_id_required == [must_be_roadnode_str]
-    assert owner_id_required == [must_be_roadnode_str]
-    assert char_id_required == [must_be_roadnode_str]
-    assert char_pool_required == [must_be_number]
-    assert debtor_weight_required == [must_be_number]
-    assert credor_weight_required == [must_be_number]
+    real_id_required = real_id_dict.get(validate_str())
+    owner_id_required = owner_id_dict.get(validate_str())
+    char_id_required = char_id_dict.get(validate_str())
+    char_pool_required = char_pool_dict.get(validate_str())
+    debtor_weight_required = debtor_weight_dict.get(validate_str())
+    credor_weight_required = credor_weight_dict.get(validate_str())
+    assert real_id_required == [must_be_roadnode_str()]
+    assert owner_id_required == [must_be_roadnode_str()]
+    assert char_id_required == [must_be_roadnode_str()]
+    assert char_pool_required == [must_be_number_str()]
+    assert debtor_weight_required == [must_be_number_str()]
+    assert credor_weight_required == [must_be_number_str()]
+
+
+def test_get_convert_format_dict_HasCorrectAttrs_jaar_format_0002_beliefhold_v0_0_0():
+    # GIVEN
+    convert_format_name = jaar_format_0002_beliefhold_v0_0_0()
+
+    # WHEN
+    convert_format_dict = get_convert_format_dict(convert_format_name)
+
+    # THEN
+    real_id_dict = convert_format_dict.get(real_id_str())
+    owner_id_dict = convert_format_dict.get(owner_id_str())
+    char_id_dict = convert_format_dict.get(char_id_str())
+    belief_id_dict = convert_format_dict.get(belief_id_str())
+    debtor_weight_dict = convert_format_dict.get(debtor_weight_str())
+    credor_weight_dict = convert_format_dict.get(credor_weight_str())
+    assert real_id_dict != None
+    assert owner_id_dict != None
+    assert char_id_dict != None
+    assert belief_id_dict != None
+    assert debtor_weight_dict != None
+    assert credor_weight_dict != None
+    real_id_required = real_id_dict.get(validate_str())
+    owner_id_required = owner_id_dict.get(validate_str())
+    char_id_required = char_id_dict.get(validate_str())
+    belief_id_required = belief_id_dict.get(validate_str())
+    debtor_weight_required = debtor_weight_dict.get(validate_str())
+    credor_weight_required = credor_weight_dict.get(validate_str())
+    assert real_id_required == [must_be_roadnode_str()]
+    assert owner_id_required == [must_be_roadnode_str()]
+    assert char_id_required == [must_be_roadnode_str()]
+    assert belief_id_required == [must_be_roadnode_str()]
+    assert debtor_weight_required == [must_be_number_str()]
+    assert credor_weight_required == [must_be_number_str()]

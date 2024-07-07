@@ -1,12 +1,12 @@
 {
-    "char_id": {
-        "required": [
-            "must_be_RoadNode"
-        ]
-    },
     "belief_id": {
         "required": [
             "must_be_str"
+        ]
+    },
+    "char_id": {
+        "required": [
+            "must_be_RoadNode"
         ]
     },
     "credor_weight": {

@@ -17,6 +17,10 @@ def char_id_str() -> str:
     return "char_id"
 
 
+def belief_id_str() -> str:
+    return "belief_id"
+
+
 def char_pool_str() -> str:
     return "char_pool"
 
@@ -27,6 +31,18 @@ def debtor_weight_str() -> str:
 
 def credor_weight_str() -> str:
     return "credor_weight"
+
+
+def validate_str() -> str:
+    return "validate"
+
+
+def must_be_roadnode_str() -> str:
+    return "must_be_RoadNode"
+
+
+def must_be_number_str() -> str:
+    return "must_be_number"
 
 
 def get_convert_format_dir() -> str:
