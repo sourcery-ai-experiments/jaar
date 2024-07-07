@@ -37,12 +37,12 @@ def jaar_format_0001_char_v0_0_0() -> str:
     return "jaar_format_0001_char_v0_0_0"
 
 
-def jaar_format_0002_belieflink_v0_0_0() -> str:
-    return "jaar_format_0002_belieflink_v0_0_0"
+def jaar_format_0002_beliefhold_v0_0_0() -> str:
+    return "jaar_format_0002_beliefhold_v0_0_0"
 
 
 def get_convert_format_filenames() -> set[str]:
-    return {jaar_format_0001_char_v0_0_0(), jaar_format_0002_belieflink_v0_0_0()}
+    return {jaar_format_0001_char_v0_0_0(), jaar_format_0002_beliefhold_v0_0_0()}
 
 
 def get_convert_format_dict(convert_format_name: str) -> dict[str:str]:
@@ -74,19 +74,24 @@ def create_convert_format(
             ]
             d1_list.append(d2_list)
 
-        return d1_list
-    elif convert_format_name == jaar_format_0002_belieflink_v0_0_0():
-        headers_list = list(get_convert_format_dict(convert_format_name).keys())
-        for x_char in x_worldunit._chars.values():
-            for x_belieflink in x_char._belieflinks():
+    elif convert_format_name == jaar_format_0002_beliefhold_v0_0_0():
+        d1_list.append(_get_headers_list(convert_format_name))
+        unsorted_charunits = list(x_worldunit._chars.values())
+        sorted_charunits = sorted(unsorted_charunits, key=lambda x_char: x_char.char_id)
+        for x_charunit in sorted_charunits:
+            unsorted_beliefholds = list(x_charunit._beliefholds.values())
+            sorted_beliefholds = sorted(
+                unsorted_beliefholds, key=lambda x_beliefhold: x_beliefhold.belief_id
+            )
+            for x_belieflink in sorted_beliefholds:
                 d2_list = [
                     x_worldunit._real_id,
                     x_worldunit._owner_id,
-                    x_worldunit._char_debtor_pool,
                     x_charunit.char_id,
-                    x_belieflink.char_id,
-                    x_charunit.credor_weight,
+                    x_belieflink.belief_id,
+                    x_belieflink.credor_weight,
+                    x_belieflink.debtor_weight,
                 ]
                 d1_list.append(d2_list)
 
-        return [headers_list]
+    return d1_list

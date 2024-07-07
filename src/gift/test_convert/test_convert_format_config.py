@@ -39,7 +39,7 @@ from src.gift.convert import (
     get_convert_format_filenames,
     get_convert_format_dict,
     jaar_format_0001_char_v0_0_0,
-    jaar_format_0002_belieflink_v0_0_0,
+    jaar_format_0002_beliefhold_v0_0_0,
 )
 
 # from src.gift.examples.gift_env import get_codespace_gift_dir
@@ -55,8 +55,8 @@ def test_str_functions_ReturnCorrectObjs():
     assert debtor_weight_str() == "debtor_weight"
     assert credor_weight_str() == "credor_weight"
     assert jaar_format_0001_char_v0_0_0() == "jaar_format_0001_char_v0_0_0"
-    x0002_convert_format = "jaar_format_0002_belieflink_v0_0_0"
-    assert jaar_format_0002_belieflink_v0_0_0() == x0002_convert_format
+    x0002_convert_format = "jaar_format_0002_beliefhold_v0_0_0"
+    assert jaar_format_0002_beliefhold_v0_0_0() == x0002_convert_format
 
 
 def test_get_convert_format_dir_ReturnsObj():
@@ -73,7 +73,7 @@ def test_get_convert_format_filenames_ReturnsCorrectObj():
     # THEN
     print(f"{x_filenames=}")
     assert jaar_format_0001_char_v0_0_0() in x_filenames
-    assert jaar_format_0002_belieflink_v0_0_0() in x_filenames
+    assert jaar_format_0002_beliefhold_v0_0_0() in x_filenames
 
 
 def test_convert_format_FilesExist():
