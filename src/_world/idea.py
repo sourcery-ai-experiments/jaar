@@ -402,12 +402,12 @@ class IdeaUnit:
     def clear_descendant_pledge_count(self):
         self._descendant_pledge_count = None
 
-    def set_descendant_pledge_count_zero_if_null(self):
+    def set_descendant_pledge_count_zero_if_none(self):
         if self._descendant_pledge_count is None:
             self._descendant_pledge_count = 0
 
     def add_to_descendant_pledge_count(self, x_int: int):
-        self.set_descendant_pledge_count_zero_if_null()
+        self.set_descendant_pledge_count_zero_if_none()
         self._descendant_pledge_count += x_int
 
     def get_descendant_roads_from_kids(self) -> dict[RoadUnit:int]:
@@ -653,7 +653,7 @@ class IdeaUnit:
         if char_id != None:
             self._originunit.set_originlink(char_id=char_id, weight=char_weight)
 
-    def set_originunit_empty_if_null(self):
+    def set_originunit_empty_if_none(self):
         if self._originunit is None:
             self._originunit = originunit_shop()
 
@@ -1054,7 +1054,7 @@ class IdeaUnit:
             dict_x=self._factunits, old_road=old_road, new_road=new_road
         )
 
-    def set_cultureunit_empty_if_null(self):
+    def set_cultureunit_empty_if_none(self):
         if self._cultureunit is None:
             self._cultureunit = cultureunit_shop()
 
@@ -1181,8 +1181,8 @@ def ideaunit_shop(
         x_ideakid.set_idea_label(_label=_world_real_id)
     else:
         x_ideakid.set_idea_label(_label=_label)
-    x_ideakid.set_cultureunit_empty_if_null()
-    x_ideakid.set_originunit_empty_if_null()
+    x_ideakid.set_cultureunit_empty_if_none()
+    x_ideakid.set_originunit_empty_if_none()
     return x_ideakid
 
 
