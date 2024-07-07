@@ -209,7 +209,7 @@ def test_get_convert_format_dict_HasCorrectAttrs_jaar_format_0002_beliefhold_v0_
 #     reason_base
 #     reason_premise_true
 #     reason_premise_false
-#     reason_suff_idea_active
+#     reason_base_idea_active_requisite
 
 
 #     _cultureunit: CultureUnit = None

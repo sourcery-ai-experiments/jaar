@@ -202,14 +202,14 @@ def test_listen_to_agenda_duty_job_agenda_ProcessesIrrationalWorld(
         road=egg_road,
         pledge=True,
         reason_base=chicken_road,
-        reason_suff_idea_active=True,
+        reason_base_idea_active_requisite=True,
     )
     # set chick pledge is True when egg first is False
     sue_job.edit_idea_attr(
         road=chicken_road,
         pledge=True,
         reason_base=egg_road,
-        reason_suff_idea_active=False,
+        reason_base_idea_active_requisite=False,
     )
     yao_dakota_hubunit.save_job_world(sue_job)
 

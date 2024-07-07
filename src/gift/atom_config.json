@@ -223,7 +223,7 @@
             "normal_table_name": "reason"
         },
         "optional_args": {
-            "suff_idea_active": {
+            "base_idea_active_requisite": {
                 "python_type": "bool",
                 "sqlite_datatype": "INTEGER"
             }

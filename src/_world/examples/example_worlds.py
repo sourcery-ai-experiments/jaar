@@ -324,7 +324,7 @@ def get_world_irrational_example() -> WorldUnit:
         road=egg_road,
         pledge=True,
         reason_base=chicken_road,
-        reason_suff_idea_active=True,
+        reason_base_idea_active_requisite=True,
     )
 
     # set chick pledge is True when egg first is False
@@ -332,7 +332,7 @@ def get_world_irrational_example() -> WorldUnit:
         road=chicken_road,
         pledge=True,
         reason_base=egg_road,
-        reason_suff_idea_active=False,
+        reason_base_idea_active_requisite=False,
     )
 
     return hatter_world

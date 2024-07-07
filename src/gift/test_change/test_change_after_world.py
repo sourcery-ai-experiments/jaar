@@ -834,11 +834,13 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_rea
     assert before_ball_idea.get_reasonunit(knee_road) is None
 
     # WHEN
-    medical_suff_idea_active = True
+    medical_base_idea_active_requisite = True
     update_disc_atomunit = atomunit_shop("world_idea_reasonunit", atom_insert())
     update_disc_atomunit.set_required_arg("road", ball_road)
     update_disc_atomunit.set_required_arg("base", knee_road)
-    update_disc_atomunit.set_optional_arg("suff_idea_active", medical_suff_idea_active)
+    update_disc_atomunit.set_optional_arg(
+        "base_idea_active_requisite", medical_base_idea_active_requisite
+    )
     # print(f"{update_disc_atomunit=}")
     sue_changeunit = changeunit_shop()
     sue_changeunit.set_atomunit(update_disc_atomunit)
@@ -849,7 +851,10 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_insert_idea_rea
     after_knee_reasonunit = after_ball_idea.get_reasonunit(knee_road)
     assert after_knee_reasonunit != None
     assert after_knee_reasonunit.get_premise(medical_road) is None
-    assert after_knee_reasonunit.suff_idea_active == medical_suff_idea_active
+    assert (
+        after_knee_reasonunit.base_idea_active_requisite
+        == medical_base_idea_active_requisite
+    )
 
 
 def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_update_idea_reasonunit():
@@ -865,26 +870,29 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_update_idea_rea
     knee_road = before_sue_au.make_l1_road(knee_text)
     medical_text = "get medical attention"
     medical_road = before_sue_au.make_road(knee_road, medical_text)
-    before_medical_suff_idea_active = False
+    before_medical_base_idea_active_requisite = False
     before_sue_au.add_l1_idea(ideaunit_shop(knee_text))
     before_sue_au.add_idea(ideaunit_shop(medical_text), knee_road)
     before_sue_au.edit_idea_attr(
         road=ball_road,
         reason_base=knee_road,
-        reason_suff_idea_active=before_medical_suff_idea_active,
+        reason_base_idea_active_requisite=before_medical_base_idea_active_requisite,
     )
     before_ball_idea = before_sue_au.get_idea_obj(ball_road)
     before_ball_reasonunit = before_ball_idea.get_reasonunit(knee_road)
     assert before_ball_reasonunit != None
-    assert before_ball_reasonunit.suff_idea_active == before_medical_suff_idea_active
+    assert (
+        before_ball_reasonunit.base_idea_active_requisite
+        == before_medical_base_idea_active_requisite
+    )
 
     # WHEN
-    after_medical_suff_idea_active = True
+    after_medical_base_idea_active_requisite = True
     update_disc_atomunit = atomunit_shop("world_idea_reasonunit", atom_update())
     update_disc_atomunit.set_required_arg("road", ball_road)
     update_disc_atomunit.set_required_arg("base", knee_road)
     update_disc_atomunit.set_optional_arg(
-        "suff_idea_active", after_medical_suff_idea_active
+        "base_idea_active_requisite", after_medical_base_idea_active_requisite
     )
     # print(f"{update_disc_atomunit=}")
     sue_changeunit = changeunit_shop()
@@ -896,7 +904,10 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_update_idea_rea
     after_knee_reasonunit = after_ball_idea.get_reasonunit(knee_road)
     assert after_knee_reasonunit != None
     assert after_knee_reasonunit.get_premise(medical_road) is None
-    assert after_knee_reasonunit.suff_idea_active == after_medical_suff_idea_active
+    assert (
+        after_knee_reasonunit.base_idea_active_requisite
+        == after_medical_base_idea_active_requisite
+    )
 
 
 def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_idea_reasonunit():
@@ -910,12 +921,12 @@ def test_ChangeUnit_get_edited_world_ReturnsCorrectObj_WorldUnit_delete_idea_rea
     before_sue_au.add_idea(ideaunit_shop(ball_text), sports_road)
     knee_text = "knee"
     knee_road = before_sue_au.make_l1_road(knee_text)
-    medical_suff_idea_active = False
+    medical_base_idea_active_requisite = False
     before_sue_au.add_l1_idea(ideaunit_shop(knee_text))
     before_sue_au.edit_idea_attr(
         road=ball_road,
         reason_base=knee_road,
-        reason_suff_idea_active=medical_suff_idea_active,
+        reason_base_idea_active_requisite=medical_base_idea_active_requisite,
     )
     before_ball_idea = before_sue_au.get_idea_obj(ball_road)
     assert before_ball_idea.get_reasonunit(knee_road) != None

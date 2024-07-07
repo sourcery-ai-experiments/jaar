@@ -567,9 +567,10 @@ class ChangeUnit:
             x_atomunit = atomunit_shop("world_idea_reasonunit", atom_insert())
             x_atomunit.set_required_arg("road", after_ideaunit.get_road())
             x_atomunit.set_required_arg("base", after_reasonunit.base)
-            if after_reasonunit.suff_idea_active != None:
+            if after_reasonunit.base_idea_active_requisite != None:
                 x_atomunit.set_optional_arg(
-                    "suff_idea_active", after_reasonunit.suff_idea_active
+                    "base_idea_active_requisite",
+                    after_reasonunit.base_idea_active_requisite,
                 )
             self.set_atomunit(x_atomunit)
 
@@ -595,11 +596,12 @@ class ChangeUnit:
                 x_atomunit.set_required_arg("road", before_ideaunit.get_road())
                 x_atomunit.set_required_arg("base", after_reasonunit.base)
                 if (
-                    before_reasonunit.suff_idea_active
-                    != after_reasonunit.suff_idea_active
+                    before_reasonunit.base_idea_active_requisite
+                    != after_reasonunit.base_idea_active_requisite
                 ):
                     x_atomunit.set_optional_arg(
-                        "suff_idea_active", after_reasonunit.suff_idea_active
+                        "base_idea_active_requisite",
+                        after_reasonunit.base_idea_active_requisite,
                     )
                 self.set_atomunit(x_atomunit)
 
@@ -1413,12 +1415,16 @@ def add_world_idea_reasonunit_insert_to_legible_list(
         for idea_reasonunit_atom in road_dict.values():
             road_value = idea_reasonunit_atom.get_value("road")
             base_value = idea_reasonunit_atom.get_value("base")
-            suff_idea_active_value = idea_reasonunit_atom.get_value("suff_idea_active")
+            base_idea_active_requisite_value = idea_reasonunit_atom.get_value(
+                "base_idea_active_requisite"
+            )
             x_str = (
                 f"ReasonUnit created for idea '{road_value}' with base '{base_value}'."
             )
-            if suff_idea_active_value != None:
-                x_str += f" suff_idea_active={suff_idea_active_value}."
+            if base_idea_active_requisite_value != None:
+                x_str += (
+                    f" base_idea_active_requisite={base_idea_active_requisite_value}."
+                )
             legible_list.append(x_str)
 
 
@@ -1429,10 +1435,12 @@ def add_world_idea_reasonunit_update_to_legible_list(
         for idea_reasonunit_atom in road_dict.values():
             road_value = idea_reasonunit_atom.get_value("road")
             base_value = idea_reasonunit_atom.get_value("base")
-            suff_idea_active_value = idea_reasonunit_atom.get_value("suff_idea_active")
-            if suff_idea_active_value != None:
-                x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' transited with suff_idea_active={suff_idea_active_value}."
-            elif suff_idea_active_value is None:
+            base_idea_active_requisite_value = idea_reasonunit_atom.get_value(
+                "base_idea_active_requisite"
+            )
+            if base_idea_active_requisite_value != None:
+                x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' transited with base_idea_active_requisite={base_idea_active_requisite_value}."
+            elif base_idea_active_requisite_value is None:
                 x_str = f"ReasonUnit base='{base_value}' for idea '{road_value}' and no longer checks base active mode."
             legible_list.append(x_str)
 

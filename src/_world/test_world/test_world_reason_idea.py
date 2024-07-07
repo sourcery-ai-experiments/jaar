@@ -155,7 +155,7 @@ def test_WorldUnit_reasonheirs_AreCorrectlyInherited_v1():
         base=week_road,
         premises=premises,
         _status=False,
-        _base_idea_active=True,
+        _base_idea_active_value=True,
     )
     print(f"{casa_wk_build_reasonunit.base=}")
     x_world.edit_idea_attr(road=casa_road, reason=casa_wk_build_reasonunit)
@@ -211,7 +211,7 @@ def test_WorldUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
         base=week_road,
         premises=premises_x,
         _status=False,
-        _base_idea_active=True,
+        _base_idea_active_value=True,
     )
     a4_world.edit_idea_attr(road=casa_road, reason=casa_wk_build_reasonunit)
 
@@ -238,26 +238,26 @@ def test_WorldUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromRoot():
     assert rla_week_reasonheir.base == casa_wk_built_reasonheir.base
     assert rla_week_reasonheir.premises == casa_wk_built_reasonheir.premises
     assert (
-        rla_week_reasonheir.suff_idea_active
-        == casa_wk_built_reasonheir.suff_idea_active
+        rla_week_reasonheir.base_idea_active_requisite
+        == casa_wk_built_reasonheir.base_idea_active_requisite
     )
     assert rla_week_reasonheir._status == casa_wk_built_reasonheir._status
     assert rla_week_reasonheir._task == casa_wk_built_reasonheir._task
-    assert rla_week_reasonheir._base_idea_active
-    assert rla_week_reasonheir._base_idea_active != casa_wk_built_reasonheir
+    assert rla_week_reasonheir._base_idea_active_value
+    assert rla_week_reasonheir._base_idea_active_value != casa_wk_built_reasonheir
 
     # 3
     cost_week_reasonheir = cost_idea._reasonheirs[week_road]
     assert cost_week_reasonheir.base == casa_wk_built_reasonheir.base
     assert cost_week_reasonheir.premises == casa_wk_built_reasonheir.premises
     assert (
-        cost_week_reasonheir.suff_idea_active
-        == casa_wk_built_reasonheir.suff_idea_active
+        cost_week_reasonheir.base_idea_active_requisite
+        == casa_wk_built_reasonheir.base_idea_active_requisite
     )
     assert cost_week_reasonheir._status == casa_wk_built_reasonheir._status
     assert cost_week_reasonheir._task == casa_wk_built_reasonheir._task
-    assert cost_week_reasonheir._base_idea_active
-    assert cost_week_reasonheir._base_idea_active != casa_wk_built_reasonheir
+    assert cost_week_reasonheir._base_idea_active_value
+    assert cost_week_reasonheir._base_idea_active_value != casa_wk_built_reasonheir
 
 
 def test_WorldUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
@@ -278,7 +278,7 @@ def test_WorldUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
         base=week_road,
         premises=premises,
         _status=False,
-        _base_idea_active=True,
+        _base_idea_active_value=True,
     )
     a4_world.edit_idea_attr(road=casa_road, reason=casa_wk_build_reasonunit)
     rla_text = "hp"
@@ -311,26 +311,26 @@ def test_WorldUnit_reasonheirs_AreCorrectlyInheritedTo4LevelsFromLevel2():
     assert rla_week_reasonheir.base == casa_wk_built_reasonheir.base
     assert rla_week_reasonheir.premises == casa_wk_built_reasonheir.premises
     assert (
-        rla_week_reasonheir.suff_idea_active
-        == casa_wk_built_reasonheir.suff_idea_active
+        rla_week_reasonheir.base_idea_active_requisite
+        == casa_wk_built_reasonheir.base_idea_active_requisite
     )
     assert rla_week_reasonheir._status == casa_wk_built_reasonheir._status
     assert rla_week_reasonheir._task == casa_wk_built_reasonheir._task
-    assert rla_week_reasonheir._base_idea_active
-    assert rla_week_reasonheir._base_idea_active != casa_wk_built_reasonheir
+    assert rla_week_reasonheir._base_idea_active_value
+    assert rla_week_reasonheir._base_idea_active_value != casa_wk_built_reasonheir
 
     # 3
     cost_week_reasonheir = cost_idea._reasonheirs[week_road]
     assert cost_week_reasonheir.base == casa_wk_built_reasonheir.base
     assert cost_week_reasonheir.premises == casa_wk_built_reasonheir.premises
     assert (
-        cost_week_reasonheir.suff_idea_active
-        == casa_wk_built_reasonheir.suff_idea_active
+        cost_week_reasonheir.base_idea_active_requisite
+        == casa_wk_built_reasonheir.base_idea_active_requisite
     )
     assert cost_week_reasonheir._status == casa_wk_built_reasonheir._status
     assert cost_week_reasonheir._task == casa_wk_built_reasonheir._task
-    assert cost_week_reasonheir._base_idea_active
-    assert cost_week_reasonheir._base_idea_active != casa_wk_built_reasonheir
+    assert cost_week_reasonheir._base_idea_active_value
+    assert cost_week_reasonheir._base_idea_active_value != casa_wk_built_reasonheir
 
 
 def test_WorldUnit_ReasonUnits_set_UnCoupledMethod():
@@ -524,8 +524,8 @@ def test_WorldUnit_ReasonUnits_del_reason_premise_UncoupledMethod2():
     assert str(excinfo.value) == f"No ReasonUnit at '{weekdays_road}'"
 
 
-def test_WorldUnit_edit_idea_attr_worldIsAbleToEdit_suff_idea_active_AnyIdeaIfInvaildThrowsError():
-    # _suff_idea_active: str = None
+def test_WorldUnit_edit_idea_attr_worldIsAbleToEdit_base_idea_active_requisite_AnyIdeaIfInvaildThrowsError():
+    # _base_idea_active_requisite: str = None
     # must be 1 of 3: bool: True, bool: False, str="Set to Ignore"
     # GIVEN
     x_world = example_worlds_get_world_with_4_levels()
@@ -543,7 +543,7 @@ def test_WorldUnit_edit_idea_attr_worldIsAbleToEdit_suff_idea_active_AnyIdeaIfIn
     x_world.edit_idea_attr(
         road=commute_road,
         reason_base=casa_road,
-        reason_suff_idea_active=True,
+        reason_base_idea_active_requisite=True,
     )
 
     # THEN
@@ -551,13 +551,13 @@ def test_WorldUnit_edit_idea_attr_worldIsAbleToEdit_suff_idea_active_AnyIdeaIfIn
     reasonunit_casa = commute_idea._reasonunits.get(casa_road)
     assert reasonunit_casa.base == casa_road
     assert len(reasonunit_casa.premises) == 0
-    assert reasonunit_casa.suff_idea_active == True
+    assert reasonunit_casa.base_idea_active_requisite == True
 
     # WHEN
     x_world.edit_idea_attr(
         road=commute_road,
         reason_base=casa_road,
-        reason_suff_idea_active=False,
+        reason_base_idea_active_requisite=False,
     )
 
     # THEN
@@ -565,13 +565,13 @@ def test_WorldUnit_edit_idea_attr_worldIsAbleToEdit_suff_idea_active_AnyIdeaIfIn
     reasonunit_casa = commute_idea._reasonunits.get(casa_road)
     assert reasonunit_casa.base == casa_road
     assert len(reasonunit_casa.premises) == 0
-    assert reasonunit_casa.suff_idea_active is False
+    assert reasonunit_casa.base_idea_active_requisite is False
 
     # WHEN
     x_world.edit_idea_attr(
         road=commute_road,
         reason_base=casa_road,
-        reason_suff_idea_active="Set to Ignore",
+        reason_base_idea_active_requisite="Set to Ignore",
     )
 
     # THEN
@@ -579,7 +579,7 @@ def test_WorldUnit_edit_idea_attr_worldIsAbleToEdit_suff_idea_active_AnyIdeaIfIn
     reasonunit_casa = commute_idea._reasonunits.get(casa_road)
     assert reasonunit_casa.base == casa_road
     assert len(reasonunit_casa.premises) == 0
-    assert reasonunit_casa.suff_idea_active is None
+    assert reasonunit_casa.base_idea_active_requisite is None
 
 
 def test_WorldUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
@@ -610,7 +610,7 @@ def test_WorldUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
     assert casa_idea._active is False
 
     # 5. idea(...,commute to casa) with
-    # 5.1. ReasonUnit: idea(base=...,casa) has .suff_idea_active = True
+    # 5.1. ReasonUnit: idea(base=...,casa) has .base_idea_active_requisite = True
     # 5.2. idea(...,casa).active = False
     commute_text = "commute to casa"
     commute_road = x_world.make_l1_road(commute_text)
@@ -618,7 +618,7 @@ def test_WorldUnit_ReasonUnits_IdeaUnit_active_InfluencesReasonUnitStatus():
     x_world.edit_idea_attr(
         road=commute_road,
         reason_base=casa_road,
-        reason_suff_idea_active=True,
+        reason_base_idea_active_requisite=True,
     )
     commute_idea = x_world.get_idea_obj(commute_road)
     x_world.calc_world_metrics()

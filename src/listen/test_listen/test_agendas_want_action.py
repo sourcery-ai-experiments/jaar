@@ -206,14 +206,14 @@ def test_listen_to_agendas_want_action_ProcessesIrrationalWorld(env_dir_setup_cl
         road=egg_road,
         pledge=True,
         reason_base=chicken_road,
-        reason_suff_idea_active=True,
+        reason_base_idea_active_requisite=True,
     )
     # set chick pledge is True when egg first is False
     sue_action.edit_idea_attr(
         road=chicken_road,
         pledge=True,
         reason_base=egg_road,
-        reason_suff_idea_active=False,
+        reason_base_idea_active_requisite=False,
     )
     sue_hubunit = hubunit_shop(env_dir(), None, sue_text)
     sue_hubunit.save_action_world(sue_action)
