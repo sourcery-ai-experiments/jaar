@@ -482,7 +482,7 @@ def premises_get_from_dict(x_dict: dict) -> dict[str:PremiseUnit]:
 class ReasonCore:
     base: RoadUnit
     premises: dict[RoadUnit:PremiseUnit]
-    suff_idea_active: bool = None
+    base_idea_active_requisite: bool = None
     delimiter: str = None
 
     def set_delimiter(self, new_delimiter: str):
@@ -553,13 +553,13 @@ class ReasonCore:
 def reasoncore_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_idea_active: bool = None,
+    base_idea_active_requisite: bool = None,
     delimiter: str = None,
 ):
     return ReasonCore(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_idea_active=suff_idea_active,
+        base_idea_active_requisite=base_idea_active_requisite,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -574,21 +574,21 @@ class ReasonUnit(ReasonCore):
         x_dict = {"base": self.base}
         if premises_dict != {}:
             x_dict["premises"] = premises_dict
-        if self.suff_idea_active != None:
-            x_dict["suff_idea_active"] = self.suff_idea_active
+        if self.base_idea_active_requisite != None:
+            x_dict["base_idea_active_requisite"] = self.base_idea_active_requisite
         return x_dict
 
 
 def reasonunit_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_idea_active: bool = None,
+    base_idea_active_requisite: bool = None,
     delimiter: str = None,
 ):
     return ReasonUnit(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_idea_active=suff_idea_active,
+        base_idea_active_requisite=base_idea_active_requisite,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -597,16 +597,16 @@ def reasonunit_shop(
 class ReasonHeir(ReasonCore):
     _status: bool = None
     _task: bool = None
-    _base_idea_active: bool = None
+    _base_idea_active_value: bool = None
 
     def inherit_from_reasonheir(self, x_reasonunit: ReasonUnit):
         x_premises = {}
-        for w in x_reasonunit.premises.values():
+        for x_premiseunit in x_reasonunit.premises.values():
             premise_x = premiseunit_shop(
-                need=w.need,
-                open=w.open,
-                nigh=w.nigh,
-                divisor=w.divisor,
+                need=x_premiseunit.need,
+                open=x_premiseunit.open,
+                nigh=x_premiseunit.nigh,
+                divisor=x_premiseunit.divisor,
             )
             x_premises[premise_x.need] = premise_x
         self.premises = x_premises
@@ -618,65 +618,67 @@ class ReasonHeir(ReasonCore):
 
     def _set_premise_status(self, factheir: FactHeir):
         for premise in self.premises.values():
-            premise.set_status(x_factheir=factheir)
+            premise.set_status(factheir)
 
-    def _get_base_fact(self, facts: dict[RoadUnit:FactHeir]) -> FactHeir:
-        x_fact = None
-        if facts is None:
-            facts = {}
+    def _get_base_fact(self, factheirs: dict[RoadUnit:FactHeir]) -> FactHeir:
+        base_fact = None
+        factheirs = get_empty_dict_if_none(factheirs)
+        for y_factheir in factheirs.values():
+            if self.base == y_factheir.base:
+                base_fact = y_factheir
+        return base_fact
 
-        for fact in facts.values():
-            if self.base == fact.base:
-                x_fact = fact
+    def set_base_idea_active_value(self, bool_x: bool):
+        self._base_idea_active_value = bool_x
 
-        return x_fact
-
-    def set_base_idea_active(self, bool_x: bool):
-        self._base_idea_active = bool_x
-
-    def set_status(self, facts: dict[RoadUnit:FactHeir]):
-        self.clear_status()
-        fact = self._get_base_fact(facts=facts)
-        self._set_premise_status(factheir=fact)
-
-        # if a single one is true return true (OR operator)
-        is_a_single_premise_true = False
-        is_single_task_true = False
-        for premise in self.premises.values():
-            if premise._status == True:
-                is_a_single_premise_true = True
-                if premise._task == True:
-                    is_single_task_true = True
-
-        # reasonheir object status is set by either
-        self._status = bool(
-            is_a_single_premise_true
-            or (
-                self._base_idea_active != None
-                and self._base_idea_active == self.suff_idea_active
-            )
+    def base_idea_active_requisite_satisfied(self) -> bool:
+        return (
+            self._base_idea_active_value != None
+            and self._base_idea_active_value == self.base_idea_active_requisite
         )
-        self._task = True if is_single_task_true else None
+
+    def is_any_premise_true(self) -> tuple[bool, bool]:
+        any_premise_true = False
+        any_task_true = False
+        for x_premiseunit in self.premises.values():
+            if x_premiseunit._status == True:
+                any_premise_true = True
+                if x_premiseunit._task == True:
+                    any_task_true = True
+        return any_premise_true, any_task_true
+
+    def _set_attr_status(self, any_premise_true: bool):
+        self._status = any_premise_true or self.base_idea_active_requisite_satisfied()
+
+    def _set_attr_task(self, any_task_true: bool):
+        self._task = True if any_task_true else None
         if self._status and self._task is None:
             self._task = False
+
+    def set_status(self, factheirs: dict[RoadUnit:FactHeir]):
+        self.clear_status()
+        self._set_premise_status(self._get_base_fact(factheirs))
+        any_premise_true, any_task_true = self.is_any_premise_true()
+        self._set_attr_status(any_premise_true)
+        self._set_attr_task(any_task_true)
 
 
 def reasonheir_shop(
     base: RoadUnit,
     premises: dict[RoadUnit:PremiseUnit] = None,
-    suff_idea_active: bool = None,
+    base_idea_active_requisite: bool = None,
     _status: bool = None,
     _task: bool = None,
-    _base_idea_active: bool = None,
+    _base_idea_active_value: bool = None,
     delimiter: str = None,
 ):
     return ReasonHeir(
         base=base,
         premises=get_empty_dict_if_none(premises),
-        suff_idea_active=suff_idea_active,
+        base_idea_active_requisite=base_idea_active_requisite,
         _status=_status,
         _task=_task,
-        _base_idea_active=_base_idea_active,
+        _base_idea_active_value=_base_idea_active_value,
         delimiter=default_road_delimiter_if_none(delimiter),
     )
 
@@ -690,7 +692,9 @@ def reasons_get_from_dict(reasons_dict: dict) -> dict[RoadUnit:ReasonUnit]:
             x_reasonunit.premises = premises_get_from_dict(
                 x_dict=reason_dict["premises"]
             )
-        if reason_dict.get("suff_idea_active") != None:
-            x_reasonunit.suff_idea_active = reason_dict.get("suff_idea_active")
+        if reason_dict.get("base_idea_active_requisite") != None:
+            x_reasonunit.base_idea_active_requisite = reason_dict.get(
+                "base_idea_active_requisite"
+            )
         x_dict[x_reasonunit.base] = x_reasonunit
     return x_dict

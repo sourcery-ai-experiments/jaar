@@ -232,14 +232,14 @@ def test_WorldUnit_calc_world_metrics_CorrectlySets_idea_dict():
         premises={wed.need: wed},
         _status=True,
         _task=False,
-        _base_idea_active=True,
+        _base_idea_active_value=True,
     )
     sta_lh = reasonheir_shop(
         base=state_road,
         premises={usa.need: usa},
         _status=True,
         _task=False,
-        _base_idea_active=True,
+        _base_idea_active_value=True,
     )
 
     x1_reasonunits = {

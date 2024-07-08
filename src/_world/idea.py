@@ -79,7 +79,7 @@ class IdeaAttrFilter:
     reason_premise_divisor: int = None
     reason_del_premise_base: RoadUnit = None
     reason_del_premise_need: RoadUnit = None
-    reason_suff_idea_active: str = None
+    reason_base_idea_active_requisite: str = None
     cultureunit: CultureUnit = None
     healerhold: HealerHold = None
     begin: float = None
@@ -163,7 +163,7 @@ def ideaattrfilter_shop(
     reason_premise_divisor: int = None,
     reason_del_premise_base: RoadUnit = None,
     reason_del_premise_need: RoadUnit = None,
-    reason_suff_idea_active: str = None,
+    reason_base_idea_active_requisite: str = None,
     cultureunit: CultureUnit = None,
     healerhold: HealerHold = None,
     begin: float = None,
@@ -196,7 +196,7 @@ def ideaattrfilter_shop(
         reason_premise_divisor=reason_premise_divisor,
         reason_del_premise_base=reason_del_premise_base,
         reason_del_premise_need=reason_del_premise_need,
-        reason_suff_idea_active=reason_suff_idea_active,
+        reason_base_idea_active_requisite=reason_base_idea_active_requisite,
         cultureunit=cultureunit,
         healerhold=healerhold,
         begin=begin,
@@ -402,12 +402,12 @@ class IdeaUnit:
     def clear_descendant_pledge_count(self):
         self._descendant_pledge_count = None
 
-    def set_descendant_pledge_count_zero_if_null(self):
+    def set_descendant_pledge_count_zero_if_none(self):
         if self._descendant_pledge_count is None:
             self._descendant_pledge_count = 0
 
     def add_to_descendant_pledge_count(self, x_int: int):
-        self.set_descendant_pledge_count_zero_if_null()
+        self.set_descendant_pledge_count_zero_if_none()
         self._descendant_pledge_count += x_int
 
     def get_descendant_roads_from_kids(self) -> dict[RoadUnit:int]:
@@ -653,7 +653,7 @@ class IdeaUnit:
         if char_id != None:
             self._originunit.set_originlink(char_id=char_id, weight=char_weight)
 
-    def set_originunit_empty_if_null(self):
+    def set_originunit_empty_if_none(self):
         if self._originunit is None:
             self._originunit = originunit_shop()
 
@@ -713,10 +713,13 @@ class IdeaUnit:
                 nigh=idea_attr.reason_premise_nigh,
                 divisor=idea_attr.reason_premise_divisor,
             )
-        if idea_attr.reason_base != None and idea_attr.reason_suff_idea_active != None:
-            self.set_reason_suff_idea_active(
+        if (
+            idea_attr.reason_base != None
+            and idea_attr.reason_base_idea_active_requisite != None
+        ):
+            self.set_reason_base_idea_active_requisite(
                 base=idea_attr.reason_base,
-                suff_idea_active=idea_attr.reason_suff_idea_active,
+                base_idea_active_requisite=idea_attr.reason_base_idea_active_requisite,
             )
         if idea_attr.cultureunit != None:
             self._cultureunit = idea_attr.cultureunit
@@ -780,14 +783,16 @@ class IdeaUnit:
             if len(self._reasonunits[base].premises) == 0:
                 self.del_reasonunit_base(base=base)
 
-    def set_reason_suff_idea_active(self, base: RoadUnit, suff_idea_active: str):
+    def set_reason_base_idea_active_requisite(
+        self, base: RoadUnit, base_idea_active_requisite: str
+    ):
         x_reasonunit = self._get_or_create_reasonunit(base=base)
-        if suff_idea_active is False:
-            x_reasonunit.suff_idea_active = False
-        elif suff_idea_active == "Set to Ignore":
-            x_reasonunit.suff_idea_active = None
-        elif suff_idea_active:
-            x_reasonunit.suff_idea_active = True
+        if base_idea_active_requisite is False:
+            x_reasonunit.base_idea_active_requisite = False
+        elif base_idea_active_requisite == "Set to Ignore":
+            x_reasonunit.base_idea_active_requisite = None
+        elif base_idea_active_requisite:
+            x_reasonunit.base_idea_active_requisite = True
 
     def _get_or_create_reasonunit(self, base: RoadUnit) -> ReasonUnit:
         x_reasonunit = None
@@ -870,7 +875,7 @@ class IdeaUnit:
     def set_reasonheirs_status(self):
         self.clear_reasonheirs_status()
         for x_reasonheir in self._reasonheirs.values():
-            x_reasonheir.set_status(facts=self._factheirs)
+            x_reasonheir.set_status(factheirs=self._factheirs)
 
     def set_active(
         self,
@@ -941,14 +946,14 @@ class IdeaUnit:
         for old_reasonheir in coalesced_reasons.values():
             new_reasonheir = reasonheir_shop(
                 base=old_reasonheir.base,
-                suff_idea_active=old_reasonheir.suff_idea_active,
+                base_idea_active_requisite=old_reasonheir.base_idea_active_requisite,
             )
             new_reasonheir.inherit_from_reasonheir(old_reasonheir)
 
             # if world_idea_dict != None:
             base_idea = world_idea_dict.get(old_reasonheir.base)
             if base_idea != None:
-                new_reasonheir.set_base_idea_active(bool_x=base_idea._active)
+                new_reasonheir.set_base_idea_active_value(base_idea._active)
 
             self._reasonheirs[new_reasonheir.base] = new_reasonheir
 
@@ -1054,7 +1059,7 @@ class IdeaUnit:
             dict_x=self._factunits, old_road=old_road, new_road=new_road
         )
 
-    def set_cultureunit_empty_if_null(self):
+    def set_cultureunit_empty_if_none(self):
         if self._cultureunit is None:
             self._cultureunit = cultureunit_shop()
 
@@ -1181,8 +1186,8 @@ def ideaunit_shop(
         x_ideakid.set_idea_label(_label=_world_real_id)
     else:
         x_ideakid.set_idea_label(_label=_label)
-    x_ideakid.set_cultureunit_empty_if_null()
-    x_ideakid.set_originunit_empty_if_null()
+    x_ideakid.set_cultureunit_empty_if_none()
+    x_ideakid.set_originunit_empty_if_none()
     return x_ideakid
 
 
